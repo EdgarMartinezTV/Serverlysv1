@@ -23,9 +23,33 @@ export type NavColumn = {
   links: readonly NavLink[];
 };
 
+/**
+ * Optional highlighted panel at the end of a mega menu. Points at a real page
+ * that already exists — it is a shortcut, not a promo slot to fill with copy.
+ */
+export type NavFeature = {
+  eyebrow: string;
+  title: string;
+  description: string;
+  href: string;
+  linkLabel: string;
+};
+
 export type NavItem =
-  | { label: string; href: string; external?: boolean; columns?: never }
-  | { label: string; href?: string; columns: readonly NavColumn[]; external?: never };
+  | {
+      label: string;
+      href: string;
+      external?: boolean;
+      columns?: never;
+      feature?: never;
+    }
+  | {
+      label: string;
+      href?: string;
+      columns: readonly NavColumn[];
+      feature?: NavFeature;
+      external?: never;
+    };
 
 export const primaryNav: readonly NavItem[] = [
   {
@@ -77,6 +101,13 @@ export const primaryNav: readonly NavItem[] = [
         ],
       },
     ],
+    feature: {
+      eyebrow: "Compare",
+      title: "Every plan, with renewal prices",
+      description: "See what each tier costs in year one and year two, side by side.",
+      href: "/pricing",
+      linkLabel: "View pricing",
+    },
   },
   {
     label: "WordPress",
@@ -107,6 +138,14 @@ export const primaryNav: readonly NavItem[] = [
         ],
       },
     ],
+    feature: {
+      eyebrow: "Switching host",
+      title: "Free migration, no downtime",
+      description:
+        "We move everything to staging first. DNS changes only when you say so.",
+      href: "/wp-migrations",
+      linkLabel: "How migration works",
+    },
   },
   {
     label: "Domains",
@@ -231,3 +270,55 @@ export const legalNav: readonly NavLink[] = [
   { label: "Report abuse", href: "/report-abuse" },
   { label: "Accessibility", href: "/accessibility" },
 ];
+
+/**
+ * Social accounts. These three are the ONLY accounts referenced by the live
+ * site — verified in ~/Desktop/Archive. Do not add a network without an
+ * account that actually exists; a dead social icon costs trust.
+ */
+export const socialLinks = [
+  { label: "X", href: "https://x.com/serverlys" },
+  { label: "Instagram", href: "https://www.instagram.com/getserverlys/" },
+  { label: "TikTok", href: "https://www.tiktok.com/@serverlys" },
+] as const;
+
+/**
+ * Announcement bar.
+ *
+ * `version` is part of the dismissal storage key: bumping it re-shows the bar
+ * to everyone who dismissed the previous one. Change the copy AND the version
+ * together, or returning visitors never see the new message.
+ *
+ * Set `enabled: false` to remove the bar entirely — no code change needed.
+ */
+export const announcement = {
+  enabled: true,
+  version: "2026-09-cloud",
+  /** Filled from real pricing data at render time — never hard-code a price. */
+  href: "/pricing",
+  linkLabel: "See plans",
+} as const;
+
+/**
+ * Is `href` the current section?
+ *
+ * Exact match for "/", prefix match otherwise, so /blog/some-post correctly
+ * marks /blog as current. Prefix matching guards on a "/" boundary so
+ * /cloud-hosting does not light up for /cloud-hosting-alternatives.
+ */
+export function isActivePath(href: string, pathname: string): boolean {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(href + "/");
+}
+
+/** True when any link inside a nav item points at the current section. */
+export function isActiveItem(item: NavItem, pathname: string): boolean {
+  if (!("columns" in item) || !item.columns) {
+    return "href" in item && typeof item.href === "string"
+      ? isActivePath(item.href, pathname)
+      : false;
+  }
+  return item.columns.some((col) =>
+    col.links.some((l) => !l.external && isActivePath(l.href, pathname)),
+  );
+}

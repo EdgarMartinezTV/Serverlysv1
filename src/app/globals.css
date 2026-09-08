@@ -297,6 +297,12 @@
    UTILITIES
    ========================================================================== */
 @layer utilities {
+  /* Announcement bar dismissal. The attribute is set by a blocking script in
+     the root layout before first paint, so a dismissed bar never flashes. */
+  [data-announcement="dismissed"] [data-announcement-bar] {
+    display: none;
+  }
+
   /* Numbers that are compared — prices, specs, tables — must align. */
   .tabular {
     font-variant-numeric: tabular-nums;
@@ -324,6 +330,19 @@
     white-space: nowrap;
     border-width: 0;
   }
+}
+
+/* Mega-menu entrance. Kept in CSS (not a library) and applied via
+   `motion-safe:` so reduced-motion users simply get no animation. */
+@keyframes megaIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scrimIn { from { opacity: 0 } to { opacity: 1 } }
+@keyframes sheetIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* Motion is decorative throughout this system — none of it carries

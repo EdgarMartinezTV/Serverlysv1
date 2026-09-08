@@ -366,6 +366,77 @@ correctly.
 
 ---
 
+## 10a. Navigation
+
+`src/components/navigation/` — header, mega menu, mobile drawer, announcement bar.
+
+### Pattern choice
+
+The menus are a **disclosure navigation menu** (W3C APG), not a `role="menu"`
+menubar. The triggers are real buttons revealing groups of ordinary links.
+`role="menu"` would promise application-menu semantics that links do not
+deliver, and would break the expected Tab behaviour.
+
+### Keyboard contract
+
+| Key | On a trigger | Inside a panel |
+|---|---|---|
+| `Enter` / `Space` | Toggle (native button behaviour) | — |
+| `ArrowDown` | Open and focus the first link | Next link |
+| `ArrowUp` | — | Previous link (wraps) |
+| `Home` / `End` | — | First / last link |
+| `ArrowLeft` / `ArrowRight` | Previous / next trigger | — |
+| `Escape` | Close | Close and restore focus to the trigger |
+| `Tab` | Moves on naturally | Leaves the panel; the header closes it |
+
+Closed panels use `hidden`, so their links leave both the tab order and the
+accessibility tree.
+
+### Pointer contract
+
+- Hover opens **only for `pointerType === "mouse"`**. On touch, `pointerenter`
+  fires immediately before `click`, so hover-to-open would open the panel and
+  the click would instantly close it.
+- A 150ms close delay lets the pointer travel diagonally from trigger to panel.
+
+### Positioning
+
+| Panel | Anchored to | Why |
+|---|---|---|
+| Multi-column / featured | The `<nav>` | Cannot overflow either viewport edge at any desktop width |
+| Single-column dropdown | Its own trigger | Narrow enough to be safe, and reads better |
+
+Anchoring a wide panel to a right-hand trigger and aligning it `end` overflowed
+the **left** viewport edge at 1440px. A document-level `scrollWidth` check does
+**not** catch that — a negative left offset adds no scroll width. `test-nav.mjs`
+measures every panel's rect directly.
+
+### Layering
+
+```
+mobile drawer   z-50, portalled to <body>   (covers the header)
+site header     z-50 sticky
+mega panel      z-10 within the header
+announcement    static, scrolls away
+```
+
+The drawer is **portalled to `document.body`** for two reasons: the header uses
+`backdrop-filter`, which makes it a containing block for `fixed` descendants
+(collapsing a `fixed inset-0` child to the 64px header box); and the
+announcement bar means the header is not at viewport top. Portalling escapes
+both couplings. Because the drawer covers the header, it carries its own close
+button.
+
+### Announcement bar
+
+Dismissal is stored in `localStorage` under a **versioned** key. Bumping
+`announcement.version` re-shows the bar to everyone — change copy and version
+together. A blocking script in the root layout stamps the dismissed state on
+`<html>` before first paint, so a dismissed bar never flashes and the header
+never jumps. Set `announcement.enabled = false` to remove the bar entirely.
+
+---
+
 ## 11. Verification
 
 ```bash
@@ -379,6 +450,7 @@ npm run verify   # typecheck → lint → validate:tokens → build
 | `validate:tokens` | Dead colour utilities + 14 contrast floors |
 | `build` | Production build |
 | `format` | Prettier |
+| `node scripts/test-nav.mjs` | **62 navigation interaction tests** — real key and pointer events, panel bounds, drawer geometry, focus restoration, scroll lock, target sizes |
 
 Plus `scripts/shoot.mjs` (true responsive screenshots — Chrome headless clamps
 its viewport at 500px, so this drives CDP instead) and `scripts/a11y.mjs`
