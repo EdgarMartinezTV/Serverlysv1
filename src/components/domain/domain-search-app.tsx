@@ -314,6 +314,44 @@ export function DomainSearchApp() {
           />
         )}
 
+        {/*
+          Empty results. The route always returns one row per requested domain,
+          so this should be unreachable — but "should be unreachable" is not
+          handled, and a search that renders nothing at all is the worst
+          outcome: the user cannot tell whether it worked. Never fail silently.
+        */}
+        {phase.kind === "results" && phase.results.length === 0 && (
+          <div
+            role="status"
+            className="rounded-lg bg-canvas-secondary p-5 ring-1 ring-inset ring-line"
+          >
+            <p className="text-body font-medium text-fg">
+              No results came back for {phase.query}
+            </p>
+            <p className="mt-1.5 text-small text-fg-secondary">
+              That is unusual rather than expected. The name may use an extension no
+              registry answered for.
+            </p>
+            <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+              <Button
+                type="button"
+                variant="secondary"
+                size="md"
+                onClick={() => void run(phase.query)}
+              >
+                Try again
+              </Button>
+              <Button
+                href={`${billing.root}/cart.php?a=add&domain=register`}
+                variant="ghost"
+                size="md"
+              >
+                Search in the cart instead
+              </Button>
+            </div>
+          </div>
+        )}
+
         {phase.kind === "results" && featured && (
           <div className="flex flex-col gap-6">
             <ul className="flex flex-col gap-3">

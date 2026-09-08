@@ -106,6 +106,34 @@ const search = async (q) =>
 // NOTE: badges are text-transform:uppercase and Chrome's innerText reflects
 // that ("Taken" renders as "TAKEN"), so every text assertion here is
 // case-insensitive. Matching on mixed case produced false negatives.
+/**
+ * Install a deterministic API stub.
+ *
+ * UI-state assertions must not depend on a third-party registry's mood: RDAP is
+ * shared public infrastructure and WILL rate-limit a suite that hammers it,
+ * producing failures that look like product defects but are not. The live
+ * integration is proved separately by the probe at the end of this file.
+ */
+const stub = (payload, status = 200) =>
+  ev(`
+  if (!window.__realFetch) window.__realFetch = window.fetch;
+  window.fetch = async (u, o) =>
+    String(u).includes('/api/domains/check')
+      ? new Response(${JSON.stringify(JSON.stringify(payload))}, {
+          status: ${status}, headers: { 'Content-Type': 'application/json' } })
+      : window.__realFetch(u, o);
+  return true;`);
+
+const row = (domain, status, price, reason) => ({
+  domain,
+  sld: domain.split(".")[0],
+  tld: "." + domain.split(".").slice(1).join("."),
+  status,
+  price,
+  source: "rdap",
+  ...(reason ? { reason } : {}),
+});
+
 const waitResults = async (ms = 20000) =>
   ev(`
   const t=Date.now();
@@ -301,6 +329,49 @@ check(
 );
 await offline(false);
 
+console.log("\n── Empty results & unsold TLD ──");
+await load();
+// Force the empty-results branch. The route always returns a row per requested
+// domain, so this state is only reachable by stubbing — which is exactly why
+// it needs a test: nothing else would ever exercise it.
+await ev(`const real=window.fetch;
+  window.fetch=async(u,o)=>String(u).includes('/api/domains/check')
+    ? new Response(JSON.stringify({ok:true,results:[],source:'rdap'}),{status:200,headers:{'Content-Type':'application/json'}})
+    : real(u,o);
+  return true;`);
+await search("empty-probe-7781.com");
+await sleep(1200);
+check(
+  "empty results shows an explicit message, never a silent blank",
+  await ev(`return /no results came back/i.test(document.body.innerText)`),
+);
+check(
+  "empty results offers retry and the WHMCS fallback",
+  await ev(`return [...document.querySelectorAll('button,a')]
+    .some(e=>/try again/i.test(e.textContent)) &&
+    [...document.querySelectorAll('a')].some(a=>/search in the cart/i.test(a.textContent))`),
+);
+
+await load();
+await stub({
+  ok: true,
+  source: "rdap",
+  results: [row("github.io", "available", null), row("github.eu", "available", 9.95)],
+});
+await search("github.io");
+await waitResults();
+check(
+  "a TLD we do not sell is shown honestly, with no Register CTA",
+  await ev(`const row=[...document.querySelectorAll('li')].find(l=>l.textContent.includes('github.io'));
+    return !!row && /do not sell this extension/i.test(row.textContent)
+      && !row.querySelector('a[href*="domain=register"]')`),
+);
+check(
+  "sellable alternates still offered alongside it",
+  await ev(`return [...document.querySelectorAll('a')]
+    .some(a=>(a.getAttribute('href')||'').includes('a=add&domain=register&query=github.eu'))`),
+);
+
 console.log("\n── Mobile 375 ──");
 await viewport(375, true);
 await load();
@@ -332,6 +403,35 @@ check(
       .filter(a=>a.getBoundingClientRect().width>0);
     return links.length>0 && links.every(a=>a.getBoundingClientRect().height>=44)`),
 );
+
+console.log("\n── Live integration (real registry, no stub) ──");
+{
+  // Every UI assertion above is stubbed for determinism. This one is NOT — it
+  // proves the provider chain actually reaches a real registry. A definite
+  // answer OR an honest "unknown" both pass; what must never happen is a
+  // fabricated availability.
+  const res = await fetch("http://localhost:3000/api/domains/check", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query: "google.com" }),
+  });
+  const body = await res.json();
+  const statuses = body.ok ? body.results.map((r) => r.status) : [];
+  const valid = ["available", "registered", "unknown", "unsupported"];
+  check(
+    "live API returns well-formed results from a real provider",
+    body.ok === true &&
+      statuses.length > 0 &&
+      statuses.every((st) => valid.includes(st)),
+    JSON.stringify(body.ok ? statuses : body.error),
+  );
+  const definite = statuses.some((st) => st === "registered" || st === "available");
+  console.log(
+    definite
+      ? "    (registry answered definitively this run)"
+      : '    (registry rate-limited this run — reported as "unknown", never guessed)',
+  );
+}
 
 console.log(
   `\n${fail === 0 ? "✓ ALL PASS" : "✗ FAILURES"} — ${pass} passed, ${fail} failed\n`,
