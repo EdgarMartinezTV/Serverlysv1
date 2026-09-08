@@ -13,19 +13,19 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { setTimeout as sleep } from "node:timers/promises";
 
 const CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
-const [, , url = "http://localhost:3000", outDir = "shots", widthsArg] =
-  process.argv;
+const [, , url = "http://localhost:3000", outDir = "shots", widthsArg] = process.argv;
 const full = process.argv.includes("--full");
-const widths = (widthsArg && !widthsArg.startsWith("--")
-  ? widthsArg
-  : "1440,1280,1024,834,768,640,430,390,375"
+const widths = (
+  widthsArg && !widthsArg.startsWith("--")
+    ? widthsArg
+    : "1440,1280,1024,834,768,640,430,390,375"
 )
   .split(",")
   .map(Number);
 
 mkdirSync(outDir, { recursive: true });
 
-const port = 9222 + Math.floor(process.uptime() * 1000) % 500;
+const port = 9222 + (Math.floor(process.uptime() * 1000) % 500);
 const chrome = spawn(CHROME, [
   "--headless=new",
   "--disable-gpu",

@@ -42,16 +42,16 @@ export function Migration() {
         {STEPS.map((step, i) => (
           <li
             key={step.title}
-            className="relative flex flex-col gap-3 rounded-xl bg-white p-6 shadow-e1 ring-1 ring-ink-200"
+            className="relative flex flex-col gap-3 rounded-xl bg-white p-6 shadow-e1 ring-1 ring-line"
           >
             <span
-              className="tabular inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand-50 text-body-sm font-semibold text-brand-700"
+              className="tabular inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary-soft text-small font-semibold text-primary"
               aria-hidden="true"
             >
               {i + 1}
             </span>
-            <h3 className="text-heading-3 text-ink-950">{step.title}</h3>
-            <p className="text-body-sm text-ink-600">{step.body}</p>
+            <h3 className="text-body-lg font-semibold text-fg">{step.title}</h3>
+            <p className="text-small text-fg-secondary">{step.body}</p>
           </li>
         ))}
       </ol>

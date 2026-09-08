@@ -3,12 +3,7 @@
 import { useId, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import {
-  planGroups,
-  formatPrice,
-  orderUrl,
-  type PlanGroup,
-} from "@/data/pricing";
+import { planGroups, formatPrice, orderUrl, type PlanGroup } from "@/data/pricing";
 
 type Term = "annual" | "monthly";
 
@@ -57,7 +52,7 @@ export function PricingTable() {
           role="tablist"
           aria-label="Hosting type"
           onKeyDown={onTabKeyDown}
-          className="flex w-full max-w-full gap-1 overflow-x-auto rounded-lg bg-ink-100 p-1 sm:w-auto"
+          className="flex w-full max-w-full gap-1 overflow-x-auto rounded-lg bg-canvas-inset p-1 sm:w-auto"
         >
           {planGroups.map((g, i) => {
             const selected = g.id === active.id;
@@ -75,10 +70,10 @@ export function PricingTable() {
                 tabIndex={selected ? 0 : -1}
                 onClick={() => setGroupId(g.id)}
                 className={cn(
-                  "min-h-10 whitespace-nowrap rounded-md px-4 text-body-sm font-medium transition-colors",
+                  "min-h-10 whitespace-nowrap rounded-md px-4 text-small font-medium transition-colors",
                   selected
-                    ? "bg-white text-ink-950 shadow-e1"
-                    : "text-ink-600 hover:text-ink-900",
+                    ? "bg-white text-fg shadow-e1"
+                    : "text-fg-secondary hover:text-fg",
                 )}
               >
                 {g.label}
@@ -89,7 +84,7 @@ export function PricingTable() {
 
         <fieldset className="flex items-center gap-3">
           <legend className="sr-only-focusable">Billing term</legend>
-          <div className="flex gap-1 rounded-lg bg-ink-100 p-1">
+          <div className="flex gap-1 rounded-lg bg-canvas-inset p-1">
             {(
               [
                 ["annual", "Annual"],
@@ -99,11 +94,11 @@ export function PricingTable() {
               <label
                 key={value}
                 className={cn(
-                  "flex min-h-9 cursor-pointer items-center rounded-md px-3.5 text-body-sm font-medium transition-colors",
-                  "focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand-600",
+                  "flex min-h-9 cursor-pointer items-center rounded-md px-3.5 text-small font-medium transition-colors",
+                  "focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary",
                   term === value
-                    ? "bg-white text-ink-950 shadow-e1"
-                    : "text-ink-600 hover:text-ink-900",
+                    ? "bg-white text-fg shadow-e1"
+                    : "text-fg-secondary hover:text-fg",
                 )}
               >
                 <input
@@ -118,7 +113,7 @@ export function PricingTable() {
               </label>
             ))}
           </div>
-          <span className="text-body-sm text-success-600">Save up to 25% annually</span>
+          <span className="text-small text-success">Save up to 25% annually</span>
         </fieldset>
       </div>
 
@@ -133,7 +128,7 @@ export function PricingTable() {
           tabIndex={0}
           className="outline-none"
         >
-          <p className="mb-6 text-center text-body text-ink-600">{g.blurb}</p>
+          <p className="mb-6 text-center text-body text-fg-secondary">{g.blurb}</p>
           <PlanGrid group={g} term={term} />
         </div>
       ))}
@@ -152,30 +147,28 @@ function PlanGrid({ group, term }: { group: PlanGroup; term: Term }) {
               className={cn(
                 "relative flex w-full flex-col rounded-xl bg-white p-6",
                 plan.popular
-                  ? "shadow-e4 ring-2 ring-brand-500"
-                  : "shadow-e2 ring-1 ring-ink-200",
+                  ? "shadow-e4 ring-2 ring-primary"
+                  : "shadow-e2 ring-1 ring-line",
               )}
             >
               {plan.popular && (
-                <span className="absolute -top-3 left-6 rounded-full bg-brand-600 px-3 py-1 text-label font-mono uppercase text-white">
+                <span className="absolute -top-3 left-6 rounded-full bg-primary px-3 py-1 text-caption font-mono uppercase text-white">
                   Most popular
                 </span>
               )}
 
-              <h3 className="text-heading-2 text-ink-950">{plan.name}</h3>
+              <h3 className="text-h4 text-fg">{plan.name}</h3>
               {/* Two lines reserved so every card's price block starts at the same y. */}
-              <p className="mt-1 min-h-14 text-body-sm text-ink-500">{plan.summary}</p>
+              <p className="mt-1 min-h-14 text-small text-fg-muted">{plan.summary}</p>
 
               <div className="mt-4 flex items-baseline gap-1.5">
-                <span className="tabular text-display-3 text-ink-950">
-                  {formatPrice(price)}
-                </span>
-                <span className="text-body-sm text-ink-500">/mo</span>
+                <span className="tabular text-h2 text-fg">{formatPrice(price)}</span>
+                <span className="text-small text-fg-muted">/mo</span>
               </div>
               {/* Non-negotiable: the renewal rate always accompanies the promo rate. */}
-              <p className="mt-1.5 text-body-sm text-ink-500">
+              <p className="mt-1.5 text-small text-fg-muted">
                 Renews at{" "}
-                <span className="tabular font-medium text-ink-700">
+                <span className="tabular font-medium text-fg-secondary">
                   {formatPrice(plan.renewal)}/mo
                 </span>
               </p>
@@ -190,7 +183,7 @@ function PlanGrid({ group, term }: { group: PlanGroup; term: Term }) {
                 Choose plan
               </Button>
 
-              <dl className="mt-6 flex flex-col gap-2.5 border-t border-ink-100 pt-5 text-body-sm">
+              <dl className="mt-6 flex flex-col gap-2.5 border-t border-line-subtle pt-5 text-small">
                 {[
                   ["Websites", plan.specs.sites],
                   ["Traffic", plan.specs.visits],
@@ -199,19 +192,22 @@ function PlanGrid({ group, term }: { group: PlanGroup; term: Term }) {
                   ["Transfer", plan.specs.transfer],
                 ].map(([label, value]) => (
                   <div key={label} className="flex justify-between gap-3">
-                    <dt className="text-ink-500">{label}</dt>
-                    <dd className="text-right font-medium text-ink-800">{value}</dd>
+                    <dt className="text-fg-muted">{label}</dt>
+                    <dd className="text-right font-medium text-fg">{value}</dd>
                   </div>
                 ))}
               </dl>
 
-              <ul className="mt-5 flex flex-col gap-2 border-t border-ink-100 pt-5">
+              <ul className="mt-5 flex flex-col gap-2 border-t border-line-subtle pt-5">
                 {plan.includes.map((inc) => (
-                  <li key={inc} className="flex items-center gap-2 text-body-sm text-ink-700">
+                  <li
+                    key={inc}
+                    className="flex items-center gap-2 text-small text-fg-secondary"
+                  >
                     <svg
                       viewBox="0 0 16 16"
                       aria-hidden="true"
-                      className="h-4 w-4 shrink-0 text-success-500"
+                      className="h-4 w-4 shrink-0 text-success-fill"
                     >
                       <path
                         d="m3.5 8.5 3 3 6-7"

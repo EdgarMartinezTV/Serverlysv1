@@ -64,7 +64,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {/* Keyboard users must be able to bypass the nav. Visible on focus. */}
         <a
           href="#main"
-          className="sr-only-focusable absolute left-4 top-4 z-[100] rounded-md bg-brand-600 px-4 py-2 text-body-sm font-medium text-white shadow-e3"
+          className="sr-only-focusable absolute left-4 top-4 z-[100] rounded-md bg-primary px-4 py-2 text-small font-medium text-white shadow-e3"
         >
           Skip to main content
         </a>

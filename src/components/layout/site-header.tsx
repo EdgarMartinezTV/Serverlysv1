@@ -81,8 +81,8 @@ export function SiteHeader() {
     <header
       ref={headerRef}
       className={cn(
-        "sticky top-0 z-50 bg-canvas/85 backdrop-blur-md transition-shadow duration-[--duration-base]",
-        scrolled ? "shadow-e2 ring-1 ring-ink-200/70" : "ring-1 ring-ink-100",
+        "sticky top-0 z-50 bg-canvas/85 backdrop-blur-md transition-shadow duration-normal",
+        scrolled ? "shadow-e2 ring-1 ring-line/70" : "ring-1 ring-line-subtle",
       )}
       onKeyDown={(e) => {
         if (e.key === "Escape" && open) {
@@ -95,7 +95,10 @@ export function SiteHeader() {
         <Wordmark tone="dark" priority />
 
         {/* Desktop navigation */}
-        <nav aria-label="Main" className="ml-6 hidden lg:flex lg:items-center lg:gap-0.5">
+        <nav
+          aria-label="Main"
+          className="ml-6 hidden lg:flex lg:items-center lg:gap-0.5"
+        >
           {primaryNav.map((item) => {
             if (!("columns" in item) || !item.columns) {
               const link = item as Extract<NavItem, { href: string }>;
@@ -106,10 +109,10 @@ export function SiteHeader() {
                   href={link.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "rounded-md px-3 py-2 text-body-sm font-medium transition-colors",
+                    "rounded-md px-3 py-2 text-small font-medium transition-colors",
                     active
-                      ? "text-brand-700"
-                      : "text-ink-700 hover:bg-ink-100 hover:text-ink-950",
+                      ? "text-primary"
+                      : "text-fg-secondary hover:bg-canvas-inset hover:text-fg",
                   )}
                 >
                   {link.label}
@@ -139,10 +142,10 @@ export function SiteHeader() {
                   aria-controls={panelId}
                   onClick={() => setOpen(isOpen ? null : item.label)}
                   className={cn(
-                    "flex items-center gap-1.5 rounded-md px-3 py-2 text-body-sm font-medium transition-colors",
+                    "flex items-center gap-1.5 rounded-md px-3 py-2 text-small font-medium transition-colors",
                     isOpen
-                      ? "bg-ink-100 text-ink-950"
-                      : "text-ink-700 hover:bg-ink-100 hover:text-ink-950",
+                      ? "bg-canvas-inset text-fg"
+                      : "text-fg-secondary hover:bg-canvas-inset hover:text-fg",
                   )}
                 >
                   {item.label}
@@ -185,7 +188,7 @@ function Chevron({ open }: { open: boolean }) {
       viewBox="0 0 12 12"
       aria-hidden="true"
       className={cn(
-        "h-3 w-3 text-ink-500 transition-transform duration-[--duration-base] ease-[--ease-out]",
+        "h-3 w-3 text-fg-muted transition-transform duration-normal ease-hover",
         open && "rotate-180",
       )}
     >
@@ -222,14 +225,14 @@ function MegaPanel({
     >
       <div
         className={cn(
-          "w-[min(44rem,calc(100vw-4rem))] rounded-xl bg-white p-2 shadow-e5 ring-1 ring-ink-200",
+          "w-[min(44rem,calc(100vw-4rem))] rounded-xl bg-white p-2 shadow-e5 ring-1 ring-line",
           "grid gap-1",
           columns.length > 1 ? "grid-cols-2" : "grid-cols-1",
         )}
       >
         {columns.map((col) => (
           <div key={col.heading} className="p-2">
-            <p className="px-3 pb-2 text-label font-mono uppercase text-ink-500">
+            <p className="px-3 pb-2 text-caption font-mono uppercase text-fg-muted">
               {col.heading}
             </p>
             <ul className="flex flex-col">
@@ -252,12 +255,12 @@ function MegaLink({ link, onNavigate }: { link: NavLink; onNavigate: () => void 
   const content = (
     <>
       <span className="flex items-center gap-2">
-        <span className="text-body-sm font-medium text-ink-900 group-hover:text-brand-700">
+        <span className="text-small font-medium text-fg group-hover:text-primary">
           {link.label}
         </span>
-        {soon && <Badge tone="warn">Soon</Badge>}
+        {soon && <Badge tone="warning">Soon</Badge>}
         {link.external && (
-          <svg viewBox="0 0 12 12" aria-hidden="true" className="h-3 w-3 text-ink-500">
+          <svg viewBox="0 0 12 12" aria-hidden="true" className="h-3 w-3 text-fg-muted">
             <path
               d="M4 2h6v6M10 2 3 9"
               fill="none"
@@ -270,7 +273,7 @@ function MegaLink({ link, onNavigate }: { link: NavLink; onNavigate: () => void 
         )}
       </span>
       {link.description && (
-        <span className="mt-0.5 block text-body-sm leading-snug text-ink-500">
+        <span className="mt-0.5 block text-small leading-snug text-fg-muted">
           {link.description}
         </span>
       )}
@@ -278,7 +281,7 @@ function MegaLink({ link, onNavigate }: { link: NavLink; onNavigate: () => void 
   );
 
   const classes =
-    "group block rounded-lg px-3 py-2.5 transition-colors hover:bg-ink-50 focus-visible:bg-ink-50";
+    "group block rounded-lg px-3 py-2.5 transition-colors hover:bg-canvas-secondary focus-visible:bg-canvas-secondary";
 
   if (link.external) {
     return (

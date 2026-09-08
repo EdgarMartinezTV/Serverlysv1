@@ -51,9 +51,7 @@ export function pageMetadata({
     title: { absolute: title },
     description,
     alternates: { canonical: url },
-    robots: index
-      ? { index: true, follow: true }
-      : { index: false, follow: true },
+    robots: index ? { index: true, follow: true } : { index: false, follow: true },
     openGraph: {
       type: "website",
       siteName: company.name,

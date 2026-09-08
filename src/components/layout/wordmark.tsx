@@ -28,7 +28,7 @@ export function Wordmark({
   return (
     <Link
       href="/"
-      className="inline-flex shrink-0 items-center rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600"
+      className="inline-flex shrink-0 items-center rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
       aria-label={`${company.name} — home`}
     >
       {tone === "dark" ? (
@@ -45,7 +45,7 @@ export function Wordmark({
           <span className="font-display text-[1.375rem] font-bold uppercase tracking-[0.14em] text-white">
             {company.name}
           </span>
-          <span className="mt-1 font-mono text-[0.5625rem] uppercase tracking-[0.18em] text-ink-400">
+          <span className="mt-1 font-mono text-[0.5625rem] uppercase tracking-[0.18em] text-fg-on-dark-muted">
             Always online, always there
           </span>
         </span>

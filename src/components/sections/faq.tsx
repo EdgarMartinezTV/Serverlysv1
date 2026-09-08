@@ -24,15 +24,17 @@ export function FaqSection({ items }: { items: readonly Faq[] }) {
           lede="The things people actually ask us, answered plainly."
         />
 
-        <ul className="divide-y divide-ink-200 border-t border-ink-200">
+        <ul className="divide-y divide-line border-t border-line">
           {items.map((faq) => (
             <li key={faq.question}>
               <details className="group py-5">
-                <summary className="flex cursor-pointer list-none items-start justify-between gap-6 rounded-sm text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 [&::-webkit-details-marker]:hidden">
-                  <span className="text-heading-3 text-ink-950">{faq.question}</span>
+                <summary className="flex cursor-pointer list-none items-start justify-between gap-6 rounded-sm text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&::-webkit-details-marker]:hidden">
+                  <span className="text-body-lg font-semibold text-fg">
+                    {faq.question}
+                  </span>
                   <span
                     aria-hidden="true"
-                    className="mt-1 shrink-0 text-ink-500 transition-transform duration-[--duration-base] ease-[--ease-out] group-open:rotate-45"
+                    className="mt-1 shrink-0 text-fg-muted transition-transform duration-normal ease-hover group-open:rotate-45"
                   >
                     <svg viewBox="0 0 16 16" className="h-4 w-4">
                       <path
@@ -45,7 +47,9 @@ export function FaqSection({ items }: { items: readonly Faq[] }) {
                     </svg>
                   </span>
                 </summary>
-                <p className="mt-3 max-w-2xl text-body text-ink-600">{faq.answer}</p>
+                <p className="mt-3 max-w-2xl text-body text-fg-secondary">
+                  {faq.answer}
+                </p>
               </details>
             </li>
           ))}

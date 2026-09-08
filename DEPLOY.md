@@ -99,5 +99,5 @@ Environment:
 - [ ] `public/` and `.next/static` present in the image
 - [ ] Redirects mapped for any legacy URL whose path changed
 - [ ] `https://serverlys.com/sitemap.xml` and `robots.txt` served
-- [ ] Reversed/white Serverlys logo supplied (see DESIGN.md) — footer currently
+- [ ] Reversed/white Serverlys logo supplied (see DESIGN_SYSTEM.md) — footer currently
       uses a typographic wordmark because no such asset exists

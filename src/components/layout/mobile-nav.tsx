@@ -90,7 +90,7 @@ export function MobileNav() {
         aria-expanded={open}
         aria-controls="mobile-nav-panel"
         aria-label={open ? "Close menu" : "Open menu"}
-        className="inline-flex h-10 w-10 items-center justify-center rounded-md text-ink-700 transition-colors hover:bg-ink-100 hover:text-ink-950 lg:hidden"
+        className="inline-flex h-10 w-10 items-center justify-center rounded-md text-fg-secondary transition-colors hover:bg-canvas-inset hover:text-fg lg:hidden"
       >
         <svg viewBox="0 0 20 20" aria-hidden="true" className="h-5 w-5">
           {open ? (
@@ -122,7 +122,7 @@ export function MobileNav() {
         >
           {/* Scrim. Pointer-only dismissal; Escape is the keyboard path. */}
           <div
-            className="absolute inset-0 bg-ink-950/20"
+            className="absolute inset-0 bg-canvas-dark/20"
             onClick={() => setOpen(false)}
             aria-hidden="true"
           />
@@ -134,7 +134,7 @@ export function MobileNav() {
             className="absolute inset-x-0 top-0 max-h-full overflow-y-auto overscroll-contain bg-white pb-8 shadow-e5 outline-none"
           >
             <nav aria-label="Mobile" className="px-5 pt-4 sm:px-8">
-              <ul className="flex flex-col divide-y divide-ink-100">
+              <ul className="flex flex-col divide-y divide-line-subtle">
                 {primaryNav.map((item) => {
                   if (!("columns" in item) || !item.columns) {
                     const link = item as { label: string; href: string };
@@ -142,7 +142,7 @@ export function MobileNav() {
                       <li key={link.label}>
                         <Link
                           href={link.href}
-                          className="flex min-h-12 items-center py-3 text-heading-3 text-ink-950"
+                          className="flex min-h-12 items-center py-3 text-body-lg font-semibold text-fg"
                         >
                           {link.label}
                         </Link>
@@ -160,14 +160,14 @@ export function MobileNav() {
                         aria-expanded={isExpanded}
                         aria-controls={sectionId}
                         onClick={() => setExpanded(isExpanded ? null : item.label)}
-                        className="flex min-h-12 w-full items-center justify-between py-3 text-left text-heading-3 text-ink-950"
+                        className="flex min-h-12 w-full items-center justify-between py-3 text-left text-body-lg font-semibold text-fg"
                       >
                         {item.label}
                         <svg
                           viewBox="0 0 12 12"
                           aria-hidden="true"
                           className={cn(
-                            "h-3.5 w-3.5 text-ink-500 transition-transform duration-[--duration-base]",
+                            "h-3.5 w-3.5 text-fg-muted transition-transform duration-normal",
                             isExpanded && "rotate-180",
                           )}
                         >
@@ -185,7 +185,7 @@ export function MobileNav() {
                       <div id={sectionId} hidden={!isExpanded} className="pb-3">
                         {item.columns.map((col) => (
                           <div key={col.heading} className="pb-2">
-                            <p className="pb-1 text-label font-mono uppercase text-ink-500">
+                            <p className="pb-1 text-caption font-mono uppercase text-fg-muted">
                               {col.heading}
                             </p>
                             <ul className="flex flex-col">
@@ -212,7 +212,7 @@ export function MobileNav() {
                 </Button>
                 <a
                   href={company.phoneHref}
-                  className="pt-1 text-center text-body-sm text-ink-500"
+                  className="pt-1 text-center text-small text-fg-muted"
                 >
                   Talk to us — {company.phone}
                 </a>
@@ -228,9 +228,9 @@ export function MobileNav() {
 function MobileLink({ link }: { link: NavLink }) {
   const soon = link.status === "soon";
   const inner = (
-    <span className="flex min-h-11 items-center gap-2 py-1.5 text-body text-ink-700">
+    <span className="flex min-h-11 items-center gap-2 py-1.5 text-body text-fg-secondary">
       {link.label}
-      {soon && <Badge tone="warn">Soon</Badge>}
+      {soon && <Badge tone="warning">Soon</Badge>}
     </span>
   );
 

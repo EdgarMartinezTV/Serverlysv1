@@ -1,17 +1,24 @@
 import { cn } from "@/lib/utils";
-import { Container } from "./container";
+import { Container, type ContainerWidth } from "./container";
 
 /**
  * A page band. Owns vertical rhythm and surface colour so no section invents
- * its own spacing. Three surfaces only:
- *   light  — the default canvas
- *   subtle — a quiet step used to separate adjacent light sections
- *   dark   — reserved for infrastructure/proof bands and the footer
+ * its own spacing.
+ *
+ * Three surfaces only:
+ *   light   the default canvas
+ *   subtle  a quiet step, to separate two adjacent light sections
+ *   dark    reserved for proof/infrastructure bands and the footer
+ *
+ * `surface` also selects the correct foreground tokens. On the dark band,
+ * fg-muted (ink-500) would fail contrast — the surface contract is what stops
+ * that mistake being possible.
  */
 export function Section({
   children,
   surface = "light",
   spacing = "base",
+  width = "content",
   as: Tag = "section",
   id,
   labelledBy,
@@ -19,7 +26,8 @@ export function Section({
 }: {
   children: React.ReactNode;
   surface?: "light" | "subtle" | "dark";
-  spacing?: "base" | "tight" | "loose";
+  spacing?: "tight" | "base" | "loose";
+  width?: ContainerWidth;
   as?: "section" | "div" | "footer";
   id?: string;
   labelledBy?: string;
@@ -30,23 +38,23 @@ export function Section({
       id={id}
       aria-labelledby={labelledBy}
       className={cn(
-        surface === "light" && "bg-canvas text-ink-800",
-        surface === "subtle" && "bg-canvas-subtle text-ink-800",
-        surface === "dark" && "bg-canvas-dark text-ink-300",
+        surface === "light" && "bg-canvas text-fg-secondary",
+        surface === "subtle" && "bg-canvas-secondary text-fg-secondary",
+        surface === "dark" && "bg-canvas-dark text-fg-on-dark-secondary",
         spacing === "tight" && "py-14 sm:py-16",
         spacing === "base" && "py-20 sm:py-24 lg:py-28",
         spacing === "loose" && "py-24 sm:py-32 lg:py-40",
         className,
       )}
     >
-      <Container>{children}</Container>
+      <Container width={width}>{children}</Container>
     </Tag>
   );
 }
 
 /**
- * Standard section header. Keeps eyebrow/heading/lede typography identical
- * everywhere, and wires the heading id used by the parent's aria-labelledby.
+ * Standard section header — keeps eyebrow/heading/lede typography identical
+ * everywhere and wires the heading id used by the parent's aria-labelledby.
  */
 export function SectionHeader({
   eyebrow,
@@ -66,35 +74,28 @@ export function SectionHeader({
   return (
     <div
       className={cn(
-        "flex flex-col gap-4",
-        align === "center" ? "items-center text-center" : "items-start",
-        align === "center" ? "mx-auto max-w-[680px]" : "max-w-[680px]",
+        "flex max-w-[680px] flex-col gap-4",
+        align === "center" ? "mx-auto items-center text-center" : "items-start",
       )}
     >
       {eyebrow && (
         <span
           className={cn(
-            "text-label font-mono uppercase",
-            tone === "dark" ? "text-brand-400" : "text-brand-600",
+            "font-mono text-caption uppercase",
+            tone === "dark" ? "text-primary-on-dark" : "text-primary",
           )}
         >
           {eyebrow}
         </span>
       )}
-      <h2
-        id={id}
-        className={cn(
-          "text-display-3",
-          tone === "dark" ? "text-white" : "text-ink-950",
-        )}
-      >
+      <h2 id={id} className={cn("text-h2", tone === "dark" ? "text-white" : "text-fg")}>
         {title}
       </h2>
       {lede && (
         <p
           className={cn(
             "text-body-lg",
-            tone === "dark" ? "text-ink-300" : "text-ink-600",
+            tone === "dark" ? "text-fg-on-dark-secondary" : "text-fg-secondary",
           )}
         >
           {lede}

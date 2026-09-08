@@ -33,7 +33,10 @@ const POINTS = [
 
 export function TrustBar() {
   return (
-    <section aria-labelledby="trust-heading" className="border-b border-ink-100 bg-canvas-subtle py-12 sm:py-14">
+    <section
+      aria-labelledby="trust-heading"
+      className="border-b border-line-subtle bg-canvas-secondary py-12 sm:py-14"
+    >
       <Container>
         <h2 id="trust-heading" className="sr-only-focusable">
           What is included with every plan
@@ -42,12 +45,12 @@ export function TrustBar() {
           {POINTS.map((p) => (
             <div key={p.label} className="flex flex-col gap-1">
               <dt className="flex items-baseline gap-2">
-                <span className="tabular text-heading-1 font-semibold text-ink-950">
-                  {p.stat}
+                <span className="tabular text-h3 font-semibold text-fg">{p.stat}</span>
+                <span className="text-small font-medium text-fg-secondary">
+                  {p.label}
                 </span>
-                <span className="text-body-sm font-medium text-ink-700">{p.label}</span>
               </dt>
-              <dd className="text-body-sm text-ink-500">{p.detail}</dd>
+              <dd className="text-small text-fg-muted">{p.detail}</dd>
             </div>
           ))}
         </dl>
