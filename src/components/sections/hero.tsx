@@ -1,130 +1,164 @@
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { Container } from "@/components/ui/container";
-import { billing } from "@/data/company";
-import { groupById, formatPrice, orderUrl } from "@/data/pricing";
+import { DomainSearch } from "@/components/domain/domain-search";
+import { groupById, formatPrice } from "@/data/pricing";
 
 /**
  * Homepage hero.
  *
- * Conversion objective: get the visitor into the plan selection with the
- * renewal price already understood, so the price is not a surprise at
- * checkout. That is the one thing Serverlys does differently from the rest of
- * the category, so it is the headline rather than a footnote.
+ * Conversion objective: put the visitor into one of two funnels — a domain
+ * search (top of funnel) or plan selection — with the two-year cost already
+ * understood.
  *
- * The right-hand card is a real plan with real numbers pulled from the pricing
- * data — not a decorative mock. If pricing changes, this changes with it.
+ * Art direction: a dark band with a layered brand light source and a fine
+ * technical grid, both CSS. No stock photography and no fabricated product
+ * screenshot — for an infrastructure company the honest hero image is the
+ * pricing itself, so the right-hand panel IS the visual, built from real plan
+ * data. If pricing changes, the hero changes with it.
+ *
+ * The layout is deliberately asymmetric (7/5) rather than a centred
+ * heading-paragraph-button stack.
  */
 export function Hero() {
   const cloud = groupById("cloud");
-  const featured = cloud?.plans.find((p) => p.popular) ?? cloud?.plans[0];
+  const plan = cloud?.plans.find((p) => p.popular) ?? cloud?.plans[0];
+
+  // Real two-year arithmetic. Computed, never hard-coded.
+  const yearOne = plan ? plan.annual * 12 : 0;
+  const yearTwo = plan ? plan.renewal * 12 : 0;
 
   return (
-    <section className="relative overflow-hidden border-b border-line-subtle bg-canvas">
-      {/* Restrained background: a single soft brand wash, no gradient soup. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(60%_100%_at_50%_0%,var(--color-primary-soft)_0%,transparent_70%)]"
-      />
+    <section className="relative isolate overflow-hidden bg-canvas-dark">
+      {/* Layered background: brand light source, then a technical grid. */}
+      <div aria-hidden="true" className="absolute inset-0 bg-hero-glow" />
+      <div aria-hidden="true" className="absolute inset-0 bg-grid-dark" />
 
-      <Container className="relative py-16 sm:py-20 lg:py-28">
-        <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
-          {/* Copy */}
-          <div className="flex flex-col items-start gap-6">
-            <span className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-caption font-mono uppercase text-primary ring-1 ring-primary/20">
+      <Container className="relative pb-16 pt-16 sm:pb-20 sm:pt-20 lg:pb-24 lg:pt-24">
+        <div className="grid items-start gap-14 lg:grid-cols-12 lg:gap-12">
+          {/* Copy + primary interaction */}
+          <div className="flex flex-col items-start lg:col-span-7">
+            <span className="inline-flex items-center gap-2.5 rounded-full bg-white/[0.06] py-1.5 pl-2.5 pr-3.5 font-mono text-caption uppercase text-fg-on-dark-secondary ring-1 ring-inset ring-white/15">
               <span
-                className="h-1.5 w-1.5 rounded-full bg-success-fill"
                 aria-hidden="true"
+                className="h-1.5 w-1.5 rounded-full bg-success-fill"
               />
-              Renewal price shown up front
+              Renewal pricing, shown up front
             </span>
 
-            <h1 className="text-display text-fg">
-              Hosting that shows you the renewal price before you buy.
+            {/* The explicit space matters: `block` breaks the line visually
+                but contributes no whitespace, so without it the accessible
+                name reads "honestly.Including year two." */}
+            <h1 className="mt-6 text-display text-white">
+              Hosting priced honestly.{" "}
+              <span className="block text-fg-on-dark-secondary">
+                Including year two.
+              </span>
             </h1>
 
-            <p className="max-w-xl text-body-lg text-fg-secondary">
-              Managed cloud, WordPress and ecommerce hosting with free migration, free
-              SSL and daily backups. Year-two pricing is printed next to year-one
-              pricing, so the real cost is on the page rather than in the terms.
+            <p className="mt-6 max-w-lg text-body-lg text-fg-on-dark-secondary">
+              Managed cloud, WordPress and ecommerce hosting. Free migration, free SSL
+              and daily backups on every plan.
             </p>
 
-            <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-              <Button href="#plans" size="lg" block>
-                See plans and renewal prices
-              </Button>
-              <Button href={billing.sales} variant="secondary" size="lg" block>
-                Talk to an expert
-              </Button>
+            <div className="mt-9 w-full max-w-xl">
+              <DomainSearch tone="dark" />
+              <p className="mt-3 text-small text-fg-on-dark-muted">
+                Free domain for the first year on annual plans. Free WHOIS privacy,
+                always.
+              </p>
             </div>
 
-            <ul className="flex flex-wrap gap-x-6 gap-y-2 pt-2 text-small text-fg-muted">
-              {["Free migration", "30-day money back", "No setup fees"].map((item) => (
-                <li key={item} className="flex items-center gap-2">
-                  <CheckIcon />
-                  {item}
-                </li>
-              ))}
-            </ul>
+            <div className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-3">
+              <Link
+                href="#plans"
+                className="inline-flex items-center gap-1.5 rounded-sm text-body font-medium text-white underline-offset-4 transition-colors hover:text-primary-on-dark hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+              >
+                Compare plans
+                <span aria-hidden="true">→</span>
+              </Link>
+              <ul className="flex flex-wrap gap-x-6 gap-y-2">
+                {["Free migration", "30-day money back"].map((item) => (
+                  <li
+                    key={item}
+                    className="flex items-center gap-2 text-small text-fg-on-dark-muted"
+                  >
+                    <CheckIcon />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
-          {/* Real plan card */}
-          {cloud && featured && (
-            <div className="lg:justify-self-end">
-              <div className="w-full rounded-xl bg-white p-6 shadow-e4 ring-1 ring-line sm:p-7 lg:max-w-[400px]">
-                <div className="flex items-baseline justify-between gap-3">
-                  <p className="text-h4 text-fg">{featured.name}</p>
-                  <span className="rounded-full bg-primary-soft px-2.5 py-0.5 text-caption font-mono uppercase text-primary">
-                    Most popular
-                  </span>
+          {/* The differentiator, made concrete. This panel is the hero image. */}
+          {plan && (
+            <div className="mx-auto w-full max-w-lg lg:col-span-5 lg:mx-0 lg:max-w-none lg:pt-2">
+              <figure className="rounded-2xl bg-white/[0.04] p-1.5 ring-1 ring-inset ring-white/10 backdrop-blur-sm">
+                <div className="rounded-xl bg-surface-dark-elevated p-6 shadow-e5 ring-1 ring-inset ring-white/[0.06] sm:p-7">
+                  <figcaption className="flex items-baseline justify-between gap-3">
+                    <span className="font-mono text-caption uppercase text-fg-on-dark-muted">
+                      What you actually pay
+                    </span>
+                    <span className="text-small text-fg-on-dark-secondary">
+                      {plan.name}
+                    </span>
+                  </figcaption>
+
+                  <dl className="mt-6 flex flex-col gap-5">
+                    <CostRow
+                      term="Year one"
+                      monthly={plan.annual}
+                      total={yearOne}
+                      emphasis
+                    />
+                    <div className="h-px bg-white/10" />
+                    <CostRow
+                      term="Year two onward"
+                      monthly={plan.renewal}
+                      total={yearTwo}
+                    />
+                  </dl>
+
+                  <p className="mt-6 border-t border-white/10 pt-5 text-small text-fg-on-dark-muted">
+                    Most hosts show you the first number. We show you both — before
+                    checkout, not in the terms.
+                  </p>
                 </div>
-                <p className="mt-1 text-small text-fg-muted">{featured.summary}</p>
-
-                <div className="mt-5 flex items-baseline gap-1.5">
-                  <span className="tabular text-h2 text-fg">
-                    {formatPrice(featured.annual)}
-                  </span>
-                  <span className="text-body text-fg-muted">/mo</span>
-                </div>
-                <p className="mt-1.5 text-small text-fg-muted">
-                  On an annual term. Renews at{" "}
-                  <span className="tabular font-medium text-fg-secondary">
-                    {formatPrice(featured.renewal)}/mo
-                  </span>
-                  .
-                </p>
-
-                <dl className="mt-6 grid grid-cols-2 gap-x-4 gap-y-3 border-t border-line-subtle pt-5">
-                  {[
-                    ["Websites", featured.specs.sites],
-                    ["Traffic", featured.specs.visits],
-                    ["Memory", featured.specs.memory],
-                    ["Storage", featured.specs.storage],
-                  ].map(([label, value]) => (
-                    <div key={label}>
-                      <dt className="text-caption font-mono uppercase text-fg-muted">
-                        {label}
-                      </dt>
-                      <dd className="mt-0.5 text-small text-fg">{value}</dd>
-                    </div>
-                  ))}
-                </dl>
-
-                <Button
-                  href={orderUrl(cloud, featured)}
-                  size="lg"
-                  className="mt-6 w-full"
-                >
-                  Get {featured.name}
-                </Button>
-                <p className="mt-3 text-center text-small text-fg-muted">
-                  30-day money-back guarantee
-                </p>
-              </div>
+              </figure>
             </div>
           )}
         </div>
       </Container>
     </section>
+  );
+}
+
+function CostRow({
+  term,
+  monthly,
+  total,
+  emphasis,
+}: {
+  term: string;
+  monthly: number;
+  total: number;
+  emphasis?: boolean;
+}) {
+  return (
+    <div className="flex items-end justify-between gap-4">
+      <div>
+        <dt className="text-small text-fg-on-dark-muted">{term}</dt>
+        <dd
+          className={`tabular mt-1 ${emphasis ? "text-h2 text-white" : "text-h3 text-fg-on-dark-secondary"}`}
+        >
+          {formatPrice(monthly)}
+          <span className="text-body font-normal text-fg-on-dark-muted">/mo</span>
+        </dd>
+      </div>
+      <span className="tabular pb-1 text-small text-fg-on-dark-muted">
+        {formatPrice(total)} / 12 mo
+      </span>
+    </div>
   );
 }
 

@@ -15,7 +15,14 @@ import { Spinner } from "./spinner";
  */
 
 export type ButtonVariant =
-  "primary" | "secondary" | "outline" | "ghost" | "text" | "inverse" | "inverseOutline";
+  | "primary"
+  | "secondary"
+  | "outline"
+  | "ghost"
+  | "text"
+  | "inverse"
+  | "inverseOutline"
+  | "onBrand";
 
 export type ButtonSize = "sm" | "md" | "lg";
 
@@ -52,6 +59,12 @@ const VARIANTS: Record<ButtonVariant, string> = {
   /** Dark bands only. */
   inverse:
     "bg-white text-fg hover:bg-canvas-inset active:bg-line focus-visible:outline-white",
+  /** Brand band only — outlined, on `primary`. The dark-band outline uses
+      ink-800, which is invisible against blue. */
+  onBrand:
+    "bg-transparent text-white ring-1 ring-inset ring-line-on-brand " +
+    "hover:bg-white/10 hover:ring-white/60 active:bg-white/15 " +
+    "focus-visible:outline-white",
   /** Dark bands only — outlined counterpart to `inverse`. */
   inverseOutline:
     "bg-transparent text-white ring-1 ring-inset ring-line-on-dark " +

@@ -23,11 +23,14 @@ export function AnnouncementBar() {
   return (
     <div
       data-announcement-bar=""
-      className="relative bg-canvas-dark text-fg-on-dark-secondary"
+      /* Brand-coloured rather than dark: with a dark hero below, a dark bar
+         above the white header banded dark → light → dark, which reads as
+         noise. White on `primary` is 5.41:1. */
+      className="relative bg-primary text-white"
     >
       <div className="mx-auto flex w-full max-w-desktop items-center justify-center gap-x-3 px-12 py-2.5 sm:px-14">
         <p className="text-center text-small">
-          <span className="font-medium text-fg-on-dark">
+          <span className="font-medium text-white">
             Cloud hosting from{" "}
             <span className="tabular">{formatPrice(lowestAnnualRate)}</span>/mo
           </span>
@@ -37,7 +40,7 @@ export function AnnouncementBar() {
           </span>{" "}
           <Link
             href={announcement.href}
-            className="inline-block whitespace-nowrap py-1 font-medium text-white underline underline-offset-2 transition-colors hover:text-primary-on-dark"
+            className="inline-block whitespace-nowrap py-1 font-semibold text-white underline underline-offset-2 transition-colors hover:text-brand-100"
           >
             {announcement.linkLabel}
             <span aria-hidden="true"> →</span>

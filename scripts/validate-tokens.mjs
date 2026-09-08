@@ -89,6 +89,25 @@ const NON_COLOUR = new Set([
   "8",
   "px",
   "reverse",
+  // Gradient direction utilities share the `bg-` prefix but carry no colour.
+  "gradient-to-b",
+  "gradient-to-t",
+  "gradient-to-l",
+  "gradient-to-r",
+  "gradient-to-br",
+  "gradient-to-bl",
+  "gradient-to-tr",
+  "gradient-to-tl",
+  // Named background utilities defined in @layer utilities, not @theme.
+  "grid-dark",
+  "hero-glow",
+  // Border/divide width resets share the prefix but set no colour.
+  "t-0",
+  "b-0",
+  "l-0",
+  "r-0",
+  "x-0",
+  "y-0",
 ]);
 
 const failures = [];
@@ -134,6 +153,8 @@ const FLOORS = [
   ["fg-on-dark-secondary", "canvas-dark", 4.5],
   ["fg-on-dark-muted", "canvas-dark", 4.5],
   ["primary-on-dark", "canvas-dark", 4.5],
+  ["fg-on-brand", "primary", 4.5],
+  ["fg-on-brand-muted", "primary", 4.5],
   ["line-input", "canvas", 3.0],
   ["line-input", "canvas-secondary", 3.0],
 ];

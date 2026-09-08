@@ -1,6 +1,8 @@
 import { Hero } from "@/components/sections/hero";
 import { TrustBar } from "@/components/sections/trust-bar";
+import { Products } from "@/components/sections/products";
 import { Migration } from "@/components/sections/migration";
+import { Technology } from "@/components/sections/technology";
 import { FaqSection } from "@/components/sections/faq";
 import { FinalCta } from "@/components/sections/final-cta";
 import { PricingTable } from "@/components/pricing/pricing-table";
@@ -33,6 +35,8 @@ export default function HomePage() {
 
       <Hero />
       <TrustBar />
+      <Products />
+      <Technology />
 
       <Section id="plans" labelledBy="plans-heading" spacing="base">
         <SectionHeader

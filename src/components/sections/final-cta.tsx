@@ -3,18 +3,32 @@ import { Button } from "@/components/ui/button";
 import { billing, company } from "@/data/company";
 
 /**
- * Closing conversion block. Two paths only: buy now, or talk to someone.
- * Offering more choices here measurably reduces action.
+ * Closing conversion block.
+ *
+ * On the BRAND band rather than the dark one: the final CTA sat directly above
+ * the dark footer, and two adjacent dark bands merged into a single block that
+ * robbed the page of a closing beat. Brand blue separates them and makes this
+ * the most assertive moment on the page — which is what a final CTA is for.
+ *
+ * Only `fg-on-brand` (white, 5.41:1) and `fg-on-brand-muted` (ink-100, 4.74:1)
+ * are legible here. The brand ramp itself fails: brand-100 is 4.44:1.
+ *
+ * Two paths only — buy, or talk to someone. More choices measurably reduce action.
  */
 export function FinalCta() {
   return (
-    <Section surface="dark" spacing="base" labelledBy="final-cta-heading">
-      <div className="flex flex-col items-start gap-6 lg:flex-row lg:items-center lg:justify-between">
+    <Section
+      surface="light"
+      spacing="base"
+      labelledBy="final-cta-heading"
+      className="bg-primary"
+    >
+      <div className="flex flex-col items-start gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-12">
         <div className="max-w-2xl">
-          <h2 id="final-cta-heading" className="text-h2 text-white">
+          <h2 id="final-cta-heading" className="text-h2 text-fg-on-brand">
             Start on a plan that still makes sense in year two.
           </h2>
-          <p className="mt-4 text-body-lg text-fg-on-dark-muted">
+          <p className="mt-4 text-body-lg text-fg-on-brand-muted">
             Free migration, free SSL and daily backups on every plan, with a 30-day
             money-back guarantee. Not sure which tier fits? Tell us what the site does
             and we will say.
@@ -25,22 +39,25 @@ export function FinalCta() {
           <Button href="#plans" variant="inverse" size="lg" block>
             Compare plans
           </Button>
-          <Button href={billing.sales} variant="inverseOutline" size="lg" block>
+          <Button href={billing.sales} variant="onBrand" size="lg" block>
             Talk to an expert
           </Button>
         </div>
       </div>
 
-      <p className="mt-8 border-t border-line-on-dark pt-6 text-small text-fg-on-dark-muted">
+      <p className="mt-10 border-t border-line-on-brand pt-6 text-small text-fg-on-brand-muted">
         Prefer the phone?{" "}
         <a
           href={company.phoneHref}
-          className="tabular text-fg-on-dark-secondary hover:text-white"
+          className="tabular inline-block py-1 text-fg-on-brand underline underline-offset-2 hover:text-fg-on-brand-muted"
         >
           {company.phone}
         </a>{" "}
         · Existing customer?{" "}
-        <a href={billing.login} className="text-fg-on-dark-secondary hover:text-white">
+        <a
+          href={billing.login}
+          className="inline-block py-1 text-fg-on-brand underline underline-offset-2 hover:text-fg-on-brand-muted"
+        >
           Client login
         </a>
       </p>
