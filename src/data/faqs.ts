@@ -52,6 +52,30 @@ export const faqs: readonly Faq[] = [
     scopes: ["/", "/pricing"],
   },
   {
+    question: "Is WHOIS privacy included?",
+    answer:
+      "Yes, free and on every domain we register. Your personal details are kept out of the public WHOIS record at no extra cost — it is not an upsell.",
+    scopes: ["/register-domain"],
+  },
+  {
+    question: "Do I need hosting to register a domain?",
+    answer:
+      "No. You can register a domain on its own and point it wherever you like. If you add hosting later, annual plans include a free domain for the first year.",
+    scopes: ["/register-domain"],
+  },
+  {
+    question: "Can I move a domain I already own to Serverlys?",
+    answer:
+      "Yes. Transfers are handled through the cart — you will need the authorisation code from your current registrar and the domain must be unlocked. A transfer normally adds a year to the registration.",
+    scopes: ["/register-domain"],
+  },
+  {
+    question: "Are domain registrations refundable?",
+    answer:
+      "Generally no. The registry fee is paid the moment a name is registered, which is standard across registrars and set out in the refund policy. The 30-day money-back guarantee covers hosting plans, not domains.",
+    scopes: ["/register-domain"],
+  },
+  {
     question: "What is cloud hosting, and how is it different from shared hosting?",
     answer:
       "Shared hosting puts your site on one machine with a fixed pool of resources. Cloud hosting spreads it across a network of servers, so capacity can grow with demand and a single hardware failure does not take you offline. It costs more than shared, but it removes the ceiling shared hosting has.",

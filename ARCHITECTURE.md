@@ -228,9 +228,25 @@ in exactly one place.
 
 | Route | Purpose | Auth |
 |---|---|---|
-| `GET /api/health` | Easypanel container health check. Returns 200 + build id | None |
+| `GET /api/health` | Easypanel container health check | None |
+| `POST /api/domains/check` | Domain availability lookup | None (rate-limited) |
 
-**That is the complete list.** No other API routes are planned or needed.
+**AMENDED 2026-09-08.** This document originally stated domain search would be
+an HTML `GET` form to WHMCS with no route handler. That remains the no-JS
+fallback and is still what the marketing-page search widget does. The
+*interactive* search added on `/register-domain` needs a server route for three
+reasons that are not negotiable:
+
+1. WHMCS admin credentials must never reach the browser.
+2. Calling RDAP from the client hits CORS and leaks per-user rate limits.
+3. Caching and de-duplication have to be shared, not per-tab.
+
+The route reads no user data, stores nothing, and holds an in-memory cache and
+rate limiter — both **per instance**, so horizontal scaling requires moving them
+to a shared store. Provider selection lives behind a `DomainProvider` interface
+with two implementations (WHMCS, RDAP) and **no mock**: an unconfigured
+deployment returns a 503 the UI renders honestly, because a fabricated
+"available" would send someone to checkout for a name they cannot buy.
 
 ### 6.2 What it does NOT own
 
