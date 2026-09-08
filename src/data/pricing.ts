@@ -14,6 +14,20 @@ import { billing } from "./company";
  * commercial position ("we show the renewal rate rather than hiding it in the
  * terms"). Never render a promo price without its renewal price.
  *
+ * ⚠ UNRESOLVED SOURCE CONFLICT (found 2026-09-08). The legacy /pricing and
+ * /cloud-hosting pages state DIFFERENT figures for the same plans. Annual promo
+ * rates agree; monthly, renewal and RAM do not:
+ *
+ *   tier      annual   monthly(/pricing → /cloud)  renewal(/pricing → /cloud)  RAM
+ *   Starter   $2.19    $2.91  →  $7.95             $11.64 →  $12.62            3 → 2 GB
+ *   Plus      $3.79    $5.05  →  $11.95            $16.84 →  $15.93            4 → 4 GB
+ *   Turbo     $5.84    $7.78  →  $17.95            $25.94 →  $21.37            5 → 6 GB
+ *   Business  $8.76    $11.68 →  $23.95            $38.94 →  $27.22            6 → 8 GB
+ *
+ * The figures below follow /pricing. WHMCS is the only authority — reconcile
+ * against the live store before launch. The renewal rate is a published
+ * commercial commitment, so publishing the wrong one is not a cosmetic error.
+ *
  * The WHMCS slugs are legacy and do NOT match the display names — the mapping
  * below was verified from the live pages, not inferred. Changing a `slug`
  * breaks checkout for that plan.

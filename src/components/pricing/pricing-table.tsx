@@ -19,17 +19,23 @@ type Term = "annual" | "monthly";
  * The renewal price renders in every state. There is deliberately no code
  * path that shows a promotional price on its own.
  */
-export function PricingTable() {
-  const [groupId, setGroupId] = useState(planGroups[0].id);
+export function PricingTable({ only }: { only?: string } = {}) {
+  // Single-product mode: a product page already knows its group, so the
+  // tablist would be a control with one meaningful option. The billing-term
+  // radiogroup still applies and is still rendered.
+  const groups = only ? planGroups.filter((g) => g.id === only) : planGroups;
+  const single = groups.length === 1;
+
+  const [groupId, setGroupId] = useState(groups[0].id);
   const [term, setTerm] = useState<Term>("annual");
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const baseId = useId();
 
-  const active = planGroups.find((g) => g.id === groupId) ?? planGroups[0];
-  const activeIndex = planGroups.findIndex((g) => g.id === active.id);
+  const active = groups.find((g) => g.id === groupId) ?? groups[0];
+  const activeIndex = groups.findIndex((g) => g.id === active.id);
 
   const onTabKeyDown = (e: React.KeyboardEvent) => {
-    const last = planGroups.length - 1;
+    const last = groups.length - 1;
     let next: number | null = null;
 
     if (e.key === "ArrowRight") next = activeIndex === last ? 0 : activeIndex + 1;
@@ -39,7 +45,7 @@ export function PricingTable() {
 
     if (next !== null) {
       e.preventDefault();
-      setGroupId(planGroups[next].id);
+      setGroupId(groups[next].id);
       tabRefs.current[next]?.focus();
     }
   };
@@ -48,39 +54,41 @@ export function PricingTable() {
     <div className="flex flex-col gap-8">
       {/* Controls */}
       <div className="flex flex-col items-center gap-5">
-        <div
-          role="tablist"
-          aria-label="Hosting type"
-          onKeyDown={onTabKeyDown}
-          className="flex w-full max-w-full gap-1 overflow-x-auto rounded-lg bg-canvas-inset p-1 sm:w-auto"
-        >
-          {planGroups.map((g, i) => {
-            const selected = g.id === active.id;
-            return (
-              <button
-                key={g.id}
-                ref={(el) => {
-                  tabRefs.current[i] = el;
-                }}
-                role="tab"
-                type="button"
-                id={`${baseId}-tab-${g.id}`}
-                aria-selected={selected}
-                aria-controls={`${baseId}-panel-${g.id}`}
-                tabIndex={selected ? 0 : -1}
-                onClick={() => setGroupId(g.id)}
-                className={cn(
-                  "min-h-10 whitespace-nowrap rounded-md px-4 text-small font-medium transition-colors",
-                  selected
-                    ? "bg-white text-fg shadow-e1"
-                    : "text-fg-secondary hover:text-fg",
-                )}
-              >
-                {g.label}
-              </button>
-            );
-          })}
-        </div>
+        {!single && (
+          <div
+            role="tablist"
+            aria-label="Hosting type"
+            onKeyDown={onTabKeyDown}
+            className="flex w-full max-w-full gap-1 overflow-x-auto rounded-lg bg-canvas-inset p-1 sm:w-auto"
+          >
+            {groups.map((g, i) => {
+              const selected = g.id === active.id;
+              return (
+                <button
+                  key={g.id}
+                  ref={(el) => {
+                    tabRefs.current[i] = el;
+                  }}
+                  role="tab"
+                  type="button"
+                  id={`${baseId}-tab-${g.id}`}
+                  aria-selected={selected}
+                  aria-controls={`${baseId}-panel-${g.id}`}
+                  tabIndex={selected ? 0 : -1}
+                  onClick={() => setGroupId(g.id)}
+                  className={cn(
+                    "min-h-10 whitespace-nowrap rounded-md px-4 text-small font-medium transition-colors",
+                    selected
+                      ? "bg-white text-fg shadow-e1"
+                      : "text-fg-secondary hover:text-fg",
+                  )}
+                >
+                  {g.label}
+                </button>
+              );
+            })}
+          </div>
+        )}
 
         <fieldset className="flex items-center gap-3">
           <legend className="sr-only-focusable">Billing term</legend>
@@ -118,14 +126,14 @@ export function PricingTable() {
       </div>
 
       {/* Panels */}
-      {planGroups.map((g) => (
+      {groups.map((g) => (
         <div
           key={g.id}
-          role="tabpanel"
-          id={`${baseId}-panel-${g.id}`}
-          aria-labelledby={`${baseId}-tab-${g.id}`}
+          role={single ? undefined : "tabpanel"}
+          id={single ? undefined : `${baseId}-panel-${g.id}`}
+          aria-labelledby={single ? undefined : `${baseId}-tab-${g.id}`}
           hidden={g.id !== active.id}
-          tabIndex={0}
+          tabIndex={single ? undefined : 0}
           className="outline-none"
         >
           <p className="mb-6 text-center text-body text-fg-secondary">{g.blurb}</p>

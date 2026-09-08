@@ -52,10 +52,40 @@ export const faqs: readonly Faq[] = [
     scopes: ["/", "/pricing"],
   },
   {
+    question: "What is cloud hosting, and how is it different from shared hosting?",
+    answer:
+      "Shared hosting puts your site on one machine with a fixed pool of resources. Cloud hosting spreads it across a network of servers, so capacity can grow with demand and a single hardware failure does not take you offline. It costs more than shared, but it removes the ceiling shared hosting has.",
+    scopes: ["/cloud-hosting"],
+  },
+  {
+    question: "What happens if my site gets a sudden traffic spike?",
+    answer:
+      "Auto-scaling absorbs it, and your plan includes unmetered data transfer — so there is no per-gigabyte overage and no surprise invoice at the end of the month. That is the practical difference from cloud platforms billed by consumption.",
+    scopes: ["/cloud-hosting"],
+  },
+  {
+    question: "Is cloud hosting cheaper than a VPS?",
+    answer:
+      "At the entry level, usually yes, because you are not paying for a fixed resource reservation you may not use. A VPS becomes better value once you need root access, a custom stack, or steady predictable load.",
+    scopes: ["/cloud-hosting"],
+  },
+  {
+    question: "Do I need technical skills to run a cloud plan?",
+    answer:
+      "No. It is managed the same way shared hosting is — a cPanel control panel, one-click WordPress installs, and a support team you can reach. \u201cCloud\u201d describes the infrastructure underneath, not extra work for you.",
+    scopes: ["/cloud-hosting"],
+  },
+  {
+    question: "Can I host multiple websites on one cloud plan?",
+    answer:
+      "Yes, from the Plus tier upward. Each site gets its own directory, database and SSL certificate, drawing from your plan's resource pool rather than a fixed per-site quota.",
+    scopes: ["/cloud-hosting"],
+  },
+  {
     question: "Will you move my existing site for me?",
     answer:
       "Yes, and it is free. Our team moves the site, the database and the email onto a staging URL first, usually within a business day. You check it there, we fix anything that looks wrong, then we switch DNS at a time you pick — so there is no gap in service.",
-    scopes: ["/"],
+    scopes: ["/", "/cloud-hosting"],
   },
 ];
 

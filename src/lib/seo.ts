@@ -128,6 +128,54 @@ export function faqGraph(items: readonly Faq[]) {
   };
 }
 
+/**
+ * Product + offer graph for a hosting product page.
+ *
+ * `AggregateOffer` with lowPrice/highPrice is the honest shape here: the page
+ * lists several tiers, so a single `Offer` would misstate what is available.
+ *
+ * Deliberately NO `aggregateRating` and NO `review`: no genuine ratings exist,
+ * and fabricating them is both dishonest and a documented cause of manual
+ * action. Add them only when real, collected reviews exist.
+ */
+export function productGraph({
+  name,
+  description,
+  path,
+  lowPrice,
+  highPrice,
+  currency = "USD",
+}: {
+  name: string;
+  description: string;
+  path: string;
+  lowPrice: number;
+  highPrice: number;
+  currency?: string;
+}) {
+  const url = canonical(path);
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "@id": `${url}#product`,
+    name,
+    description,
+    url,
+    brand: { "@id": ORG_ID },
+    category: "Web Hosting",
+    offers: {
+      "@type": "AggregateOffer",
+      priceCurrency: currency,
+      lowPrice: lowPrice.toFixed(2),
+      highPrice: highPrice.toFixed(2),
+      offerCount: 4,
+      availability: "https://schema.org/InStock",
+      url,
+      seller: { "@id": ORG_ID },
+    },
+  };
+}
+
 /** Breadcrumbs. Pass the trail excluding the current page's own trailing slash. */
 export function breadcrumbGraph(trail: ReadonlyArray<{ name: string; path: string }>) {
   return {
