@@ -175,6 +175,92 @@ for (const path of [...paths, ...extraPaths]) {
       fail(label, `invalid JSON-LD: ${e.message}`);
     }
   }
+  // Required-property validation. Checking that a @type is merely PRESENT is
+  // not enough — Google rejects nodes that lack required fields, and a
+  // dangling @id reference defeats the entire point of an entity graph.
+  {
+    const nodes = [];
+    const refs = [];
+    const walk = (n) => {
+      if (Array.isArray(n)) return n.forEach(walk);
+      if (n && typeof n === "object") {
+        if (n["@type"]) nodes.push(n);
+        if (n["@id"] && Object.keys(n).length === 1) refs.push(n["@id"]);
+        Object.values(n).forEach((v) => {
+          if (v && typeof v === "object") walk(v);
+        });
+      }
+    };
+    for (const raw of blocks) {
+      try {
+        walk(JSON.parse(raw.replace(/\\u003c/g, "<")));
+      } catch {
+        /* reported above */
+      }
+    }
+    const ids = new Set(nodes.map((n) => n["@id"]).filter(Boolean));
+    const need = (n, keys, what) =>
+      keys.forEach((k) => {
+        if (!n[k]) fail(label, `${what} missing ${k}`);
+      });
+
+    for (const n of nodes) {
+      switch (n["@type"]) {
+        case "Organization":
+          need(n, ["name", "url"], "Organization");
+          if (n.address || n.geo || n.priceRange)
+            fail(
+              label,
+              "Organization has address/geo/priceRange — prohibited by the entity rules",
+            );
+          break;
+        case "WebSite":
+          need(n, ["url", "name", "publisher"], "WebSite");
+          break;
+        case "Product":
+          need(n, ["name", "description", "offers"], "Product");
+          break;
+        case "AggregateOffer":
+          need(n, ["priceCurrency", "lowPrice", "availability"], "AggregateOffer");
+          if (n.lowPrice && !/^\d+\.\d{2}$/.test(String(n.lowPrice)))
+            fail(
+              label,
+              `AggregateOffer lowPrice is not a clean decimal: ${n.lowPrice}`,
+            );
+          if (n.highPrice && Number(n.highPrice) < Number(n.lowPrice))
+            fail(label, "AggregateOffer highPrice < lowPrice");
+          break;
+        case "BreadcrumbList":
+          if (!Array.isArray(n.itemListElement))
+            fail(label, "BreadcrumbList has no itemListElement");
+          else
+            n.itemListElement.forEach((li, i) => {
+              if (li.position !== i + 1)
+                fail(label, `BreadcrumbList position out of order at index ${i}`);
+              if (!li.name || !li.item)
+                fail(label, "BreadcrumbList item missing name or item");
+            });
+          break;
+        case "FAQPage": {
+          const entries = n.mainEntity ?? [];
+          if (!Array.isArray(entries) || entries.length === 0)
+            fail(label, "FAQPage has no mainEntity");
+          const visible = html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ");
+          for (const q of entries) {
+            if (!q.name || !q.acceptedAnswer?.text)
+              fail(label, "FAQ Question missing name or acceptedAnswer.text");
+            // Marking up Q&A that is not rendered misrepresents the page.
+            else if (!visible.includes(q.name.slice(0, 30)))
+              fail(label, `FAQ question not visible on page: "${q.name.slice(0, 46)}"`);
+          }
+          break;
+        }
+      }
+    }
+    for (const ref of refs)
+      if (!ids.has(ref)) fail(label, `dangling @id reference: ${ref}`);
+  }
+
   if (isIndexable) {
     if (!types.includes("Organization")) fail(label, "no Organization node");
     if (types.filter((t) => t === "Organization").length > 1)
