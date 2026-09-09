@@ -92,6 +92,28 @@ for (const width of widths) {
   await send("Page.navigate", { url }, sessionId);
   await sleep(1400);
 
+  // Full-page capture does not scroll, so IntersectionObserver-driven reveals
+  // never fire and every below-fold section renders at opacity 0. Walk the
+  // page first to trigger them, then return to the top before capturing.
+  if (full) {
+    await send(
+      "Runtime.evaluate",
+      {
+        expression: `(async () => {
+          const step = window.innerHeight * 0.8;
+          for (let y = 0; y < document.body.scrollHeight; y += step) {
+            window.scrollTo(0, y);
+            await new Promise((r) => setTimeout(r, 90));
+          }
+          window.scrollTo(0, 0);
+          await new Promise((r) => setTimeout(r, 500));
+        })()`,
+        awaitPromise: true,
+      },
+      sessionId,
+    );
+  }
+
   const shot = await send(
     "Page.captureScreenshot",
     { format: "png", captureBeyondViewport: full },

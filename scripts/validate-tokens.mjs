@@ -155,6 +155,10 @@ const FLOORS = [
   ["primary-on-dark", "canvas-dark", 4.5],
   ["fg-on-brand", "primary", 4.5],
   ["fg-on-brand-muted", "primary", 4.5],
+  ["fg-secondary", "canvas-tint", 4.5],
+  ["fg-secondary", "canvas-lavender", 4.5],
+  ["accent-on-dark", "canvas-dark", 4.5],
+  ["primary-on-dark", "canvas-abyss", 4.5],
   ["line-input", "canvas", 3.0],
   ["line-input", "canvas-secondary", 3.0],
 ];

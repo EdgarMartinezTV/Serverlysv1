@@ -58,7 +58,7 @@ await send("Page.navigate", { url }, sessionId);
 await sleep(1600);
 for (const y of ys.split(",")) {
   await send("Runtime.evaluate", { expression: `window.scrollTo(0,${y})` }, sessionId);
-  await sleep(500);
+  await sleep(1300); // let scroll-reveal transitions settle before capture
   const s = await send("Page.captureScreenshot", { format: "png" }, sessionId);
   writeFileSync(`${out}/y${y}.png`, Buffer.from(s.data, "base64"));
   console.log("✓ y=" + y);

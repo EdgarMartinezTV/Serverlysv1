@@ -63,6 +63,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      /*
+        Two pre-paint scripts mutate attributes on this element before React
+        hydrates — `data-js` (scroll-reveal fail-safe) and `data-announcement`
+        (dismissed state). The server markup cannot contain either without
+        defeating their purpose, so the attributes legitimately differ at
+        hydration. This suppresses the warning for THIS element's attributes
+        only; children are still checked.
+      */
+      suppressHydrationWarning
       className={`${inter.variable} ${interTight.variable} ${jetbrainsMono.variable} h-full`}
     >
       <head>
@@ -73,7 +82,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{if(localStorage.getItem(${JSON.stringify(ANNOUNCEMENT_STORAGE_KEY)})==="dismissed"){document.documentElement.dataset.announcement="dismissed"}}catch(e){}`,
+            __html: `document.documentElement.dataset.js="true";try{if(localStorage.getItem(${JSON.stringify(ANNOUNCEMENT_STORAGE_KEY)})==="dismissed"){document.documentElement.dataset.announcement="dismissed"}}catch(e){}`,
           }}
         />
       </head>

@@ -52,6 +52,13 @@
   --color-ink-900: #141922;
   --color-ink-950: #0b0e14;
 
+  /* Cyan — the technology accent. TEXT-SAFE ON DARK ONLY (10.7:1 on the dark
+     band) and only 1.8:1 on white, so it is never body text on a light
+     surface: there it is a fill or a rule. */
+  --color-cyan-300: #67e8f9;
+  --color-cyan-400: #22d3ee;
+  --color-cyan-500: #06b6d4;
+
   /* Accents — used sparingly and with meaning, never decoratively.
      Violet marks AI surfaces (ConvoAI); indigo marks automation. */
   --color-violet-500: #8d59ff;
@@ -84,6 +91,7 @@
   --color-primary-ring:  var(--color-brand-600);
   /* Brand on the dark band — brand-600 is only 2.1:1 there. 400 is 7.45:1. */
   --color-primary-on-dark: var(--color-brand-400);
+  --color-accent-on-dark:  var(--color-cyan-400);
 
   /* --- Backgrounds & surfaces -------------------------------------------
      canvas  = the page. surface = a raised plane ON the page.
@@ -92,12 +100,18 @@
   --color-canvas:           #ffffff;
   --color-canvas-secondary: var(--color-ink-50);
   --color-canvas-inset:     var(--color-ink-100);
+  /* Very light blue grounds. fg-secondary holds 7.0:1 on both. */
+  --color-canvas-tint:      #f5f9ff;
+  --color-canvas-lavender:  #f2f5ff;
   --color-surface:          #ffffff;
   --color-surface-elevated: #ffffff;
   --color-surface-sunken:   var(--color-ink-50);
 
   /* Dark band — the inverse surface set. */
   --color-canvas-dark:          var(--color-ink-950);
+  /* Deep hero grounds. White clears 9.5:1 on the lightest of these. */
+  --color-canvas-abyss:         #0a1030;
+  --color-canvas-deep:          var(--color-brand-950);
   --color-surface-dark:         var(--color-ink-900);
   --color-surface-dark-elevated:#12161f;
   /* Interaction states on the dark band. */
@@ -369,6 +383,42 @@
 @keyframes sheetIn {
   from { opacity: 0; transform: translateY(-8px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Scroll reveal ──────────────────────────────────────────────────────────
+   Elements start shifted and transparent, and `data-revealed` (set by an
+   IntersectionObserver) animates them in. Implemented in CSS rather than an
+   animation library: the whole effect is one transform and one opacity, and a
+   library would be 30KB for that. Under reduced motion the initial state is
+   neutral, so nothing ever stays invisible if the observer never fires. */
+@media (prefers-reduced-motion: no-preference) {
+  /* Gated on [data-js]. Without that gate the hidden state is the DEFAULT, so
+     anything that renders the page without scrolling it — a social-preview
+     screenshotter, print, a crawler, a delayed hydration — sees empty
+     sections. The initial state must only exist where something is guaranteed
+     to remove it. */
+  html[data-js="true"] [data-reveal] {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 420ms var(--ease-entrance),
+      transform 420ms var(--ease-entrance);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  html[data-js="true"] [data-reveal][data-revealed="true"] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Slow drift for floating decorative panels. */
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .animate-float { animation: floatY 7s ease-in-out infinite; }
+  .animate-float-slow { animation: floatY 10s ease-in-out infinite; }
 }
 
 /* Motion is decorative throughout this system — none of it carries

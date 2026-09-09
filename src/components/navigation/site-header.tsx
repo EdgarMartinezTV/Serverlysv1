@@ -28,6 +28,14 @@ import { cn } from "@/lib/utils";
  * Layering: header z-50 · panel z-10 within the header · mobile drawer z-40,
  * i.e. below the header so its own close button stays reachable.
  */
+/**
+ * Routes whose hero is a dark band. On these the header starts transparent and
+ * sits ON the hero — matching the target, which shows a dark nav at the top of
+ * the page and a solid white one once scrolled. Elsewhere it is solid from the
+ * first pixel.
+ */
+const OVERLAY_ROUTES = new Set(["/", "/cloud-hosting"]);
+
 export function SiteHeader() {
   const [open, setOpen] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
@@ -47,6 +55,8 @@ export function SiteHeader() {
     setLastPath(pathname);
     setOpen(null);
   }
+
+  const overlay = OVERLAY_ROUTES.has(pathname) && !scrolled && !open;
 
   // Elevation once the page has moved — grounds the sticky bar without a
   // permanent shadow competing with the content.
@@ -115,9 +125,11 @@ export function SiteHeader() {
     <header
       ref={headerRef}
       className={cn(
-        "sticky top-0 z-50 bg-canvas/85 backdrop-blur-md",
-        "transition-shadow duration-normal ease-hover",
-        scrolled ? "shadow-e2 ring-1 ring-line" : "ring-1 ring-line-subtle",
+        "sticky top-0 z-50 transition-[background-color,box-shadow] duration-normal ease-hover",
+        overlay
+          ? "bg-transparent"
+          : "bg-canvas/85 backdrop-blur-md " +
+              (scrolled ? "shadow-e2 ring-1 ring-line" : "ring-1 ring-line-subtle"),
       )}
       onBlur={(e) => {
         // Focus left the header entirely (Tab past the last panel link).
@@ -125,7 +137,7 @@ export function SiteHeader() {
       }}
     >
       <div className="mx-auto flex h-16 w-full max-w-desktop items-center gap-2 px-5 sm:px-8 lg:px-10">
-        <Wordmark tone="dark" priority />
+        <Wordmark tone={overlay ? "light" : "dark"} priority />
 
         <nav
           aria-label="Main"
@@ -158,9 +170,11 @@ export function SiteHeader() {
                   }}
                   className={cn(
                     "relative rounded-md px-3 py-2 text-small font-medium transition-colors duration-fast",
-                    active
-                      ? "text-primary"
-                      : "text-fg-secondary hover:bg-canvas-inset hover:text-fg",
+                    overlay
+                      ? "text-fg-on-dark-secondary hover:bg-white/10 hover:text-white"
+                      : active
+                        ? "text-primary"
+                        : "text-fg-secondary hover:bg-canvas-inset hover:text-fg",
                   )}
                 >
                   {item.label}
@@ -226,9 +240,11 @@ export function SiteHeader() {
                     "relative flex items-center gap-1.5 rounded-md px-3 py-2 text-small font-medium transition-colors duration-fast",
                     isOpen
                       ? "bg-canvas-inset text-fg"
-                      : active
-                        ? "text-primary"
-                        : "text-fg-secondary hover:bg-canvas-inset hover:text-fg",
+                      : overlay
+                        ? "text-fg-on-dark-secondary hover:bg-white/10 hover:text-white"
+                        : active
+                          ? "text-primary"
+                          : "text-fg-secondary hover:bg-canvas-inset hover:text-fg",
                   )}
                 >
                   {item.label}
@@ -257,14 +273,18 @@ export function SiteHeader() {
           {/* Wrapped rather than given `hidden` directly: overriding `display`
               on Button collides with its base `inline-flex`. */}
           <span className="hidden sm:block">
-            <Button href={billing.login} variant="ghost" size="sm">
+            <Button
+              href={billing.login}
+              variant={overlay ? "inverseGhost" : "ghost"}
+              size="sm"
+            >
               Log in
             </Button>
           </span>
           <Button href={billing.store("cloud-hosting")} size="sm">
             Get started
           </Button>
-          <MobileNav />
+          <MobileNav overlay={overlay} />
         </div>
       </div>
     </header>

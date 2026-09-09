@@ -24,10 +24,10 @@ export function AnnouncementBar() {
   return (
     <div
       data-announcement-bar=""
-      /* Brand-coloured rather than dark: with a dark hero below, a dark bar
-         above the white header banded dark → light → dark, which reads as
-         noise. White on `primary` is 5.41:1. */
-      className="relative bg-primary text-white"
+      /* Matches the hero's ground so the top of the page reads as one
+         continuous dark field, as in the target. White on canvas-abyss is
+         18.6:1. */
+      className="relative border-b border-white/10 bg-canvas-abyss text-fg-on-dark-secondary"
     >
       <div className="mx-auto flex w-full max-w-desktop items-center justify-center gap-x-3 px-12 py-2.5 sm:px-14">
         <p className="text-center text-small">
@@ -41,7 +41,7 @@ export function AnnouncementBar() {
           </span>{" "}
           <Link
             href={resolveNavTarget(announcement.href).href}
-            className="inline-block whitespace-nowrap py-1 font-semibold text-white underline underline-offset-2 transition-colors hover:text-brand-100"
+            className="inline-block whitespace-nowrap py-1 font-semibold text-white underline underline-offset-2 transition-colors hover:text-primary-on-dark"
           >
             {announcement.linkLabel}
             <span aria-hidden="true"> →</span>

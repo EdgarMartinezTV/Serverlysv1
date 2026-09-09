@@ -22,6 +22,7 @@ export type ButtonVariant =
   | "text"
   | "inverse"
   | "inverseOutline"
+  | "inverseGhost"
   | "onBrand";
 
 export type ButtonSize = "sm" | "md" | "lg";
@@ -59,6 +60,10 @@ const VARIANTS: Record<ButtonVariant, string> = {
   /** Dark bands only. */
   inverse:
     "bg-white text-fg hover:bg-canvas-inset active:bg-line focus-visible:outline-white",
+  /** Low emphasis on a dark or transparent-over-dark surface. */
+  inverseGhost:
+    "bg-transparent text-fg-on-dark-secondary hover:bg-white/10 hover:text-white " +
+    "active:bg-white/15 focus-visible:outline-white",
   /** Brand band only — outlined, on `primary`. The dark-band outline uses
       ink-800, which is invisible against blue. */
   onBrand:

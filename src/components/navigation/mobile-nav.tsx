@@ -28,7 +28,7 @@ import { cn } from "@/lib/utils";
  * Covering the header means the drawer needs its own close control, which is
  * also the more standard mobile pattern.
  */
-export function MobileNav() {
+export function MobileNav({ overlay = false }: { overlay?: boolean } = {}) {
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
 
@@ -256,7 +256,13 @@ export function MobileNav() {
         aria-expanded={open}
         aria-controls="mobile-nav-panel"
         aria-label={open ? "Close menu" : "Open menu"}
-        className="inline-flex h-11 w-11 items-center justify-center rounded-md text-fg-secondary transition-colors duration-fast hover:bg-canvas-inset hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary lg:hidden"
+        className={cn(
+          "inline-flex h-11 w-11 items-center justify-center rounded-md transition-colors duration-fast lg:hidden",
+          "focus-visible:outline-2 focus-visible:outline-offset-2",
+          overlay
+            ? "text-fg-on-dark-secondary hover:bg-white/10 hover:text-white focus-visible:outline-white"
+            : "text-fg-secondary hover:bg-canvas-inset hover:text-fg focus-visible:outline-primary",
+        )}
       >
         <svg viewBox="0 0 20 20" aria-hidden="true" className="h-5 w-5">
           <path
