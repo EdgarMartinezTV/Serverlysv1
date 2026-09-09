@@ -52,6 +52,66 @@ export const faqs: readonly Faq[] = [
     scopes: ["/", "/pricing"],
   },
   {
+    question: "Is managed WordPress hosting different from normal hosting?",
+    answer:
+      "The hardware is the same. What differs is tuning and maintenance: LiteSpeed caching is configured for WordPress before you arrive, core updates are applied for you, and the stack is watched for the failure modes WordPress actually has.",
+    scopes: ["/wordpress-hosting"],
+  },
+  {
+    question: "Will my plugins keep working?",
+    answer:
+      "Plugin updates stay under your control — we apply core updates, not plugin updates, because a plugin update is the most common way a working site breaks. If one does break something, the nightly backup restores it for free.",
+    scopes: ["/wordpress-hosting"],
+  },
+  {
+    question: "Does WooCommerce need different hosting?",
+    answer:
+      "It needs headroom at checkout rather than raw capacity all the time. Store pages cache poorly by nature — carts and checkouts cannot be served from cache — so the tier that matters is the one that keeps the database responsive under concurrent orders.",
+    scopes: ["/ecommerce-hosting"],
+  },
+  {
+    question: "Can you migrate an existing store?",
+    answer:
+      "Yes, free, and to a staging URL first. Stores are the case where checking before cutover matters most: you get to place a test order on staging before anything points at us.",
+    scopes: ["/ecommerce-hosting"],
+  },
+  {
+    question: "Which hosting should I choose?",
+    answer:
+      "Match it to the workload rather than the price. Brochure sites and blogs fit the entry tier; variable or growing traffic suits cloud; a store needs checkout headroom. If nobody in-house wants to maintain a server, choose managed at whichever tier.",
+    scopes: ["/hosting"],
+  },
+  {
+    question: "What can an AI agent actually answer?",
+    answer:
+      "The routine questions that make up most of the volume: hours, location, delivery, pricing, availability, booking. It is trained on your own site and the details you give it, so it answers about your business rather than in general.",
+    scopes: ["/ai-agents", "/convoai"],
+  },
+  {
+    question: "What happens when it does not know?",
+    answer:
+      "It hands over rather than guesses. A refund dispute or an unusual request is passed to a person with the conversation attached, so nobody starts from scratch.",
+    scopes: ["/ai-agents", "/convoai"],
+  },
+  {
+    question: "Will callers know it is not a person?",
+    answer:
+      "It introduces itself as an assistant. Pretending otherwise damages trust the first time someone notices, and in several places it is not permitted.",
+    scopes: ["/callflow-ai"],
+  },
+  {
+    question: "What happens outside opening hours?",
+    answer:
+      "The call is answered, the caller gets the information they asked for, and anything needing a person is captured as a message with a callback number.",
+    scopes: ["/callflow-ai"],
+  },
+  {
+    question: "Do I need to know n8n to use automations?",
+    answer:
+      "No. The common workflows — enquiry to record, booking to calendar, form to notification — are set up for you. n8n is there if you want to build something specific.",
+    scopes: ["/automations"],
+  },
+  {
     question: "Is WHOIS privacy included?",
     answer:
       "Yes, free and on every domain we register. Your personal details are kept out of the public WHOIS record at no extra cost — it is not an upsell.",

@@ -33,7 +33,10 @@ export function Breadcrumbs({
                 <Link
                   href={crumb.href}
                   className={cn(
-                    "rounded-sm text-small transition-colors focus-visible:outline-2 focus-visible:outline-offset-2",
+                    // min-h-6 = 24px, the WCAG 2.2 (2.5.8 AA) target minimum.
+                    // At text-small the natural line box is 22px, which fails
+                    // by 2px on every page of the site.
+                    "inline-flex min-h-6 items-center rounded-sm text-small transition-colors focus-visible:outline-2 focus-visible:outline-offset-2",
                     tone === "dark"
                       ? "text-fg-on-dark-muted hover:text-white focus-visible:outline-white"
                       : "text-fg-muted hover:text-fg focus-visible:outline-primary",

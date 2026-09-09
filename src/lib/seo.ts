@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { company } from "@/data/company";
+import { ogCards, ogKeyFor } from "@/data/og-cards";
 import type { Faq } from "@/data/faqs";
 
 /**
@@ -47,6 +48,14 @@ export function pageMetadata({
   index = true,
 }: PageMetaInput): Metadata {
   const url = canonical(path);
+
+  // Every page declares openGraph explicitly, which suppresses Next's
+  // file-based opengraph-image for that route. So the card is resolved here,
+  // from the registry, and a page with no registered card falls back to the
+  // site card rather than shipping with none.
+  const card = ogCards[path] ? `/og/${ogKeyFor(path)}` : "/opengraph-image";
+  const images = [{ url: canonical(card), width: 1200, height: 630, alt: title }];
+
   return {
     title: { absolute: title },
     description,
@@ -58,11 +67,13 @@ export function pageMetadata({
       title,
       description,
       url,
+      images,
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images,
     },
   };
 }
@@ -187,5 +198,43 @@ export function breadcrumbGraph(trail: ReadonlyArray<{ name: string; path: strin
       name: item.name,
       item: canonical(item.path),
     })),
+  };
+}
+
+/**
+ * Article graph for a blog post.
+ *
+ * `author` is the Organization, not an invented person — Serverlys has no
+ * named bylines and fabricating one would misrepresent the entity. `publisher`
+ * points at the same @id emitted once by the root layout, so the whole site
+ * resolves to a single Organization node.
+ */
+export function articleGraph({
+  headline,
+  description,
+  path,
+  published,
+  section,
+}: {
+  headline: string;
+  description: string;
+  path: string;
+  published: string;
+  section: string;
+}) {
+  const url = canonical(path);
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "@id": `${url}#article`,
+    headline,
+    description,
+    articleSection: section,
+    datePublished: published,
+    dateModified: published,
+    inLanguage: "en",
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    author: { "@id": ORG_ID },
+    publisher: { "@id": ORG_ID },
   };
 }

@@ -75,7 +75,13 @@ const res = await send(
   out.navsWithoutLabel=[...document.querySelectorAll('nav')].filter(n=>!n.getAttribute('aria-label')&&!n.getAttribute('aria-labelledby')).length;
   out.smallTargets=[...document.querySelectorAll('a,button,input')].filter(el=>{
     const r=el.getBoundingClientRect();
-    return r.width>0 && r.height>0 && r.height<24;
+    if(!(r.width>0 && r.height>0 && r.height<24)) return false;
+    // Visually-hidden controls (the skip link, sr-only labels) are 1x1 by
+    // design and are not pointer targets until focused, so WCAG 2.5.8 does not
+    // apply. Without this they mask real regressions on every page.
+    const cs=getComputedStyle(el);
+    if(cs.clip==='rect(0px, 0px, 0px, 0px)'||cs.clipPath==='inset(50%)') return false;
+    return true;
   }).map(el=>el.tagName+' '+Math.round(el.getBoundingClientRect().height)+'px: '+(el.innerText||'').trim().slice(0,26));
   out.expandedTriggers=[...document.querySelectorAll('[aria-expanded]')].length;
   out.langAttr=document.documentElement.lang;

@@ -7,6 +7,16 @@ import { Field } from "@/components/ui/field";
 import { Input, Textarea, Select } from "@/components/ui/input";
 import { Checkbox, Radio, ChoiceGroup } from "@/components/ui/choice";
 import { Spinner } from "@/components/ui/spinner";
+import { DashboardMock } from "@/components/product-ui/dashboard";
+import {
+  HostingMock,
+  DomainMock,
+  ChatMock,
+  CallMock,
+  AutomationMock,
+  SeoMock,
+  SitePreviewMock,
+} from "@/components/product-ui/mocks";
 
 /**
  * Design-system gallery.
@@ -227,6 +237,23 @@ export default function DesignSystemPage() {
             company="Example Studio"
           />
         </ul>
+      </Row>
+
+      <Row title="Product interfaces">
+        <div className="flex flex-col gap-8">
+          <DashboardMock />
+          <div className="grid gap-6 lg:grid-cols-2">
+            <HostingMock />
+            <DomainMock />
+            <ChatMock />
+            <SeoMock />
+            <SitePreviewMock />
+            <AutomationMock />
+          </div>
+          <div className="flex justify-center">
+            <CallMock />
+          </div>
+        </div>
       </Row>
 
       <Row title="Forms">

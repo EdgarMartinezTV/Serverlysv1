@@ -1,17 +1,19 @@
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
+import { Reveal } from "@/components/animations/reveal";
+import { cn } from "@/lib/utils";
 
 /**
- * Product page hero. Reusable across all four hosting product pages.
+ * Product page hero.
  *
- * Same visual family as the homepage hero — dark band, brand light source,
- * technical grid — but deliberately shorter and simpler. A product page hero's
- * job is to confirm "yes, this is the thing you were looking for" and route to
- * plans; the homepage hero has to do positioning work this one does not.
+ * Same visual family as the homepage hero — dark band, layered light source,
+ * technical grid — and it now carries a PRODUCT VISUAL. A hero of heading,
+ * paragraph and two buttons was the pattern the gap analysis called out; every
+ * page hero here shows the software it is selling.
  *
- * The spec row is the one piece of hero furniture that earns its place: it lets
- * someone qualify the product in about two seconds without scrolling.
+ * The spec row lets someone qualify the product in about two seconds without
+ * scrolling.
  */
 export function ProductHero({
   eyebrow,
@@ -21,57 +23,79 @@ export function ProductHero({
   specs,
   primary,
   secondary,
+  visual,
 }: {
   eyebrow: string;
   title: string;
   lede: string;
   breadcrumb: ReadonlyArray<{ name: string; href?: string }>;
-  specs: ReadonlyArray<{ label: string; value: string }>;
+  specs?: ReadonlyArray<{ label: string; value: string }>;
   primary: { label: string; href: string };
   secondary: { label: string; href: string };
+  /** Rendered to the right on desktop, below the copy on mobile. */
+  visual?: React.ReactNode;
 }) {
   return (
-    <section className="relative isolate overflow-hidden bg-canvas-dark">
-      <div aria-hidden="true" className="absolute inset-0 bg-hero-glow" />
+    <section className="relative isolate overflow-hidden bg-canvas-abyss">
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-[radial-gradient(65%_55%_at_25%_-5%,rgb(34_126_255/0.34)_0%,transparent_68%)]"
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-[radial-gradient(45%_40%_at_88%_20%,rgb(34_211_238/0.14)_0%,transparent_70%)]"
+      />
       <div aria-hidden="true" className="absolute inset-0 bg-grid-dark" />
 
-      <Container className="relative pb-14 pt-8 sm:pb-16 sm:pt-10 lg:pb-20 lg:pt-12">
+      <Container className="relative pb-16 pt-8 sm:pb-20 sm:pt-10 lg:pb-24 lg:pt-12">
         <Breadcrumbs trail={breadcrumb} tone="dark" />
 
-        <div className="mt-10 grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-12">
-          <div className="lg:col-span-7">
-            <span className="font-mono text-caption uppercase text-primary-on-dark">
+        <div
+          className={cn(
+            "mt-10 grid gap-12",
+            visual ? "lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-14" : "",
+          )}
+        >
+          <div className={visual ? "" : "max-w-3xl"}>
+            <span className="font-mono text-caption uppercase text-accent-on-dark">
               {eyebrow}
             </span>
             <h1 className="mt-4 text-h1 text-white">{title}</h1>
             <p className="mt-5 max-w-xl text-body-lg text-fg-on-dark-secondary">
               {lede}
             </p>
-          </div>
 
-          <div className="flex flex-col gap-3 sm:flex-row lg:col-span-5 lg:justify-end">
-            <Button href={primary.href} variant="inverse" size="lg" block>
-              {primary.label}
-            </Button>
-            <Button href={secondary.href} variant="inverseOutline" size="lg" block>
-              {secondary.label}
-            </Button>
-          </div>
-        </div>
-
-        {/* At-a-glance qualification. */}
-        <dl className="mt-12 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-line-on-dark pt-8 sm:grid-cols-4">
-          {specs.map((spec) => (
-            <div key={spec.label}>
-              <dt className="font-mono text-caption uppercase text-fg-on-dark-muted">
-                {spec.label}
-              </dt>
-              <dd className="mt-1.5 text-body-lg font-semibold text-white">
-                {spec.value}
-              </dd>
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <Button href={primary.href} variant="inverse" size="lg" block>
+                {primary.label}
+              </Button>
+              <Button href={secondary.href} variant="inverseOutline" size="lg" block>
+                {secondary.label}
+              </Button>
             </div>
-          ))}
-        </dl>
+
+            {specs && (
+              <dl className="mt-10 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-line-on-dark pt-7 sm:grid-cols-4">
+                {specs.map((spec) => (
+                  <div key={spec.label}>
+                    <dt className="font-mono text-caption uppercase text-fg-on-dark-muted">
+                      {spec.label}
+                    </dt>
+                    <dd className="mt-1.5 text-body font-semibold text-white">
+                      {spec.value}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+          </div>
+
+          {visual && (
+            <Reveal delay={80} className="lg:-mr-10 xl:-mr-20">
+              {visual}
+            </Reveal>
+          )}
+        </div>
       </Container>
     </section>
   );

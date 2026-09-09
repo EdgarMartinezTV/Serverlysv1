@@ -180,7 +180,7 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
           },
           {
             label: "Ecommerce hosting",
-            href: "/store-hosting",
+            href: "/ecommerce-hosting",
             icon: "cart",
             description: "WooCommerce-ready, fast at checkout.",
           },
@@ -226,7 +226,7 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
       eyebrow: "Renewal pricing",
       title: "Year two, before you buy",
       body: "Every tier shows what it renews at next to today's price. The real number is on the page.",
-      cta: { label: "Compare plans", href: "/#plans" },
+      cta: { label: "Compare plans", href: "/pricing" },
       visual: "hosting",
     },
   },
@@ -294,13 +294,13 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
         items: [
           {
             label: "Web design",
-            href: "/web-design",
+            href: "/website-design",
             icon: "layout",
             description: "Sites built to convert.",
           },
           {
             label: "Custom development",
-            href: "/custom-development",
+            href: "/website-development",
             icon: "wrench",
             description: "Applications and integrations.",
           },
@@ -317,7 +317,7 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
         items: [
           {
             label: "SEO and marketing",
-            href: "/seo-marketing",
+            href: "/seo",
             icon: "chart",
             description: "Drive qualified traffic.",
           },
@@ -329,7 +329,7 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
           },
           {
             label: "Social media",
-            href: "/socialmedia-management",
+            href: "/social-media",
             icon: "chat",
             description: "Content and scheduling, handled.",
           },
@@ -391,19 +391,19 @@ const SOLUTION_CATEGORIES: readonly MegaCategory[] = [
         items: [
           {
             label: "Blogs and brochure sites",
-            href: "/#plans",
+            href: "/pricing",
             icon: "book",
             description: "One site, steady traffic.",
           },
           {
             label: "Online stores",
-            href: "/store-hosting",
+            href: "/ecommerce-hosting",
             icon: "cart",
             description: "Checkout that stays fast under load.",
           },
           {
             label: "Agencies",
-            href: "/#plans",
+            href: "/pricing",
             icon: "layout",
             description: "Unlimited sites, one bill.",
           },
@@ -420,7 +420,7 @@ const SOLUTION_CATEGORIES: readonly MegaCategory[] = [
       eyebrow: "Not sure?",
       title: "Tell us what you run",
       body: "Pick the closest description and we will name the tier that fits — with what it renews at.",
-      cta: { label: "Find my plan", href: "/#plans" },
+      cta: { label: "Find my plan", href: "/pricing" },
       visual: "hosting",
     },
   },
@@ -440,7 +440,7 @@ const SOLUTION_CATEGORIES: readonly MegaCategory[] = [
           },
           {
             label: "Renewal shock",
-            href: "/#plans",
+            href: "/pricing",
             icon: "chart",
             description: "See year two before you commit.",
           },
@@ -500,7 +500,7 @@ const RESOURCE_CATEGORIES: readonly MegaCategory[] = [
       eyebrow: "Read first",
       title: "What renewal really costs",
       body: "The number that decides the price of hosting is year two, not year one. We publish both.",
-      cta: { label: "See pricing", href: "/#plans" },
+      cta: { label: "See pricing", href: "/pricing" },
       visual: "hosting",
     },
   },
@@ -546,7 +546,7 @@ const RESOURCE_CATEGORIES: readonly MegaCategory[] = [
 ];
 
 export const primaryNav: readonly NavItem[] = [
-  { label: "Pricing", href: "/#plans" },
+  { label: "Pricing", href: "/pricing" },
   { label: "Products", railLabel: "Products", categories: PRODUCT_CATEGORIES },
   { label: "Solutions", railLabel: "Solutions", categories: SOLUTION_CATEGORIES },
   { label: "Resources", railLabel: "Resources", categories: RESOURCE_CATEGORIES },
@@ -560,7 +560,7 @@ export const footerNav: readonly NavColumn[] = [
     links: [
       { label: "Cloud hosting", href: "/cloud-hosting" },
       { label: "WordPress hosting", href: "/wordpress-hosting" },
-      { label: "Ecommerce hosting", href: "/store-hosting" },
+      { label: "Ecommerce hosting", href: "/ecommerce-hosting" },
       { label: "Managed hosting", href: "/managed-hosting" },
       { label: "Shared hosting", href: "/shared-hosting", status: "soon" },
       { label: "VPS hosting", href: "/vps-hosting", status: "soon" },
@@ -570,11 +570,11 @@ export const footerNav: readonly NavColumn[] = [
   {
     heading: "Services",
     links: [
-      { label: "Web design", href: "/web-design" },
-      { label: "Custom development", href: "/custom-development" },
+      { label: "Web design", href: "/website-design" },
+      { label: "Custom development", href: "/website-development" },
       { label: "Site management", href: "/site-management" },
-      { label: "SEO & marketing", href: "/seo-marketing" },
-      { label: "Social media management", href: "/socialmedia-management" },
+      { label: "SEO & marketing", href: "/seo" },
+      { label: "Social media management", href: "/social-media" },
       { label: "WP migrations", href: "/wp-migrations" },
     ],
   },
@@ -618,7 +618,7 @@ export const socialLinks = [
 export const announcement = {
   enabled: true,
   version: "2026-09-cloud",
-  href: "/#plans",
+  href: "/pricing",
   linkLabel: "See plans",
 } as const;
 

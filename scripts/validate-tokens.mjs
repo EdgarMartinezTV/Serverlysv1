@@ -33,6 +33,13 @@ const pattern = new RegExp(
   "g",
 );
 
+// Width/side utilities that share a prefix with the colour utilities:
+// border-l-2, border-t, divide-x-2, ring-2. The capture group swallows the
+// side and the numeric width, so these must be excluded by SHAPE rather than
+// by name — otherwise every legitimate border width is reported as a dead
+// colour token.
+const SIDE_OR_WIDTH = /^(?:[xytrbles])?-?\d*$/;
+
 // Utilities whose value is not a colour token.
 const NON_COLOUR = new Set([
   "inherit",
@@ -115,7 +122,7 @@ for (const file of walk("src")) {
   const src = readFileSync(file, "utf8");
   for (const m of src.matchAll(pattern)) {
     const [, util, name] = m;
-    if (NON_COLOUR.has(name)) continue;
+    if (NON_COLOUR.has(name) || SIDE_OR_WIDTH.test(name)) continue;
     if (!defined.has(name)) failures.push(`${util}-${name}  →  ${file}`);
   }
 }

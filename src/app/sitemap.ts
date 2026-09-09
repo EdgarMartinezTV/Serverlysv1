@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { sitemapRoutes } from "@/data/routes";
+import { articles } from "@/data/articles";
 import { canonical } from "@/lib/seo";
 
 /**
@@ -17,10 +18,22 @@ import { canonical } from "@/lib/seo";
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
 
-  return sitemapRoutes().map((route) => ({
+  const pages = sitemapRoutes().map((route) => ({
     url: canonical(route.path),
     lastModified,
     changeFrequency: route.changeFrequency,
     priority: route.priority,
   }));
+
+  // Articles are not in the registry — they are content, enumerated from
+  // data/articles, and their lastModified is the real publication date rather
+  // than build time because that date is known and does not change on redeploy.
+  const posts = articles.map((article) => ({
+    url: canonical(`/blog/${article.slug}`),
+    lastModified: new Date(`${article.published}T00:00:00Z`),
+    changeFrequency: "yearly" as const,
+    priority: 0.5,
+  }));
+
+  return [...pages, ...posts];
 }
