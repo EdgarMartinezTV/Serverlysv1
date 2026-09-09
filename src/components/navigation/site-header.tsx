@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { billing } from "@/data/company";
 import { primaryNav, isActiveItem, isActivePath } from "@/data/navigation";
+import { resolveNavTarget } from "@/data/routes";
 import { Button } from "@/components/ui/button";
 import { Wordmark } from "@/components/layout/wordmark";
 import { MegaPanel, panelLinks } from "./mega-menu";
@@ -139,10 +140,11 @@ export function SiteHeader() {
             // Plain link (no panel).
             if (!("columns" in item) || !item.columns) {
               const href = (item as { href: string }).href;
+              const target = resolveNavTarget(href);
               return (
                 <Link
                   key={item.label}
-                  href={href}
+                  href={target.href}
                   data-nav-link={item.label}
                   aria-current={isActivePath(href, pathname) ? "page" : undefined}
                   onKeyDown={(e) => {

@@ -1,0 +1,442 @@
+/**
+ * Route registry — the single source of truth for what exists on this site.
+ *
+ * Feeds the sitemap, breadcrumb trails, and indexability decisions. Keeping
+ * these in one place is the whole point: a sitemap maintained separately from
+ * the navigation drifts, and a sitemap that disagrees with the site is worse
+ * than none.
+ *
+ * ⚠ `built` is load-bearing. Only built routes enter the sitemap. The header
+ * and footer link to pages that are not built yet (they carry demand signal and
+ * ship soon), and those links 404 today — but ADVERTISING a 404 to Google is a
+ * different and worse thing than a visitor finding one. Flip `built` to true in
+ * the same commit that adds the page.
+ */
+
+export type RouteGroup = "marketing" | "commercial" | "legal" | "tool" | "internal";
+
+export type RouteMeta = {
+  path: string;
+  /** Short label used in breadcrumb trails. */
+  name: string;
+  group: RouteGroup;
+  /** Does a page component exist for this path today? */
+  built: boolean;
+  /** Excluded from the sitemap and marked noindex when false. */
+  indexable: boolean;
+  /**
+   * Relative importance within THIS site (0–1). Google largely ignores it, but
+   * it costs nothing and helps other crawlers prioritise.
+   */
+  priority: number;
+  changeFrequency: "daily" | "weekly" | "monthly" | "yearly";
+  /** Ancestors, nearest last. Used to build breadcrumbs and their schema. */
+  parents?: readonly string[];
+  /**
+   * Where to send someone while this page does not exist yet.
+   *
+   * Only set this when the destination genuinely serves the intent — the
+   * homepage plans section really does list WordPress and ecommerce pricing,
+   * so pointing there is useful rather than a fudge. Routes with no honest
+   * interim destination get no link at all.
+   */
+  interim?: string;
+};
+
+export const routes: readonly RouteMeta[] = [
+  {
+    path: "/",
+    name: "Home",
+    group: "marketing",
+    built: true,
+    indexable: true,
+    priority: 1.0,
+    changeFrequency: "weekly",
+  },
+  {
+    path: "/cloud-hosting",
+    name: "Cloud hosting",
+    group: "commercial",
+    built: true,
+    indexable: true,
+    priority: 0.9,
+    changeFrequency: "weekly",
+    parents: ["/"],
+  },
+  {
+    path: "/register-domain",
+    name: "Register a domain",
+    group: "commercial",
+    built: true,
+    indexable: true,
+    priority: 0.9,
+    changeFrequency: "weekly",
+    parents: ["/"],
+  },
+  // Internal tooling — must never be indexed.
+  {
+    path: "/design-system",
+    name: "Design system",
+    group: "internal",
+    built: true,
+    indexable: false,
+    priority: 0,
+    changeFrequency: "monthly",
+  },
+
+  // ── Not built yet ────────────────────────────────────────────────────────
+  // Linked from the navigation, deliberately absent from the sitemap.
+  {
+    path: "/pricing",
+    name: "Pricing",
+    group: "commercial",
+    built: false,
+    indexable: true,
+    priority: 0.9,
+    changeFrequency: "weekly",
+    parents: ["/"],
+    interim: "/#plans",
+  },
+  {
+    path: "/wordpress-hosting",
+    name: "WordPress hosting",
+    group: "commercial",
+    built: false,
+    indexable: true,
+    priority: 0.9,
+    changeFrequency: "weekly",
+    parents: ["/"],
+    interim: "/#plans",
+  },
+  {
+    path: "/store-hosting",
+    name: "Ecommerce hosting",
+    group: "commercial",
+    built: false,
+    indexable: true,
+    priority: 0.9,
+    changeFrequency: "weekly",
+    parents: ["/"],
+    interim: "/#plans",
+  },
+  {
+    path: "/managed-hosting",
+    name: "Managed hosting",
+    group: "commercial",
+    built: false,
+    indexable: true,
+    priority: 0.8,
+    changeFrequency: "weekly",
+    parents: ["/"],
+    interim: "/#plans",
+  },
+  {
+    path: "/transfer-domain",
+    name: "Transfer a domain",
+    group: "commercial",
+    built: false,
+    indexable: true,
+    priority: 0.8,
+    changeFrequency: "monthly",
+    parents: ["/"],
+  },
+  {
+    path: "/shared-hosting",
+    name: "Shared hosting",
+    group: "commercial",
+    built: false,
+    indexable: true,
+    priority: 0.7,
+    changeFrequency: "monthly",
+    parents: ["/"],
+  },
+  {
+    path: "/vps-hosting",
+    name: "VPS hosting",
+    group: "commercial",
+    built: false,
+    indexable: true,
+    priority: 0.7,
+    changeFrequency: "monthly",
+    parents: ["/"],
+  },
+  {
+    path: "/dedicated-servers",
+    name: "Dedicated servers",
+    group: "commercial",
+    built: false,
+    indexable: true,
+    priority: 0.7,
+    changeFrequency: "monthly",
+    parents: ["/"],
+  },
+  {
+    path: "/wp-migrations",
+    name: "WP migrations",
+    group: "commercial",
+    built: false,
+    indexable: true,
+    priority: 0.7,
+    changeFrequency: "monthly",
+    parents: ["/"],
+    interim: "/#migration",
+  },
+  {
+    path: "/web-design",
+    name: "Web design",
+    group: "commercial",
+    built: false,
+    indexable: true,
+    priority: 0.7,
+    changeFrequency: "monthly",
+    parents: ["/"],
+  },
+  {
+    path: "/custom-development",
+    name: "Custom development",
+    group: "commercial",
+    built: false,
+    indexable: true,
+    priority: 0.7,
+    changeFrequency: "monthly",
+    parents: ["/"],
+  },
+  {
+    path: "/site-management",
+    name: "Site management",
+    group: "commercial",
+    built: false,
+    indexable: true,
+    priority: 0.7,
+    changeFrequency: "monthly",
+    parents: ["/"],
+  },
+  {
+    path: "/seo-marketing",
+    name: "SEO & marketing",
+    group: "commercial",
+    built: false,
+    indexable: true,
+    priority: 0.7,
+    changeFrequency: "monthly",
+    parents: ["/"],
+  },
+  {
+    path: "/socialmedia-management",
+    name: "Social media management",
+    group: "commercial",
+    built: false,
+    indexable: true,
+    priority: 0.6,
+    changeFrequency: "monthly",
+    parents: ["/"],
+  },
+  {
+    path: "/about",
+    name: "About us",
+    group: "marketing",
+    built: false,
+    indexable: true,
+    priority: 0.6,
+    changeFrequency: "monthly",
+    parents: ["/"],
+  },
+  {
+    path: "/our-process",
+    name: "Our process",
+    group: "marketing",
+    built: false,
+    indexable: true,
+    priority: 0.5,
+    changeFrequency: "monthly",
+    parents: ["/"],
+  },
+  {
+    path: "/case-studies",
+    name: "Case studies",
+    group: "marketing",
+    built: false,
+    indexable: true,
+    priority: 0.5,
+    changeFrequency: "monthly",
+    parents: ["/"],
+  },
+  {
+    path: "/success-stories",
+    name: "Success stories",
+    group: "marketing",
+    built: false,
+    indexable: true,
+    priority: 0.5,
+    changeFrequency: "monthly",
+    parents: ["/"],
+  },
+  {
+    path: "/hosting-alternatives",
+    name: "Hosting comparison",
+    group: "marketing",
+    built: false,
+    indexable: true,
+    priority: 0.5,
+    changeFrequency: "monthly",
+    parents: ["/"],
+  },
+  {
+    path: "/whois-lookup",
+    name: "WHOIS lookup",
+    group: "tool",
+    built: false,
+    indexable: true,
+    priority: 0.5,
+    changeFrequency: "monthly",
+    parents: ["/"],
+  },
+  {
+    path: "/tutorials",
+    name: "Tutorials",
+    group: "tool",
+    built: false,
+    indexable: true,
+    priority: 0.5,
+    changeFrequency: "weekly",
+    parents: ["/"],
+  },
+  {
+    path: "/ai-tools",
+    name: "AI tools",
+    group: "tool",
+    built: false,
+    indexable: true,
+    priority: 0.4,
+    changeFrequency: "monthly",
+    parents: ["/"],
+  },
+  {
+    path: "/blog",
+    name: "Blog",
+    group: "marketing",
+    built: false,
+    indexable: true,
+    priority: 0.7,
+    changeFrequency: "weekly",
+    parents: ["/"],
+  },
+  // Legal: indexable but low priority. Thin pages get noindex individually.
+  {
+    path: "/privacy-policy",
+    name: "Privacy policy",
+    group: "legal",
+    built: false,
+    indexable: true,
+    priority: 0.3,
+    changeFrequency: "yearly",
+    parents: ["/"],
+  },
+  {
+    path: "/terms-of-service",
+    name: "Terms of service",
+    group: "legal",
+    built: false,
+    indexable: true,
+    priority: 0.3,
+    changeFrequency: "yearly",
+    parents: ["/"],
+  },
+  {
+    path: "/refund-policy",
+    name: "Refund policy",
+    group: "legal",
+    built: false,
+    indexable: true,
+    priority: 0.3,
+    changeFrequency: "yearly",
+    parents: ["/"],
+  },
+  {
+    path: "/legal-information",
+    name: "Legal information",
+    group: "legal",
+    built: false,
+    indexable: true,
+    priority: 0.3,
+    changeFrequency: "yearly",
+    parents: ["/"],
+  },
+  {
+    path: "/report-abuse",
+    name: "Report abuse",
+    group: "legal",
+    built: false,
+    indexable: true,
+    priority: 0.3,
+    changeFrequency: "yearly",
+    parents: ["/"],
+  },
+  {
+    path: "/accessibility",
+    name: "Accessibility",
+    group: "legal",
+    built: false,
+    indexable: true,
+    priority: 0.3,
+    changeFrequency: "yearly",
+    parents: ["/"],
+  },
+];
+
+const byPath = new Map(routes.map((r) => [r.path, r]));
+
+export function routeFor(path: string): RouteMeta | undefined {
+  return byPath.get(path);
+}
+
+/** Routes that exist AND may be indexed — the sitemap's source. */
+export function sitemapRoutes(): readonly RouteMeta[] {
+  return routes.filter((r) => r.built && r.indexable);
+}
+
+/** Paths linked in navigation that have no page yet. */
+export function unbuiltRoutes(): readonly RouteMeta[] {
+  return routes.filter((r) => !r.built);
+}
+
+/**
+ * Breadcrumb trail for a path, derived from `parents`. Returns entries in
+ * order, current page last.
+ */
+/**
+ * How a navigation entry should render.
+ *
+ * `link`   → a real <a>/<Link> to `href`
+ * `text`   → not a link: the page does not exist and has no honest interim
+ *            destination, and linking to a 404 wastes crawl budget on every
+ *            page of the site while sending visitors nowhere.
+ */
+export function resolveNavTarget(path: string): {
+  mode: "link" | "text";
+  href: string;
+} {
+  // External URLs and in-page anchors are never registry-managed.
+  if (/^https?:\/\//.test(path) || path.startsWith("#")) {
+    return { mode: "link", href: path };
+  }
+  const route = byPath.get(path);
+  // Unknown paths are assumed real — the registry describes the site, it does
+  // not gate it, and a missing entry should not silently break a link.
+  if (!route || route.built) return { mode: "link", href: path };
+  if (route.interim) return { mode: "link", href: route.interim };
+  return { mode: "text", href: path };
+}
+
+export function breadcrumbTrail(path: string): Array<{ name: string; path: string }> {
+  const route = byPath.get(path);
+  if (!route) return [];
+  const trail = (route.parents ?? [])
+    .map((p) => byPath.get(p))
+    .filter((r): r is RouteMeta => Boolean(r))
+    // Never build a trail through a page that does not exist — a breadcrumb
+    // link to a 404 is worse than a shorter trail.
+    .filter((r) => r.built)
+    .map((r) => ({ name: r.name, path: r.path }));
+  return [...trail, { name: route.name, path: route.path }];
+}

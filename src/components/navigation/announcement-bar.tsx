@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { announcement } from "@/data/navigation";
+import { resolveNavTarget } from "@/data/routes";
 import { lowestAnnualRate, formatPrice } from "@/data/pricing";
 import { DismissAnnouncement } from "./dismiss-announcement";
 
@@ -39,7 +40,7 @@ export function AnnouncementBar() {
             — free domain, free SSL and free migration included.
           </span>{" "}
           <Link
-            href={announcement.href}
+            href={resolveNavTarget(announcement.href).href}
             className="inline-block whitespace-nowrap py-1 font-semibold text-white underline underline-offset-2 transition-colors hover:text-brand-100"
           >
             {announcement.linkLabel}

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { footerNav, legalNav, socialLinks } from "@/data/navigation";
+import { resolveNavTarget } from "@/data/routes";
 import { company, billing, sisterProducts } from "@/data/company";
 import { Wordmark } from "./wordmark";
 import { SocialIcon } from "./social-icon";
@@ -85,21 +86,37 @@ export function SiteFooter() {
                   {col.heading}
                 </h2>
                 <ul className="mt-4 flex flex-col gap-1.5">
-                  {col.links.map((link) => (
-                    <li key={link.label}>
-                      <Link
-                        href={link.href}
-                        className="inline-block py-1 text-small text-fg-on-dark-muted transition-colors hover:text-white"
-                      >
+                  {col.links.map((link) => {
+                    const target = resolveNavTarget(link.href);
+                    const label = (
+                      <>
                         {link.label}
                         {link.status === "soon" && (
                           <span className="ml-2 font-mono text-[0.625rem] uppercase tracking-[0.08em] text-fg-on-dark-muted">
                             Soon
                           </span>
                         )}
-                      </Link>
-                    </li>
-                  ))}
+                      </>
+                    );
+                    return (
+                      <li key={link.label}>
+                        {target.mode === "link" ? (
+                          <Link
+                            href={target.href}
+                            className="inline-block py-1 text-small text-fg-on-dark-muted transition-colors hover:text-white"
+                          >
+                            {label}
+                          </Link>
+                        ) : (
+                          // Not yet built. Rendered as text so the footer does
+                          // not link every page on the site to a 404.
+                          <span className="inline-block py-1 text-small text-fg-on-dark-muted/70">
+                            {label}
+                          </span>
+                        )}
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             ))}
@@ -123,16 +140,25 @@ export function SiteFooter() {
             </a>
           </div>
           <ul className="flex flex-wrap gap-x-5">
-            {legalNav.map((link) => (
-              <li key={link.label}>
-                <Link
-                  href={link.href}
-                  className="inline-block py-1 text-small text-fg-on-dark-muted transition-colors hover:text-white"
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
+            {legalNav.map((link) => {
+              const target = resolveNavTarget(link.href);
+              return (
+                <li key={link.label}>
+                  {target.mode === "link" ? (
+                    <Link
+                      href={target.href}
+                      className="inline-block py-1 text-small text-fg-on-dark-muted transition-colors hover:text-white"
+                    >
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <span className="inline-block py-1 text-small text-fg-on-dark-muted/70">
+                      {link.label}
+                    </span>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </div>
 

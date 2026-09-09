@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { primaryNav, isActivePath, type NavLink } from "@/data/navigation";
+import { resolveNavTarget } from "@/data/routes";
 import { billing, company } from "@/data/company";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -296,8 +297,10 @@ function MobileLink({ link, pathname }: { link: NavLink; pathname: string }) {
       </a>
     );
   }
+  const target = resolveNavTarget(link.href);
+  if (target.mode === "text") return <span>{inner}</span>;
   return (
-    <Link href={link.href} aria-current={active ? "page" : undefined}>
+    <Link href={target.href} aria-current={active ? "page" : undefined}>
       {inner}
     </Link>
   );

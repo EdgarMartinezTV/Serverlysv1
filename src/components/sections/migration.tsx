@@ -30,7 +30,7 @@ const STEPS = [
 
 export function Migration() {
   return (
-    <Section surface="subtle" labelledBy="migration-heading">
+    <Section id="migration" surface="subtle" labelledBy="migration-heading">
       <SectionHeader
         id="migration-heading"
         eyebrow="Switching host"

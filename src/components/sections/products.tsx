@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { Badge } from "@/components/ui/badge";
 import { products, upcomingProducts, startingPrice } from "@/data/products";
+import { resolveNavTarget } from "@/data/routes";
 import { formatPrice } from "@/data/pricing";
 
 /**
@@ -27,7 +28,7 @@ export function Products() {
           lede="Every product runs on the same infrastructure. What differs is how it is tuned and who maintains it."
         />
         <Link
-          href="/pricing"
+          href={resolveNavTarget("/pricing").href}
           className="inline-flex shrink-0 items-center gap-1.5 rounded-sm text-body font-medium text-primary underline-offset-4 transition-colors hover:text-primary-hover hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
         >
           Compare every plan
@@ -38,6 +39,7 @@ export function Products() {
       <ul className="mt-12 grid gap-5 sm:grid-cols-2">
         {products.map((product) => {
           const from = startingPrice(product);
+          const target = resolveNavTarget(product.href);
           return (
             <li key={product.name} className="flex">
               <article className="group relative flex w-full flex-col overflow-hidden rounded-lg bg-surface shadow-e1 ring-1 ring-line transition-shadow duration-normal ease-hover hover:shadow-e4 focus-within:ring-2 focus-within:ring-primary">
@@ -50,7 +52,7 @@ export function Products() {
                 <div className="flex flex-1 flex-col p-6 sm:p-7">
                   <h3 className="text-h4 text-fg">
                     <Link
-                      href={product.href}
+                      href={target.href}
                       className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none"
                     >
                       {product.name}
@@ -111,13 +113,12 @@ export function Products() {
           <ul className="flex flex-wrap gap-x-6 gap-y-2">
             {upcomingProducts.map((p) => (
               <li key={p.name}>
-                <Link
-                  href={p.href}
-                  className="inline-flex min-h-9 items-center gap-2 rounded-sm text-small text-fg-secondary transition-colors hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                >
+                {/* No page and no honest interim destination — text, not a
+                    link to a 404. */}
+                <span className="inline-flex min-h-9 items-center gap-2 text-small text-fg-secondary">
                   {p.name}
                   <Badge tone="warning">Soon</Badge>
-                </Link>
+                </span>
               </li>
             ))}
           </ul>

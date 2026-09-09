@@ -11,7 +11,8 @@
     "validate:tokens": "node scripts/validate-tokens.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "verify": "npm run typecheck && npm run lint && npm run validate:tokens && npm run build"
+    "verify": "npm run typecheck && npm run lint && npm run validate:tokens && npm run build",
+    "audit:seo": "node scripts/seo-audit.mjs"
   },
   "dependencies": {
     "next": "16.3.4",

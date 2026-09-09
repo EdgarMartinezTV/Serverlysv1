@@ -1,0 +1,235 @@
+/**
+ * Technical SEO audit.
+ *
+ * Parses RAW SSR HTML rather than the rendered DOM — that is what a crawler
+ * receives before running JavaScript, so it is the correct thing to assert on.
+ *
+ * Usage: node scripts/seo-audit.mjs [origin]
+ */
+const ORIGIN = process.argv[2] ?? "http://localhost:3000";
+
+const findings = [];
+const note = (level, page, msg) => findings.push({ level, page, msg });
+const fail = (page, msg) => note("FAIL", page, msg);
+const warn = (page, msg) => note("WARN", page, msg);
+
+const get = async (path) => {
+  const res = await fetch(ORIGIN + path, { redirect: "manual" });
+  return { status: res.status, html: await res.text(), headers: res.headers };
+};
+
+const meta = (html, key) => {
+  const patterns = [
+    new RegExp(`<meta[^>]+(?:name|property)="${key}"[^>]+content="([^"]*)"`, "i"),
+    new RegExp(`<meta[^>]+content="([^"]*)"[^>]+(?:name|property)="${key}"`, "i"),
+  ];
+  for (const p of patterns) {
+    const m = html.match(p);
+    if (m) return m[1];
+  }
+  return null;
+};
+const tag = (html, re) => (html.match(re) || [null, null])[1];
+const all = (html, re) => [...html.matchAll(re)].map((m) => m[1]);
+
+// ── Discover pages from the sitemap, plus known non-indexed surfaces ───────
+const sitemapXml = (await get("/sitemap.xml")).html;
+const sitemapUrls = all(sitemapXml, /<loc>([^<]+)<\/loc>/g);
+const paths = sitemapUrls.map((u) => new URL(u).pathname || "/");
+const extraPaths = ["/design-system", "/this-page-does-not-exist"];
+
+console.log(
+  `Auditing ${paths.length} indexable page(s) + ${extraPaths.length} control(s)\n`,
+);
+
+const seenTitles = new Map();
+const seenDescriptions = new Map();
+const internalLinks = new Set();
+
+for (const path of [...paths, ...extraPaths]) {
+  const { status, html } = await get(path);
+  const isIndexable = paths.includes(path);
+  const label = path;
+
+  if (status !== 200 && isIndexable) {
+    fail(label, `sitemap URL returns ${status}`);
+    continue;
+  }
+
+  // ── Title ──
+  const title = tag(html, /<title>([^<]*)<\/title>/i);
+  if (!title) fail(label, "no <title>");
+  else {
+    if (title.length > 60)
+      warn(label, `title ${title.length} chars — may truncate in SERP`);
+    if (title.length < 15) warn(label, `title only ${title.length} chars`);
+    if (isIndexable) {
+      if (seenTitles.has(title))
+        fail(label, `duplicate title with ${seenTitles.get(title)}`);
+      else seenTitles.set(title, label);
+    }
+  }
+
+  // ── Description ──
+  const desc = meta(html, "description");
+  if (!desc && isIndexable) fail(label, "no meta description");
+  else if (desc) {
+    if (desc.length > 165)
+      warn(label, `description ${desc.length} chars — may truncate`);
+    if (desc.length < 70) warn(label, `description only ${desc.length} chars`);
+    if (isIndexable) {
+      if (seenDescriptions.has(desc))
+        fail(label, `duplicate description with ${seenDescriptions.get(desc)}`);
+      else seenDescriptions.set(desc, label);
+    }
+  }
+
+  // ── Canonical ──
+  const canonical = tag(html, /<link[^>]+rel="canonical"[^>]+href="([^"]*)"/i);
+  if (isIndexable) {
+    if (!canonical) fail(label, "no canonical");
+    else {
+      if (!canonical.startsWith("http")) fail(label, "canonical is not absolute");
+      const expected = path === "/" ? "" : path;
+      if (canonical && !canonical.endsWith(expected))
+        fail(label, `canonical ${canonical} does not self-reference ${path}`);
+      if (canonical.includes("?")) fail(label, "canonical contains a query string");
+    }
+  }
+
+  // ── Robots ──
+  const robotsMeta = meta(html, "robots") ?? "";
+  if (isIndexable && /noindex/i.test(robotsMeta))
+    fail(label, "indexable page is marked noindex");
+  if (!isIndexable && !/noindex/i.test(robotsMeta))
+    fail(label, "non-indexable page is missing noindex");
+
+  // ── OpenGraph / Twitter ──
+  if (isIndexable) {
+    for (const k of [
+      "og:title",
+      "og:description",
+      "og:url",
+      "og:type",
+      "og:site_name",
+      "og:image",
+    ]) {
+      if (!meta(html, k)) fail(label, `missing ${k}`);
+    }
+    for (const k of [
+      "twitter:card",
+      "twitter:title",
+      "twitter:description",
+      "twitter:image",
+    ]) {
+      if (!meta(html, k)) fail(label, `missing ${k}`);
+    }
+    const ogUrl = meta(html, "og:url");
+    if (ogUrl && canonical && ogUrl !== canonical)
+      warn(label, "og:url differs from canonical");
+  }
+
+  // ── Headings ──
+  const headings = [...html.matchAll(/<(h[1-6])[^>]*>([\s\S]*?)<\/\1>/gi)].map((m) => ({
+    level: Number(m[1][1]),
+    text: m[2].replace(/<[^>]*>/g, "").trim(),
+  }));
+  const h1s = headings.filter((h) => h.level === 1);
+  if (h1s.length === 0) fail(label, "no <h1>");
+  if (h1s.length > 1) fail(label, `${h1s.length} <h1> elements`);
+  for (let i = 1; i < headings.length; i++) {
+    const jump = headings[i].level - headings[i - 1].level;
+    if (jump > 1)
+      fail(
+        label,
+        `heading skip h${headings[i - 1].level}→h${headings[i].level} at "${headings[i].text.slice(0, 40)}"`,
+      );
+  }
+
+  // ── Images ──
+  for (const img of [...html.matchAll(/<img[^>]*>/gi)].map((m) => m[0])) {
+    if (!/\salt=/.test(img)) fail(label, `<img> without alt: ${img.slice(0, 70)}`);
+  }
+
+  // ── lang ──
+  if (!/<html[^>]+lang="/.test(html)) fail(label, "<html> has no lang attribute");
+
+  // ── Structured data ──
+  const blocks = [
+    ...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g),
+  ].map((m) => m[1]);
+  if (isIndexable && blocks.length === 0) fail(label, "no structured data");
+  const types = [];
+  for (const raw of blocks) {
+    try {
+      const json = JSON.parse(raw.replace(/\\u003c/g, "<"));
+      const collect = (n) => {
+        if (Array.isArray(n)) return n.forEach(collect);
+        if (n && typeof n === "object") {
+          if (n["@type"]) types.push(n["@type"]);
+          if (n["@graph"]) collect(n["@graph"]);
+        }
+      };
+      collect(json);
+    } catch (e) {
+      fail(label, `invalid JSON-LD: ${e.message}`);
+    }
+  }
+  if (isIndexable) {
+    if (!types.includes("Organization")) fail(label, "no Organization node");
+    if (types.filter((t) => t === "Organization").length > 1)
+      fail(label, "duplicate Organization nodes");
+    if (!types.includes("WebSite")) fail(label, "no WebSite node");
+    if (path !== "/" && !types.includes("BreadcrumbList"))
+      warn(label, "no BreadcrumbList on a child page");
+  }
+
+  // ── Collect internal links ──
+  for (const href of all(html, /<a[^>]+href="([^"]+)"/g)) {
+    if (href.startsWith("/") && !href.startsWith("//"))
+      internalLinks.add(href.split("#")[0] || "/");
+  }
+
+  // ── Anchor text quality ──
+  for (const m of html.matchAll(/<a[^>]*>([\s\S]{0,120}?)<\/a>/g)) {
+    const text = m[1]
+      .replace(/<[^>]*>/g, "")
+      .trim()
+      .toLowerCase();
+    if (["click here", "here", "read more", "learn more", "more"].includes(text))
+      warn(label, `non-descriptive anchor text: "${text}"`);
+  }
+}
+
+// ── Internal links must not 404 ────────────────────────────────────────────
+console.log(`Checking ${internalLinks.size} unique internal link target(s)…\n`);
+const broken = [];
+for (const href of internalLinks) {
+  const { status } = await get(href);
+  if (status >= 400) broken.push(`${href} → ${status}`);
+}
+if (broken.length) {
+  for (const b of broken)
+    fail(
+      "(internal links)",
+      `links to a ${b.split("→")[1].trim()}: ${b.split("→")[0].trim()}`,
+    );
+}
+
+// ── robots.txt ─────────────────────────────────────────────────────────────
+const robotsTxt = (await get("/robots.txt")).html;
+if (!/Sitemap:/i.test(robotsTxt)) fail("/robots.txt", "no Sitemap directive");
+if (!/Disallow: \/api\//.test(robotsTxt)) warn("/robots.txt", "/api/ not disallowed");
+if (/Disallow: \/$/m.test(robotsTxt))
+  warn("/robots.txt", "entire site disallowed (expected on staging only)");
+
+// ── Report ─────────────────────────────────────────────────────────────────
+const fails = findings.filter((f) => f.level === "FAIL");
+const warns = findings.filter((f) => f.level === "WARN");
+for (const f of [...fails, ...warns]) {
+  console.log(`  ${f.level === "FAIL" ? "✗" : "!"} ${f.page.padEnd(22)} ${f.msg}`);
+}
+console.log(
+  `\n${fails.length === 0 ? "✓" : "✗"} ${fails.length} failure(s), ${warns.length} warning(s)\n`,
+);
+process.exit(fails.length === 0 ? 0 : 1);

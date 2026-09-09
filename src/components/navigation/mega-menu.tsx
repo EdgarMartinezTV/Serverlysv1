@@ -4,6 +4,7 @@ import { useRef } from "react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import type { NavColumn, NavFeature, NavLink } from "@/data/navigation";
+import { resolveNavTarget } from "@/data/routes";
 import { cn } from "@/lib/utils";
 
 /**
@@ -155,7 +156,7 @@ function FeaturePanel({
           {feature.description}
         </p>
         <Link
-          href={feature.href}
+          href={resolveNavTarget(feature.href).href}
           onClick={onNavigate}
           className="mt-4 inline-flex items-center gap-1.5 rounded-sm text-small font-medium text-primary transition-colors hover:text-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         >
@@ -217,8 +218,15 @@ function MegaLink({ link, onNavigate }: { link: NavLink; onNavigate: () => void 
     );
   }
 
+  // Pages that do not exist yet render as text, not links. Linking to a 404
+  // from every page of the site wastes crawl budget and sends people nowhere.
+  const target = resolveNavTarget(link.href);
+  if (target.mode === "text") {
+    return <span className={`${classes} cursor-default`}>{body}</span>;
+  }
+
   return (
-    <Link href={link.href} className={classes} onClick={onNavigate}>
+    <Link href={target.href} className={classes} onClick={onNavigate}>
       {body}
     </Link>
   );
