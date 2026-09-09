@@ -49,12 +49,21 @@ export function Hero() {
       <div aria-hidden="true" className="absolute inset-0 bg-grid-dark" />
 
       <Container className="relative pb-0 pt-36 sm:pt-40 lg:pt-44">
-        {/* Domain search sits above the headline, as in the target. */}
-        <Reveal className="mx-auto w-full max-w-xl">
-          <DomainSearch tone="dark" />
-        </Reveal>
+        {/*
+          NOT wrapped in <Reveal>. Everything above the fold paints immediately.
 
-        <Reveal delay={60} className="mx-auto mt-12 max-w-3xl text-center sm:mt-14">
+          Reveal is a client component driven by an IntersectionObserver, so it
+          cannot un-hide anything until hydration has run. Wrapping the hero put
+          the LCP element — the paragraph below — behind a fade that started
+          after hydration: cold-cache LCP was 2.88s against a 2.50s budget,
+          while every other page measured 0.85s. The animation was the entire
+          difference. Never animate the largest element in the first viewport.
+        */}
+        <div className="mx-auto w-full max-w-xl">
+          <DomainSearch tone="dark" />
+        </div>
+
+        <div className="mx-auto mt-12 max-w-3xl text-center sm:mt-14">
           <h1 className="text-display text-white">
             Everything online. <span className="block">One honest price.</span>
           </h1>
@@ -92,7 +101,7 @@ export function Hero() {
               30-day money-back guarantee
             </p>
           </div>
-        </Reveal>
+        </div>
 
         {/* Product strip. Cropped by the fold — the next section overlaps it. */}
         <Reveal delay={140} className="mt-16 sm:mt-20">
