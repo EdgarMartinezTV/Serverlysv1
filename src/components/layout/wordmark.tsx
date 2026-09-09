@@ -6,66 +6,63 @@ import { company } from "@/data/company";
 /**
  * The Serverlys logo.
  *
- * TWO ASSETS, one per surface:
+ * ONE ASSET: /brand/logo.webp, used everywhere, unmodified. The blue wordmark,
+ * the green circuit mark and the black tagline appear exactly as drawn — no
+ * recolouring, no reversed variant, no derived file that can drift from the
+ * original.
  *
- *   /brand/logo.webp           blue wordmark + green circuit mark + black
- *                              tagline. Drawn for LIGHT surfaces.
- *   /brand/logo-reversed.webp  the same lockup KEEPING THE BRAND COLOURS, for
- *                              dark surfaces. DERIVED from the asset above,
- *                              measured against the dark ground (#0a1030):
+ * The logo is drawn for light surfaces, so on the dark header, footer and
+ * mobile drawer it sits on a WHITE PLATE rather than being recoloured to suit
+ * the background. That is the trade this component makes deliberately:
  *
- *                                green #4caf50  6.69:1  kept exactly as drawn
- *                                blue  #0000ff  2.16:1  fails — lightened
- *                                                       along the same hue to
- *                                                       #5c78ff, which
- *                                                       measures 4.94:1
- *                                tagline #000000        invisible — to white
+ *   · Recolouring keeps the surface clean and changes the brand. Pure blue
+ *     (0,0,255) measures 2.16:1 on the dark ground, so it has to move a long
+ *     way in lightness to be legible, and the mark stops being the mark.
+ *   · A plate keeps the brand exact and adds a shape to the layout.
  *
- *                              Alpha is left untouched, so the circuit detail
- *                              and the anti-aliased edges survive exactly; a
- *                              hard swap on exact colour matches would leave a
- *                              fringe around every glyph. Regenerate it if the
- *                              primary logo changes.
+ * The plate wins because the logo is the one element on the page that must not
+ * be approximated. It is also what the asset supports: black tagline text has
+ * no legible form on a dark background at any lightness.
  *
- * Why a second asset rather than one everywhere: pure blue on the dark ground
- * is unreadable, well under the 4.5:1 floor the rest of this design system
- * holds itself to. Turning the whole mark white would solve legibility and
- * lose the brand — this keeps the blue and the green and only moves the blue
- * far enough up in lightness to be read.
- *
- * ⚠ The lockup includes a tagline set much smaller than the wordmark. At
- * header height the tagline is a few pixels tall and reads as texture rather
- * than words. If a horizontal mark WITHOUT the tagline is available, it would
- * be the better asset at these sizes — this component is where to swap it.
+ * ⚠ The lockup carries a tagline set far smaller than the wordmark. At header
+ * height it is a few pixels tall and reads as texture rather than words. A
+ * horizontal mark WITHOUT the tagline would be the better asset at these
+ * sizes — this component is where to swap it.
  */
 export function Wordmark({
   tone = "dark",
   priority = false,
   className,
 }: {
-  /** `dark` = dark art for light surfaces. `light` = light art for dark surfaces. */
+  /** `dark` = a light surface, logo bare. `light` = a dark surface, logo plated. */
   tone?: "dark" | "light";
   priority?: boolean;
-  /** Height utility. Defaults to the header size. */
+  /** Height utility for the image. Defaults to the header size. */
   className?: string;
 }) {
-  const reversed = tone === "light";
+  const onDark = tone === "light";
 
   return (
     <Link
       href="/"
-      className="inline-flex shrink-0 items-center rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+      className={cn(
+        "inline-flex w-fit shrink-0 items-center self-start rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary",
+        /* The plate. Pure white so the artwork renders on the background it
+           was drawn for, with enough padding that the circuit mark's legs are
+           not clipped by the corner radius. */
+        onDark && "bg-white px-3 py-2 shadow-e2 ring-1 ring-inset ring-white",
+      )}
       aria-label={`${company.name} — home`}
     >
       <Image
-        src={reversed ? "/brand/logo-reversed.webp" : "/brand/logo.webp"}
+        src="/brand/logo.webp"
         alt={company.name}
-        /* Intrinsic dimensions of the asset. Next needs the true ratio to
-           reserve the right box and avoid a layout shift as it loads. */
+        /* Intrinsic dimensions. Next needs the true ratio to reserve the right
+           box and avoid a layout shift as it loads. */
         width={1653}
         height={409}
         priority={priority}
-        className={cn("w-auto", className ?? "h-10")}
+        className={cn("w-auto", className ?? "h-8")}
       />
     </Link>
   );
