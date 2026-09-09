@@ -419,11 +419,13 @@ check(
   await ev(`return document.documentElement.scrollWidth <= document.documentElement.clientWidth+1
     && /\\bAVAILABLE\\b/i.test(document.body.innerText)`),
 );
-// Filter to VISIBLE controls: the closed mega-menu contains a "Register a
-// domain" link that is correctly 0px tall while hidden.
+// Scoped to <main>: this is about the RESULT ROW's Register button, a primary
+// touch CTA. Searching the whole document also picks up the footer's
+// "Register a domain" nav link and the closed mega-menu's hidden copy, which
+// are held to the WCAG 2.2 24px floor by test-nav rather than to 44px.
 check(
   "every visible Register control meets the 44px touch target",
-  await ev(`const links=[...document.querySelectorAll('a')]
+  await ev(`const links=[...document.querySelectorAll('main a')]
       .filter(a=>/^register/i.test(a.textContent.trim()))
       .filter(a=>a.getBoundingClientRect().width>0);
     return links.length>0 && links.every(a=>a.getBoundingClientRect().height>=44)`),
