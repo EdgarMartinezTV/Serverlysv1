@@ -8,37 +8,39 @@ import { primaryNav, isActiveItem, isActivePath } from "@/data/navigation";
 import { resolveNavTarget } from "@/data/routes";
 import { Button } from "@/components/ui/button";
 import { Wordmark } from "@/components/layout/wordmark";
-import { MegaPanel, panelLinks } from "./mega-menu";
+import { MegaMenu, panelLinks } from "./mega-menu";
 import { MobileNav } from "./mobile-nav";
+import { LanguageSelector } from "./language-selector";
+import { AccountButton } from "./account-button";
+import { Chevron } from "./nav-icons";
 import { cn } from "@/lib/utils";
 
 /**
- * Sticky site header.
+ * Site header.
  *
- * Owns which panel is open (exactly one at a time), the scrolled state, and
- * top-level keyboard navigation. The panels themselves handle intra-panel keys.
+ * Owns which mega menu is open, the scrolled state, and top-level keyboard
+ * navigation. The panel handles its own rail and content keys.
  *
- * Pointer contract:
- *   · Hover opens — but ONLY for a mouse. On touch, `pointerenter` fires just
- *     before `click`, so hover-to-open would open the panel and the click would
- *     immediately close it. Guarding on pointerType fixes that class of bug.
- *   · A short close delay lets the pointer travel diagonally from trigger to
- *     panel without the panel vanishing underneath it.
+ * SURFACE: the header is dark whenever a menu is open, and on routes whose
+ * hero is a dark band. Opening a menu therefore puts the whole top of the page
+ * into one dark field with the panel — the relationship shown in the target —
+ * rather than floating a dark panel under a white bar.
  *
- * Layering: header z-50 · panel z-10 within the header · mobile drawer z-40,
- * i.e. below the header so its own close button stays reachable.
- */
-/**
- * Routes whose hero is a dark band. On these the header starts transparent and
- * sits ON the hero — matching the target, which shows a dark nav at the top of
- * the page and a solid white one once scrolled. Elsewhere it is solid from the
- * first pixel.
+ * LAYERING: backdrop z-40 → header z-50 → panel z-10 within the header. The
+ * backdrop is rendered as a SIBLING of <header>, not a child: the header uses
+ * backdrop-blur, which would become a containing block for a fixed child and
+ * trap it inside the 64px bar.
+ *
+ * POINTER: hover opens for a mouse only. On touch, `pointerenter` fires
+ * immediately before `click`, so hover-to-open would open then instantly close
+ * the panel. A short close delay lets the pointer travel to the panel.
  */
 const OVERLAY_ROUTES = new Set(["/", "/cloud-hosting"]);
 
 export function SiteHeader() {
   const [open, setOpen] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const headerRef = useRef<HTMLElement>(null);
   const closeTimer = useRef<number | null>(null);
@@ -48,18 +50,17 @@ export function SiteHeader() {
   const pathname = usePathname();
   const baseId = useId();
 
-  // Close on navigation. Adjusted during render, not in an effect, so the
-  // stale-open panel never paints after a route change.
+  // Close on navigation — adjusted during render, not in an effect, so a stale
+  // panel never paints after a route change.
   const [lastPath, setLastPath] = useState(pathname);
   if (lastPath !== pathname) {
     setLastPath(pathname);
     setOpen(null);
   }
 
-  const overlay = OVERLAY_ROUTES.has(pathname) && !scrolled && !open;
+  const dark = open !== null || (OVERLAY_ROUTES.has(pathname) && !scrolled);
+  const transparent = open === null && OVERLAY_ROUTES.has(pathname) && !scrolled;
 
-  // Elevation once the page has moved — grounds the sticky bar without a
-  // permanent shadow competing with the content.
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
@@ -67,7 +68,6 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Dismiss on an outside pointer press.
   useEffect(() => {
     if (!open) return;
     const onPointerDown = (e: PointerEvent) => {
@@ -86,7 +86,7 @@ export function SiteHeader() {
 
   const scheduleClose = useCallback(() => {
     cancelClose();
-    closeTimer.current = window.setTimeout(() => setOpen(null), 150);
+    closeTimer.current = window.setTimeout(() => setOpen(null), 160);
   }, [cancelClose]);
 
   useEffect(() => cancelClose, [cancelClose]);
@@ -96,7 +96,7 @@ export function SiteHeader() {
     if (restoreFocus) triggerRefs.current[label]?.focus();
   }, []);
 
-  /** Open via keyboard: move focus into the panel once it has rendered. */
+  /** Keyboard open: move focus into the panel once it has rendered. */
   const openAndFocus = useCallback((label: string) => {
     setOpen(label);
     requestAnimationFrame(() => {
@@ -104,222 +104,195 @@ export function SiteHeader() {
     });
   }, []);
 
-  /** Left/Right move between top-level triggers, as in a menubar. */
   const moveTrigger = useCallback((currentLabel: string, delta: 1 | -1) => {
     const labels = primaryNav.map((i) => i.label);
     const i = labels.indexOf(currentLabel);
     const next = labels[(i + delta + labels.length) % labels.length];
-    const el = triggerRefs.current[next];
-    if (el) {
-      el.focus();
-    } else {
-      // The target is a plain link (e.g. Pricing), not a disclosure trigger.
-      headerRef.current
-        ?.querySelector<HTMLElement>(`[data-nav-link="${next}"]`)
-        ?.focus();
-    }
+    const el =
+      triggerRefs.current[next] ??
+      headerRef.current?.querySelector<HTMLElement>(`[data-nav-link="${next}"]`);
+    el?.focus();
     setOpen(null);
   }, []);
 
   return (
-    <header
-      ref={headerRef}
-      className={cn(
-        "sticky top-0 z-50 transition-[background-color,box-shadow] duration-normal ease-hover",
-        overlay
-          ? "bg-transparent"
-          : "bg-canvas/85 backdrop-blur-md " +
-              (scrolled ? "shadow-e2 ring-1 ring-line" : "ring-1 ring-line-subtle"),
-      )}
-      onBlur={(e) => {
-        // Focus left the header entirely (Tab past the last panel link).
-        if (!e.currentTarget.contains(e.relatedTarget as Node)) setOpen(null);
-      }}
-    >
-      <div className="mx-auto flex h-16 w-full max-w-desktop items-center gap-2 px-5 sm:px-8 lg:px-10">
-        <Wordmark tone={overlay ? "light" : "dark"} priority />
+    <>
+      {/* Page dimming. Sibling of <header> — see LAYERING above. */}
+      <div
+        aria-hidden="true"
+        onClick={() => setOpen(null)}
+        className={cn(
+          "fixed inset-0 z-40 bg-canvas-abyss/55 transition-opacity duration-normal ease-hover",
+          open ? "opacity-100" : "pointer-events-none opacity-0",
+        )}
+      />
 
-        <nav
-          aria-label="Main"
-          /* `relative h-16` makes the nav the positioning context for wide
-             panels, and gives them a `top-full` that lands exactly on the
-             header's bottom edge. */
-          className="relative ml-6 hidden h-16 lg:flex lg:items-center lg:gap-0.5"
-        >
-          {primaryNav.map((item, index) => {
-            const active = isActiveItem(item, pathname);
+      <header
+        ref={headerRef}
+        className={cn(
+          "sticky top-0 z-50 transition-[background-color,box-shadow] duration-normal ease-hover",
+          transparent && "bg-transparent",
+          !transparent && dark && "bg-canvas-abyss",
+          !dark && "bg-canvas/85 backdrop-blur-md",
+          !dark && scrolled && "shadow-e2 ring-1 ring-line",
+          !dark && !scrolled && "ring-1 ring-line-subtle",
+          open && "shadow-e5",
+        )}
+        onBlur={(e) => {
+          if (!e.currentTarget.contains(e.relatedTarget as Node)) setOpen(null);
+        }}
+      >
+        {/* `relative` so mega panels span the CONTAINER, not their trigger. */}
+        <div className="relative mx-auto flex h-16 w-full max-w-desktop items-center gap-2 px-5 sm:px-8 lg:px-10">
+          <Wordmark tone={dark ? "light" : "dark"} priority />
 
-            // Plain link (no panel).
-            if (!("columns" in item) || !item.columns) {
-              const href = (item as { href: string }).href;
-              const target = resolveNavTarget(href);
-              return (
-                <Link
-                  key={item.label}
-                  href={target.href}
-                  data-nav-link={item.label}
-                  aria-current={isActivePath(href, pathname) ? "page" : undefined}
-                  onKeyDown={(e) => {
-                    if (e.key === "ArrowRight") {
-                      e.preventDefault();
-                      moveTrigger(item.label, 1);
-                    } else if (e.key === "ArrowLeft") {
-                      e.preventDefault();
-                      moveTrigger(item.label, -1);
+          <nav
+            aria-label="Main"
+            className="ml-7 hidden lg:flex lg:items-center lg:gap-0.5"
+          >
+            {primaryNav.map((item, index) => {
+              const active = isActiveItem(item, pathname);
+
+              if (!item.categories) {
+                const target = resolveNavTarget(item.href);
+                return (
+                  <Link
+                    key={item.label}
+                    href={target.href}
+                    data-nav-link={item.label}
+                    aria-current={
+                      isActivePath(item.href, pathname) ? "page" : undefined
                     }
-                  }}
-                  className={cn(
-                    "relative rounded-md px-3 py-2 text-small font-medium transition-colors duration-fast",
-                    overlay
-                      ? "text-fg-on-dark-secondary hover:bg-white/10 hover:text-white"
-                      : active
-                        ? "text-primary"
-                        : "text-fg-secondary hover:bg-canvas-inset hover:text-fg",
-                  )}
-                >
-                  {item.label}
-                  {active && <ActiveMarker />}
-                </Link>
-              );
-            }
-
-            const panelId = `${baseId}-panel-${index}`;
-            const triggerId = `${baseId}-trigger-${index}`;
-            const isOpen = open === item.label;
-            // A multi-column panel anchors to the <nav> so it cannot overflow
-            // either viewport edge; a single-column dropdown is narrow enough
-            // to anchor to its own trigger, which reads better.
-            const wide = item.columns.length > 1 || Boolean(item.feature);
-
-            return (
-              <div
-                key={item.label}
-                className={wide ? undefined : "relative"}
-                onPointerEnter={(e) => {
-                  if (e.pointerType !== "mouse") return;
-                  cancelClose();
-                  setOpen(item.label);
-                }}
-                onPointerLeave={(e) => {
-                  if (e.pointerType !== "mouse") return;
-                  scheduleClose();
-                }}
-              >
-                <button
-                  ref={(el) => {
-                    triggerRefs.current[item.label] = el;
-                  }}
-                  id={triggerId}
-                  type="button"
-                  aria-expanded={isOpen}
-                  aria-controls={panelId}
-                  onClick={() => (isOpen ? setOpen(null) : setOpen(item.label))}
-                  onKeyDown={(e) => {
-                    switch (e.key) {
-                      case "ArrowDown":
-                        e.preventDefault();
-                        openAndFocus(item.label);
-                        break;
-                      case "ArrowRight":
+                    onKeyDown={(e) => {
+                      if (e.key === "ArrowRight") {
                         e.preventDefault();
                         moveTrigger(item.label, 1);
-                        break;
-                      case "ArrowLeft":
+                      } else if (e.key === "ArrowLeft") {
                         e.preventDefault();
                         moveTrigger(item.label, -1);
-                        break;
-                      case "Escape":
-                        if (isOpen) {
-                          e.preventDefault();
-                          closePanel(item.label, true);
-                        }
-                        break;
-                    }
-                  }}
-                  className={cn(
-                    "relative flex items-center gap-1.5 rounded-md px-3 py-2 text-small font-medium transition-colors duration-fast",
-                    isOpen
-                      ? "bg-canvas-inset text-fg"
-                      : overlay
+                      }
+                    }}
+                    className={cn(
+                      "rounded-lg px-3 py-2 text-small font-medium transition-colors duration-fast",
+                      dark
                         ? "text-fg-on-dark-secondary hover:bg-white/10 hover:text-white"
                         : active
                           ? "text-primary"
                           : "text-fg-secondary hover:bg-canvas-inset hover:text-fg",
-                  )}
-                >
-                  {item.label}
-                  <Chevron open={isOpen} />
-                  {active && !isOpen && <ActiveMarker />}
-                </button>
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              }
 
-                <MegaPanel
-                  id={panelId}
-                  labelledBy={triggerId}
-                  open={isOpen}
-                  columns={item.columns}
-                  feature={item.feature}
-                  registerPanel={(el) => {
-                    panelRefs.current[item.label] = el;
+              const panelId = `${baseId}-panel-${index}`;
+              const triggerId = `${baseId}-trigger-${index}`;
+              const isOpen = open === item.label;
+
+              return (
+                <div
+                  key={item.label}
+                  onPointerEnter={(e) => {
+                    if (e.pointerType !== "mouse") return;
+                    cancelClose();
+                    setOpen(item.label);
                   }}
-                  onClose={(restore) => closePanel(item.label, restore)}
-                  onNavigate={() => setOpen(null)}
-                />
-              </div>
-            );
-          })}
-        </nav>
+                  onPointerLeave={(e) => {
+                    if (e.pointerType !== "mouse") return;
+                    scheduleClose();
+                  }}
+                >
+                  <button
+                    ref={(el) => {
+                      triggerRefs.current[item.label] = el;
+                    }}
+                    id={triggerId}
+                    type="button"
+                    aria-expanded={isOpen}
+                    aria-controls={panelId}
+                    onClick={() => setOpen(isOpen ? null : item.label)}
+                    onKeyDown={(e) => {
+                      switch (e.key) {
+                        case "ArrowDown":
+                          e.preventDefault();
+                          openAndFocus(item.label);
+                          break;
+                        case "ArrowRight":
+                          e.preventDefault();
+                          moveTrigger(item.label, 1);
+                          break;
+                        case "ArrowLeft":
+                          e.preventDefault();
+                          moveTrigger(item.label, -1);
+                          break;
+                        case "Escape":
+                          if (isOpen) {
+                            e.preventDefault();
+                            closePanel(item.label, true);
+                          }
+                          break;
+                      }
+                    }}
+                    className={cn(
+                      "flex items-center gap-1.5 rounded-lg px-3 py-2 text-small font-medium transition-colors duration-fast",
+                      dark
+                        ? isOpen
+                          ? "bg-white/10 text-white"
+                          : "text-fg-on-dark-secondary hover:bg-white/10 hover:text-white"
+                        : isOpen
+                          ? "bg-canvas-inset text-fg"
+                          : active
+                            ? "text-primary"
+                            : "text-fg-secondary hover:bg-canvas-inset hover:text-fg",
+                    )}
+                  >
+                    {item.label}
+                    <Chevron
+                      className={cn(
+                        "h-2.5 w-2.5 transition-transform duration-normal ease-hover",
+                        isOpen && "rotate-180",
+                      )}
+                    />
+                  </button>
 
-        <div className="ml-auto flex items-center gap-2">
-          {/* Wrapped rather than given `hidden` directly: overriding `display`
-              on Button collides with its base `inline-flex`. */}
-          <span className="hidden sm:block">
-            <Button
-              href={billing.login}
-              variant={overlay ? "inverseGhost" : "ghost"}
-              size="sm"
-            >
-              Log in
-            </Button>
-          </span>
-          <Button href={billing.store("cloud-hosting")} size="sm">
-            Get started
-          </Button>
-          <MobileNav overlay={overlay} />
+                  <MegaMenu
+                    railLabel={item.railLabel}
+                    categories={item.categories}
+                    panelId={panelId}
+                    labelledBy={triggerId}
+                    open={isOpen}
+                    registerPanel={(el) => {
+                      panelRefs.current[item.label] = el;
+                    }}
+                    onClose={(restore) => closePanel(item.label, restore)}
+                    onNavigate={() => setOpen(null)}
+                  />
+                </div>
+              );
+            })}
+          </nav>
+
+          <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
+            <span className="hidden sm:block">
+              <Button
+                href={billing.store("cloud-hosting")}
+                variant={dark ? "inverse" : "primary"}
+                size="sm"
+              >
+                Get started
+              </Button>
+            </span>
+            <span className="hidden md:block">
+              <LanguageSelector onDark={dark} />
+            </span>
+            <span className="hidden sm:block">
+              <AccountButton onDark={dark} />
+            </span>
+            <MobileNav overlay={dark} open={mobileOpen} onOpenChange={setMobileOpen} />
+          </div>
         </div>
-      </div>
-    </header>
-  );
-}
-
-/** Underline marking the current section. Decorative — `aria-current` is the
-    programmatic signal, so this is hidden from assistive tech. */
-function ActiveMarker() {
-  return (
-    <span
-      aria-hidden="true"
-      className="absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-primary"
-    />
-  );
-}
-
-function Chevron({ open }: { open: boolean }) {
-  return (
-    <svg
-      viewBox="0 0 12 12"
-      aria-hidden="true"
-      className={cn(
-        "h-3 w-3 text-fg-muted transition-transform duration-normal ease-hover",
-        open && "rotate-180",
-      )}
-    >
-      <path
-        d="M2.5 4.5 6 8l3.5-3.5"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+      </header>
+    </>
   );
 }

@@ -177,7 +177,7 @@ await evaluate(
 );
 check(
   "trigger receives focus",
-  await evaluate(`document.activeElement.textContent.trim().startsWith('Hosting')`),
+  await evaluate(`document.activeElement.textContent.trim().startsWith('Products')`),
 );
 check(
   "panel starts closed",
@@ -207,7 +207,7 @@ check(
 );
 check(
   "Escape restores focus to the trigger",
-  await evaluate(`document.activeElement.textContent.trim().startsWith('Hosting')`),
+  await evaluate(`document.activeElement.textContent.trim().startsWith('Products')`),
 );
 
 await press("ArrowDown");
@@ -254,12 +254,12 @@ await press("Escape");
 await press("ArrowRight");
 check(
   "ArrowRight moves to the next top-level trigger",
-  await evaluate(`document.activeElement.textContent.trim().startsWith('WordPress')`),
+  await evaluate(`document.activeElement.textContent.trim().startsWith('Solutions')`),
 );
 await press("ArrowLeft");
 check(
   "ArrowLeft moves back",
-  await evaluate(`document.activeElement.textContent.trim().startsWith('Hosting')`),
+  await evaluate(`document.activeElement.textContent.trim().startsWith('Products')`),
 );
 
 check(
@@ -433,7 +433,7 @@ check(
 check(
   "all nav items are reachable inside the drawer",
   await evaluate(
-    `document.querySelectorAll('#mobile-nav-panel button[aria-controls^="mnav-"]').length >= 4`,
+    `document.querySelectorAll('#mobile-nav-panel button[aria-controls^="mnav-"]').length >= 3`,
   ),
 );
 

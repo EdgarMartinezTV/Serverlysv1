@@ -4,52 +4,58 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { primaryNav, isActivePath, type NavLink } from "@/data/navigation";
+import {
+  primaryNav,
+  isActivePath,
+  type MegaItem,
+  type NavItem,
+} from "@/data/navigation";
 import { resolveNavTarget } from "@/data/routes";
 import { billing, company } from "@/data/company";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Wordmark } from "@/components/layout/wordmark";
+import { NavIcon, Chevron, ArrowUpRight } from "./nav-icons";
 import { cn } from "@/lib/utils";
 
 /**
- * Mobile navigation drawer.
+ * Mobile navigation.
  *
- * FULL-VIEWPORT overlay, PORTALLED to document.body. Both choices fix real bugs:
+ * A dedicated experience, not the mega menu scaled down: top-level sections
+ * expand into their categories, and each category lists its items with the same
+ * icon, title and description the desktop panel shows.
  *
- *   1. It previously sat at `top-16`, assuming the header was flush with the
- *      viewport top. The announcement bar pushes the header down, so the drawer
- *      landed in the wrong place.
- *   2. The header uses `backdrop-filter`, which makes it a containing block for
- *      `fixed` descendants — so a `fixed inset-0` child of the header is sized
- *      against the 64px header box, not the viewport. Portalling to <body>
- *      escapes that containing block entirely.
+ * FULL-VIEWPORT and PORTALLED to <body>, for two reasons that are not
+ * cosmetic: the header uses backdrop-filter, which makes it a containing block
+ * for fixed descendants; and the announcement bar means the header is not at
+ * the viewport top. Portalling escapes both. Because it covers the header, it
+ * carries its own.
  *
- * Covering the header means the drawer needs its own close control, which is
- * also the more standard mobile pattern.
+ * Sections animate with grid-template-rows 0fr→1fr — intrinsic height, no JS
+ * measurement, no layout jump. Collapsed sections are `inert`, so their links
+ * leave the tab order entirely.
  */
-export function MobileNav({ overlay = false }: { overlay?: boolean } = {}) {
-  const [open, setOpen] = useState(false);
+export function MobileNav({
+  overlay = false,
+  open,
+  onOpenChange,
+}: {
+  overlay?: boolean;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
   const [expanded, setExpanded] = useState<string | null>(null);
-
   const panelRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
-
-  // No `mounted` guard is needed: createPortal only runs when `open` is true,
-  // and `open` can only become true from a click — i.e. never during the
-  // server render. Guarding with a setState-in-effect would just add a
-  // cascading render.
 
   // Close on navigation — adjusted during render, not in an effect.
   const [lastPath, setLastPath] = useState(pathname);
   if (lastPath !== pathname) {
     setLastPath(pathname);
-    setOpen(false);
+    if (open) onOpenChange(false);
     setExpanded(null);
   }
 
-  // Lock background scroll, restoring the exact previous value.
   useEffect(() => {
     if (!open) return;
     const previous = document.body.style.overflow;
@@ -59,30 +65,24 @@ export function MobileNav({ overlay = false }: { overlay?: boolean } = {}) {
     };
   }, [open]);
 
-  // Escape closes; Tab cycles inside the panel.
   useEffect(() => {
     if (!open) return;
-
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         e.preventDefault();
-        setOpen(false);
+        onOpenChange(false);
         toggleRef.current?.focus();
         return;
       }
       if (e.key !== "Tab" || !panelRef.current) return;
-
-      // offsetParent is null for anything inside a collapsed (inert) section.
       const focusables = Array.from(
         panelRef.current.querySelectorAll<HTMLElement>(
           'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
         ),
       ).filter((el) => el.offsetParent !== null);
-
       if (focusables.length === 0) return;
       const first = focusables[0];
       const last = focusables[focusables.length - 1];
-
       if (e.shiftKey && document.activeElement === first) {
         e.preventDefault();
         last.focus();
@@ -91,10 +91,9 @@ export function MobileNav({ overlay = false }: { overlay?: boolean } = {}) {
         first.focus();
       }
     };
-
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [open]);
+  }, [open, onOpenChange]);
 
   useEffect(() => {
     if (open) panelRef.current?.focus();
@@ -111,19 +110,18 @@ export function MobileNav({ overlay = false }: { overlay?: boolean } = {}) {
         ref={panelRef}
         tabIndex={-1}
         id="mobile-nav-panel"
-        className="absolute inset-0 flex flex-col bg-surface outline-none motion-safe:animate-[sheetIn_220ms_cubic-bezier(0.16,1,0.3,1)]"
+        className="absolute inset-0 flex flex-col bg-canvas-abyss outline-none motion-safe:animate-[sheetIn_220ms_cubic-bezier(0.16,1,0.3,1)]"
       >
-        {/* The drawer covers the site header, so it carries its own. */}
-        <div className="flex h-16 shrink-0 items-center justify-between border-b border-line-subtle px-5 sm:px-8">
-          <Wordmark tone="dark" />
+        <div className="flex h-16 shrink-0 items-center justify-between border-b border-line-on-dark px-5 sm:px-8">
+          <Wordmark tone="light" />
           <button
             type="button"
             onClick={() => {
-              setOpen(false);
+              onOpenChange(false);
               toggleRef.current?.focus();
             }}
             aria-label="Close menu"
-            className="inline-flex h-11 w-11 items-center justify-center rounded-md text-fg-secondary transition-colors duration-fast hover:bg-canvas-inset hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-fg-on-dark-secondary transition-colors duration-fast hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             <svg viewBox="0 0 20 20" aria-hidden="true" className="h-5 w-5">
               <path
@@ -141,19 +139,19 @@ export function MobileNav({ overlay = false }: { overlay?: boolean } = {}) {
           aria-label="Mobile"
           className="flex-1 overflow-y-auto overscroll-contain px-5 pb-8 pt-2 sm:px-8"
         >
-          <ul className="flex flex-col divide-y divide-line-subtle">
+          <ul className="flex flex-col divide-y divide-line-on-dark">
             {primaryNav.map((item) => {
-              if (!("columns" in item) || !item.columns) {
-                const href = (item as { href: string }).href;
-                const active = isActivePath(href, pathname);
+              if (!item.categories) {
+                const target = resolveNavTarget(item.href);
+                const active = isActivePath(item.href, pathname);
                 return (
                   <li key={item.label}>
                     <Link
-                      href={href}
+                      href={target.href}
                       aria-current={active ? "page" : undefined}
                       className={cn(
                         "flex min-h-14 items-center text-body-lg font-semibold",
-                        active ? "text-primary" : "text-fg",
+                        active ? "text-primary-on-dark" : "text-white",
                       )}
                     >
                       {item.label}
@@ -172,30 +170,17 @@ export function MobileNav({ overlay = false }: { overlay?: boolean } = {}) {
                     aria-expanded={isExpanded}
                     aria-controls={sectionId}
                     onClick={() => setExpanded(isExpanded ? null : item.label)}
-                    className="flex min-h-14 w-full items-center justify-between gap-4 text-left text-body-lg font-semibold text-fg"
+                    className="flex min-h-14 w-full items-center justify-between gap-4 text-left text-body-lg font-semibold text-white"
                   >
                     {item.label}
-                    <svg
-                      viewBox="0 0 12 12"
-                      aria-hidden="true"
+                    <Chevron
                       className={cn(
-                        "h-3.5 w-3.5 shrink-0 text-fg-muted transition-transform duration-normal ease-hover",
+                        "h-3.5 w-3.5 shrink-0 text-fg-on-dark-muted transition-transform duration-normal ease-hover",
                         isExpanded && "rotate-180",
                       )}
-                    >
-                      <path
-                        d="M2.5 4.5 6 8l3.5-3.5"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
+                    />
                   </button>
 
-                  {/* grid 0fr→1fr animates to intrinsic height: no JS
-                      measurement, no layout jump. */}
                   <div
                     id={sectionId}
                     inert={!isExpanded}
@@ -205,18 +190,23 @@ export function MobileNav({ overlay = false }: { overlay?: boolean } = {}) {
                     )}
                   >
                     <div className="overflow-hidden">
-                      <div className="pb-3">
-                        {item.columns.map((col) => (
-                          <div key={col.heading} className="pb-2">
-                            <p className="pb-1 font-mono text-caption uppercase text-fg-muted">
-                              {col.heading}
+                      <div className="pb-4">
+                        {(
+                          item as Extract<NavItem, { categories: unknown }>
+                        ).categories.map((category) => (
+                          <div key={category.id} className="pb-3">
+                            <p className="flex items-center gap-2 pb-2 font-mono text-caption uppercase text-fg-on-dark-muted">
+                              <NavIcon name={category.icon} className="h-3.5 w-3.5" />
+                              {category.label}
                             </p>
-                            <ul className="flex flex-col">
-                              {col.links.map((link) => (
-                                <li key={link.label}>
-                                  <MobileLink link={link} pathname={pathname} />
-                                </li>
-                              ))}
+                            <ul className="flex flex-col gap-0.5">
+                              {category.groups
+                                .flatMap((g) => g.items)
+                                .map((entry) => (
+                                  <li key={entry.label}>
+                                    <MobileItem item={entry} pathname={pathname} />
+                                  </li>
+                                ))}
                             </ul>
                           </div>
                         ))}
@@ -228,18 +218,35 @@ export function MobileNav({ overlay = false }: { overlay?: boolean } = {}) {
             })}
           </ul>
 
-          <div className="mt-6 flex flex-col gap-3">
-            <Button href={billing.store("cloud-hosting")} size="lg" block>
+          <div className="mt-7 flex flex-col gap-3">
+            <Button
+              href={billing.store("cloud-hosting")}
+              variant="inverse"
+              size="lg"
+              block
+            >
               Get started
             </Button>
-            <Button href={billing.login} variant="secondary" size="lg" block>
-              Log in
+            <Button href={billing.login} variant="inverseOutline" size="lg" block>
+              Client login
             </Button>
+          </div>
+
+          <div className="mt-6 flex items-center justify-between border-t border-line-on-dark pt-5">
+            <span className="flex items-center gap-2 text-small text-fg-on-dark-muted">
+              <span
+                aria-hidden="true"
+                className="flex h-4 w-4 items-center justify-center rounded-full text-[0.5rem] font-bold text-white ring-1 ring-inset ring-white/25"
+              >
+                E
+              </span>
+              English
+            </span>
             <a
               href={company.phoneHref}
-              className="inline-flex min-h-11 items-center justify-center text-small text-fg-muted"
+              className="tabular text-small text-fg-on-dark-secondary underline underline-offset-4"
             >
-              Talk to us — <span className="tabular">&nbsp;{company.phone}</span>
+              {company.phone}
             </a>
           </div>
         </nav>
@@ -252,12 +259,12 @@ export function MobileNav({ overlay = false }: { overlay?: boolean } = {}) {
       <button
         ref={toggleRef}
         type="button"
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => onOpenChange(!open)}
         aria-expanded={open}
         aria-controls="mobile-nav-panel"
         aria-label={open ? "Close menu" : "Open menu"}
         className={cn(
-          "inline-flex h-11 w-11 items-center justify-center rounded-md transition-colors duration-fast lg:hidden",
+          "inline-flex h-11 w-11 items-center justify-center rounded-lg transition-colors duration-fast lg:hidden",
           "focus-visible:outline-2 focus-visible:outline-offset-2",
           overlay
             ? "text-fg-on-dark-secondary hover:bg-white/10 hover:text-white focus-visible:outline-white"
@@ -280,31 +287,59 @@ export function MobileNav({ overlay = false }: { overlay?: boolean } = {}) {
   );
 }
 
-function MobileLink({ link, pathname }: { link: NavLink; pathname: string }) {
-  const soon = link.status === "soon";
-  const active = !link.external && isActivePath(link.href, pathname);
+function MobileItem({ item, pathname }: { item: MegaItem; pathname: string }) {
+  const target = resolveNavTarget(item.href);
+  const interactive = item.external || target.mode === "link";
+  const active = !item.external && isActivePath(item.href, pathname);
 
   const inner = (
-    <span
-      className={cn(
-        "flex min-h-11 items-center gap-2 py-1.5 text-body",
-        active ? "font-medium text-primary" : "text-fg-secondary",
-      )}
-    >
-      {link.label}
-      {soon && <Badge tone="warning">Soon</Badge>}
+    <span className="flex min-h-12 items-start gap-3 py-2">
+      <span
+        aria-hidden="true"
+        className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/[0.06] text-fg-on-dark-secondary ring-1 ring-inset ring-white/10"
+      >
+        <NavIcon name={item.icon} className="h-4 w-4" />
+      </span>
+      <span className="min-w-0">
+        <span className="flex items-center gap-2">
+          <span
+            className={cn(
+              "text-small font-medium",
+              active
+                ? "text-primary-on-dark"
+                : interactive
+                  ? "text-white"
+                  : "text-fg-on-dark-secondary",
+            )}
+          >
+            {item.label}
+          </span>
+          {item.badge && (
+            <span className="rounded-full bg-white/10 px-1.5 py-0.5 font-mono text-[0.5625rem] uppercase text-fg-on-dark-muted">
+              {item.badge.text}
+            </span>
+          )}
+          {item.external && (
+            <span aria-hidden="true" className="text-fg-on-dark-muted">
+              <ArrowUpRight className="h-3 w-3" />
+            </span>
+          )}
+        </span>
+        <span className="mt-0.5 block text-caption leading-snug text-fg-on-dark-muted">
+          {item.description}
+        </span>
+      </span>
     </span>
   );
 
-  if (link.external) {
+  if (!interactive) return <span>{inner}</span>;
+  if (item.external) {
     return (
-      <a href={link.href} target="_blank" rel="noopener noreferrer">
+      <a href={item.href} target="_blank" rel="noopener noreferrer">
         {inner}
       </a>
     );
   }
-  const target = resolveNavTarget(link.href);
-  if (target.mode === "text") return <span>{inner}</span>;
   return (
     <Link href={target.href} aria-current={active ? "page" : undefined}>
       {inner}

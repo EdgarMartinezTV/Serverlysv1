@@ -98,7 +98,11 @@ await load();
 
 check(
   "single-product mode hides the hosting-type tablist",
-  await ev(`return document.querySelectorAll('[role="tablist"]').length === 0`),
+  // Scoped to <main>: the header's mega-menu category rail is also a tablist,
+  // so a document-wide count no longer isolates the pricing control.
+  await ev(
+    `return document.querySelectorAll('main [role="tablist"]').length === 0`,
+  ),
 );
 check(
   "billing-term radiogroup still present",
