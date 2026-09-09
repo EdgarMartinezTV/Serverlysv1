@@ -72,6 +72,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         only; children are still checked.
       */
       suppressHydrationWarning
+      /*
+        We set `scroll-behavior: smooth` in globals.css so in-page anchors —
+        the FAQ topic index, an article's contents list — glide instead of
+        jumping. Next 16 needs to be told that is deliberate: without this
+        attribute it warns, and it also applies the smooth scroll to ROUTE
+        TRANSITIONS, so navigating to a new page animates a scroll to the top
+        instead of arriving there. This scopes the smoothness to anchors.
+      */
+      data-scroll-behavior="smooth"
       className={`${inter.variable} ${interTight.variable} ${jetbrainsMono.variable} h-full`}
     >
       <head>
