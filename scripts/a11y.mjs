@@ -81,6 +81,16 @@ const res = await send(
     // apply. Without this they mask real regressions on every page.
     const cs=getComputedStyle(el);
     if(cs.clip==='rect(0px, 0px, 0px, 0px)'||cs.clipPath==='inset(50%)') return false;
+    // WCAG 2.2 SC 2.5.8 exempts a target that is "in a sentence or block of
+    // text". A link inline in a paragraph is sized by the line box and cannot
+    // be padded without breaking the line — the exception exists precisely for
+    // this. Detect it by asking whether the parent holds text besides the link.
+    const parent=el.parentElement;
+    if(parent && cs.display.startsWith('inline')){
+      const own=(el.innerText||'').trim();
+      const around=(parent.innerText||'').trim();
+      if(around.length > own.length + 1) return false;
+    }
     return true;
   }).map(el=>el.tagName+' '+Math.round(el.getBoundingClientRect().height)+'px: '+(el.innerText||'').trim().slice(0,26));
   out.expandedTriggers=[...document.querySelectorAll('[aria-expanded]')].length;

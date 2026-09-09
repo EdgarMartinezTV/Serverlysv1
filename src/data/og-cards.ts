@@ -143,6 +143,108 @@ const PAGES: Record<string, OgCard> = {
     title: "One queue, one team, every plan.",
     detail: "Migration, restores and DNS included at no extra cost.",
   },
+
+  // Hosting tiers.
+  "/shared-hosting": {
+    eyebrow: "Shared hosting",
+    title: "The entry tier, described honestly.",
+    detail: "What it suits, where it stops, and how to tell you have outgrown it.",
+  },
+  "/vps-hosting": {
+    eyebrow: "VPS hosting",
+    title: "Root access, and a slice that is yours.",
+    detail: "Install what the application needs. Managed or unmanaged.",
+  },
+  "/dedicated-servers": {
+    eyebrow: "Dedicated servers",
+    title: "One tenant. The whole machine.",
+    detail: "Specified to the workload, quoted, then built.",
+  },
+  "/managed-hosting": {
+    eyebrow: "Managed hosting",
+    title: "Managed is not a tier.",
+    detail: "It is a decision about who patches the server at 2am.",
+  },
+
+  // Domains.
+  "/transfer-domain": {
+    eyebrow: "Transfer a domain",
+    title: "Move it without taking anything offline.",
+    detail: "Your remaining term carries over, and a year goes on top.",
+  },
+  "/whois-lookup": {
+    eyebrow: "Free tool",
+    title: "Look up any domain.",
+    detail: "Registrar, expiry, nameservers and lock — live from the registry.",
+  },
+
+  // Services.
+  "/wp-migrations": {
+    eyebrow: "WordPress migration",
+    title: "We move it. You approve the moment it goes live.",
+    detail: "Staged first, DNS last. Free on every hosting plan.",
+  },
+  "/site-management": {
+    eyebrow: "Site management",
+    title: "A website is not finished when it launches.",
+    detail: "Updates, backups, uptime and the small changes, handled.",
+  },
+
+  // Resources.
+  "/tutorials": {
+    eyebrow: "Tutorials",
+    title: "Get the job done.",
+    detail: "Real procedures with the actual records, settings and commands.",
+  },
+  "/hosting-alternatives": {
+    eyebrow: "Comparison",
+    title: "How the tiers differ, and how to judge a host.",
+    detail: "No scores out of ten. Six questions that work on anyone.",
+  },
+  "/ai-tools": {
+    eyebrow: "AI tools",
+    title: "Start with the symptom, not the technology.",
+    detail: "Three tools, three problems — and when the answer is none of them.",
+  },
+
+  // Company.
+  "/our-process": {
+    eyebrow: "Our process",
+    title: "Five stages, and what each one owes you.",
+    detail: "What you receive, and what we need from you to start the next.",
+  },
+
+  // Legal.
+  "/report-abuse": {
+    eyebrow: "Report abuse",
+    title: "Report abuse on our platform.",
+    detail: "What we need, what we do, and what we will not do.",
+  },
+  "/privacy-policy": {
+    eyebrow: "Privacy",
+    title: "What we hold, and what you can ask us to do about it.",
+    detail: "Written to be read rather than to be defensible.",
+  },
+  "/terms-of-service": {
+    eyebrow: "Terms",
+    title: "The agreement, in plain language.",
+    detail: "Terms nobody can read are terms nobody agreed to.",
+  },
+  "/refund-policy": {
+    eyebrow: "Refunds",
+    title: "30 days on hosting, no questions.",
+    detail: "And an honest explanation of why domains are different.",
+  },
+  "/legal-information": {
+    eyebrow: "Legal",
+    title: "Which document governs what.",
+    detail: "Company details, DMCA procedure and law-enforcement requests.",
+  },
+  "/accessibility": {
+    eyebrow: "Accessibility",
+    title: "What we target, and what is not done yet.",
+    detail: "WCAG 2.2 AA, with the known limitations stated.",
+  },
 };
 
 /** Articles get a card generated from their own title and category. */
