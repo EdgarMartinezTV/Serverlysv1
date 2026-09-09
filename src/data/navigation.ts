@@ -6,10 +6,14 @@ import { billing } from "./company";
  * Data-driven so the mega menu can grow without touching components: a
  * category, group, item, badge or promo is added here and the UI follows.
  *
- * `status: "soon"` items are real — the live site marks Shared, VPS, Dedicated
- * and CallFlow as Coming Soon. They stay listed because they carry demand
- * signal, but they must never render a purchase CTA. Whether an entry renders
- * as a link at all is decided by `resolveNavTarget` in `data/routes.ts`, which
+ * `status: "soon"` marks a product that is not SELF-SERVE PURCHASABLE — Shared,
+ * VPS and Dedicated are quoted rather than bought from a cart. It does not mean
+ * the page is unfinished: all three have full product pages, and their CTAs are
+ * contact-led on purpose. The badge therefore reads "By request", not "Soon" —
+ * a "Soon" badge beside a complete page tells the visitor the page is broken.
+ *
+ * Such items must never render a purchase CTA. Whether an entry renders as a
+ * link at all is decided by `resolveNavTarget` in `data/routes.ts`, which
  * refuses to link to a page that does not exist yet.
  */
 
@@ -34,7 +38,7 @@ export type NavIconName =
   | "compass"
   | "bolt";
 
-export type NavBadge = { text: string; tone: "brand" | "success" | "warning" };
+export type NavBadge = { text: string; tone: "brand" | "success" | "warning" | "neutral" };
 
 export type MegaItem = {
   label: string;
@@ -208,7 +212,7 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
             href: "/shared-hosting",
             icon: "server",
             status: "soon",
-            badge: { text: "Soon", tone: "warning" },
+            badge: { text: "By request", tone: "neutral" },
             description: "Brochure sites and blogs.",
           },
           {
@@ -216,7 +220,7 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
             href: "/vps-hosting",
             icon: "server",
             status: "soon",
-            badge: { text: "Soon", tone: "warning" },
+            badge: { text: "By request", tone: "neutral" },
             description: "Root access, dedicated resources.",
           },
           {
@@ -224,7 +228,7 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
             href: "/dedicated-servers",
             icon: "server",
             status: "soon",
-            badge: { text: "Soon", tone: "warning" },
+            badge: { text: "By request", tone: "neutral" },
             description: "Single-tenant hardware.",
           },
         ],

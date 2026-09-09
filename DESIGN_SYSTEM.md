@@ -462,10 +462,18 @@ its viewport at 500px, so this drives CDP instead) and `scripts/a11y.mjs`
 
 Stated so they read as tracked, not overlooked.
 
-1. **No reversed logo asset.** `/brand/serverlys-logo.webp` is blue-on-transparent,
-   for light surfaces only. The dark footer uses a typographic wordmark until a
-   reversed asset exists. (`dark-version-logo.webp` in the old repo is a
-   **ConvoAI** logo — a different product. Do not use it.)
+1. **The reversed logo is derived, not supplied.** `/brand/logo.webp` is the
+   primary asset — blue wordmark, green circuit mark, black tagline, drawn for
+   light surfaces. `/brand/logo-reversed.webp` is generated from it by
+   recolouring every non-green pixel to white with alpha untouched, because
+   pure blue on the dark band measures about 2.4:1. Regenerate it whenever the
+   primary changes. An officially drawn reversed asset should replace it.
+   (`dark-version-logo.webp` in the old repo is a **ConvoAI** logo — a
+   different product. Do not use it.)
+
+   The lockup also carries a tagline set far smaller than the wordmark, so at
+   header height it reads as texture rather than words. A horizontal mark
+   without the tagline would be the better asset at these sizes.
 2. **Dark mode is not shipped.** The token structure supports it — `canvas`,
    `surface` and `fg` are already separated — but shipping it half-working is
    worse than not shipping it.

@@ -107,8 +107,8 @@ export function organizationGraph() {
       {
         "@type": "ImageObject",
         "@id": LOGO_ID,
-        url: `${company.url}/brand/serverlys-logo.webp`,
-        contentUrl: `${company.url}/brand/serverlys-logo.webp`,
+        url: `${company.url}/brand/logo.webp`,
+        contentUrl: `${company.url}/brand/logo.webp`,
         caption: company.name,
       },
       {

@@ -39,7 +39,7 @@ export function SiteFooter() {
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_2fr] lg:gap-16">
           {/* ── Brand, contact, social ─────────────────────────────────── */}
           <div className="flex flex-col gap-6">
-            <Wordmark tone="light" />
+            <Wordmark tone="light" className="h-12" />
             <p className="max-w-xs text-small text-fg-on-dark-muted">
               {company.description}
             </p>
@@ -137,8 +137,8 @@ export function SiteFooter() {
                       <>
                         {link.label}
                         {link.status === "soon" && (
-                          <span className="ml-2 rounded-full bg-warning-fill/15 px-1.5 py-0.5 font-mono text-[0.5625rem] uppercase text-warning-fill ring-1 ring-inset ring-warning-fill/25">
-                            Soon
+                          <span className="ml-2 rounded-full bg-white/10 px-1.5 py-0.5 font-mono text-[0.5625rem] uppercase text-fg-on-dark-secondary ring-1 ring-inset ring-white/15">
+                            By request
                           </span>
                         )}
                       </>

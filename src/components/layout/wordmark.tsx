@@ -1,55 +1,64 @@
 import Image from "next/image";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 import { company } from "@/data/company";
 
 /**
- * The Serverlys wordmark.
+ * The Serverlys logo.
  *
- * IMPORTANT — only ONE real logo asset exists: /brand/serverlys-logo.webp,
- * a blue wordmark on transparency, drawn for LIGHT surfaces. There is no
- * reversed/white version in the brand assets, and recolouring the raster
- * would destroy the green circuit detail in the mark.
+ * TWO ASSETS, one per surface:
  *
- * So on dark surfaces we render a typographic wordmark instead of shipping an
- * illegible logo. When a proper reversed asset is supplied, drop it in and
- * swap the `light` branch for an <Image>.
+ *   /brand/logo.webp           blue wordmark + green circuit mark + black
+ *                              tagline. Drawn for LIGHT surfaces.
+ *   /brand/logo-reversed.webp  the same lockup with the wordmark and tagline
+ *                              in white. DERIVED from the asset above by
+ *                              recolouring every non-green pixel to white and
+ *                              leaving alpha untouched, so the green circuit
+ *                              detail and the anti-aliased edges survive
+ *                              exactly. Regenerate it if the primary logo
+ *                              changes — it is not hand-drawn, so it cannot
+ *                              drift on its own, but it will go stale.
  *
- * (The file previously used for dark surfaces, dark-version-logo.webp, is a
- * ConvoAI logo — a different product. It is deliberately not used here.)
+ * Why a second asset rather than one everywhere: the wordmark is pure blue
+ * (0,0,255) and the tagline is black. Against the dark band both are close to
+ * invisible — blue on #0b0e14 measures roughly 2.4:1, well under the 4.5:1
+ * floor the rest of this design system holds itself to. Shipping one logo on
+ * both surfaces would mean shipping an unreadable one on half the site.
+ *
+ * ⚠ The lockup includes a tagline set much smaller than the wordmark. At
+ * header height the tagline is a few pixels tall and reads as texture rather
+ * than words. If a horizontal mark WITHOUT the tagline is available, it would
+ * be the better asset at these sizes — this component is where to swap it.
  */
 export function Wordmark({
   tone = "dark",
   priority = false,
+  className,
 }: {
   /** `dark` = dark art for light surfaces. `light` = light art for dark surfaces. */
   tone?: "dark" | "light";
   priority?: boolean;
+  /** Height utility. Defaults to the header size. */
+  className?: string;
 }) {
+  const reversed = tone === "light";
+
   return (
     <Link
       href="/"
       className="inline-flex shrink-0 items-center rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
       aria-label={`${company.name} — home`}
     >
-      {tone === "dark" ? (
-        <Image
-          src="/brand/serverlys-logo.webp"
-          alt={company.name}
-          width={280}
-          height={70}
-          priority={priority}
-          className="h-9 w-auto"
-        />
-      ) : (
-        <span className="flex flex-col leading-none">
-          <span className="font-display text-[1.375rem] font-bold uppercase tracking-[0.14em] text-white">
-            {company.name}
-          </span>
-          <span className="mt-1 font-mono text-[0.5625rem] uppercase tracking-[0.18em] text-fg-on-dark-muted">
-            Always online, always there
-          </span>
-        </span>
-      )}
+      <Image
+        src={reversed ? "/brand/logo-reversed.webp" : "/brand/logo.webp"}
+        alt={company.name}
+        /* Intrinsic dimensions of the asset. Next needs the true ratio to
+           reserve the right box and avoid a layout shift as it loads. */
+        width={1653}
+        height={409}
+        priority={priority}
+        className={cn("w-auto", className ?? "h-10")}
+      />
     </Link>
   );
 }

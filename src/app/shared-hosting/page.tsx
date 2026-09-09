@@ -102,7 +102,7 @@ export default function SharedHostingPage() {
           { label: "Backups", value: "Daily" },
           { label: "Migration", value: "Free" },
         ]}
-        primary={{ label: "See shared plans", href: "/pricing" }}
+        primary={{ label: "Ask about shared hosting", href: "/contact" }}
         secondary={{ label: "Compare the tiers", href: "/hosting-alternatives" }}
         visual={<SharedLimitsMock />}
       />

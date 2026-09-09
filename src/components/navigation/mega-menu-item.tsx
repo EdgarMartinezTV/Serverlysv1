@@ -15,6 +15,7 @@ const BADGE_TONE = {
   brand: "bg-primary/20 text-primary-on-dark ring-primary/30",
   success: "bg-success-fill/15 text-success-fill ring-success-fill/25",
   warning: "bg-warning-fill/15 text-warning-fill ring-warning-fill/25",
+  neutral: "bg-white/10 text-fg-on-dark-secondary ring-white/15",
 } as const;
 
 export function MegaMenuItem({
