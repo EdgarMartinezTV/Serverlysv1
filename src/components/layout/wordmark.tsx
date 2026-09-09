@@ -10,20 +10,28 @@ import { company } from "@/data/company";
  *
  *   /brand/logo.webp           blue wordmark + green circuit mark + black
  *                              tagline. Drawn for LIGHT surfaces.
- *   /brand/logo-reversed.webp  the same lockup with the wordmark and tagline
- *                              in white. DERIVED from the asset above by
- *                              recolouring every non-green pixel to white and
- *                              leaving alpha untouched, so the green circuit
- *                              detail and the anti-aliased edges survive
- *                              exactly. Regenerate it if the primary logo
- *                              changes — it is not hand-drawn, so it cannot
- *                              drift on its own, but it will go stale.
+ *   /brand/logo-reversed.webp  the same lockup KEEPING THE BRAND COLOURS, for
+ *                              dark surfaces. DERIVED from the asset above,
+ *                              measured against the dark ground (#0a1030):
  *
- * Why a second asset rather than one everywhere: the wordmark is pure blue
- * (0,0,255) and the tagline is black. Against the dark band both are close to
- * invisible — blue on #0b0e14 measures roughly 2.4:1, well under the 4.5:1
- * floor the rest of this design system holds itself to. Shipping one logo on
- * both surfaces would mean shipping an unreadable one on half the site.
+ *                                green #4caf50  6.69:1  kept exactly as drawn
+ *                                blue  #0000ff  2.16:1  fails — lightened
+ *                                                       along the same hue to
+ *                                                       #5c78ff, which
+ *                                                       measures 4.94:1
+ *                                tagline #000000        invisible — to white
+ *
+ *                              Alpha is left untouched, so the circuit detail
+ *                              and the anti-aliased edges survive exactly; a
+ *                              hard swap on exact colour matches would leave a
+ *                              fringe around every glyph. Regenerate it if the
+ *                              primary logo changes.
+ *
+ * Why a second asset rather than one everywhere: pure blue on the dark ground
+ * is unreadable, well under the 4.5:1 floor the rest of this design system
+ * holds itself to. Turning the whole mark white would solve legibility and
+ * lose the brand — this keeps the blue and the green and only moves the blue
+ * far enough up in lightness to be read.
  *
  * ⚠ The lockup includes a tagline set much smaller than the wordmark. At
  * header height the tagline is a few pixels tall and reads as texture rather

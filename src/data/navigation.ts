@@ -38,7 +38,10 @@ export type NavIconName =
   | "compass"
   | "bolt";
 
-export type NavBadge = { text: string; tone: "brand" | "success" | "warning" | "neutral" };
+export type NavBadge = {
+  text: string;
+  tone: "brand" | "success" | "warning" | "neutral";
+};
 
 export type MegaItem = {
   label: string;
@@ -616,42 +619,92 @@ export const footerNav: readonly NavColumn[] = [
     ],
   },
   {
+    heading: "Domains",
+    links: [
+      { label: "Domain names", href: "/domain-name" },
+      { label: "Register a domain", href: "/register-domain" },
+      { label: "Transfer a domain", href: "/transfer-domain" },
+      { label: "WHOIS lookup", href: "/whois-lookup" },
+    ],
+  },
+  {
+    heading: "AI and automation",
+    links: [
+      { label: "AI agents", href: "/ai-agents" },
+      { label: "ConvoAI", href: "/convoai" },
+      { label: "CallFlow AI", href: "/callflow-ai" },
+      { label: "Automations", href: "/automations" },
+      { label: "AI tools", href: "/ai-tools" },
+    ],
+  },
+  {
     heading: "Services",
     links: [
       { label: "Web design", href: "/website-design" },
       { label: "Custom development", href: "/website-development" },
-      { label: "Site management", href: "/site-management" },
       { label: "SEO", href: "/seo" },
       { label: "Marketing", href: "/marketing" },
-      { label: "Social media management", href: "/social-media" },
+      { label: "Social media", href: "/social-media" },
+      { label: "Site management", href: "/site-management" },
       { label: "WP migrations", href: "/wp-migrations" },
+      { label: "Business solutions", href: "/business-solutions" },
     ],
   },
   {
     heading: "Company",
     links: [
       { label: "About us", href: "/about" },
-      { label: "Contact", href: "/contact" },
       { label: "Our process", href: "/our-process" },
-      { label: "Legal information", href: "/legal-information" },
+      { label: "Contact", href: "/contact" },
       { label: "Blog", href: "/blog" },
+      { label: "Legal information", href: "/legal-information" },
     ],
   },
   {
     heading: "Resources",
     links: [
       { label: "Pricing", href: "/pricing" },
-      { label: "Resources", href: "/resources" },
+      { label: "All resources", href: "/resources" },
+      { label: "Tutorials", href: "/tutorials" },
+      { label: "Hosting comparison", href: "/hosting-alternatives" },
       { label: "FAQ", href: "/faq" },
       { label: "Support", href: "/support" },
-      { label: "Domain names", href: "/domain-name" },
-      { label: "Tutorials", href: "/tutorials" },
-      { label: "WHOIS lookup", href: "/whois-lookup" },
-      { label: "Hosting comparison", href: "/hosting-alternatives" },
-      { label: "AI tools", href: "/ai-tools" },
+      { label: "Report abuse", href: "/report-abuse" },
     ],
   },
 ];
+
+/**
+ * Guarantees shown in the footer trust strip.
+ *
+ * EVERY ONE IS A REAL, PUBLISHED SERVERLYS COMMITMENT — the same four that
+ * appear on the pricing page and in the refund policy. Nothing here is an
+ * uptime percentage, an award, a certification or a customer count, because
+ * none of those are verified. A trust strip built from unverifiable claims is
+ * the fastest way to lose the trust it is trying to build.
+ */
+export const footerGuarantees = [
+  {
+    icon: "shield" as NavIconName,
+    label: "30-day money back",
+    detail: "On every hosting plan, no reason required.",
+  },
+  {
+    icon: "compass" as NavIconName,
+    label: "Free migration",
+    detail: "Staged first. DNS moves when you approve it.",
+  },
+  {
+    icon: "wrench" as NavIconName,
+    label: "Free SSL and backups",
+    detail: "Daily restore points, and restores cost nothing.",
+  },
+  {
+    icon: "lifebuoy" as NavIconName,
+    label: "One support queue",
+    detail: "Every plan, every tier. No priority to buy.",
+  },
+] as const;
 
 export const legalNav: readonly NavLink[] = [
   { label: "Privacy policy", href: "/privacy-policy" },
