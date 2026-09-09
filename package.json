@@ -13,7 +13,8 @@
     "format:check": "prettier --check .",
     "verify": "npm run typecheck && npm run lint && npm run validate:tokens && npm run build",
     "audit:seo": "node scripts/seo-audit.mjs",
-    "audit:cwv": "node scripts/cwv.mjs"
+    "audit:cwv": "node scripts/cwv.mjs",
+    "test:home": "node scripts/test-home.mjs"
   },
   "dependencies": {
     "next": "16.3.4",
