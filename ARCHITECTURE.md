@@ -34,12 +34,12 @@ absence is the design decision.
 
 **Rendering model: static-first.**
 
-| Mode | Used for | Why |
-|---|---|---|
-| Static (SSG) | Every marketing, legal and blog page | Content changes on deploy, not per request. Fastest possible TTFB behind the Easypanel proxy. |
-| Dynamic (SSR) | Nothing currently | No per-request data exists |
-| ISR | Not used | Would only matter if content moved to a CMS |
-| Client | 5 leaf components (§7) | Interaction only |
+| Mode          | Used for                             | Why                                                                                           |
+| ------------- | ------------------------------------ | --------------------------------------------------------------------------------------------- |
+| Static (SSG)  | Every marketing, legal and blog page | Content changes on deploy, not per request. Fastest possible TTFB behind the Easypanel proxy. |
+| Dynamic (SSR) | Nothing currently                    | No per-request data exists                                                                    |
+| ISR           | Not used                             | Would only matter if content moved to a CMS                                                   |
+| Client        | 5 leaf components (§7)               | Interaction only                                                                              |
 
 We deploy the **Node runtime** (`output: "standalone"`) rather than a static
 export — not because pages are dynamic, but because it keeps `headers()`,
@@ -126,15 +126,15 @@ URLs against staging.
 
 ### 3.1 Four layers
 
-| Layer | Knows about | May import | Example |
-|---|---|---|---|
-| `ui/` | Nothing domain-specific | `lib/utils` | `Button`, `Field`, `Tabs`, `Disclosure` |
-| `layout/` | Site shell, nav shape | `ui/`, `data/navigation` | `SiteHeader`, `SiteFooter` |
-| `sections/` | A page band's shape | `ui/` | `Hero`, `FaqSection`, `ProofBar` |
-| domain (`pricing/`, `domain/`, `blog/`) | One business concept | `ui/`, its own types | `PricingTable`, `DomainSearch` |
+| Layer                                   | Knows about             | May import               | Example                                 |
+| --------------------------------------- | ----------------------- | ------------------------ | --------------------------------------- |
+| `ui/`                                   | Nothing domain-specific | `lib/utils`              | `Button`, `Field`, `Tabs`, `Disclosure` |
+| `layout/`                               | Site shell, nav shape   | `ui/`, `data/navigation` | `SiteHeader`, `SiteFooter`              |
+| `sections/`                             | A page band's shape     | `ui/`                    | `Hero`, `FaqSection`, `ProofBar`        |
+| domain (`pricing/`, `domain/`, `blog/`) | One business concept    | `ui/`, its own types     | `PricingTable`, `DomainSearch`          |
 
 `layout/` is the one permitted exception to the no-data rule: the header and
-footer are site-wide singletons whose content *is* the navigation data.
+footer are site-wide singletons whose content _is_ the navigation data.
 
 ### 3.2 Component contract
 
@@ -168,14 +168,16 @@ Three tiers, all in `app/globals.css` under `@theme`:
 ```
 
 **Rules that already exist and stay:**
+
 - No arbitrary values in components; a value used twice becomes a token.
 - Verified contrast floors are binding: `ink-400` fails as text on white
-  (2.95:1); `ink-500`/`ink-600` fail on the dark band. Warn *text* uses
+  (2.95:1); `ink-500`/`ink-600` fail on the dark band. Warn _text_ uses
   `warn-600`.
 - `Section` owns vertical rhythm; `Container` owns horizontal gutters. Sections
   never invent padding.
 
 **Additions:**
+
 - A **surface contract**: every section declares `surface="light|subtle|dark"`,
   and text-colour tokens are chosen by surface. This is what prevents the dark
   band contrast failures from recurring as the site grows.
@@ -214,6 +216,7 @@ to a CMS, validation gets added **at that boundary** — not before.
 in exactly one place.
 
 **Invariants enforced by types, not convention:**
+
 - A `Plan` cannot exist without a `renewal` price — the type requires it, so the
   commercial commitment ("always show the renewal rate") cannot be dropped by
   omission.
@@ -226,15 +229,15 @@ in exactly one place.
 
 ### 6.1 What this application exposes
 
-| Route | Purpose | Auth |
-|---|---|---|
-| `GET /api/health` | Easypanel container health check | None |
-| `POST /api/domains/check` | Domain availability lookup | None (rate-limited) |
+| Route                     | Purpose                          | Auth                |
+| ------------------------- | -------------------------------- | ------------------- |
+| `GET /api/health`         | Easypanel container health check | None                |
+| `POST /api/domains/check` | Domain availability lookup       | None (rate-limited) |
 
 **AMENDED 2026-09-08.** This document originally stated domain search would be
 an HTML `GET` form to WHMCS with no route handler. That remains the no-JS
 fallback and is still what the marketing-page search widget does. The
-*interactive* search added on `/register-domain` needs a server route for three
+_interactive_ search added on `/register-domain` needs a server route for three
 reasons that are not negotiable:
 
 1. WHMCS admin credentials must never reach the browser.
@@ -250,18 +253,19 @@ deployment returns a 503 the UI renders honestly, because a fabricated
 
 ### 6.2 What it does NOT own
 
-| Concern | Owner | Integration |
-|---|---|---|
-| Checkout / cart | WHMCS | Outbound link |
-| Client accounts, login, sessions | WHMCS | Outbound link |
-| Domain availability lookup | WHMCS | **HTML `GET` form → `cart.php`** |
+| Concern                                         | Owner | Integration                               |
+| ----------------------------------------------- | ----- | ----------------------------------------- |
+| Checkout / cart                                 | WHMCS | Outbound link                             |
+| Client accounts, login, sessions                | WHMCS | Outbound link                             |
+| Domain availability lookup                      | WHMCS | **HTML `GET` form → `cart.php`**          |
 | Support tickets, abuse reports, sales enquiries | WHMCS | **HTML `POST` form → `submitticket.php`** |
-| Billing, invoices, provisioning | WHMCS | Outbound link |
+| Billing, invoices, provisioning                 | WHMCS | Outbound link                             |
 
 ### 6.3 Why no server-side proxying of WHMCS
 
 Forms submit **directly to WHMCS from the browser**. Routing them through a
 Server Action or route handler would:
+
 - break WHMCS CSRF and session validation (it expects its own origin/cookies),
 - add a hop and a failure mode to the revenue path,
 - make our server responsible for data it should never hold.
@@ -281,16 +285,17 @@ the most expensive available mistake.
 
 Permitted client components — all **leaves**, never wrapping large trees:
 
-| Component | Why client | Fallback without JS |
-|---|---|---|
-| `SiteHeader` | Menu open state, scroll state | Links render; panels reachable via mobile nav |
-| `MobileNav` | Dialog state, focus trap, scroll lock | Hidden; desktop nav present |
-| `PricingTable` | Tab + billing-term state | **Must render one group + annual pricing server-side** |
-| `DomainSearch` | Optional input polish only | **Form fully functional without JS** |
-| `CookieConsent` | Consent state, storage | No banner; no non-essential scripts load |
-| `Analytics` | Script injection post-consent | No tracking |
+| Component       | Why client                            | Fallback without JS                                    |
+| --------------- | ------------------------------------- | ------------------------------------------------------ |
+| `SiteHeader`    | Menu open state, scroll state         | Links render; panels reachable via mobile nav          |
+| `MobileNav`     | Dialog state, focus trap, scroll lock | Hidden; desktop nav present                            |
+| `PricingTable`  | Tab + billing-term state              | **Must render one group + annual pricing server-side** |
+| `DomainSearch`  | Optional input polish only            | **Form fully functional without JS**                   |
+| `CookieConsent` | Consent state, storage                | No banner; no non-essential scripts load               |
+| `Analytics`     | Script injection post-consent         | No tracking                                            |
 
 **Rules:**
+
 - A client component may not import a server component as a child; pass it as
   `children` instead.
 - No client component wraps a page or layout.
@@ -345,17 +350,18 @@ the project.
 **Current reality: one image exists.** The strategy therefore covers both how
 images are handled and how the asset gap gets closed.
 
-| Concern | Decision |
-|---|---|
-| Component | `next/image` exclusively. No raw `<img>`. |
-| Formats | AVIF → WebP → original. Already configured. |
-| Hosting | **Self-hosted in `public/`.** No remote patterns; no third-party image hosts. |
-| Sizing | Every image passes explicit `sizes`. Intrinsic `width`/`height` always set — zero CLS. |
-| LCP | Exactly one `priority` image per page, above the fold. Never more. |
-| Decorative | `alt=""` + `aria-hidden`. Never invent alt text for ornament. |
-| OG images | `app/opengraph-image.tsx` via `ImageResponse` — generated from title + brand, so every page gets a real card with no design work per page. |
+| Concern    | Decision                                                                                                                                   |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| Component  | `next/image` exclusively. No raw `<img>`.                                                                                                  |
+| Formats    | AVIF → WebP → original. Already configured.                                                                                                |
+| Hosting    | **Self-hosted in `public/`.** No remote patterns; no third-party image hosts.                                                              |
+| Sizing     | Every image passes explicit `sizes`. Intrinsic `width`/`height` always set — zero CLS.                                                     |
+| LCP        | Exactly one `priority` image per page, above the fold. Never more.                                                                         |
+| Decorative | `alt=""` + `aria-hidden`. Never invent alt text for ornament.                                                                              |
+| OG images  | `app/opengraph-image.tsx` via `ImageResponse` — generated from title + brand, so every page gets a real card with no design work per page. |
 
 **Asset organisation:**
+
 ```
 public/brand/     logo, favicons, OG fallback
 public/product/   cPanel / WHMCS / dashboard screenshots
@@ -374,12 +380,12 @@ with placeholders.
 
 **Recommendation: reduce three families to two.**
 
-| | Current | Proposed |
-|---|---|---|
+|         | Current                   | Proposed                       |
+| ------- | ------------------------- | ------------------------------ |
 | Display | Inter Tight (500/600/700) | **Inter** at negative tracking |
-| Body/UI | Inter (400/500/600) | **Inter** (400/500/600) |
-| Numeric | JetBrains Mono (400/500) | **JetBrains Mono** (400/500) |
-| Payload | 20 files / **528 KB** | ~2/3 of that |
+| Body/UI | Inter (400/500/600)       | **Inter** (400/500/600)        |
+| Numeric | JetBrains Mono (400/500)  | **JetBrains Mono** (400/500)   |
+| Payload | 20 files / **528 KB**     | ~2/3 of that                   |
 
 Inter and Inter Tight are close relatives; the display voice is recoverable with
 `letter-spacing` at large sizes, which the type scale already applies. The saving
@@ -422,12 +428,12 @@ If one appears, evaluate then — do not pre-install.
 
 Because there is no backend, errors are rendering or routing errors.
 
-| Boundary | File | Behaviour |
-|---|---|---|
-| Route segment | `app/(marketing)/error.tsx` | On-brand recovery page, `reset()` retry, links to home/pricing/support |
-| Root | `app/global-error.tsx` | Self-contained (own `<html>`), minimal inline styles — must not depend on the design system it may be failing to load |
-| Not found | `app/not-found.tsx` | Branded 404 with search-intent links: plans, domains, blog, support. **404s will happen at cutover; this page is a recovery surface, not a dead end.** |
-| Blog post missing | `notFound()` in `[slug]` | Falls through to `not-found.tsx` |
+| Boundary          | File                        | Behaviour                                                                                                                                              |
+| ----------------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Route segment     | `app/(marketing)/error.tsx` | On-brand recovery page, `reset()` retry, links to home/pricing/support                                                                                 |
+| Root              | `app/global-error.tsx`      | Self-contained (own `<html>`), minimal inline styles — must not depend on the design system it may be failing to load                                  |
+| Not found         | `app/not-found.tsx`         | Branded 404 with search-intent links: plans, domains, blog, support. **404s will happen at cutover; this page is a recovery surface, not a dead end.** |
+| Blog post missing | `notFound()` in `[slug]`    | Falls through to `not-found.tsx`                                                                                                                       |
 
 **Principles:** never surface a stack trace or raw message to a user. Every
 error page offers at least one route back into the funnel and the support
@@ -457,15 +463,15 @@ mostly a safety net rather than a visible experience.**
 
 Few, but each needs a real design rather than a blank region:
 
-| Surface | Empty case | Treatment |
-|---|---|---|
-| Blog listing / category | No posts match a filter | Explain, clear the filter, show recent posts |
-| Blog search | No results | Suggest popular posts + link to support |
-| 404 | Unknown URL | Recovery links (§12) |
-| Domain search | *Not ours* — results render on WHMCS | Our job is only to validate input before submit |
-| `soon` products | Product not purchasable | Clear "coming soon" state with a notify/contact path — **never a dead CTA** |
+| Surface                 | Empty case                           | Treatment                                                                   |
+| ----------------------- | ------------------------------------ | --------------------------------------------------------------------------- |
+| Blog listing / category | No posts match a filter              | Explain, clear the filter, show recent posts                                |
+| Blog search             | No results                           | Suggest popular posts + link to support                                     |
+| 404                     | Unknown URL                          | Recovery links (§12)                                                        |
+| Domain search           | _Not ours_ — results render on WHMCS | Our job is only to validate input before submit                             |
+| `soon` products         | Product not purchasable              | Clear "coming soon" state with a notify/contact path — **never a dead CTA** |
 
-**Rule:** an empty state always explains *why* it is empty and offers the next
+**Rule:** an empty state always explains _why_ it is empty and offers the next
 action.
 
 ---
@@ -475,12 +481,12 @@ action.
 **Native HTML forms posting directly to WHMCS. No form library, no server
 actions, no API routes.**
 
-| Form | Method | Target |
-|---|---|---|
-| Domain search | `GET` | `billing/cart.php` (`a=add`, `domain=register`, `query`) |
-| Domain transfer | `GET` | `billing/cart.php` (`domain=transfer`) |
-| Report abuse | `POST` | `billing/submitticket.php` (`deptid`) |
-| Sales / contact | `POST` | `billing/submitticket.php` (`deptid=1`) |
+| Form            | Method | Target                                                   |
+| --------------- | ------ | -------------------------------------------------------- |
+| Domain search   | `GET`  | `billing/cart.php` (`a=add`, `domain=register`, `query`) |
+| Domain transfer | `GET`  | `billing/cart.php` (`domain=transfer`)                   |
+| Report abuse    | `POST` | `billing/submitticket.php` (`deptid`)                    |
+| Sales / contact | `POST` | `billing/submitticket.php` (`deptid=1`)                  |
 
 **Progressive enhancement contract:** every form is fully functional with
 JavaScript disabled. Client JS may only add input normalisation (trimming a
@@ -508,6 +514,7 @@ free — WHMCS does it.
 handoffs to WHMCS, which are the conversion events.
 
 **Architecture:**
+
 ```
 components/analytics/  provider (loads post-consent, next/script afterInteractive)
 lib/analytics.ts       track(event) — typed event union, single call surface
@@ -520,6 +527,7 @@ data/events.ts         the event taxonomy
 `login_clicked` · `faq_opened`.
 
 **Rules:**
+
 - **Consent-gated.** Nothing non-essential loads before consent (§17). This is
   the same gate as the cookie banner — one mechanism, not two.
 - **No PII.** No emails, no domain queries containing personal names, no form
@@ -538,16 +546,16 @@ privacy-first; confirm before implementing** — this affects the consent design
 
 ## 17. Security boundaries
 
-| Boundary | Position |
-|---|---|
-| **Trust** | This app is a public, unauthenticated, read-only site. It holds no secrets and no user data. |
-| **`/billing`** | The one sensitive boundary, and it is *outside* this app. Proxy must forward `Host: serverlys.com` or WHMCS session/CSRF validation breaks. Verify with a real login on staging. |
-| **Headers** | HSTS, `nosniff`, `X-Frame-Options`, Referrer-Policy, Permissions-Policy — already shipped. |
-| **CSP** | **The notable gap.** See tension below. |
-| **External links** | `rel="noopener noreferrer"`, enforced by the `Button`/link components. |
-| **Container** | Non-root user, multi-stage build, no build tooling in the runtime image. |
-| **Dependencies** | Zero-dependency default. Any addition needs a stated justification and a `npm audit` clean. |
-| **Secrets** | None exist. If any appear, they are server-only; `NEXT_PUBLIC_*` is treated as published. |
+| Boundary           | Position                                                                                                                                                                         |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Trust**          | This app is a public, unauthenticated, read-only site. It holds no secrets and no user data.                                                                                     |
+| **`/billing`**     | The one sensitive boundary, and it is _outside_ this app. Proxy must forward `Host: serverlys.com` or WHMCS session/CSRF validation breaks. Verify with a real login on staging. |
+| **Headers**        | HSTS, `nosniff`, `X-Frame-Options`, Referrer-Policy, Permissions-Policy — already shipped.                                                                                       |
+| **CSP**            | **The notable gap.** See tension below.                                                                                                                                          |
+| **External links** | `rel="noopener noreferrer"`, enforced by the `Button`/link components.                                                                                                           |
+| **Container**      | Non-root user, multi-stage build, no build tooling in the runtime image.                                                                                                         |
+| **Dependencies**   | Zero-dependency default. Any addition needs a stated justification and a `npm audit` clean.                                                                                      |
+| **Secrets**        | None exist. If any appear, they are server-only; `NEXT_PUBLIC_*` is treated as published.                                                                                        |
 
 **CSP tension worth stating plainly:** a nonce-based CSP requires middleware to
 generate a per-request nonce, which forces dynamic rendering and forfeits static
@@ -555,7 +563,7 @@ prerendering across the whole site. Since this site injects inline JSON-LD and
 `next/font` emits inline styles, the practical options are:
 
 1. **Hash-based CSP** for the known inline blocks — preserves static rendering.
-   *Recommended.*
+   _Recommended._
 2. `Content-Security-Policy-Report-Only` first, to gather violations without
    risk, then enforce.
 3. Nonce-based — only if the site later becomes dynamic anyway.
@@ -568,14 +576,14 @@ Ship (2) immediately, converge on (1).
 
 Minimal by design; there is almost nothing to configure.
 
-| Variable | Scope | Required | Purpose |
-|---|---|---|---|
-| `NODE_ENV` | server | yes | |
-| `PORT` | server | yes | Must match exposed container port |
-| `HOSTNAME` | server | yes | `0.0.0.0` — standalone binds localhost otherwise |
-| `NEXT_PUBLIC_SITE_URL` | public | yes | Canonicals/OG; must differ on staging or staging gets indexed |
-| `NEXT_PUBLIC_ANALYTICS_ID` | public | no | Absent ⇒ analytics disabled |
-| `NEXT_PUBLIC_BILLING_ORIGIN` | public | no | Defaults to `https://serverlys.com/billing`; overridable for staging |
+| Variable                     | Scope  | Required | Purpose                                                              |
+| ---------------------------- | ------ | -------- | -------------------------------------------------------------------- |
+| `NODE_ENV`                   | server | yes      |                                                                      |
+| `PORT`                       | server | yes      | Must match exposed container port                                    |
+| `HOSTNAME`                   | server | yes      | `0.0.0.0` — standalone binds localhost otherwise                     |
+| `NEXT_PUBLIC_SITE_URL`       | public | yes      | Canonicals/OG; must differ on staging or staging gets indexed        |
+| `NEXT_PUBLIC_ANALYTICS_ID`   | public | no       | Absent ⇒ analytics disabled                                          |
+| `NEXT_PUBLIC_BILLING_ORIGIN` | public | no       | Defaults to `https://serverlys.com/billing`; overridable for staging |
 
 **`lib/env.ts`** validates at boot and **fails fast with a clear message** — a
 missing `NEXT_PUBLIC_SITE_URL` must break the build, not silently emit
@@ -701,14 +709,14 @@ serverlys/
 
 ### Deviations from the example structure, and why
 
-| Example folder | Decision | Reason |
-|---|---|---|
-| `styles/` | **Not used** | One stylesheet, `app/globals.css`. Tailwind v4 is CSS-first and the token system is ~260 lines. A `styles/` directory would hold one file and imply more CSS is coming — it isn't. |
-| `config/` | **Not used** | Its contents already have better homes: site constants in `data/company.ts`, env in `lib/env.ts`, build config in `next.config.ts`. A third location invites duplication of the `BILLING` constant, which is exactly the thing that must stay singular. |
-| `hooks/` | **Included, but stays empty until earned** | Created only when a hook is used twice. `use-disclosure` and `use-scrolled` are the two likely extractions from existing header/nav code. A hooks folder with one single-use hook is worse than inline state. |
-| `components/forms/` | **Included** | Real forms exist (abuse, contact) and share field/validation patterns. |
-| `components/navigation/` | **Split from `layout/`** | The mega menu and mobile nav are 550 LOC between them and are the most complex interactive code in the project. They deserve their own boundary rather than sitting beside a 40-line footer. |
-| `content/` | **Conditional** | Only exists if the blog is MDX in-repo (§21). If the blog is proxied, this folder never appears. |
+| Example folder           | Decision                                   | Reason                                                                                                                                                                                                                                                  |
+| ------------------------ | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `styles/`                | **Not used**                               | One stylesheet, `app/globals.css`. Tailwind v4 is CSS-first and the token system is ~260 lines. A `styles/` directory would hold one file and imply more CSS is coming — it isn't.                                                                      |
+| `config/`                | **Not used**                               | Its contents already have better homes: site constants in `data/company.ts`, env in `lib/env.ts`, build config in `next.config.ts`. A third location invites duplication of the `BILLING` constant, which is exactly the thing that must stay singular. |
+| `hooks/`                 | **Included, but stays empty until earned** | Created only when a hook is used twice. `use-disclosure` and `use-scrolled` are the two likely extractions from existing header/nav code. A hooks folder with one single-use hook is worse than inline state.                                           |
+| `components/forms/`      | **Included**                               | Real forms exist (abuse, contact) and share field/validation patterns.                                                                                                                                                                                  |
+| `components/navigation/` | **Split from `layout/`**                   | The mega menu and mobile nav are 550 LOC between them and are the most complex interactive code in the project. They deserve their own boundary rather than sitting beside a 40-line footer.                                                            |
+| `content/`               | **Conditional**                            | Only exists if the blog is MDX in-repo (§21). If the blog is proxied, this folder never appears.                                                                                                                                                        |
 
 ---
 
@@ -718,15 +726,15 @@ Four, and each materially changes the build:
 
 1. **Blog strategy** — MDX in-repo (better end state, 73 files to convert) vs
    proxy `/blog/*` to the legacy host (lowest cutover risk, preserves rankings
-   immediately, defers the work). *Recommendation: proxy first, migrate to MDX
-   after launch.*
+   immediately, defers the work). _Recommendation: proxy first, migrate to MDX
+   after launch._
 2. **Analytics vendor** — privacy-first/cookieless vs GA4. Affects the consent
-   design. *Recommendation: privacy-first.*
-3. **Font families** — 3 → 2, saving ~170 KB. *Recommendation: reduce; confirm
-   the display-voice tradeoff.*
+   design. _Recommendation: privacy-first._
+3. **Font families** — 3 → 2, saving ~170 KB. _Recommendation: reduce; confirm
+   the display-voice tradeoff._
 4. **Pricing presentation** — keep 4 tiers, or 3 tiers plus a comparison table.
-   *Recommendation: 3 + comparison; the fourth tier currently competes with the
-   "most popular" signal.*
+   _Recommendation: 3 + comparison; the fourth tier currently competes with the
+   "most popular" signal._
 
 ---
 
@@ -747,3 +755,73 @@ Stated so their absence reads as a decision rather than an oversight:
 
 Each is a reversible decision. None is reversible cheaply if made wrongly in the
 other direction, which is why the default is to leave them out.
+
+---
+
+## Amendment — complete site build
+
+### Route inventory
+
+39 routes build. 24 pages plus 5 articles are indexable; `/design-system` is
+built and deliberately `indexable: false`.
+
+Hosting `/hosting` `/cloud-hosting` `/wordpress-hosting` `/ecommerce-hosting` ·
+Domains `/domain-name` `/register-domain` · AI `/ai-agents` `/convoai`
+`/callflow-ai` `/automations` · Services `/website-design`
+`/website-development` `/seo` `/marketing` `/social-media`
+`/business-solutions` · Company `/pricing` `/about` `/contact` `/resources`
+`/blog` `/blog/[slug]` `/faq` `/support`.
+
+### Redirects live in next.config.ts, not middleware
+
+Two groups: legacy URLs from the previous serverlys.com, which carry inbound
+links and search history; and aliases for campaign names that are not the
+canonical route. All 308. Config-level redirects are handled at the edge before
+the app runs, cost nothing per request, and cannot drift from the router the
+way a middleware matcher can.
+
+`/chatrep` → `/convoai`. **Open question for the client:** the brief says
+"ChatRep", the live application at convoai.cloud says "ConvoAI". `/convoai` is
+canonical here and ChatRep redirects to it. If ChatRep is the intended
+customer-facing name, this reverses — one commit, but it must be decided before
+launch because it changes the indexed URL.
+
+### Editorial content is typed data, not markdown
+
+`data/articles.ts` holds a small block union (`p`, `h2`, `ul`, `ol`, `callout`).
+No markdown parser, no MDX, no prose stylesheet — the dependency count stays at
+zero and articles render through the design system's own typography rather than
+a second, competing one. The cost is that authoring requires editing a
+TypeScript file; that is the right trade at five articles and should be
+revisited if this becomes a real publishing surface.
+
+`author` on the Article graph is the Organization. Serverlys has no named
+bylines and inventing one would misrepresent the entity.
+
+### OpenGraph cards are a keyed registry
+
+`data/og-cards.ts` maps route path → card copy; `/og/[key]` renders it and
+404s on an unknown key. Two reasons this is not per-route
+`opengraph-image.tsx` files:
+
+1. Every page declares `openGraph` explicitly via `pageMetadata`, which
+   suppresses Next's file-based image for that route. 26 pages shipped with no
+   `og:image` at all before this was caught by the SEO audit. A registry cannot
+   silently miss a page.
+2. A card route that takes `?title=` from the query string lets anyone render
+   arbitrary words onto a Serverlys-branded image and share it as ours.
+
+All keys are known at build time, so all 29 cards are prerendered.
+
+### Still outstanding
+
+- **`/billing` reverse proxy remains the launch blocker.** See DEPLOY.md.
+- **The pricing source conflict is unresolved.** Documented in `data/pricing.ts`:
+  legacy `/pricing` and `/cloud-hosting` disagree on renewal rates and RAM.
+  Figures follow `/pricing`. WHMCS is the only authority and must be reconciled
+  before launch.
+- **Legal pages are unwritten** — `/privacy-policy`, `/terms-of-service`,
+  `/refund-policy`, `/legal-information`, `/report-abuse`, `/accessibility`.
+  They are registry entries with `built: false` and no interim, so the footer
+  renders them as plain text rather than linking to a 404. These are real legal
+  documents and are not something to draft speculatively.
