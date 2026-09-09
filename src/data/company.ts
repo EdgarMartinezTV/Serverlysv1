@@ -44,11 +44,11 @@ export const sisterProducts = [
   {
     name: "ConvoAI",
     href: "https://convoai.cloud/",
-    description: "AI chat agents that answer for your business around the clock.",
+    description: "Answers your customers, day and night.",
   },
   {
     name: "CallFlow",
     href: "https://callflow.serverlys.com/",
-    description: "AI voice reception that picks up when you cannot.",
+    description: "Picks up the phone when you cannot.",
   },
 ] as const;
