@@ -218,6 +218,20 @@ check("submit button shows a loading state", ls.button);
 await waitResults();
 
 await load();
+// Stubbed, like every other UI-state assertion in this file. It was live, and
+// running the suite back-to-back rate-limited RDAP: the results never rendered,
+// the shortlist step then found no save button and the run died on a null
+// dereference. That reads as a product defect and is not one. The registry is
+// still proved for real by the live probe at the end.
+await stub({
+  ok: true,
+  source: "rdap",
+  results: [
+    row(TAKEN, "registered", null),
+    row("google.net", "registered", null),
+    row("google.org", "registered", null),
+  ],
+});
 await search(TAKEN);
 await waitResults();
 check(
@@ -235,6 +249,15 @@ check(
 );
 
 await load();
+await stub({
+  ok: true,
+  source: "rdap",
+  results: [
+    row(`${AVAILABLE}.com`, "available", 14.95),
+    row(`${AVAILABLE}.net`, "available", 12.95),
+    row(`${AVAILABLE}.org`, "available", 12.95),
+  ],
+});
 await search(AVAILABLE);
 await waitResults();
 check(
@@ -265,7 +288,9 @@ console.log("\n── Shortlist & history ──");
 check(
   "save adds to shortlist",
   await ev(`localStorage.removeItem('serverlys.domain.shortlist.v1');
-    document.querySelector('button[aria-pressed="false"]').click();
+    const save=document.querySelector('button[aria-pressed="false"]');
+    if(!save) return false;
+    save.click();
     await new Promise(r=>setTimeout(r,250));
     return document.body.innerText.includes('Saved names (1)')`),
 );

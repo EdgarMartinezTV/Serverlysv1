@@ -102,27 +102,29 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
         heading: "Answer and automate",
         items: [
           {
+            label: "AI agents",
+            href: "/ai-agents",
+            icon: "sparkles",
+            description: "Chat and voice, working the hours you cannot.",
+          },
+          {
             label: "ConvoAI",
-            href: "https://convoai.cloud/",
-            external: true,
+            href: "/convoai",
             icon: "chat",
             badge: { text: "Live", tone: "success" },
             description: "Answers your customers around the clock.",
           },
           {
             label: "CallFlow",
-            href: "https://callflow.serverlys.com/",
-            external: true,
+            href: "/callflow-ai",
             icon: "phone",
-            badge: { text: "Soon", tone: "warning" },
-            status: "soon",
             description: "Picks up the phone when nobody can.",
           },
           {
             label: "Automations",
-            href: "/#migration",
+            href: "/automations",
             icon: "bolt",
-            description: "Backups, scaling and SSL, running unattended.",
+            description: "The admin nobody wants to do, done for you.",
           },
         ],
       },
@@ -154,7 +156,7 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
       eyebrow: "ConvoAI",
       title: "An agent that answers at 2am",
       body: "Hours, bookings and pricing answered the moment they are asked — and handed over when they are not routine.",
-      cta: { label: "Explore ConvoAI", href: "https://convoai.cloud/", external: true },
+      cta: { label: "Explore ConvoAI", href: "/convoai" },
       visual: "ai",
     },
   },
@@ -166,6 +168,12 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
       {
         heading: "Available now",
         items: [
+          {
+            label: "All hosting",
+            href: "/hosting",
+            icon: "server",
+            description: "Every plan, side by side, with renewals shown.",
+          },
           {
             label: "Cloud hosting",
             href: "/cloud-hosting",
@@ -238,6 +246,12 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
       {
         heading: "Get a name",
         items: [
+          {
+            label: "Domain names",
+            href: "/domain-name",
+            icon: "globe",
+            description: "How domains work, and what they renew at.",
+          },
           {
             label: "Register a domain",
             href: "/register-domain",
@@ -316,10 +330,16 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
         heading: "Grow it",
         items: [
           {
-            label: "SEO and marketing",
+            label: "SEO",
             href: "/seo",
             icon: "chart",
-            description: "Drive qualified traffic.",
+            description: "Rankings you can trace to revenue.",
+          },
+          {
+            label: "Marketing",
+            href: "/marketing",
+            icon: "gauge",
+            description: "Spend measured against booked work.",
           },
           {
             label: "Site management",
@@ -389,6 +409,12 @@ const SOLUTION_CATEGORIES: readonly MegaCategory[] = [
       {
         heading: "What are you running?",
         items: [
+          {
+            label: "Business solutions",
+            href: "/business-solutions",
+            icon: "layout",
+            description: "The whole setup from one supplier.",
+          },
           {
             label: "Blogs and brochure sites",
             href: "/pricing",
@@ -476,6 +502,12 @@ const RESOURCE_CATEGORIES: readonly MegaCategory[] = [
         heading: "Guides and comparisons",
         items: [
           {
+            label: "All resources",
+            href: "/resources",
+            icon: "compass",
+            description: "Guides, answers and tools in one place.",
+          },
+          {
             label: "Blog",
             href: "/blog",
             icon: "book",
@@ -492,6 +524,12 @@ const RESOURCE_CATEGORIES: readonly MegaCategory[] = [
             href: "/hosting-alternatives",
             icon: "chart",
             description: "How the tiers differ.",
+          },
+          {
+            label: "FAQ",
+            href: "/faq",
+            icon: "book",
+            description: "Pricing, renewals, refunds and domains.",
           },
         ],
       },
@@ -513,11 +551,16 @@ const RESOURCE_CATEGORIES: readonly MegaCategory[] = [
         heading: "Get help",
         items: [
           {
-            label: "Contact support",
-            href: billing.sales,
-            external: true,
+            label: "Support",
+            href: "/support",
             icon: "lifebuoy",
-            description: "Reach a person, not a queue.",
+            description: "What is included, and how to reach us.",
+          },
+          {
+            label: "Contact us",
+            href: "/contact",
+            icon: "mail",
+            description: "Sales, migrations and technical questions.",
           },
           {
             label: "Client login",
@@ -558,6 +601,7 @@ export const footerNav: readonly NavColumn[] = [
   {
     heading: "Hosting",
     links: [
+      { label: "All hosting", href: "/hosting" },
       { label: "Cloud hosting", href: "/cloud-hosting" },
       { label: "WordPress hosting", href: "/wordpress-hosting" },
       { label: "Ecommerce hosting", href: "/ecommerce-hosting" },
@@ -573,7 +617,8 @@ export const footerNav: readonly NavColumn[] = [
       { label: "Web design", href: "/website-design" },
       { label: "Custom development", href: "/website-development" },
       { label: "Site management", href: "/site-management" },
-      { label: "SEO & marketing", href: "/seo" },
+      { label: "SEO", href: "/seo" },
+      { label: "Marketing", href: "/marketing" },
       { label: "Social media management", href: "/social-media" },
       { label: "WP migrations", href: "/wp-migrations" },
     ],
@@ -582,6 +627,7 @@ export const footerNav: readonly NavColumn[] = [
     heading: "Company",
     links: [
       { label: "About us", href: "/about" },
+      { label: "Contact", href: "/contact" },
       { label: "Our process", href: "/our-process" },
       { label: "Case studies", href: "/case-studies" },
       { label: "Success stories", href: "/success-stories" },
@@ -592,6 +638,10 @@ export const footerNav: readonly NavColumn[] = [
     heading: "Resources",
     links: [
       { label: "Pricing", href: "/pricing" },
+      { label: "Resources", href: "/resources" },
+      { label: "FAQ", href: "/faq" },
+      { label: "Support", href: "/support" },
+      { label: "Domain names", href: "/domain-name" },
       { label: "Tutorials", href: "/tutorials" },
       { label: "WHOIS lookup", href: "/whois-lookup" },
       { label: "Hosting comparison", href: "/hosting-alternatives" },

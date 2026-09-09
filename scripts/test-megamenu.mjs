@@ -166,10 +166,13 @@ check(
   "items carry icon, title, description and badges",
   await ev(`const b=document.querySelectorAll('${TRIG}')[0];
     const panel=document.getElementById(b.getAttribute('aria-controls'));
-    const first=panel.querySelector('[role="tabpanel"] li');
-    return !!first.querySelector('svg') && /ConvoAI/.test(first.textContent)
-      && /Answers your customers/.test(first.textContent)
-      && /LIVE/i.test(panel.textContent);`),
+    const items=[...panel.querySelectorAll('[role="tabpanel"] li')];
+    const wellFormed=items.length>0 && items.every(li=>
+      !!li.querySelector('svg') && li.textContent.trim().length>20);
+    const convo=items.find(li=>/ConvoAI/.test(li.textContent));
+    return wellFormed && !!convo
+      && /Answers your customers/.test(convo.textContent)
+      && /LIVE/i.test(convo.textContent);`),
 );
 check(
   "grouped sections have headings and a rule between them",
