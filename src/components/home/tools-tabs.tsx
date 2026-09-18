@@ -68,7 +68,7 @@ const TABS: readonly Tab[] = [
     eyebrow: "Migration",
     title: "Move in without going offline.",
     body: "We copy the site, database and email to staging first. You check it there. DNS changes only when you say so.",
-    href: "/wp-migrations",
+    href: "/migrations",
     cta: "How migration works",
     meta: ["Free", "Staged first", "You approve"],
   },
@@ -101,7 +101,7 @@ export function ToolsTabs() {
   return (
     <section
       aria-labelledby="tools-heading"
-      className="bg-canvas py-20 sm:py-24 lg:py-28"
+      className="bg-canvas py-14 sm:py-24 lg:py-28"
     >
       <Container>
         <Reveal className="mx-auto max-w-2xl text-center">

@@ -2,7 +2,7 @@ import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/animations/reveal";
 import { billing } from "@/data/company";
-import { lowestAnnualRate, formatPrice } from "@/data/pricing";
+import { lowestRate, formatPrice } from "@/data/pricing";
 import { sisterProducts } from "@/data/company";
 
 /**
@@ -39,7 +39,7 @@ export function SplitCards() {
               <p className="mt-4 max-w-sm text-body-lg text-fg-on-dark-secondary">
                 Year one and year two, side by side, before checkout. From{" "}
                 <span className="tabular font-semibold text-white">
-                  {formatPrice(lowestAnnualRate)}
+                  {formatPrice(lowestRate)}
                 </span>
                 /mo.
               </p>
@@ -59,7 +59,7 @@ export function SplitCards() {
               <span className="inline-flex items-center gap-2 font-mono text-caption uppercase text-fg-muted">
                 <span
                   aria-hidden="true"
-                  className="flex h-5 w-5 items-center justify-center rounded-md bg-violet-500 text-[0.5rem] font-bold text-white"
+                  className="flex h-5 w-5 items-center justify-center rounded-md bg-violet-500 text-micro font-bold text-white"
                 >
                   C
                 </span>

@@ -1,96 +1,81 @@
 import Link from "next/link";
-import {
-  footerNav,
-  footerGuarantees,
-  legalNav,
-  socialLinks,
-} from "@/data/navigation";
-import { company, billing, sisterProducts } from "@/data/company";
+import { footerNav, legalNav, socialLinks } from "@/data/navigation";
+import { company, billing, emailDisplay } from "@/data/company";
 import { resolveNavTarget } from "@/data/routes";
 import { Wordmark } from "./wordmark";
 import { SocialIcon } from "./social-icon";
-import { NavIcon, ArrowUpRight } from "@/components/navigation/nav-icons";
-import { LanguageSelector } from "@/components/navigation/language-selector";
-import { cn } from "@/lib/utils";
+import { NavIcon } from "@/components/navigation/nav-icons";
+import { CookieSettingsLink } from "@/components/consent/cookie-settings-link";
 
 /**
  * Site footer.
  *
- * Four bands, in the order a hosting company's footer earns its keep:
+ * Rebuilt to the reference footer's anatomy, which is three bands and nothing
+ * else:
  *
- *   1. GUARANTEES — the four commitments a visitor is weighing at the moment
- *      they reach the bottom of a page without buying. Every one is real and
- *      published elsewhere on the site. No uptime figure, no award, no badge,
- *      no customer count: none of those are verified, and a trust strip built
- *      from unverifiable claims destroys the trust it is meant to build.
- *   2. INDEX — six columns covering every product and page. This is the site's
- *      own sitemap, and on a hosting site it is genuinely used for navigation
- *      rather than decoration.
- *   3. BRAND — logo, what we do, how to reach a person, social, sister
- *      products. Deliberately BELOW the index: the index is the useful part.
- *   4. LEGAL — copyright, policies, language, back to top.
+ *   1. INDEX — six link columns spread edge to edge, uppercase titles at full
+ *      text strength rather than muted. This is the site's own sitemap and on a
+ *      hosting site it is genuinely navigated, not decoration.
+ *   2. BRAND ROW — logo hard left, social icons hard right, then legal links
+ *      and contact wrapping onto their own rows beneath. One flex container
+ *      with wrap does all three rows; the reference does the same thing with
+ *      flex-basis rather than a grid.
+ *   3. COPYRIGHT — two lines pushed to opposite ends.
  *
- * Shares the header and mega menu's ground (`canvas-abyss`) and depth
- * treatment, so the top and bottom of the page read as one system.
+ * ⚠ LIGHT, not dark. The footer used to share the header's abyss ground. The
+ * reference footer is a light surface and the closing CTA above it is brand
+ * blue, so the page now ends blue → white instead of blue → near-black. If this
+ * is ever reverted to dark, every `text-fg-*` token here has to change with it:
+ * fg-secondary (ink-600) fails on a dark ground, and fg-on-dark-muted (ink-400)
+ * fails on this one. The surface and the text tokens are a pair.
  *
- * Unbuilt destinations render as text, not links, via `resolveNavTarget`.
+ * Container is 1600px with 80px gutters, matching the reference and the mega
+ * menu panel — the footer and the open menu are the two widest surfaces on the
+ * site and they line up.
+ *
+ * WHAT THE REFERENCE HAS THAT THIS DOES NOT: a row of accepted payment-card
+ * icons. Which cards Serverlys accepts is a fact held by WHMCS, not by this
+ * repo, and drawing six card logos on a guess is a claim about the business.
+ * The contact block occupies that slot until someone confirms the real list.
  *
  * NO mobile accordion: the columns stay open. Collapsing a footer hides the
- * site's own index behind taps for no real gain, and an accordion here would
- * need JavaScript to behave correctly at two breakpoints.
+ * site's own index behind taps for no real gain.
+ *
+ * Unbuilt destinations render as text, not links, via `resolveNavTarget`.
  */
 export function SiteFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative isolate overflow-hidden bg-canvas-abyss text-fg-on-dark-secondary">
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(60%_45%_at_15%_0%,rgb(34_126_255/0.16)_0%,transparent_65%)]"
-      />
-      <div aria-hidden="true" className="absolute inset-0 bg-grid-dark opacity-40" />
-
-      <div className="relative mx-auto w-full max-w-desktop px-5 sm:px-8 lg:px-10">
-        {/* ── 1. Guarantees ──────────────────────────────────────────────── */}
-        <ul className="grid gap-px overflow-hidden rounded-2xl bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
-          {footerGuarantees.map((g) => (
-            <li key={g.label} className="flex items-start gap-3.5 bg-canvas-abyss p-5">
-              <span
-                aria-hidden="true"
-                className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary-on-dark ring-1 ring-inset ring-primary/25"
-              >
-                <NavIcon name={g.icon} />
-              </span>
-              <span>
-                <span className="block text-small font-semibold text-white">
-                  {g.label}
-                </span>
-                <span className="mt-0.5 block text-caption text-fg-on-dark-muted">
-                  {g.detail}
-                </span>
-              </span>
-            </li>
-          ))}
-        </ul>
-
-        {/* ── 2. Index ───────────────────────────────────────────────────── */}
+    <footer className="border-t border-line bg-canvas text-fg-secondary">
+      <div className="mx-auto w-full max-w-mega px-5 pt-14 sm:px-8 lg:px-20 lg:pt-16">
+        {/* ── 1. Index ───────────────────────────────────────────────────── */}
         <nav
           aria-label="Footer"
-          className="mt-14 grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:mt-16 lg:grid-cols-6"
+          className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:flex lg:justify-between lg:gap-x-11"
         >
           {footerNav.map((col) => (
-            <div key={col.heading}>
-              <h2 className="font-mono text-caption uppercase tracking-wider text-fg-on-dark-muted">
+            <div key={col.heading} className="min-w-0">
+              {/* 16px / 600 / 24px line box, uppercase — measured off the
+                  reference footer, whose column titles are body-size headings
+                  in the body face, not eyebrow captions. This was `font-mono
+                  text-caption` (12px + 0.08em tracking), which rendered the
+                  site's own index a third smaller than the links it heads and
+                  was the single biggest type gap between the two footers. The
+                  mono face comes off with it: at 16px, mono + wide tracking
+                  runs ~40% wider than the reference and would push the six
+                  columns apart. */}
+              <h2 className="text-body font-semibold uppercase leading-6 text-fg">
                 {col.heading}
               </h2>
-              <ul className="mt-4 flex flex-col gap-0.5">
+              <ul className="mt-3 flex flex-col">
                 {col.links.map((link) => {
                   const target = resolveNavTarget(link.href);
                   const label = (
                     <>
                       {link.label}
                       {link.status === "soon" && (
-                        <span className="ml-2 inline-block whitespace-nowrap rounded-full bg-white/10 px-1.5 py-0.5 font-mono text-[0.5625rem] uppercase text-fg-on-dark-secondary ring-1 ring-inset ring-white/15">
+                        <span className="ml-2 inline-block whitespace-nowrap rounded-full bg-canvas-inset px-1.5 py-0.5 font-mono text-caption uppercase text-fg-muted">
                           By request
                         </span>
                       )}
@@ -101,12 +86,12 @@ export function SiteFooter() {
                       {target.mode === "link" ? (
                         <Link
                           href={target.href}
-                          className="inline-block rounded-sm py-1.5 text-small text-fg-on-dark-secondary transition-colors duration-fast hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                          className="inline-flex min-h-11 items-center rounded-sm py-1.5 text-small leading-5 text-fg-secondary transition-colors duration-fast hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:min-h-0"
                         >
                           {label}
                         </Link>
                       ) : (
-                        <span className="inline-block py-1.5 text-small text-fg-on-dark-muted">
+                        <span className="inline-block py-1.5 text-small leading-5 text-fg-muted">
                           {label}
                         </span>
                       )}
@@ -118,114 +103,32 @@ export function SiteFooter() {
           ))}
         </nav>
 
-        {/* ── 3. Brand ───────────────────────────────────────────────────── */}
-        <div className="mt-16 grid gap-10 border-t border-line-on-dark pt-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-16">
-          <div className="flex flex-col gap-6">
-            <Wordmark tone="light" className="h-12" />
-            <p className="max-w-md text-small text-fg-on-dark-muted">
-              {company.description}
-            </p>
+        {/* ── 2. Brand row ───────────────────────────────────────────────── */}
+        {/* One wrapping flex row. Logo + social share line one; the legal links
+            and the contact block each claim a full basis so they break onto
+            their own line, exactly as the reference does. */}
+        <div className="mt-12 flex flex-wrap items-center gap-4 border-t border-line-subtle pt-8">
+          <Wordmark tone="dark" className="h-9" />
 
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-small">
-              <a
-                href={`mailto:${company.email}`}
-                className="inline-flex items-center gap-2 rounded-sm py-1 text-fg-on-dark-secondary transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-              >
-                <NavIcon name="mail" className="h-4 w-4 text-fg-on-dark-muted" />
-                {company.email}
-              </a>
-              <a
-                href={company.phoneHref}
-                className="inline-flex items-center gap-2 rounded-sm py-1 text-fg-on-dark-secondary transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-              >
-                <NavIcon name="phone" className="h-4 w-4 text-fg-on-dark-muted" />
-                <span className="tabular">{company.phone}</span>
-              </a>
-            </div>
+          <ul className="ml-auto flex items-center gap-2">
+            {socialLinks.map((social) => (
+              <li key={social.label}>
+                <a
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer me"
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-md text-fg-muted transition-colors duration-fast hover:bg-canvas-inset hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:h-10 sm:w-10"
+                >
+                  <SocialIcon name={social.label} />
+                  <span className="sr-only">
+                    {company.name} on {social.label}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
 
-            <div className="flex flex-wrap items-center gap-3">
-              <ul className="flex items-center gap-2">
-                {socialLinks.map((s) => (
-                  <li key={s.label}>
-                    <a
-                      href={s.href}
-                      target="_blank"
-                      rel="noopener noreferrer me"
-                      className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-fg-on-dark-muted ring-1 ring-inset ring-white/12 transition-colors duration-fast hover:bg-white/[0.06] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                    >
-                      <SocialIcon name={s.label} />
-                      <span className="sr-only">
-                        {company.name} on {s.label}
-                      </span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-
-              <span aria-hidden="true" className="h-6 w-px bg-white/12" />
-
-              <a
-                href={billing.login}
-                className="inline-flex min-h-10 items-center rounded-lg px-3.5 text-small font-semibold text-white ring-1 ring-inset ring-white/20 transition-colors hover:bg-white/[0.08] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-              >
-                Client login
-              </a>
-              <a
-                href={billing.sales}
-                className="inline-flex min-h-10 items-center rounded-lg px-3.5 text-small text-fg-on-dark-secondary transition-colors hover:bg-white/[0.06] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-              >
-                Talk to sales
-              </a>
-            </div>
-          </div>
-
-          {/* Sister products. Real cards, presented the way the mega menu
-              presents them, so the family reads as one company. */}
-          <div>
-            <h2 className="font-mono text-caption uppercase tracking-wider text-fg-on-dark-muted">
-              Also from {company.name}
-            </h2>
-            <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-              {sisterProducts.map((p) => (
-                <li key={p.name}>
-                  <a
-                    href={p.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group flex items-start gap-3.5 rounded-xl bg-white/[0.035] p-4 ring-1 ring-inset ring-white/10 transition-colors duration-fast hover:bg-white/[0.06] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary-on-dark ring-1 ring-inset ring-primary/25"
-                    >
-                      <NavIcon name={p.name === "ConvoAI" ? "chat" : "phone"} />
-                    </span>
-                    <span className="min-w-0">
-                      <span className="flex items-center gap-2">
-                        <span className="text-small font-semibold text-white">
-                          {p.name}
-                        </span>
-                        <span
-                          aria-hidden="true"
-                          className="text-fg-on-dark-muted transition-transform duration-fast group-hover:translate-x-0.5"
-                        >
-                          <ArrowUpRight className="h-3 w-3" />
-                        </span>
-                      </span>
-                      <span className="mt-1 block text-small text-fg-on-dark-muted">
-                        {p.description}
-                      </span>
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        {/* ── 4. Legal ───────────────────────────────────────────────────── */}
-        <div className="mt-12 flex flex-col gap-5 border-t border-line-on-dark py-8 lg:flex-row lg:items-center lg:justify-between">
-          <ul className="flex flex-wrap gap-x-5 gap-y-1">
+          <ul className="flex basis-full flex-wrap items-center gap-x-4 gap-y-0">
             {legalNav.map((link) => {
               const target = resolveNavTarget(link.href);
               return (
@@ -233,51 +136,60 @@ export function SiteFooter() {
                   {target.mode === "link" ? (
                     <Link
                       href={target.href}
-                      className="inline-block rounded-sm py-1 text-small text-fg-on-dark-muted transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                      className="inline-flex min-h-11 items-center rounded-sm py-1.5 text-small text-fg-secondary transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:min-h-0"
                     >
                       {link.label}
                     </Link>
                   ) : (
-                    <span className="inline-block py-1 text-small text-fg-on-dark-muted/70">
+                    <span className="inline-block py-1.5 text-small leading-5 text-fg-muted">
                       {link.label}
                     </span>
                   )}
                 </li>
               );
             })}
+            {/* Reopening the panel is a legal requirement, not a nicety: consent
+                must be withdrawable as easily as it was given, and the banner
+                is gone once answered. */}
+            <li>
+              <CookieSettingsLink />
+            </li>
           </ul>
 
-          <div className="flex items-center gap-2">
-            {/* Same control as the header, so the choice reads as one system. */}
-            <LanguageSelector onDark />
+          <div className="flex basis-full flex-wrap items-center gap-x-5 gap-y-2 text-small">
             <a
-              href="#main"
-              className={cn(
-                "inline-flex min-h-10 items-center gap-2 rounded-lg px-3 text-small text-fg-on-dark-muted",
-                "transition-colors duration-fast hover:bg-white/[0.06] hover:text-white",
-                "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white",
-              )}
+              href={`mailto:${company.email}`}
+              className="inline-flex min-h-11 items-center gap-2 rounded-sm py-1.5 text-fg-secondary transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:min-h-0"
             >
-              Back to top
-              <svg viewBox="0 0 12 12" aria-hidden="true" className="h-3 w-3">
-                <path
-                  d="M6 9.5v-7M2.5 6 6 2.5 9.5 6"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              <NavIcon name="mail" className="h-4 w-4 text-fg-muted" />
+              {emailDisplay}
+            </a>
+            <a
+              href={company.phoneHref}
+              className="inline-flex min-h-11 items-center gap-2 rounded-sm py-1.5 text-fg-secondary transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:min-h-0"
+            >
+              <NavIcon name="phone" className="h-4 w-4 text-fg-muted" />
+              <span className="tabular">{company.phone}</span>
+            </a>
+            <a
+              href={billing.login}
+              className="inline-flex min-h-10 items-center rounded-md px-3 font-semibold text-primary transition-colors hover:bg-primary-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            >
+              Client login
             </a>
           </div>
         </div>
 
-        <p className="border-t border-line-on-dark py-6 text-small text-fg-on-dark-muted">
-          © {year} {company.legalName}. All rights reserved. Domain
-          registrations are subject to the policies of ICANN and the relevant
-          registry.
-        </p>
+        {/* ── 3. Copyright ───────────────────────────────────────────────── */}
+        <div className="mt-8 flex flex-col justify-between gap-2 border-t border-line-subtle py-6 lg:flex-row lg:gap-32">
+          <p className="text-small text-fg-muted">
+            © {year} {company.legalName}. All rights reserved. Domain registrations are
+            subject to the policies of ICANN and the relevant registry.
+          </p>
+          <p className="shrink-0 text-small text-fg-muted">
+            Renewal prices shown on every plan.
+          </p>
+        </div>
       </div>
     </footer>
   );

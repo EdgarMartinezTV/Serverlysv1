@@ -1,112 +1,115 @@
-import { ProductHero } from "@/components/sections/product-hero";
-import { ProductFit } from "@/components/sections/product-fit";
-import { Included } from "@/components/sections/included";
-import { Migration } from "@/components/sections/migration";
-import { FaqSection } from "@/components/sections/faq";
-import { FinalCta } from "@/components/sections/final-cta";
-import { PricingTable } from "@/components/pricing/pricing-table";
-import { Section, SectionHeader } from "@/components/ui/section";
 import { JsonLd } from "@/components/ui/json-ld";
-import { billing } from "@/data/company";
-import { groupById, formatPrice } from "@/data/pricing";
-import { faqsFor } from "@/data/faqs";
-import { pageMetadata, faqGraph, breadcrumbGraph, productGraph } from "@/lib/seo";
+import { breadcrumbGraph, faqGraph, pageMetadata, productGraph } from "@/lib/seo";
+import { groupById } from "@/data/pricing";
+import { FAQS, FAQ_HEAD } from "./_content";
+import { Banner } from "./_components/banner";
+import { Bento } from "./_components/bento";
+import { Comparison } from "./_components/comparison";
+import { Dashboard } from "./_components/dashboard";
+import { Faqs } from "@/components/ref/faqs";
+import { Hero } from "./_components/hero";
+import { Pricing } from "./_components/pricing";
+import { WhatIs } from "./_components/what-is";
+import { Reviews } from "./_components/reviews";
+
+/**
+ * Cloud hosting.
+ *
+ * A deliberate 1:1 rebuild of hostinger.com/cloud-hosting: the same sections
+ * in the same order, same grid, same type scale, same copy. The page owner
+ * asked for a match rather than an interpretation, so the reference's
+ * measurements are the spec — see _components/kit.tsx for the numbers and
+ * _content.ts for the copy, including what still needs replacing before this
+ * is shipped.
+ *
+ * Removed from the reference on request: the hero's Trustpilot +
+ * WordPress.org proof row, the reviews band's Trustpilot line, the connector
+ * band, and the "Data centers worldwide" band. The dot-matrix region map that
+ * band rendered went with it (_components/world-map.tsx) — it has no other
+ * caller, so restoring the band means restoring that file too.
+ *
+ * Two things are ours rather than theirs, and both are noted where they occur:
+ * the accent colour (Serverlys blue, not Hostinger purple) and the product
+ * imagery (rebuilt in SVG in _components/visuals.tsx, since the originals are
+ * Hostinger's files).
+ */
 
 const PATH = "/cloud-hosting";
 
-/**
- * Cloud hosting product page.
- *
- * Conversion objective: plan selection. The visitor arriving here has usually
- * already decided they want cloud, or is deciding between cloud and something
- * else — so the page qualifies (hero specs, honest comparison), substantiates
- * (what is included), prices, then removes the switching objection.
- *
- * Sections omitted deliberately:
- *  · Social proof — no genuine testimonials exist. The legacy site's are
- *    invented brands, and fabricated proof on a trust page is worse than none.
- *  · Competitor comparison — unverifiable, and it ages badly. The comparison
- *    here is against our own range, which is checkable and more useful.
- */
-const cloud = groupById("cloud");
-const prices = cloud?.plans.map((p) => p.annual) ?? [0];
-const low = Math.min(...prices);
-const high = Math.max(...prices);
-
-const TITLE = "Cloud Hosting — auto-scaling plans from " + formatPrice(low) + "/mo";
+const TITLE = "Managed cloud hosting | 4X more speed | 99.9% uptime";
 const DESCRIPTION =
-  "Auto-scaling cloud hosting with free migration, free SSL, daily backups and unmetered transfer. Renewal pricing shown next to introductory pricing.";
+  "Our cloud hosting offers up to 20X more resources compared to traditional web hosting, providing great power and stability for your online success.";
 
 export const metadata = pageMetadata({
-  title: `${TITLE} | Serverlys`,
+  title: TITLE,
   description: DESCRIPTION,
   path: PATH,
 });
 
-// Two levels only. An intermediate "Hosting" crumb would have to point at
-// /pricing, which is not built yet — a breadcrumb to a 404 is worse than a
-// shorter trail. Restore the middle crumb when that page ships.
+/**
+ * Offer range for the Product schema. Derived, not typed — a hardcoded pair
+ * here would silently disagree with the slider the first time a rate moves.
+ */
+const CLOUD_RATES = (groupById("cloud")?.plans ?? []).map((p) => p.monthly);
+
 const BREADCRUMB = [
   { name: "Home", path: "/" },
   { name: "Cloud hosting", path: PATH },
 ];
 
-export default function CloudHostingPage() {
-  const faqs = faqsFor(PATH);
-  const turbo = cloud?.plans.find((p) => p.popular);
+/**
+ * FAQPage needs plain-text answers, so the block structure the accordion
+ * renders is flattened here rather than duplicated as a second copy of the
+ * answers that could drift out of sync with the first.
+ */
+const FAQ_TEXT = FAQS.map((f) => ({
+  question: f.q,
+  answer: f.a
+    .map((b) => (b.type === "ul" ? b.items.join(" ") : b.runs.map((r) => r.text).join("")))
+    .join(" ")
+    .replace(/\s+/g, " ")
+    .trim(),
+  // `scopes` drives which pages a shared FAQ appears on. These answers live
+  // with this page rather than in data/faqs.ts, so the scope is just this path.
+  scopes: [PATH],
+}));
 
+export default function CloudHostingPage() {
   return (
-    <>
+    /**
+     * globals.css sets `text-wrap: balance` on every heading and `pretty` on
+     * every paragraph. Both are good defaults and both break the match: the
+     * reference wraps normally, so "WordPress tools, built / in" becomes
+     * "WordPress / tools, built in" under balance. Reset for this page only.
+     */
+    <div className="[&_h1]:text-wrap [&_h2]:text-wrap [&_h3]:text-wrap [&_p]:text-wrap">
       <JsonLd data={breadcrumbGraph(BREADCRUMB)} />
       <JsonLd
         data={productGraph({
           name: "Serverlys Cloud Hosting",
           description: DESCRIPTION,
           path: PATH,
-          lowPrice: low,
-          highPrice: high,
+          lowPrice: Math.min(...CLOUD_RATES),
+          highPrice: Math.max(...CLOUD_RATES),
+          offerCount: CLOUD_RATES.length,
         })}
       />
-      <JsonLd data={faqGraph(faqs)} />
+      <JsonLd data={faqGraph(FAQ_TEXT)} />
 
-      <ProductHero
-        eyebrow="Cloud hosting"
-        title="Servers that grow with your traffic"
-        lede="Auto-scaling infrastructure for sites whose traffic moves. A spike absorbs into the plan instead of throttling your site or producing a surprise invoice."
-        breadcrumb={[{ name: "Home", href: "/" }, { name: "Cloud hosting" }]}
-        specs={[
-          { label: "From", value: `${formatPrice(low)}/mo` },
-          { label: "Storage", value: "Unlimited NVMe" },
-          { label: "Transfer", value: "Unmetered" },
-          { label: "Migration", value: "Free" },
-        ]}
-        primary={{ label: "Choose a plan", href: "#plans" }}
-        secondary={{ label: "Talk to an expert", href: billing.sales }}
+      <Hero />
+      <Pricing />
+      <WhatIs />
+      <Comparison />
+      <Bento />
+      <Reviews />
+      <Dashboard />
+      <Banner />
+      <Faqs
+        idPrefix="cloud"
+        title={FAQ_HEAD.title}
+        description={FAQ_HEAD.description}
+        items={FAQS}
       />
-
-      <ProductFit />
-      <Included />
-
-      <Section id="plans" labelledBy="plans-heading" spacing="base">
-        <SectionHeader
-          id="plans-heading"
-          eyebrow="Plans"
-          title="Cloud hosting pricing"
-          lede={
-            turbo
-              ? `Every tier shows what it renews at. ${turbo.name} is the usual choice — ${formatPrice(turbo.annual)}/mo now, ${formatPrice(turbo.renewal)}/mo from year two.`
-              : "Every tier shows what it renews at."
-          }
-          align="center"
-        />
-        <div className="mt-12">
-          <PricingTable only="cloud" />
-        </div>
-      </Section>
-
-      <Migration />
-      <FaqSection items={faqs} />
-      <FinalCta />
-    </>
+    </div>
   );
 }

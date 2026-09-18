@@ -4,18 +4,19 @@ import { FeatureGrid } from "@/components/sections/feature-grid";
 import { FaqSection } from "@/components/sections/faq";
 import { FinalCta } from "@/components/sections/final-cta";
 import { JsonLd } from "@/components/ui/json-ld";
-import { CallMock, AutomationMock } from "@/components/product-ui/mocks";
+import { CallFlowConsole } from "@/components/product-ui/live/callflow-console";
+import { AutomationMock } from "@/components/product-ui/mocks";
 import { DashboardMock as Panel } from "@/components/product-ui/dashboard";
 import { billing, sisterProducts } from "@/data/company";
 import { faqsFor } from "@/data/faqs";
-import { pageMetadata, faqGraph, breadcrumbGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph, breadcrumbGraph, serviceGraph } from "@/lib/seo";
 
 const PATH = "/callflow-ai";
 const DESCRIPTION =
   "CallFlow is the Serverlys voice agent: it answers the phone when nobody can, handles routine calls, books appointments and takes a proper message otherwise.";
 
 export const metadata = pageMetadata({
-  title: "CallFlow AI — an AI receptionist that answers | Serverlys",
+  title: "AI Voice Agent for Your Business — CallFlow | Serverlys",
   description: DESCRIPTION,
   path: PATH,
 });
@@ -26,13 +27,21 @@ export default function CallFlowPage() {
 
   return (
     <>
+      <JsonLd
+        data={serviceGraph({
+          name: "CallFlow — AI voice agent",
+          serviceType: "AI voice agent",
+          description: DESCRIPTION,
+          path: PATH,
+        })}
+      />
       <JsonLd data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "AI agents", path: "/ai-agents" }, { name: "CallFlow", path: PATH }])} />
       <JsonLd data={faqGraph(faqs)} />
 
       <ProductHero
         eyebrow="CallFlow"
-        title="A missed call is a lost customer"
-        lede="People still ring, and they rarely ring twice. CallFlow answers, handles what it can, books what it should and takes a message worth reading when it cannot."
+        title="An AI voice agent, because a missed call is a lost customer"
+        lede="People still ring, and they rarely ring twice. This AI voice agent answers, handles what it can, books what it should and takes a message worth reading when it cannot."
         breadcrumb={[{ name: "Home", href: "/" }, { name: "AI agents", href: "/ai-agents" }, { name: "CallFlow" }]}
         specs={[
           { label: "Answers", value: "Every call" },
@@ -42,7 +51,7 @@ export default function CallFlowPage() {
         ]}
         primary={{ label: "See CallFlow", href: callflow?.href ?? billing.sales }}
         secondary={{ label: "Ask about early access", href: billing.sales }}
-        visual={<div className="flex justify-center lg:justify-end"><CallMock /></div>}
+        visual={<CallFlowConsole />}
       />
 
       <FeatureGrid

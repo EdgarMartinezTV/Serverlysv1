@@ -171,7 +171,7 @@ export function ProductFit() {
         them is what you actually need,{" "}
         <a
           href={billing.sales}
-          className="rounded-sm font-medium text-primary underline underline-offset-4 hover:text-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          className="inline-block rounded-sm py-1 font-medium text-primary underline underline-offset-4 hover:text-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         >
           tell us
         </a>{" "}

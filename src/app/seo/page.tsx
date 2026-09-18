@@ -7,7 +7,7 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { SeoMock, HostingMock, SitePreviewMock } from "@/components/product-ui/mocks";
 import { billing } from "@/data/company";
 import { faqsFor } from "@/data/faqs";
-import { pageMetadata, faqGraph, breadcrumbGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph, breadcrumbGraph, serviceGraph } from "@/lib/seo";
 
 const PATH = "/seo";
 const DESCRIPTION =
@@ -23,6 +23,14 @@ export default function SeoPage() {
   const faqs = faqsFor("/");
   return (
     <>
+      <JsonLd
+        data={serviceGraph({
+          name: "Search engine optimisation",
+          serviceType: "Search engine optimisation",
+          description: DESCRIPTION,
+          path: PATH,
+        })}
+      />
       <JsonLd data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "SEO", path: PATH }])} />
       <JsonLd data={faqGraph(faqs)} />
       <ProductHero

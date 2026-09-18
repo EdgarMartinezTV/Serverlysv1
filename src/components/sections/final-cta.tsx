@@ -14,8 +14,18 @@ import { billing, company } from "@/data/company";
  * are legible here. The brand ramp itself fails: brand-100 is 4.44:1.
  *
  * Two paths only — buy, or talk to someone. More choices measurably reduce action.
+ *
+ * ⚠ `plansHref` DEFAULTS TO THE HOMEPAGE ANCHOR, and that default is the fix
+ * for a real bug. This section is rendered on 26 pages and used to hardcode
+ * `#plans` — a same-page anchor. Only three pages own an `id="plans"` section
+ * (the homepage, /hosting and /wordpress-hosting), so on the other 23 the
+ * primary closing CTA was a click that did nothing at all: no navigation, no
+ * scroll, no error. Pages that DO own the anchor pass `plansHref="#plans"` so
+ * they scroll to their own plans instead of leaving for the homepage.
+ *
+ * `scripts/audit-links.mjs` is what found this and is what will catch it again.
  */
-export function FinalCta() {
+export function FinalCta({ plansHref = "/#plans" }: { plansHref?: string } = {}) {
   return (
     <Section
       surface="light"
@@ -36,7 +46,7 @@ export function FinalCta() {
         </div>
 
         <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row lg:shrink-0">
-          <Button href="#plans" variant="inverse" size="lg" block>
+          <Button href={plansHref} variant="inverse" size="lg" block>
             Compare plans
           </Button>
           <Button href={billing.sales} variant="onBrand" size="lg" block>

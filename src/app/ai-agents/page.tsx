@@ -7,7 +7,7 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { ChatMock, CallMock, AutomationMock } from "@/components/product-ui/mocks";
 import { billing } from "@/data/company";
 import { faqsFor } from "@/data/faqs";
-import { pageMetadata, faqGraph, breadcrumbGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph, breadcrumbGraph, serviceGraph } from "@/lib/seo";
 
 const PATH = "/ai-agents";
 const DESCRIPTION =
@@ -25,6 +25,14 @@ export default function AiAgentsPage() {
 
   return (
     <>
+      <JsonLd
+        data={serviceGraph({
+          name: "AI agents for customer chat and calls",
+          serviceType: "AI customer service agent",
+          description: DESCRIPTION,
+          path: PATH,
+        })}
+      />
       <JsonLd data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "AI agents", path: PATH }])} />
       <JsonLd data={faqGraph(faqs)} />
 

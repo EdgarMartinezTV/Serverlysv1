@@ -216,7 +216,7 @@ function Record({ record }: { record: WhoisRecord }) {
             "The registry for this extension does not publish machine-readable records."}{" "}
           Rather than guess, we are telling you we do not know.
         </p>
-        <Button href="/contact" variant="secondary" className="mt-6">
+        <Button href="/support" variant="secondary" className="mt-6">
           Ask us to check manually
         </Button>
       </div>

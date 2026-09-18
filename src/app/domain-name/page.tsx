@@ -1,104 +1,98 @@
-import { ProductHero } from "@/components/sections/product-hero";
-import { ShowcaseSplit } from "@/components/sections/showcase-split";
-import { FeatureGrid } from "@/components/sections/feature-grid";
-import { FaqSection } from "@/components/sections/faq";
-import { FinalCta } from "@/components/sections/final-cta";
-import { Container } from "@/components/ui/container";
-import { DomainSearchApp } from "@/components/domain/domain-search-app";
 import { JsonLd } from "@/components/ui/json-ld";
-import { DomainMock, SitePreviewMock } from "@/components/product-ui/mocks";
-import { billing } from "@/data/company";
-import { tlds, cheapestTld } from "@/data/tlds";
-import { faqsFor } from "@/data/faqs";
-import { pageMetadata, faqGraph, breadcrumbGraph, productGraph } from "@/lib/seo";
+import { Faqs } from "@/components/ref/faqs";
+import { cheapestTld, tlds } from "@/data/tlds";
+import { breadcrumbGraph, faqGraph, pageMetadata, productGraph } from "@/lib/seo";
+import { FAQS, FAQ_HEAD, HERO, REASONS, STEPS } from "./_content";
+import { DomainHero } from "@/components/ref/domain/hero";
+import { Popular } from "@/components/ref/domain/popular";
+import { Reasons } from "@/components/ref/domain/reasons";
+import { Steps } from "@/components/ref/domain/steps";
+import { TldTable } from "@/components/ref/domain/tld-table";
+import { DomainSearchApp } from "@/components/domain/domain-search-app";
+
+/**
+ * Domain name search.
+ *
+ * A 1:1 rebuild of hostinger.com/domain-name-search, on the same terms as
+ * /cloud-hosting and /ecommerce-hosting: the reference's section order, grid
+ * and type scale, our palette, our prices. Measurements live in
+ * components/ref/kit.tsx; copy in _content.ts.
+ *
+ * THE SEARCH IS REAL. The hero renders the site's existing <DomainSearchApp>,
+ * which posts to /api/domains/check — a server route that resolves
+ * availability against the registry (RDAP by default, WHMCS when credentialed,
+ * never client-side invention) and returns an honest `unknown` instead of
+ * rounding uncertainty up to "available". Every result and every TLD card
+ * hands off to the real WHMCS cart at
+ * `serverlys.com/billing/cart.php?a=add&domain=register&query=…`, so a name
+ * the visitor picks arrives in checkout prefilled.
+ *
+ * Every price on this page comes from `data/tlds.ts`. Nothing is hardcoded.
+ *
+ * Removed from the reference: the "Trusted by 4+ million website owners"
+ * review carousel (their customers, not ours) and the promo strip offering a
+ * free month of a plan we do not run — matching the calls already made on the
+ * other two clones.
+ */
 
 const PATH = "/domain-name";
-const DESCRIPTION =
-  "Search and register a domain name with free WHOIS privacy, DNS management included and renewal rates published up front. Availability read live from the registry.";
 
-export const metadata = pageMetadata({
-  title: `Domain Names — register from $${cheapestTld.price.toFixed(2)}/yr | Serverlys`,
-  description: DESCRIPTION,
-  path: PATH,
-});
+const TITLE = "Domain Name Search – Check and Buy a Domain In Minutes";
+const DESCRIPTION =
+  "Check domain availability against the registry, then register at Serverlys. Free WHOIS privacy where the registry allows it.";
+
+export const metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH });
+
+const BREADCRUMB = [
+  { name: "Home", path: "/" },
+  { name: "Domain names", path: PATH },
+];
+
+/** Derived from the TLD list, so the schema cannot disagree with the table. */
+const PRICES = tlds.map((t) => t.price);
+
+const FAQ_TEXT = FAQS.map((f) => ({
+  question: f.q,
+  answer: f.a
+    .map((b) => (b.type === "ul" ? b.items.join(" ") : b.runs.map((r) => r.text).join("")))
+    .join(" ")
+    .replace(/\s+/g, " ")
+    .trim(),
+  scopes: [PATH],
+}));
 
 export default function DomainNamePage() {
-  const faqs = faqsFor("/register-domain");
-  const prices = tlds.map((t) => t.price);
-
   return (
-    <>
-      <JsonLd data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "Domain names", path: PATH }])} />
+    /**
+     * globals.css balances every heading and prettifies every paragraph; the
+     * reference wraps normally. Reset for this page only, as on the other two.
+     */
+    <div className="[&_h1]:text-wrap [&_h2]:text-wrap [&_h3]:text-wrap [&_p]:text-wrap">
+      <JsonLd data={breadcrumbGraph(BREADCRUMB)} />
       <JsonLd
         data={productGraph({
           name: "Serverlys Domain Registration",
-          description: DESCRIPTION,
+          description: `Domain registration from ${cheapestTld.tld} at $${cheapestTld.price.toFixed(2)} for the first year.`,
           path: PATH,
-          lowPrice: Math.min(...prices),
-          highPrice: Math.max(...prices),
+          lowPrice: Math.min(...PRICES),
+          highPrice: Math.max(...PRICES),
+          offerCount: PRICES.length,
         })}
       />
-      <JsonLd data={faqGraph(faqs)} />
+      <JsonLd data={faqGraph(FAQ_TEXT)} />
 
-      <ProductHero
-        eyebrow="Domains"
-        title="The name comes first"
-        lede="Availability read live from the registry, free WHOIS privacy on everything we register, and DNS management included rather than sold back to you."
-        breadcrumb={[{ name: "Home", href: "/" }, { name: "Domain names" }]}
-        specs={[
-          { label: "From", value: `$${cheapestTld.price.toFixed(2)}/yr` },
-          { label: "WHOIS privacy", value: "Free" },
-          { label: "DNS", value: "Included" },
-          { label: "Availability", value: "Live" },
-        ]}
-        primary={{ label: "Search a name", href: "#search" }}
-        secondary={{ label: "Transfer a domain", href: `${billing.root}/cart.php?a=add&domain=transfer` }}
-        visual={<DomainMock />}
+      <DomainHero copy={HERO} tool={<DomainSearchApp />} />
+      <Reasons copy={REASONS} />
+      <Popular />
+      <Steps copy={STEPS} />
+      <TldTable />
+
+      <Faqs
+        idPrefix="dn"
+        title={FAQ_HEAD.title}
+        description={FAQ_HEAD.description}
+        items={FAQS}
       />
-
-      {/* The real search, not a picture of one. */}
-      <section id="search" className="border-b border-line bg-canvas-secondary">
-        <Container className="py-16 sm:py-20">
-          <div className="mx-auto max-w-2xl text-center">
-            <span className="font-mono text-caption uppercase text-primary">Search</span>
-            <h2 className="mt-4 text-h2 text-fg">Find out if it is free</h2>
-            <p className="mx-auto mt-4 max-w-md text-body-lg text-fg-secondary">
-              Checked against the registry, not a guess.
-            </p>
-          </div>
-          <div className="mt-10">
-            <DomainSearchApp />
-          </div>
-        </Container>
-      </section>
-
-      <FeatureGrid
-        eyebrow="Every domain"
-        title="What comes with the name"
-        lede="The things some registrars price separately."
-        surface="light"
-        columns={4}
-        items={[
-          { label: "WHOIS privacy", detail: "Your details stay out of the public record, free.", icon: "shield" },
-          { label: "DNS management", detail: "Records, subdomains and redirects included.", icon: "wrench" },
-          { label: "Auto-renew off by default", detail: "Nothing renews silently without your say-so.", icon: "book" },
-          { label: "Published renewal rates", detail: "Year two is on the page, not in the terms.", icon: "chart" },
-        ]}
-      />
-
-      <ShowcaseSplit
-        id="site"
-        eyebrow="Then the site"
-        title="A name is not a website yet"
-        body="Point it at hosting you already have, or let us build the site behind it. Annual hosting plans include the first year of the domain."
-        cta={{ label: "See website design", href: "/website-design" }}
-        visual={<SitePreviewMock />}
-        side="left"
-        surface="subtle"
-      />
-
-      <FaqSection items={faqs} />
-      <FinalCta />
-    </>
+    </div>
   );
 }

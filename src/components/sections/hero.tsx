@@ -7,7 +7,7 @@ import { groupById, formatPrice } from "@/data/pricing";
  * Homepage hero.
  *
  * Conversion objective: put the visitor into one of two funnels — a domain
- * search (top of funnel) or plan selection — with the two-year cost already
+ * search (top of funnel) or plan selection — with the twelve-month cost already
  * understood.
  *
  * Art direction: a dark band with a layered brand light source and a fine
@@ -23,9 +23,9 @@ export function Hero() {
   const cloud = groupById("cloud");
   const plan = cloud?.plans.find((p) => p.popular) ?? cloud?.plans[0];
 
-  // Real two-year arithmetic. Computed, never hard-coded.
-  const yearOne = plan ? plan.annual * 12 : 0;
-  const yearTwo = plan ? plan.renewal * 12 : 0;
+  // Real arithmetic over twelve months. Computed, never hard-coded.
+  const onPromo = plan ? plan.monthly * 12 : 0;
+  const atStandard = plan ? plan.standard * 12 : 0;
 
   return (
     <section className="relative isolate overflow-hidden bg-canvas-dark">
@@ -106,16 +106,16 @@ export function Hero() {
 
                   <dl className="mt-6 flex flex-col gap-5">
                     <CostRow
-                      term="Year one"
-                      monthly={plan.annual}
-                      total={yearOne}
+                      term="At the promotional rate"
+                      monthly={plan.monthly}
+                      total={onPromo}
                       emphasis
                     />
                     <div className="h-px bg-white/10" />
                     <CostRow
-                      term="Year two onward"
-                      monthly={plan.renewal}
-                      total={yearTwo}
+                      term="At the standard rate"
+                      monthly={plan.standard}
+                      total={atStandard}
                     />
                   </dl>
 

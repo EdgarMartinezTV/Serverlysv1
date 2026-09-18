@@ -11,26 +11,69 @@ Re-run it after any change to navigation or routing.
 
 **Every reachable route returns 200, renders the shared header and footer,
 has exactly one `<h1>`, and carries a title, meta description, canonical URL
-and OpenGraph image.** No 404s, no redirect chains, no dead navigation.
+and OpenGraph image.** No 404s, no dead navigation, and no internal link that
+takes a redirect hop.
 
 | Check | Result |
 |---|---|
-| Routes crawled | 47 (46 pages + 1 alias redirect) |
+| Routes crawled | 47 |
 | 4xx / 5xx | **0** |
 | Missing header or footer | **0** |
 | Wrong `<h1>` count | **0** |
 | Missing title / description / canonical / og:image | **0** |
+| Internal links landing on a 308 | **0** |
 | Structured-data blocks | 4–8 per page |
 
 Companion audits, all green at the same commit:
 
 | Audit | Command | Result |
 |---|---|---|
-| SEO crawl | `npm run audit:seo` | 0 failures, 0 warnings across 42 indexable pages |
-| Core Web Vitals | `npm run audit:cwv` | 43 pages, cold cache: LCP ≤ 1.22s, CLS ≤ 0.016 |
-| Design tokens + contrast | `npm run validate:tokens` | 84 tokens resolve, 20 contrast floors pass |
-| Typecheck, lint, build | `npm run verify` | clean |
-| Functional tests | 6 suites | 187 passing |
+| SEO crawl | `npm run audit:seo` | 0 failures, 0 warnings — 47 indexable pages, 48 internal link targets |
+| Core Web Vitals | `npm run audit:cwv` | 43 pages, mobile + 4× CPU throttle + Fast 3G: worst LCP **0.85s** (`/`), CLS **0.000**, ≤315 KB transfer |
+| Structural a11y | `node scripts/a11y.mjs` | 1 `<h1>`, no heading skips, no unlabelled controls, no undersized targets, skip link present |
+| Design tokens + contrast | `npm run validate:tokens` | 86 tokens resolve, 22 contrast floors pass |
+| Typecheck, lint, build | `npm run verify` | clean — 0 errors, 0 warnings |
+| Live product UI | `npm run test:live` | **11/11** interaction checks pass |
+
+## Redirect hops
+
+Four aliases are registered in `next.config.ts` and return 308 to a canonical
+route. They exist for inbound and campaign links; **no internal link points at
+them**, which is what keeps the crawl free of redirect chains.
+
+| Alias | → | Verified |
+|---|---|---|
+| `/domain-name-search` | `/register-domain` | 308 |
+| `/store-hosting` | `/ecommerce-hosting` | 308 |
+| `/chatrep` | `/convoai` | 308 |
+| `/n8n-automations` | `/automations` | 308 |
+
+`/chatrep` and `/n8n-automations` are aliases rather than pages on purpose.
+ChatRep is a campaign name for the product the live application ships as
+ConvoAI, and n8n is the engine under Automations — building either as its own
+page would put two URLs in the index competing for one intent, and would mean
+naming a product Serverlys does not sell under that name.
+
+## Live product UI coverage
+
+These routes carry an **operable** product surface — real React state, real
+controls, keyboard-navigable — rather than a static mockup. Each is labelled
+"Live demo" in the interface so a reader cannot mistake the demonstration data
+for their own account.
+
+| Route | Surface |
+|---|---|
+| `/` | Hosting console · ConvoAI chat · CallFlow call · Automation workflow |
+| `/hosting` | Hosting console |
+| `/cloud-hosting` | Hosting console |
+| `/convoai` | ConvoAI chat |
+| `/callflow-ai` | CallFlow call |
+| `/automations` | Automation workflow |
+
+The domain search on `/`, `/register-domain` and `/transfer-domain` is not a
+demonstration at all: it queries a real availability provider through
+`/api/domains/check` and reports "no answer" when the registry does not
+respond, rather than rounding an unknown to available.
 
 ## Columns
 
@@ -44,7 +87,7 @@ Companion audits, all green at the same commit:
 ## Full crawl output
 
 ```
-Crawled 48 routes from http://localhost:3000
+Crawled 47 routes from http://localhost:3001
 
 status  header  footer  h1  seo   jsonld  route
 --------------------------------------------------------------------------
@@ -67,7 +110,6 @@ status  header  footer  h1  seo   jsonld  route
 200     yes     yes     1   ok    6       /convoai
 200     yes     yes     1   ok    6       /dedicated-servers
 200     yes     yes     1   ok    8       /domain-name
-308     —       —       —   —     —       /domain-name-search  → /register-domain
 200     yes     yes     1   ok    8       /ecommerce-hosting
 200     yes     yes     1   ok    6       /faq
 200     yes     yes     1   ok    8       /hosting
@@ -100,29 +142,3 @@ status  header  footer  h1  seo   jsonld  route
 
 ✓ every reachable route is complete
 ```
-
-## Deliberate exclusions
-
-Three paths are **redirects, not pages**, and the crawl shows them as 308:
-
-| Path | Redirects to | Why |
-|---|---|---|
-| `/chatrep` | `/convoai` | Campaign name for a product whose canonical name is ConvoAI |
-| `/n8n-automations` | `/automations` | Tool name for the same service |
-| `/domain-name-search` | `/register-domain` | Alias of the search page |
-
-Building these as pages would create three sets of duplicate content competing
-with their own canonical URL. None appears in the navigation.
-
-Legacy URLs from the previous serverlys.com — `/store-hosting`, `/web-design`,
-`/custom-development`, `/seo-marketing`, `/socialmedia-management`,
-`/web-hosting`, `/domains` — also 308 to their successors, preserving inbound
-links and search history. They are not linked from anywhere on the current
-site, so the crawl does not reach them; they are verified separately.
-
-`/case-studies` and `/success-stories` were **removed from the footer rather
-than built**. Both require named customers, their results and their permission.
-None have been supplied, and a case-studies page populated with invented
-clients is the single most damaging thing that could go on this site — it is
-exactly the claim a prospect checks. When real, permissioned stories exist,
-each is one page.

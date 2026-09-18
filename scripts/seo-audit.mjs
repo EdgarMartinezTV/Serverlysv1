@@ -6,6 +6,8 @@
  *
  * Usage: node scripts/seo-audit.mjs [origin]
  */
+import { readFileSync } from "node:fs";
+
 const ORIGIN = process.argv[2] ?? "http://localhost:3000";
 
 const findings = [];
@@ -308,6 +310,99 @@ if (!/Sitemap:/i.test(robotsTxt)) fail("/robots.txt", "no Sitemap directive");
 if (!/Disallow: \/api\//.test(robotsTxt)) warn("/robots.txt", "/api/ not disallowed");
 if (/Disallow: \/$/m.test(robotsTxt))
   warn("/robots.txt", "entire site disallowed (expected on staging only)");
+
+/* ── Redirect hygiene ──────────────────────────────────────────────────────
+ *
+ * ⚠ ADDED BECAUSE NOTHING CHECKED IT. Every `redirects()` entry in
+ * next.config.ts is a promise that an old URL still reaches content, and the
+ * two ways that promise breaks silently are a CHAIN (301 → 301 → 200, which
+ * bleeds signal and costs a round trip) and a LOOP. Both look fine in the
+ * config file and are only visible by following the hops.
+ *
+ * Parsed out of next.config rather than hand-listed, so adding a redirect
+ * without testing it is not possible. Parameterised sources (`:slug`) are
+ * skipped — there is no single URL to follow for a pattern.
+ */
+{
+  const config = readFileSync(new URL("../next.config.ts", import.meta.url), "utf8");
+  const sources = [...config.matchAll(/source:\s*"([^"]+)"/g)]
+    .map((m) => m[1])
+    .filter((src) => !src.includes(":") && !src.includes("*"));
+
+  for (const src of sources) {
+    let url = src;
+    const hops = [];
+    for (let i = 0; i < 6; i += 1) {
+      const res = await fetch(ORIGIN + url, { redirect: "manual" });
+      hops.push(res.status);
+      if (res.status < 300 || res.status >= 400) break;
+      const loc = res.headers.get("location") ?? "";
+      const next = loc.startsWith("http") ? new URL(loc).pathname : loc;
+      if (next === url) {
+        fail("(redirects)", `${src} redirects to itself`);
+        break;
+      }
+      url = next;
+    }
+    const redirects = hops.filter((st) => st >= 300 && st < 400).length;
+    const landed = hops[hops.length - 1];
+    if (redirects === 0) warn("(redirects)", `${src} does not redirect (${landed})`);
+    else if (redirects > 1)
+      fail("(redirects)", `${src} chains through ${redirects} hops → ${url}`);
+    else if (landed !== 200)
+      fail("(redirects)", `${src} redirects to a ${landed}: ${url}`);
+  }
+}
+
+/* ── Trailing-slash canonicalisation ───────────────────────────────────────
+ *
+ * Next's default (`trailingSlash: false`) 308s `/path/` to `/path`, which is
+ * what we want — one canonical spelling per URL. It is checked rather than
+ * assumed because flipping that config, or adding middleware that intercepts
+ * first, would silently produce two crawlable URLs for every page on the site.
+ */
+{
+  for (const path of ["/hosting", "/pricing", "/blog"]) {
+    const res = await fetch(`${ORIGIN}${path}/`, { redirect: "manual" });
+    if (res.status < 300 || res.status >= 400) {
+      fail("(trailing slash)", `${path}/ returns ${res.status} instead of redirecting`);
+      continue;
+    }
+    const loc = res.headers.get("location") ?? "";
+    if (!loc.endsWith(path))
+      fail("(trailing slash)", `${path}/ redirects to ${loc}, expected ${path}`);
+  }
+}
+
+/* ── Inbound internal links ────────────────────────────────────────────────
+ *
+ * ⚠ THIS IS THE CHECK THAT CAUGHT A REAL BUG. `relatedArticles` used to return
+ * the first three posts in array order, so every article in a category linked
+ * to the same three and the rest received no inbound link beyond the blog
+ * index. Eighteen articles sat on a single inbound link. Nothing in the audit
+ * noticed, because none of them was ORPHANED — they were reachable, just
+ * starved, and "reachable" is all a link checker looks for.
+ *
+ * So this measures the DISTRIBUTION, not merely the existence, of inbound
+ * links. A page nothing links to is a failure. A page one thing links to is a
+ * warning: legitimate for a legal page reached only from the footer, and a
+ * symptom for anything else.
+ */
+{
+  const inbound = new Map(paths.map((p) => [p, new Set()]));
+  for (const page of paths) {
+    const { html } = await get(page);
+    for (const m of html.matchAll(/href="(\/[^"#?]*)/g)) {
+      const target = m[1].replace(/\/$/, "") || "/";
+      if (inbound.has(target) && target !== page) inbound.get(target).add(page);
+    }
+  }
+  for (const [page, from] of inbound) {
+    if (from.size === 0) fail("(internal links)", `${page} is orphaned — nothing links to it`);
+    else if (from.size === 1)
+      warn("(internal links)", `${page} has one inbound link (from ${[...from][0]})`);
+  }
+}
 
 // ── Report ─────────────────────────────────────────────────────────────────
 const fails = findings.filter((f) => f.level === "FAIL");

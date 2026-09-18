@@ -7,7 +7,7 @@ import { FaqSection } from "@/components/sections/faq";
 import { FinalCta } from "@/components/sections/final-cta";
 import { PricingBand } from "@/components/home/pricing-band";
 import { JsonLd } from "@/components/ui/json-ld";
-import { DashboardMock } from "@/components/product-ui/dashboard";
+import { HostingConsole } from "@/components/product-ui/live/hosting-console";
 import { HostingMock, DomainMock } from "@/components/product-ui/mocks";
 import { billing } from "@/data/company";
 import { groupById, formatPrice } from "@/data/pricing";
@@ -19,7 +19,7 @@ const DESCRIPTION =
   "Cloud, WordPress and ecommerce hosting on one stack, with free migration, daily backups and the renewal price published beside the first-year price.";
 
 const cloud = groupById("cloud");
-const prices = cloud?.plans.map((p) => p.annual) ?? [0];
+const prices = cloud?.plans.map((p) => p.monthly) ?? [0];
 
 export const metadata = pageMetadata({
   title: `Web Hosting — managed plans from ${formatPrice(Math.min(...prices))}/mo | Serverlys`,
@@ -41,13 +41,14 @@ export default function HostingPage() {
           path: PATH,
           lowPrice: Math.min(...prices),
           highPrice: Math.max(...prices),
+          offerCount: prices.length,
         })}
       />
       <JsonLd data={faqGraph(faqs)} />
 
       <ProductHero
         eyebrow="Web hosting"
-        title="One stack. Three ways to run on it."
+        title="Web hosting on one stack, three ways to run on it."
         lede="Cloud, WordPress and ecommerce hosting share the same infrastructure. What differs is how it is tuned and who maintains it — not whether you get the fast disks."
         breadcrumb={[{ name: "Home", href: "/" }, { name: "Hosting" }]}
         specs={[
@@ -58,7 +59,7 @@ export default function HostingPage() {
         ]}
         primary={{ label: "Compare plans", href: "#plans" }}
         secondary={{ label: "Talk to an expert", href: billing.sales }}
-        visual={<DashboardMock />}
+        visual={<HostingConsole />}
       />
 
       <ProductFit />
@@ -101,7 +102,7 @@ export default function HostingPage() {
         eyebrow="Domains"
         title="The name is part of the plan"
         body="Annual plans include a free domain for the first year, and WHOIS privacy is free on everything we register. DNS management is included rather than sold separately."
-        cta={{ label: "Search domains", href: "/domain-name-search" }}
+        cta={{ label: "Search domains", href: "/register-domain" }}
         visual={<DomainMock />}
         side="left"
         surface="light"
@@ -110,7 +111,9 @@ export default function HostingPage() {
       <PricingBand />
       <Migration />
       <FaqSection items={faqs} />
-      <FinalCta />
+      {/* This page owns an id="plans" section, so the closing CTA scrolls
+          there rather than leaving for the homepage. */}
+      <FinalCta plansHref="#plans" />
     </>
   );
 }

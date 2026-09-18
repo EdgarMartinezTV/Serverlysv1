@@ -83,7 +83,7 @@ export default function VpsHostingPage() {
           { label: "Storage", value: "NVMe" },
           { label: "Admin", value: "Managed or not" },
         ]}
-        primary={{ label: "Talk to us about sizing", href: "/contact" }}
+        primary={{ label: "Talk to us about sizing", href: billing.sales }}
         secondary={{ label: "Compare the tiers", href: "/hosting-alternatives" }}
         visual={<TerminalMock />}
       />
@@ -122,7 +122,7 @@ export default function VpsHostingPage() {
           { label: "Managed", detail: "We patch, harden, monitor and back up. You still get root.", icon: "shield" },
           { label: "Either way", detail: "Free migration in, daily backups, free restores.", icon: "compass" },
         ]}
-        cta={{ label: "Ask which one fits", href: "/contact" }}
+        cta={{ label: "Ask which one fits", href: billing.sales }}
         visual={<ResponsibilityMock />}
         side="left"
         surface="subtle"

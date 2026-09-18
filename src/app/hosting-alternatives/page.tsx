@@ -8,6 +8,7 @@ import { FinalCta } from "@/components/sections/final-cta";
 import { JsonLd } from "@/components/ui/json-ld";
 import { pageMetadata, breadcrumbGraph, faqGraph } from "@/lib/seo";
 import type { Faq } from "@/data/faqs";
+import { billing } from "@/data/company";
 
 const PATH = "/hosting-alternatives";
 
@@ -79,7 +80,7 @@ const AXES = [
 const QUESTIONS = [
   {
     q: "What is the renewal rate for this exact plan?",
-    why: "The introductory price is the first term only. Three years is the honest comparison, and the renewal rate decides it.",
+    why: "The introductory price is promotional. The renewal rate is what you pay from then on, and it is the number that decides the comparison.",
   },
   {
     q: "What does it cost to restore a backup?",
@@ -273,7 +274,7 @@ export default function HostingAlternativesPage() {
         </dl>
         <div className="mt-10 flex flex-wrap gap-3">
           <Button href="/pricing">See the prices and renewals</Button>
-          <Button href="/contact" variant="secondary">
+          <Button href={billing.sales} variant="secondary">
             Ask us anything on that list
           </Button>
         </div>

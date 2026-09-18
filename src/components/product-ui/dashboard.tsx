@@ -50,9 +50,9 @@ export function DashboardMock({ className }: { className?: string }) {
           ["Automations", "5", "running"],
         ].map(([label, value, sub]) => (
           <div key={label} className="rounded-lg bg-canvas-secondary p-2.5">
-            <p className="font-mono text-[0.5625rem] uppercase text-fg-muted">{label}</p>
+            <p className="font-mono text-ui uppercase text-fg-muted">{label}</p>
             <p className="tabular mt-1 text-h4 leading-none text-fg">{value}</p>
-            <p className="mt-1 text-[0.625rem] text-fg-muted">{sub}</p>
+            <p className="mt-1 text-ui text-fg-muted">{sub}</p>
           </div>
         ))}
       </div>
@@ -61,8 +61,8 @@ export function DashboardMock({ className }: { className?: string }) {
         {/* Sites table — the working list that makes it read as software */}
         <div className="overflow-hidden rounded-lg ring-1 ring-line-subtle">
           <div className="flex items-center justify-between border-b border-line-subtle bg-canvas-secondary px-3 py-1.5">
-            <span className="text-[0.625rem] font-semibold text-fg">Websites</span>
-            <span className="font-mono text-[0.5625rem] text-fg-muted">Last 24h</span>
+            <span className="text-ui font-semibold text-fg">Websites</span>
+            <span className="font-mono text-ui text-fg-muted">Last 24h</span>
           </div>
           <table className="w-full">
             <tbody>
@@ -76,17 +76,17 @@ export function DashboardMock({ className }: { className?: string }) {
                           state === "ok" ? "bg-success-fill" : "bg-warning-fill",
                         )}
                       />
-                      <span className="truncate font-mono text-[0.625rem] text-fg">
+                      <span className="truncate font-mono text-ui text-fg">
                         {domain}
                       </span>
                     </span>
                   </td>
                   <td className="px-2 py-2 text-right">
-                    <span className="rounded bg-canvas-inset px-1.5 py-0.5 text-[0.5625rem] text-fg-secondary">
+                    <span className="rounded bg-canvas-inset px-1.5 py-0.5 text-ui text-fg-secondary">
                       {plan}
                     </span>
                   </td>
-                  <td className="tabular px-3 py-2 text-right text-[0.625rem] text-fg-secondary">
+                  <td className="tabular px-3 py-2 text-right text-ui text-fg-secondary">
                     {visits}
                   </td>
                 </tr>
@@ -98,7 +98,7 @@ export function DashboardMock({ className }: { className?: string }) {
         {/* Traffic + activity */}
         <div className="flex flex-col gap-3">
           <div className="rounded-lg bg-canvas-secondary p-3">
-            <p className="font-mono text-[0.5625rem] uppercase text-fg-muted">
+            <p className="font-mono text-ui uppercase text-fg-muted">
               Requests · 24h
             </p>
             <svg viewBox="0 0 120 40" className="mt-2 h-12 w-full" preserveAspectRatio="none">
@@ -138,10 +138,10 @@ export function DashboardMock({ className }: { className?: string }) {
                     tone === "success" ? "bg-success-fill" : "bg-primary",
                   )}
                 />
-                <span className="min-w-0 flex-1 truncate text-[0.625rem] text-fg-secondary">
+                <span className="min-w-0 flex-1 truncate text-ui text-fg-secondary">
                   {text}
                 </span>
-                <span className="font-mono text-[0.5625rem] text-fg-muted">{when}</span>
+                <span className="font-mono text-ui text-fg-muted">{when}</span>
               </li>
             ))}
           </ul>

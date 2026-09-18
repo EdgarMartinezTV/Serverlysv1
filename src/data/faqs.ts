@@ -18,13 +18,13 @@ export const faqs: readonly Faq[] = [
   {
     question: "How much does web hosting cost?",
     answer:
-      "Cloud, WordPress and ecommerce hosting all start at $2.19/mo on an annual term. The figure that decides real cost is the renewal rate rather than the introductory rate, so compare year two before you compare anything else — we show both.",
+      "Cloud, WordPress and ecommerce hosting all start at $7.95/mo, against a standard rate of $12.62/mo. Starter also carries a one-off $2.95 setup fee. The figure that decides real cost is the standard rate rather than the promotional rate, so compare that before you compare anything else — we show both.",
     scopes: ["/", "/pricing"],
   },
   {
     question: "Do your prices go up when I renew?",
     answer:
-      "Introductory pricing applies to the first term, as it does everywhere in this industry. The difference is that we show the renewal rate next to it rather than in the terms, so you can see the real multi-year cost before you commit.",
+      "Yes. The advertised price is a promotional rate and the plan renews at the standard rate. As it does everywhere in this industry — the difference is that we print the renewal rate next to the promotional one rather than leaving it in the terms, so you can see what it costs from year two before you buy.",
     scopes: ["/", "/pricing"],
   },
   {
@@ -63,7 +63,61 @@ export const faqs: readonly Faq[] = [
       "Plugin updates stay under your control — we apply core updates, not plugin updates, because a plugin update is the most common way a working site breaks. If one does break something, the nightly backup restores it for free.",
     scopes: ["/wordpress-hosting"],
   },
+
   {
+    question: "What are the CPU, RAM and storage limits on a WordPress plan?",
+    answer:
+      "RAM is the number printed on every plan card — 2 GB on Starter, 4 GB on Plus, 6 GB on Turbo and 8 GB on Business. Storage is unlimited NVMe and bandwidth is unmetered, both subject to normal fair use: they are sized for websites, not for file distribution or backup archives.",
+    scopes: ["/wordpress-hosting", "/pricing"],
+  },
+  {
+    question: "How much does WordPress hosting cost?",
+    answer:
+      "From $7.95/mo, against a standard rate of $12.62/mo. Starter also carries a one-off $2.95 setup fee. Both figures are on every plan card, because the promotional rate on its own is not the price you end up paying.",
+    scopes: ["/wordpress-hosting"],
+  },
+  {
+    question: "How is this different from ordinary hosting?",
+    answer:
+      "Same infrastructure, different defaults. WordPress plans ship with WordPress already installed, LiteSpeed caching tuned for it, core and security updates applied automatically with a backup taken first, and one-click staging. On a general plan you would configure all of that yourself.",
+    scopes: ["/wordpress-hosting"],
+  },
+  {
+    question: "Do I actually need WordPress-specific hosting?",
+    answer:
+      "No. WordPress runs on any of our plans. The WordPress tier exists so you do not have to set up caching, updates and staging by hand — if you would rather do that yourself, cloud hosting is the same machine at the same price.",
+    scopes: ["/wordpress-hosting"],
+  },
+  {
+    question: "How do I keep a WordPress site secure?",
+    answer:
+      "Most of it is already on: a firewall in front of PHP, malware scanning on a schedule, free SSL issued and renewed, and automatic security patching. The part left to you is choosing plugins carefully and keeping the admin account on a password you do not reuse.",
+    scopes: ["/wordpress-hosting"],
+  },
+  {
+    question: "How do I move my WordPress site over?",
+    answer:
+      "Tell us where it lives now and we move it — files, database and email — onto a staging URL first. You check it properly, and DNS only changes when you say so. It is free, and there is no limit on how many sites you bring.",
+    scopes: ["/wordpress-hosting", "/migrations"],
+  },
+  {
+    question: "How many sites can I run on one plan?",
+    answer:
+      "One on Starter, seven on Plus, and unlimited on Turbo and Business. Each gets its own staging copy and its own backups, so an agency account does not have to share one restore point across every client.",
+    scopes: ["/wordpress-hosting"],
+  },
+  {
+    question: "Do WordPress plans support WooCommerce?",
+    answer:
+      "Yes, and there is a dedicated ecommerce tier if the store is the main thing the site does — same infrastructure, tuned for checkout under load rather than for reads.",
+    scopes: ["/wordpress-hosting", "/ecommerce-hosting"],
+  },
+  {
+    question: "Is there anything here for agencies running many sites?",
+    answer:
+      "Turbo and Business carry unlimited sites with per-site staging and per-site backups, which is the usual shape for an agency account. If you are moving a portfolio across, tell us how many and we will schedule the migrations rather than leaving you to queue them.",
+    scopes: ["/wordpress-hosting"],
+  },  {
     question: "Does WooCommerce need different hosting?",
     answer:
       "It needs headroom at checkout rather than raw capacity all the time. Store pages cache poorly by nature — carts and checkouts cannot be served from cache — so the tier that matters is the one that keeps the database responsive under concurrent orders.",

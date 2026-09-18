@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { lookupWhois } from "@/lib/domains/whois";
+import { clientKey, rateLimit } from "@/lib/domains/provider";
 
 /**
  * Registration lookup endpoint.
@@ -25,6 +26,26 @@ export async function GET(request: Request) {
     return NextResponse.json(
       { ok: false, reason: "That is longer than a domain name can be." },
       { status: 400 },
+    );
+  }
+
+  /*
+   * Rate limit. This endpoint had none, while /api/domains/check next door did
+   * — and this is the one that is trivially abusable: unauthenticated, GET, and
+   * every call makes an outbound request to rdap.org on our behalf. Left open
+   * it is free amplification, and the realistic damage is not our bandwidth but
+   * rdap.org blocking this server's IP, which takes the WHOIS feature down for
+   * everyone.
+   *
+   * Scoped to "whois" so it has its own budget rather than sharing one with the
+   * domain search — a visitor doing a lot of searching should not be locked out
+   * of a lookup, and vice versa.
+   */
+  const limit = rateLimit(clientKey(request, "whois"));
+  if (!limit.ok) {
+    return NextResponse.json(
+      { ok: false, reason: "Too many lookups. Try again in a moment." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfterSeconds) } },
     );
   }
 

@@ -11,11 +11,23 @@ import type { Faq } from "@/data/faqs";
  * The answers rendered here must stay identical to the ones fed to the
  * FAQPage structured data, or the markup misrepresents the page.
  */
-export function FaqSection({ items }: { items: readonly Faq[] }) {
+export function FaqSection({
+  items,
+  surface = "light",
+}: {
+  items: readonly Faq[];
+  /**
+   * The band this sits on. Exposed because the FAQ moves between pages and the
+   * surface it needs depends on what precedes it — the homepage now runs a
+   * light section directly above it, and two light bands in a row erase the
+   * boundary between them.
+   */
+  surface?: "light" | "subtle";
+}) {
   if (items.length === 0) return null;
 
   return (
-    <Section labelledBy="faq-heading">
+    <Section surface={surface} labelledBy="faq-heading">
       <div className="grid gap-10 lg:grid-cols-[minmax(0,26rem)_1fr] lg:gap-16">
         <SectionHeader
           id="faq-heading"
@@ -27,8 +39,12 @@ export function FaqSection({ items }: { items: readonly Faq[] }) {
         <ul className="divide-y divide-line border-t border-line">
           {items.map((faq) => (
             <li key={faq.question}>
-              <details className="group py-5">
-                <summary className="flex cursor-pointer list-none items-start justify-between gap-6 rounded-sm text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&::-webkit-details-marker]:hidden">
+              {/* The vertical padding lives on the SUMMARY, not on the
+                  <details>. With it on the wrapper the row looked 67px tall
+                  but only the 27px text itself was tappable, which is how a
+                  thumb misses an accordion that visually fills the row. */}
+              <details className="group">
+                <summary className="flex cursor-pointer list-none items-start justify-between gap-6 rounded-sm py-5 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&::-webkit-details-marker]:hidden">
                   <span className="text-body-lg font-semibold text-fg">
                     {faq.question}
                   </span>
@@ -47,7 +63,7 @@ export function FaqSection({ items }: { items: readonly Faq[] }) {
                     </svg>
                   </span>
                 </summary>
-                <p className="mt-3 max-w-2xl text-body text-fg-secondary">
+                <p className="mt-3 max-w-2xl pb-5 text-body text-fg-secondary">
                   {faq.answer}
                 </p>
               </details>

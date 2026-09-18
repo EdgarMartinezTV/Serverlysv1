@@ -1,125 +1,151 @@
-import { ProductHero } from "@/components/sections/product-hero";
-import { FeatureGrid } from "@/components/sections/feature-grid";
-import { FaqSection } from "@/components/sections/faq";
-import { FinalCta } from "@/components/sections/final-cta";
-import { Section, SectionHeader } from "@/components/ui/section";
-import { PricingTable } from "@/components/pricing/pricing-table";
-import { Container } from "@/components/ui/container";
 import { JsonLd } from "@/components/ui/json-ld";
-import { Reveal } from "@/components/animations/reveal";
-import { planGroups, formatPrice, lowestAnnualRate } from "@/data/pricing";
-import { tlds } from "@/data/tlds";
-import { billing } from "@/data/company";
-import { faqsFor } from "@/data/faqs";
-import { pageMetadata, faqGraph, breadcrumbGraph, productGraph } from "@/lib/seo";
+import { Faqs } from "@/components/ref/faqs";
+import { Grid, ShieldCheck } from "@/components/ref/kit";
+import { lowestRate, planGroups } from "@/data/pricing";
+import { breadcrumbGraph, faqGraph, pageMetadata, productGraph } from "@/lib/seo";
+import { FAQS, FAQ_HEAD, HERO } from "./_content";
+import { Plans } from "./_components/plans";
+import { Compare } from "./_components/compare";
+
+/**
+ * Plans & pricing.
+ *
+ * A 1:1 rebuild of hostinger.com/pricing, screenshotted and measured first.
+ * Geometry: dark hero band 652px tall with a 56/64 centred h1 at -0.28px
+ * capped to 646px, a trust row, then category pills in two centred rows; the
+ * plan band is #f5f5f6 with 48px padding; compare table 48px; FAQ band 80px.
+ *
+ * Two of the reference's controls are deliberately absent because ours would
+ * be theatre — the term dropdown (we sell no terms) and the agency toggle (we
+ * publish no agency rates). Both are explained in _content.ts.
+ *
+ * Every figure comes from data/pricing.ts and data/tlds.ts. The plan card is
+ * the shared components/ref/plan-card, the same one /ecommerce-hosting uses,
+ * so the two pages cannot drift apart on what a plan costs.
+ */
 
 const PATH = "/pricing";
+
+const TITLE = `Serverlys pricing | Hosting and domains from $${lowestRate.toFixed(2)}/mo`;
 const DESCRIPTION =
-  "Every Serverlys plan with its renewal price beside its introductory price. Cloud, WordPress and ecommerce hosting, plus domain pricing, on one page.";
+  "Cloud, WordPress and ecommerce hosting plus domains, with the renewal rate shown beside the monthly rate on every plan. 30-day money-back guarantee.";
 
 export const metadata = pageMetadata({
-  title: `Pricing — every plan and every renewal rate | Serverlys`,
+  title: TITLE,
   description: DESCRIPTION,
   path: PATH,
 });
 
-/**
- * Full pricing. Data-driven from `data/pricing.ts` — no page hard-codes a
- * price, so a change moves every surface at once.
- */
-export default function PricingPage() {
-  const faqs = faqsFor("/pricing");
-  const all = planGroups.flatMap((g) => g.plans.map((p) => p.annual));
+const RATES = planGroups.flatMap((g) => g.plans.map((p) => p.monthly));
 
+const FAQ_TEXT = FAQS.map((f) => ({
+  question: f.q,
+  answer: f.a
+    .map((b) =>
+      b.type === "ul" ? b.items.join(" ") : b.runs.map((r) => r.text).join(""),
+    )
+    .join(" ")
+    .replace(/\s+/g, " ")
+    .trim(),
+  scopes: [PATH],
+}));
+
+/** Small inline icons for the hero trust row. */
+function Support({ className }: { className?: string }) {
   return (
-    <>
-      <JsonLd data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "Pricing", path: PATH }])} />
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden className={className}>
+      <path
+        d="M4.5 14v-2a7.5 7.5 0 0 1 15 0v2M4.5 14h2.2v4.5H5.6A1.1 1.1 0 0 1 4.5 17.4V14zm14.8 0h-2.2v4.5h1.1a1.1 1.1 0 0 0 1.1-1.1V14z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function Cancel({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden className={className}>
+      <path
+        d="M19.5 12a7.5 7.5 0 1 1-2.4-5.5M19.5 4.5V9h-4.5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+const TRUST_ICONS = { shield: ShieldCheck, support: Support, cancel: Cancel } as const;
+
+export default function PricingPage() {
+  return (
+    /** globals.css balances headings; the reference wraps normally. */
+    <div className="[&_h1]:text-wrap [&_h2]:text-wrap [&_h3]:text-wrap [&_p]:text-wrap">
+      <JsonLd
+        data={breadcrumbGraph([
+          { name: "Home", path: "/" },
+          { name: "Pricing", path: PATH },
+        ])}
+      />
       <JsonLd
         data={productGraph({
-          name: "Serverlys Hosting Plans",
+          name: "Serverlys hosting plans",
           description: DESCRIPTION,
           path: PATH,
-          lowPrice: Math.min(...all),
-          highPrice: Math.max(...all),
+          lowPrice: Math.min(...RATES),
+          highPrice: Math.max(...RATES),
+          offerCount: RATES.length,
         })}
       />
-      <JsonLd data={faqGraph(faqs)} />
+      <JsonLd data={faqGraph(FAQ_TEXT)} />
 
-      <ProductHero
-        eyebrow="Pricing"
-        title="Both numbers, on the same page"
-        lede="Introductory pricing is normal in this industry. Hiding what happens next is the part we do differently — every tier below shows what it renews at."
-        breadcrumb={[{ name: "Home", href: "/" }, { name: "Pricing" }]}
-        specs={[
-          { label: "From", value: `${formatPrice(lowestAnnualRate)}/mo` },
-          { label: "Setup fees", value: "None" },
-          { label: "Money back", value: "30 days" },
-          { label: "Migration", value: "Free" },
-        ]}
-        primary={{ label: "See the plans", href: "#plans" }}
-        secondary={{ label: "Ask which fits", href: billing.sales }}
-      />
+      {/* Dark hero. The category pills live inside it, as on the reference,
+          which is why <Plans> renders both the pills and the panel below. */}
+      {/* Plans sits OUTSIDE <Grid> on purpose: it renders the pills (which are
+          gridded) and then the plan panel, which has to reach both edges. Put
+          it inside the Grid and the light band renders inset. */}
+      <section
+        aria-labelledby="pricing-heading"
+        className="bg-canvas-abyss pt-14 xl:pt-20"
+      >
+        <Grid>
+          <h1
+            id="pricing-heading"
+            className="mx-auto max-w-[646px] text-center text-[36px] leading-[44px] font-normal tracking-[-0.18px] text-ink-50 lg:text-[56px] lg:leading-[64px] lg:tracking-[-0.28px]"
+          >
+            {HERO.title}
+          </h1>
 
-      <Section id="plans" labelledBy="plans-heading" spacing="base">
-        <SectionHeader
-          id="plans-heading"
-          eyebrow="Hosting"
-          title="Every tier, every term"
-          lede="Switch between annual and monthly, and between products. The renewal rate never leaves the card."
-          align="center"
-        />
-        <div className="mt-12">
-          <PricingTable />
-        </div>
-      </Section>
-
-      {/* Domains, priced on the same page rather than hidden behind a search */}
-      <section className="border-y border-line bg-canvas-secondary">
-        <Container className="py-20 sm:py-24">
-          <Reveal className="max-w-2xl">
-            <span className="font-mono text-caption uppercase text-primary">Domains</span>
-            <h2 className="mt-4 text-h2 text-fg">Extensions and first-year prices</h2>
-            <p className="mt-5 text-body-lg text-fg-secondary">
-              Standard registration. Premium names are priced by the registry and
-              labelled as premium before checkout.
-            </p>
-          </Reveal>
-          <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {tlds.map((t) => (
-              <li
-                key={t.tld}
-                className="flex items-baseline justify-between gap-4 rounded-lg bg-surface p-4 ring-1 ring-inset ring-line"
-              >
-                <span>
-                  <span className="block font-mono text-body font-medium text-fg">{t.tld}</span>
-                  {t.note && <span className="mt-0.5 block text-small text-fg-muted">{t.note}</span>}
-                </span>
-                <span className="tabular shrink-0 text-body font-semibold text-fg">
-                  ${t.price.toFixed(2)}
-                  <span className="block text-right text-small font-normal text-fg-muted">/yr</span>
-                </span>
-              </li>
-            ))}
+          <ul className="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+            {HERO.trust.map((t) => {
+              const Icon = TRUST_ICONS[t.icon];
+              return (
+                <li
+                  key={t.label}
+                  className="flex items-center gap-2 text-body text-fg-on-dark-secondary"
+                >
+                  <Icon className="size-5 shrink-0" />
+                  {t.label}
+                </li>
+              );
+            })}
           </ul>
-        </Container>
+        </Grid>
+
+        <Plans />
       </section>
 
-      <FeatureGrid
-        eyebrow="On every plan"
-        title="What the price already includes"
-        lede="These are not add-ons and they are not tier-gated."
-        surface="light"
-        columns={4}
-        items={[
-          { label: "Free migration", detail: "Site, database and email, staged before DNS.", icon: "compass" },
-          { label: "Daily backups", detail: "Restores cost nothing and need no ticket.", icon: "shield" },
-          { label: "Free SSL", detail: "Issued and renewed automatically.", icon: "shield" },
-          { label: "30-day money back", detail: "On every hosting plan, no questions.", icon: "book" },
-        ]}
-      />
+      <Compare />
 
-      <FaqSection items={faqs} />
-      <FinalCta />
-    </>
+      <Faqs
+        idPrefix="pr"
+        title={FAQ_HEAD.title}
+        description={FAQ_HEAD.description}
+        items={FAQS}
+      />
+    </div>
   );
 }

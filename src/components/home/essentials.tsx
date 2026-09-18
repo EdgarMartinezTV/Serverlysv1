@@ -38,7 +38,7 @@ const ITEMS = [
     id: "migration",
     label: "Free migration",
     detail: "We move it for you",
-    href: "/wp-migrations",
+    href: "/migrations",
   },
 ] as const;
 
@@ -46,7 +46,7 @@ export function Essentials() {
   return (
     <section
       aria-labelledby="essentials-heading"
-      className="bg-canvas-secondary py-20 sm:py-24 lg:py-28"
+      className="bg-canvas-secondary py-14 sm:py-24 lg:py-28"
     >
       <Container>
         <Reveal className="mx-auto max-w-2xl text-center">
@@ -134,7 +134,7 @@ function Visual({ id }: { id: string }) {
 
   if (id === "email") {
     return (
-      <div aria-hidden="true" className={cn(base, "bg-canvas-lavender")}>
+      <div aria-hidden="true" className={cn(base, "bg-canvas-secondary")}>
         <div className="absolute inset-x-5 top-5 flex flex-col gap-2">
           {[
             ["hello@", "Enquiry — new order"],
@@ -148,7 +148,7 @@ function Visual({ id }: { id: string }) {
                 i === 0 && "ring-1 ring-primary/30",
               )}
             >
-              <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary-soft font-mono text-[0.5rem] text-primary">
+              <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary-soft font-mono text-micro text-primary">
                 @
               </span>
               <span className="truncate font-mono text-caption text-fg-muted">
@@ -163,7 +163,7 @@ function Visual({ id }: { id: string }) {
   }
 
   return (
-    <div aria-hidden="true" className={cn(base, "bg-canvas-tint")}>
+    <div aria-hidden="true" className={cn(base, "bg-canvas-secondary")}>
       <div className="absolute inset-0 bg-[radial-gradient(70%_70%_at_20%_100%,rgb(20_160_107/0.18)_0%,transparent_70%)]" />
       <div className="absolute inset-x-5 top-6 flex flex-col gap-2">
         {["Old host", "Staging", "Live"].map((label, i) => (

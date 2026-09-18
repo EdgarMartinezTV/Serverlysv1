@@ -9,7 +9,7 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { SharedLimitsMock } from "@/components/product-ui/infra";
 import { NavIcon } from "@/components/navigation/nav-icons";
 import { billing } from "@/data/company";
-import { lowestAnnualRate, formatPrice } from "@/data/pricing";
+import { lowestRate, formatPrice } from "@/data/pricing";
 import { pageMetadata, breadcrumbGraph, faqGraph } from "@/lib/seo";
 import type { Faq } from "@/data/faqs";
 
@@ -17,7 +17,7 @@ const PATH = "/shared-hosting";
 
 
 export const metadata = pageMetadata({
-  title: `Shared Hosting from ${formatPrice(lowestAnnualRate)}/mo | Serverlys`,
+  title: `Shared Hosting from ${formatPrice(lowestRate)}/mo | Serverlys`,
   description:
     "The entry tier, described honestly: what shared hosting is genuinely good for, where it runs out, and how to tell when you have outgrown it.",
   path: PATH,
@@ -97,12 +97,12 @@ export default function SharedHostingPage() {
           { name: "Shared hosting" },
         ]}
         specs={[
-          { label: "From", value: `${formatPrice(lowestAnnualRate)}/mo` },
+          { label: "From", value: `${formatPrice(lowestRate)}/mo` },
           { label: "SSL", value: "Free" },
           { label: "Backups", value: "Daily" },
           { label: "Migration", value: "Free" },
         ]}
-        primary={{ label: "Ask about shared hosting", href: "/contact" }}
+        primary={{ label: "Ask about shared hosting", href: billing.sales }}
         secondary={{ label: "Compare the tiers", href: "/hosting-alternatives" }}
         visual={<SharedLimitsMock />}
       />
@@ -232,7 +232,7 @@ export default function SharedHostingPage() {
             </p>
           </div>
           <div className="flex shrink-0 flex-wrap gap-3">
-            <Button href="/contact">Ask us</Button>
+            <Button href={billing.sales}>Ask us</Button>
             <Button href={billing.store("cloud-hosting")} variant="secondary">
               See plans
             </Button>

@@ -8,7 +8,7 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { SitePreviewMock, SeoMock, ChatMock } from "@/components/product-ui/mocks";
 import { billing } from "@/data/company";
 import { faqsFor } from "@/data/faqs";
-import { pageMetadata, faqGraph, breadcrumbGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph, breadcrumbGraph, serviceGraph } from "@/lib/seo";
 
 const PATH = "/website-design";
 const DESCRIPTION =
@@ -25,6 +25,14 @@ export default function WebsiteDesignPage() {
 
   return (
     <>
+      <JsonLd
+        data={serviceGraph({
+          name: "Website design",
+          serviceType: "Website design",
+          description: DESCRIPTION,
+          path: PATH,
+        })}
+      />
       <JsonLd data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "Website design", path: PATH }])} />
       <JsonLd data={faqGraph(faqs)} />
 
@@ -83,7 +91,10 @@ export default function WebsiteDesignPage() {
         surface="dark"
       />
 
-      <Migration />
+      {/* Subtle, not the dark services-rail treatment: the ShowcaseSplit
+          directly above this one is already `surface="dark"`, and two dark
+          bands in a row erase the boundary between them. */}
+      <Migration tone="subtle" />
       <FaqSection items={faqs} />
       <FinalCta />
     </>

@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { MegaPromo } from "@/data/navigation";
 import { resolveNavTarget } from "@/data/routes";
 import { ArrowUpRight } from "./nav-icons";
+import { ConvoAiLogo } from "@/components/layout/convoai-logo";
 import { cn } from "@/lib/utils";
 
 /**
@@ -29,9 +30,16 @@ export function MegaMenuPromo({ promo }: { promo: MegaPromo }) {
       />
 
       <div className="relative flex items-start justify-between gap-3">
-        <span className="font-mono text-caption uppercase text-fg-on-dark-muted">
-          {promo.eyebrow}
-        </span>
+        {/* tone="dark" is not a choice here: the panel is always the abyss
+            band, so the light-surface asset would put black "Convo" on
+            near-black and leave a floating "AI". */}
+        {promo.brand === "convoai" ? (
+          <ConvoAiLogo tone="dark" className="h-6 w-auto" />
+        ) : (
+          <span className="font-mono text-caption uppercase text-fg-on-dark-muted">
+            {promo.eyebrow}
+          </span>
+        )}
         <span aria-hidden="true" className="text-fg-on-dark-muted">
           <ArrowUpRight />
         </span>
@@ -103,12 +111,12 @@ function PromoVisual({ kind }: { kind: MegaPromo["visual"] }) {
     return (
       <div aria-hidden="true" className={cn(frame, "flex-col gap-2 px-4")}>
         {[
-          ["Year one", "$5.84", "bg-primary"],
-          ["Year two", "$25.94", "bg-white/25"],
+          ["Monthly rate", "$17.95", "bg-primary"],
+          ["Standard rate", "$21.37", "bg-white/25"],
         ].map(([label, price, bar], i) => (
           <div key={label} className="w-full">
             <div className="flex items-baseline justify-between">
-              <span className="font-mono text-[0.5625rem] uppercase text-fg-on-dark-muted">
+              <span className="font-mono text-caption uppercase text-fg-on-dark-muted">
                 {label}
               </span>
               <span className="tabular text-small font-semibold text-white">
@@ -140,10 +148,10 @@ function PromoVisual({ kind }: { kind: MegaPromo["visual"] }) {
               free ? "bg-success-fill/15" : "bg-white/[0.06]",
             )}
           >
-            <span className="font-mono text-[0.625rem] text-white">serverlys{tld}</span>
+            <span className="font-mono text-micro text-white">serverlys{tld}</span>
             <span
               className={cn(
-                "font-mono text-[0.5rem] uppercase",
+                "font-mono text-caption uppercase",
                 free ? "text-success-fill" : "text-fg-on-dark-muted",
               )}
             >
@@ -180,7 +188,7 @@ function PromoVisual({ kind }: { kind: MegaPromo["visual"] }) {
               <span className="h-1 w-1 rounded-full bg-current" />
             )}
           </span>
-          <span className="flex-1 rounded-md bg-white/[0.06] px-2 py-1 text-[0.625rem] text-fg-on-dark-secondary">
+          <span className="flex-1 rounded-md bg-white/[0.06] px-2 py-1 text-micro text-fg-on-dark-secondary">
             {label}
           </span>
         </div>

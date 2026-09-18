@@ -41,7 +41,7 @@ export const products: readonly Product[] = [
   },
   {
     name: "Ecommerce hosting",
-    href: "/store-hosting",
+    href: "/ecommerce-hosting",
     summary: "WooCommerce-ready stores, built for checkout speed under load.",
     points: ["WooCommerce ready", "Store caching", "Daily backups"],
     group: "ecommerce",
@@ -80,5 +80,5 @@ export function startingPrice(product: Product): number | null {
   if (!product.group) return null;
   const group = planGroups.find((g) => g.id === product.group);
   if (!group) return null;
-  return Math.min(...group.plans.map((p) => p.annual));
+  return Math.min(...group.plans.map((p) => p.monthly));
 }

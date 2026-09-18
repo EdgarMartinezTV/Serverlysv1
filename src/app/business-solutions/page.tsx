@@ -8,7 +8,7 @@ import { DashboardMock } from "@/components/product-ui/dashboard";
 import { AutomationMock, ChatMock } from "@/components/product-ui/mocks";
 import { billing } from "@/data/company";
 import { faqsFor } from "@/data/faqs";
-import { pageMetadata, faqGraph, breadcrumbGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph, breadcrumbGraph, serviceGraph } from "@/lib/seo";
 
 const PATH = "/business-solutions";
 const DESCRIPTION =
@@ -24,6 +24,14 @@ export default function BusinessSolutionsPage() {
   const faqs = faqsFor("/");
   return (
     <>
+      <JsonLd
+        data={serviceGraph({
+          name: "Small business technology package",
+          serviceType: "Managed IT and web services",
+          description: DESCRIPTION,
+          path: PATH,
+        })}
+      />
       <JsonLd data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "Business solutions", path: PATH }])} />
       <JsonLd data={faqGraph(faqs)} />
       <ProductHero

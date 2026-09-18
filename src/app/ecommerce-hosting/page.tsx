@@ -1,119 +1,185 @@
-import { ProductHero } from "@/components/sections/product-hero";
-import { ShowcaseSplit } from "@/components/sections/showcase-split";
-import { FeatureGrid } from "@/components/sections/feature-grid";
-import { Migration } from "@/components/sections/migration";
-import { FaqSection } from "@/components/sections/faq";
-import { FinalCta } from "@/components/sections/final-cta";
-import { Section, SectionHeader } from "@/components/ui/section";
-import { PricingTable } from "@/components/pricing/pricing-table";
+import Image from "next/image";
 import { JsonLd } from "@/components/ui/json-ld";
-import { HostingMock, SitePreviewMock, ChatMock } from "@/components/product-ui/mocks";
-import { billing } from "@/data/company";
-import { groupById, formatPrice } from "@/data/pricing";
-import { faqsFor } from "@/data/faqs";
-import { pageMetadata, faqGraph, breadcrumbGraph, productGraph } from "@/lib/seo";
+import { Faqs } from "@/components/ref/faqs";
+import { Split } from "@/components/ref/split";
+import { groupById } from "@/data/pricing";
+import { breadcrumbGraph, faqGraph, pageMetadata, productGraph } from "@/lib/seo";
+import { FAQS, FAQ_HEAD, LAUNCH, MIGRATION, SECURITY, SPEED, SUPPORT } from "./_content";
+import { Agent } from "./_components/agent";
+import { Banner } from "./_components/banner";
+import { Email } from "./_components/email";
+import { Hero } from "./_components/hero";
+import { Pricing } from "./_components/pricing";
+import { ChatPanel } from "./_components/visuals";
+
+/**
+ * Ecommerce hosting.
+ *
+ * A deliberate 1:1 rebuild of hostinger.com/woocommerce-hosting, on the same
+ * terms as /cloud-hosting: the reference's section order, grid, type scale and
+ * copy, with our palette, our plans and our own product imagery. Measurements
+ * live in components/ref/kit.tsx; copy — and what still needs replacing before
+ * this ships — lives in _content.ts.
+ *
+ * Four of the reference's bands are one component (`ref/split`): launch,
+ * speed, security, migration and support differ only in which side the media
+ * sits on and whether the surface is light or the deep brand band.
+ *
+ * Removed from the reference on request: the hero's Trustpilot +
+ * WordPress.org row, the Hostinger Connector band, the
+ * Google/HostAdvice/WPBeginner ratings strip, the "Managed WooCommerce
+ * hosting" band, and the customer-story carousel — which had placeholder
+ * attributions anyway, since the reference quotes real named Hostinger
+ * customers.
+ */
 
 const PATH = "/ecommerce-hosting";
+
+const TITLE = "Managed WooCommerce hosting for your eCommerce store";
 const DESCRIPTION =
-  "WooCommerce-ready hosting built for checkout speed under load, with free migration to staging, daily backups and renewal pricing shown up front.";
+  "Quick setup, AI tools, and 24/7 support – our Managed WooCommerce hosting has everything for eCommerce.";
 
-const group = groupById("ecommerce");
-const prices = group?.plans.map((p) => p.annual) ?? [0];
+export const metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH });
 
-export const metadata = pageMetadata({
-  title: `Ecommerce Hosting — WooCommerce from ${formatPrice(Math.min(...prices))}/mo | Serverlys`,
-  description: DESCRIPTION,
-  path: PATH,
-});
+const BREADCRUMB = [
+  { name: "Home", path: "/" },
+  { name: "Ecommerce hosting", path: PATH },
+];
+
+/** Derived, so the schema cannot disagree with the cards. */
+const RATES = (groupById("ecommerce")?.plans ?? []).map((p) => p.monthly);
+
+/** FAQPage wants plain text, so the rendered block structure is flattened. */
+const FAQ_TEXT = FAQS.map((f) => ({
+  question: f.q,
+  answer: f.a
+    .map((b) => (b.type === "ul" ? b.items.join(" ") : b.runs.map((r) => r.text).join("")))
+    .join(" ")
+    .replace(/\s+/g, " ")
+    .trim(),
+  scopes: [PATH],
+}));
 
 export default function EcommerceHostingPage() {
-  const faqs = faqsFor(PATH);
-
   return (
-    <>
-      <JsonLd data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "Ecommerce hosting", path: PATH }])} />
+    /**
+     * globals.css balances every heading and prettifies every paragraph. Both
+     * are good defaults and both break the match — the reference wraps
+     * normally. Reset for this page only, as on /cloud-hosting.
+     */
+    <div className="[&_h1]:text-wrap [&_h2]:text-wrap [&_h3]:text-wrap [&_p]:text-wrap">
+      <JsonLd data={breadcrumbGraph(BREADCRUMB)} />
       <JsonLd
         data={productGraph({
           name: "Serverlys Ecommerce Hosting",
           description: DESCRIPTION,
           path: PATH,
-          lowPrice: Math.min(...prices),
-          highPrice: Math.max(...prices),
+          lowPrice: Math.min(...RATES),
+          highPrice: Math.max(...RATES),
+          offerCount: RATES.length,
         })}
       />
-      <JsonLd data={faqGraph(faqs)} />
+      <JsonLd data={faqGraph(FAQ_TEXT)} />
 
-      <ProductHero
-        eyebrow="Ecommerce hosting"
-        title="Checkout that holds up on your best day"
-        lede="Store pages cache badly by nature — a cart cannot be served from cache. What matters is a database that stays responsive while orders land together."
-        breadcrumb={[{ name: "Home", href: "/" }, { name: "Ecommerce hosting" }]}
-        specs={[
-          { label: "From", value: `${formatPrice(Math.min(...prices))}/mo` },
-          { label: "Built for", value: "WooCommerce" },
-          { label: "Transfer", value: "Unmetered" },
-          { label: "Backups", value: "Daily" },
-        ]}
-        primary={{ label: "Choose a plan", href: "#plans" }}
-        secondary={{ label: "Move my store", href: billing.sales }}
-        visual={<SitePreviewMock />}
+      <Hero />
+      <Pricing />
+
+      <Split
+        id="ecom-launch-heading"
+        title={LAUNCH.title}
+        description={LAUNCH.description}
+        items={LAUNCH.items}
+        media={
+          <Image
+            src="/Hosting-images/ecommerce-launch-quickly.png"
+            alt="The Serverlys panel adding a product, with AI generating the description, beside a WordPress site and the hosting behind it"
+            width={1536}
+            height={1024}
+            sizes="(min-width: 1280px) 600px, (min-width: 768px) 688px, 100vw"
+            className="h-auto w-full rounded-2xl"
+          />
+        }
+        reverse
       />
 
-      <FeatureGrid
-        eyebrow="Built for stores"
-        title="Where a store actually slows down"
-        lede="It is rarely the homepage. It is the cart, the checkout and the admin while an import is running."
-        surface="light"
-        columns={3}
-        items={[
-          { label: "Uncached paths stay fast", detail: "Cart and checkout are never served from cache — they need real headroom.", icon: "gauge" },
-          { label: "Database headroom", detail: "Concurrent orders hit the database, not the page cache.", icon: "server" },
-          { label: "No transfer overage", detail: "A campaign that works does not produce a surprise invoice.", icon: "chart" },
-          { label: "Daily backups", detail: "Restore a store to this morning, free.", icon: "shield" },
-          { label: "Free SSL", detail: "Required for payments, included and auto-renewed.", icon: "shield" },
-          { label: "Staged migration", detail: "Place a test order on staging before anything cuts over.", icon: "compass" },
-        ]}
+      <Agent />
+
+      <Split
+        id="ecom-speed-heading"
+        title={SPEED.title}
+        description={SPEED.description}
+        items={SPEED.items}
+        media={
+          <Image
+            src="/Hosting-images/Woocommerce-checkout-section.png"
+            alt="A WooCommerce order summary totalling $92 beside a sales overview, top products and store performance readout"
+            width={1403}
+            height={1121}
+            sizes="(min-width: 1280px) 600px, (min-width: 768px) 688px, 100vw"
+            className="h-auto w-full rounded-2xl"
+          />
+        }
+        reverse
       />
 
-      <ShowcaseSplit
-        id="resources"
-        eyebrow="Visibility"
-        title="See the load before your customers do"
-        body="Resource use and security posture are in the panel, per store. When an import or a campaign is pushing the database, you can see it rather than infer it from complaints."
-        cta={{ label: "See what is included", href: "/hosting" }}
-        visual={<HostingMock />}
-        side="right"
-        surface="subtle"
-        bleed
+      <Email />
+
+      <Split
+        id="ecom-security-heading"
+        tone="dark"
+        title={SECURITY.title}
+        description={SECURITY.description}
+        items={SECURITY.items}
+        media={
+          <Image
+            src="/Hosting-images/Top-notch-security.png"
+            alt="A site in the Serverlys panel with SSL protection, cloud infrastructure and daily backups shown active"
+            width={1254}
+            height={1254}
+            sizes="(min-width: 1280px) 600px, (min-width: 768px) 688px, 100vw"
+            className="h-auto w-full rounded-2xl"
+          />
+        }
+        reverse
       />
 
-      <ShowcaseSplit
-        id="support"
-        eyebrow="Fewer abandoned carts"
-        title="Answer the question that stops the order"
-        body="Most abandoned carts are a question nobody answered: delivery, sizing, returns. ConvoAI answers those in the moment and passes the rest to a person."
-        cta={{ label: "See ConvoAI", href: "https://convoai.cloud/", external: true }}
-        visual={<ChatMock />}
-        side="left"
-        surface="dark"
+      <Split
+        id="ecom-migration-heading"
+        tone="dark"
+        title={MIGRATION.title}
+        description={MIGRATION.description}
+        items={MIGRATION.items}
+        cta={{ label: "Request a migration", href: "/migrations" }}
+        /* Our own migration artwork rather than a second ChatPanel — the
+           support band below already uses that, and two identical panels two
+           sections apart reads as a mistake. */
+        media={
+          <Image
+            src="/Hosting-images/Migration.png"
+            alt="A store migration in progress, with products, orders, media and customers transferred"
+            width={1536}
+            height={1024}
+            sizes="(min-width: 1280px) 600px, (min-width: 768px) 688px, 100vw"
+            className="h-auto w-full rounded-2xl"
+          />
+        }
       />
 
-      <Section id="plans" labelledBy="plans-heading" spacing="base">
-        <SectionHeader
-          id="plans-heading"
-          eyebrow="Plans"
-          title="Ecommerce hosting pricing"
-          lede="Every tier shows what it renews at, next to what it costs today."
-          align="center"
-        />
-        <div className="mt-12">
-          <PricingTable only="ecommerce" />
-        </div>
-      </Section>
+      <Split
+        id="ecom-support-heading"
+        title={SUPPORT.title}
+        items={SUPPORT.items}
+        media={<ChatPanel className="aspect-[600/435] w-full" />}
+      />
 
-      <Migration />
-      <FaqSection items={faqs} />
-      <FinalCta />
-    </>
+      <Banner />
+
+      <Faqs
+        idPrefix="ecom"
+        title={FAQ_HEAD.title}
+        description={FAQ_HEAD.description}
+        items={FAQS}
+      />
+    </div>
   );
 }

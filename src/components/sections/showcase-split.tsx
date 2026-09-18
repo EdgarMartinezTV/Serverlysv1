@@ -48,7 +48,7 @@ export function ShowcaseSplit({
       id={id}
       aria-labelledby={id ? `${id}-heading` : undefined}
       className={cn(
-        "relative isolate overflow-hidden py-20 sm:py-24 lg:py-28",
+        "relative isolate overflow-hidden py-14 sm:py-24 lg:py-28",
         surface === "light" && "bg-canvas",
         surface === "subtle" && "bg-canvas-secondary",
         dark && "bg-canvas-abyss",

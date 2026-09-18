@@ -5,15 +5,21 @@ import { Section } from "@/components/ui/section";
 import { Badge } from "@/components/ui/badge";
 import { FinalCta } from "@/components/sections/final-cta";
 import { JsonLd } from "@/components/ui/json-ld";
-import { articles, articleCategories, readingMinutes } from "@/data/articles";
-import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
+import {
+  articles,
+  articleCategories,
+  articlesByCategory,
+  categorySlug,
+  readingMinutes,
+} from "@/data/articles";
+import { pageMetadata, breadcrumbGraph, collectionGraph } from "@/lib/seo";
 
 const PATH = "/blog";
 
 export const metadata = pageMetadata({
   title: "Serverlys blog — hosting, domains, performance and AI",
   description:
-    "Practical guides on hosting costs, migrations, Core Web Vitals and AI agents, written for people running a small business website.",
+    "Practical guides on hosting, WordPress, performance, security and domains — written for people running a small business website, not for other agencies.",
   path: PATH,
 });
 
@@ -29,16 +35,37 @@ function formatDate(iso: string): string {
 /**
  * Blog index.
  *
- * The category row is a set of labels, not filters: with five articles a
- * filter UI would be pure decoration. It becomes a real control when the
- * archive is large enough to need one.
+ * The category row used to be a set of inert labels, on the reasoning that a
+ * filter over five articles would be decoration. The archive is 76 now, so
+ * they jump to the matching section of the grouped archive below.
+ *
+ * The page shows the newest article with real hierarchy, then the rest of the
+ * recent ones, then the whole archive grouped by subject. That last part
+ * matters for more than browsing: it is the only place every article is linked
+ * from a single page, which is what stops a post 60 items down the list being
+ * effectively orphaned.
  */
+const RECENT_COUNT = 12;
+
 export default function BlogIndexPage() {
   const [lead, ...rest] = articles;
+  const recent = rest.slice(0, RECENT_COUNT);
 
   return (
     <>
       <JsonLd data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "Blog", path: PATH }])} />
+      <JsonLd
+        data={collectionGraph({
+          name: "Serverlys blog",
+          description:
+            "Practical guides on hosting, WordPress, performance, security and domains for small business websites.",
+          path: PATH,
+          // The lead and the recent list — not all 76. An ItemList claiming to
+          // be the page's main entity should describe what the page actually
+          // leads with, and a 76-item list is not that.
+          items: [lead, ...recent].map((a) => ({ name: a.title, path: `/blog/${a.slug}` })),
+        })}
+      />
 
       <section className="relative isolate overflow-hidden bg-canvas-abyss">
         <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(60%_55%_at_25%_-5%,rgb(34_126_255/0.3)_0%,transparent_68%)]" />
@@ -54,12 +81,22 @@ export default function BlogIndexPage() {
               keep. No listicles.
             </p>
           </div>
+          {/*
+            In-page anchors, not links to category routes. There are no
+            category pages: with the whole archive grouped by subject further
+            down this page, a separate route per category would be eight URLs
+            whose entire content already exists here.
+          */}
           <ul className="mt-8 flex flex-wrap gap-2">
             {articleCategories.map((c) => (
               <li key={c}>
-                <span className="inline-flex items-center rounded-full bg-white/10 px-3 py-1 text-caption font-medium text-fg-on-dark-secondary ring-1 ring-inset ring-white/15">
+                <a
+                  href={`#${categorySlug(c)}`}
+                  className="inline-flex min-h-6 items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-caption font-medium text-fg-on-dark-secondary ring-1 ring-inset ring-white/15 transition-colors hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                >
                   {c}
-                </span>
+                  <span className="text-fg-on-dark-muted">{articlesByCategory(c).length}</span>
+                </a>
               </li>
             ))}
           </ul>
@@ -102,7 +139,7 @@ export default function BlogIndexPage() {
         </Link>
 
         <ul className="mt-8 grid gap-px overflow-hidden rounded-xl bg-line sm:grid-cols-2">
-          {rest.map((a) => (
+          {recent.map((a) => (
             <li key={a.slug} className="bg-canvas">
               <Link
                 href={`/blog/${a.slug}`}
@@ -119,6 +156,42 @@ export default function BlogIndexPage() {
             </li>
           ))}
         </ul>
+      </Section>
+
+      {/* The full archive, grouped. Every article is linked from here. */}
+      <Section surface="subtle">
+        <h2 className="text-h3 text-fg">Everything, by subject</h2>
+        <p className="mt-4 max-w-[60ch] text-body text-fg-secondary">
+          {articles.length} articles across {articleCategories.length} subjects.
+        </p>
+
+        <div className="mt-12 flex flex-col gap-12">
+          {articleCategories.map((category) => {
+            const posts = articlesByCategory(category);
+            return (
+              <div key={category} id={categorySlug(category)} className="scroll-mt-24">
+                <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-line pb-4">
+                  <h3 className="text-h4 text-fg">{category}</h3>
+                  <span className="text-small text-fg-muted">
+                    {posts.length} {posts.length === 1 ? "article" : "articles"}
+                  </span>
+                </div>
+                <ul className="mt-5 grid gap-x-10 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
+                  {posts.map((a) => (
+                    <li key={a.slug}>
+                      <Link
+                        href={`/blog/${a.slug}`}
+                        className="block py-1 text-small text-fg-secondary transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                      >
+                        {a.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
+        </div>
       </Section>
 
       <FinalCta />

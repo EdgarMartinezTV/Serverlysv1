@@ -6,7 +6,7 @@ import { FeatureGrid } from "@/components/sections/feature-grid";
 import { FinalCta } from "@/components/sections/final-cta";
 import { JsonLd } from "@/components/ui/json-ld";
 import { NavIcon, ArrowUpRight } from "@/components/navigation/nav-icons";
-import { billing, company } from "@/data/company";
+import { billing, company, emailDisplay } from "@/data/company";
 import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
 
 const PATH = "/support";
@@ -38,7 +38,7 @@ const CHANNELS = [
     title: "Email",
     detail:
       "Write to us if you cannot sign in. Use the address on your invoice so we can match you to an account.",
-    action: { label: company.email, href: `mailto:${company.email}` },
+    action: { label: emailDisplay, href: `mailto:${company.email}` },
   },
   {
     icon: "phone" as const,

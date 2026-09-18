@@ -15,6 +15,18 @@ import { setTimeout as sleep } from "node:timers/promises";
 const CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 const [, , url = "http://localhost:3000", outDir = "shots", widthsArg] = process.argv;
 const full = process.argv.includes("--full");
+/**
+ * Capture as a reduced-motion user sees it.
+ *
+ * Scroll-reveal is gated behind `prefers-reduced-motion: no-preference`, so
+ * under `reduce` the hidden initial state does not exist at all and every
+ * section renders regardless of whether an IntersectionObserver ever fired.
+ * The scroll walk below is best-effort — observer callbacks are coalesced
+ * during a fast programmatic scroll, so on a very tall page some reveals are
+ * missed and the shot shows empty bands that are not empty in a real browser.
+ * Use this flag when you are auditing LAYOUT rather than entrance animation.
+ */
+const reduced = process.argv.includes("--reduced");
 const widths = (
   widthsArg && !widthsArg.startsWith("--")
     ? widthsArg
@@ -77,6 +89,7 @@ const { sessionId } = await send("Target.attachToTarget", {
 });
 
 await send("Page.enable", {}, sessionId);
+await send("Runtime.enable", {}, sessionId);
 
 for (const width of widths) {
   await send(
@@ -89,6 +102,13 @@ for (const width of widths) {
     },
     sessionId,
   );
+  if (reduced) {
+    await send(
+      "Emulation.setEmulatedMedia",
+      { features: [{ name: "prefers-reduced-motion", value: "reduce" }] },
+      sessionId,
+    );
+  }
   await send("Page.navigate", { url }, sessionId);
   await sleep(1400);
 
@@ -114,11 +134,45 @@ for (const width of widths) {
     );
   }
 
-  const shot = await send(
-    "Page.captureScreenshot",
-    { format: "png", captureBeyondViewport: full },
-    sessionId,
-  );
+  /*
+   * Grow the VIEWPORT to the page instead of asking for a capture beyond it.
+   *
+   * `captureBeyondViewport: true` re-lays the page out for the capture, and
+   * when media emulation is active it does so against the real headless window
+   * rather than the metrics override — so every `--reduced` shot came back
+   * rendered at the BASE breakpoint. No md:, no xl:, every responsive layout
+   * collapsed to its narrowest form at every width requested. The DOM was
+   * correct throughout; only the image was wrong, which is the worst way for
+   * this to fail: the tool used to audit layout was silently reporting a
+   * layout the browser never showed anyone.
+   *
+   * Overriding the height instead keeps one real viewport at one real width,
+   * so the capture is of the page as rendered. The cap is Chrome's texture
+   * limit — beyond it the capture comes back blank rather than truncated.
+   */
+  if (full) {
+    const h = await send(
+      "Runtime.evaluate",
+      { expression: "document.documentElement.scrollHeight", returnByValue: true },
+      sessionId,
+    );
+    const pageHeight = Math.min(Math.ceil(h.result?.value ?? 1000), 16000);
+    await send(
+      "Emulation.setDeviceMetricsOverride",
+      { width, height: pageHeight, deviceScaleFactor: 2, mobile: width < 768 },
+      sessionId,
+    );
+    if (reduced) {
+      await send(
+        "Emulation.setEmulatedMedia",
+        { features: [{ name: "prefers-reduced-motion", value: "reduce" }] },
+        sessionId,
+      );
+    }
+    await sleep(300);
+  }
+
+  const shot = await send("Page.captureScreenshot", { format: "png" }, sessionId);
   writeFileSync(`${outDir}/w${width}.png`, Buffer.from(shot.data, "base64"));
   console.log(`✓ ${width}px`);
 }

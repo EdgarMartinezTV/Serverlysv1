@@ -1,13 +1,28 @@
-import { ProductHero } from "@/components/sections/product-hero";
-import { ShowcaseSplit } from "@/components/sections/showcase-split";
-import { FeatureGrid } from "@/components/sections/feature-grid";
-import { FaqSection } from "@/components/sections/faq";
-import { FinalCta } from "@/components/sections/final-cta";
 import { JsonLd } from "@/components/ui/json-ld";
-import { AutomationMock, HostingMock, SitePreviewMock } from "@/components/product-ui/mocks";
-import { billing } from "@/data/company";
-import { faqsFor } from "@/data/faqs";
-import { pageMetadata, faqGraph, breadcrumbGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph, breadcrumbGraph, serviceGraph } from "@/lib/seo";
+import { Hero, Expert, Ways, Plans, Tackle, Commitments, Chat } from "./_components/sections";
+import { Faq } from "./_components/faq";
+import { FAQS } from "./_content";
+
+/**
+ * /website-development — a 1:1 rebuild of
+ * https://www.dreamhost.com/pro-services/development/ (2026-09-14).
+ *
+ * LAYOUT ONLY. Edgar asked for this page to look exactly like that one, so the
+ * section order, grid, type scale and measurements are the reference's — all in
+ * `_components/kit.tsx`. THE COPY IS NOT: every sentence was rewritten for
+ * Serverlys on 2026-09-14 so the page does not trade on someone else's writing.
+ * `_content.ts` carries the rules that rewrite was done under, including why
+ * this page publishes no hourly rate and no turnaround promise.
+ *
+ * REPLACES the previous page, which was built from the site's own section kit
+ * (ProductHero / ShowcaseSplit / FeatureGrid / FinalCta). That version is in
+ * git history if the clone is ever reverted.
+ *
+ * ⚠ The FAQ schema below intentionally uses THIS page's questions rather than
+ * the shared `faqsFor()` set. `faqGraph` may only be emitted on a page that
+ * visibly renders the same Q&As, and these are what render here.
+ */
 
 const PATH = "/website-development";
 const DESCRIPTION =
@@ -20,64 +35,43 @@ export const metadata = pageMetadata({
 });
 
 export default function WebsiteDevelopmentPage() {
-  const faqs = faqsFor("/");
   return (
     <>
-      <JsonLd data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "Web development", path: PATH }])} />
-      <JsonLd data={faqGraph(faqs)} />
-      <ProductHero
-        eyebrow="Web development"
-        title="When a plugin will not do it"
-        lede="Booking that has to match how you actually schedule, stock that has to match your warehouse, a portal your customers log into. Built by the people who will also host it."
-        breadcrumb={[{ name: "Home", href: "/" }, { name: "Web development" }]}
-        specs={[
-          { label: "Built on", value: "Serverlys" },
-          { label: "Integrations", value: "Yours" },
-          { label: "Handover", value: "Full source" },
-          { label: "Support", value: "Same team" },
-        ]}
-        primary={{ label: "Describe the problem", href: billing.sales }}
-        secondary={{ label: "See hosting", href: "/hosting" }}
-        visual={<SitePreviewMock />}
+      <JsonLd
+        data={serviceGraph({
+          name: "Website development",
+          serviceType: "Web application development",
+          description: DESCRIPTION,
+          path: PATH,
+        })}
       />
-      <FeatureGrid
-        eyebrow="What we build"
-        title="The awkward middle of a business"
-        lede="The parts that are specific to how you work, and therefore never come in a box."
-        surface="light"
-        columns={3}
-        items={[
-          { label: "Customer portals", detail: "Accounts, orders and documents behind a login.", icon: "shield" },
-          { label: "Booking systems", detail: "Availability that matches how you actually schedule.", icon: "compass" },
-          { label: "Integrations", detail: "Your accounting, stock or CRM talking to the site.", icon: "bolt" },
-          { label: "Data imports", detail: "Getting years of records out of the old system.", icon: "server" },
-          { label: "Internal tools", detail: "The spreadsheet that has outgrown being a spreadsheet.", icon: "layout" },
-          { label: "APIs", detail: "So the next thing you build can talk to this one.", icon: "wrench" },
-        ]}
+      <JsonLd
+        data={breadcrumbGraph([
+          { name: "Home", path: "/" },
+          { name: "Web development", path: PATH },
+        ])}
       />
-      <ShowcaseSplit
-        id="run"
-        eyebrow="Built to be run"
-        title="It has to survive after launch"
-        body="We build on the infrastructure we operate, so backups, certificates and scaling are already handled. There is no handover to a host who did not write it."
-        cta={{ label: "See the platform", href: "/hosting" }}
-        visual={<HostingMock />}
-        side="right"
-        surface="subtle"
-        bleed
+      <JsonLd
+        /* `scopes` is what decides which pages a SHARED faq appears on. These
+           are page-local, so the scope is this path and nothing else. */
+        data={faqGraph(
+          FAQS.items.map((f) => ({ question: f.q, answer: f.a, scopes: [PATH] })),
+        )}
       />
-      <ShowcaseSplit
-        id="connect"
-        eyebrow="Connected"
-        title="New systems still need the old ones"
-        body="Automations connect what we build to what you already use, so a new booking lands in the calendar and the accounts package you have used for a decade."
-        cta={{ label: "See automations", href: "/automations" }}
-        visual={<AutomationMock />}
-        side="left"
-        surface="dark"
-      />
-      <FaqSection items={faqs} />
-      <FinalCta />
+
+      <Hero />
+      <Expert />
+      <Ways />
+      <Plans />
+      <Tackle />
+      {/* Commitments stands in the testimonial slot. Serverlys has no collected
+          customer reviews yet, and the band's job — give a stranger a reason to
+          believe you — is better done by things that are checkable than by
+          quotes nobody said. Swap back to <Reviews /> once real ones exist;
+          `REVIEWS` and its `check:reviews` gate are still in place. */}
+      <Commitments />
+      <Chat />
+      <Faq />
     </>
   );
 }

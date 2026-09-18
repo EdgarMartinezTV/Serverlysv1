@@ -26,8 +26,10 @@ export function DomainResultRow({
   const { domain, status, price } = result;
   const sellable = status === "available" && price !== null;
 
-  const registerUrl = `${billing.root}/cart.php?a=add&domain=register&query=${encodeURIComponent(domain)}`;
-  const transferUrl = `${billing.root}/cart.php?a=add&domain=transfer&query=${encodeURIComponent(domain)}`;
+  /* company.ts owns the cart contract and says to route through these rather
+     than hand-building the URL; this file used to duplicate it. */
+  const registerUrl = billing.searchDomain(domain);
+  const transferUrl = billing.transferDomainSearch(domain);
 
   return (
     <li

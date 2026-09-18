@@ -1,20 +1,22 @@
 import { ProductHero } from "@/components/sections/product-hero";
+import { ConvoAiLogo } from "@/components/layout/convoai-logo";
 import { ShowcaseSplit } from "@/components/sections/showcase-split";
 import { FeatureGrid } from "@/components/sections/feature-grid";
 import { FaqSection } from "@/components/sections/faq";
 import { FinalCta } from "@/components/sections/final-cta";
 import { JsonLd } from "@/components/ui/json-ld";
-import { ChatMock, AutomationMock, SitePreviewMock } from "@/components/product-ui/mocks";
+import { ConvoChat } from "@/components/product-ui/live/convo-chat";
+import { AutomationMock, SitePreviewMock } from "@/components/product-ui/mocks";
 import { billing, sisterProducts } from "@/data/company";
 import { faqsFor } from "@/data/faqs";
-import { pageMetadata, faqGraph, breadcrumbGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph, breadcrumbGraph, serviceGraph } from "@/lib/seo";
 
 const PATH = "/convoai";
 const DESCRIPTION =
-  "ConvoAI is the Serverlys chat agent: trained on your own site, it answers customers around the clock, captures the lead and hands the rest to a person.";
+  "ConvoAI is the Serverlys AI chatbot: trained on your own site, it answers customers around the clock, captures the lead and hands the rest to a person.";
 
 export const metadata = pageMetadata({
-  title: "ConvoAI — an AI chat agent for your business | Serverlys",
+  title: "AI Chatbot for Your Business — ConvoAI | Serverlys",
   description: DESCRIPTION,
   path: PATH,
 });
@@ -25,13 +27,24 @@ export default function ConvoAiPage() {
 
   return (
     <>
+      <JsonLd
+        data={serviceGraph({
+          name: "ConvoAI — AI chatbot",
+          serviceType: "AI chatbot",
+          description: DESCRIPTION,
+          path: PATH,
+        })}
+      />
       <JsonLd data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "ConvoAI", path: PATH }])} />
       <JsonLd data={faqGraph(faqs)} />
 
       <ProductHero
         eyebrow="ConvoAI"
-        title="It answers before you wake up"
-        lede="A chat agent trained on your own site. It handles the questions that make up most of your volume, and it knows which ones it should not attempt."
+        eyebrowSlot={
+          <ConvoAiLogo tone="dark" decorative={false} className="h-9 w-auto" />
+        }
+        title="An AI chatbot that answers before you wake up"
+        lede="An AI chatbot trained on your own site. It handles the questions that make up most of your volume, and it knows which ones it should not attempt."
         breadcrumb={[{ name: "Home", href: "/" }, { name: "AI agents", href: "/ai-agents" }, { name: "ConvoAI" }]}
         specs={[
           { label: "Trained on", value: "Your website" },
@@ -41,7 +54,7 @@ export default function ConvoAiPage() {
         ]}
         primary={{ label: "Open ConvoAI", href: convo?.href ?? billing.sales }}
         secondary={{ label: "Ask what it can do", href: billing.sales }}
-        visual={<ChatMock />}
+        visual={<ConvoChat tone="dark" />}
       />
 
       <FeatureGrid

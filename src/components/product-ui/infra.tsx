@@ -45,11 +45,11 @@ export function TerminalMock({ className }: { className?: string }) {
             <span key={c} className={cn("h-2 w-2 rounded-full opacity-70", c)} />
           ))}
         </span>
-        <p className="ml-1 font-mono text-[0.625rem] text-fg-on-dark-muted">
+        <p className="ml-1 font-mono text-ui text-fg-on-dark-muted">
           root@vps-31 — bash
         </p>
       </div>
-      <div className="flex flex-col gap-1 p-3.5 font-mono text-[0.6875rem] leading-relaxed">
+      <div className="flex flex-col gap-1 p-3.5 font-mono text-ui leading-relaxed">
         {SESSION.map(([kind, text], i) => (
           <p key={i} className="flex gap-2">
             {kind === "cmd" ? (
@@ -91,12 +91,12 @@ export function RackMock({ className }: { className?: string }) {
       )}
     >
       <div className="flex items-center justify-between">
-        <p className="font-mono text-[0.625rem] uppercase tracking-wider text-fg-on-dark-muted">
+        <p className="font-mono text-ui uppercase tracking-wider text-fg-on-dark-muted">
           Cabinet 04 · your machine
         </p>
         <span className="inline-flex items-center gap-1.5 rounded-full bg-success-fill/15 px-2 py-0.5">
           <span className="h-1.5 w-1.5 rounded-full bg-success-fill" />
-          <span className="text-[0.5625rem] font-semibold uppercase text-success-fill">
+          <span className="text-ui font-semibold uppercase text-success-fill">
             Powered
           </span>
         </span>
@@ -118,7 +118,7 @@ export function RackMock({ className }: { className?: string }) {
                 : "bg-white/[0.03] ring-white/5",
             )}
           >
-            <span className="font-mono text-[0.5625rem] text-fg-on-dark-muted">{row.u}</span>
+            <span className="font-mono text-ui text-fg-on-dark-muted">{row.u}</span>
             {/* Drive bays. */}
             <span className="flex gap-1">
               {Array.from({ length: 8 }).map((_, d) => (
@@ -133,7 +133,7 @@ export function RackMock({ className }: { className?: string }) {
             </span>
             <span
               className={cn(
-                "ml-auto text-[0.625rem]",
+                "ml-auto text-ui",
                 row.mine ? "font-semibold text-white" : "text-fg-on-dark-muted",
               )}
             >
@@ -150,8 +150,8 @@ export function RackMock({ className }: { className?: string }) {
           ["Disk", "NVMe RAID"],
         ].map(([k, v]) => (
           <div key={k}>
-            <dt className="font-mono text-[0.5rem] uppercase text-fg-on-dark-muted">{k}</dt>
-            <dd className="mt-0.5 text-[0.6875rem] font-semibold text-white">{v}</dd>
+            <dt className="font-mono text-ui uppercase text-fg-on-dark-muted">{k}</dt>
+            <dd className="mt-0.5 text-ui font-semibold text-white">{v}</dd>
           </div>
         ))}
       </dl>
@@ -189,19 +189,19 @@ export function ResponsibilityMock({ className }: { className?: string }) {
       className={className}
     >
       <div className="grid grid-cols-[1fr_auto] gap-x-3">
-        <p className="pb-1.5 font-mono text-[0.5625rem] uppercase text-fg-muted">Task</p>
-        <p className="pb-1.5 text-right font-mono text-[0.5625rem] uppercase text-fg-muted">
+        <p className="pb-1.5 font-mono text-ui uppercase text-fg-muted">Task</p>
+        <p className="pb-1.5 text-right font-mono text-ui uppercase text-fg-muted">
           Owner
         </p>
         {DUTIES.map(([task, owner]) => (
           <div key={task} className="contents">
-            <p className="border-t border-line-subtle py-1.5 text-[0.6875rem] text-fg">
+            <p className="border-t border-line-subtle py-1.5 text-ui text-fg">
               {task}
             </p>
             <p className="border-t border-line-subtle py-1.5 text-right">
               <span
                 className={cn(
-                  "inline-flex rounded-full px-1.5 py-0.5 text-[0.5625rem] font-semibold uppercase",
+                  "inline-flex rounded-full px-1.5 py-0.5 text-ui font-semibold uppercase",
                   owner === "us"
                     ? "bg-success-fill/15 text-success"
                     : "bg-canvas-inset text-fg-secondary",
@@ -243,10 +243,10 @@ export function SharedLimitsMock({ className }: { className?: string }) {
         ].map(([label, note, pct]) => (
           <div key={label as string}>
             <div className="flex items-baseline justify-between">
-              <p className="text-[0.6875rem] font-medium text-fg">{label}</p>
+              <p className="text-ui font-medium text-fg">{label}</p>
               <p
                 className={cn(
-                  "text-[0.625rem]",
+                  "text-ui",
                   (pct as number) > 60 ? "text-warning" : "text-fg-muted",
                 )}
               >
@@ -265,7 +265,7 @@ export function SharedLimitsMock({ className }: { className?: string }) {
           </div>
         ))}
       </div>
-      <p className="mt-4 rounded-lg bg-canvas-secondary px-3 py-2 text-[0.625rem] text-fg-secondary">
+      <p className="mt-4 rounded-lg bg-canvas-secondary px-3 py-2 text-ui text-fg-secondary">
         Approaching a limit tells you it is time to move up — before visitors
         notice, not after.
       </p>

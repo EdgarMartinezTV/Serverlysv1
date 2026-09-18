@@ -9,6 +9,7 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { SitePreviewMock } from "@/components/product-ui/mocks";
 import { pageMetadata, breadcrumbGraph, faqGraph } from "@/lib/seo";
 import type { Faq } from "@/data/faqs";
+import { billing } from "@/data/company";
 
 const PATH = "/our-process";
 
@@ -136,7 +137,7 @@ export default function OurProcessPage() {
                 of a stage, and what we need from you to start the next one.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <Button href="/contact" variant="inverse" size="lg">
+                <Button href={billing.sales} variant="inverse" size="lg">
                   Start with a scope
                 </Button>
                 <Button href="/website-design" variant="ghost" size="lg">
@@ -249,13 +250,13 @@ export default function OurProcessPage() {
                 AI agent
               </Link>{" "}
               setup. Hosting migrations have their own,{" "}
-              <Link href="/wp-migrations" className="font-medium text-primary hover:text-primary-hover">
+              <Link href="/migrations" className="font-medium text-primary hover:text-primary-hover">
                 shorter runbook
               </Link>
               .
             </p>
           </div>
-          <Button href="/contact">Talk about a project</Button>
+          <Button href={billing.sales}>Talk about a project</Button>
         </div>
       </Section>
 

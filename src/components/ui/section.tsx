@@ -41,9 +41,16 @@ export function Section({
         surface === "light" && "bg-canvas text-fg-secondary",
         surface === "subtle" && "bg-canvas-secondary text-fg-secondary",
         surface === "dark" && "bg-canvas-dark text-fg-on-dark-secondary",
-        spacing === "tight" && "py-14 sm:py-16",
-        spacing === "base" && "py-20 sm:py-24 lg:py-28",
-        spacing === "loose" && "py-24 sm:py-32 lg:py-40",
+        /* Each step now starts SMALLER than `sm` rather than carrying the
+           tablet value down to a phone. `base` used to be py-20 at every width
+           below 640px, so a 390px screen paid 160px of band padding — desktop
+           rhythm on a device with a fifth of the height to spend. Fourteen
+           bands did that, which is ~2.4 screens of the mobile page in padding
+           alone. The mobile step is --space-section-tight (3.5rem), the value
+           the token file already defines for exactly this. */
+        spacing === "tight" && "py-10 sm:py-16",
+        spacing === "base" && "py-14 sm:py-24 lg:py-28",
+        spacing === "loose" && "py-16 sm:py-32 lg:py-40",
         className,
       )}
     >
@@ -63,6 +70,7 @@ export function SectionHeader({
   id,
   align = "left",
   tone = "light",
+  accent = "brand",
 }: {
   eyebrow?: string;
   title: string;
@@ -70,6 +78,17 @@ export function SectionHeader({
   id?: string;
   align?: "left" | "center";
   tone?: "light" | "dark";
+  /**
+   * Eyebrow colour. `brand` is the default everywhere.
+   *
+   * `neutral` exists for dark bands that already carry the brand in a large
+   * field behind them. On dark, the brand eyebrow is brand-400 (#7d7dff) —
+   * hue 240 and therefore correct by the ramp, but at 75% lightness it is the
+   * PERIWINKLE the design system warns about, and beside a full-width #0000ff
+   * glow it reads lavender rather than blue. Neutral drops the accent so the
+   * one blue in the band is the true logo blue.
+   */
+  accent?: "brand" | "neutral";
 }) {
   return (
     <div
@@ -82,7 +101,13 @@ export function SectionHeader({
         <span
           className={cn(
             "font-mono text-caption uppercase",
-            tone === "dark" ? "text-primary-on-dark" : "text-primary",
+            accent === "neutral"
+              ? tone === "dark"
+                ? "text-fg-on-dark-secondary"
+                : "text-fg-secondary"
+              : tone === "dark"
+                ? "text-primary-on-dark"
+                : "text-primary",
           )}
         >
           {eyebrow}

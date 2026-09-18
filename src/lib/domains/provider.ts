@@ -156,6 +156,37 @@ const WINDOW_MS = 60_000;
 const MAX_PER_WINDOW = 20;
 const buckets = new Map<string, { count: number; resetAt: number }>();
 
+/**
+ * The client address to rate-limit against.
+ *
+ * ⚠ `X-Forwarded-For` is a LIST, and the left-hand entries are written by the
+ * caller. Taking `xff.split(",")[0]` — which this used to do — reads a value
+ * the attacker chose, so rotating one header defeats the limiter entirely and
+ * the bucket map fills with junk keys. Each proxy APPENDS the address it
+ * actually observed, so the trustworthy entry is the RIGHTMOST one, written by
+ * the last proxy before us.
+ *
+ * `x-real-ip` is preferred where present: the reverse proxy sets it to a single
+ * observed address rather than a caller-extensible list.
+ *
+ * This assumes exactly one trusted proxy in front of the app, which is how this
+ * deploys (Easypanel/Traefik). Behind N proxies the correct entry is the Nth
+ * from the right — revisit this if another hop is ever added, because getting
+ * it wrong silently reopens the bypass.
+ */
+export function clientKey(request: Request, scope: string): string {
+  const realIp = request.headers.get("x-real-ip")?.trim();
+  if (realIp) return `${scope}:${realIp}`;
+
+  const forwarded = request.headers.get("x-forwarded-for");
+  if (forwarded) {
+    const hops = forwarded.split(",").map((h) => h.trim()).filter(Boolean);
+    const observed = hops[hops.length - 1];
+    if (observed) return `${scope}:${observed}`;
+  }
+  return `${scope}:unknown`;
+}
+
 export function rateLimit(key: string): { ok: boolean; retryAfterSeconds: number } {
   const now = Date.now();
   const bucket = buckets.get(key);

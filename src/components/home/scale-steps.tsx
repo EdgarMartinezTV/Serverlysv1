@@ -88,11 +88,23 @@ export function ScaleSteps() {
   return (
     <section
       aria-labelledby="scale-heading"
-      className="relative isolate overflow-hidden bg-canvas-deep py-20 sm:py-24 lg:py-28"
+      className="relative isolate overflow-hidden bg-canvas-deep py-14 sm:py-24 lg:py-28"
     >
+      {/*
+        ⚠ CYAN, NOT VIOLET. This wash was `rgb(141 89 255 / 0.20)` —
+        `violet-500`. Recoloured rather than deleted for the same reason as the
+        hero's: each of these dark bands is lit by TWO sources, and dropping one
+        leaves a flat half.
+
+        Cyan is the substitute because globals.css already nominates it —
+        `--color-accent-on-dark: var(--color-cyan-400)` — so the band keeps two
+        visibly distinct hues without inventing a third. Alpha comes down from
+        0.20 to 0.14 because cyan is markedly more luminous than violet at the
+        same opacity and read as a teal spotlight at parity.
+      */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(55%_60%_at_75%_0%,rgb(141_89_255/0.20)_0%,transparent_70%)]"
+        className="absolute inset-0 bg-[radial-gradient(55%_60%_at_75%_0%,rgb(34_211_238/0.14)_0%,transparent_70%)]"
       />
       <div
         aria-hidden="true"
@@ -169,7 +181,7 @@ export function ScaleSteps() {
                     <span
                       aria-hidden="true"
                       className={cn(
-                        "flex h-6 w-6 items-center justify-center rounded-md font-mono text-[0.5625rem]",
+                        "flex h-6 w-6 items-center justify-center rounded-md font-mono text-micro",
                         selected ? "bg-cyan-400 text-canvas-abyss" : "bg-white/10",
                       )}
                     >

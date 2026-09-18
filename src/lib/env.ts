@@ -14,6 +14,30 @@ export const publicEnv = {
 } as const;
 
 /**
+ * Search-engine ownership verification tokens.
+ *
+ * Without one of these there is no Search Console property, and without a
+ * Search Console property there is no way to submit the sitemap, see which
+ * queries the site already surfaces for, request indexing after a change, or
+ * find out that Google has stopped crawling something. That makes this the one
+ * piece of SEO plumbing that is not optional — every other signal on the site
+ * is invisible until it exists.
+ *
+ * Read at module scope (not lazily) because Next needs them while building the
+ * static <head>. Both are absent by default, and an absent token emits no tag
+ * at all rather than an empty one — an empty verification meta is a failed
+ * verification, not a neutral one.
+ *
+ * These are NOT secrets: the whole point is that they are published in the
+ * page. They live here instead of being hardcoded so staging never claims
+ * ownership of the production property.
+ */
+export const verification = {
+  google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+  bing: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION,
+} as const;
+
+/**
  * WHMCS admin API credentials. Server-only — these must never reach the client
  * bundle, which is why they are read inside a function and have no
  * NEXT_PUBLIC_ prefix.

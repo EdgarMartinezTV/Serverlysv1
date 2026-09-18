@@ -65,7 +65,7 @@ export default function FaqPage() {
             <p className="mt-5 text-body-lg text-fg-on-dark-secondary">
               {faqs.length} answers covering price, renewals, migration, domains
               and the AI products. If yours is not here,{" "}
-              <Link href="/contact" className="text-white underline underline-offset-4 hover:text-accent-on-dark">
+              <Link href="/support" className="text-white underline underline-offset-4 hover:text-accent-on-dark">
                 ask us directly
               </Link>
               .

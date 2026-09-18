@@ -9,6 +9,7 @@ import { ResponsibilityMock } from "@/components/product-ui/infra";
 import { UptimePanel } from "@/components/product-ui/panels";
 import { pageMetadata, breadcrumbGraph, faqGraph } from "@/lib/seo";
 import type { Faq } from "@/data/faqs";
+import { billing } from "@/data/company";
 
 const PATH = "/managed-hosting";
 
@@ -84,7 +85,7 @@ export default function ManagedHostingPage() {
           { label: "Your access", value: "Unchanged" },
         ]}
         primary={{ label: "See hosting plans", href: "/pricing" }}
-        secondary={{ label: "Ask what you need", href: "/contact" }}
+        secondary={{ label: "Ask what you need", href: billing.sales }}
         visual={<ResponsibilityMock />}
       />
 

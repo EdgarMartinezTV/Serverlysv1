@@ -76,14 +76,14 @@ export function PlanFinder() {
   return (
     <section
       aria-labelledby="finder-heading"
-      className="relative isolate overflow-hidden border-b border-line bg-canvas-lavender"
+      className="relative isolate overflow-hidden border-b border-line bg-canvas-secondary"
     >
       {/* Soft brand wash, mirroring the target's tinted band. */}
       <div
         aria-hidden="true"
         className="absolute inset-0 bg-[radial-gradient(60%_70%_at_50%_0%,rgb(34_126_255/0.10)_0%,transparent_70%)]"
       />
-      <Container className="relative py-20 sm:py-24">
+      <Container className="relative py-14 sm:py-24">
         <Reveal className="mx-auto max-w-2xl text-center">
           <span
             aria-hidden="true"
@@ -149,10 +149,10 @@ export function PlanFinder() {
                   <p className="mt-2 text-h3 text-fg">{plan.name}</p>
                   <p className="mt-1.5 text-small text-fg-secondary">
                     <span className="tabular font-semibold text-fg">
-                      {formatPrice(plan.annual)}
+                      {formatPrice(plan.monthly)}
                     </span>
-                    /mo on an annual term · renews at{" "}
-                    <span className="tabular">{formatPrice(plan.renewal)}</span>/mo
+                    /mo · standard rate{" "}
+                    <span className="tabular">{formatPrice(plan.standard)}</span>/mo
                   </p>
                 </div>
                 <div className="flex w-full shrink-0 flex-col gap-2.5 sm:w-auto sm:flex-row">
@@ -169,7 +169,7 @@ export function PlanFinder() {
                 Still unsure?{" "}
                 <a
                   href={billing.sales}
-                  className="rounded-sm font-medium text-primary underline underline-offset-4 hover:text-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                  className="inline-block rounded-sm py-1 font-medium text-primary underline underline-offset-4 hover:text-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                 >
                   Describe it to us
                 </a>{" "}

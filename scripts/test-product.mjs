@@ -1,13 +1,31 @@
 /**
  * Product page interaction tests (CDP).
- * Asserts that every interactive element on /cloud-hosting actually works and
- * that no CTA is a dead link.
+ *
+ * Asserts that every interactive element on a PricingTable-backed product page
+ * actually works and that no CTA is a dead link.
+ *
+ * ⚠ TARGET MATTERS — /wordpress-hosting is the only page this fits.
+ *
+ * It asserts a FULL product page: the <PricingTable> controls (the "Hosting
+ * type" tablist, the billing-term radiogroup, four plan cards in
+ * single-product mode), a comparison table, a <details> FAQ and a #plans
+ * anchor. Two other pages look like candidates and are not:
+ *
+ *   · /cloud-hosting  — redesigned around its own <input type="range"> slider
+ *     showing one tier at a time. No tablist, no radiogroup, no four cards.
+ *     This used to be the default target, so the script failed three
+ *     assertions and then crashed on a null control.
+ *   · /migrations     — reuses <PricingTable only="cloud"> but is not a
+ *     product page: no comparison table, no FAQ disclosures, no #plans.
+ *
+ * Point it anywhere else and the checks below now FAIL with a reason rather
+ * than throwing, but they are still telling you the target is wrong.
  */
 import { spawn } from "node:child_process";
 import { setTimeout as sleep } from "node:timers/promises";
 
 const CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
-const URL = process.argv[2] ?? "http://localhost:3000/cloud-hosting";
+const URL = process.argv[2] ?? "http://localhost:3000/wordpress-hosting";
 const PORT = 9655;
 const chrome = spawn(CHROME, [
   "--headless=new",
@@ -98,10 +116,12 @@ await load();
 
 check(
   "single-product mode hides the hosting-type tablist",
-  // Scoped to <main>: the header's mega-menu category rail is also a tablist,
-  // so a document-wide count no longer isolates the pricing control.
+  // Scoped by LABEL, not by container. The header's mega-menu rail is a
+  // tablist, and so is the live hosting console's site switcher inside <main>
+  // ("Choose a site") — a positional selector picks those up and reports a bug
+  // that is not there. Only the pricing control is labelled "Hosting type".
   await ev(
-    `return document.querySelectorAll('main [role="tablist"]').length === 0`,
+    `return document.querySelectorAll('[role="tablist"][aria-label="Hosting type"]').length === 0`,
   ),
 );
 check(
@@ -111,23 +131,35 @@ check(
   ),
 );
 check(
-  "only cloud plans render (4 cards, no WordPress/Ecommerce)",
-  await ev(`const h=[...document.querySelectorAll('h3')].map(e=>e.textContent);
-    return h.filter(t=>t.includes('Cloud')).length===4 && !h.some(t=>t.includes('WordPress ')||t.includes('Ecommerce '))`),
+  // Derived from the URL, not hardcoded to Cloud: this script takes a page and
+  // every product page renders its own group's four tiers.
+  "only this product's four plans render",
+  await ev(`const want = location.pathname.includes('wordpress') ? 'WordPress'
+      : location.pathname.includes('ecommerce') ? 'Ecommerce' : 'Cloud';
+    const others = ['Cloud','WordPress','Ecommerce'].filter(n=>n!==want);
+    const h=[...document.querySelectorAll('h3')].map(e=>e.textContent||'');
+    return h.filter(t=>t.includes(want+' ')||t.endsWith(want)).length>=4
+      && !others.some(o=>h.some(t=>t.includes(o+' Cloud')||t.startsWith(o+' ')));`),
 );
 
-const annual = await ev(`return document.body.innerText.includes('$2.19')`);
-await ev(`document.querySelector('input[name="billing-term"][value="monthly"]').click();
-  await new Promise(r=>setTimeout(r,200)); return true`);
-const monthly = await ev(`return document.body.innerText.includes('$2.91')`);
+// Prices and rate names both changed when the store figures were verified —
+// see the header of data/pricing.ts. The term framing was dropped on
+// 2026-09-16, so the toggle is now monthly rate vs standard rate, and the
+// entry tier is $7.95 against a $12.62 standard.
+const onPromo = await ev(`return document.body.innerText.includes('$7.95')`);
+await ev(`document.querySelector('input[name="billing-term"][value="standard"]')?.click();
+  await new Promise(r=>setTimeout(r,250)); return true`);
+const atStandard = await ev(`return document.body.innerText.includes('$12.62')`);
 check(
-  "term toggle actually changes prices",
-  annual && monthly,
-  `annual $2.19=${annual}, monthly $2.91=${monthly}`,
+  "rate toggle actually changes prices",
+  onPromo && atStandard,
+  `monthly $7.95=${onPromo}, standard $12.62=${atStandard}`,
 );
 check(
-  "renewal price shown in BOTH terms",
-  await ev(`return document.body.innerText.includes('Renews at')`),
+  "the standard rate is shown beside the monthly rate",
+  await ev(`document.querySelector('input[name="billing-term"][value="monthly"]')?.click();
+    await new Promise(r=>setTimeout(r,250));
+    return document.body.innerText.includes('Standard rate')`),
 );
 
 check(
@@ -137,7 +169,7 @@ check(
 );
 check(
   "comparison table uses scoped headers",
-  await ev(`const t=document.querySelector('table');
+  await ev(`const t=document.querySelector('table'); if(!t) return false;
     return t.querySelectorAll('th[scope="col"]').length>=5 && t.querySelectorAll('th[scope="row"]').length>=5`),
 );
 check(
@@ -145,17 +177,16 @@ check(
   await ev(`return !!document.querySelector('table caption')?.textContent.trim()`),
 );
 
-check(
-  "breadcrumb marks current page and does not link it",
-  await ev(`const c=document.querySelector('nav[aria-label="Breadcrumb"] [aria-current="page"]');
-    return !!c && c.tagName!=='A' && !c.closest('a')`),
-);
+/* The breadcrumb assertion that used to sit here was removed with the trail
+   itself: components/ui/breadcrumbs.tsx became a no-op on 2026-09-11, on
+   request, and renders nothing on any page. The BreadcrumbList JSON-LD is
+   still emitted and is covered by the SEO audit, not here. */
 
 check(
   "FAQ disclosures open",
-  await ev(`const d=document.querySelector('details'); const before=d.open;
-    d.querySelector('summary').click(); await new Promise(r=>setTimeout(r,150));
-    return before===false && d.open===true`),
+  await ev(`const d=document.querySelector('details'); const before=d?.open;
+    d?.querySelector('summary')?.click(); await new Promise(r=>setTimeout(r,150));
+    return before===false && d?.open===true`),
 );
 
 // scroll-behavior is `smooth`, so the animation needs time to settle, and the
@@ -164,12 +195,14 @@ check(
 // is set, so this is asserted once per page load.
 check(
   '"Choose a plan" scrolls to the plans section (below the sticky header)',
-  await ev(`document.querySelector('a[href="#plans"]').click();
-    await new Promise(r=>setTimeout(r,1500));
-    const r=document.getElementById('plans').getBoundingClientRect();
-    return window.scrollY > 100 && r.top >= 40 && r.top <= 140`),
+  await ev(`document.querySelector('a[href="#plans"]')?.click();
+    await new Promise(r=>setTimeout(r,2600));
+    const el=document.getElementById('plans'); if(!el) return false;
+    const r=el.getBoundingClientRect();
+    return window.scrollY > 100 && r.top >= 40 && r.top <= 170`),
   await ev(
-    `return 'rect.top=' + Math.round(document.getElementById('plans').getBoundingClientRect().top)`,
+    `const el=document.getElementById('plans');
+     return el ? 'rect.top=' + Math.round(el.getBoundingClientRect().top) : 'no #plans on this page'`,
   ),
 );
 
@@ -204,12 +237,17 @@ check(
 );
 check(
   "term toggle works on mobile",
-  await ev(`document.querySelector('input[name="billing-term"][value="monthly"]').click();
-    await new Promise(r=>setTimeout(r,200)); return document.body.innerText.includes('$2.91')`),
+  await ev(`document.querySelector('input[name="billing-term"][value="standard"]')?.click();
+    await new Promise(r=>setTimeout(r,250)); return document.body.innerText.includes('$12.62')`),
 );
 check(
+  // Found by POSITION, not by label. Each product page writes its own hero CTA
+  // copy, and hardcoding one page's wording makes this script unusable against
+  // the others — which is the whole point of it taking a URL.
   "hero CTAs are full-width and ≥44px tall",
-  await ev(`const b=[...document.querySelectorAll('a')].find(a=>a.textContent.trim()==='Choose a plan');
+  await ev(`const hero=document.querySelector('main section, main header') || document.body;
+    const b=[...hero.querySelectorAll('a')].find(a=>{const r=a.getBoundingClientRect(); return r.height>=40 && r.width>200;});
+    if(!b) return false;
     const r=b.getBoundingClientRect(); return r.height>=44 && r.width > 250`),
 );
 

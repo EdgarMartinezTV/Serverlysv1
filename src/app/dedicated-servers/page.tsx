@@ -15,7 +15,7 @@ const PATH = "/dedicated-servers";
 export const metadata = pageMetadata({
   title: "Dedicated Servers — the whole machine | Serverlys",
   description:
-    "Single-tenant hardware for sustained load, predictable I/O and compliance requirements that forbid shared tenancy. Specified to your workload, quoted, then built.",
+    "Single-tenant hardware for sustained load, predictable I/O and compliance rules that forbid shared tenancy. Specified to your workload, quoted, then built.",
   path: PATH,
 });
 
@@ -82,7 +82,7 @@ export default function DedicatedServersPage() {
           { label: "Storage", value: "NVMe RAID" },
           { label: "Pricing", value: "Quoted" },
         ]}
-        primary={{ label: "Request a specification", href: "/contact" }}
+        primary={{ label: "Request a specification", href: billing.sales }}
         secondary={{ label: "Compare the tiers", href: "/hosting-alternatives" }}
         visual={<RackMock />}
       />
@@ -192,7 +192,7 @@ export default function DedicatedServersPage() {
             </p>
           </div>
           <div className="flex shrink-0 flex-wrap gap-3">
-            <Button href="/contact">Request a specification</Button>
+            <Button href={billing.sales}>Request a specification</Button>
             <Button href={billing.sales} variant="secondary" external>
               Open a sales ticket
             </Button>

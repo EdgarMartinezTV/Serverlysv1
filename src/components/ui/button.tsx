@@ -25,10 +25,13 @@ export type ButtonVariant =
   | "inverseGhost"
   | "onBrand";
 
-export type ButtonSize = "sm" | "md" | "lg";
+export type ButtonSize = "sm" | "md" | "lg" | "nav";
 
+/* Weight lives in SIZES, not here. `nav` is the only size that is semibold, and
+   `cn` is a plain join — two font-weight utilities on one element would be
+   resolved by stylesheet order rather than by the one you wrote last. */
 const BASE =
-  "inline-flex items-center justify-center gap-2 rounded-md font-sans font-medium " +
+  "inline-flex items-center justify-center gap-2 rounded-md font-sans " +
   "whitespace-nowrap transition-colors duration-fast ease-hover " +
   "focus-visible:outline-2 focus-visible:outline-offset-2 " +
   "disabled:pointer-events-none disabled:opacity-50 " +
@@ -78,16 +81,23 @@ const VARIANTS: Record<ButtonVariant, string> = {
 
 /** Heights meet the 40px+ comfortable touch target; `sm` is 36px for dense UI. */
 const SIZES: Record<ButtonSize, string> = {
-  sm: "h-9 px-3.5 text-small",
-  md: "h-11 px-5 text-small",
-  lg: "h-12 px-6 text-body",
+  sm: "h-9 px-3.5 text-small font-medium",
+  md: "h-11 px-5 text-small font-medium",
+  lg: "h-12 px-6 text-body font-medium",
+  /* Header bar only, measured off the target's own nav CTA: 40px tall, 16px
+     horizontal padding, 16px / 600 label. `sm` (36px / 14px / 500) is what the
+     header used to run and it sat visibly smaller than the reference beside an
+     identical 40px account button. Additive on purpose — none of the other 47
+     routes reference this size, so their buttons are untouched. */
+  nav: "h-10 px-4 text-body font-semibold",
 };
 
 /** `text` variant must not carry button padding. */
 const TEXT_SIZES: Record<ButtonSize, string> = {
-  sm: "h-auto text-small",
-  md: "h-auto text-small",
-  lg: "h-auto text-body",
+  sm: "h-auto text-small font-medium",
+  md: "h-auto text-small font-medium",
+  lg: "h-auto text-body font-medium",
+  nav: "h-auto text-body font-semibold",
 };
 
 type CommonProps = {

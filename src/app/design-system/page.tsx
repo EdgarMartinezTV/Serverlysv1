@@ -82,7 +82,7 @@ export default function DesignSystemPage() {
             Caption — eyebrows and labels
           </p>
           <p className="tabular text-body text-fg">
-            Tabular figures 0123456789 · $5.84 · $25.94
+            Tabular figures 0123456789 · $7.95 · $12.62
           </p>
         </div>
       </Row>

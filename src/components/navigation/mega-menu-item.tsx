@@ -39,14 +39,14 @@ export function MegaMenuItem({
             : "text-fg-on-dark-muted/60",
         )}
       >
-        <NavIcon name={item.icon} className="h-[1.125rem] w-[1.125rem]" />
+        <NavIcon name={item.icon} className="h-5 w-5" />
       </span>
 
       <span className="min-w-0">
         <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
           <span
             className={cn(
-              "text-small font-semibold transition-colors duration-fast",
+              "text-small font-semibold leading-5 transition-colors duration-fast",
               interactive ? "text-white" : "text-fg-on-dark-secondary",
             )}
           >
@@ -55,7 +55,10 @@ export function MegaMenuItem({
           {item.badge && (
             <span
               className={cn(
-                "whitespace-nowrap rounded-full px-1.5 py-0.5 font-mono text-[0.5625rem] uppercase ring-1 ring-inset",
+                // 12px / 600 / 16px — the target's badge is the same size as its
+                // group eyebrow. Ours was 9px, which read as a footnote next to
+                // a 14px title rather than a label.
+                "whitespace-nowrap rounded-full px-1.5 py-0.5 font-mono text-caption uppercase leading-4 ring-1 ring-inset",
                 BADGE_TONE[item.badge.tone],
               )}
             >
@@ -68,15 +71,28 @@ export function MegaMenuItem({
             </span>
           )}
         </span>
-        <span className="mt-1 block text-small leading-snug text-fg-on-dark-muted">
+        <span className="mt-1 block text-small leading-5 text-fg-on-dark-muted">
           {item.description}
         </span>
       </span>
     </>
   );
 
+  /* -m-2 p-2 is the target's exact trick: the hover background extends 8px
+     past the text on every side, so the GRID gap (24px row / 40px column) is
+     the real gap between two items' text, not the gap between two hover
+     rectangles. Dropping the negative margin makes the grid look twice as
+     loose as the original.
+
+     `flex-1 min-w-0` is what makes it the target's SIZE. Without it the <a> is
+     a shrink-to-fit flex item inside its <li>, so every row was only as wide as
+     its own text — measured at 292/321/339/344px against a 353.5px track, a
+     ragged right edge and a hover rectangle that stopped short. With it the
+     margin box fills the track and the border box lands at 369.5px, matching
+     the target's uniform 368.5px. It is also why descriptions now wrap across
+     the full column instead of sitting on one short line. */
   const classes =
-    "group/item flex gap-3 rounded-xl px-2.5 py-2.5 transition-colors duration-fast " +
+    "group/item -m-2 flex min-w-0 flex-1 gap-3 rounded-lg p-2 transition-colors duration-fast " +
     "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white";
 
   if (!interactive) {

@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { FinalCta } from "@/components/sections/final-cta";
 import { JsonLd } from "@/components/ui/json-ld";
+import { RichText } from "@/components/ui/rich-text";
 import {
   articles,
   articleBySlug,
@@ -14,7 +15,7 @@ import {
   relatedArticles,
   type Block,
 } from "@/data/articles";
-import { company } from "@/data/company";
+import { company, billing } from "@/data/company";
 import { pageMetadata, breadcrumbGraph, articleGraph } from "@/lib/seo";
 
 /**
@@ -63,7 +64,13 @@ function formatDate(iso: string): string {
   });
 }
 
-/** One block. Headings carry ids so the contents list can link to them. */
+/**
+ * One block.
+ *
+ * h2s carry ids so the contents list can link to them; h3s deliberately do not
+ * (see the Block type). Every text surface goes through RichText so the inline
+ * markers render rather than showing as literal asterisks and brackets.
+ */
 function BlockView({ block }: { block: Block }) {
   switch (block.type) {
     case "h2":
@@ -72,15 +79,25 @@ function BlockView({ block }: { block: Block }) {
           {block.text}
         </h2>
       );
+    case "h3":
+      return (
+        <h3 className="mt-10 text-body-lg font-semibold text-fg">{block.text}</h3>
+      );
     case "p":
-      return <p className="mt-5 text-body text-fg-secondary">{block.text}</p>;
+      return (
+        <p className="mt-5 text-body text-fg-secondary">
+          <RichText text={block.text} />
+        </p>
+      );
     case "ul":
       return (
         <ul className="mt-5 flex flex-col gap-3">
           {block.items.map((item) => (
             <li key={item} className="flex gap-3 text-body text-fg-secondary">
               <span aria-hidden="true" className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
-              <span>{item}</span>
+              <span>
+                <RichText text={item} />
+              </span>
             </li>
           ))}
         </ul>
@@ -96,7 +113,9 @@ function BlockView({ block }: { block: Block }) {
               >
                 {i + 1}
               </span>
-              <span>{item}</span>
+              <span>
+                <RichText text={item} />
+              </span>
             </li>
           ))}
         </ol>
@@ -105,8 +124,69 @@ function BlockView({ block }: { block: Block }) {
       return (
         <aside className="mt-8 rounded-xl border-l-2 border-primary bg-canvas-secondary p-6">
           <p className="text-body font-semibold text-fg">{block.title}</p>
-          <p className="mt-2 text-small text-fg-secondary">{block.text}</p>
+          <p className="mt-2 text-small text-fg-secondary">
+            <RichText text={block.text} />
+          </p>
         </aside>
+      );
+    case "quote":
+      return (
+        <blockquote className="mt-8 border-l-2 border-line pl-6 text-body-lg text-fg">
+          <RichText text={block.text} />
+        </blockquote>
+      );
+    case "code":
+      return (
+        /*
+         * The article column is 68ch; a config snippet is routinely wider. The
+         * scroll container is on the <pre> so the PAGE never scrolls
+         * horizontally — a body-level overflow on mobile is the failure mode
+         * this layout is most prone to.
+         */
+        <pre className="mt-6 min-w-0 overflow-x-auto rounded-xl bg-canvas-abyss p-5 text-small">
+          <code className="font-mono text-fg-on-dark-secondary">{block.code}</code>
+        </pre>
+      );
+    case "table":
+      return (
+        <div className="mt-6 min-w-0 overflow-x-auto rounded-xl ring-1 ring-inset ring-line">
+          <table className="w-full border-collapse text-left text-small">
+            {block.head.length > 0 && (
+              <thead className="bg-canvas-secondary">
+                <tr>
+                  {block.head.map((cell) => (
+                    <th
+                      key={cell}
+                      scope="col"
+                      className="border-b border-line px-4 py-3 font-semibold text-fg"
+                    >
+                      <RichText text={cell} />
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+            )}
+            <tbody>
+              {block.rows.map((row, r) => (
+                <tr key={r} className="border-b border-line last:border-0">
+                  {/*
+                    Rows are padded to the header width rather than trusted to
+                    match it: the source markup these were ported from has
+                    ragged rows, and a short row would otherwise silently drop
+                    the columns after it.
+                  */}
+                  {Array.from({ length: Math.max(block.head.length, row.length) }).map(
+                    (_, c) => (
+                      <td key={c} className="px-4 py-3 align-top text-fg-secondary">
+                        <RichText text={row[c] ?? ""} />
+                      </td>
+                    ),
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       );
   }
 }
@@ -164,7 +244,26 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
 
       <Section spacing="tight">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_15rem] lg:gap-16">
-          <article className="max-w-[68ch]">
+          {/*
+            min-w-0 is required, not cosmetic. A grid item defaults to
+            `min-width: auto`, which means it refuses to shrink below its
+            content's min-content width — so a wide table or code block inside
+            pushes the article column past the viewport and the whole PAGE
+            scrolls sideways on a phone, `overflow-x-auto` on the inner
+            container notwithstanding. That inner scroll only works once the
+            column itself is allowed to be narrower than its contents.
+          */}
+          {/* `overflow-wrap: break-word` on the whole column, not just on
+              <code>. Article prose quotes raw strings in places that are not
+              code spans — `/blog/mysql-database-guide` puts a PHP DSN
+              (`mysql:host=localhost;dbname=…`) inside a <blockquote>, which has
+              no spaces to break at and pushed the layout viewport to 608px on
+              every phone width up to 430. `break-word` rather than `anywhere`
+              because this applies to ordinary sentences too: it breaks a word
+              only when that word cannot otherwise fit, and leaves intrinsic
+              sizing alone. Inline <code> keeps the stricter `anywhere` — see
+              components/ui/rich-text.tsx. */}
+          <article className="min-w-0 max-w-[68ch] [overflow-wrap:break-word]">
             {article.body.map((block, i) => (
               <BlockView key={i} block={block} />
             ))}
@@ -175,7 +274,7 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
                 script.
               </p>
               <div className="mt-5 flex flex-wrap gap-3">
-                <Button href="/contact">Talk to us</Button>
+                <Button href={billing.sales}>Talk to us</Button>
                 <Button href="/pricing" variant="secondary">
                   See pricing
                 </Button>

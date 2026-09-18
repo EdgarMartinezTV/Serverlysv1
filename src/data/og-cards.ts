@@ -36,7 +36,7 @@ const PAGES: Record<string, OgCard> = {
   "/cloud-hosting": {
     eyebrow: "Cloud hosting",
     title: "Resources that flex when traffic does.",
-    detail: "From $2.19/mo. Free migration, free SSL, daily backups.",
+    detail: "From $7.95/mo. Free migration, free SSL, daily backups.",
   },
   "/wordpress-hosting": {
     eyebrow: "WordPress hosting",
@@ -75,8 +75,8 @@ const PAGES: Record<string, OgCard> = {
   },
   "/automations": {
     eyebrow: "Automations",
-    title: "The admin nobody wants to do.",
-    detail: "Workflows that move data between the tools you already pay for.",
+    title: "The daily work, done without anyone remembering.",
+    detail: "Enquiry to record, booking to calendar, form to the right person.",
   },
   "/website-design": {
     eyebrow: "Website design",
@@ -117,11 +117,6 @@ const PAGES: Record<string, OgCard> = {
     eyebrow: "About",
     title: "Three commitments we could profit by dropping.",
     detail: "Published renewals, free migration, free restores.",
-  },
-  "/contact": {
-    eyebrow: "Contact",
-    title: "Talk to a person.",
-    detail: "Sales, migrations and technical questions reach the same team.",
   },
   "/resources": {
     eyebrow: "Resources",
@@ -179,7 +174,7 @@ const PAGES: Record<string, OgCard> = {
   },
 
   // Services.
-  "/wp-migrations": {
+  "/migrations": {
     eyebrow: "WordPress migration",
     title: "We move it. You approve the moment it goes live.",
     detail: "Staged first, DNS last. Free on every hosting plan.",
@@ -219,6 +214,36 @@ const PAGES: Record<string, OgCard> = {
     eyebrow: "Report abuse",
     title: "Report abuse on our platform.",
     detail: "What we need, what we do, and what we will not do.",
+  },
+  "/acceptable-use-policy": {
+    eyebrow: "Acceptable use",
+    title: "What you may run on our infrastructure.",
+    detail: "Prohibited content, anti-spam rules, fair use, and how suspensions work.",
+  },
+  "/dmca-policy": {
+    eyebrow: "Copyright",
+    title: "Reporting infringement, and answering back.",
+    detail: "What a valid DMCA notice contains, and how a counter-notice works.",
+  },
+  "/cookie-policy": {
+    eyebrow: "Cookies",
+    title: "What we store in your browser.",
+    detail: "Strictly necessary only by default. No ad cookies, no cross-site tracking.",
+  },
+  "/data-processing-agreement": {
+    eyebrow: "Data processing",
+    title: "The Article 28 terms, in force by default.",
+    detail: "Roles, security, sub-processors, transfers and deletion.",
+  },
+  "/domain-registration-agreement": {
+    eyebrow: "Domains",
+    title: "You are the registrant. The domain is yours.",
+    detail: "WHOIS privacy free and on by default, plus how registrant data requests work.",
+  },
+  "/law-enforcement-requests": {
+    eyebrow: "Legal requests",
+    title: "What we require before we disclose anything.",
+    detail: "Valid process, narrow scope, and we tell the customer unless forbidden.",
   },
   "/privacy-policy": {
     eyebrow: "Privacy",

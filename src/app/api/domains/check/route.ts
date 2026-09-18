@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { parseDomainInput } from "@/lib/domains/normalize";
-import { checkDomains, rateLimit, resolveProvider } from "@/lib/domains/provider";
+import { checkDomains, clientKey, rateLimit, resolveProvider } from "@/lib/domains/provider";
 import { domainProviderName } from "@/lib/env";
 import { suggestionTlds, tldSet } from "@/data/tlds";
 import type { CheckOutcome } from "@/lib/domains/types";
@@ -24,12 +24,6 @@ export const dynamic = "force-dynamic";
 const MAX_DOMAINS = 8;
 /** Whole-request budget. Individual provider calls time out sooner. */
 const OVERALL_TIMEOUT_MS = 12_000;
-
-function clientKey(request: Request): string {
-  const forwarded = request.headers.get("x-forwarded-for");
-  if (forwarded) return forwarded.split(",")[0].trim();
-  return request.headers.get("x-real-ip") ?? "unknown";
-}
 
 function fail(
   error: CheckOutcome & { ok: false },
@@ -71,7 +65,7 @@ export async function POST(request: Request) {
   }
 
   // ── Rate limit ──────────────────────────────────────────────────────────
-  const limit = rateLimit(clientKey(request));
+  const limit = rateLimit(clientKey(request, "check"));
   if (!limit.ok) {
     return fail(
       {
@@ -109,9 +103,15 @@ export async function POST(request: Request) {
   // The exact match first, so the primary answer is always row one.
   const primaryTld = parsed.tld && tldSet.has(parsed.tld) ? parsed.tld : ".com";
   const primary = `${parsed.sld}${parsed.tld ?? primaryTld}`;
-  const alternates = suggestionTlds(parsed.tld ?? primaryTld).map(
-    (t) => `${parsed.sld}${t.tld}`,
-  );
+
+  // Alternates are only meaningful for a single-label name. For "example.co.uk"
+  // the parser hands back sld "example.co" (we do not sell .co.uk, so the
+  // longest-suffix match cannot fire), and appending our TLDs to that produced
+  // "example.co.com" — a name nobody searched for and nobody wants. When the
+  // SLD carries a dot, answer the exact question and suggest nothing.
+  const alternates = parsed.sld.includes(".")
+    ? []
+    : suggestionTlds(parsed.tld ?? primaryTld).map((t) => `${parsed.sld}${t.tld}`);
   const domains = [primary, ...alternates].slice(0, MAX_DOMAINS);
 
   // ── Check ───────────────────────────────────────────────────────────────

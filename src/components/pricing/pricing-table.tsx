@@ -5,7 +5,13 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { planGroups, formatPrice, orderUrl, type PlanGroup } from "@/data/pricing";
 
-type Term = "annual" | "monthly";
+/**
+ * The store sells one discounted monthly rate against one standard rate, and
+ * since 2026-09-16 no term is attached to either. The old "annual vs monthly"
+ * toggle described a price list that no longer exists — see the note at the
+ * top of data/pricing.ts.
+ */
+type Term = "monthly" | "standard";
 
 /**
  * Plan selection — the primary conversion surface of the site.
@@ -27,7 +33,7 @@ export function PricingTable({ only }: { only?: string } = {}) {
   const single = groups.length === 1;
 
   const [groupId, setGroupId] = useState(groups[0].id);
-  const [term, setTerm] = useState<Term>("annual");
+  const [term, setTerm] = useState<Term>("monthly");
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const baseId = useId();
 
@@ -91,12 +97,12 @@ export function PricingTable({ only }: { only?: string } = {}) {
         )}
 
         <fieldset className="flex items-center gap-3">
-          <legend className="sr-only-focusable">Billing term</legend>
+          <legend className="sr-only-focusable">Rate shown</legend>
           <div className="flex gap-1 rounded-lg bg-canvas-inset p-1">
             {(
               [
-                ["annual", "Annual"],
-                ["monthly", "Monthly"],
+                ["monthly", "Monthly rate"],
+                ["standard", "Standard rate"],
               ] as const
             ).map(([value, label]) => (
               <label
@@ -148,10 +154,27 @@ function PlanGrid({ group, term }: { group: PlanGroup; term: Term }) {
   return (
     <ul className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
       {group.plans.map((plan) => {
-        const price = term === "annual" ? plan.annual : plan.monthly;
+        const price = term === "monthly" ? plan.monthly : plan.standard;
         return (
           <li key={plan.slug} className="flex">
             <div
+              /*
+               * ⚠ THE TARGET IS `<group>-<tier>`, NOT `plan.slug`. The slug is
+               * the WHMCS store's marketing string — the Starter WordPress plan
+               * is "your-wordpress-journey-begins-here" — and asking a model to
+               * infer which tier that is invites exactly the wrong card being
+               * highlighted. `group.id` and `plan.tier` are clean enums that
+               * marketing copy cannot move, so "wordpress-starter" means the
+               * same card today and after the store is re-shot.
+               *
+               * This attribute is an API, not a styling hook: Sera resolves a
+               * plan to it and the widget marks whatever carries it — see
+               * `lib/sera/highlight.ts`. The alternative is a CSS selector,
+               * which means Sera knowing that the third card in a grid is Turbo
+               * — true until somebody reorders the grid, and then Sera
+               * confidently points at the wrong price.
+               */
+              data-sera-target={`${group.id}-${plan.tier}`}
               className={cn(
                 "relative flex w-full flex-col rounded-xl bg-white p-6",
                 plan.popular
@@ -173,12 +196,21 @@ function PlanGrid({ group, term }: { group: PlanGroup; term: Term }) {
                 <span className="tabular text-h2 text-fg">{formatPrice(price)}</span>
                 <span className="text-small text-fg-muted">/mo</span>
               </div>
-              {/* Non-negotiable: the renewal rate always accompanies the promo rate. */}
+              {/* Non-negotiable: the discounted rate never appears alone. When
+                  the monthly rate is showing, the standard rate shows beside it;
+                  when the standard rate is showing, there is nothing to hide. */}
               <p className="mt-1.5 text-small text-fg-muted">
-                Renews at{" "}
-                <span className="tabular font-medium text-fg-secondary">
-                  {formatPrice(plan.renewal)}/mo
-                </span>
+                {term === "monthly" ? (
+                  <>
+                    Standard rate{" "}
+                    <span className="tabular font-medium text-fg-secondary">
+                      {formatPrice(plan.standard)}/mo
+                    </span>
+                  </>
+                ) : (
+                  <>The rate every plan renews at</>
+                )}
+                {plan.setupFee ? ` · ${formatPrice(plan.setupFee)} setup fee` : null}
               </p>
 
               <Button

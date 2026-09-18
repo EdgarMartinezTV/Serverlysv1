@@ -140,11 +140,15 @@ const SECTIONS: readonly LegalSection[] = [
     blocks: [
       {
         type: "p",
-        text: "This website uses local storage in your browser for two things you control: remembering that you dismissed the announcement bar, and holding the shortlist in the domain search. Both stay on your device and are not sent to us.",
+        text: "This website uses local storage in your browser for three things you control: remembering that you dismissed the announcement bar, holding the shortlist in the domain search, and recording your answer to the cookie notice. All three stay on your device and are not sent to us.",
       },
       {
         type: "p",
         text: "The billing area sets a session cookie so you can stay signed in. That cookie is necessary for the service to function.",
+      },
+      {
+        type: "p",
+        text: "This site sets no advertising or analytics cookies and loads no third-party trackers. The cookie panel lists every category with exactly what it covers, and two of the three are empty — we would rather show you that than pad the list. You can reopen it any time from Cookie settings in the footer.",
       },
     ],
   },

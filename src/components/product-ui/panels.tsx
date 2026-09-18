@@ -23,7 +23,7 @@ function Chrome({ label }: { label: string }) {
           <span key={c} className={cn("h-2 w-2 rounded-full", c)} />
         ))}
       </span>
-      <span className="ml-1 truncate rounded bg-surface px-2 py-0.5 font-mono text-[0.5625rem] text-fg-muted ring-1 ring-line-subtle">
+      <span className="ml-1 truncate rounded bg-surface px-2 py-0.5 font-mono text-ui text-fg-muted ring-1 ring-line-subtle">
         {label}
       </span>
     </div>
@@ -58,8 +58,8 @@ export function HostingPanel({ className }: { className?: string }) {
       <Chrome label="serverlys.com" />
       <div className="p-3.5">
         <div className="flex items-center justify-between">
-          <span className="text-[0.625rem] font-semibold text-fg">Cloud · Turbo</span>
-          <span className="rounded-full bg-success-soft px-1.5 py-0.5 font-mono text-[0.5rem] uppercase text-success">
+          <span className="text-ui font-semibold text-fg">Cloud · Turbo</span>
+          <span className="rounded-full bg-success-soft px-1.5 py-0.5 font-mono text-ui uppercase text-success">
             Live
           </span>
         </div>
@@ -70,8 +70,8 @@ export function HostingPanel({ className }: { className?: string }) {
             ["Disk", "6.2 GB"],
           ].map(([k, v]) => (
             <div key={k} className="rounded-md bg-canvas-secondary px-1.5 py-1">
-              <dt className="font-mono text-[0.5rem] uppercase text-fg-muted">{k}</dt>
-              <dd className="tabular text-[0.625rem] font-semibold text-fg">{v}</dd>
+              <dt className="font-mono text-ui uppercase text-fg-muted">{k}</dt>
+              <dd className="tabular text-ui font-semibold text-fg">{v}</dd>
             </div>
           ))}
         </dl>
@@ -111,7 +111,7 @@ export function DomainPanel({ className }: { className?: string }) {
               strokeLinecap="round"
             />
           </svg>
-          <span className="text-[0.625rem] text-fg">yourbusiness</span>
+          <span className="text-ui text-fg">yourbusiness</span>
         </div>
         <ul className="mt-2.5 flex flex-col gap-1.5">
           {[
@@ -126,17 +126,17 @@ export function DomainPanel({ className }: { className?: string }) {
                 free ? "bg-success-soft" : "bg-canvas-secondary",
               )}
             >
-              <span className="font-mono text-[0.625rem] text-fg">{tld}</span>
+              <span className="font-mono text-ui text-fg">{tld}</span>
               <span className="flex items-center gap-1.5">
                 <span
                   className={cn(
-                    "font-mono text-[0.5rem] uppercase",
+                    "font-mono text-ui uppercase",
                     free ? "text-success" : "text-fg-muted",
                   )}
                 >
                   {free ? "Available" : "Taken"}
                 </span>
-                <span className="tabular text-[0.625rem] font-semibold text-fg">
+                <span className="tabular text-ui font-semibold text-fg">
                   {price}
                 </span>
               </span>
@@ -153,17 +153,17 @@ export function ConvoPanel({ className }: { className?: string }) {
   return (
     <Shell className={className}>
       <div className="flex items-center gap-2 border-b border-line-subtle px-3 py-2">
-        <span className="flex h-5 w-5 items-center justify-center rounded-md bg-violet-500 text-[0.5rem] font-bold text-white">
+        <span className="flex h-5 w-5 items-center justify-center rounded-md bg-violet-500 text-ui font-bold text-white">
           C
         </span>
-        <span className="text-[0.625rem] font-semibold text-fg">ConvoAI</span>
+        <span className="text-ui font-semibold text-fg">ConvoAI</span>
         <span className="ml-auto h-1.5 w-1.5 rounded-full bg-success-fill" />
       </div>
       <div className="flex flex-col gap-2 p-3.5">
-        <p className="max-w-[85%] rounded-lg rounded-tl-sm bg-canvas-secondary px-2 py-1.5 text-[0.625rem] text-fg-secondary">
+        <p className="max-w-[85%] rounded-lg rounded-tl-sm bg-canvas-secondary px-2 py-1.5 text-ui text-fg-secondary">
           Do you take bookings on Sundays?
         </p>
-        <p className="ml-auto max-w-[85%] rounded-lg rounded-tr-sm bg-primary px-2 py-1.5 text-[0.625rem] text-white">
+        <p className="ml-auto max-w-[85%] rounded-lg rounded-tr-sm bg-primary px-2 py-1.5 text-ui text-white">
           We do — 10am to 4pm. Shall I book you in?
         </p>
         <span className="flex gap-1 pl-1" aria-hidden="true">
@@ -182,8 +182,8 @@ export function UptimePanel({ className }: { className?: string }) {
     <Shell className={className}>
       <div className="p-3.5">
         <div className="flex items-center justify-between">
-          <span className="text-[0.625rem] font-semibold text-fg">Status</span>
-          <span className="flex items-center gap-1 font-mono text-[0.5rem] uppercase text-success">
+          <span className="text-ui font-semibold text-fg">Status</span>
+          <span className="flex items-center gap-1 font-mono text-ui uppercase text-success">
             <span className="h-1.5 w-1.5 rounded-full bg-success-fill" />
             Operational
           </span>
@@ -238,7 +238,7 @@ export function MigrationPanel({ className }: { className?: string }) {
   return (
     <Shell className={className}>
       <div className="p-3.5">
-        <p className="text-[0.625rem] font-semibold text-fg">Migration</p>
+        <p className="text-ui font-semibold text-fg">Migration</p>
         <ul className="mt-2.5 flex flex-col gap-1.5">
           {steps.map(([label, done]) => (
             <li key={label} className="flex items-center gap-2">
@@ -265,7 +265,7 @@ export function MigrationPanel({ className }: { className?: string }) {
               </span>
               <span
                 className={cn(
-                  "text-[0.625rem]",
+                  "text-ui",
                   done ? "text-fg-secondary" : "text-fg-muted",
                 )}
               >
@@ -274,7 +274,7 @@ export function MigrationPanel({ className }: { className?: string }) {
             </li>
           ))}
         </ul>
-        <p className="mt-3 rounded-md bg-primary-soft px-2 py-1 text-[0.5625rem] text-primary">
+        <p className="mt-3 rounded-md bg-primary-soft px-2 py-1 text-ui text-primary">
           You approve before DNS changes.
         </p>
       </div>

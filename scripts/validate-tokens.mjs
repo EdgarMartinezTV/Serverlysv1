@@ -65,6 +65,7 @@ const NON_COLOUR = new Set([
   "separate",
   "hidden",
   "display",
+  "hero",
   "h1",
   "h2",
   "h3",
@@ -73,6 +74,11 @@ const NON_COLOUR = new Set([
   "body-lg",
   "small",
   "caption",
+  // The bottom two steps of the type scale, added 2026-09-17 with the 12px
+  // floor. Without them here every `text-micro` / `text-ui` in the tree is
+  // read as a colour utility and reported as rendering nothing.
+  "micro",
+  "ui",
   "mono",
   "sans",
   "start",
@@ -105,6 +111,11 @@ const NON_COLOUR = new Set([
   "gradient-to-bl",
   "gradient-to-tr",
   "gradient-to-tl",
+  // Background-clip utilities share the `bg-` prefix but set no colour.
+  "clip-text",
+  "clip-border",
+  "clip-padding",
+  "clip-content",
   // Named background utilities defined in @layer utilities, not @theme.
   "grid-dark",
   "hero-glow",
@@ -162,10 +173,24 @@ const FLOORS = [
   ["primary-on-dark", "canvas-dark", 4.5],
   ["fg-on-brand", "primary", 4.5],
   ["fg-on-brand-muted", "primary", 4.5],
-  ["fg-secondary", "canvas-tint", 4.5],
-  ["fg-secondary", "canvas-lavender", 4.5],
+  /*
+   * `canvas-tint` and `canvas-lavender` were checked here until both were
+   * deleted from globals.css — see the note there. `canvas-secondary` took
+   * over all eleven of their usages, so the two floors those lines held are
+   * re-stated against it rather than assumed.
+   *
+   * ⚠ `fg-secondary` IS LISTED EXPLICITLY even though `fg-muted` on the same
+   * ground is already checked above and is the lighter of the two. Relying on
+   * "the lighter one passes, so the darker one must" makes this table depend
+   * on the ink ramp's ordering staying true, which is not something it
+   * promises. Both are cheap to measure.
+   */
+  ["fg-secondary", "canvas-secondary", 4.5],
+  ["primary", "canvas-secondary", 4.5],
   ["accent-on-dark", "canvas-dark", 4.5],
   ["primary-on-dark", "canvas-abyss", 4.5],
+  ["error-on-dark", "canvas-dark", 4.5],
+  ["error-on-dark", "canvas-abyss", 4.5],
   ["line-input", "canvas", 3.0],
   ["line-input", "canvas-secondary", 3.0],
 ];

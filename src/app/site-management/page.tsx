@@ -8,15 +8,17 @@ import { ShowcaseSplit } from "@/components/sections/showcase-split";
 import { JsonLd } from "@/components/ui/json-ld";
 import { DashboardMock } from "@/components/product-ui/dashboard";
 import { UptimePanel } from "@/components/product-ui/panels";
-import { pageMetadata, breadcrumbGraph, faqGraph } from "@/lib/seo";
+import { pageMetadata, breadcrumbGraph, faqGraph, serviceGraph } from "@/lib/seo";
 import type { Faq } from "@/data/faqs";
+import { billing } from "@/data/company";
 
 const PATH = "/site-management";
+const DESCRIPTION =
+  "Updates applied and tested, backups verified, uptime watched, small changes made. The ongoing work a website needs after it launches.";
 
 export const metadata = pageMetadata({
   title: "Site Management — someone whose job is your website",
-  description:
-    "Updates applied and tested, backups verified, uptime watched, small changes made. The ongoing work a website needs after it launches.",
+  description: DESCRIPTION,
   path: PATH,
 });
 
@@ -63,6 +65,14 @@ export default function SiteManagementPage() {
   return (
     <>
       <JsonLd
+        data={serviceGraph({
+          name: "Website maintenance and management",
+          serviceType: "Website maintenance",
+          description: DESCRIPTION,
+          path: PATH,
+        })}
+      />
+      <JsonLd
         data={breadcrumbGraph([
           { name: "Home", path: "/" },
           { name: "Site management", path: PATH },
@@ -81,7 +91,7 @@ export default function SiteManagementPage() {
           { label: "Uptime", value: "Watched" },
           { label: "Changes", value: "Included" },
         ]}
-        primary={{ label: "Talk about your site", href: "/contact" }}
+        primary={{ label: "Talk about your site", href: billing.sales }}
         secondary={{ label: "Managed hosting instead", href: "/managed-hosting" }}
         visual={<DashboardMock />}
       />
@@ -195,7 +205,7 @@ export default function SiteManagementPage() {
           { label: "What we caught", detail: "Problems found before they reached your visitors.", icon: "shield" },
           { label: "What is next", detail: "The thing we would fix if you gave us the go-ahead.", icon: "compass" },
         ]}
-        cta={{ label: "See what we would find", href: "/contact" }}
+        cta={{ label: "See what we would find", href: billing.sales }}
         visual={<UptimePanel />}
         side="right"
         surface="subtle"
@@ -219,7 +229,7 @@ export default function SiteManagementPage() {
               includes, in writing, before you commit to anything.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Button href="/contact">Get a figure</Button>
+              <Button href={billing.sales}>Get a figure</Button>
               <Button href="/pricing" variant="secondary">
                 Hosting prices
               </Button>

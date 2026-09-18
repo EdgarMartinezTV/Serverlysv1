@@ -7,7 +7,7 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { SeoMock, ChatMock } from "@/components/product-ui/mocks";
 import { billing } from "@/data/company";
 import { faqsFor } from "@/data/faqs";
-import { pageMetadata, faqGraph, breadcrumbGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph, breadcrumbGraph, serviceGraph } from "@/lib/seo";
 
 const PATH = "/marketing";
 const DESCRIPTION =
@@ -23,6 +23,14 @@ export default function MarketingPage() {
   const faqs = faqsFor("/");
   return (
     <>
+      <JsonLd
+        data={serviceGraph({
+          name: "Digital marketing",
+          serviceType: "Digital marketing",
+          description: DESCRIPTION,
+          path: PATH,
+        })}
+      />
       <JsonLd data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "Marketing", path: PATH }])} />
       <JsonLd data={faqGraph(faqs)} />
       <ProductHero

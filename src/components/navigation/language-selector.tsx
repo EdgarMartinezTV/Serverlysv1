@@ -42,7 +42,9 @@ export function LanguageSelector({ onDark = false }: { onDark?: boolean }) {
         aria-haspopup="true"
         onClick={() => setOpen((v) => !v)}
         className={cn(
-          "flex min-h-10 items-center gap-1.5 rounded-lg px-2.5 text-small font-medium transition-colors duration-fast",
+          // 40px tall, 16px padding, 16px / 600 label — the target's own
+          // language control, and the same metrics the header CTA now runs.
+          "flex min-h-10 items-center gap-2 rounded-lg px-4 text-body font-semibold transition-colors duration-fast",
           "focus-visible:outline-2 focus-visible:outline-offset-2",
           onDark
             ? "text-fg-on-dark-secondary hover:bg-white/10 hover:text-white focus-visible:outline-white"
@@ -52,7 +54,7 @@ export function LanguageSelector({ onDark = false }: { onDark?: boolean }) {
         <span
           aria-hidden="true"
           className={cn(
-            "flex h-4 w-4 items-center justify-center rounded-full text-[0.5rem] font-bold ring-1 ring-inset",
+            "flex h-4 w-4 items-center justify-center rounded-full text-micro font-bold ring-1 ring-inset",
             onDark ? "ring-white/25 text-white" : "ring-line-strong text-fg-secondary",
           )}
         >
@@ -60,7 +62,10 @@ export function LanguageSelector({ onDark = false }: { onDark?: boolean }) {
         </span>
         EN
         <Chevron
-          className={cn("h-2.5 w-2.5 transition-transform", open && "rotate-180")}
+          className={cn(
+            "h-[1.125rem] w-[1.125rem] transition-transform",
+            open && "rotate-180",
+          )}
         />
         <span className="sr-only">Change language. Current language: English</span>
       </button>

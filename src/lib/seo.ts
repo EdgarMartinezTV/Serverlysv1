@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { company } from "@/data/company";
 import { ogCards, ogKeyFor } from "@/data/og-cards";
 import type { Faq } from "@/data/faqs";
+import { socialLinks } from "@/data/navigation";
 
 /**
  * SEO / structured data.
@@ -79,6 +80,22 @@ export function pageMetadata({
 }
 
 /** The canonical Organization + WebSite graph. Rendered once, in the root layout. */
+/**
+ * The services the offer catalogue advertises. Each `path` is a real, indexable
+ * page that sells the thing — a catalogue entry pointing at a page that does
+ * not sell it is a misrepresentation, not an optimisation.
+ */
+const SERVICES = [
+  { name: "Web hosting", path: "/hosting" },
+  { name: "WordPress hosting", path: "/wordpress-hosting" },
+  { name: "Ecommerce hosting", path: "/ecommerce-hosting" },
+  { name: "Domain registration", path: "/register-domain" },
+  { name: "AI chatbot", path: "/convoai" },
+  { name: "AI voice agent", path: "/callflow-ai" },
+  { name: "Web development", path: "/website-development" },
+  { name: "Business automations", path: "/automations" },
+] as const;
+
 export function organizationGraph() {
   return {
     "@context": "https://schema.org",
@@ -103,6 +120,44 @@ export function organizationGraph() {
             availableLanguage: ["en"],
           },
         ],
+        /*
+         * The profiles this company actually controls, read from the same list
+         * the footer renders so the two can never drift apart.
+         *
+         * `sameAs` is the primary entity-disambiguation signal: it is how a
+         * search engine confirms that the Serverlys on this domain, the
+         * Serverlys on X and the Serverlys on Instagram are ONE entity rather
+         * than three unrelated strings. Without it the Organization node is an
+         * unverifiable assertion about a name, which is why a site can carry
+         * perfect Organization markup and still never resolve to a knowledge
+         * panel. Only add profiles that genuinely belong to the company.
+         */
+        sameAs: socialLinks.map((link) => link.href),
+        /*
+         * What Serverlys sells, enumerated.
+         *
+         * The Organization described who this company is and never said what it
+         * does, so a model summarising the brand had to infer the service list
+         * from prose. This is the structured answer to that question — the same
+         * thing behind a "Core Services" breakdown in an AI Overview.
+         *
+         * Every entry MUST point at a page that visibly sells that service, and
+         * the names deliberately use the CATEGORY term customers search rather
+         * than the internal product name — "AI chatbot", not "chat agent".
+         */
+        hasOfferCatalog: {
+          "@type": "OfferCatalog",
+          name: `${company.name} services`,
+          itemListElement: SERVICES.map((service) => ({
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "Service",
+              name: service.name,
+              url: canonical(service.path),
+              provider: { "@id": ORG_ID },
+            },
+          })),
+        },
       },
       {
         "@type": "ImageObject",
@@ -155,6 +210,7 @@ export function productGraph({
   path,
   lowPrice,
   highPrice,
+  offerCount,
   currency = "USD",
 }: {
   name: string;
@@ -162,6 +218,14 @@ export function productGraph({
   path: string;
   lowPrice: number;
   highPrice: number;
+  /**
+   * How many tiers the offer actually covers. Was hardcoded to 4, which is a
+   * claim about the catalogue made in a file that cannot see it — the pricing
+   * band renders `cloud.plans` whole and promises a fifth tier would appear
+   * automatically, and this would have gone on saying 4. Pass it from the same
+   * array the page renders.
+   */
+  offerCount: number;
   currency?: string;
 }) {
   const url = canonical(path);
@@ -179,10 +243,58 @@ export function productGraph({
       priceCurrency: currency,
       lowPrice: lowPrice.toFixed(2),
       highPrice: highPrice.toFixed(2),
-      offerCount: 4,
+      offerCount,
       availability: "https://schema.org/InStock",
       url,
       seller: { "@id": ORG_ID },
+    },
+  };
+}
+
+/**
+ * CollectionPage + ItemList for an archive page.
+ *
+ * WHY ItemList AND NOT just CollectionPage. CollectionPage alone says "this
+ * page is a collection" and stops there — it names no members, so it adds
+ * nothing a crawler could not already see. The ItemList is the part that
+ * carries information: it states, in order, which articles this hub covers,
+ * which is exactly the relationship that makes a category read as a topic
+ * cluster rather than a pagination artifact.
+ *
+ * `url` on each ListItem rather than a nested Article node: the article's own
+ * page already emits its full Article graph, and repeating a partial copy here
+ * creates a second, thinner node competing to describe the same URL.
+ */
+export function collectionGraph({
+  name,
+  description,
+  path,
+  items,
+}: {
+  name: string;
+  description: string;
+  path: string;
+  items: ReadonlyArray<{ name: string; path: string }>;
+}) {
+  const url = canonical(path);
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": `${url}#collection`,
+    name,
+    description,
+    url,
+    isPartOf: { "@id": SITE_ID },
+    publisher: { "@id": ORG_ID },
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: items.length,
+      itemListElement: items.map((item, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: item.name,
+        url: canonical(item.path),
+      })),
     },
   };
 }
@@ -236,5 +348,55 @@ export function articleGraph({
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     author: { "@id": ORG_ID },
     publisher: { "@id": ORG_ID },
+  };
+}
+
+/**
+ * Service graph for a page that sells a service rather than a plan.
+ *
+ * WHY THIS EXISTS SEPARATELY FROM `productGraph`. `productGraph` describes a
+ * thing with tiers and a price range — a hosting plan. Most of what Serverlys
+ * sells is not that: website design, SEO, automations and the AI agents are
+ * scoped and quoted. Typing them as `Product` with no `offers` produces an
+ * invalid node; typing them as `Service` with an `@id`-linked provider is what
+ * actually resolves them to the Serverlys entity.
+ *
+ * That resolution is the whole point for answer engines. "Who builds AI phone
+ * agents for small businesses" is matched against the SERVICE, and the answer
+ * names the PROVIDER — so the provider must be the one canonical Organization
+ * node, not an anonymous stub that resolves to nothing.
+ *
+ * DELIBERATELY ABSENT, all for reasons recorded at the top of this file:
+ *   · `areaServed` — the positioning is global brand, no local targeting.
+ *   · `offers` / `priceRange` — prices are quoted, not published, on these
+ *     pages. An empty or invented Offer is worse than none.
+ *   · `aggregateRating` / `review` — no genuine ratings exist.
+ */
+export function serviceGraph({
+  name,
+  serviceType,
+  description,
+  path,
+}: {
+  /** The service as a customer would name it. */
+  name: string;
+  /** The category. Free text in schema.org; keep it a plain noun phrase. */
+  serviceType: string;
+  description: string;
+  path: string;
+}) {
+  const url = canonical(path);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${url}#service`,
+    name,
+    serviceType,
+    description,
+    url,
+    provider: { "@id": ORG_ID },
+    isPartOf: { "@id": SITE_ID },
+    mainEntityOfPage: url,
   };
 }

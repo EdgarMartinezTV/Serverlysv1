@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { SeraOpenButton } from "@/components/sera/sera-open-button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -219,14 +220,12 @@ export function MobileNav({
           </ul>
 
           <div className="mt-7 flex flex-col gap-3">
-            <Button
-              href={billing.store("cloud-hosting")}
-              variant="inverse"
-              size="lg"
-              block
-            >
-              Get started
-            </Button>
+            {/*
+              Matches the desktop header. `onOpen` closes the drawer first —
+              opening the chat panel behind an open full-screen drawer would
+              put it somewhere the visitor cannot see it.
+            */}
+            <SeraOpenButton onDark block onOpen={() => onOpenChange(false)} />
             <Button href={billing.login} variant="inverseOutline" size="lg" block>
               Client login
             </Button>
@@ -236,7 +235,7 @@ export function MobileNav({
             <span className="flex items-center gap-2 text-small text-fg-on-dark-muted">
               <span
                 aria-hidden="true"
-                className="flex h-4 w-4 items-center justify-center rounded-full text-[0.5rem] font-bold text-white ring-1 ring-inset ring-white/25"
+                className="flex h-4 w-4 items-center justify-center rounded-full text-micro font-bold text-white ring-1 ring-inset ring-white/25"
               >
                 E
               </span>
@@ -315,7 +314,7 @@ function MobileItem({ item, pathname }: { item: MegaItem; pathname: string }) {
             {item.label}
           </span>
           {item.badge && (
-            <span className="rounded-full bg-white/10 px-1.5 py-0.5 font-mono text-[0.5625rem] uppercase text-fg-on-dark-muted">
+            <span className="rounded-full bg-white/10 px-1.5 py-0.5 font-mono text-caption uppercase leading-4 text-fg-on-dark-muted">
               {item.badge.text}
             </span>
           )}

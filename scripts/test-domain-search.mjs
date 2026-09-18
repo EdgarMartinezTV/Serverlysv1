@@ -336,10 +336,25 @@ await search("offline-probe-3312.com");
 await sleep(2500);
 check(
   "network failure shows an error state, not a fake result",
+  /*
+   * Scoped to the LIVE RESULTS REGION (domain-search-app.tsx renders results
+   * inside `<div aria-live="polite">`), not the whole body. /register-domain's
+   * own explainer says "The registry answers available, registered, or
+   * unknown" — honest copy that is always on the page — so a body-wide
+   * /\bAVAILABLE\b/ guard could never pass here, and reported a fabricated
+   * availability bug that does not exist. Intent is unchanged: after a network
+   * failure there must be an error state, and no availability verdict for the
+   * name searched.
+   */
   await ev(
-    `return /did not complete/i.test(document.body.innerText) && !/\\bAVAILABLE\\b/i.test(document.body.innerText)`,
+    `const alerts = [...document.querySelectorAll('[role="alert"]')]
+       .map(e => e.innerText).join(' ');
+     const live = [...document.querySelectorAll('[aria-live]')]
+       .map(e => e.innerText).join(' ');
+     return /did not complete/i.test(alerts) && !/\\bavailable\\b/i.test(live);`,
   ),
 );
+
 check(
   "error state offers a retry",
   await ev(

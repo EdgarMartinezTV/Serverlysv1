@@ -1,8 +1,7 @@
-import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { Section } from "@/components/ui/section";
-import { company } from "@/data/company";
+import { company, emailDisplay } from "@/data/company";
 
 /**
  * Legal document layout.
@@ -150,12 +149,8 @@ export function LegalPage({
                   href={`mailto:${company.email}`}
                   className="font-medium text-primary underline underline-offset-4 hover:text-primary-hover"
                 >
-                  {company.email}
-                </a>{" "}
-                or through the{" "}
-                <Link href="/contact" className="font-medium text-primary underline underline-offset-4 hover:text-primary-hover">
-                  contact page
-                </Link>
+                  {emailDisplay}
+                </a>
                 .
               </p>
             </div>

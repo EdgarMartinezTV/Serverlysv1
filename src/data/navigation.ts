@@ -61,6 +61,13 @@ export type MegaGroup = {
 /** Right-hand promotional panel. One per category. */
 export type MegaPromo = {
   eyebrow: string;
+  /**
+   * A sister product with its own logo. When set, the promo shows that mark in
+   * place of the eyebrow text — the panel is the first place someone meets the
+   * product, and its own lockup says more there than its name set in our type.
+   * `eyebrow` stays required as the accessible fallback.
+   */
+  brand?: "convoai";
   title: string;
   body: string;
   cta: { label: string; href: string; external?: boolean };
@@ -161,6 +168,7 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
     ],
     promo: {
       eyebrow: "ConvoAI",
+      brand: "convoai",
       title: "An agent that answers at 2am",
       body: "Hours, bookings and pricing answered the moment they are asked — and handed over when they are not routine.",
       cta: { label: "Explore ConvoAI", href: "/convoai" },
@@ -326,8 +334,8 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
             description: "Applications and integrations.",
           },
           {
-            label: "WP migrations",
-            href: "/wp-migrations",
+            label: "Migrations",
+            href: "/migrations",
             icon: "compass",
             description: "Site, database and email. Free.",
           },
@@ -387,7 +395,7 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
           },
           {
             label: "Email migration",
-            href: "/wp-migrations",
+            href: "/migrations",
             icon: "compass",
             description: "Moved with the rest of the site.",
           },
@@ -564,12 +572,6 @@ const RESOURCE_CATEGORIES: readonly MegaCategory[] = [
             description: "What is included, and how to reach us.",
           },
           {
-            label: "Contact us",
-            href: "/contact",
-            icon: "mail",
-            description: "Sales, migrations and technical questions.",
-          },
-          {
             label: "Client login",
             href: billing.login,
             external: true,
@@ -646,7 +648,7 @@ export const footerNav: readonly NavColumn[] = [
       { label: "Marketing", href: "/marketing" },
       { label: "Social media", href: "/social-media" },
       { label: "Site management", href: "/site-management" },
-      { label: "WP migrations", href: "/wp-migrations" },
+      { label: "Migrations", href: "/migrations" },
       { label: "Business solutions", href: "/business-solutions" },
     ],
   },
@@ -655,7 +657,6 @@ export const footerNav: readonly NavColumn[] = [
     links: [
       { label: "About us", href: "/about" },
       { label: "Our process", href: "/our-process" },
-      { label: "Contact", href: "/contact" },
       { label: "Blog", href: "/blog" },
       { label: "Legal information", href: "/legal-information" },
     ],
@@ -706,10 +707,29 @@ export const footerGuarantees = [
   },
 ] as const;
 
+/**
+ * The footer legal strip.
+ *
+ * A hosting company is asked for more of these than a typical business,
+ * because it holds other people's data and serves other people's content.
+ * Ordered by how often a reader actually needs one rather than alphabetically:
+ * the three everyone looks for first, then the operational policies, then the
+ * ones aimed at a third party rather than a customer.
+ *
+ * Every entry here must be a built, indexable route in data/routes.ts. The
+ * footer is the one place a legal document is reliably reachable from, so a
+ * policy that exists but is not listed here is, in practice, unpublished.
+ */
 export const legalNav: readonly NavLink[] = [
   { label: "Privacy policy", href: "/privacy-policy" },
   { label: "Terms of service", href: "/terms-of-service" },
   { label: "Refund policy", href: "/refund-policy" },
+  { label: "Acceptable use policy", href: "/acceptable-use-policy" },
+  { label: "Cookie policy", href: "/cookie-policy" },
+  { label: "Data processing agreement", href: "/data-processing-agreement" },
+  { label: "Domain registration agreement", href: "/domain-registration-agreement" },
+  { label: "Copyright and DMCA", href: "/dmca-policy" },
+  { label: "Law enforcement requests", href: "/law-enforcement-requests" },
   { label: "Legal information", href: "/legal-information" },
   { label: "Report abuse", href: "/report-abuse" },
   { label: "Accessibility", href: "/accessibility" },
@@ -721,11 +741,33 @@ export const socialLinks = [
   { label: "TikTok", href: "https://www.tiktok.com/@serverlys" },
 ] as const;
 
+/**
+ * The bar above the header.
+ *
+ * ⚠ Bump `version` whenever the CONTENT changes. Dismissal is stored under a
+ * key built from it, so anyone who closed the previous message would otherwise
+ * never see this one — the old bar would stay dismissed forever.
+ *
+ * No countdown and no "ends tonight". CallFlow is simply available; inventing a
+ * deadline to create urgency is a dark pattern, and this company's whole
+ * pricing position is that it does not do that.
+ */
 export const announcement = {
   enabled: true,
-  version: "2026-09-cloud",
-  href: "/pricing",
-  linkLabel: "See plans",
+  version: "2026-09-callflow",
+  badge: "New",
+  title: "A voice agent that answers your phone",
+  /**
+   * Swapped in below sm. The bar must hold ONE line at 320px: the full title
+   * plus the full link label wraps at 390px, and a two-line promo pushes the
+   * hero down on exactly the devices with the least vertical room.
+   */
+  titleShort: "Your phone, answered by AI",
+  /** Dropped below md, where there is no room for a second clause. */
+  detail: "CallFlow books the job and sends you the transcript.",
+  href: "/callflow-ai",
+  linkLabel: "Hear it answer",
+  linkLabelShort: "Hear it",
 } as const;
 
 /* ── Path helpers ───────────────────────────────────────────────────────── */

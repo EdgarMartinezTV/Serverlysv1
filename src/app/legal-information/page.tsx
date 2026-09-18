@@ -1,7 +1,7 @@
 import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
 import { JsonLd } from "@/components/ui/json-ld";
 import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
-import { company } from "@/data/company";
+import { company, emailDisplay } from "@/data/company";
 
 const PATH = "/legal-information";
 const EFFECTIVE = "2026-09-09";
@@ -20,7 +20,7 @@ const SECTIONS: readonly LegalSection[] = [
     blocks: [
       {
         type: "p",
-        text: `${company.legalName} operates this website and the services described on it. Correspondence about any of the documents listed below reaches us at ${company.email} or on ${company.phone}.`,
+        text: `${company.legalName} operates this website and the services described on it. Correspondence about any of the documents listed below reaches us at ${emailDisplay} or on ${company.phone}.`,
       },
       {
         type: "note",

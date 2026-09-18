@@ -1,0 +1,1010 @@
+/*
+  Sera's stylesheet.
+
+  A CSS MODULE, NOT `globals.css`. Every class here is hashed and scoped to the
+  widget. The site's global stylesheet is a shared design system with contrast
+  ratios recorded inline and a token validator running over it on every build;
+  nothing in this file can affect a single existing element on the site.
+
+  ─────────────────────────────────────────────────────────────────────────────
+  MEASURED, NOT ESTIMATED.
+
+  Every dimension, radius, padding, gap, font size, weight and opacity below was
+  read out of `getComputedStyle` on the live Hostinger Agent widget driven in a
+  real browser — not sampled from a screenshot and not guessed. Panel 460×796 at
+  16px from the right and bottom edges; header 56px; body padding 24 gap 24;
+  primary card 78px tall with a 44px tile; three 129×92 option tiles; 56px
+  composer row. Those are its numbers, reproduced exactly.
+
+  ⚠ THE ONE DELIBERATE DIFFERENCE IS BRAND COLOUR, and it has to be.
+
+  Hostinger's widget is built on their violet: #7b66ff tiles, #e6e8ff cards,
+  rgba(103,61,230,…) accents. Reproducing those would put a competitor's brand
+  inside Serverlys' own site — the visitor would be looking at a Hostinger-
+  coloured assistant on serverlys.com. So the violet ramp is swapped for the
+  Serverlys brand ramp from `globals.css` at the SAME roles and the SAME
+  opacities: brand-500 where the violet tile was, brand-100 where the lavender
+  card was, brand-600 at 12% where the accent badge was. Geometry, type and
+  spacing are untouched.
+  ─────────────────────────────────────────────────────────────────────────────
+
+  Every animation is inside `prefers-reduced-motion: no-preference`, matching
+  the convention in `globals.css`: the default state is the FINAL state, so a
+  reduced-motion visitor gets a widget that is simply there, never one stuck
+  invisible because an animation did not run.
+*/
+
+/* ── Positioning ─────────────────────────────────────────────────────────── */
+
+.root {
+  /*
+    `display: contents` removes this element from layout entirely. The root
+    layout's <body> is a flex column whose items are the header, <main> and the
+    footer; a fourth flex item — even an empty one — is a change to that layout.
+    The children are `position: fixed` and out of flow regardless, so the only
+    thing this element needs to do is carry the custom properties below.
+  */
+  display: contents;
+
+  /*
+    The cookie notice is `fixed inset-x-0 bottom-0` and full-width, so it would
+    sit on top of the launcher. `--sera-lift` is measured from the live banner
+    at runtime (see sera-provider.tsx) rather than guessed, because that
+    banner's height changes with viewport width and with whether its settings
+    panel is open. Zero once the visitor has answered.
+  */
+  --sera-lift: 0px;
+  /* The reference's own inset. */
+  --sera-edge: 16px;
+  /*
+    Home-indicator clearance on iOS. The root layout already sets
+    `viewportFit: "cover"`, so `env()` resolves to a real inset here; on every
+    other device it is 0 and this costs nothing.
+  */
+  --sera-safe: env(safe-area-inset-bottom, 0px);
+}
+
+.launcher {
+  position: fixed;
+  right: var(--sera-edge);
+  bottom: calc(var(--sera-edge) + var(--sera-lift) + var(--sera-safe));
+  z-index: 60; /* Above the cookie notice (50), below the skip link (100). */
+  transition:
+    bottom 200ms var(--ease-hover),
+    transform 120ms var(--ease-hover),
+    background-color 120ms var(--ease-hover);
+}
+
+/* A press should feel like a press. 3% is under the threshold of noticing it
+   as animation and over the threshold of noticing its absence. */
+.launcher:active {
+  transform: scale(0.97);
+}
+
+/*
+  ⚠ HIDDEN WHILE THE PANEL IS OPEN, at every size.
+
+  The reference has no floating launcher at all — its widget opens from a nav
+  entry — so its panel sits flush at 16px from the bottom. Serverlys needs a
+  launcher (there is no nav entry to open it from), and the only way to keep the
+  panel's exact offsets is for the launcher to step aside while it is open. The
+  header's collapse control is the affordance from that point on.
+*/
+.launcherHidden {
+  display: none;
+}
+
+/*
+  ⚠ AND HIDDEN WHILE THE MOBILE NAV DRAWER IS OPEN.
+
+  The drawer is `z-50`; this launcher is `z-60` so that it clears the cookie
+  notice. The result was Sera's button floating on top of an open navigation
+  menu — visibly wrong, and tappable through a surface that is meant to be
+  covering the page.
+
+  Fixed HERE rather than by renumbering the site's layers: lowering the
+  launcher under the drawer would also put it under the cookie notice, and
+  raising the drawer means editing a navigation component over a chat widget's
+  problem. `:has()` lets Sera react to the drawer's presence without the two
+  components knowing anything about each other — the same read-only approach
+  used to measure the cookie banner. `#mobile-nav-panel` unmounts on close, so
+  the launcher returns by itself.
+*/
+:global(body):has(:global(#mobile-nav-panel)) .launcher {
+  display: none;
+}
+
+.panel {
+  /* Serverlys brand, standing in for the reference's violet. See the header. */
+  --sera-accent: var(--color-brand-500);
+  --sera-accent-deep: var(--color-brand-600);
+  --sera-accent-soft: var(--color-brand-100);
+
+  /* The reference's neutrals, exactly. */
+  --sera-fg: #18181a;
+  --sera-muted: #58585e;
+  --sera-hairline: rgba(24, 24, 26, 0.06);
+
+  position: fixed;
+  z-index: 60;
+  right: var(--sera-edge);
+  bottom: calc(var(--sera-edge) + var(--sera-lift) + var(--sera-safe));
+  width: min(460px, calc(100vw - 2 * var(--sera-edge)));
+  height: min(
+    796px,
+    calc(100dvh - 2 * var(--sera-edge) - var(--sera-lift) - var(--sera-safe))
+  );
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--sera-accent-deep) 36%, transparent);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--sera-accent) 20%, transparent),
+    0 12px 32px -8px rgb(24 24 26 / 0.18);
+  color: var(--sera-fg);
+  font-size: 14px;
+}
+
+/*
+  Phones get a sheet. A 460px panel does not fit a 390px screen, and the
+  reference collapses to the viewport at this size for the same reason.
+*/
+@media (max-width: 30rem) {
+  .panel {
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: min(88dvh, calc(100dvh - 2rem));
+    border-radius: 12px 12px 0 0;
+    padding-bottom: var(--sera-safe);
+  }
+}
+
+/* ── Header CTA (site chrome, not the panel) ─────────────────────────────── */
+
+/*
+  The "Ask Sera" pill that replaced the header's checkout CTA.
+
+  MEASURED FROM THE REFERENCE: 40px tall, 8px/16px padding, 8px gap, fully
+  rounded, TRANSPARENT fill, a 24px mark and a 14px/20px semibold label. The
+  only thing it paints is a 1px gradient ring.
+
+  ⚠ WHY THIS IS NOT THE DESIGN SYSTEM'S `Button`. That component's own header
+  warns against passing a className that overrides display or colour — the
+  winner is decided by stylesheet order rather than by the author, and it has
+  already caused one shipped bug there. A transparent pill with a gradient
+  border is not one of its nine variants, so this is its own control rather
+  than a `Button` fought into shape. It borrows the system's tokens for colour
+  and motion, so it still moves and reads like the rest of the header.
+
+  The reference's ring runs magenta (#ce31cf) to sky (#3aaefe) — their brand.
+  Serverlys' equivalent is violet-500 to cyan-400, already in `globals.css` as
+  the accent pair used on dark bands, so the gradient is this company's rather
+  than a competitor's.
+*/
+.headerCta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: transparent;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 120ms var(--ease-hover);
+}
+
+/*
+  The 1px gradient border. `border-image` cannot round its corners and a real
+  gradient border needs two boxes, so this masks a gradient-filled overlay down
+  to its own 1px padding ring — the standard technique, and the only one that
+  keeps the fill genuinely transparent so the hero shows through.
+*/
+.headerCta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    120deg,
+    var(--color-violet-500),
+    var(--color-cyan-400)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.headerCta:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.headerCta:focus-visible {
+  outline: 2px solid var(--color-primary-ring);
+  outline-offset: 2px;
+}
+
+/* Over the dark hero, as the reference has it. */
+.headerCtaOnDark {
+  color: #ffffff;
+}
+
+/*
+  On the light header the same ring works, but white text would vanish. The
+  label takes the site's own foreground instead, and the hover tint flips to a
+  dark wash for the same reason.
+*/
+.headerCtaOnLight {
+  color: var(--color-fg);
+}
+
+.headerCtaOnLight:hover {
+  background: rgba(24, 24, 26, 0.05);
+}
+
+/* Full-width inside the mobile drawer. */
+.headerCtaBlock {
+  display: flex;
+  width: 100%;
+  height: 48px;
+}
+
+/* ── Header ──────────────────────────────────────────────────────────────── */
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  height: 56px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--sera-hairline);
+}
+
+.headerTitle {
+  flex: 1;
+  min-width: 0;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  color: var(--sera-fg);
+}
+
+.headerButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  padding: 8px;
+  border-radius: 12px;
+  color: var(--sera-fg);
+  transition: background-color 120ms var(--ease-hover);
+}
+
+.headerButton:hover {
+  background: rgba(24, 24, 26, 0.05);
+}
+
+.headerButton:focus-visible {
+  outline: 2px solid var(--sera-accent-deep);
+  outline-offset: 1px;
+}
+
+/* ── Body ────────────────────────────────────────────────────────────────── */
+
+.body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain; /* Never scroll the page behind the panel. */
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  /*
+    The intro sits in the MIDDLE of the panel, as the reference does — the
+    opening screen is a poster, not the top of a list. Once a conversation
+    starts, `data-mode="thread"` releases it so messages stack from the top and
+    grow downward the way a transcript must.
+  */
+  justify-content: center;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(24, 24, 26, 0.18) transparent;
+}
+
+.body[data-mode="thread"] {
+  justify-content: flex-start;
+}
+
+.body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.body::-webkit-scrollbar-thumb {
+  background-color: rgba(24, 24, 26, 0.18);
+  border-radius: 999px;
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.introTitle {
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 600;
+  color: var(--sera-fg);
+}
+
+.introBody {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--sera-fg);
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* The headline action. */
+.primary {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--sera-accent-soft);
+  border: 1px solid color-mix(in srgb, var(--sera-accent-deep) 15%, transparent);
+  text-align: left;
+  transition:
+    background-color 120ms var(--ease-hover),
+    border-color 120ms var(--ease-hover);
+}
+
+.primary:hover:not([disabled]) {
+  background: color-mix(in srgb, var(--sera-accent-soft) 70%, #ffffff);
+  border-color: color-mix(in srgb, var(--sera-accent-deep) 30%, transparent);
+}
+
+.primary:focus-visible {
+  outline: 2px solid var(--sera-accent-deep);
+  outline-offset: 2px;
+}
+
+.primaryTile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--sera-accent);
+  color: #ffffff;
+  box-shadow: 0 4px 12px 0 color-mix(in srgb, var(--sera-accent-deep) 30%, transparent);
+}
+
+.primaryText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.primaryTitle {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--sera-fg);
+}
+
+.primarySub {
+  font-size: 12px;
+  line-height: 12px;
+  color: var(--sera-muted);
+}
+
+.primaryChevron {
+  flex-shrink: 0;
+  color: var(--sera-muted);
+}
+
+/* "or explore", ruled on both sides. */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  line-height: 12px;
+  color: var(--sera-muted);
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--sera-hairline);
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 8px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid var(--sera-hairline);
+  text-align: center;
+  transition:
+    background-color 120ms var(--ease-hover),
+    border-color 120ms var(--ease-hover);
+}
+
+.tile:hover:not([disabled]) {
+  background: #ffffff;
+  border-color: color-mix(in srgb, var(--sera-accent-deep) 24%, transparent);
+}
+
+.tile:focus-visible {
+  outline: 2px solid var(--sera-accent-deep);
+  outline-offset: 2px;
+}
+
+.tileBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--sera-accent-deep) 12%, transparent);
+  color: var(--sera-accent-deep);
+}
+
+.tileLabel {
+  font-size: 12px;
+  line-height: 12px;
+  color: var(--sera-muted);
+}
+
+.options[data-disabled="true"] .primary,
+.options[data-disabled="true"] .tile {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* ── Transcript ──────────────────────────────────────────────────────────── */
+
+.thread {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+}
+
+.rowUser {
+  align-items: flex-end;
+}
+
+.bubble {
+  max-width: 86%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(24, 24, 26, 0.04);
+  color: var(--sera-fg);
+  font-size: 14px;
+  line-height: 20px;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+.bubbleUser {
+  background: var(--sera-accent-deep);
+  color: #ffffff;
+}
+
+/*
+  A system message is the SERVER speaking — a confirmation, a reference number,
+  an honest failure. Edged so it is visibly not the model talking: those two
+  carry different weight, and only one of them is guaranteed true.
+*/
+.bubbleSystem {
+  background: var(--sera-accent-soft);
+  box-shadow: inset 0 0 0 1px
+    color-mix(in srgb, var(--sera-accent-deep) 20%, transparent);
+}
+
+.meta {
+  margin-top: 6px;
+  padding-inline: 2px;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--sera-muted);
+}
+
+.metaDot {
+  margin-inline: 5px;
+}
+
+/* ── Navigation proposal ─────────────────────────────────────────────────── */
+
+/*
+  Reads as a decision to make, not as something Sera said. Tinted and edged in
+  brand so it sits apart from the grey message bubbles around it — the same
+  treatment the request-confirmation strip gets, because they are the same kind
+  of moment: an action prepared, waiting on a person.
+*/
+.proposal {
+  align-self: flex-start;
+  max-width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--sera-accent-soft);
+  border: 1px solid color-mix(in srgb, var(--sera-accent-deep) 18%, transparent);
+}
+
+.proposalTitle {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--sera-fg);
+}
+
+.proposalBody {
+  margin-top: 4px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--sera-muted);
+}
+
+/*
+  The wait, made visible. Sera has said it is opening a page; this is how much
+  of that sentence is left to act on, and it is the only thing on the card that
+  tells a visitor the pause is deliberate rather than the widget having hung.
+
+  The track is always drawn. The FILL is what moves, and only under
+  no-preference below — so a reduced-motion visitor sees a full, still bar for
+  the four seconds instead of an empty one that looks like nothing is coming.
+*/
+.proposalCountdown {
+  margin-top: 12px;
+  height: 3px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--sera-accent-deep) 16%, transparent);
+}
+
+.proposalCountdownFill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--sera-accent-deep);
+  transform-origin: left center;
+  /*
+    ⚠ FULL IS THE DEFAULT, and the drain is added under no-preference below —
+    the file's rule that a visitor who blocks animation gets the readable state
+    rather than the leftovers of one. Emptying it from JS instead would leave
+    that visitor staring at a spent bar for the whole four seconds, which reads
+    as "already happened" under a line that says it is about to.
+  */
+  transform: scaleX(1);
+  transition: none;
+  transition-timing-function: linear;
+}
+
+.proposalActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.proposalPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: var(--sera-accent-deep);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  transition:
+    background-color 120ms var(--ease-hover),
+    transform 120ms var(--ease-hover);
+}
+
+.proposalPrimary:hover:not([disabled]) {
+  background: var(--color-primary-hover);
+}
+
+.proposalPrimary:active:not([disabled]) {
+  transform: scale(0.97);
+}
+
+.proposalGhost {
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  color: var(--sera-muted);
+  font-size: 13px;
+  font-weight: 500;
+  transition:
+    background-color 120ms var(--ease-hover),
+    color 120ms var(--ease-hover);
+}
+
+.proposalGhost:hover:not([disabled]) {
+  background: rgba(24, 24, 26, 0.06);
+  color: var(--sera-fg);
+}
+
+.proposalPrimary:focus-visible,
+.proposalGhost:focus-visible {
+  outline: 2px solid var(--sera-accent-deep);
+  outline-offset: 2px;
+}
+
+.proposalPrimary[disabled],
+.proposalGhost[disabled] {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* What the card becomes once answered. Quiet, but it stays in the record. */
+.proposalResolved {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  padding-inline: 2px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--sera-muted);
+}
+
+/* ── Composer ────────────────────────────────────────────────────────────── */
+
+.composerArea {
+  position: relative;
+  flex-shrink: 0;
+  border-top: 1px solid var(--sera-hairline);
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.composer {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  min-height: 56px;
+  padding: 12px;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  max-height: 96px;
+  padding: 6px 2px;
+  resize: none;
+  border: 0;
+  background: transparent;
+  color: var(--sera-fg);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.input::placeholder {
+  color: var(--sera-muted);
+}
+
+.input:focus {
+  outline: none;
+}
+
+.send {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  padding: 8px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.05);
+  /* Grey at rest, as the reference has it — the arrow is an affordance, not a
+     call to action, until there is something to send. */
+  color: var(--sera-muted);
+  transition:
+    background-color 120ms var(--ease-hover),
+    color 120ms var(--ease-hover),
+    transform 120ms var(--ease-hover);
+}
+
+/*
+  The button EARNS its colour when there is something to send — the reference
+  shows it flat grey at rest for the same reason. A permanently bright send
+  button on an empty field is a call to action with nothing behind it.
+*/
+.sendReady {
+  background: var(--sera-accent-deep);
+  color: #ffffff;
+}
+
+.sendReady:hover {
+  background: var(--color-primary-hover);
+}
+
+.sendReady:active {
+  transform: scale(0.94);
+}
+
+.send:focus-visible {
+  outline: 2px solid var(--sera-accent-deep);
+  outline-offset: 1px;
+}
+
+.footer {
+  padding: 0 12px 8px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--sera-muted);
+}
+
+.footer a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.footer a:hover {
+  color: var(--sera-fg);
+}
+
+/* ── Jump to latest ──────────────────────────────────────────────────────── */
+
+.jump {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--sera-hairline);
+  background: #ffffff;
+  color: var(--sera-fg);
+  font-size: 12px;
+  font-weight: 500;
+  box-shadow: 0 6px 16px -4px rgb(24 24 26 / 0.18);
+}
+
+.jump:hover {
+  background: rgba(24, 24, 26, 0.04);
+}
+
+.jump:focus-visible {
+  outline: 2px solid var(--sera-accent-deep);
+  outline-offset: 2px;
+}
+
+/* ── Status strips ───────────────────────────────────────────────────────── */
+
+.strip {
+  flex-shrink: 0;
+  padding: 12px 16px;
+  border-top: 1px solid var(--sera-hairline);
+}
+
+.stripQuiet {
+  flex-shrink: 0;
+  padding: 10px 16px;
+  border-top: 1px solid var(--sera-hairline);
+}
+
+.track {
+  margin-top: 6px;
+  height: 4px;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(24, 24, 26, 0.08);
+}
+
+.trackFill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--sera-accent-deep);
+  transition: width 200ms var(--ease-entrance);
+}
+
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--color-error-soft);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-error) 25%, transparent);
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--sera-fg);
+}
+
+/* ── Motion ──────────────────────────────────────────────────────────────── */
+
+@keyframes seraPanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes seraPanelOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(8px) scale(0.985);
+  }
+}
+
+@keyframes seraMessageIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes seraPillIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 6px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes seraBlink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.15;
+  }
+}
+
+@keyframes seraPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  70%,
+  100% {
+    transform: scale(2.1);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /*
+    The navigation countdown sweeping to empty. Duration is set inline from
+    `NAV_OPEN_DELAY_MS`, so the bar and the timer that actually navigates are
+    driven by one number and cannot drift apart.
+  */
+  .proposalCountdownFill {
+    transition-property: transform;
+  }
+
+  .proposalCountdownRunning {
+    transform: scaleX(0);
+  }
+
+  /*
+    ⚠ THE PANEL DELIBERATELY HAS NO ENTRANCE OR EXIT ANIMATION.
+    
+    Measured on the reference: `animation: none`, a `transition` with no
+    duration, and full opacity with no transform on the very first frame after
+    the click. It appears and disappears instantly. An earlier pass here had a
+    220ms scale-and-fade in and a 160ms fade out, which looked considered but
+    was simply not what the widget being matched does — and a chat window that
+    makes you wait a fifth of a second to start typing is slower to use for no
+    gain. `seraPanelIn` / `seraPanelOut` are kept below unused so the decision
+    is visible rather than silently lost.
+  */
+
+  /*
+    ⚠ APPLIED ONLY TO NEWLY GENERATED MESSAGES. Reopening the panel re-mounts
+    the whole transcript, and animating all of it makes a conversation you have
+    already read replay itself every time — the widget's single most obviously
+    "fake" behaviour. The panel stamps its mount time and only stamps this class
+    on messages that arrived after it. See sera-panel.tsx.
+  */
+  .message {
+    animation: seraMessageIn 180ms var(--ease-entrance) both;
+  }
+
+  .jump {
+    animation: seraPillIn 160ms var(--ease-entrance) both;
+  }
+
+  .dot {
+    animation: seraBlink 1.1s ease-in-out infinite;
+  }
+
+  .dot:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+
+  .dot:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  /*
+    A ring that breathes out of the online indicator. It is the only thing on
+    the launcher that moves, and it is what makes a static button read as
+    "available" rather than "decoration".
+  */
+  .ping {
+    animation: seraPulse 2.4s var(--ease-exit) infinite;
+  }
+
+  /* The caret that trails streaming text. Stops the instant the text does. */
+  .caret {
+    animation: seraBlink 900ms steps(1, end) infinite;
+  }
+}

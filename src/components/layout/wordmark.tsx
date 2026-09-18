@@ -6,61 +6,83 @@ import { company } from "@/data/company";
 /**
  * The Serverlys logo.
  *
- * ONE ASSET: /brand/logo.webp, used everywhere, unmodified. The blue wordmark,
- * the green circuit mark and the black tagline appear exactly as drawn — no
- * recolouring, no reversed variant, no derived file that can drift from the
- * original.
+ * TWO ASSETS, one lockup. `/brand/logo.webp` is the original, used unmodified
+ * on every light surface. `/brand/logo-on-dark.webp` is the reversed lockup for
+ * the dark header, footer and mobile drawer.
  *
- * The logo is drawn for light surfaces, so on the dark header, footer and
- * mobile drawer it sits on a WHITE PLATE rather than being recoloured to suit
- * the background. That is the trade this component makes deliberately:
+ * The reversed file is GENERATED FROM THE ORIGINAL, pixel for pixel — same
+ * artwork, same 1653×409 box, same alpha. Only lightness moves, and only where
+ * the dark ground requires it:
  *
- *   · Recolouring keeps the surface clean and changes the brand. Pure blue
- *     (0,0,255) measures 2.16:1 on the dark ground, so it has to move a long
- *     way in lightness to be legible, and the mark stops being the mark.
- *   · A plate keeps the brand exact and adds a shape to the layout.
+ *   · the blue wordmark and drum go to brand-400 (#5ea3fa), the palette's
+ *     vetted on-dark blue. Pure blue measures 2.16:1 on the abyss ground and
+ *     is effectively invisible there;
+ *   · the black tagline becomes white — black has no legible form on a dark
+ *     background at any lightness;
+ *   · the circuit mark's green is lifted slightly and keeps its hue, because
+ *     green already carries on dark and recolouring it would lose the one part
+ *     of the mark that is not blue.
  *
- * The plate wins because the logo is the one element on the page that must not
- * be approximated. It is also what the asset supports: black tagline text has
- * no legible form on a dark background at any lightness.
+ * ⚠ This REPLACES an earlier white plate behind the logo. The plate kept the
+ * artwork exact but put a white card in the top-left corner of every dark
+ * band, which is the first thing you see on the homepage and reads as a bug.
+ *
+ * ⚠ DO NOT use `/brand/white-version-logo.webp` or `/brand/dark-version-logo.webp`.
+ * Both are ConvoAI's logo, not Serverlys' — they are a different company's mark
+ * that happens to sit in the same folder, and shipping one puts the wrong brand
+ * in the header. Checked 2026-09-10.
  *
  * ⚠ The lockup carries a tagline set far smaller than the wordmark. At header
  * height it is a few pixels tall and reads as texture rather than words. A
  * horizontal mark WITHOUT the tagline would be the better asset at these
  * sizes — this component is where to swap it.
  */
+/**
+ * Widest this mark is rendered anywhere: the header's `h-10` against the
+ * asset's 1653×409 ratio (4.042), so 40 × 4.042 ≈ 162px. The footer's `h-9` is
+ * 145px and the default `h-8` is 129px, both comfortably under it.
+ *
+ * This number exists because WITHOUT a `sizes` attribute the browser assumes
+ * `100vw` and picks the largest candidate in the srcset — it was fetching the
+ * 1920px variant, 19KB of AVIF, to paint a 162px-wide logo. With `sizes` set
+ * the correct small variant is chosen instead. The header copy carries
+ * `priority`, so this sat in the critical path on every page.
+ *
+ * If you ever render the mark larger than this, pass `sizes` — do not leave it
+ * to scale up from a 162px source and go soft.
+ */
+const DEFAULT_SIZES = "162px";
+
 export function Wordmark({
   tone = "dark",
   priority = false,
   className,
+  sizes = DEFAULT_SIZES,
 }: {
-  /** `dark` = a light surface, logo bare. `light` = a dark surface, logo plated. */
+  /** `dark` = a light surface. `light` = a dark surface, reversed lockup. */
   tone?: "dark" | "light";
   priority?: boolean;
   /** Height utility for the image. Defaults to the header size. */
   className?: string;
+  /** Override only when rendering wider than the header's ~162px. */
+  sizes?: string;
 }) {
   const onDark = tone === "light";
 
   return (
     <Link
       href="/"
-      className={cn(
-        "inline-flex w-fit shrink-0 items-center self-start rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary",
-        /* The plate. Pure white so the artwork renders on the background it
-           was drawn for, with enough padding that the circuit mark's legs are
-           not clipped by the corner radius. */
-        onDark && "bg-white px-3 py-2 shadow-e2 ring-1 ring-inset ring-white",
-      )}
+      className="inline-flex w-fit shrink-0 items-center self-start rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
       aria-label={`${company.name} — home`}
     >
       <Image
-        src="/brand/logo.webp"
+        src={onDark ? "/brand/logo-on-dark.webp" : "/brand/logo.webp"}
         alt={company.name}
         /* Intrinsic dimensions. Next needs the true ratio to reserve the right
-           box and avoid a layout shift as it loads. */
+           box and avoid a layout shift as it loads. Both files share them. */
         width={1653}
         height={409}
+        sizes={sizes}
         priority={priority}
         className={cn("w-auto", className ?? "h-8")}
       />

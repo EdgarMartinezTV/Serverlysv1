@@ -229,10 +229,12 @@ check(
 console.log("\n── Open / close ──");
 await load();
 await hover(TRIG, 0);
+// Click-only, matching the reference: hovering must leave the panel shut.
+// This assertion was the opposite until the menu stopped opening on hover.
 check(
-  "mouse hover opens the panel",
+  "mouse hover does NOT open the panel (click-only)",
   await ev(
-    `return document.querySelectorAll('${TRIG}')[0].getAttribute('aria-expanded')==='true'`,
+    `return document.querySelectorAll('${TRIG}')[0].getAttribute('aria-expanded')==='false'`,
   ),
 );
 await load();
@@ -370,9 +372,12 @@ check(
       && /AI and automation/.test(s.textContent) && /ConvoAI/.test(s.textContent);`),
 );
 check(
+  // The drawer's primary CTA was "Get started" (straight to the cloud-hosting
+  // store) until Sera replaced it with "Ask Sera", which opens the assistant.
+  // Login and language are unchanged.
   "drawer shows CTA, login and language",
   await ev(`const t=document.querySelector('#mobile-nav-panel').textContent;
-    return /Get started/.test(t) && /Client login/.test(t) && /English/.test(t)`),
+    return /Ask Sera/.test(t) && /Client login/.test(t) && /English/.test(t)`),
 );
 check(
   "no horizontal overflow on mobile",

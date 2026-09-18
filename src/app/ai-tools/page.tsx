@@ -10,6 +10,7 @@ import { ChatMock, CallMock, AutomationMock } from "@/components/product-ui/mock
 import { NavIcon } from "@/components/navigation/nav-icons";
 import { pageMetadata, breadcrumbGraph, faqGraph } from "@/lib/seo";
 import type { Faq } from "@/data/faqs";
+import { billing } from "@/data/company";
 
 const PATH = "/ai-tools";
 
@@ -200,7 +201,7 @@ export default function AiToolsPage() {
               for how they are set up.
             </p>
           </div>
-          <Button href="/contact">Describe it to us</Button>
+          <Button href={billing.sales}>Describe it to us</Button>
         </div>
       </Section>
 

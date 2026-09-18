@@ -1,132 +1,82 @@
-import { Container } from "@/components/ui/container";
-import { Section, SectionHeader } from "@/components/ui/section";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { JsonLd } from "@/components/ui/json-ld";
+import { Faqs } from "@/components/ref/faqs";
+import { DomainHero } from "@/components/ref/domain/hero";
+import { Popular } from "@/components/ref/domain/popular";
+import { Reasons } from "@/components/ref/domain/reasons";
+import { Steps } from "@/components/ref/domain/steps";
+import { TldTable } from "@/components/ref/domain/tld-table";
 import { DomainSearchApp } from "@/components/domain/domain-search-app";
-import { FaqSection } from "@/components/sections/faq";
-import { FinalCta } from "@/components/sections/final-cta";
-import { tlds, cheapestTld } from "@/data/tlds";
+import { cheapestTld, tlds } from "@/data/tlds";
 import { faqsFor } from "@/data/faqs";
-import { pageMetadata, faqGraph, breadcrumbGraph, productGraph } from "@/lib/seo";
+import { breadcrumbGraph, faqGraph, pageMetadata, productGraph } from "@/lib/seo";
+import { FAQ_HEAD, HERO, REASONS, STEPS } from "./_content";
+
+/**
+ * Register a domain.
+ *
+ * Built from hostinger.com/domain-name-search, the same reference as
+ * /domain-name, sharing its bands via components/ref/domain/*. The copy is
+ * registration-specific — see the note in _content.ts about why four pages on
+ * one reference need four sets of words.
+ *
+ * THE SEARCH IS REAL: <DomainSearchApp> posts to /api/domains/check, which
+ * resolves against the registry server-side and returns an honest `unknown`.
+ * Results hand off to the Serverlys cart at
+ * `billing/cart.php?a=add&domain=register&query=…`.
+ *
+ * FAQs come from data/faqs.ts, which already scopes items to this path — the
+ * site's shared answers, not the reference's.
+ */
 
 const PATH = "/register-domain";
 
+const TITLE = `Register a domain name from $${cheapestTld.price.toFixed(2)} | Serverlys`;
 const DESCRIPTION =
-  "Search and register a domain name. Free WHOIS privacy on every domain, renewal rates published up front, and no charge for DNS management.";
+  "Check domain availability against the registry and register at Serverlys. Free WHOIS privacy where allowed, and the renewal rate shown before you pay.";
 
-export const metadata = pageMetadata({
-  title: `Register a Domain — search names from $${cheapestTld.price.toFixed(2)}/yr | Serverlys`,
-  description: DESCRIPTION,
-  path: PATH,
-});
+export const metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH });
 
-const INCLUDED = [
-  ["Free WHOIS privacy", "Your details stay out of the public record, at no cost."],
-  ["Full DNS management", "Records, subdomains and redirects, included."],
-  ["Auto-renew, off by default", "Nothing renews silently without your say-so."],
-  ["Published renewal rates", "The year-two price is on the page, not in the terms."],
-] as const;
+const BREADCRUMB = [
+  { name: "Home", path: "/" },
+  { name: "Register a domain", path: PATH },
+];
+
+const PRICES = tlds.map((t) => t.price);
 
 export default function RegisterDomainPage() {
   const faqs = faqsFor(PATH);
-  const prices = tlds.map((t) => t.price);
 
   return (
-    <>
-      <JsonLd
-        data={breadcrumbGraph([
-          { name: "Home", path: "/" },
-          { name: "Register a domain", path: PATH },
-        ])}
-      />
+    /** globals.css balances headings; the reference wraps normally. */
+    <div className="[&_h1]:text-wrap [&_h2]:text-wrap [&_h3]:text-wrap [&_p]:text-wrap">
+      <JsonLd data={breadcrumbGraph(BREADCRUMB)} />
       <JsonLd
         data={productGraph({
-          name: "Domain registration",
+          name: "Serverlys Domain Registration",
           description: DESCRIPTION,
           path: PATH,
-          lowPrice: Math.min(...prices),
-          highPrice: Math.max(...prices),
+          lowPrice: Math.min(...PRICES),
+          highPrice: Math.max(...PRICES),
+          offerCount: PRICES.length,
         })}
       />
       <JsonLd data={faqGraph(faqs)} />
 
-      {/* The search IS the page — it gets the fold, on a light surface so the
-          input is the brightest thing on screen. */}
-      <section className="border-b border-line bg-canvas-secondary">
-        <Container className="pb-14 pt-8 sm:pb-16 sm:pt-10">
-          <Breadcrumbs
-            trail={[{ name: "Home", href: "/" }, { name: "Register a domain" }]}
-          />
-          <div className="mt-10 max-w-2xl">
-            <span className="font-mono text-caption uppercase text-primary">
-              Domains
-            </span>
-            <h1 className="mt-4 text-h1 text-fg">Find the name first</h1>
-            <p className="mt-5 text-body-lg text-fg-secondary">
-              Availability is checked live against the domain registry. Free WHOIS
-              privacy on everything we register.
-            </p>
-          </div>
+      <DomainHero copy={HERO} tool={<DomainSearchApp />} />
+      <Reasons copy={REASONS} />
+      <Popular />
+      <Steps copy={STEPS} />
+      <TldTable />
 
-          <div className="mt-10">
-            <DomainSearchApp />
-          </div>
-        </Container>
-      </section>
-
-      <Section labelledBy="tld-heading">
-        <SectionHeader
-          id="tld-heading"
-          eyebrow="Pricing"
-          title="Extensions and first-year prices"
-          lede="Standard registration prices. Premium names are priced by the registry and labelled as premium before checkout."
-        />
-        <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {tlds.map((t) => (
-            <li
-              key={t.tld}
-              className="flex items-baseline justify-between gap-4 rounded-lg bg-surface p-4 ring-1 ring-inset ring-line"
-            >
-              <span>
-                <span className="block font-mono text-body font-medium text-fg">
-                  {t.tld}
-                </span>
-                {t.note && (
-                  <span className="mt-0.5 block text-small text-fg-muted">
-                    {t.note}
-                  </span>
-                )}
-              </span>
-              <span className="tabular shrink-0 text-body font-semibold text-fg">
-                ${t.price.toFixed(2)}
-                <span className="block text-right text-small font-normal text-fg-muted">
-                  /yr
-                </span>
-              </span>
-            </li>
-          ))}
-        </ul>
-      </Section>
-
-      <Section surface="subtle" labelledBy="included-heading">
-        <SectionHeader
-          id="included-heading"
-          eyebrow="Every domain"
-          title="What comes with the name"
-          lede="The things some registrars charge extra for."
-        />
-        <dl className="mt-10 grid gap-8 sm:grid-cols-2">
-          {INCLUDED.map(([term, detail]) => (
-            <div key={term}>
-              <dt className="text-body font-semibold text-fg">{term}</dt>
-              <dd className="mt-1.5 text-small text-fg-secondary">{detail}</dd>
-            </div>
-          ))}
-        </dl>
-      </Section>
-
-      <FaqSection items={faqs} />
-      <FinalCta />
-    </>
+      <Faqs
+        idPrefix="rd"
+        title={FAQ_HEAD.title}
+        description={FAQ_HEAD.description}
+        items={faqs.map((f) => ({
+          q: f.question,
+          a: [{ type: "p" as const, runs: [{ text: f.answer }] }],
+        }))}
+      />
+    </div>
   );
 }

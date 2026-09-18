@@ -273,11 +273,13 @@ check(
 console.log("\n── Desktop · pointer ──");
 await load();
 await hover('nav[aria-label="Main"] button[aria-expanded]', 0);
+// Click-only, matching the reference: a mouse hover must leave the panel shut.
+// This assertion was the opposite until the menu stopped opening on hover.
 check(
-  "mouse hover opens a panel",
+  "mouse hover does NOT open a panel (click-only)",
   (await evaluate(
     `document.querySelectorAll('nav[aria-label="Main"] button[aria-expanded]')[0].getAttribute('aria-expanded')`,
-  )) === "true",
+  )) === "false",
 );
 
 await load();

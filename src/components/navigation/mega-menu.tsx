@@ -20,8 +20,12 @@ import { cn } from "@/lib/utils";
  * items.
  *
  * Switching category swaps content in place — the panel keeps its size and
- * position, so nothing flashes or jumps. Panel width is fixed to the container
+ * position, so nothing flashes or jumps. Panel width is fixed to the viewport
  * so moving between top-level menus does not resize the surface either.
+ *
+ * The promo column drops below xl. At 1280px and under, a 300px fixed column
+ * took a third of the panel away from the links people opened the menu to
+ * reach, and the target hides it at the same point.
  */
 export function MegaMenu({
   railLabel,
@@ -87,21 +91,28 @@ export function MegaMenu({
           onClose(true);
         }
       }}
-      /* Centred on the VIEWPORT, not the container: the panel is deliberately
-         wider than the 1200px content column so three columns of items get
-         real width and descriptions sit on two lines, as in the target. */
-      className="absolute left-1/2 top-full z-10 w-[min(88rem,calc(100vw-2.5rem))] -translate-x-1/2 pt-3"
+      /* GEOMETRY, matching the target to the pixel: the panel is centred on the
+         VIEWPORT rather than the container, spans the viewport less a 16px
+         margin each side up to 1600px, and opens 8px below the 72px bar. It is
+         deliberately far wider than the 1200px content column — three columns
+         of items need real width or every description wraps to four lines. */
+      className="absolute left-1/2 top-full z-10 w-[calc(100vw-2rem)] max-w-mega -translate-x-1/2 pt-2"
     >
       <div
         className={cn(
-          "overflow-hidden rounded-2xl bg-canvas-abyss/95 shadow-e5 ring-1 ring-inset ring-white/10 backdrop-blur-xl",
+          "max-h-[calc(100vh-6rem)] overflow-auto rounded-xl bg-canvas-abyss/95 shadow-e5 ring-1 ring-inset ring-white/10 backdrop-blur-xl",
           "motion-safe:animate-[megaIn_180ms_cubic-bezier(0.16,1,0.3,1)]",
         )}
       >
-        <div className="grid gap-0 lg:grid-cols-[15.5rem_minmax(0,1fr)_19rem]">
+        {/* Flex, not grid: the rail and the promo are FIXED widths (240 / 300)
+            and the content takes whatever is left. A three-column grid made the
+            content column collapse on narrow laptops instead of the promo. */}
+        <div className="flex gap-6 p-6">
           {/* ── Zone 1: category rail ──────────────────────────────────── */}
-          <div className="border-white/10 p-4 lg:border-r">
-            <p className="px-3 pb-2 pt-1 font-mono text-caption uppercase text-fg-on-dark-muted">
+          <div className="flex w-60 shrink-0 flex-col gap-6">
+            {/* 12px / 600 / 16px line box — the target's eyebrow exactly.
+                `text-caption` alone is 12/16.8 (the site's 1.4 ratio). */}
+            <p className="font-mono text-caption uppercase leading-4 text-fg-on-dark-muted">
               {railLabel}
             </p>
             <div
@@ -109,7 +120,7 @@ export function MegaMenu({
               aria-orientation="vertical"
               aria-label={`${railLabel} categories`}
               onKeyDown={onRailKeyDown}
-              className="flex flex-col gap-0.5"
+              className="flex flex-col gap-1.5"
             >
               {categories.map((c, i) => {
                 const selected = c.id === category.id;
@@ -125,20 +136,31 @@ export function MegaMenu({
                     aria-selected={selected}
                     aria-controls={`${baseId}-region-${c.id}`}
                     tabIndex={selected ? 0 : -1}
+                    /* Click only — measured off the reference: hovering a rail
+                       item there leaves the panel content unchanged, and only a
+                       click swaps it. This had an onMouseEnter too, which meant
+                       the panel rewrote itself as the pointer crossed the rail
+                       on its way to a link. */
                     onClick={() => setActiveId(c.id)}
-                    onMouseEnter={() => setActiveId(c.id)}
+                    /* A PILL, not a rounded rectangle. The target's rail is
+                       fully rounded and the difference is obvious side by side. */
+                    /* 14px / 20px line box in a 32px pill (6+20+6), and the
+                       weight carries the active state — 600 selected, 400 at
+                       rest, as measured on the target. A flat font-medium made
+                       every row look selected and the 21px line box pushed the
+                       pill to 33px. */
                     className={cn(
-                      "flex min-h-11 items-center gap-3 rounded-xl px-3 text-small font-medium transition-colors duration-fast",
+                      "flex items-center gap-3 rounded-full px-3 py-1.5 text-left text-small leading-5 transition-colors duration-fast",
                       "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white",
                       selected
-                        ? "bg-white/[0.09] text-white ring-1 ring-inset ring-white/10"
-                        : "text-fg-on-dark-secondary hover:bg-white/[0.05] hover:text-white",
+                        ? "bg-primary/25 font-semibold text-white"
+                        : "font-normal text-fg-on-dark-secondary hover:bg-white/[0.06] hover:text-white",
                     )}
                   >
                     <NavIcon
                       name={c.icon}
                       className={cn(
-                        "h-[1.125rem] w-[1.125rem] shrink-0",
+                        "h-5 w-5 shrink-0",
                         selected ? "text-primary-on-dark" : "text-fg-on-dark-muted",
                       )}
                     />
@@ -149,23 +171,28 @@ export function MegaMenu({
             </div>
           </div>
 
+          <div aria-hidden="true" className="w-px shrink-0 bg-white/10" />
+
           {/* ── Zone 2: grouped content ────────────────────────────────── */}
           <div
             role="tabpanel"
             id={`${baseId}-region-${category.id}`}
             aria-labelledby={`${baseId}-rail-${category.id}`}
             tabIndex={0}
-            className="p-5 outline-none lg:p-6"
+            className="flex min-w-0 flex-1 flex-col gap-6 outline-none"
           >
             {category.groups.map((group, gi) => (
               <section
                 key={group.heading}
-                className={cn(gi > 0 && "mt-6 border-t border-white/10 pt-6")}
+                className={cn("flex flex-col gap-6", gi > 0 && "border-t border-white/10 pt-6")}
               >
-                <h3 className="px-2.5 pb-3 font-mono text-caption uppercase text-fg-on-dark-muted">
+                <h3 className="font-mono text-caption uppercase leading-4 text-fg-on-dark-muted">
                   {group.heading}
                 </h3>
-                <ul className="grid gap-x-5 gap-y-1 sm:grid-cols-2 xl:grid-cols-3">
+                {/* auto-fit at a 264px floor, exactly as the target: columns
+                    appear and disappear with the panel width instead of
+                    snapping at two fixed breakpoints. */}
+                <ul className="grid grid-cols-[repeat(auto-fit,minmax(16.5rem,1fr))] gap-x-10 gap-y-6">
                   {group.items.map((item) => (
                     <li key={item.label} className="flex">
                       <MegaMenuItem item={item} onNavigate={onNavigate} />
@@ -177,7 +204,7 @@ export function MegaMenu({
           </div>
 
           {/* ── Zone 3: promotional panel ──────────────────────────────── */}
-          <div className="border-white/10 p-4 lg:border-l">
+          <div className="hidden h-[27.75rem] w-[18.75rem] shrink-0 xl:block">
             <MegaMenuPromo promo={category.promo} />
           </div>
         </div>
