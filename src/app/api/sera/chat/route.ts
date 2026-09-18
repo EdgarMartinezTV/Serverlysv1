@@ -1,6 +1,12 @@
 import { clientKey } from "@/lib/domains/provider";
 import { LIMITS } from "@/lib/sera/config";
-import { CHAT_BY_ADDRESS, CHAT_BY_CONVERSATION, check } from "@/lib/sera/rate-limit";
+import {
+  CHAT_BY_ADDRESS,
+  CHAT_BY_CONVERSATION,
+  GLOBAL_CHAT,
+  GLOBAL_CHAT_KEY,
+  check,
+} from "@/lib/sera/rate-limit";
 import {
   createConversation,
   getConversation,
@@ -16,6 +22,7 @@ import {
   safeTrail,
   validateMessage,
 } from "@/lib/sera/validation";
+import { readJsonObject } from "@/lib/request";
 import { FALLBACK_MESSAGE, runTurn } from "@/lib/sera/ai";
 import { errorCategory, log } from "@/lib/sera/observability";
 import { WORKFLOW_IDS, newWorkflow, toView } from "@/lib/sera/workflows";
@@ -52,14 +59,15 @@ function fail(message: string, status: number, headers?: HeadersInit) {
 
 export async function POST(request: Request) {
   // ── Input ───────────────────────────────────────────────────────────────
-  let body: Record<string, unknown>;
-  try {
-    const parsed = await request.json();
-    if (!parsed || typeof parsed !== "object") throw new Error("not an object");
-    body = parsed as Record<string, unknown>;
-  } catch {
-    return fail("Malformed request.", 400);
-  }
+  /*
+   * Bounded read. The limiters below cannot run until the body is parsed —
+   * they need to know which conversation is calling — so an unbounded
+   * `request.json()` here would be reachable before any of them. See
+   * lib/request.ts.
+   */
+  const parsed = await readJsonObject(request);
+  if (!parsed.ok) return fail(parsed.reason, parsed.status);
+  const body = parsed.value;
 
   const message = validateMessage(body.message, LIMITS.maxMessageChars);
   if (!message.ok) return fail(message.reason, 400);
@@ -83,6 +91,25 @@ export async function POST(request: Request) {
   const setCookie = existingSession ? undefined : sessionCookie(sessionId);
 
   // ── Rate limit ──────────────────────────────────────────────────────────
+  /*
+   * The instance ceiling is checked FIRST, before the per-address bucket, and
+   * the order is the point: every limit after this one is keyed on a value
+   * derived from request headers, and an origin reached directly has no proxy
+   * to write those headers honestly. This check asks nothing about the caller,
+   * so there is no answer that gets past it. It is the one that bounds the
+   * OpenAI bill in the case where the deployment is misconfigured.
+   */
+  const global = check(GLOBAL_CHAT_KEY, GLOBAL_CHAT);
+  if (!global.ok) {
+    log.warn("rate_limited", { error: "chat_global_ceiling" });
+    return fail(
+      "I am handling more conversations than usual right now. Email " +
+        "support@serverlys.com or call (305) 671-1272 and the team will pick it up.",
+      503,
+      { "Retry-After": String(global.retryAfterSeconds) },
+    );
+  }
+
   const address = check(clientKey(request, "sera-chat"), CHAT_BY_ADDRESS);
   if (!address.ok) {
     /*

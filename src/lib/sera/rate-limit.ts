@@ -46,6 +46,34 @@ export const CHAT_BY_CONVERSATION: Window = { limit: 20, windowMs: 60_000 };
  */
 export const SUBMIT_BY_ADDRESS: Window = { limit: 5, windowMs: 10 * 60_000 };
 
+/**
+ * THE BILL CEILING. Instance-wide, keyed on nothing.
+ *
+ * Every other limit in this file asks "who is calling", and every answer to
+ * that question ultimately rests on a header. `clientKey` now reads only the
+ * position our own proxy writes, which closes the forgery path THROUGH the
+ * proxy — but an origin that is ever reachable directly has no proxy to write
+ * it, and then identity is whatever the caller says it is. A limiter that can
+ * be made to see a new visitor on every request does not limit anything.
+ *
+ * So this one does not ask. It counts model calls leaving this process and
+ * stops at the ceiling no matter who is asking, which makes it the only limit
+ * here whose guarantee does not depend on the deployment being wired correctly.
+ * The failure mode it prevents is not an outage, it is an invoice.
+ *
+ * 240/minute is roughly twenty simultaneous real conversations — far above
+ * anything this site will see organically, and far below a number that could
+ * run up a bill unnoticed. Tripping it means something is driving the endpoint,
+ * and the visitor-facing copy hands over to a human rather than pretending.
+ *
+ * ⚠ PER INSTANCE, like everything else here. N replicas means N ceilings, so
+ * the real cap is N × 240. Sized with that in mind rather than forgotten.
+ */
+export const GLOBAL_CHAT: Window = { limit: 240, windowMs: 60_000 };
+
+/** The fixed key for `GLOBAL_CHAT`. Constant on purpose — one shared bucket. */
+export const GLOBAL_CHAT_KEY = "sera-chat:global";
+
 export type LimitResult = { ok: boolean; retryAfterSeconds: number };
 
 export function check(key: string, window: Window): LimitResult {

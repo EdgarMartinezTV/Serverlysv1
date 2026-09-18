@@ -38,6 +38,46 @@ export const verification = {
 } as const;
 
 /**
+ * How the deployment learns a visitor's address.
+ *
+ * ⚠ EVERY FORWARDING HEADER IS ATTACKER-CONTROLLED UNTIL A PROXY OVERWRITES IT.
+ * A header is not evidence of anything on its own — `curl -H "X-Real-IP: …"`
+ * sets it as easily as Traefik does. What makes a value trustworthy is knowing
+ * exactly WHO wrote it, and that is a fact about the deployment topology that
+ * only the operator can supply. Hence configuration rather than a guess.
+ *
+ * `TRUSTED_CLIENT_IP_HEADER` — set this when a CDN terminates the connection
+ * and stamps a single authoritative address. Cloudflare writes
+ * `cf-connecting-ip` at its edge and strips any inbound copy, so it cannot be
+ * forged THROUGH Cloudflare. It can still be forged by anyone who reaches the
+ * origin directly, which is why locking the origin to the CDN's ranges is part
+ * of using this, not an optional extra.
+ *
+ * `TRUSTED_PROXY_HOPS` — how many proxies sit in front of the app. Used to
+ * index `X-Forwarded-For` FROM THE RIGHT. Each proxy APPENDS the address it
+ * observed, so with one proxy the rightmost entry was written by our own
+ * Traefik and everything to its left is caller-supplied noise. Default 1,
+ * matching the Easypanel/Traefik deployment. Raise it if a hop is ever added —
+ * counting wrong silently reopens a bypass.
+ *
+ * Deliberately NOT supported: `x-real-ip` as a trusted source. It carries a
+ * single value with no append semantics, so there is no position in it that is
+ * known to have been written by our proxy rather than by the caller. It is
+ * indistinguishable from a request that simply set it, which is exactly the
+ * bypass this configuration exists to close.
+ */
+export function clientIpSource() {
+  const header = process.env.TRUSTED_CLIENT_IP_HEADER?.trim().toLowerCase();
+  const parsed = Number.parseInt(process.env.TRUSTED_PROXY_HOPS ?? "", 10);
+  return {
+    /** A single authoritative header (CDN), or null to use X-Forwarded-For. */
+    header: header || null,
+    /** Clamped: 0 would read caller-supplied data, and no sane chain is > 8. */
+    hops: Number.isFinite(parsed) ? Math.min(Math.max(parsed, 1), 8) : 1,
+  } as const;
+}
+
+/**
  * WHMCS admin API credentials. Server-only — these must never reach the client
  * bundle, which is why they are read inside a function and have no
  * NEXT_PUBLIC_ prefix.

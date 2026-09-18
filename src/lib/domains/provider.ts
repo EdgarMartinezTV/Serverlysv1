@@ -1,4 +1,4 @@
-import { domainProviderName } from "@/lib/env";
+import { clientIpSource, domainProviderName } from "@/lib/env";
 import { rdapProvider } from "./rdap";
 import { createWhmcsProvider } from "./whmcs";
 import type { DomainProvider, DomainResult } from "./types";
@@ -159,35 +159,90 @@ const buckets = new Map<string, { count: number; resetAt: number }>();
 /**
  * The client address to rate-limit against.
  *
- * ⚠ `X-Forwarded-For` is a LIST, and the left-hand entries are written by the
- * caller. Taking `xff.split(",")[0]` — which this used to do — reads a value
- * the attacker chose, so rotating one header defeats the limiter entirely and
- * the bucket map fills with junk keys. Each proxy APPENDS the address it
- * actually observed, so the trustworthy entry is the RIGHTMOST one, written by
- * the last proxy before us.
+ * ⚠ THE ONLY QUESTION THAT MATTERS HERE IS "WHO WROTE THIS VALUE". A header the
+ * caller can set is not an identity, it is a suggestion, and keying a limiter
+ * on a suggestion means the limiter can be asked to look away. This function
+ * therefore reads ONE position that the deployment guarantees was written by
+ * our own infrastructure, and treats everything else as absent.
  *
- * `x-real-ip` is preferred where present: the reverse proxy sets it to a single
- * observed address rather than a caller-extensible list.
+ * WHAT THIS REPLACED, AND WHY IT WAS A REAL HOLE. The previous version tried
+ * `x-real-ip` first and returned it unconditionally. `x-real-ip` has no append
+ * semantics — it is one value, and there is no way to tell our proxy's copy
+ * from a caller's. Rotating it gave a fresh bucket per request and defeated
+ * every limit on the site: 25 requests with a rotating header all returned 200
+ * where 20 was the cap. The XFF handling immediately below it was already
+ * correct; the early return meant it never ran.
  *
- * This assumes exactly one trusted proxy in front of the app, which is how this
- * deploys (Easypanel/Traefik). Behind N proxies the correct entry is the Nth
- * from the right — revisit this if another hop is ever added, because getting
- * it wrong silently reopens the bypass.
+ * `X-Forwarded-For` IS trustworthy at a known position because each proxy
+ * APPENDS what it observed. With one proxy in front, the rightmost entry is our
+ * Traefik's observation of the real peer, and the caller cannot write past it —
+ * anything they inject lands to its LEFT. `TRUSTED_PROXY_HOPS` says how far
+ * from the right that position is; see `clientIpSource`.
+ *
+ * FAIL CLOSED, TWICE OVER. A list shorter than the configured chain means the
+ * request did not arrive the way the deployment says it does, so no identity is
+ * claimed rather than a caller-supplied one being believed. And because a
+ * DIRECTLY EXPOSED origin can forge even this, identity-keyed limits are not
+ * the last line: `GLOBAL_CHAT` in sera/rate-limit caps the instance as a whole,
+ * and no amount of header rotation moves it.
  */
 export function clientKey(request: Request, scope: string): string {
-  const realIp = request.headers.get("x-real-ip")?.trim();
-  if (realIp) return `${scope}:${realIp}`;
+  const anonymous = `${scope}:unknown`;
+  const source = clientIpSource();
+
+  // A CDN-stamped single header (Cloudflare's cf-connecting-ip). Authoritative
+  // ONLY because the edge strips any inbound copy before setting its own —
+  // which holds exactly as long as the origin refuses connections that did not
+  // come from the CDN.
+  if (source.header) {
+    const stamped = request.headers.get(source.header)?.trim();
+    return stamped ? `${scope}:${stamped}` : anonymous;
+  }
 
   const forwarded = request.headers.get("x-forwarded-for");
-  if (forwarded) {
-    const hops = forwarded.split(",").map((h) => h.trim()).filter(Boolean);
-    const observed = hops[hops.length - 1];
-    if (observed) return `${scope}:${observed}`;
-  }
-  return `${scope}:unknown`;
+  if (!forwarded) return anonymous;
+
+  const hops = forwarded.split(",").map((h) => h.trim()).filter(Boolean);
+  // Count from the right: 1 hop => the last entry, 2 => the one before it.
+  const index = hops.length - source.hops;
+  if (index < 0) return anonymous;
+
+  return hops[index] ? `${scope}:${hops[index]}` : anonymous;
 }
 
+/**
+ * THE INSTANCE CEILING, and the reason it is inside `rateLimit` rather than at
+ * the call sites.
+ *
+ * ⚠ NO HEADER-BASED IDENTITY SURVIVES A DIRECTLY REACHABLE ORIGIN. `clientKey`
+ * reads the one X-Forwarded-For position our proxy is guaranteed to have
+ * written — which is sound behind Traefik, because anything the caller injects
+ * gets pushed left when Traefik appends. Reach the container directly and there
+ * is no Traefik to append: the caller's own entry sits in that position, and a
+ * rotating header buys a fresh bucket again. Headers cannot distinguish the two
+ * cases, so this is not a bug to be coded around — it is the reason the origin
+ * must be reachable ONLY through the proxy (see DEPLOY.md).
+ *
+ * This ceiling is the defence that does not care. It counts every call leaving
+ * this instance, keyed on nothing, so a total identity bypass still cannot
+ * drive the endpoint past it. Living inside `rateLimit` means no future caller
+ * can forget it — there is no way to take the per-key limit without it.
+ *
+ * 600/minute is thirty visitors at the full per-visitor allowance: generous for
+ * a site this size, and well under the volume that would get this server's IP
+ * blocked by rdap.org, which is the realistic damage from an open lookup.
+ */
+const GLOBAL_KEY = " global";
+const GLOBAL_MAX_PER_WINDOW = 600;
+
 export function rateLimit(key: string): { ok: boolean; retryAfterSeconds: number } {
+  // Checked first: a tripped ceiling must not consume the caller's own budget,
+  // or a burst from elsewhere would lock out someone who did nothing.
+  if (key !== GLOBAL_KEY) {
+    const ceiling = rateLimitGlobal();
+    if (!ceiling.ok) return ceiling;
+  }
+
   const now = Date.now();
   const bucket = buckets.get(key);
 
@@ -201,6 +256,30 @@ export function rateLimit(key: string): { ok: boolean; retryAfterSeconds: number
   }
 
   if (bucket.count >= MAX_PER_WINDOW) {
+    return {
+      ok: false,
+      retryAfterSeconds: Math.max(1, Math.ceil((bucket.resetAt - now) / 1000)),
+    };
+  }
+
+  bucket.count += 1;
+  return { ok: true, retryAfterSeconds: 0 };
+}
+
+/**
+ * The ceiling's own bucket. Separate function so it reuses the same window
+ * bookkeeping without recursing back through the guard above.
+ */
+function rateLimitGlobal(): { ok: boolean; retryAfterSeconds: number } {
+  const now = Date.now();
+  const bucket = buckets.get(GLOBAL_KEY);
+
+  if (!bucket || bucket.resetAt <= now) {
+    buckets.set(GLOBAL_KEY, { count: 1, resetAt: now + WINDOW_MS });
+    return { ok: true, retryAfterSeconds: 0 };
+  }
+
+  if (bucket.count >= GLOBAL_MAX_PER_WINDOW) {
     return {
       ok: false,
       retryAfterSeconds: Math.max(1, Math.ceil((bucket.resetAt - now) / 1000)),

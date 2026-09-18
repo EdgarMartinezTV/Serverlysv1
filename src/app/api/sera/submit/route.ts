@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { clientKey } from "@/lib/domains/provider";
+import { readJsonObject } from "@/lib/request";
 import { SUBMIT_BY_ADDRESS, check } from "@/lib/sera/rate-limit";
 import { getConversation, readSessionId } from "@/lib/sera/session";
 import { submitWorkflow } from "@/lib/sera/submit";
@@ -29,13 +30,11 @@ import { log } from "@/lib/sera/observability";
 export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
-  let conversationId: unknown;
-  try {
-    const body = await request.json();
-    conversationId = (body as { conversationId?: unknown })?.conversationId;
-  } catch {
-    return NextResponse.json({ ok: false, message: "Malformed request." }, { status: 400 });
+  const parsed = await readJsonObject(request);
+  if (!parsed.ok) {
+    return NextResponse.json({ ok: false, message: parsed.reason }, { status: parsed.status });
   }
+  const conversationId: unknown = parsed.value.conversationId;
 
   if (typeof conversationId !== "string" || conversationId.length > 64) {
     return NextResponse.json({ ok: false, message: "Malformed request." }, { status: 400 });

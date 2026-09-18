@@ -470,6 +470,67 @@ console.log("\nSTRUCTURAL — no model required\n");
 }
 
 {
+  /*
+   * THE RATE-LIMIT BYPASS REGRESSION.
+   *
+   * A limiter keyed on a header the caller can set is not a limiter. An earlier
+   * `clientKey` trusted `x-real-ip` unconditionally, so rotating that one header
+   * produced a fresh bucket per request and every limit on the site came off:
+   * 25 requests against a cap of 20 all returned 200.
+   *
+   * Asserted against /api/domains/whois because it shares `clientKey` with the
+   * chat endpoint and costs nothing to call — proving the shared derivation is
+   * sound without spending a single model token. If this ever passes 25/25
+   * again, the bypass is back.
+   */
+  const burst = async (headers) => {
+    const codes = [];
+    for (let i = 0; i < 25; i += 1) {
+      const response = await fetch(`${base}/api/domains/whois?domain=example.com`, {
+        headers: headers(i),
+      });
+      codes.push(response.status);
+    }
+    return codes;
+  };
+
+  const rotated = await burst((i) => ({ "X-Real-IP": `10.0.0.${i}` }));
+  assert(
+    rotated.includes(429),
+    "a rotating X-Real-IP cannot buy a fresh rate-limit bucket",
+    `${rotated.filter((c) => c === 429).length}/25 throttled`,
+  );
+
+  /*
+   * The proxy-append property, which is what makes X-Forwarded-For usable at
+   * all. Behind one proxy the RIGHTMOST entry is Traefik's observation and
+   * everything the caller injected sits to its LEFT. So: rotate the left
+   * entries, hold the right one constant, and the limiter must still see one
+   * visitor. If this stops throttling, `TRUSTED_PROXY_HOPS` is being counted
+   * from the wrong end and injected entries are being believed.
+   */
+  const injectedLeft = await burst((i) => ({
+    "X-Forwarded-For": `10.1.1.${i}, 203.0.113.9`,
+  }));
+  assert(
+    injectedLeft.includes(429),
+    "injected X-Forwarded-For entries left of the proxy's are ignored",
+    `${injectedLeft.filter((c) => c === 429).length}/25 throttled`,
+  );
+
+  /*
+   * ⚠ NOT ASSERTED HERE, AND DELIBERATELY: that a rotating single-entry XFF is
+   * throttled. Against a directly-reachable origin it is not, and cannot be —
+   * the caller's lone entry occupies the position a proxy's entry would, and no
+   * header tells the two apart. That case is bounded by the instance ceiling in
+   * `provider.ts` (600/min) rather than by identity, and is verified by
+   * deployment (origin reachable only through the proxy), not by this suite.
+   * An assertion here would pass only when run through the proxy and fail
+   * locally, which teaches people to ignore it.
+   */
+}
+
+{
   const session = new Session();
   const first = await session.send("Hello");
   assert(Boolean(session.conversationId), "a conversation id is issued before any model work");
