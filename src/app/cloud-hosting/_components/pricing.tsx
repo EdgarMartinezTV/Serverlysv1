@@ -66,7 +66,7 @@ export function Pricing() {
         <div className="mt-8 flex flex-col items-center gap-3 text-center">
           <Link
             href="/pricing#compare-heading"
-            className="inline-flex items-center gap-1.5 text-small font-semibold text-primary hover:text-primary-hover"
+            className="inline-flex min-h-11 items-center gap-1.5 text-small font-semibold text-primary hover:text-primary-hover"
           >
             View all features
             <svg viewBox="0 0 16 16" aria-hidden="true" className="size-3.5">

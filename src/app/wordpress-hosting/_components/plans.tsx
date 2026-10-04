@@ -33,7 +33,7 @@ export function Plans() {
           ))}
         </ul>
         <div className="mt-8 flex flex-col items-center gap-3 text-center">
-          <Link href="/pricing#compare-heading" className="inline-flex items-center gap-1.5 text-small font-semibold text-primary hover:text-primary-hover">
+          <Link href="/pricing#compare-heading" className="inline-flex min-h-11 items-center gap-1.5 text-small font-semibold text-primary hover:text-primary-hover">
             View all features
             <svg viewBox="0 0 16 16" aria-hidden="true" className="size-3.5">
               <path d="M5 11 11 5M6.5 5H11v4.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
