@@ -98,6 +98,9 @@ export function SiteHeader() {
   if (lastPath !== pathname) {
     setLastPath(pathname);
     setOpen(null);
+    // The mobile drawer's open state lives here, so it is closed here. Closing
+    // it from inside MobileNav's render updated this component mid-render.
+    setMobileOpen(false);
   }
 
   const dark = open !== null || (OVERLAY_ROUTES.has(pathname) && !scrolled);

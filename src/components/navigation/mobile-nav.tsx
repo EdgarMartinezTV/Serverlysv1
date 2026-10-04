@@ -49,13 +49,29 @@ export function MobileNav({
   const toggleRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
 
-  // Close on navigation — adjusted during render, not in an effect.
+  // Collapse sections on navigation — adjusted during render, not in an
+  // effect. Closing the drawer itself is SiteHeader's job: it owns `open`.
   const [lastPath, setLastPath] = useState(pathname);
   if (lastPath !== pathname) {
     setLastPath(pathname);
-    if (open) onOpenChange(false);
     setExpanded(null);
   }
+
+  /*
+   * Above lg the drawer is hidden by CSS, but `open` would stay true — scroll
+   * locked, focus trap listening — until reload. Rotating a tablet to
+   * landscape with the menu open is enough to get there, so widening closes it.
+   */
+  useEffect(() => {
+    if (!open) return;
+    const wide = window.matchMedia("(min-width: 64rem)");
+    const onChange = () => {
+      if (wide.matches) onOpenChange(false);
+    };
+    onChange();
+    wide.addEventListener("change", onChange);
+    return () => wide.removeEventListener("change", onChange);
+  }, [open, onOpenChange]);
 
   useEffect(() => {
     if (!open) return;
@@ -107,10 +123,15 @@ export function MobileNav({
       aria-modal="true"
       aria-label="Site menu"
     >
+      {/* Any link closes the drawer. A route change would too, but a link to
+          the page already open changes nothing, and left it covering the page. */}
       <div
         ref={panelRef}
         tabIndex={-1}
         id="mobile-nav-panel"
+        onClick={(e) => {
+          if ((e.target as HTMLElement).closest("a[href]")) onOpenChange(false);
+        }}
         className="absolute inset-0 flex flex-col bg-canvas-abyss outline-none motion-safe:animate-[sheetIn_220ms_cubic-bezier(0.16,1,0.3,1)]"
       >
         <div className="flex h-16 shrink-0 items-center justify-between border-b border-line-on-dark px-5 sm:px-8">
