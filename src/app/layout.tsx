@@ -63,6 +63,9 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
   subsets: ["latin"],
   display: "swap",
+  // Code and figures only, never above the fold, so it is fetched when a page
+  // actually uses it instead of competing with the first paint on every page.
+  preload: false,
 });
 
 export const metadata: Metadata = {
