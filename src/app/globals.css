@@ -480,7 +480,7 @@
      the root layout before first paint, so a dismissed bar never flashes. */
   /* Someone who already answered the cookie notice must never see it flash.
      The blocking script in the layout stamps this before first paint. */
-  [data-consent="set"] [data-cookie-consent] {
+  [data-consent="set"] [data-cookie-consent]:not([data-consent-reopened]) {
     display: none;
   }
   [data-announcement="dismissed"] [data-announcement-bar] {

@@ -78,6 +78,9 @@ export function CookieConsent() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [draft, setDraft] = useState<ConsentState>(DEFAULT_CONSENT);
   const panelRef = useRef<HTMLDivElement>(null);
+  // Set by Escape; the settings trigger only exists once the panel has closed,
+  // so focus is restored after that render rather than inside the handler.
+  const restoreFocus = useRef(false);
 
   const open = reopened || stored === null;
 
@@ -107,10 +110,8 @@ export function CookieConsent() {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
+        restoreFocus.current = true;
         setSettingsOpen(false);
-        document
-          .querySelector<HTMLElement>("[data-consent-settings-trigger]")
-          ?.focus();
         return;
       }
       if (event.key !== "Tab" || !node) return;
@@ -135,11 +136,20 @@ export function CookieConsent() {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [settingsOpen]);
 
+  useEffect(() => {
+    if (settingsOpen || !restoreFocus.current) return;
+    restoreFocus.current = false;
+    document.querySelector<HTMLElement>("[data-consent-settings-trigger]")?.focus();
+  }, [settingsOpen]);
+
   if (!open) return null;
 
   return (
     <div
       data-cookie-consent=""
+      // Opts out of the first-paint hiding rule, which matches anyone who has
+      // already answered — including someone reopening it to change that answer.
+      data-consent-reopened={reopened ? "" : undefined}
       className="fixed inset-x-0 bottom-0 z-50 p-3 sm:right-auto sm:bottom-4 sm:left-4 sm:w-[26rem] sm:p-0"
       role="region"
       aria-label="Cookie notice"
