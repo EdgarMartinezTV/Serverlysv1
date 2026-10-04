@@ -79,13 +79,13 @@ export function DomainHero({ copy, tool }: { copy: HeroCopy; tool: React.ReactNo
         <ul className="mx-auto mt-6 flex max-w-[760px] flex-wrap justify-center gap-2">
           {chips.map((t) => (
             <li key={t.tld}>
-              <Link
+              <a
                 href={billing.searchDomain(`${DOMAIN}${t.tld}`)}
                 className="inline-flex min-h-11 items-center gap-2 rounded-full bg-white/10 px-4 text-small ring-1 ring-white/15 transition-colors duration-fast hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               >
                 <span className="font-semibold text-white">{t.tld}</span>
                 <span className="text-fg-on-dark-secondary">${t.price.toFixed(2)}</span>
-              </Link>
+              </a>
             </li>
           ))}
         </ul>
@@ -481,12 +481,12 @@ export function TldTable() {
               <p className="mt-1 text-small text-fg-secondary">
                 {t.note ?? "General purpose"} · {TABLE.columns.renew}: {TABLE.renewNote}
               </p>
-              <Link
-                href={billing.searchDomain(`example${t.tld}`)}
+              <a
+                href={billing.registerDomain}
                 className="mt-3 inline-flex min-h-11 items-center rounded-md px-3 text-body font-semibold text-primary hover:bg-primary-soft"
               >
                 Register {t.tld}
-              </Link>
+              </a>
             </li>
           ))}
         </ul>
@@ -514,12 +514,12 @@ export function TldTable() {
                   <td className="px-6 py-2 text-small text-fg-muted">{TABLE.renewNote}</td>
                   <td className="px-6 py-2 text-small text-fg-secondary">{t.note ?? "—"}</td>
                   <td className="px-6 py-2 text-right">
-                    <Link
-                      href={billing.searchDomain(`example${t.tld}`)}
+                    <a
+                      href={billing.registerDomain}
                       className="inline-flex min-h-11 items-center rounded-md px-4 text-small font-semibold text-primary ring-1 ring-inset ring-primary transition-colors duration-fast hover:bg-primary-soft"
                     >
                       Register
-                    </Link>
+                    </a>
                   </td>
                 </tr>
               ))}

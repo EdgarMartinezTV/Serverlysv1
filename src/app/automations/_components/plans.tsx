@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Check, Grid, Headline } from "@/components/ref/kit";
 import { billing } from "@/data/company";
 import { INCLUDED } from "../_content";
@@ -65,14 +64,14 @@ export function Plans() {
                   <p className="mt-5 text-[30px] leading-none font-semibold tracking-[-0.03em] text-white">Custom quote</p>
                   <p className="mt-1.5 text-micro text-fg-on-dark-muted">After a free mapping call</p>
 
-                  <Link
+                  <a
                     href={billing.sales}
                     className={`mt-6 flex h-12 items-center justify-center rounded-md text-body font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${
                       featured ? "bg-white text-fg hover:bg-ink-100" : "text-white ring-1 ring-inset ring-white/50 hover:bg-white/10"
                     }`}
                   >
                     Book the mapping call
-                  </Link>
+                  </a>
                   <p className="mt-3 text-micro text-fg-on-dark-muted">No per-task or per-run billing. Nothing to sign before the call.</p>
 
                   <ul className="mt-6 flex flex-col gap-3 border-t border-white/10 pt-6">

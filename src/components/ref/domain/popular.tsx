@@ -100,12 +100,12 @@ export function Popular() {
               </span>
               <span className="text-body text-fg-secondary">/1st yr</span>
             </p>
-            <Link
-              href={billing.searchDomain(`example${t.tld}`)}
+            <a
+              href={billing.registerDomain}
               className="mt-4 flex h-12 items-center justify-center rounded-md bg-primary text-[16px] font-semibold text-white transition-colors duration-fast hover:bg-primary-hover"
             >
               {POPULAR.check}
-            </Link>
+            </a>
           </li>
         ))}
       </ul>

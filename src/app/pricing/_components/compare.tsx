@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import Link from "next/link";
 import { formatPrice, groupById, orderUrl, type Plan } from "@/data/pricing";
 import { Check, Grid, Headline } from "@/components/ref/kit";
 import { COMPARE } from "../_content";
@@ -97,12 +96,12 @@ export function Compare() {
                   </div>
                 ))}
               </dl>
-              <Link
+              <a
                 href={orderUrl(g, p)}
                 className="mt-4 flex h-11 items-center justify-center rounded-md bg-primary text-small font-semibold text-white hover:bg-primary-hover"
               >
                 Get started
-              </Link>
+              </a>
             </li>
           ))}
         </ul>
@@ -125,7 +124,7 @@ export function Compare() {
                   <p className="mt-1 text-small text-fg-secondary">
                     <span className="font-semibold text-fg">{formatPrice(p.monthly)}</span>/mo
                   </p>
-                  <Link
+                  <a
                     href={orderUrl(g, p)}
                     className={cn(
                       "mt-3 flex h-10 items-center justify-center rounded-md text-small font-semibold transition-colors duration-fast focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
@@ -133,7 +132,7 @@ export function Compare() {
                     )}
                   >
                     Get started
-                  </Link>
+                  </a>
                 </div>
               ))}
             </div>

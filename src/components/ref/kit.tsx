@@ -162,17 +162,28 @@ export function CtaButton({
   tone?: "primary" | "light" | "on-dark";
   className?: string;
 }) {
+  const classes = cn(
+    "inline-flex h-12 items-center justify-center rounded-md px-12 text-body font-semibold transition-colors duration-fast",
+    tone === "primary" && "bg-primary text-white hover:bg-primary-hover",
+    tone === "light" && "bg-white text-fg hover:bg-ink-100",
+    tone === "on-dark" && "bg-primary text-white hover:bg-brand-500",
+    className,
+  );
+  /*
+   * Absolute URLs — in practice the WHMCS store at /billing — get a plain <a>.
+   * Once the site and WHMCS share an origin, next/link would treat a store URL
+   * as an app route and prefetch it on sight, sending GETs to the cart nobody
+   * clicked. Same rule as `Button`.
+   */
+  if (/^https?:\/\//.test(href)) {
+    return (
+      <a href={href} className={classes}>
+        {children}
+      </a>
+    );
+  }
   return (
-    <Link
-      href={href}
-      className={cn(
-        "inline-flex h-12 items-center justify-center rounded-md px-12 text-body font-semibold transition-colors duration-fast",
-        tone === "primary" && "bg-primary text-white hover:bg-primary-hover",
-        tone === "light" && "bg-white text-fg hover:bg-ink-100",
-        tone === "on-dark" && "bg-primary text-white hover:bg-brand-500",
-        className,
-      )}
-    >
+    <Link href={href} className={classes}>
       {children}
     </Link>
   );
@@ -188,16 +199,24 @@ export function ArrowLink({
   children: React.ReactNode;
   className?: string;
 }) {
-  return (
-    <Link
-      href={href}
-      className={cn(
-        "group inline-flex items-center gap-1.5 text-body font-semibold text-primary hover:text-primary-hover",
-        className,
-      )}
-    >
+  const classes = cn(
+    "group inline-flex items-center gap-1.5 text-body font-semibold text-primary hover:text-primary-hover",
+    className,
+  );
+  const body = (
+    <>
       {children}
       <ArrowRight className="size-4 transition-transform duration-fast group-hover:translate-x-0.5" />
+    </>
+  );
+  // Absolute URLs get a plain <a> — see CtaButton.
+  return /^https?:\/\//.test(href) ? (
+    <a href={href} className={classes}>
+      {body}
+    </a>
+  ) : (
+    <Link href={href} className={classes}>
+      {body}
     </Link>
   );
 }

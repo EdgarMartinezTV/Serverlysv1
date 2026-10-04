@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { billing } from "@/data/company";
 import { groupById } from "@/data/pricing";
@@ -117,12 +116,12 @@ export function Plans() {
                       /1st yr
                     </span>
                   </p>
-                  <Link
-                    href={billing.searchDomain(`example${t.tld}`)}
+                  <a
+                    href={billing.registerDomain}
                     className="mt-4 flex h-12 items-center justify-center rounded-md border border-primary text-[16px] font-semibold text-primary transition-colors duration-fast hover:bg-primary-soft"
                   >
                     Check availability
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ul>

@@ -77,14 +77,14 @@ export function PopularRail({
               </span>
               <span className={`text-small ${i === 0 ? "text-fg-on-brand-muted" : "text-fg-secondary"}`}>/1st yr</span>
             </p>
-            <Link
-              href={billing.searchDomain(`example${t.tld}`)}
+            <a
+              href={billing.registerDomain}
               className={`mt-4 flex h-12 items-center justify-center rounded-md text-body font-semibold transition-colors duration-fast ${
                 i === 0 ? "bg-white text-fg hover:bg-ink-100" : "bg-primary text-white hover:bg-primary-hover"
               }`}
             >
               {check}
-            </Link>
+            </a>
           </li>
         ))}
       </ul>

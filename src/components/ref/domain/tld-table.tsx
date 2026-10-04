@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { billing } from "@/data/company";
 import { Band, Grid, Headline } from "../kit";
 import { tlds } from "@/data/tlds";
@@ -46,12 +45,12 @@ export function TldTable() {
               <p className="mt-1 text-[14px] leading-5 text-fg-secondary">
                 {t.note ?? "General purpose"} · {TABLE.columns.renew}: {TABLE.renewNote}
               </p>
-              <Link
-                href={billing.searchDomain(`example${t.tld}`)}
+              <a
+                href={billing.registerDomain}
                 className="mt-3 inline-flex min-h-11 items-center rounded-md px-3 text-body font-semibold text-primary hover:bg-primary-soft"
               >
                 Register {t.tld}
-              </Link>
+              </a>
             </li>
           ))}
         </ul>
@@ -87,12 +86,12 @@ export function TldTable() {
                 <td className="py-2 text-right">
                   {/* min-h-11 so the control clears the 44px touch target the
                       repo's mobile check enforces; a bare text link does not. */}
-                  <Link
-                    href={billing.searchDomain(`example${t.tld}`)}
+                  <a
+                    href={billing.registerDomain}
                     className="inline-flex min-h-11 items-center rounded-md px-3 text-body font-semibold text-primary hover:bg-primary-soft"
                   >
                     Register
-                  </Link>
+                  </a>
                 </td>
               </tr>
             ))}

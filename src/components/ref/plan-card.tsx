@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { formatPrice, formatSavings, orderUrl, type Plan, type PlanGroup } from "@/data/pricing";
 import { Check } from "./kit";
@@ -83,7 +82,7 @@ export function PlanCard({ plan, group, why, cta }: { plan: Plan; group: PlanGro
         <span className={cn("text-body", dark ? "text-fg-on-dark-secondary" : "text-fg-secondary")}>/mo</span>
       </p>
 
-      <Link
+      <a
         href={orderUrl(group, plan)}
         className={cn(
           "relative mt-6 flex h-12 w-full items-center justify-center rounded-md text-body font-semibold transition-colors duration-fast focus-visible:outline-2 focus-visible:outline-offset-2",
@@ -93,7 +92,7 @@ export function PlanCard({ plan, group, why, cta }: { plan: Plan; group: PlanGro
         )}
       >
         {cta}
-      </Link>
+      </a>
 
       <p className={cn("relative mt-3 text-micro", dark ? "text-fg-on-dark-muted" : "text-fg-muted")}>
         Renews at {formatPrice(plan.standard)}/mo
