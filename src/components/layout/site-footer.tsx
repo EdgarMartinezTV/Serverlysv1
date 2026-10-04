@@ -3,6 +3,7 @@ import { footerNav, legalNav, socialLinks } from "@/data/navigation";
 import { company, billing, emailDisplay } from "@/data/company";
 import { resolveNavTarget } from "@/data/routes";
 import { Wordmark } from "./wordmark";
+import { CurrentYear } from "./current-year";
 import { SocialIcon } from "./social-icon";
 import { NavIcon } from "@/components/navigation/nav-icons";
 import { CookieSettingsLink } from "@/components/consent/cookie-settings-link";
@@ -252,7 +253,7 @@ export function SiteFooter() {
         {/* ── Bottom line ─────────────────────────────────────────────── */}
         <div className="mt-8 flex flex-col justify-between gap-3 border-t border-line py-6 lg:flex-row lg:items-center">
           <p className="text-small text-fg-secondary">
-            © {year} {company.legalName}. All rights reserved. Domain registrations are
+            © <CurrentYear buildYear={year} /> {company.legalName}. All rights reserved. Domain registrations are
             subject to the policies of ICANN and the relevant registry.
           </p>
           <div className="flex items-center justify-between gap-4 text-small lg:shrink-0 lg:justify-end">
