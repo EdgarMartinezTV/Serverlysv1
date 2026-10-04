@@ -234,6 +234,9 @@ export async function runTurn({
           tools: definitionsFor(SURFACE) as unknown as never,
           stream: true,
           store: false,
+          // With store:false a reasoning model's items cannot be looked up by
+          // id on the next request, so they must carry their own content.
+          include: ["reasoning.encrypted_content"],
           // Long enough for a tool round, short enough that a wedged upstream
           // does not hold a browser connection open indefinitely.
           max_output_tokens: 800,

@@ -58,7 +58,13 @@ export function readSessionId(request: Request): string | null {
     if (eq < 0) continue;
     if (part.slice(0, eq).trim() !== COOKIE_NAME) continue;
 
-    const raw = decodeURIComponent(part.slice(eq + 1).trim());
+    let raw: string;
+    try {
+      raw = decodeURIComponent(part.slice(eq + 1).trim());
+    } catch {
+      // Malformed percent-encoding is a tampered cookie, not a server error.
+      return null;
+    }
     const dot = raw.lastIndexOf(".");
     if (dot <= 0) return null;
 
@@ -159,8 +165,23 @@ export function setWorkflow(conversation: Conversation, workflow: WorkflowRecord
  * loses a collected field.
  */
 export function trimHistory(conversation: Conversation) {
-  const excess = conversation.history.length - LIMITS.maxHistoryItems;
-  if (excess > 0) conversation.history.splice(0, excess);
+  const { history } = conversation;
+  if (history.length <= LIMITS.maxHistoryItems) return;
+
+  /*
+   * Cut on a TURN boundary, never mid-turn. A turn is a user message followed
+   * by function calls, their outputs and replies; slicing at a fixed count can
+   * keep a function_call_output whose function_call was dropped, and the API
+   * rejects the whole request over that orphan. So the window always starts at
+   * a user message — the first one inside the budget, or failing that the last
+   * one at all, so the turn in progress is never cut into.
+   */
+  const isUser = (item: unknown) =>
+    typeof item === "object" && item !== null && (item as { role?: string }).role === "user";
+  const budgetStart = history.length - LIMITS.maxHistoryItems;
+  let start = history.findIndex((item, i) => i >= budgetStart && isUser(item));
+  if (start < 0) start = history.findLastIndex(isUser);
+  if (start > 0) history.splice(0, start);
 }
 
 /** Test/diagnostic surface. Never exposed through a route. */
