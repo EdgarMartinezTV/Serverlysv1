@@ -182,7 +182,7 @@ export function DomainSearchApp() {
   }, []);
 
   const run = useCallback(
-    async (rawQuery: string) => {
+    async (rawQuery: string, retry = false) => {
       const parsed = parseDomainInput(rawQuery);
       if (!parsed.ok) {
         setValidation(parsed.message);
@@ -194,7 +194,8 @@ export function DomainSearchApp() {
       setIdeas(false);
 
       const query = parsed.tld ? `${parsed.sld}${parsed.tld}` : `${parsed.sld}${preferredTld}`;
-      if (phase.kind === "results" && phase.query === query) return;
+      // Re-submitting the search on screen is a no-op; an explicit retry is not.
+      if (!retry && phase.kind === "results" && phase.query === query) return;
 
       abortRef.current?.abort();
       const controller = new AbortController();
@@ -605,7 +606,7 @@ export function DomainSearchApp() {
                   That is unusual rather than expected. The name may use an extension no registry answered for.
                 </p>
                 <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-                  <Button type="button" variant="secondary" size="md" onClick={() => void run(phase.query)}>
+                  <Button type="button" variant="secondary" size="md" onClick={() => void run(phase.query, true)}>
                     Try again
                   </Button>
                   <Button href={`${billing.root}/cart.php?a=add&domain=register`} variant="ghost" size="md">

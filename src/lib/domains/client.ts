@@ -133,7 +133,9 @@ export const shortlist = {
     const exists = current.some((i) => i.domain === item.domain);
     const next = exists
       ? current.filter((i) => i.domain !== item.domain)
-      : [...current, item].slice(0, MAX_SHORTLIST);
+      : // Full list: the newest save wins and the oldest drops off. Keeping the
+        // front instead silently refused every save past the cap.
+        [...current, item].slice(-MAX_SHORTLIST);
     write(SHORTLIST_KEY, next);
     return next;
   },
