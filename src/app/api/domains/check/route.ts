@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { parseDomainInput } from "@/lib/domains/normalize";
 import { checkDomains, clientKey, rateLimit, resolveProvider } from "@/lib/domains/provider";
 import { domainProviderName } from "@/lib/env";
+import { readJsonObject } from "@/lib/request";
 import { suggestionTlds, tldSet } from "@/data/tlds";
 import type { CheckOutcome } from "@/lib/domains/types";
 
@@ -35,16 +36,22 @@ function fail(
 
 export async function POST(request: Request) {
   // ── Input ───────────────────────────────────────────────────────────────
-  let query: unknown;
-  try {
-    const body = await request.json();
-    query = (body as { query?: unknown })?.query;
-  } catch {
+  // Size-capped read: a plain request.json() buffers and parses any body,
+  // however large, before a single check runs.
+  const body = await readJsonObject(request);
+  if (!body.ok) {
     return fail(
-      { ok: false, error: { kind: "invalid", message: "Malformed request." } },
-      400,
+      {
+        ok: false,
+        error: {
+          kind: "invalid",
+          message: body.status === 413 ? body.reason : "Malformed request.",
+        },
+      },
+      body.status,
     );
   }
+  const query = body.value.query;
 
   if (typeof query !== "string" || query.length > 255) {
     return fail(

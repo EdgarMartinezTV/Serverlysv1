@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { lookupWhois } from "@/lib/domains/whois";
 import { clientKey, rateLimit } from "@/lib/domains/provider";
+import { parseDomainInput } from "@/lib/domains/normalize";
 
 /**
  * Registration lookup endpoint.
@@ -25,6 +26,21 @@ export async function GET(request: Request) {
   if (query.length > MAX_LENGTH) {
     return NextResponse.json(
       { ok: false, reason: "That is longer than a domain name can be." },
+      { status: 400 },
+    );
+  }
+
+  // Input the registry could never answer is the caller's error: a 400, and
+  // checked before the rate limit so a typo does not spend a lookup.
+  const parsed = parseDomainInput(query);
+  if (!parsed.ok || !parsed.tld) {
+    return NextResponse.json(
+      {
+        ok: false,
+        reason: parsed.ok
+          ? "Include the extension — for example serverlys.com, not serverlys."
+          : parsed.message,
+      },
       { status: 400 },
     );
   }
