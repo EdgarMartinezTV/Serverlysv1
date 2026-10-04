@@ -1,7 +1,8 @@
 import { JsonLd } from "@/components/ui/json-ld";
 import { Faqs } from "@/components/ref/faqs";
 import { ContentSwitch } from "@/components/ref/content-switch";
-import { PricingTable } from "@/components/pricing/pricing-table";
+import { PlanCard } from "@/components/ref/plan-card";
+import { groupById } from "@/data/pricing";
 import { Grid, Headline } from "@/components/ref/kit";
 import { breadcrumbGraph, faqGraph, pageMetadata, serviceGraph } from "@/lib/seo";
 import { FAQS, FAQ_HEAD, PRICING_HEAD, WHY } from "./_content";
@@ -54,6 +55,8 @@ const FAQ_TEXT = FAQS.map((f) => ({
   scopes: [PATH],
 }));
 
+const CLOUD = groupById("cloud");
+
 export default function WpMigrationsPage() {
   return (
     /** globals.css balances headings; the reference wraps normally. */
@@ -85,7 +88,7 @@ export default function WpMigrationsPage() {
       <section
         id="pricing"
         aria-labelledby="wm-pricing-heading"
-        className="scroll-mt-24 bg-canvas-secondary py-14 md:py-16 xl:py-20"
+        className="scroll-mt-24 bg-canvas-secondary py-16 lg:py-24"
       >
         <Grid>
           <Headline
@@ -94,7 +97,15 @@ export default function WpMigrationsPage() {
             description={PRICING_HEAD.description}
             className="mb-8 xl:mb-12"
           />
-          <PricingTable only="cloud" />
+          {/* Shared PlanCard grid (2026-10-03), same card as /pricing and the
+              product pages: both prices on every card, no rate toggle. */}
+          <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {CLOUD?.plans.map((plan) => (
+              <li key={plan.tier}>
+                <PlanCard plan={plan} group={CLOUD} cta="Choose plan" />
+              </li>
+            ))}
+          </ul>
         </Grid>
       </section>
 

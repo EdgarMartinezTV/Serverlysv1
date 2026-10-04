@@ -1,6 +1,6 @@
 import { Check, CtaButton, Grid, ShieldCheck } from "@/components/ref/kit";
 import { HERO } from "../_content";
-import { HeroArt } from "./visuals";
+import { HeroCanvas } from "./hero-canvas";
 
 /**
  * Hero.
@@ -24,10 +24,12 @@ import { HeroArt } from "./visuals";
  */
 export function Hero() {
   return (
-    <section aria-labelledby="n8n-hero-heading" className="bg-canvas-dark pt-9 pb-14 md:pb-16 xl:pb-20">
+    <section aria-labelledby="n8n-hero-heading" className="relative isolate overflow-hidden bg-canvas-dark pt-9 pb-14 md:pb-16 xl:pb-20">
+      {/* Brand light behind the workflow, the reference's purple glow in our blue. */}
+      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[radial-gradient(45%_70%_at_78%_55%,rgb(0_0_255/0.35),transparent_70%)]" />
       <Grid>
         <div className="flex flex-col items-stretch gap-8 xl:flex-row xl:items-center xl:justify-between xl:gap-x-20">
-          <div className="xl:w-[500px] xl:shrink-0">
+          <div className="xl:w-[580px] xl:shrink-0">
             <p className="mb-2 text-[18px] leading-[26px] font-semibold tracking-[-0.09px] text-fg-on-dark lg:text-[20px] lg:leading-7 lg:tracking-[-0.1px]">
               {HERO.eyebrowPrefix}
               <span className="text-primary-on-dark">{HERO.eyebrowAccent}</span>
@@ -36,7 +38,7 @@ export function Hero() {
 
             <h1
               id="n8n-hero-heading"
-              className="mb-6 text-[36px] leading-[44px] font-normal tracking-[-0.18px] text-fg-on-dark lg:text-[48px] lg:leading-[56px] lg:tracking-[-0.24px]"
+              className="display-lg mb-6 text-fg-on-dark"
             >
               {HERO.title}
             </h1>
@@ -67,7 +69,7 @@ export function Hero() {
            * prioritise and no layout shift to reserve against.
            */}
           <div className="xl:max-w-[700px] xl:flex-1">
-            <HeroArt />
+            <HeroCanvas />
           </div>
         </div>
       </Grid>

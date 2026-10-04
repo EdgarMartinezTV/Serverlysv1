@@ -159,7 +159,7 @@ export function AutomationCanvas({
         </span>
         <span
           className={cn(
-            "rounded-full px-2 py-0.5 font-mono text-ui uppercase tracking-[0.1em]",
+            "rounded-full px-2 py-0.5 text-ui font-semibold",
             dark
               ? "bg-white/8 text-fg-on-dark-secondary"
               : "bg-canvas-inset text-fg-muted",
@@ -266,7 +266,7 @@ export function AutomationCanvas({
                   />
                   <span
                     className={cn(
-                      "truncate font-mono text-ui uppercase tracking-[0.1em]",
+                      "truncate text-ui font-semibold",
                       dark ? "text-fg-on-dark-muted" : "text-fg-muted",
                     )}
                   >

@@ -1,6 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { track } from "@/lib/sera/analytics";
+import { SeraIcon, SeraMark } from "./sera-mark";
 import styles from "./sera.module.css";
 import type { ChatMessage } from "@/lib/sera/types";
 
@@ -81,12 +84,46 @@ function Linkified({ text }: { text: string }) {
  * nearly useless — what a reader wants to know is whether this is part of the
  * conversation they are having or something from earlier.
  */
-function relativeTime(at: number): string {
-  const seconds = Math.max(0, Math.round((Date.now() - at) / 1000));
-  if (seconds < 60) return "Just now";
-  const minutes = Math.round(seconds / 60);
-  if (minutes < 60) return `${minutes} min ago`;
-  return new Date(at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+function clockTime(at: number): string {
+  return new Date(at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+}
+
+/** 👍 / 👎 and copy, under a finished reply (2026-10-03, Kodee-style). */
+function ReplyTools({ message }: { message: ChatMessage }) {
+  const [rating, setRating] = useState<"up" | "down" | null>(null);
+  const [copied, setCopied] = useState(false);
+  const rate = (r: "up" | "down") => {
+    const nextRating = rating === r ? null : r;
+    setRating(nextRating);
+    if (nextRating) track("sera_feedback", { rating: nextRating, message: message.id });
+  };
+  return (
+    <div className={styles.tools}>
+      <button type="button" aria-pressed={rating === "up"} onClick={() => rate("up")} className={styles.tool}>
+        <SeraIcon name="thumbUp" className="h-3.5 w-3.5" />
+        <span className="sr-only">Helpful</span>
+      </button>
+      <button type="button" aria-pressed={rating === "down"} onClick={() => rate("down")} className={styles.tool}>
+        <SeraIcon name="thumbDown" className="h-3.5 w-3.5" />
+        <span className="sr-only">Not helpful</span>
+      </button>
+      <button
+        type="button"
+        onClick={() => {
+          void navigator.clipboard?.writeText(message.text).then(() => {
+            setCopied(true);
+            setTimeout(() => setCopied(false), 1500);
+          });
+        }}
+        className={styles.tool}
+      >
+        <SeraIcon name={copied ? "check" : "copy"} className="h-3.5 w-3.5" />
+        <span className="sr-only">{copied ? "Copied" : "Copy reply"}</span>
+      </button>
+      <span className={styles.toolTime}>{clockTime(message.at)}</span>
+      {rating === "down" && <span className={styles.toolThanks}>Thanks — noted.</span>}
+    </div>
+  );
 }
 
 export function SeraMessage({
@@ -94,56 +131,46 @@ export function SeraMessage({
   streaming,
   showMeta,
   animate,
+  avatar = true,
 }: {
   message: ChatMessage;
-  /** Text is still arriving into this bubble. */
   streaming?: boolean;
-  /** Show the attribution line. Suppressed on all but the last of a run. */
   showMeta?: boolean;
-  /**
-   * Whether this message is NEW. History must appear instantly — animating a
-   * transcript the visitor has already read makes reopening the panel look
-   * like the conversation is happening again. The panel decides by comparing
-   * the message's timestamp to its own mount time.
-   */
   animate?: boolean;
+  /** Show Sera's mark beside the first bubble of an assistant run. */
+  avatar?: boolean;
 }) {
   const isUser = message.role === "user";
 
-  return (
-    <div
-      className={cn(styles.row, animate && styles.message, isUser && styles.rowUser)}
-    >
-      <div
-        className={cn(
-          styles.bubble,
-          isUser && styles.bubbleUser,
-          message.system && styles.bubbleSystem,
-        )}
-      >
-        <Linkified text={message.text} />
-        {streaming && (
-          <span
-            className={`${styles.caret} ml-0.5 inline-block h-3.5 w-px translate-y-0.5 align-middle`}
-            style={{ background: "currentColor", opacity: 0.6 }}
-            aria-hidden="true"
-          />
-        )}
+  if (isUser) {
+    return (
+      <div className={cn(styles.row, animate && styles.message, styles.rowUser)}>
+        <div className={cn(styles.bubble, styles.bubbleUser)}>
+          <Linkified text={message.text} />
+        </div>
+        {showMeta && <p className={styles.meta}>{clockTime(message.at)}</p>}
       </div>
+    );
+  }
 
-      {showMeta && !streaming && (
-        <p className={styles.meta}>
-          {isUser ? (
-            relativeTime(message.at)
-          ) : (
-            <>
-              Sera<span className={styles.metaDot}>•</span>AI Agent
-              <span className={styles.metaDot}>•</span>
-              {relativeTime(message.at)}
-            </>
+  return (
+    <div className={cn(styles.assistantRow, animate && styles.message)}>
+      <span className={styles.avatar} data-hidden={!avatar || undefined} aria-hidden="true">
+        <SeraMark className="h-3.5 w-3.5" />
+      </span>
+      <div className="min-w-0 flex-1">
+        <div className={cn(styles.bubble, message.system && styles.bubbleSystem)}>
+          <Linkified text={message.text} />
+          {streaming && (
+            <span
+              className={`${styles.caret} ml-0.5 inline-block h-3.5 w-px translate-y-0.5 align-middle`}
+              style={{ background: "currentColor", opacity: 0.6 }}
+              aria-hidden="true"
+            />
           )}
-        </p>
-      )}
+        </div>
+        {showMeta && !streaming && <ReplyTools message={message} />}
+      </div>
     </div>
   );
 }

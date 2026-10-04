@@ -6,16 +6,15 @@
  *
  * ⚠ TARGET MATTERS — /wordpress-hosting is the only page this fits.
  *
- * It asserts a FULL product page: the <PricingTable> controls (the "Hosting
- * type" tablist, the billing-term radiogroup, four plan cards in
- * single-product mode), a comparison table, a <details> FAQ and a #plans
- * anchor. Two other pages look like candidates and are not:
+ * It asserts a full product page: four plan cards for the page's own group
+ * with both prices, a <details> FAQ inside #faq, a #plans anchor and real
+ * checkout links. Two other pages look like candidates and are not:
  *
  *   · /cloud-hosting  — redesigned around its own <input type="range"> slider
  *     showing one tier at a time. No tablist, no radiogroup, no four cards.
  *     This used to be the default target, so the script failed three
  *     assertions and then crashed on a null control.
- *   · /migrations     — reuses <PricingTable only="cloud"> but is not a
+ *   · /migrations     — renders the cloud PlanCards (since 2026-10-03) but is not a
  *     product page: no comparison table, no FAQ disclosures, no #plans.
  *
  * Point it anywhere else and the checks below now FAIL with a reason rather
@@ -114,67 +113,22 @@ console.log("\n── Desktop 1440 ──");
 await viewport(1440);
 await load();
 
+// 2026-10-03: /wordpress-hosting moved from <PricingTable> (tabs, rate
+// toggle, comparison table) to the shared PlanCard grid used on /pricing and
+// /cloud-hosting. The toggle and table checks went with it; what must still
+// hold is below: four plans for THIS product, both prices on every card.
 check(
-  "single-product mode hides the hosting-type tablist",
-  // Scoped by LABEL, not by container. The header's mega-menu rail is a
-  // tablist, and so is the live hosting console's site switcher inside <main>
-  // ("Choose a site") — a positional selector picks those up and reports a bug
-  // that is not there. Only the pricing control is labelled "Hosting type".
-  await ev(
-    `return document.querySelectorAll('[role="tablist"][aria-label="Hosting type"]').length === 0`,
-  ),
-);
-check(
-  "billing-term radiogroup still present",
-  await ev(
-    `return document.querySelectorAll('input[name="billing-term"]').length === 2`,
-  ),
-);
-check(
-  // Derived from the URL, not hardcoded to Cloud: this script takes a page and
-  // every product page renders its own group's four tiers.
   "only this product's four plans render",
   await ev(`const want = location.pathname.includes('wordpress') ? 'WordPress'
       : location.pathname.includes('ecommerce') ? 'Ecommerce' : 'Cloud';
     const others = ['Cloud','WordPress','Ecommerce'].filter(n=>n!==want);
-    const h=[...document.querySelectorAll('h3')].map(e=>e.textContent||'');
-    return h.filter(t=>t.includes(want+' ')||t.endsWith(want)).length>=4
-      && !others.some(o=>h.some(t=>t.includes(o+' Cloud')||t.startsWith(o+' ')));`),
-);
-
-// Prices and rate names both changed when the store figures were verified —
-// see the header of data/pricing.ts. The term framing was dropped on
-// 2026-09-16, so the toggle is now monthly rate vs standard rate, and the
-// entry tier is $7.95 against a $12.62 standard.
-const onPromo = await ev(`return document.body.innerText.includes('$7.95')`);
-await ev(`document.querySelector('input[name="billing-term"][value="standard"]')?.click();
-  await new Promise(r=>setTimeout(r,250)); return true`);
-const atStandard = await ev(`return document.body.innerText.includes('$12.62')`);
-check(
-  "rate toggle actually changes prices",
-  onPromo && atStandard,
-  `monthly $7.95=${onPromo}, standard $12.62=${atStandard}`,
+    const h=[...document.querySelectorAll('#plans h3')].map(e=>e.textContent||'');
+    return h.filter(t=>t.includes(want)).length===4 && !others.some(o=>h.some(t=>t.includes(o)));`),
 );
 check(
-  "the standard rate is shown beside the monthly rate",
-  await ev(`document.querySelector('input[name="billing-term"][value="monthly"]')?.click();
-    await new Promise(r=>setTimeout(r,250));
-    return document.body.innerText.includes('Standard rate')`),
-);
-
-check(
-  "comparison table scroll region is keyboard reachable + labelled",
-  await ev(`const r=document.querySelector('[role="region"][aria-label]');
-    return !!r && r.tabIndex===0 && r.getAttribute('aria-label').length>0`),
-);
-check(
-  "comparison table uses scoped headers",
-  await ev(`const t=document.querySelector('table'); if(!t) return false;
-    return t.querySelectorAll('th[scope="col"]').length>=5 && t.querySelectorAll('th[scope="row"]').length>=5`),
-);
-check(
-  "table has a caption",
-  await ev(`return !!document.querySelector('table caption')?.textContent.trim()`),
+  "every card shows the monthly rate and the rate it renews at",
+  await ev(`const t=document.getElementById('plans')?.innerText||'';
+    return ['$7.95','$12.62','$17.95','$21.37'].every(p=>t.includes(p)) && (t.match(/Renews at/g)||[]).length===4`),
 );
 
 /* The breadcrumb assertion that used to sit here was removed with the trail
@@ -184,7 +138,7 @@ check(
 
 check(
   "FAQ disclosures open",
-  await ev(`const d=document.querySelector('details'); const before=d?.open;
+  await ev(`const d=document.querySelector('#faq details'); const before=d?.open;
     d?.querySelector('summary')?.click(); await new Promise(r=>setTimeout(r,150));
     return before===false && d?.open===true`),
 );
@@ -229,16 +183,6 @@ check(
   await ev(
     `return document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1`,
   ),
-);
-check(
-  "wide table is contained by its scroll region, not the page",
-  await ev(`const r=document.querySelector('[role="region"][aria-label]');
-    return r.scrollWidth > r.clientWidth && document.documentElement.scrollWidth <= document.documentElement.clientWidth+1`),
-);
-check(
-  "term toggle works on mobile",
-  await ev(`document.querySelector('input[name="billing-term"][value="standard"]')?.click();
-    await new Promise(r=>setTimeout(r,250)); return document.body.innerText.includes('$12.62')`),
 );
 check(
   // Found by POSITION, not by label. Each product page writes its own hero CTA

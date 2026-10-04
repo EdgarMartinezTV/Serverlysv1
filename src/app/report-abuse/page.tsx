@@ -41,11 +41,12 @@ export default function ReportAbusePage() {
         ])}
       />
 
-      <section aria-labelledby="ra-heading" className="bg-canvas py-14 md:py-16 xl:py-20">
+      <section aria-labelledby="ra-heading" className="relative isolate overflow-hidden bg-canvas py-14 md:py-16 xl:py-20">
+        <div aria-hidden="true" className="absolute inset-x-0 top-0 -z-10 h-[420px] bg-[radial-gradient(55%_70%_at_50%_0%,rgb(0_0_255/0.07),transparent_70%)]" />
         <Grid>
           <h1
             id="ra-heading"
-            className="mx-auto max-w-[646px] text-center text-[36px] leading-[44px] font-normal tracking-[-0.18px] text-fg lg:text-[48px] lg:leading-[56px] lg:tracking-[-0.24px]"
+            className="display-lg mx-auto max-w-[760px] text-center text-fg"
           >
             {HERO.title}
           </h1>

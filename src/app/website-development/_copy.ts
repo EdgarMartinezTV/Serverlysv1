@@ -1,46 +1,13 @@
-/**
- * /website-development — copy.
+/*
+ * /website-development copy (rebuilt 2026-10-03).
  *
- * LAYOUT is a 1:1 rebuild of dreamhost.com/pro-services/development/ (grid,
- * type scale, section order, measurements — all in `_components/kit.tsx`).
- * TEXT IS NOT. Every sentence below is written for Serverlys.
- *
- * WHY THE REWRITE (2026-09-14): the first pass carried the reference's copy
- * verbatim on instruction. Edgar then asked for Serverlys-original text to
- * avoid trading on someone else's writing. Layout and structure are not
- * protectable and are deliberately kept; the prose is ours.
- *
- * ── THE RULES THIS FILE IS WRITTEN UNDER ─────────────────────────────────────
- *
- * 1. NOTHING FROM THE REFERENCE SURVIVES AS A SENTENCE. Not paraphrased, not
- *    reordered — replaced. Gone with it: "20+ years of development expertise"
- *    (their tenure), "most projects are done within 72 hours" (their delivery
- *    commitment), their $129/$119/$109/$99 rate card and 8/16/23% discounts,
- *    their retainer roll-over and accrual-cap policy, and "we specialize with
- *    WordPress-based websites" (their specialism).
- *
- * 2. NO INVENTED FACTS. Everything here is either verifiable from the rest of
- *    this site or is a statement of approach rather than a claim of fact. No
- *    years in business, no project counts, no turnaround promise, no uptime
- *    figure — `data/navigation.ts` carries the standing rule on that last one.
- *
- * 3. THE RATE CARD IS THE ONE EXCEPTION, and it is Serverlys' own. The prices
- *    in `PLANS` happen to match the reference's exactly; Edgar was asked
- *    directly and confirmed they are his. Every OTHER service page on this site
- *    still publishes no price. See the note on `PLANS` below before touching
- *    those figures.
- *
- * 4. THE ONE THING THAT IS ACTUALLY DIFFERENT ABOUT SERVERLYS gets said plainly
- *    instead of a generic quality claim: the team that builds the site also
- *    runs the infrastructure under it. That is true, it is checkable, and no
- *    competitor page can say it for us.
- *
- * ⚠ TESTIMONIALS ARE PLACEHOLDERS AND GATED. See REVIEWS below —
- *    `npm run check:reviews` fails while they are unreal.
+ * The unfinished "What clients say" band was removed with the rebuild: it
+ * carried template quotes with no names and was gated off by
+ * scripts/check-reviews.mjs. Add a testimonials band back only with real,
+ * attributable client quotes.
  */
-
 export const HERO = {
-  badge: "SERVERLYS: WEB DEVELOPMENT",
+  badge: "Custom development",
   // Two lines and two lines only. The reference's headline sets on two at 80px
   // in a 672px column, and its lede on two at 24px — roughly 60 characters a
   // line. Longer copy here pushes both to three and the band stops matching.
@@ -176,61 +143,6 @@ export const TACKLE = {
  * sentences; the card is 410×464 and built for roughly that length. Fewer than
  * six is fine, the rail just scrolls less. If there are none yet, delete the
  * `<Reviews />` line from `page.tsx` and ship the other seven bands.
- */
-export const REVIEWS_ARE_REAL = false;
-
-export const REVIEWS = {
-  title: "What clients say",
-  items: [
-    {
-      quote:
-        "Replace with a real client quote of about this length. Two to four sentences reads best at this card width, and specifics — what was built, how the process went — carry more weight than praise.",
-      name: "Reviewer name needed",
-    },
-    {
-      quote:
-        "Replace with a real client quote. Something about responsiveness or communication tends to be what a prospect is actually checking for here.",
-      name: "Reviewer name needed",
-    },
-    {
-      quote:
-        "Replace with a real client quote. A named business reads stronger than a first name on its own.",
-      name: "Reviewer name needed",
-    },
-    {
-      quote:
-        "Replace with a real client quote. If a client described a problem they had before the work, lead with that.",
-      name: "Reviewer name needed",
-    },
-    {
-      quote:
-        "Replace with a real client quote. Quotes that mention the hosting and the build together make the single-team point better than the copy above can.",
-      name: "Reviewer name needed",
-    },
-    {
-      quote:
-        "Replace with a real client quote, or cut this band from page.tsx until there are real ones to show.",
-      name: "Reviewer name needed",
-    },
-  ],
-} as const;
-
-/**
- * The band that occupies the testimonial slot until real reviews exist.
- *
- * WHY THIS IS HERE. A testimonial band does one job: give a stranger a reason
- * to believe you. Serverlys has no collected customer reviews yet — checked,
- * including the original site, where every quote turned out to be a blog
- * pull-quote in our own editorial voice. Leaving the slot empty loses the job;
- * inventing quotes fakes it. So the slot carries COMMITMENTS instead: things a
- * prospect can hold us to, every one of them verifiable elsewhere on this site.
- *
- * It reuses the reviews rail exactly — same 410×464 card, same 48px padding,
- * same scroll-snap — so putting real testimonials back is a one-line swap in
- * `page.tsx` and nothing about the layout moves.
- *
- * ⚠ Each line below must stay checkable. No uptime figure, no turnaround
- * promise, no count of anything. If a claim here stops being true, delete it.
  */
 export const COMMITMENTS = {
   title: "What you can hold us to",

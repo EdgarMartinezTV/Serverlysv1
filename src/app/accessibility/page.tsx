@@ -3,7 +3,6 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
 
 const PATH = "/accessibility";
-const EFFECTIVE = "2026-09-09";
 
 export const metadata = pageMetadata({
   title: "Accessibility Statement | Serverlys",
@@ -116,7 +115,7 @@ export default function AccessibilityPage() {
       <LegalPage
         title="Accessibility statement"
         intro="What we target, what we have actually tested, and — the part most statements omit — what we know is not done yet."
-        effective={EFFECTIVE}
+        path={PATH}
         trail={[{ name: "Home", href: "/" }, { name: "Accessibility" }]}
         sections={SECTIONS}
         contact="Report a barrier and we will treat it as a bug with a priority, not a suggestion for a future release."

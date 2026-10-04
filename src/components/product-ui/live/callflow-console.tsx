@@ -205,7 +205,7 @@ export function CallFlowConsole({ className }: { className?: string }) {
                     : "self-end rounded-br-sm bg-white/8 text-fg-on-dark-secondary",
                 )}
               >
-                <span className="mb-0.5 block font-mono text-ui uppercase tracking-[0.1em] text-fg-on-dark-muted">
+                <span className="mb-0.5 block text-ui text-fg-on-dark-muted font-semibold">
                   {t.from === "agent" ? "CallFlow" : "Caller"}
                 </span>
                 {t.text}
@@ -244,7 +244,7 @@ export function CallFlowConsole({ className }: { className?: string }) {
 
         {/* ── What the agent captured ───────────────────────────────────── */}
         <div className="p-3.5">
-          <p className="font-mono text-ui uppercase tracking-[0.1em] text-fg-on-dark-muted">
+          <p className="text-ui text-fg-on-dark-muted font-semibold">
             Captured from the call
           </p>
           <dl className="mt-2.5 flex flex-col gap-1.5">
@@ -260,7 +260,7 @@ export function CallFlowConsole({ className }: { className?: string }) {
                       : "bg-white/[0.02]",
                   )}
                 >
-                  <dt className="font-mono text-ui uppercase tracking-[0.1em] text-fg-on-dark-muted">
+                  <dt className="text-ui text-fg-on-dark-muted font-semibold">
                     {row.label}
                   </dt>
                   <dd
@@ -277,7 +277,7 @@ export function CallFlowConsole({ className }: { className?: string }) {
           </dl>
 
           <div className="mt-3 rounded-lg bg-white/[0.04] p-2.5 ring-1 ring-inset ring-white/8">
-            <p className="font-mono text-ui uppercase tracking-[0.1em] text-fg-on-dark-muted">
+            <p className="text-ui text-fg-on-dark-muted font-semibold">
               This month
             </p>
             <dl className="mt-1.5 grid grid-cols-2 gap-2">

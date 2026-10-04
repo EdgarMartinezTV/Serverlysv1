@@ -12,6 +12,7 @@ import { SeraAction } from "./sera-action";
 import { SeraProposal } from "./sera-proposal";
 import { SeraTyping } from "./sera-typing";
 import { SeraWorkflow } from "./sera-workflow";
+import { SeraQuestion } from "./sera-question";
 import { useSera } from "./sera-provider";
 
 /**
@@ -38,7 +39,7 @@ import { useSera } from "./sera-provider";
 const PINNED_THRESHOLD = 72;
 
 export function SeraPanel({ onClose, closing }: { onClose: () => void; closing?: boolean }) {
-  const { messages, status, busy, activity, phase, error, retry, dismissError, workflow } =
+  const { messages, status, busy, activity, phase, error, retry, dismissError, workflow, reset } =
     useSera();
 
   const scroller = useRef<HTMLDivElement>(null);
@@ -135,7 +136,7 @@ export function SeraPanel({ onClose, closing }: { onClose: () => void; closing?:
      * ends up permanently gliding a few pixels behind the text.
      */
     element.scrollTop = element.scrollHeight;
-  }, [messages, activity, workflow, pinned]);
+  }, [messages, activity, workflow, pinned, status]);
 
   /* ── Screen-reader status ─────────────────────────────────────────────── */
   /*
@@ -192,7 +193,23 @@ export function SeraPanel({ onClose, closing }: { onClose: () => void; closing?:
           <SeraMark className="h-6 w-6" />
         </span>
 
-        <p className={cn(styles.headerTitle, "truncate")}>Sera</p>
+        <p className={cn(styles.headerTitle, "truncate")}>
+          Sera <span className={styles.headerSub}>· {company.name} assistant</span>
+        </p>
+
+        {/* New chat, Kodee-style: only once there is something to clear. */}
+        {messages.length > 0 && (
+          <button
+            type="button"
+            onClick={reset}
+            disabled={busy}
+            className={styles.headerButton}
+            aria-label="Start a new chat"
+            title="New chat"
+          >
+            <SeraIcon name="compose" className="h-4 w-4" />
+          </button>
+        )}
 
         {/* The reference's collapse control: a chevron, not an ×. */}
         <button
@@ -219,10 +236,13 @@ export function SeraPanel({ onClose, closing }: { onClose: () => void; closing?:
           {messages.length === 0 && (
             <>
               <div className={styles.intro}>
-                <h2 className={styles.introTitle}>What are you looking to do?</h2>
+                <span className={styles.introTile} aria-hidden="true">
+                  <SeraIcon name="spark" className="h-5 w-5" />
+                </span>
+                <h2 className={styles.introTitle}>How can I help you today?</h2>
                 <p className={styles.introBody}>
-                  I&rsquo;m Sera. I can answer questions about {company.name} hosting,
-                  domains and websites, or get a request started for you.
+                  Plans, prices, domains or moving your site. I answer from the real{" "}
+                  {company.name} plans, and hand you to a person whenever that&rsquo;s better.
                 </p>
               </div>
               <SeraQuickActions />
@@ -249,11 +269,15 @@ export function SeraPanel({ onClose, closing }: { onClose: () => void; closing?:
                       index === messages.length - 1 ||
                       messages[index + 1]?.role !== message.role
                     }
+                    avatar={index === 0 || messages[index - 1]?.role !== message.role}
                   />
                 ),
               )}
 
               {showIndicator && <SeraTyping label={activity} />}
+
+              {/* Tappable answers for the field Sera is asking about. */}
+              {!busy && !streaming && lastMessage?.role === "assistant" && <SeraQuestion />}
 
               {error && (
                 <div role="alert" className={styles.notice}>

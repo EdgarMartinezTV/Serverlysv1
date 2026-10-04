@@ -196,7 +196,7 @@ export function MobileNav({
                           item as Extract<NavItem, { categories: unknown }>
                         ).categories.map((category) => (
                           <div key={category.id} className="pb-3">
-                            <p className="flex items-center gap-2 pb-2 font-mono text-caption uppercase text-fg-on-dark-muted">
+                            <p className="flex items-center gap-2 pb-2 text-micro text-fg-on-dark-muted font-semibold">
                               <NavIcon name={category.icon} className="h-3.5 w-3.5" />
                               {category.label}
                             </p>
@@ -314,7 +314,7 @@ function MobileItem({ item, pathname }: { item: MegaItem; pathname: string }) {
             {item.label}
           </span>
           {item.badge && (
-            <span className="rounded-full bg-white/10 px-1.5 py-0.5 font-mono text-caption uppercase leading-4 text-fg-on-dark-muted">
+            <span className="rounded-full bg-white/10 px-1.5 py-0.5 text-micro leading-4 text-fg-on-dark-muted font-semibold">
               {item.badge.text}
             </span>
           )}

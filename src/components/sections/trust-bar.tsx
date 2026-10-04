@@ -174,7 +174,7 @@ export function TrustBar() {
               >
                 <dt className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
                   <span className="tabular text-h3 leading-none text-fg">{g.stat}</span>
-                  <span className="font-mono text-caption uppercase leading-none text-primary">
+                  <span className="text-micro leading-none text-primary font-semibold">
                     {g.label}
                   </span>
                 </dt>

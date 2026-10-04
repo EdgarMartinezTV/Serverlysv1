@@ -31,12 +31,6 @@ const BADGES = [
   "Standard rate shown",
 ] as const;
 
-const GROUPS = [
-  {
-    heading: "Build with",
-    keys: ["sites", "visits", "memory"] as const,
-  },
-] as const;
 
 export function PricingBand() {
   const cloud = groupById("cloud");
@@ -57,7 +51,7 @@ export function PricingBand() {
       />
       <Container width="wide" className="relative">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <h2 id="pricing-heading" className="text-h1 text-fg">
+          <h2 id="pricing-heading" className="display-lg text-fg">
             Choose the plan that <span className="block">matches what you run</span>
           </h2>
           <p className="mx-auto mt-5 max-w-lg text-body-lg text-fg-secondary">
@@ -90,214 +84,163 @@ export function PricingBand() {
           </ul>
         </Reveal>
 
-        <ul className="mt-14 grid items-start gap-5 sm:grid-cols-2 xl:grid-cols-4">
+        {/* 2026-10-03 card grammar, after the reference: saving pill in the
+            corner, the standard rate struck through above the price, an
+            outline button, the renewal line, a rule, then the three specs
+            that actually differ per tier as a checklist. Both numbers are
+            still on every card (see data/pricing.ts: never `monthly` alone). */}
+        <ul className="mt-14 grid items-stretch gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {shown.map((plan, i) => {
             if (!plan) return null;
             const featured = plan.popular;
             return (
               <Reveal as="li" key={plan.slug} delay={i * 80} className="flex">
                 <article
-                  // The price is sized in `cqi`, so the card has to be the query
-                  // container. Without this the price falls back to viewport
-                  // units and stops tracking the column it has to fit inside.
-                  style={{ containerType: "inline-size" }}
                   className={cn(
-                    "relative flex w-full flex-col rounded-2xl p-7 sm:p-8",
+                    "relative flex w-full flex-col overflow-hidden rounded-2xl p-6",
                     featured
-                      ? "bg-canvas-abyss text-fg-on-dark-secondary shadow-e5 xl:-mt-4 xl:pb-12"
-                      : "bg-surface shadow-e2 ring-1 ring-line",
+                      ? "bg-[linear-gradient(180deg,var(--color-brand-950)_0%,#040a1c_100%)] text-fg-on-dark-secondary shadow-e5"
+                      : "bg-surface ring-1 ring-line",
                   )}
                 >
                   {featured && (
-                    <>
-                      <div
-                        aria-hidden="true"
-                        className="absolute inset-0 rounded-2xl bg-[radial-gradient(70%_60%_at_50%_0%,rgb(34_126_255/0.35)_0%,transparent_70%)]"
-                      />
-                      <span className="relative mb-4 inline-flex w-fit items-center rounded-full bg-white/12 px-3 py-1 font-mono text-caption uppercase text-white ring-1 ring-inset ring-white/20">
-                        Most popular
-                      </span>
-                    </>
+                    <div
+                      aria-hidden="true"
+                      className="absolute inset-x-0 top-0 h-48 bg-[radial-gradient(80%_100%_at_50%_0%,rgb(0_0_255/0.45)_0%,transparent_70%)]"
+                    />
                   )}
 
-                  <div className="relative">
-                    <h3 className={cn("text-h3", featured ? "text-white" : "text-fg")}>
+                  <div className="relative flex items-start justify-between gap-3">
+                    <h3 className={cn("text-body-lg font-semibold", featured ? "text-white" : "text-fg")}>
                       {plan.name}
                     </h3>
-                    <p
+                    <span
                       className={cn(
-                        "mt-2 min-h-11 text-small",
-                        featured ? "text-fg-on-dark-muted" : "text-fg-secondary",
+                        "shrink-0 rounded-md px-2 py-0.5 text-micro font-semibold",
+                        featured ? "bg-white/15 text-white" : "bg-brand-50 text-primary",
                       )}
                     >
-                      {plan.summary}
-                    </p>
+                      {featured ? `Most popular · ${formatSavings(plan)} off` : `${formatSavings(plan)} off`}
+                    </span>
+                  </div>
+                  <p
+                    className={cn(
+                      "relative mt-1.5 min-h-10 text-small",
+                      featured ? "text-fg-on-dark-muted" : "text-fg-secondary",
+                    )}
+                  >
+                    {plan.summary}
+                  </p>
 
-                    <p className="mt-6 flex items-baseline gap-1.5">
-                      <span
-                        className={cn(
-                          "tabular text-display",
-                          featured ? "text-white" : "text-fg",
-                        )}
-                        /* Sized from the CARD, not the viewport. Two bugs lived
-                           here: `1.9rem+1.5vw` has no space around the `+`, which
-                           is invalid inside clamp(), so the whole declaration was
-                           dropped and the price rendered at the raw --text-display
-                           size (80px) — wide enough that "$23.95" shoved "/mo"
-                           outside the card between 1280px and ~1390px, where the
-                           4-up grid starts but the container has not caught up.
-                           Even spaced correctly, a vw-driven size cannot track a
-                           grid-driven column, so it is `cqi`: 24% of the card's
-                           content box, floored at 2.25rem and capped at the 3rem
-                           this always meant to cap at. The widest price the store
-                           sells ($23.95 + "/mo") fits every card width the grid
-                           produces, down to 320px. */
-                        style={{ fontSize: "clamp(2.25rem, 24cqi, 3rem)" }}
-                      >
-                        {formatPrice(plan.monthly)}
-                      </span>
-                      <span
-                        className={cn(
-                          "text-body",
-                          featured ? "text-fg-on-dark-muted" : "text-fg-muted",
-                        )}
-                      >
-                        /mo
-                      </span>
-                    </p>
-
-                    {/* No term is attached to this price any more (2026-09-16).
-                        The saving is measured against the standard rate printed
-                        directly below, which is what keeps the claim meaningful. */}
-                    <p
+                  <p
+                    className={cn(
+                      "relative mt-5 text-small line-through",
+                      featured ? "text-fg-on-dark-muted" : "text-fg-muted",
+                    )}
+                  >
+                    <span className="sr-only">Standard rate </span>
+                    {formatPrice(plan.standard)}
+                  </p>
+                  <p className="relative flex items-baseline gap-1">
+                    <span
                       className={cn(
-                        "mt-2 inline-flex w-fit items-center rounded-md px-2 py-1 text-small font-medium",
-                        featured
-                          ? "bg-white/12 text-white"
-                          : "bg-warning-soft text-warning",
+                        "tabular text-[40px] leading-none font-semibold tracking-[-0.03em]",
+                        featured ? "text-white" : "text-fg",
                       )}
                     >
-                      Save {formatSavings(plan)} on the standard rate
-                    </p>
+                      {formatPrice(plan.monthly)}
+                    </span>
+                    <span className={cn("text-body", featured ? "text-fg-on-dark-muted" : "text-fg-muted")}>
+                      /mo
+                    </span>
+                  </p>
 
-                    <p
-                      className={cn(
-                        "mt-2 text-small",
-                        featured ? "text-fg-on-dark-muted" : "text-fg-muted",
-                      )}
-                    >
-                      Standard rate{" "}
-                      <span
-                        className={cn(
-                          "tabular font-medium",
-                          featured ? "text-white" : "text-fg-secondary",
-                        )}
-                      >
-                        {formatPrice(plan.standard)}/mo
-                      </span>
-                      {plan.setupFee
-                        ? ` · ${formatPrice(plan.setupFee)} setup fee`
-                        : " · no setup fee"}
-                    </p>
+                  <Button
+                    href={orderUrl(cloud, plan)}
+                    variant={featured ? "primary" : "outline"}
+                    size="md"
+                    className="relative mt-6 w-full"
+                  >
+                    Choose plan
+                  </Button>
 
-                    <Button
-                      href={orderUrl(cloud, plan)}
-                      variant={featured ? "inverse" : "secondary"}
-                      size="lg"
-                      className="mt-7 w-full"
-                    >
-                      Choose {plan.name}
-                    </Button>
+                  <p
+                    className={cn(
+                      "relative mt-3 text-micro",
+                      featured ? "text-fg-on-dark-muted" : "text-fg-muted",
+                    )}
+                  >
+                    Renews at {formatPrice(plan.standard)}/mo.
+                    {plan.setupFee ? ` ${formatPrice(plan.setupFee)} one-off setup fee.` : " No setup fee."}
+                  </p>
 
-                    {GROUPS.map((group) => (
-                      <div key={group.heading} className="mt-8">
-                        <p
-                          className={cn(
-                            "font-mono text-caption uppercase",
-                            featured ? "text-fg-on-dark-muted" : "text-fg-muted",
-                          )}
-                        >
-                          {group.heading}
-                        </p>
-                        <dl className="mt-3 flex flex-col gap-2.5">
-                          {group.keys.map((k) => (
-                            <div
-                              key={k}
-                              className="flex justify-between gap-3 text-small"
-                            >
-                              <dt
-                                className={
-                                  featured ? "text-fg-on-dark-muted" : "text-fg-muted"
-                                }
-                              >
-                                {k === "sites"
-                                  ? "Websites"
-                                  : k === "visits"
-                                    ? "Traffic"
-                                    : "Memory"}
-                              </dt>
-                              <dd
-                                className={cn(
-                                  "text-right font-medium",
-                                  featured ? "text-white" : "text-fg",
-                                )}
-                              >
-                                {plan.specs[k]}
-                              </dd>
-                            </div>
-                          ))}
-                        </dl>
-                      </div>
-                    ))}
-
-                    <div className="mt-7">
-                      <p
-                        className={cn(
-                          "font-mono text-caption uppercase",
-                          featured ? "text-fg-on-dark-muted" : "text-fg-muted",
-                        )}
-                      >
-                        Included
-                      </p>
-                      <ul className="mt-3 flex flex-col gap-2">
-                        {plan.includes.map((inc) => (
-                          <li key={inc} className="flex items-center gap-2 text-small">
-                            <svg
-                              viewBox="0 0 16 16"
-                              aria-hidden="true"
-                              className={cn(
-                                "h-4 w-4 shrink-0",
-                                featured ? "text-accent-on-dark" : "text-success-fill",
-                              )}
-                            >
-                              <path
-                                d="m3.5 8.5 3 3 6-7"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="1.75"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                            <span
-                              className={
-                                featured
-                                  ? "text-fg-on-dark-secondary"
-                                  : "text-fg-secondary"
-                              }
-                            >
-                              {inc}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                  <div
+                    className={cn(
+                      "relative mt-6 border-t pt-6",
+                      featured ? "border-white/10" : "border-line",
+                    )}
+                  >
+                    <ul className="flex flex-col gap-3">
+                      {[plan.specs.sites, plan.specs.visits, `${plan.specs.memory} memory`, "Unlimited NVMe storage", "Free SSL and daily backups"].map((spec) => (
+                        <li key={spec} className="flex items-center gap-2.5 text-small">
+                          <svg
+                            viewBox="0 0 16 16"
+                            aria-hidden="true"
+                            className={cn("h-4 w-4 shrink-0", featured ? "text-primary-on-dark" : "text-success-fill")}
+                          >
+                            <path d="m3.5 8.5 3 3 6-7" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                          <span className={featured ? "text-white" : "text-fg"}>{spec}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </article>
               </Reveal>
             );
           })}
         </ul>
+
+        {/* The store's feature list is identical on all four tiers (see
+            data/pricing.ts), so it is printed once here rather than four times
+            inside the cards, where it buried the three rows that differ. */}
+        <Reveal className="mt-10 rounded-2xl bg-surface p-7 ring-1 ring-line sm:p-8">
+          <h3 className="text-h4 text-fg">Every plan includes</h3>
+          <ul className="mt-5 grid gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {shown[0].includes.map((inc) => (
+              <li key={inc} className="flex items-center gap-2 text-small text-fg-secondary">
+                <svg
+                  viewBox="0 0 16 16"
+                  aria-hidden="true"
+                  className="h-4 w-4 shrink-0 text-success-fill"
+                >
+                  <path
+                    d="m3.5 8.5 3 3 6-7"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.75"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                {inc}
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+
+        <div className="mt-4 flex flex-col gap-4 rounded-2xl bg-brand-50 p-6 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+          <div>
+            <h3 className="text-h4 font-medium text-fg">Need more from your hosting?</h3>
+            <p className="mt-1 text-small text-fg-secondary">
+              Root access and dedicated resources are coming with VPS hosting. Tell us what you
+              need and we will size it.
+            </p>
+          </div>
+          <Button href="/vps-hosting" variant="outline" size="sm" className="shrink-0 bg-white">
+            See VPS hosting
+          </Button>
+        </div>
 
         <p className="mt-10 text-center text-small text-fg-muted">
           All four cloud tiers, at the monthly rate.{" "}

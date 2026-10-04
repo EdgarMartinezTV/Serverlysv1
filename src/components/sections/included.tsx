@@ -54,7 +54,7 @@ export function Included() {
       <div className="mt-12 grid gap-10 md:grid-cols-2 md:gap-12">
         {GROUPS.map((group) => (
           <div key={group.title}>
-            <h3 className="border-b border-line pb-4 font-mono text-caption uppercase text-primary">
+            <h3 className="border-b border-line pb-4 text-micro text-primary font-semibold">
               {group.title}
             </h3>
             <ul className="mt-6 flex flex-col gap-5">

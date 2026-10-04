@@ -1,5 +1,7 @@
 import Link from "next/link";
-import { ArrowRight, CtaButton, Grid } from "@/components/ref/kit";
+import { Grid } from "@/components/ref/kit";
+import { SeraMark } from "@/components/sera/sera-mark";
+import { CoworkerBento } from "./coworker-bento";
 
 /**
  * "Your AI co-worker. Free with every plan."
@@ -28,95 +30,100 @@ import { ArrowRight, CtaButton, Grid } from "@/components/ref/kit";
  * "85% of issues solved without a human" — their measured figure, not ours, so
  * it is deliberately absent.
  */
-const CARDS = [
-  {
-    title: "Answer",
-    body: "It handles the questions that make up most of a site's volume — hours, pricing, stock, delivery — day and night.",
-  },
-  {
-    title: "Capture",
-    body: "It writes down the name and the intent, so an enquiry is never just a missed message.",
-  },
-  {
-    title: "Escalate",
-    body: "When it should not attempt something, a person receives the whole conversation rather than a summary.",
-  },
-  {
-    title: "Stay honest",
-    body: "It says when it does not know, and tells customers they are talking to an assistant. No invented policies, no guessed prices.",
-  },
-  {
-    title: "Trigger work",
-    body: "A conversation can start an automation — a booking, a ticket, a follow-up — without you wiring it up.",
-  },
+const PROMPTS = [
+  "Book a cleaning for Friday morning",
+  "Send the quote to my email",
+  "Follow up with Tuesday's enquiries",
 ] as const;
 
+/**
+ * AI co-worker band — 2026-10-03 re-composition.
+ *
+ * Heading left, the claim and the action right; then a bento: four dark
+ * capability plates at staggered heights and one lit plate that SHOWS the
+ * agent answering instead of describing it. The sticky stacked list this
+ * replaced made the reader scroll through five near-identical rows.
+ *
+ * Then "Same agent, more ways to grow": automations, with stacked task cards
+ * and a tool bar as the visual. Every task named is something an automation
+ * on the platform actually does (booking, quote, follow-up).
+ */
 export function CoworkerBand() {
   return (
     <section
       aria-labelledby="coworker-heading"
-      className="bg-canvas-abyss py-14 md:py-16 xl:py-20"
+      className="relative isolate overflow-hidden bg-canvas-abyss py-20 md:py-28"
     >
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 bg-[radial-gradient(55%_50%_at_90%_25%,rgb(0_0_255/0.6)_0%,transparent_70%),radial-gradient(50%_45%_at_80%_80%,rgb(31_85_255/0.35)_0%,transparent_70%)]"
+      />
       <Grid>
-        <div className="mx-auto flex max-w-[720px] flex-col items-center text-center">
-          <h2
-            id="coworker-heading"
-            className="text-[36px] leading-[44px] font-normal tracking-[-0.18px] text-ink-50 lg:text-[48px] lg:leading-[56px] lg:tracking-[-0.24px]"
-          >
+        <div className="grid gap-8 lg:grid-cols-2 lg:items-end">
+          <h2 id="coworker-heading" className="display-md max-w-[460px] text-white">
             Your AI co-worker. Free with every plan.
           </h2>
-          <p className="mt-4 text-body text-fg-on-dark-secondary">
-            ConvoAI answers your customers day and night, and hands anything it should not attempt
-            to a person with the full transcript.
-          </p>
-          <div className="mt-8">
-            <CtaButton href="/convoai" tone="light">
+          <div className="lg:justify-self-end lg:max-w-[400px]">
+            <p className="text-body text-fg-on-dark-secondary">
+              ConvoAI answers your customers day and night, and hands anything it should not
+              attempt to a person with the full transcript.
+            </p>
+            <Link
+              href="/convoai"
+              className="mt-5 inline-flex items-center gap-2 rounded-full px-4 py-2 text-small font-semibold text-white ring-1 ring-white/40 transition-colors duration-fast hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            >
+              <SeraMark className="h-4 w-4" />
               Start a chat
-            </CtaButton>
+            </Link>
           </div>
         </div>
 
-        {/*
-         * The stack. Each <li> is sticky at the header's 72px, and the trailing
-         * spacer gives the last card room to pin before the band ends —
-         * without it the final card unpins early and the sequence reads as
-         * broken at the bottom.
-         */}
-        <ol className="mt-12">
-          {CARDS.map((c, i) => (
-            <li
-              key={c.title}
-              style={{ top: `calc(4.5rem + ${i * 12}px)`, zIndex: i + 1 }}
-              className="sticky mb-6"
-            >
-              <div className="flex flex-col gap-3 rounded-2xl bg-canvas-deep p-8 ring-1 ring-white/10 md:flex-row md:items-start md:gap-10 md:p-10">
-                <p className="flex items-center gap-4 md:w-[280px] md:shrink-0">
-                  <span className="grid size-9 shrink-0 place-items-center rounded-full bg-primary text-small font-semibold text-white">
-                    {i + 1}
-                  </span>
-                  <span className="text-[24px] leading-8 font-normal tracking-[-0.12px] text-white">
-                    {c.title}
-                  </span>
-                </p>
-                <p className="flex-1 text-body text-fg-on-dark-secondary">{c.body}</p>
-              </div>
-            </li>
-          ))}
-          <li aria-hidden className="h-24" />
-        </ol>
+        {/* ── Bento: hover/focus/tap opens a plate (see coworker-bento) ── */}
+        <CoworkerBento />
 
-        <div className="flex flex-col items-center gap-3 text-center">
-          <p className="max-w-[720px] text-body text-fg-on-dark-secondary">
-            Same agent, more ways to grow: connect it to automations so a conversation becomes a
-            booking, a ticket or a follow-up.
-          </p>
-          <Link
-            href="/automations"
-            className="inline-flex min-h-11 items-center gap-1.5 text-body font-semibold text-primary-on-dark hover:text-white"
-          >
-            Learn more
-            <ArrowRight className="size-4" />
-          </Link>
+        {/* ── Same agent, more ways to grow ──────────────────────────────── */}
+        <div className="mt-24 grid items-center gap-14 lg:grid-cols-2">
+          <div className="max-w-[460px]">
+            <h3 className="display-md text-white">Same agent. More ways to grow.</h3>
+            <p className="mt-4 text-body text-fg-on-dark-secondary">
+              Connect it to automations, so a conversation becomes a booking, a ticket or a
+              follow-up without anyone copying it across.
+            </p>
+            <Link
+              href="/automations"
+              className="group/row mt-7 flex items-center justify-between gap-4 border-b border-line-on-dark py-4 text-body-lg text-white transition-colors duration-fast hover:text-primary-on-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            >
+              See automations
+              <svg viewBox="0 0 16 16" aria-hidden="true" className="h-4 w-4 transition-transform duration-fast group-hover/row:translate-x-1">
+                <path d="M3 8h9m-3.5-3.5L12 8l-3.5 3.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </Link>
+          </div>
+
+          <div aria-hidden="true" className="relative mx-auto h-[300px] w-full max-w-[500px]">
+            <span className="absolute top-0 right-10 z-10 inline-flex size-20 items-center justify-center rounded-2xl bg-primary text-white shadow-e5 ring-1 ring-white/20">
+              <SeraMark className="h-10 w-10" />
+            </span>
+            {PROMPTS.map((p, i) => (
+              <div
+                key={p}
+                style={{ top: `${60 + i * 52}px`, left: `${i * 48}px`, opacity: 0.55 + i * 0.22 }}
+                className="absolute right-0 max-w-[360px] rounded-2xl bg-white/90 px-5 py-4 text-body text-fg shadow-e4 backdrop-blur"
+              >
+                {p}
+              </div>
+            ))}
+            <div className="absolute right-0 bottom-0 flex gap-1 rounded-2xl bg-white p-1.5 shadow-e5">
+              {["Chat", "Tasks", "Files", "Apps"].map((t, i) => (
+                <span
+                  key={t}
+                  className={`rounded-xl px-4 py-2 text-micro font-medium ${i === 0 ? "bg-brand-50 text-primary" : "text-fg-secondary"}`}
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
       </Grid>
     </section>

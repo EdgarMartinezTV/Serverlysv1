@@ -4,10 +4,11 @@ import { FeatureGrid } from "@/components/sections/feature-grid";
 import { FaqSection } from "@/components/sections/faq";
 import { FinalCta } from "@/components/sections/final-cta";
 import { JsonLd } from "@/components/ui/json-ld";
-import { SeoMock, HostingMock, SitePreviewMock } from "@/components/product-ui/mocks";
+import { SeoMock, HostingMock } from "@/components/product-ui/mocks";
 import { billing } from "@/data/company";
 import { faqsFor } from "@/data/faqs";
 import { pageMetadata, faqGraph, breadcrumbGraph, serviceGraph } from "@/lib/seo";
+import { BakerySite } from "../website-design/_components/shots";
 
 const PATH = "/seo";
 const DESCRIPTION =
@@ -72,7 +73,6 @@ export default function SeoPage() {
         visual={<HostingMock />}
         side="right"
         surface="subtle"
-        bleed
       />
       <ShowcaseSplit
         id="pages"
@@ -80,7 +80,7 @@ export default function SeoPage() {
         title="Built to be found, not retrofitted"
         body="When we build the site, the structure, metadata and internal linking are done as part of the build. Retrofitting SEO onto a finished site is always more expensive."
         cta={{ label: "See website design", href: "/website-design" }}
-        visual={<SitePreviewMock />}
+        visual={<BakerySite />}
         side="left"
         surface="dark"
       />

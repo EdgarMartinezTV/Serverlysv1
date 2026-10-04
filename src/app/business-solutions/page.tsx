@@ -73,7 +73,6 @@ export default function BusinessSolutionsPage() {
         visual={<ChatMock />}
         side="right"
         surface="subtle"
-        bleed
       />
       <ShowcaseSplit
         id="after"

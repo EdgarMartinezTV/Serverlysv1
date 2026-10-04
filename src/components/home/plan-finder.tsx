@@ -143,7 +143,7 @@ export function PlanFinder() {
             {group && plan && chosen ? (
               <div className="flex flex-col items-start gap-5 rounded-xl bg-surface p-6 shadow-e3 ring-1 ring-line sm:flex-row sm:items-center sm:justify-between sm:p-7">
                 <div>
-                  <p className="font-mono text-caption uppercase text-primary">
+                  <p className="text-micro text-primary font-semibold">
                     {chosen.detail}
                   </p>
                   <p className="mt-2 text-h3 text-fg">{plan.name}</p>

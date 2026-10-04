@@ -3,7 +3,6 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
 
 const PATH = "/refund-policy";
-const EFFECTIVE = "2026-09-09";
 
 export const metadata = pageMetadata({
   title: "Refund Policy — 30 days on hosting | Serverlys",
@@ -118,7 +117,7 @@ export default function RefundPolicyPage() {
       <LegalPage
         title="Refund policy"
         intro="30 days on hosting, no questions. Domains are not refundable, and this page explains exactly why rather than burying it in a clause."
-        effective={EFFECTIVE}
+        path={PATH}
         trail={[{ name: "Home", href: "/" }, { name: "Refund policy" }]}
         sections={SECTIONS}
         contact="If you think a refund is due and something here says otherwise, write to us anyway. Policies have edge cases and people are better at those than documents."

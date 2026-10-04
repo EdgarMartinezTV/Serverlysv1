@@ -7,6 +7,7 @@ import { Bento } from "./_components/bento";
 import { Hero } from "./_components/hero";
 import { Integrate } from "./_components/integrate";
 import { Process } from "./_components/process";
+import { Plans } from "./_components/plans";
 import { Reliability } from "./_components/reliability";
 import { SubNav } from "./_components/subnav";
 import { Triggers } from "./_components/triggers";
@@ -130,6 +131,7 @@ export default function AutomationsPage() {
 
       <Hero />
       <SubNav />
+      <Plans />
       <Process />
       <Bento />
       <Integrate />

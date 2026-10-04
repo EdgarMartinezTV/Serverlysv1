@@ -36,7 +36,11 @@ export function Bento() {
   return (
     <Band labelledBy="cloud-bento-heading">
       <Grid>
-        <Headline id="cloud-bento-heading" title={BENTO.title} className="mb-4 xl:mb-12">
+        <Headline
+          id="cloud-bento-heading"
+          title={BENTO.title}
+          className="mb-4 xl:mb-12"
+        >
           <div className="mt-6 xl:mt-8">
             <CtaButton href="#pricing">{BENTO.cta}</CtaButton>
           </div>
@@ -51,9 +55,7 @@ export function Bento() {
               <h3 className="text-[32px] leading-10 font-normal tracking-[-0.16px] text-white xl:text-[36px] xl:leading-[44px] xl:tracking-[-0.18px]">
                 {BENTO.wordpress.title}
               </h3>
-              <p className="text-body text-white">
-                {BENTO.wordpress.description}
-              </p>
+              <p className="text-body text-white">{BENTO.wordpress.description}</p>
             </div>
             <WordPressField className="absolute inset-0 xl:relative xl:w-[408px] xl:shrink-0" />
           </div>
@@ -104,10 +106,14 @@ function NarrowCard({
   children: React.ReactNode;
 }) {
   return (
-    <div className={`flex flex-col overflow-hidden rounded-2xl bg-primary-soft ${height}`}>
+    <div
+      className={`flex flex-col overflow-hidden rounded-2xl bg-primary-soft ${height}`}
+    >
       <div className="shrink-0">{children}</div>
       <div className="flex flex-1 flex-col justify-end gap-3 p-10">
-        <h3 className="text-[24px] leading-8 font-normal tracking-[-0.12px] text-fg">{title}</h3>
+        <h3 className="text-[24px] leading-8 font-normal tracking-[-0.12px] text-fg">
+          {title}
+        </h3>
         <p className="mt-1 text-body text-fg">{description}</p>
       </div>
     </div>

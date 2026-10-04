@@ -1,4 +1,4 @@
-import { Section, SectionHeader } from "@/components/ui/section";
+import { Section } from "@/components/ui/section";
 import { cn } from "@/lib/utils";
 import { Reveal } from "@/components/animations/reveal";
 import { Button } from "@/components/ui/button";
@@ -99,31 +99,35 @@ export function Migration({
         </>
       )}
 
-      <Reveal className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-        <SectionHeader
+      <Reveal className="mx-auto flex max-w-[720px] flex-col items-center text-center">
+        <h2
           id="migration-heading"
-          eyebrow="Switching host"
-          title="Move an existing site without downtime"
-          lede="Migration is free and handled by our team. Nothing points at Serverlys until you have seen the site working."
-          tone={dark ? "dark" : "light"}
-          accent="neutral"
-        />
-        <div className="shrink-0">
+          className={cn("display-lg", dark ? "text-white" : "text-fg")}
+        >
+          Move an existing site without downtime
+        </h2>
+        <p className={cn("mt-5 text-body-lg", dark ? "text-fg-on-dark-secondary" : "text-fg-secondary")}>
+          Migration is free and handled by our team. Nothing points at Serverlys until you
+          have seen the site working.
+        </p>
+        <div className="mt-8">
           <Button href={billing.sales} variant={dark ? "inverse" : "secondary"}>
             Ask about migrating
           </Button>
         </div>
       </Reveal>
 
-      <Reveal delay={80} className="mt-12">
+      <Reveal delay={80} className="mt-14">
         {/* Still an <ol>. These are ordered steps and the order is the content —
             the numbers are not decoration, so the list stays a list. */}
-        <ol className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+        <ol className="relative grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {/* The thread through the four steps, desktop only. */}
+          <span aria-hidden="true" className="absolute top-11 right-[12%] left-[12%] hidden h-px bg-[linear-gradient(90deg,transparent,rgb(255_255_255/0.25),transparent)] xl:block" />
           {STEPS.map((step, i) => (
             <li
               key={step.title}
               className={cn(
-                "flex min-h-81 flex-col gap-2 rounded-xl p-6 ring-1 ring-inset",
+                "relative flex flex-col gap-2 rounded-2xl p-6 ring-1 ring-inset",
                 dark
                   ? "bg-canvas-dark/50 ring-white/10"
                   : "bg-white shadow-e1 ring-line",

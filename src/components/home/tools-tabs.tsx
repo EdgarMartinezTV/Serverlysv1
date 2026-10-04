@@ -164,7 +164,7 @@ export function ToolsTabs() {
               <ShowcaseFor id={t.id} />
 
               <div>
-                <span className="font-mono text-caption uppercase text-primary">
+                <span className="text-micro text-primary font-semibold">
                   {t.eyebrow}
                 </span>
                 <h3 className="mt-4 text-h2 text-fg">{t.title}</h3>
@@ -174,7 +174,7 @@ export function ToolsTabs() {
                   {t.meta.map((m) => (
                     <li
                       key={m}
-                      className="rounded-full bg-canvas-secondary px-3 py-1.5 font-mono text-caption uppercase text-fg-secondary ring-1 ring-line"
+                      className="rounded-full bg-canvas-secondary px-3 py-1.5 text-micro text-fg-secondary ring-1 ring-line font-semibold"
                     >
                       {m}
                     </li>
@@ -256,7 +256,7 @@ function HostShowcase() {
             <p className="text-h4 text-fg">Turbo Cloud</p>
             <p className="mt-0.5 text-small text-fg-muted">3 sites · London</p>
           </div>
-          <span className="rounded-full bg-success-soft px-3 py-1 font-mono text-caption uppercase text-success">
+          <span className="rounded-full bg-success-soft px-3 py-1 text-micro text-success font-semibold">
             Operational
           </span>
         </div>
@@ -268,7 +268,7 @@ function HostShowcase() {
             ["Storage", "6.2 GB", "unlimited"],
           ].map(([k, v, sub]) => (
             <div key={k} className="rounded-lg bg-canvas-secondary p-3">
-              <dt className="font-mono text-caption uppercase text-fg-muted">{k}</dt>
+              <dt className="text-micro text-fg-muted font-semibold">{k}</dt>
               <dd className="tabular mt-1 text-h4 text-fg">{v}</dd>
               <p className="mt-0.5 text-caption text-fg-muted">{sub}</p>
             </div>
@@ -276,7 +276,7 @@ function HostShowcase() {
         </dl>
 
         <div className="mt-5 rounded-lg bg-canvas-secondary p-4">
-          <p className="font-mono text-caption uppercase text-fg-muted">
+          <p className="text-micro text-fg-muted font-semibold">
             Requests · last 12h
           </p>
           <div className="mt-3 flex h-20 items-end gap-1.5">
@@ -347,7 +347,7 @@ function DomainsShowcase() {
               <span className="flex items-center gap-3">
                 <span
                   className={cn(
-                    "font-mono text-caption uppercase",
+                    "text-micro font-semibold",
                     state === "available" ? "text-success" : "text-fg-muted",
                   )}
                 >
@@ -370,7 +370,7 @@ function GrowShowcase() {
   return (
     <Frame>
       <div className="flex items-center gap-3 border-b border-line-subtle px-5 py-4">
-        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-violet-500 text-small font-bold text-white">
+        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-small font-bold text-white">
           C
         </span>
         <div>
@@ -419,7 +419,7 @@ function ManageShowcase() {
       <div className="p-5 sm:p-6">
         <div className="flex items-center justify-between">
           <p className="text-h4 text-fg">Migration</p>
-          <span className="rounded-full bg-primary-soft px-3 py-1 font-mono text-caption uppercase text-primary">
+          <span className="rounded-full bg-primary-soft px-3 py-1 text-micro text-primary font-semibold">
             4 of 5
           </span>
         </div>

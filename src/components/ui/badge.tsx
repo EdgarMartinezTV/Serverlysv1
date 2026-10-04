@@ -23,8 +23,13 @@ export function Badge({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5",
-        "font-mono text-caption uppercase",
+        "inline-flex items-center gap-1.5 rounded-full px-3 py-1",
+        /* Sans, sentence case, 600 — the reference's chip. This was
+           `text-micro font-semibold`, which reads as a technical label
+           rather than as a marketing chip. Uppercase mono is still the right
+           call for the eyebrow/overline pattern, which is NOT this component;
+           see the `text-caption` usages in section headers. */
+        "text-small font-semibold",
         tone === "brand" && "bg-primary-soft text-primary",
         tone === "success" && "bg-success-soft text-success",
         tone === "warning" && "bg-warning-soft text-warning",

@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { Container } from "@/components/ui/container";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
+import { PageHero } from "../resources/_components/page-hero";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { Button } from "@/components/ui/button";
 import { FaqSection } from "@/components/sections/faq";
@@ -111,44 +110,32 @@ export default function OurProcessPage() {
       />
       <JsonLd data={faqGraph(FAQS)} />
 
-      <section className="relative isolate overflow-hidden bg-canvas-abyss">
-        <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(60%_55%_at_25%_-5%,rgb(34_126_255/0.3)_0%,transparent_68%)]" />
-        <div aria-hidden="true" className="absolute inset-0 bg-grid-dark" />
-        <Container className="relative pb-16 pt-8 sm:pb-20 sm:pt-10">
-          <Breadcrumbs
-            trail={[
-              { name: "Home", href: "/" },
-              { name: "About", href: "/about" },
-              { name: "Our process" },
-            ]}
-            tone="dark"
-          />
-          <div className="mt-10 grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-            <div>
-              <span className="font-mono text-caption uppercase text-accent-on-dark">
-                Our process
-              </span>
-              <h1 className="mt-4 text-h1 text-white">
-                Five stages, and what each one owes you
-              </h1>
-              <p className="mt-5 max-w-xl text-body-lg text-fg-on-dark-secondary">
-                Every agency has a process diagram. The useful columns are the
-                two most of them leave out: what you actually receive at the end
-                of a stage, and what we need from you to start the next one.
-              </p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Button href={billing.sales} variant="inverse" size="lg">
-                  Start with a scope
-                </Button>
-                <Button href="/website-design" variant="ghost" size="lg">
-                  See design work
-                </Button>
-              </div>
-            </div>
-            <SitePreviewMock />
-          </div>
-        </Container>
-      </section>
+      <PageHero
+        trail={[
+          { name: "Home", href: "/" },
+          { name: "About", href: "/about" },
+          { name: "Our process" },
+        ]}
+        label="Our process"
+        title="Five stages, and what each one owes you"
+        lede={
+          <p>
+            Every agency has a process diagram. The useful columns are the two most of them
+            leave out: what you actually receive at the end of a stage, and what we need from
+            you to start the next one.
+          </p>
+        }
+        visual={<SitePreviewMock />}
+      >
+        <div className="mt-8 flex flex-wrap gap-3">
+          <Button href={billing.sales} size="lg">
+            Start with a scope
+          </Button>
+          <Button href="/website-design" variant="outline" size="lg">
+            See design work
+          </Button>
+        </div>
+      </PageHero>
 
       {/* The stages. Three columns per stage: what / you get / we need. */}
       <Section>
@@ -157,27 +144,27 @@ export default function OurProcessPage() {
           title="What happens, in order"
           lede="Durations are typical for a small business site. A store or an application is longer, and we say so at scope rather than discovering it in week six."
         />
-        <ol className="mt-14 flex flex-col gap-14">
+        <ol className="mt-12 flex flex-col gap-4">
           {STAGES.map((s) => (
-            <li key={s.n} className="border-t border-line pt-8">
+            <li key={s.n} className="rounded-3xl bg-canvas-secondary p-6 sm:p-8">
               <div className="grid gap-8 lg:grid-cols-[minmax(0,22rem)_1fr] lg:gap-16">
                 <div>
-                  <div className="flex items-baseline gap-4">
-                    <span aria-hidden="true" className="font-mono text-small text-fg-muted">
-                      {s.n}
+                  <div className="flex items-center gap-3">
+                    <span aria-hidden="true" className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-primary text-small font-semibold text-white">
+                      {Number(s.n)}
                     </span>
-                    <h3 className="text-h4 text-fg">{s.name}</h3>
+                    <h3 className="text-h3 font-medium tracking-[-0.02em] text-fg">{s.name}</h3>
                   </div>
-                  <p className="mt-2 pl-10 font-mono text-caption uppercase tracking-wider text-primary">
+                  <p className="mt-4 inline-flex rounded-md bg-brand-50 px-2.5 py-1 text-micro font-semibold text-primary">
                     {s.duration}
                   </p>
-                  <p className="mt-4 max-w-[52ch] pl-10 text-body text-fg-secondary lg:pl-0">
+                  <p className="mt-4 max-w-[52ch] text-body text-fg-secondary">
                     {s.what}
                   </p>
                 </div>
                 <div className="grid gap-8 sm:grid-cols-2">
                   <div>
-                    <h4 className="font-mono text-caption uppercase tracking-wider text-fg-muted">
+                    <h4 className="text-small font-semibold text-fg">
                       You receive
                     </h4>
                     <ul className="mt-3 flex flex-col gap-2.5">
@@ -190,7 +177,7 @@ export default function OurProcessPage() {
                     </ul>
                   </div>
                   <div>
-                    <h4 className="font-mono text-caption uppercase tracking-wider text-fg-muted">
+                    <h4 className="text-small font-semibold text-fg">
                       We need from you
                     </h4>
                     <ul className="mt-3 flex flex-col gap-2.5">
@@ -217,14 +204,14 @@ export default function OurProcessPage() {
           title="Four things we do that cost us money"
           lede="Anyone can list values. These are the ones with a price attached."
         />
-        <dl className="mt-10 grid gap-px overflow-hidden rounded-xl bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
+        <dl className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
             ["We say no to work", "If a template would serve you better than a custom build, we will tell you and lose the project."],
             ["We quote changes before doing them", "Slower conversations, no surprise invoices."],
             ["We build accessibility in", "It takes longer than adding it at the end, and adding it at the end does not work."],
             ["We hand over properly", "You get what you need to leave. That is what makes staying a choice."],
           ].map(([t, d]) => (
-            <div key={t} className="bg-canvas-dark p-6">
+            <div key={t} className="rounded-2xl bg-white/[0.06] p-6 ring-1 ring-white/10">
               <dt className="text-body font-semibold text-white">{t}</dt>
               <dd className="mt-2 text-small text-fg-on-dark-secondary">{d}</dd>
             </div>
@@ -232,8 +219,8 @@ export default function OurProcessPage() {
         </dl>
       </Section>
 
-      <Section surface="subtle" spacing="tight">
-        <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
+      <Section surface="light" spacing="tight">
+        <div className="flex flex-col items-start justify-between gap-6 rounded-2xl bg-brand-50 p-7 sm:flex-row sm:items-center sm:p-8">
           <div>
             <h2 className="text-h4 text-fg">Where this process gets used</h2>
             <p className="mt-2 max-w-2xl text-body text-fg-secondary">

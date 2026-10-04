@@ -11,11 +11,10 @@ import type { FaqItem } from "@/components/ref/faqs";
  * Plans are NOT here — the pricing band reads `src/data/pricing.ts`, which is
  * the source of truth for what we charge.
  *
- * ⚠ ONE THING IN HERE STILL NEEDS REPLACING before this reaches production:
- * `EMAIL` is the reference's section for "Hostinger Reach", their email
- * marketing tool, swapped to "Serverlys Reach" — which is not a product that
- * exists. Either build it, repoint it, or cut the section, the way `AGENT` was
- * repointed at ConvoAI and the customer-story carousel was cut.
+ * 2026-10-03: the page was rebuilt (see _components/sections.tsx) and no
+ * longer renders LAUNCH, AGENT, SPEED, EMAIL, SECURITY, MIGRATION, SUPPORT or
+ * BANNER — their copy carried reference figures this site cannot back up.
+ * HERO, PRICING_HEAD, WHY, FAQ_HEAD and FAQS are still read.
  *
  * `AGENT` and `SUPPORT` are no longer the reference's copy at all: both now
  * describe ConvoAI, which we do ship. See the note above AGENT.
@@ -50,7 +49,9 @@ export const PRICING_HEAD = {
   /** The reference's two footnotes, kept in its order. */
   fairUsage: { lead: "Unlimited features are subject to our ", link: "Fair Usage Policy", href: "/terms-of-service" },
   upfront:
-    "All plans are paid upfront. The monthly rate reflects the total plan price divided by the number of months in your plan.",
+    /* Was the reference's "paid upfront … divided by the number of months"
+       line: term framing, which this site may not use (see data/pricing.ts). */
+    "Every price is a monthly rate. Applicable taxes, and any setup fee shown on the plan, are added at checkout.",
   why: "Why this plan?",
 };
 

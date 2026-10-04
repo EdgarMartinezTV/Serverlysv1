@@ -36,31 +36,54 @@
 
      Every step holds hue 240 so nothing in the ramp drifts back toward azure.
      Ratios recomputed by validate-tokens.mjs on every build. */
-  --color-brand-50: #f0f0ff;
-  --color-brand-100: #e1e1ff;
-  --color-brand-200: #c6c6ff;
-  --color-brand-300: #a2a2ff;
-  --color-brand-400: #7d7dff; /* 5.75:1 on the dark band */
-  --color-brand-500: #4d4dff; /* 5.50:1 under white type */
+  /* ⚠ 50–500 ARE HUE-COMPENSATED (2026-10-03). Mixing #0000ff with white
+     at a fixed hue 240 is what made every tint read lavender/purple — blue
+     shifts toward violet as it lightens (the Abney effect), so a "pure" tint
+     is perceptually NOT the logo's blue. These steps lean toward hue ~225 as
+     they lighten, which is what keeps them looking like the logo. 600 and
+     darker are untouched; #0000ff is still the brand. Do not "fix" these back
+     to #f0f0ff/#e1e1ff/#c6c6ff — Edgar called that purple on sight. */
+  --color-brand-50: #f0f5ff;
+  --color-brand-100: #e0eaff;
+  --color-brand-200: #c2d5ff;
+  --color-brand-300: #94b4ff;
+  --color-brand-400: #5f8bff; /* on the dark band */
+  --color-brand-500: #1f55ff; /* under white type */
   --color-brand-600: #0000ff; /* the logo. 8.59:1 on white */
   --color-brand-700: #0000d4;
   --color-brand-800: #0000a8;
-  --color-brand-900: #0e0e80;
-  --color-brand-950: #08084d;
+  --color-brand-900: #0b2080;
+  --color-brand-950: #061a4d;
 
-  /* Ink — cool neutral ramp, blue-shifted so it sits with the brand rather
-     than fighting it. 950 is the dark-band canvas. */
-  --color-ink-50: #f7f8fa;
-  --color-ink-100: #eef0f4;
-  --color-ink-200: #dfe3ea;
-  --color-ink-300: #c4cbd7;
-  --color-ink-400: #8d97a8;
-  --color-ink-500: #616c80;
-  --color-ink-600: #4a5466;
-  --color-ink-700: #394252;
-  --color-ink-800: #232a36;
-  --color-ink-900: #141922;
-  --color-ink-950: #0b0e14;
+  /* Ink — NEAR-NEUTRAL grey, re-cut on the reference's ramp (2026-09-19).
+     950 is the dark-band canvas.
+
+     This ramp was previously blue-SHIFTED (#616c80, #0b0e14) so it would sit
+     with the hue-240 brand. The reference's neutrals are almost chroma-free
+     (#797980, #101011), and that difference is doing more work than any
+     single component: a blue-grey ramp makes every card edge, every divider
+     and the whole dark band read as a different material. Steps 200–400 and
+     700–950 are the reference's values verbatim.
+
+     TWO STEPS ARE DELIBERATELY NOT THEIRS, and both are text steps:
+       500  theirs is #797980, which is 4.32:1 on white — under AA for body
+            text. Darkened to #6f6f78 (4.98:1). We use 500 as `fg-muted`;
+            they do not use it as body copy on white.
+       600  #55555c, a hair off their #58585e, for the same reason applied to
+            `fg-secondary`.
+     Do not "finish the job" by restoring those two to the reference values —
+     validate-tokens.mjs fails the build on both. */
+  --color-ink-50: #f8f9fa;
+  --color-ink-100: #f1f1f3;
+  --color-ink-200: #dedee2;
+  --color-ink-300: #c6c6cc;
+  --color-ink-400: #9d9ea4;
+  --color-ink-500: #6f6f78; /* 4.98:1 on white — theirs fails AA here */
+  --color-ink-600: #55555c; /* 7.39:1 on white */
+  --color-ink-700: #36363b;
+  --color-ink-800: #222225;
+  --color-ink-900: #18181a;
+  --color-ink-950: #101011;
 
   /* Cyan — the technology accent. TEXT-SAFE ON DARK ONLY (10.7:1 on the dark
      band) and only 1.8:1 on white, so it is never body text on a light
@@ -69,24 +92,27 @@
   --color-cyan-400: #22d3ee;
   --color-cyan-500: #06b6d4;
 
-  /* Accents — used sparingly and with meaning, never decoratively.
-     Violet marks AI surfaces (ConvoAI); indigo marks automation. */
-  --color-violet-500: #8d59ff;
-  --color-violet-600: #7539f0;
-  --color-indigo-500: #5f50ff;
+  /* No violet or indigo primitives (removed 2026-10-03). The brand is the
+     logo's blue, green and black; a purple token in the theme is an
+     invitation to use it. Cyan above is the only cool accent. */
 
   /* Status ramps. The 500 steps are for FILLS and ICONS.
      The 600 steps are the text-safe steps — use those for any status TEXT. */
-  --color-green-50: #e8f8f1;
-  --color-green-500: #14a06b;
-  --color-green-600: #0f7f55; /* 5.02:1 on white */
-  --color-amber-50: #fdf5e7;
-  --color-amber-500: #c77a09;
-  --color-amber-600: #8e6c18; /* 4.87:1 on white */
-  --color-red-50: #fdeceb;
-  --color-red-300: #fca5a5; /* dark bands only — 1.9:1 on white, FAILS there */
-  --color-red-500: #d6413e;
-  --color-red-600: #c8383a; /* 5.14:1 on white */
+  /* Status ramps — the reference's values (2026-09-19), with one substitution.
+     Their success and danger 600 steps clear AA on white as-is. Their WARNING
+     600 (#c46c00) is 3.82:1 and fails, so the text step here is their 700
+     (#9b4600, 6.42:1) while the FILL step stays their 500. Fills carry no
+     contrast floor; text steps do. */
+  --color-green-50: #f1f9f3;
+  --color-green-500: #009e5b; /* fill */
+  --color-green-600: #007a49; /* 5.41:1 on white */
+  --color-amber-50: #fdf6e8;
+  --color-amber-500: #e69800; /* fill */
+  --color-amber-600: #9b4600; /* 6.42:1 on white — their 700, see above */
+  --color-red-50: #fff4f3;
+  --color-red-300: #ffb5b3; /* dark bands only — fails on white, as before */
+  --color-red-500: #e73a47; /* fill */
+  --color-red-600: #be1025; /* 6.38:1 on white */
 
   /* ==========================================================================
      TIER 2 — SEMANTIC TOKENS
@@ -131,7 +157,9 @@
   /* Dark band — the inverse surface set. */
   --color-canvas-dark: var(--color-ink-950);
   /* Deep hero grounds. White clears 9.5:1 on the lightest of these. */
-  --color-canvas-abyss: #0d0d3a;
+  /* Hue-compensated navy (2026-10-03): #0d0d3a is hue 240 and reads indigo
+     at this lightness; leaning toward 225 keeps it the logo's blue. */
+  --color-canvas-abyss: #061433;
   --color-canvas-deep: var(--color-brand-950);
   --color-surface-dark: var(--color-ink-900);
   --color-surface-dark-elevated: #12161f;
@@ -165,7 +193,7 @@
   --color-line-subtle: var(--color-ink-100);
   --color-line: var(--color-ink-200);
   --color-line-strong: var(--color-ink-300);
-  --color-line-input: #8092a7; /* 3.19:1 on white */
+  --color-line-input: #8a8a93; /* 3.42:1 on white — de-blued with the ink ramp */
   --color-line-on-dark: var(--color-ink-800);
   --color-line-on-dark-hover: var(--color-ink-700);
 
@@ -188,11 +216,18 @@
      Display/H1/H2 are fluid: min = the 375px value, max = the 1440px value.
      Body sizes are FIXED — body text must not grow with the viewport.
      ====================================================================== */
-  /* One family for headings and body, as the reference does. `--font-display`
-     is kept as a separate token so a display face can return later without
-     touching every call site. */
+  /* TWO families, matching the reference (2026-09-19). It sets DM Sans on
+     headings and UI, and Noto Sans on body copy — the note that used to sit
+     here ("one family for headings and body, as the reference does") was
+     measured off a single band and was wrong about the body face.
+
+     Noto Sans has a larger x-height and slightly wider letterforms than DM
+     Sans at the same px, so body copy reads a touch bigger without any size
+     token moving. That is the intended effect; do not compensate by dropping
+     --text-body. */
   --font-display: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-noto-sans), var(--font-dm-sans), ui-sans-serif, system-ui,
+    sans-serif;
   --font-mono:
     var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 
@@ -304,28 +339,49 @@
   --container-nav: 2230px; /* header bar — near full-bleed by design */
 
   /* ==========================================================================
-     RADIUS — restrained. Large radii read consumer-app, not infrastructure.
+     RADIUS — matched to the reference's scale (2026-09-19).
+     Previously "restrained", on the reasoning that large radii read
+     consumer-app rather than infrastructure. That call was DELIBERATELY
+     REVERSED: the reference is the target look and it is materially rounder
+     at every step. Buttons 8→12 and cards 12→16 are the two that carry most
+     of the visual difference; do not "restore" them.
+
+     The semantic job of each step is unchanged, so no call site moves — only
+     the value each step resolves to.
      ====================================================================== */
   --radius-xs: 4px; /* focus rings, tiny chips     */
-  --radius-sm: 6px; /* inputs, small controls      */
-  --radius-md: 8px; /* buttons                     */
-  --radius-lg: 12px; /* cards — the default         */
-  --radius-xl: 16px; /* large panels, mega menu     */
-  --radius-2xl: 20px; /* hero media                  */
+  --radius-sm: 8px; /* inputs, small controls      */
+  --radius-md: 12px; /* buttons                     */
+  --radius-lg: 16px; /* cards — the default         */
+  --radius-xl: 24px; /* large panels, mega menu     */
+  --radius-2xl: 32px; /* hero media                  */
+  --radius-full: 999px; /* pills, avatars, chips       */
 
   /* ==========================================================================
-     ELEVATION
-     Layered, low-alpha, cool-tinted. Never pure black — it reads muddy over
-     the cool neutral ramp. Each level has a stated job.
+     ELEVATION — re-cut on the reference's scale (2026-09-19).
+
+     The reference ships THREE shadows, each single-layer, pure-black alpha,
+     with no negative spread:
+         1  0 2px  6px 0 rgb(0 0 0 / 0.10)
+         2  0 8px 24px 0 rgb(0 0 0 / 0.15)
+         3  0 8px 28px 0 rgb(0 0 0 / 0.25)
+
+     Ours were two-layer and cool-tinted (rgb(11 14 20)) on the reasoning that
+     pure black reads muddy over a cool ramp. That was true of the OLD
+     blue-tinted ink; against the near-neutral ramp below it no longer is, and
+     the tint is one of the things that made surfaces read as "not quite" the
+     reference.
+
+     Five steps are KEPT rather than collapsed to three — e1..e5 are used in
+     64 files and renaming them buys nothing. e2/e4/e5 are the reference's
+     three; e1 and e3 are interpolated for the steps our components already
+     distinguish.
      ====================================================================== */
-  --shadow-e1: 0 1px 2px 0 rgb(11 14 20 / 0.05);
-  --shadow-e2: 0 1px 3px 0 rgb(11 14 20 / 0.06), 0 1px 2px -1px rgb(11 14 20 / 0.07);
-  --shadow-e3:
-    0 4px 12px -2px rgb(11 14 20 / 0.08), 0 2px 4px -2px rgb(11 14 20 / 0.05);
-  --shadow-e4:
-    0 12px 28px -6px rgb(11 14 20 / 0.12), 0 4px 10px -4px rgb(11 14 20 / 0.06);
-  --shadow-e5:
-    0 24px 56px -12px rgb(11 14 20 / 0.18), 0 8px 20px -8px rgb(11 14 20 / 0.08);
+  --shadow-e1: 0 2px 6px 0 rgb(0 0 0 / 0.06);
+  --shadow-e2: 0 2px 6px 0 rgb(0 0 0 / 0.1);
+  --shadow-e3: 0 8px 24px 0 rgb(0 0 0 / 0.1);
+  --shadow-e4: 0 8px 24px 0 rgb(0 0 0 / 0.15);
+  --shadow-e5: 0 8px 28px 0 rgb(0 0 0 / 0.25);
 
   /* ==========================================================================
      MOTION
@@ -465,7 +521,7 @@
   /*
     Brand light source for the dark hero.
 
-    ⚠ THE SECOND STOP WAS `rgb(141 89 255 / 0.16)` — violet-500 — and is now
+    ⚠ THE SECOND STOP WAS `rgb(141 89 255 / 0.16)` (a violet) — and is now
     cyan, the accent globals.css already nominates for dark grounds. Same
     substitution and same reasoning as the three dark bands in
     `components/home`; see the note in `ai-band.tsx`.
@@ -1027,5 +1083,67 @@
 
   [data-header-hidden] [data-stage-rail] {
     transform: translateY(-4.5rem);
+  }
+}
+
+/*
+ * ── Display headings (2026-10-03 homepage pass) ─────────────────────────────
+ * One family, one weight (500), tight tracking — the headline voice of the
+ * homepage. Three steps so every section picks from the same ladder instead
+ * of hand-writing its own clamp. Tracking stays at or above -0.04em.
+ */
+@utility display-xl {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.5rem, 1.4rem + 4.4vw, 5rem);
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+@utility display-lg {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.125rem, 1.45rem + 2.6vw, 3.5rem);
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+@utility display-md {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.75rem, 1.35rem + 1.5vw, 2.5rem);
+  line-height: 1.14;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+/* Co-worker bento: the demo of a newly opened plate rises in. */
+@keyframes coworker-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Domain search dropdown: a short rise-in on open. */
+@keyframes ddIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Automations hero: marching dashes on the AI agent's sub-ports while it thinks. */
+@keyframes dash {
+  to {
+    stroke-dashoffset: -16;
   }
 }

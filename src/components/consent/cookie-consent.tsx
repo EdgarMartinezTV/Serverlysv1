@@ -140,20 +140,19 @@ export function CookieConsent() {
   return (
     <div
       data-cookie-consent=""
-      className="fixed inset-x-0 bottom-0 z-50 p-3 sm:p-4"
+      className="fixed inset-x-0 bottom-0 z-50 p-3 sm:right-auto sm:bottom-4 sm:left-4 sm:w-[26rem] sm:p-0"
       role="region"
       aria-label="Cookie notice"
     >
-      <div className="mx-auto w-full max-w-desktop overflow-hidden rounded-2xl bg-canvas shadow-e5 ring-1 ring-line">
+      <div className="w-full overflow-hidden rounded-2xl bg-canvas shadow-e5 ring-1 ring-line">
         {!settingsOpen ? (
-          <div className="flex flex-col gap-5 p-5 sm:p-6 lg:flex-row lg:items-center lg:gap-8">
+          <div className="flex flex-col gap-4 p-5">
             <div className="min-w-0">
-              <h2 className="text-h4 text-fg">We care about your privacy</h2>
-              <p className="mt-2 text-small text-fg-secondary">
-                This site stores only what it needs to work — remembering that you
-                closed a notice, and holding your domain shortlist. It sets no
-                advertising or analytics cookies, and there are no third-party
-                trackers on it. If that ever changes, this panel is where you decide.{" "}
+              <h2 className="text-body font-semibold text-fg">Your privacy</h2>
+              <p className="mt-1.5 text-small text-fg-secondary">
+                We store only what the site needs to work, like a notice you closed
+                or your domain shortlist. No advertising or analytics cookies, and no
+                third-party trackers.{" "}
                 <Link
                   href="/privacy-policy#cookies"
                   className="font-medium text-primary underline underline-offset-2 hover:text-primary-hover"
@@ -163,12 +162,12 @@ export function CookieConsent() {
               </p>
             </div>
 
-            <div className="flex shrink-0 flex-col gap-2.5 sm:flex-row lg:items-center">
+            <div className="grid grid-cols-2 gap-2">
               {/* Equal weight — see the note above. */}
-              <Button onClick={() => decide(ACCEPT_ALL)} variant="primary">
+              <Button onClick={() => decide(ACCEPT_ALL)} variant="primary" size="sm">
                 Accept all
               </Button>
-              <Button onClick={() => decide(DEFAULT_CONSENT)} variant="outline">
+              <Button onClick={() => decide(DEFAULT_CONSENT)} variant="outline" size="sm">
                 Reject all
               </Button>
               {/* `Button` is a plain function component and forwards no ref,
@@ -178,6 +177,8 @@ export function CookieConsent() {
                 data-consent-settings-trigger=""
                 onClick={() => setSettingsOpen(true)}
                 variant="ghost"
+                size="sm"
+                className="col-span-2"
               >
                 Cookie settings
               </Button>
@@ -226,7 +227,7 @@ export function CookieConsent() {
                             {copy.label}
                           </span>
                           {copy.locked && (
-                            <span className="rounded-full bg-canvas-inset px-2 py-0.5 font-mono text-caption uppercase text-fg-secondary">
+                            <span className="rounded-full bg-canvas-inset px-2 py-0.5 text-micro text-fg-secondary font-semibold">
                               Always on
                             </span>
                           )}

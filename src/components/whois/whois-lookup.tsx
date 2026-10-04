@@ -1,9 +1,8 @@
 "use client";
 
-import { useId, useRef, useState } from "react";
-import { Field } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
+import { useEffect, useId, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Spinner } from "@/components/ui/spinner";
 import { billing } from "@/data/company";
 import type { WhoisRecord } from "@/lib/domains/whois";
@@ -55,6 +54,9 @@ export function WhoisLookup() {
   const [invalid, setInvalid] = useState<string | null>(null);
   const inFlight = useRef<AbortController | null>(null);
   const regionId = useId();
+  const inputId = useId();
+  const descId = `${inputId}-desc`;
+  const errId = `${inputId}-err`;
 
   async function run(raw: string) {
     const query = raw.trim().toLowerCase();
@@ -67,6 +69,7 @@ export function WhoisLookup() {
       return;
     }
     setInvalid(null);
+    window.history.replaceState(null, "", `?domain=${encodeURIComponent(query)}`);
 
     inFlight.current?.abort();
     const controller = new AbortController();
@@ -94,53 +97,103 @@ export function WhoisLookup() {
     }
   }
 
+  /* Deep links: /whois-lookup?domain=example.com opens with that lookup run,
+     and every lookup writes its domain back to the URL so it can be shared. */
+  useEffect(() => {
+    const d = new URLSearchParams(window.location.search).get("domain");
+    if (!d) return;
+    // Deferred a tick so the state updates happen in a callback, not the effect body.
+    const t = setTimeout(() => {
+      setValue(d);
+      void run(d);
+    }, 0);
+    return () => clearTimeout(t);
+  }, []);
+
+  const busy = state.kind === "loading";
+
   return (
     <div>
+      {/* Same pill as the domain search (2026-10-03). */}
       <form
         onSubmit={(e) => {
           e.preventDefault();
           void run(value);
         }}
-        className="flex flex-col gap-4 sm:flex-row sm:items-end"
+        className="flex flex-col gap-3"
       >
-        <Field
-          name="whois"
-          label="Domain name"
-          description="Any registered domain — yours or someone else's."
-          error={invalid ?? undefined}
-          className="flex-1"
+        <label htmlFor={`${inputId}`} className="sr-only">
+          Domain name
+        </label>
+        <div
+          className={cn(
+            "flex h-16 items-center gap-2 rounded-full bg-white pr-2 pl-5 shadow-[0_10px_40px_rgb(0_0_60/0.25)] ring-2 transition-[box-shadow] duration-200",
+            invalid
+              ? "ring-error"
+              : "ring-brand-300 focus-within:shadow-[0_0_0_6px_rgb(31_85_255/0.25),0_10px_40px_rgb(0_0_60/0.25)] focus-within:ring-primary",
+          )}
         >
-          <Input
+          <svg viewBox="0 0 20 20" aria-hidden="true" className="size-5 shrink-0 text-fg">
+            <circle cx="9" cy="9" r="6" fill="none" stroke="currentColor" strokeWidth="1.7" />
+            <path d="m13.5 13.5 3.5 3.5" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+          </svg>
+          <input
+            id={inputId}
             name="whois"
+            type="text"
             value={value}
-            onChange={(e) => setValue(e.target.value)}
-            placeholder="serverlys.com"
+            onChange={(e) => {
+              setValue(e.target.value);
+              if (invalid) setInvalid(null);
+            }}
+            placeholder="Look up any domain, e.g. serverlys.com"
             autoComplete="off"
             autoCapitalize="none"
             spellCheck={false}
             inputMode="url"
-            hasDescription
-            invalid={Boolean(invalid)}
+            enterKeyHint="search"
+            aria-invalid={invalid ? true : undefined}
+            aria-describedby={invalid ? `${descId} ${errId}` : descId}
+            className="h-12 min-w-0 flex-1 bg-transparent text-body-lg text-fg outline-none placeholder:text-fg-muted"
           />
-        </Field>
-        <Button
-          type="submit"
-          size="lg"
-          className="w-full sm:w-auto"
-          aria-busy={state.kind === "loading" || undefined}
-        >
-          {state.kind === "loading" ? "Looking up…" : "Look up"}
-        </Button>
+          {value && (
+            <button
+              type="button"
+              onClick={() => setValue("")}
+              className="inline-flex size-9 shrink-0 items-center justify-center rounded-full text-fg-muted transition-colors hover:bg-canvas-secondary hover:text-fg focus-visible:outline-2 focus-visible:outline-primary"
+            >
+              <svg viewBox="0 0 16 16" aria-hidden="true" className="size-4">
+                <path d="m4 4 8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+              </svg>
+              <span className="sr-only">Clear</span>
+            </button>
+          )}
+          <button
+            type="submit"
+            aria-busy={busy || undefined}
+            disabled={busy}
+            className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-primary px-5 text-body font-semibold text-white shadow-e2 transition-colors hover:bg-primary-hover active:scale-[0.98] disabled:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          >
+            {busy ? <Spinner size="sm" className="text-white" /> : null}
+            {busy ? "Looking up…" : "Look up"}
+          </button>
+        </div>
+        <p id={descId} className="text-center text-small text-fg-on-dark-secondary">
+          Any registered domain — yours or someone else&apos;s.
+        </p>
+        <p id={errId} role="alert" className={cn("rounded-lg bg-white/95 px-3 py-2 text-small text-error", !invalid && "hidden")}>
+          {invalid}
+        </p>
       </form>
 
       <div
         id={regionId}
         aria-live="polite"
         aria-busy={state.kind === "loading"}
-        className="mt-8"
+        className={cn("mt-6", state.kind !== "idle" && "rounded-3xl bg-white p-4 text-left shadow-[0_24px_60px_rgb(0_0_60/0.25)] sm:p-6")}
       >
         {state.kind === "idle" && (
-          <p className="text-small text-fg-muted">
+          <p className="text-center text-small text-fg-on-dark-secondary">
             Results come straight from the domain registry over RDAP, the
             protocol that replaced WHOIS. Nothing is cached.
           </p>
@@ -181,7 +234,7 @@ function Record({ record }: { record: WhoisRecord }) {
   if (record.status === "available") {
     return (
       <div className="rounded-xl bg-success-soft p-6 ring-1 ring-inset ring-success/25 sm:p-8">
-        <p className="font-mono text-caption uppercase tracking-wider text-success">
+        <p className="text-micro text-success font-semibold">
           Not registered
         </p>
         <h3 className="mt-2 text-h4 text-fg">
@@ -207,7 +260,7 @@ function Record({ record }: { record: WhoisRecord }) {
   if (record.status === "unsupported" || record.status === "error") {
     return (
       <div className="rounded-xl bg-canvas-secondary p-6 ring-1 ring-inset ring-line sm:p-8">
-        <p className="font-mono text-caption uppercase tracking-wider text-fg-muted">
+        <p className="text-micro text-fg-muted font-semibold">
           No answer
         </p>
         <h3 className="mt-2 text-h4 text-fg">We cannot tell you about this one</h3>
@@ -256,7 +309,7 @@ function Record({ record }: { record: WhoisRecord }) {
     <div className="overflow-hidden rounded-xl ring-1 ring-inset ring-line">
       <div className="flex flex-wrap items-center justify-between gap-3 bg-canvas-secondary px-6 py-4">
         <div>
-          <p className="font-mono text-caption uppercase tracking-wider text-fg-muted">
+          <p className="text-micro text-fg-muted font-semibold">
             Registered
           </p>
           <h3 className="mt-1 font-mono text-body-lg font-semibold text-fg">
@@ -269,9 +322,12 @@ function Record({ record }: { record: WhoisRecord }) {
       </div>
 
       <dl className="grid gap-px bg-line sm:grid-cols-2">
-        {rows.map(([label, value]) => (
-          <div key={label} className="bg-canvas px-6 py-4">
-            <dt className="font-mono text-caption uppercase tracking-wider text-fg-muted">
+        {rows.map(([label, value], i) => (
+          <div
+            key={label}
+            className={cn("bg-canvas px-6 py-4", rows.length % 2 === 1 && i === rows.length - 1 && "sm:col-span-2")}
+          >
+            <dt className="text-micro text-fg-muted font-semibold">
               {label}
             </dt>
             <dd className="mt-1 text-body text-fg">{value}</dd>
@@ -281,7 +337,7 @@ function Record({ record }: { record: WhoisRecord }) {
 
       {record.nameservers && record.nameservers.length > 0 && (
         <div className="border-t border-line px-6 py-4">
-          <p className="font-mono text-caption uppercase tracking-wider text-fg-muted">
+          <p className="text-micro text-fg-muted font-semibold">
             Nameservers
           </p>
           <ul className="mt-2 flex flex-wrap gap-x-6 gap-y-1">
@@ -296,7 +352,7 @@ function Record({ record }: { record: WhoisRecord }) {
 
       {record.epp && record.epp.length > 0 && (
         <div className="border-t border-line px-6 py-4">
-          <p className="font-mono text-caption uppercase tracking-wider text-fg-muted">
+          <p className="text-micro text-fg-muted font-semibold">
             Status codes
           </p>
           <ul className="mt-2 flex flex-wrap gap-2">

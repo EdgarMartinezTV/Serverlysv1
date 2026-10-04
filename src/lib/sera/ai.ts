@@ -7,7 +7,7 @@ import { decide, type Surface } from "./policy";
 import { PhaseTracker } from "./phases";
 import { errorCategory, log, newRequestId } from "./observability";
 import { trimHistory, touch } from "./session";
-import { actionOfferFor, missingRequired, toView, workflowForIntent } from "./workflows";
+import { actionOfferFor, mergeIntoWorkflow, missingRequired, toView, workflowForIntent } from "./workflows";
 import type { NavTarget } from "./navigation";
 import type { Conversation, PageContext, SeraStreamEvent } from "./types";
 
@@ -125,6 +125,33 @@ export async function runTurn({
   touch(conversation);
 
   /*
+   * ⚠ DETERMINISTIC CAPTURE OF A DIRECT ANSWER (2026-10-03).
+   *
+   * Saving used to depend entirely on the model calling `record_details`, and
+   * it sometimes didn't ("I have your domain as …" with no call), so the
+   * record — and the progress bar, the next question and the tappable answer
+   * card built from it — ran one turn behind. When the message is a clean
+   * answer to the field being asked, save it before the model runs.
+   *
+   * Only for shapes that cannot be mistaken for chat: an exact choice option,
+   * or a value that validates as a domain, email, phone or URL. Free text
+   * (names, descriptions) still goes through the model, because "what does
+   * it cost?" would otherwise be saved as somebody's business name.
+   */
+  const pending = conversation.workflow;
+  if (pending && pending.stage === "COLLECTING" && message.length <= 120) {
+    const field = missingRequired(pending)[0];
+    const answer = message.trim();
+    const exactChoice =
+      field?.kind === "choice" && field.options?.some((o) => o.toLowerCase() === answer.toLowerCase());
+    const shaped = field && ["domain", "email", "phone", "url"].includes(field.kind) && !/\s/.test(answer);
+    if (field && (exactChoice || shaped)) {
+      const outcome = mergeIntoWorkflow(pending, { [field.key]: answer });
+      if (outcome.accepted.length) log.info("direct_answer_captured", { request, conversation: conversation.id, workflow: pending.id });
+    }
+  }
+
+  /*
    * The context block is sent but NOT stored. It describes the visitor's
    * current page and the live state of their request, all of which changes
    * every turn — persisting it would leave the model reading a stale snapshot
@@ -140,6 +167,8 @@ export async function runTurn({
 
   const emittedIntent = conversation.intent;
   let sawAnyText = false;
+  /** Text already streamed this turn, one entry per model round. */
+  const spokenThisTurn: string[] = [];
   /*
    * ONE TAPPABLE THING PER TURN — a navigation countdown OR an action button,
    * never both and never two of either.
@@ -214,10 +243,37 @@ export async function runTurn({
 
       let text = "";
       let output: unknown[] = [];
+      /*
+       * ⚠ NO REPEATS ACROSS ROUNDS (2026-10-03). After a tool call the model
+       * often restates the sentence it already streamed ("Who hosts the
+       * site?Who hosts the site? …"). While this round's text is still a
+       * prefix of something already said this turn, hold it; the moment it
+       * diverges, emit only the new part.
+       */
+      let held = "";
+      let echoing = spokenThisTurn.length > 0;
 
       for await (const event of stream) {
         if (event.type === "response.output_text.delta") {
           text += event.delta;
+          if (echoing) {
+            held += event.delta;
+            const trimmed = held.trimStart();
+            /* Still a restatement of something already shown (anywhere in
+               it, not only its start)? Keep holding. */
+            if (spokenThisTurn.some((said) => said.includes(trimmed))) continue;
+            echoing = false;
+            const before = trimmed.slice(0, trimmed.length - event.delta.length);
+            const repeated = before.length > 0 && spokenThisTurn.some((said) => said.includes(before));
+            /* New material: continue after the repeated part, or open a new
+               paragraph instead of gluing on ("…Serverlys?Who hosts…"). */
+            const fresh = repeated ? event.delta : `\n\n${trimmed}`;
+            if (!fresh) continue;
+            if (!sawAnyText) phases.to("RESPONDING");
+            sawAnyText = true;
+            emit({ t: "delta", v: fresh });
+            continue;
+          }
           if (!sawAnyText) phases.to("RESPONDING");
           sawAnyText = true;
           emit({ t: "delta", v: event.delta });
@@ -231,6 +287,8 @@ export async function runTurn({
           });
         }
       }
+
+      if (text) spokenThisTurn.push(text);
 
       /*
        * Output items go back verbatim — assistant messages, reasoning items and

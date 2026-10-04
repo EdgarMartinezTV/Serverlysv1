@@ -16,7 +16,13 @@ import { Check } from "@/components/ref/kit";
 /* ── shared pieces ──────────────────────────────────────────────────────── */
 
 /** The dark, diagonally banded stage the comparison panels float on. */
-function Stage({ children, className }: { children: React.ReactNode; className?: string }) {
+function Stage({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
     <div
       aria-hidden
@@ -34,7 +40,13 @@ function Stage({ children, className }: { children: React.ReactNode; className?:
 }
 
 /** A floating white readout panel. */
-function Readout({ children, className }: { children: React.ReactNode; className?: string }) {
+function Readout({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
     <div
       className={cn(
@@ -69,7 +81,14 @@ function Gauge({
     <div className="flex flex-col items-center gap-1.5">
       <div className="relative size-[68px]">
         <svg viewBox="0 0 68 68" className="size-full -rotate-90">
-          <circle cx="34" cy="34" r={r} fill="none" strokeWidth="6" className="stroke-ink-200" />
+          <circle
+            cx="34"
+            cy="34"
+            r={r}
+            fill="none"
+            strokeWidth="6"
+            className="stroke-ink-200"
+          />
           <circle
             cx="34"
             cy="34"
@@ -104,7 +123,11 @@ function Spark({ seed, className }: { seed: number; className?: string }) {
     return `${(i / 21) * 88},${y.toFixed(1)}`;
   }).join(" ");
   return (
-    <svg viewBox="0 0 88 22" className={cn("h-5 w-full", className)} preserveAspectRatio="none">
+    <svg
+      viewBox="0 0 88 22"
+      className={cn("h-5 w-full", className)}
+      preserveAspectRatio="none"
+    >
       <polyline
         points={pts}
         fill="none"
@@ -151,11 +174,23 @@ export function StatusPanel({ className }: { className?: string }) {
           <ActiveDot />
           Active
         </p>
-        <svg viewBox="0 0 100 34" className="mt-2 h-[52px] w-full" preserveAspectRatio="none">
+        <svg
+          viewBox="0 0 100 34"
+          className="mt-2 h-[52px] w-full"
+          preserveAspectRatio="none"
+        >
           <defs>
             <linearGradient id="ch-uptime" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="var(--color-success-fill)" stopOpacity="0.45" />
-              <stop offset="100%" stopColor="var(--color-success-fill)" stopOpacity="0.05" />
+              <stop
+                offset="0%"
+                stopColor="var(--color-success-fill)"
+                stopOpacity="0.45"
+              />
+              <stop
+                offset="100%"
+                stopColor="var(--color-success-fill)"
+                stopOpacity="0.05"
+              />
             </linearGradient>
           </defs>
           <path
@@ -190,7 +225,9 @@ export function ResourcePanel({ className }: { className?: string }) {
           <div key={row.k} className="mt-3 flex items-center gap-3">
             <span className="w-[62px] shrink-0">
               <span className="block text-ui leading-3 text-fg-secondary">{row.k}</span>
-              <span className="block text-[13px] leading-5 font-semibold text-fg">{row.v}</span>
+              <span className="block text-[13px] leading-5 font-semibold text-fg">
+                {row.v}
+              </span>
             </span>
             <Spark seed={row.seed} className="flex-1" />
           </div>
@@ -205,7 +242,10 @@ export function ResourcePanel({ className }: { className?: string }) {
 /** "Your data, protected" — two security rows on a lavender field. */
 export function SecurityPanel({ className }: { className?: string }) {
   return (
-    <div aria-hidden className={cn("flex flex-col justify-center gap-3 px-10", className)}>
+    <div
+      aria-hidden
+      className={cn("flex flex-col justify-center gap-3 px-10", className)}
+    >
       {[
         { label: "SSL certificate", strong: true },
         { label: "Firewall protection", strong: false },
@@ -283,7 +323,12 @@ export function StorePanel({ className }: { className?: string }) {
           <span className="flex items-center gap-2 text-fg">
             <svg viewBox="0 0 20 20" fill="none" className="size-3.5">
               <circle cx="9" cy="9" r="5.4" stroke="currentColor" strokeWidth="1.6" />
-              <path d="M13.2 13.2l3.3 3.3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+              <path
+                d="M13.2 13.2l3.3 3.3"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+              />
             </svg>
             <svg viewBox="0 0 20 20" fill="none" className="size-3.5">
               <path
@@ -314,10 +359,15 @@ export function StorePanel({ className }: { className?: string }) {
               </span>
             ))}
           </div>
-          <p className="mt-3 text-ui leading-3 font-medium text-fg-secondary">Products</p>
+          <p className="mt-3 text-ui leading-3 font-medium text-fg-secondary">
+            Products
+          </p>
           <div className="mt-1.5 grid grid-cols-3 gap-1.5">
             {[0, 1, 2].map((i) => (
-              <span key={i} className="block h-14 rounded-md bg-gradient-to-b from-brand-100 to-brand-200" />
+              <span
+                key={i}
+                className="block h-14 rounded-md bg-gradient-to-b from-brand-100 to-brand-200"
+              />
             ))}
           </div>
         </div>
@@ -331,14 +381,21 @@ export function StorePanel({ className }: { className?: string }) {
           {/* A positive delta reads as success, not as the dark-band accent. */}
           <span className="text-ui leading-4 font-medium text-success">+32%</span>
         </p>
-        <svg viewBox="0 0 100 28" className="mt-1 h-7 w-full" preserveAspectRatio="none">
+        <svg
+          viewBox="0 0 100 28"
+          className="mt-1 h-7 w-full"
+          preserveAspectRatio="none"
+        >
           <defs>
             <linearGradient id="ch-views" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0.28" />
               <stop offset="100%" stopColor="var(--color-primary)" stopOpacity="0.02" />
             </linearGradient>
           </defs>
-          <path d="M0 24 L18 20 L34 22 L52 13 L70 15 L86 7 L100 4 L100 28 L0 28 Z" fill="url(#ch-views)" />
+          <path
+            d="M0 24 L18 20 L34 22 L52 13 L70 15 L86 7 L100 4 L100 28 L0 28 Z"
+            fill="url(#ch-views)"
+          />
           <path
             d="M0 24 L18 20 L34 22 L52 13 L70 15 L86 7 L100 4"
             fill="none"
@@ -352,7 +409,11 @@ export function StorePanel({ className }: { className?: string }) {
 }
 
 /** Icon chip used by the three "what is cloud hosting" cards. */
-export function IconChip({ icon: Icon }: { icon: (p: { className?: string }) => React.ReactNode }) {
+export function IconChip({
+  icon: Icon,
+}: {
+  icon: (p: { className?: string }) => React.ReactNode;
+}) {
   return (
     <span className="grid size-10 place-items-center rounded-md bg-black/5 text-fg">
       <Icon className="size-6" />
@@ -409,14 +470,19 @@ export function MigrationPanel({ className }: { className?: string }) {
         </svg>
       </span>
       <div className="absolute top-8 right-24 w-[300px] rounded-xl bg-white/95 p-4 shadow-e5">
-        <p className="text-[13px] leading-5 font-semibold text-fg">Migration in progress</p>
+        <p className="text-[13px] leading-5 font-semibold text-fg">
+          Migration in progress
+        </p>
         <p className="text-ui leading-4 text-fg-secondary">2.3GB out of 3GB</p>
         <span className="mt-2 block h-1.5 overflow-hidden rounded-full bg-ink-100">
           <span className="block h-full w-[76%] rounded-full bg-primary" />
         </span>
         <div className="mt-3 grid grid-cols-2 gap-y-1.5">
           {["Products", "Orders", "Media", "Customers"].map((k) => (
-            <span key={k} className="flex items-center gap-1.5 text-ui leading-4 text-fg">
+            <span
+              key={k}
+              className="flex items-center gap-1.5 text-ui leading-4 text-fg"
+            >
               <Check className="size-3 text-primary" />
               {k}
             </span>

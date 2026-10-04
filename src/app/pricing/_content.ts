@@ -32,9 +32,9 @@ export const HERO = {
 
 /** The category pills. Each maps to something we actually price. */
 export const TABS = [
-  { id: "cloud", label: "Cloud hosting", icon: "cloud" as const },
-  { id: "wordpress", label: "WordPress hosting", icon: "wordpress" as const },
-  { id: "ecommerce", label: "Ecommerce hosting", icon: "store" as const },
+  { id: "cloud", label: "Cloud hosting", icon: "server" as const },
+  { id: "wordpress", label: "WordPress hosting", icon: "layout" as const },
+  { id: "ecommerce", label: "Ecommerce hosting", icon: "cart" as const },
   { id: "domains", label: "Domains", icon: "globe" as const },
 ] as const;
 

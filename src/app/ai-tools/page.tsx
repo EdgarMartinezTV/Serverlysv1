@@ -99,26 +99,26 @@ export default function AiToolsPage() {
       />
       <JsonLd data={faqGraph(FAQS)} />
 
-      <section className="relative isolate overflow-hidden bg-canvas-abyss">
-        <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(60%_55%_at_25%_-5%,rgb(34_126_255/0.3)_0%,transparent_68%)]" />
-        <div aria-hidden="true" className="absolute inset-0 bg-grid-dark" />
-        <Container className="relative pb-16 pt-8 sm:pb-20 sm:pt-10">
+      {/* 2026-10-03: light hero, pill label, display title (was dark navy + mono). */}
+      <section className="relative isolate overflow-hidden bg-canvas">
+        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[radial-gradient(55%_60%_at_80%_10%,rgb(0_0_255/0.06)_0%,transparent_70%)]" />
+        <Container width="wide" className="relative pb-16 pt-6 sm:pb-20 lg:pt-10">
           <Breadcrumbs
             trail={[
               { name: "Home", href: "/" },
               { name: "AI agents", href: "/ai-agents" },
               { name: "AI tools" },
             ]}
-            tone="dark"
+            tone="light"
           />
-          <div className="mt-10 max-w-2xl">
-            <span className="font-mono text-caption uppercase text-accent-on-dark">
+          <div className="mx-auto mt-10 max-w-3xl text-center">
+            <span className="inline-flex rounded-md bg-brand-50 px-2.5 py-1 text-small font-medium text-primary">
               AI tools
             </span>
-            <h1 className="mt-4 text-h1 text-white">
+            <h1 className="display-lg mt-5 text-fg">
               Start with the symptom, not the technology
             </h1>
-            <p className="mt-5 text-body-lg text-fg-on-dark-secondary">
+            <p className="mx-auto mt-5 max-w-2xl text-body-lg text-fg-secondary">
               Three tools, three different problems. Find the one that describes
               your week — and read the last section, which is about when the
               answer is none of them.
@@ -136,13 +136,13 @@ export default function AiToolsPage() {
             }`}
           >
             <div>
-              <p className="flex items-center gap-2.5 font-mono text-caption uppercase tracking-wider text-primary">
-                <span aria-hidden="true">
+              <p className="flex items-center gap-2.5 text-small font-semibold text-fg">
+                <span aria-hidden="true" className="inline-flex size-9 items-center justify-center rounded-lg bg-brand-50 text-primary">
                   <NavIcon name={tool.icon} />
                 </span>
                 {tool.name}
               </p>
-              <h2 className="mt-4 text-h3 text-fg">{tool.symptom}</h2>
+              <h2 className="display-md mt-5 text-fg">{tool.symptom}</h2>
               <p className="mt-4 max-w-[58ch] text-body-lg text-fg-secondary">{tool.does}</p>
               <ul className="mt-6 flex flex-col gap-2.5">
                 {tool.good.map((g) => (
@@ -156,13 +156,22 @@ export default function AiToolsPage() {
                 How {tool.name} works
               </Button>
             </div>
-            <div>{tool.visual}</div>
+            {/* Tiled brand stage, same framing as ShowcaseSplit. */}
+            <div className="relative isolate overflow-hidden rounded-3xl bg-brand-50 p-5 sm:p-8">
+              <div aria-hidden="true" className="absolute inset-0 -z-10 grid grid-cols-4 grid-rows-3">
+                {Array.from({ length: 12 }, (_, k) => (
+                  <span key={k} className={[1, 4, 6, 11].includes(k) ? "bg-brand-100" : ""} />
+                ))}
+              </div>
+              <div className="flex justify-center drop-shadow-[0_24px_40px_rgb(0_0_60/0.16)]">{tool.visual}</div>
+            </div>
           </div>
         </Section>
       ))}
 
       {/* Where AI is the wrong answer. The section that makes the rest credible. */}
-      <Section surface="dark">
+      <Section surface="dark" className="relative isolate overflow-hidden !bg-canvas-abyss">
+        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[radial-gradient(50%_60%_at_15%_30%,rgb(0_0_255/0.35),transparent_70%)]" />
         <div className="grid gap-10 lg:grid-cols-[minmax(0,24rem)_1fr] lg:gap-16">
           <SectionHeader
             eyebrow="When not to"
@@ -170,7 +179,7 @@ export default function AiToolsPage() {
             title="Where the answer is none of these"
             lede="We would rather you did not buy something that makes your business worse. These are the cases where an agent is the wrong tool."
           />
-          <ul className="flex flex-col divide-y divide-white/10 border-t border-white/10">
+          <ul className="grid gap-3 sm:grid-cols-2">
             {[
               ["Complaints and anything emotional", "Escalate immediately. An automated response to an upset customer converts a problem into a public one."],
               ["Anything with legal, medical or financial consequence", "If being wrong has a real cost, a person makes the call and the agent takes a message."],
@@ -178,7 +187,7 @@ export default function AiToolsPage() {
               ["Replacing someone who was answering well", "The case for an agent is strong when the alternative is nobody. It is weak when the alternative is a person doing it properly."],
               ["A team that will not maintain it", "An agent given stale hours and last year's prices does damage. Someone has to own it."],
             ].map(([t, d]) => (
-              <li key={t} className="py-5">
+              <li key={t} className="rounded-2xl bg-white/[0.06] p-5 ring-1 ring-white/10">
                 <h3 className="text-body font-semibold text-white">{t}</h3>
                 <p className="mt-1.5 max-w-[62ch] text-small text-fg-on-dark-secondary">{d}</p>
               </li>
@@ -187,10 +196,10 @@ export default function AiToolsPage() {
         </div>
       </Section>
 
-      <Section surface="subtle" spacing="tight">
-        <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
+      <Section surface="light" spacing="tight">
+        <div className="flex flex-col items-start justify-between gap-6 rounded-2xl bg-brand-50 p-7 sm:flex-row sm:items-center sm:p-8">
           <div>
-            <h2 className="text-h4 text-fg">Still not sure which one?</h2>
+            <h2 className="text-h3 font-medium tracking-[-0.02em] text-fg">Still not sure which one?</h2>
             <p className="mt-2 max-w-2xl text-body text-fg-secondary">
               Describe a normal week — where enquiries come from, what gets
               missed, and what you keep retyping. We will tell you which of the

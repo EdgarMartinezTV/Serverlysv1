@@ -1,4 +1,4 @@
-import { Section, SectionHeader } from "@/components/ui/section";
+import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/animations/reveal";
 import { Button } from "@/components/ui/button";
 import { stageById } from "./stages";
@@ -60,38 +60,38 @@ export function StageManage() {
     <Section
       id={stage.id}
       surface="light"
-      spacing="base"
+      spacing="tight"
       width="wide"
       labelledBy="manage-heading"
-      className="scroll-mt-8"
+      className="scroll-mt-16"
     >
       <Reveal>
-        <SectionHeader
-          eyebrow="04 · Manage"
-          title={stage.heading}
-          lede={stage.lede}
-          id="manage-heading"
-        />
+        <h2 id="manage-heading" className="display-md mx-auto max-w-[900px] text-center text-fg">
+          {stage.heading}
+        </h2>
+        <p className="mx-auto mt-4 max-w-[620px] text-center text-body-lg text-fg-secondary">
+          {stage.lede}
+        </p>
       </Reveal>
 
-      <div className="mt-12 grid gap-5 lg:grid-cols-[1fr_minmax(0,26rem)] lg:items-start">
-        <Reveal className="flex flex-col gap-3">
+      <div className="mt-14 grid gap-10 lg:grid-cols-[1fr_minmax(0,24rem)] lg:items-start lg:gap-16">
+        <Reveal className="flex flex-col border-t border-line">
           {PANELS.map((panel, index) => (
             <details
               key={panel.title}
               name="manage-panels"
               open={index === 0}
-              className="group/panel rounded-xl bg-canvas shadow-e1 ring-1 ring-inset ring-line-subtle transition-shadow duration-fast ease-hover open:shadow-e3"
+              className="group/panel border-b border-line"
             >
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&::-webkit-details-marker]:hidden">
-                <span className="text-h4 text-fg">{panel.title}</span>
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&::-webkit-details-marker]:hidden">
+                <span className="text-body-lg font-medium text-fg">{panel.title}</span>
                 <svg
                   viewBox="0 0 16 16"
                   aria-hidden="true"
-                  className="h-4 w-4 shrink-0 text-fg-muted transition-transform duration-fast ease-hover group-open/panel:-rotate-180"
+                  className="h-4 w-4 shrink-0 text-fg transition-transform duration-fast ease-hover group-open/panel:rotate-45"
                 >
                   <path
-                    d="m3 6 5 5 5-5"
+                    d="M8 3v10M3 8h10"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="1.6"
@@ -100,9 +100,9 @@ export function StageManage() {
                   />
                 </svg>
               </summary>
-              <div className="px-6 pb-6">
+              <div className="max-w-[640px] pb-6">
                 <p className="text-body text-fg-secondary">{panel.body}</p>
-                <p className="mt-3 font-mono text-caption uppercase text-primary">
+                <p className="mt-3 w-fit rounded-md bg-brand-50 px-2 py-0.5 text-micro font-semibold text-primary">
                   {panel.meta}
                 </p>
               </div>
@@ -111,7 +111,7 @@ export function StageManage() {
         </Reveal>
 
         <Reveal delay={80} className="lg:sticky lg:top-32">
-          <div className="rounded-2xl bg-canvas p-7 shadow-e2 ring-1 ring-inset ring-line-subtle">
+          <div className="rounded-2xl bg-brand-50 p-7">
             <h3 className="text-h4 text-fg">Included before you ask</h3>
             <p className="mt-2 text-small text-fg-secondary">
               None of the five are an add-on, an upgrade prompt, or a line on the

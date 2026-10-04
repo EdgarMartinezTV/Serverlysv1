@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { Container } from "@/components/ui/container";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { Section } from "@/components/ui/section";
 import { Badge } from "@/components/ui/badge";
 import { FinalCta } from "@/components/sections/final-cta";
@@ -8,6 +6,7 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { tutorials, tutorialCategories } from "@/data/tutorials";
 import { canonical, pageMetadata, breadcrumbGraph } from "@/lib/seo";
 import { company } from "@/data/company";
+import { PageHero } from "../resources/_components/page-hero";
 
 const PATH = "/tutorials";
 
@@ -60,47 +59,37 @@ export default function TutorialsPage() {
       />
       <JsonLd data={howToGraph()} />
 
-      <section className="relative isolate overflow-hidden bg-canvas-abyss">
-        <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(60%_55%_at_25%_-5%,rgb(34_126_255/0.3)_0%,transparent_68%)]" />
-        <div aria-hidden="true" className="absolute inset-0 bg-grid-dark" />
-        <Container className="relative pb-16 pt-8 sm:pb-20 sm:pt-10">
-          <Breadcrumbs
-            trail={[
-              { name: "Home", href: "/" },
-              { name: "Resources", href: "/resources" },
-              { name: "Tutorials" },
-            ]}
-            tone="dark"
-          />
-          <div className="mt-10 max-w-2xl">
-            <span className="font-mono text-caption uppercase text-accent-on-dark">
-              Tutorials
-            </span>
-            <h1 className="mt-4 text-h1 text-white">Get the job done</h1>
-            <p className="mt-5 text-body-lg text-fg-on-dark-secondary">
-              Complete procedures with the actual record values, settings and
-              commands. Each one names the mistake people make, because that is
-              usually why you are here.
-            </p>
-          </div>
-          <ul className="mt-8 flex flex-wrap gap-2">
-            {tutorialCategories.map((c) => (
-              <li key={c}>
-                <span className="inline-flex items-center rounded-full bg-white/10 px-3 py-1 text-caption font-medium text-fg-on-dark-secondary ring-1 ring-inset ring-white/15">
-                  {c}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </Container>
-      </section>
+      <PageHero
+        trail={[
+          { name: "Home", href: "/" },
+          { name: "Resources", href: "/resources" },
+          { name: "Tutorials" },
+        ]}
+        label="Tutorials"
+        title="Get the job done"
+        lede={
+          <p>
+            Complete procedures with the actual record values, settings and commands. Each
+            one names the mistake people make, because that is usually why you are here.
+          </p>
+        }
+        visual={<DnsMock />}
+      >
+        <ul className="mt-8 flex flex-wrap gap-2">
+          {tutorialCategories.map((c) => (
+            <li key={c}>
+              <span className="inline-flex min-h-9 items-center rounded-full bg-canvas-secondary px-3.5 text-small font-medium text-fg ring-1 ring-line">
+                {c}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </PageHero>
 
       <Section>
         <div className="grid gap-12 lg:grid-cols-[minmax(0,16rem)_1fr] lg:gap-16">
           <nav aria-label="Tutorials" className="lg:sticky lg:top-24 lg:self-start">
-            <p className="text-caption font-semibold uppercase tracking-wider text-fg-muted">
-              All guides
-            </p>
+            <p className="text-small font-semibold text-fg">All guides</p>
             <ul className="mt-4 flex flex-col gap-1">
               {tutorials.map((t) => (
                 <li key={t.slug}>
@@ -124,13 +113,13 @@ export default function TutorialsPage() {
                     About {t.minutes} minutes
                   </span>
                 </div>
-                <h2 className="mt-4 text-h3 text-fg">{t.title}</h2>
+                <h2 className="display-md mt-4 text-fg">{t.title}</h2>
                 <p className="mt-3 max-w-[62ch] text-body-lg text-fg-secondary">
                   {t.summary}
                 </p>
 
-                <div className="mt-6 rounded-xl bg-canvas-secondary p-5 ring-1 ring-inset ring-line">
-                  <h3 className="font-mono text-caption uppercase tracking-wider text-fg-muted">
+                <div className="mt-6 rounded-2xl bg-brand-50 p-5">
+                  <h3 className="text-small font-semibold text-fg">
                     Before you start
                   </h3>
                   <ul className="mt-3 flex flex-col gap-2">
@@ -148,7 +137,7 @@ export default function TutorialsPage() {
                     <li key={s.title} className="flex gap-5 py-6">
                       <span
                         aria-hidden="true"
-                        className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-canvas-inset font-mono text-caption font-semibold text-fg"
+                        className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-micro font-semibold text-white"
                       >
                         {i + 1}
                       </span>
@@ -169,13 +158,18 @@ export default function TutorialsPage() {
                   ))}
                 </ol>
 
-                <div className="mt-8 rounded-xl border-l-2 border-warning-fill bg-warning-soft p-5">
+                {/* Full tinted card with a leading icon; the old left-stripe
+                    border was a flagged pattern (2026-10-03). */}
+                <div className="mt-8 flex gap-4 rounded-2xl bg-warning-soft p-5">
+                  <span aria-hidden="true" className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-warning-fill text-small font-bold text-white">!</span>
+                  <div>
                   <h3 className="text-body font-semibold text-fg">
                     The mistake people make
                   </h3>
                   <p className="mt-2 max-w-[62ch] text-small text-fg-secondary">
                     {t.gotcha}
                   </p>
+                  </div>
                 </div>
               </article>
             ))}
@@ -183,8 +177,8 @@ export default function TutorialsPage() {
         </div>
       </Section>
 
-      <Section surface="subtle" spacing="tight">
-        <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
+      <Section surface="light" spacing="tight">
+        <div className="flex flex-col items-start justify-between gap-6 rounded-2xl bg-brand-50 p-7 sm:flex-row sm:items-center sm:p-8">
           <div>
             <h2 className="text-h4 text-fg">Stuck on something not covered here?</h2>
             <p className="mt-2 max-w-2xl text-body text-fg-secondary">
@@ -211,5 +205,49 @@ export default function TutorialsPage() {
 
       <FinalCta />
     </>
+  );
+}
+
+/**
+ * The first tutorial's subject, drawn: a DNS zone with the records a site
+ * and its mail need. Values are documentation addresses (RFC 5737) and
+ * placeholders, so nothing here points anywhere real.
+ */
+function DnsMock() {
+  const rows = [
+    ["A", "@", "192.0.2.10"],
+    ["CNAME", "www", "yourbrand.com"],
+    ["MX", "@", "mail.yourbrand.com"],
+    ["TXT", "@", "v=spf1 include:_spf… ~all"],
+  ];
+  return (
+    <div aria-hidden="true" className="mx-auto max-w-[480px] overflow-hidden rounded-2xl bg-white ring-1 ring-black/5">
+      <div className="flex items-center justify-between border-b border-line-subtle px-4 py-3">
+        <span className="text-small font-semibold text-fg">DNS zone · yourbrand.com</span>
+        <span className="rounded-md bg-primary px-2.5 py-1 text-micro font-semibold text-white">Add record</span>
+      </div>
+      <table className="w-full text-left text-micro">
+        <thead className="bg-canvas-secondary text-fg-muted">
+          <tr>
+            <th className="px-4 py-2 font-medium">Type</th>
+            <th className="px-4 py-2 font-medium">Name</th>
+            <th className="px-4 py-2 font-medium">Value</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-line-subtle">
+          {rows.map(([t, n, v]) => (
+            <tr key={t + n}>
+              <td className="px-4 py-2.5"><span className="rounded bg-brand-50 px-1.5 py-0.5 font-semibold text-primary">{t}</span></td>
+              <td className="px-4 py-2.5 text-fg">{n}</td>
+              <td className="max-w-0 truncate px-4 py-2.5 text-fg-secondary">{v}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p className="flex items-center gap-2 border-t border-line-subtle px-4 py-3 text-micro text-success">
+        <span className="size-1.5 rounded-full bg-success-fill" />
+        Propagated · HTTPS certificate issued
+      </p>
+    </div>
   );
 }

@@ -24,7 +24,6 @@ import { company, emailDisplay } from "@/data/company";
  */
 
 const PATH = "/dmca-policy";
-const EFFECTIVE = "2026-09-14";
 
 export const metadata = pageMetadata({
   title: "Copyright and DMCA Policy | Serverlys",
@@ -179,7 +178,7 @@ export default function DmcaPolicyPage() {
       <LegalPage
         title="Copyright and DMCA Policy"
         intro="How to report copyright infringement on material we host, what a valid notice has to contain, and how the customer answers back."
-        effective={EFFECTIVE}
+        path={PATH}
         sections={SECTIONS}
         trail={[{ name: "Home", href: "/" }, { name: "Copyright and DMCA policy" }]}
         contact="Copyright notices and counter-notices go to the address above, marked “DMCA notice”. Anything else reaches us faster through the abuse report form."

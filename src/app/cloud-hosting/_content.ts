@@ -70,7 +70,7 @@ export const WHAT_IS = {
       icon: "shield" as const,
       title: "Stable and secure",
       description:
-        "99.9% uptime, daily backups, and DDoS protection so busy days stay online and client data stays put.",
+        "Daily backups, a firewall and malware scanning, so busy days stay online and client data stays put.",
     },
     {
       icon: "gear" as const,
@@ -83,7 +83,8 @@ export const WHAT_IS = {
 
 export const COMPARISON = {
   title: "Shared, cloud, or VPS: which one fits you?",
-  description: "All three host your website. The difference is how much power and control you get.",
+  description:
+    "All three host your website. The difference is how much power and control you get.",
   cards: [
     {
       panel: "performance" as const,
@@ -134,26 +135,9 @@ export const BENTO = {
   },
 };
 
-export const REVIEWS_HEAD = "Trusted by 5M+ website owners worldwide";
-
-/** ⚠ Placeholder attributions — see the file header. */
-export const REVIEWS = [
-  {
-    name: "Reviewer name",
-    quote:
-      "Serverlys is an excellent web hosting service that offers affordable plans without compromising on reliability.",
-  },
-  {
-    name: "Reviewer name",
-    quote:
-      "Every time i tried for a help with serverlys they came out with the best solution, i am really happy with the service.",
-  },
-  {
-    name: "Reviewer name",
-    quote:
-      "If you are looking for a reliable hosting provider, I wholeheartedly recommend Serverlys. Give them a try, and I’m confident you won’t be disappointed.",
-  },
-];
+/* REVIEWS / REVIEWS_HEAD removed 2026-10-03: they were placeholder names on
+   Hostinger's Trustpilot quotes under a "5M+" claim. The proof band now
+   states commitments instead (see _components/proof.tsx). */
 
 export const DASHBOARD = {
   title: "Multiple projects. One easy dashboard",
@@ -163,13 +147,15 @@ export const DASHBOARD = {
 
 export const BANNER = {
   title: "Hosting that grows with you",
-  description: "Get the speed, security, and support your business needs to grow. Risk-free for 30 days.",
+  description:
+    "Get the speed, security, and support your business needs to grow. Risk-free for 30 days.",
   cta: "View plans",
 };
 
 export const FAQ_HEAD = {
   title: "Cloud hosting FAQs",
-  description: "Find answers to frequently asked questions about cloud web hosting services.",
+  description:
+    "Find answers to frequently asked questions about cloud web hosting services.",
 };
 
 export const FAQS: FaqItem[] = [
@@ -189,7 +175,7 @@ export const FAQS: FaqItem[] = [
         type: "p",
         runs: [
           {
-            text: "Serverlys’ managed cloud hosting offers 4X more speed and 20X more resources compared to traditional web hosting. It’s also fully managed – meaning that we take care of all the technical stuff, so you can focus on scaling your projects.",
+            text: "Serverlys managed cloud hosting runs on NVMe storage and LiteSpeed servers, with more memory and visits on every tier than an entry shared plan. It’s also fully managed, so we take care of the technical work and you can focus on the project.",
           },
         ],
       },
@@ -256,7 +242,9 @@ export const FAQS: FaqItem[] = [
       {
         type: "p",
         runs: [
-          { text: "Depending on the size of your online project, you can buy one of the following cloud plans:" },
+          {
+            text: "Depending on the size of your online project, you can buy one of the following cloud plans:",
+          },
         ],
       },
       /* Re-pointed at our real plans, because these prices sit on the same
@@ -345,7 +333,11 @@ export const FAQS: FaqItem[] = [
       },
       {
         type: "p",
-        runs: [{ text: "With VPS hosting, your website data will be stored on a single physical server." }],
+        runs: [
+          {
+            text: "With VPS hosting, your website data will be stored on a single physical server.",
+          },
+        ],
       },
     ],
   },
@@ -423,7 +415,9 @@ export const FAQS: FaqItem[] = [
       {
         type: "p",
         runs: [
-          { text: "To learn what resources our cloud hosting solutions provide, check out these " },
+          {
+            text: "To learn what resources our cloud hosting solutions provide, check out these ",
+          },
           { text: "parameters and limits for hosting plans", href: "/support" },
           {
             text: ". You will find detailed information on the specific limits associated with each plan we offer, so you can make an informed choice based on your website’s needs.",

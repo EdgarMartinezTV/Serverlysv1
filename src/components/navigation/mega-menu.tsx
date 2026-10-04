@@ -96,23 +96,23 @@ export function MegaMenu({
          margin each side up to 1600px, and opens 8px below the 72px bar. It is
          deliberately far wider than the 1200px content column — three columns
          of items need real width or every description wraps to four lines. */
-      className="absolute left-1/2 top-full z-10 w-[calc(100vw-2rem)] max-w-mega -translate-x-1/2 pt-2"
+      className="absolute left-1/2 top-full z-10 w-[calc(100vw-2rem)] max-w-mega -translate-x-1/2 pt-2 xl:w-[calc(100vw-6rem)]"
     >
       <div
         className={cn(
-          "max-h-[calc(100vh-6rem)] overflow-auto rounded-xl bg-canvas-abyss/95 shadow-e5 ring-1 ring-inset ring-white/10 backdrop-blur-xl",
+          "max-h-[calc(100vh-6rem)] overflow-auto rounded-2xl bg-[#121214]/[0.97] shadow-e5 ring-1 ring-inset ring-white/10 backdrop-blur-xl",
           "motion-safe:animate-[megaIn_180ms_cubic-bezier(0.16,1,0.3,1)]",
         )}
       >
         {/* Flex, not grid: the rail and the promo are FIXED widths (240 / 300)
             and the content takes whatever is left. A three-column grid made the
             content column collapse on narrow laptops instead of the promo. */}
-        <div className="flex gap-6 p-6">
+        <div className="flex gap-8 p-7">
           {/* ── Zone 1: category rail ──────────────────────────────────── */}
           <div className="flex w-60 shrink-0 flex-col gap-6">
             {/* 12px / 600 / 16px line box — the target's eyebrow exactly.
                 `text-caption` alone is 12/16.8 (the site's 1.4 ratio). */}
-            <p className="font-mono text-caption uppercase leading-4 text-fg-on-dark-muted">
+            <p className="text-caption uppercase leading-4 font-semibold tracking-[0.04em] text-white">
               {railLabel}
             </p>
             <div
@@ -120,7 +120,7 @@ export function MegaMenu({
               aria-orientation="vertical"
               aria-label={`${railLabel} categories`}
               onKeyDown={onRailKeyDown}
-              className="flex flex-col gap-1.5"
+              className="flex flex-col gap-1"
             >
               {categories.map((c, i) => {
                 const selected = c.id === category.id;
@@ -150,18 +150,18 @@ export function MegaMenu({
                        every row look selected and the 21px line box pushed the
                        pill to 33px. */
                     className={cn(
-                      "flex items-center gap-3 rounded-full px-3 py-1.5 text-left text-small leading-5 transition-colors duration-fast",
+                      "flex items-center gap-3 rounded-lg px-3.5 py-2.5 text-left text-body leading-5 transition-colors duration-fast",
                       "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white",
                       selected
-                        ? "bg-primary/25 font-semibold text-white"
-                        : "font-normal text-fg-on-dark-secondary hover:bg-white/[0.06] hover:text-white",
+                        ? "bg-white/[0.09] font-semibold text-white"
+                        : "font-normal text-white/85 hover:bg-white/[0.05] hover:text-white",
                     )}
                   >
                     <NavIcon
                       name={c.icon}
                       className={cn(
                         "h-5 w-5 shrink-0",
-                        selected ? "text-primary-on-dark" : "text-fg-on-dark-muted",
+                        selected ? "text-white" : "text-white/70",
                       )}
                     />
                     <span className="truncate">{c.label}</span>
@@ -184,15 +184,15 @@ export function MegaMenu({
             {category.groups.map((group, gi) => (
               <section
                 key={group.heading}
-                className={cn("flex flex-col gap-6", gi > 0 && "border-t border-white/10 pt-6")}
+                className={cn("flex flex-col gap-6", gi > 0 && "border-t border-white/10 pt-7")}
               >
-                <h3 className="font-mono text-caption uppercase leading-4 text-fg-on-dark-muted">
+                <h3 className="text-caption uppercase leading-4 font-semibold tracking-[0.04em] text-white">
                   {group.heading}
                 </h3>
                 {/* auto-fit at a 264px floor, exactly as the target: columns
                     appear and disappear with the panel width instead of
                     snapping at two fixed breakpoints. */}
-                <ul className="grid grid-cols-[repeat(auto-fit,minmax(16.5rem,1fr))] gap-x-10 gap-y-6">
+                <ul className="grid grid-cols-[repeat(auto-fit,minmax(16.5rem,1fr))] gap-x-10 gap-y-7">
                   {group.items.map((item) => (
                     <li key={item.label} className="flex">
                       <MegaMenuItem item={item} onNavigate={onNavigate} />
@@ -204,7 +204,7 @@ export function MegaMenu({
           </div>
 
           {/* ── Zone 3: promotional panel ──────────────────────────────── */}
-          <div className="hidden h-[27.75rem] w-[18.75rem] shrink-0 xl:block">
+          <div className="hidden min-h-[30rem] w-[20rem] shrink-0 xl:block">
             <MegaMenuPromo promo={category.promo} />
           </div>
         </div>

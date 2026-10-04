@@ -90,9 +90,9 @@ export default function NotFound() {
       <section className="bg-canvas pt-20 pb-14 sm:pt-28 sm:pb-16 lg:pt-32 lg:pb-20">
         <Container>
           <div className="mx-auto max-w-[680px] text-center">
-            <p className="font-mono text-caption uppercase text-primary">Error 404</p>
+            <p className="inline-flex rounded-md bg-brand-50 px-2.5 py-1 text-small font-medium text-primary">Error 404</p>
 
-            <h1 className="mt-5 text-h1 text-fg">This page does not exist</h1>
+            <h1 className="display-lg mt-5 text-fg">This page does not exist</h1>
 
             <p className="mx-auto mt-6 max-w-[52ch] text-body-lg text-fg-secondary">
               The link may be out of date, or the address may have a typo. Nothing is
@@ -124,10 +124,10 @@ export default function NotFound() {
         className="bg-canvas pb-20 sm:pb-28 lg:pb-36"
       >
         <Container width="wide">
-          <div className="overflow-hidden rounded-xl bg-canvas-secondary">
+          <div className="overflow-hidden rounded-3xl bg-brand-50">
             <div className="flex flex-col gap-8 p-8 sm:p-10 lg:flex-row lg:items-center lg:gap-14 lg:p-14">
               <div className="lg:max-w-[34rem]">
-                <p className="font-mono text-caption uppercase text-primary">Plans</p>
+                <p className="inline-flex rounded-md bg-white px-2.5 py-1 text-small font-medium text-primary">Plans</p>
                 {/*
                   ⚠ NO EM DASH, AND THE MEASURE IS IN rem NOT ch. The first
                   draft read "While you are here — the renewal rate, up front"
@@ -136,7 +136,7 @@ export default function NotFound() {
                   second one. `ch` is measured on the BODY font, so it sizes a
                   display-type block wrongly by design.
                 */}
-                <h2 id="notfound-offer-heading" className="mt-3 text-h2 text-fg">
+                <h2 id="notfound-offer-heading" className="display-md mt-4 text-fg">
                   The renewal rate, shown up front
                 </h2>
                 {/*

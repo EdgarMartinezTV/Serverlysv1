@@ -100,76 +100,19 @@ function Cursor({ x, y }: { x: number; y: number }) {
 }
 
 /* ==========================================================================
-   Hero — chat → AI agent → editor, over a workflow panel
-   ======================================================================== */
-
-export function HeroArt({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 700 460" role="presentation" aria-hidden className={cn("h-auto w-full", className)}>
-      <GridPaper id="n8n-hero-grid" />
-
-      {/* Trigger → agent → action, the chain the copy describes. */}
-      <path d="M66 96h12" className="stroke-brand-500" strokeWidth="1.5" />
-      <path d="M20 88l-8 12h8l-6 10" className="stroke-brand-500" strokeWidth="1.6" fill="none" strokeLinejoin="round" />
-
-      <Node x={78} y={56} w={110} h={80} accent>
-        <g transform="translate(112 84)" className="stroke-white" fill="none" strokeWidth="1.6">
-          <path d="M2 2h38a4 4 0 0 1 4 4v16a4 4 0 0 1-4 4H16l-9 8v-8H6a4 4 0 0 1-4-4V6a4 4 0 0 1 4-4z" />
-        </g>
-      </Node>
-
-      <path d="M188 96h30" className="stroke-line-on-dark" strokeWidth="1.5" />
-
-      <Node x={218} y={56} w={290} h={80}>
-        <g transform="translate(246 80)" className="stroke-white" fill="none" strokeWidth="1.6">
-          <rect x="0" y="4" width="28" height="22" rx="6" />
-          <path d="M14 0v4M6 22h16" />
-          <circle cx="9" cy="13" r="1.6" className="fill-white stroke-none" />
-          <circle cx="19" cy="13" r="1.6" className="fill-white stroke-none" />
-        </g>
-        <text x="292" y="103" className="fill-fg-on-dark text-[19px] font-semibold">
-          AI Agent
-        </text>
-      </Node>
-
-      <path d="M508 96h18a8 8 0 0 1 8 8v0" className="stroke-line-on-dark" strokeWidth="1.5" fill="none" />
-
-      <Node x={534} y={48} w={96} h={96} accent>
-        <path
-          d="M566 112l4-14 26-26 10 10-26 26z"
-          className="fill-none stroke-white"
-          strokeWidth="1.6"
-          strokeLinejoin="round"
-        />
-      </Node>
-      <Cursor x={616} y={116} />
-
-      {/* The editor panel below, lit from the left as on the reference. */}
-      <defs>
-        <linearGradient id="n8n-hero-glow" x1="0" y1="1" x2="1" y2="0">
-          <stop offset="0" className="text-brand-600" stopColor="currentColor" stopOpacity="0.55" />
-          <stop offset="1" className="text-brand-600" stopColor="currentColor" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      <path d="M0 220l60-60h640v300H0z" fill="url(#n8n-hero-glow)" />
-
-      <rect x="84" y="196" width="560" height="150" rx="14" className="fill-surface-dark stroke-line-on-dark" strokeWidth="1.5" />
-      <path d="M116 272h132M480 272h132" className="stroke-brand-500" strokeWidth="2" />
-      <g className="text-fg-on-dark">
-        <NodeGlyph x={296} y={258} scale={1.9} />
-      </g>
-
-      <rect x="84" y="366" width="560" height="78" rx="14" className="fill-surface-dark stroke-line-on-dark" strokeWidth="1.5" />
-    </svg>
-  );
-}
-
-/* ==========================================================================
    Integrations — a model picker ring under a cursor
    ======================================================================== */
 
+const APPS = [
+  ["Gm", "Gmail"],
+  ["Sh", "Sheets"],
+  ["Ca", "Calendar"],
+  ["Sl", "Slack"],
+  ["St", "Stripe"],
+  ["Qb", "QuickBooks"],
+] as const;
+
 export function IntegrateArt({ className }: { className?: string }) {
-  const logos = ["leaf", "spiral", "g", "llama", "x", "claw"] as const;
   return (
     <svg viewBox="0 0 600 435" role="presentation" aria-hidden className={cn("h-auto w-full", className)}>
       <GridPaper id="n8n-int-grid" />
@@ -199,53 +142,30 @@ export function IntegrateArt({ className }: { className?: string }) {
 
       <path d="M304 108v96" className="stroke-success-fill" strokeWidth="1.6" fill="none" />
 
-      {/* The provider ring. The third is highlighted, as on the reference. */}
-      {logos.map((kind, i) => {
+      {/* The tools a small business already pays for, named (2026-10-03). */}
+      {APPS.map(([mono, name], i) => {
         const cx = 60 + i * 96;
         const active = i === 2;
         return (
-          <g key={kind}>
+          <g key={name}>
             <circle
               cx={cx}
               cy={300}
               r="40"
-              className={cn("fill-surface-dark", active ? "stroke-brand-500" : "stroke-line-on-dark")}
-              strokeWidth={active ? 2.5 : 1.5}
+              className={cn(active ? "fill-white stroke-brand-500" : "fill-surface-dark stroke-line-on-dark")}
+              strokeWidth={active ? 3 : 1.5}
             />
-            <ProviderMark kind={kind} cx={cx} cy={300} muted={!active} />
+            <text x={cx} y={308} textAnchor="middle" className={cn("text-[20px] font-bold", active ? "fill-brand-600" : "fill-fg-on-dark")}>
+              {mono}
+            </text>
+            <text x={cx} y={366} textAnchor="middle" className={cn("text-[14px]", active ? "fill-fg-on-dark font-semibold" : "fill-fg-on-dark-muted")}>
+              {name}
+            </text>
           </g>
         );
       })}
       <Cursor x={268} y={318} />
     </svg>
-  );
-}
-
-/** Generic provider marks — suggestive shapes, not anyone's trademark. */
-function ProviderMark({
-  kind,
-  cx,
-  cy,
-  muted,
-}: {
-  kind: string;
-  cx: number;
-  cy: number;
-  muted: boolean;
-}) {
-  const c = muted ? "stroke-fg-on-dark-muted" : "stroke-fg-on-dark";
-  const g = (d: string, w = 1.8) => (
-    <path d={d} className={c} strokeWidth={w} fill="none" strokeLinecap="round" strokeLinejoin="round" />
-  );
-  return (
-    <g transform={`translate(${cx - 16} ${cy - 16})`}>
-      {kind === "leaf" && g("M4 26c0-12 8-20 24-20 0 14-8 22-24 20zM8 26c4-6 8-9 14-11")}
-      {kind === "spiral" && g("M16 4a12 12 0 1 0 12 12A12 12 0 0 0 16 4zm0 6a6 6 0 1 1-6 6 6 6 0 0 1 6-6z")}
-      {kind === "g" && g("M28 16a12 12 0 1 1-4-9M28 16H16")}
-      {kind === "llama" && g("M10 28V14a6 6 0 0 1 12 0v14M13 8V4M19 8V4M14 17h.01M18 17h.01")}
-      {kind === "x" && g("M5 5l22 22M27 5L5 27")}
-      {kind === "claw" && g("M26 8a14 14 0 1 0 0 16M20 12l-6 4 6 4")}
-    </g>
   );
 }
 
@@ -255,7 +175,8 @@ function ProviderMark({
 
 /** Template picker: three selectable n8n templates, the first chosen. */
 export function TemplatesArt({ className }: { className?: string }) {
-  const rows = ["n8n", "n8n (+100 workflows)", "n8n (queue mode)"];
+  /* Our workflow names (2026-10-03) — the reference listed its VPS templates. */
+  const rows = ["Enquiry → record", "Booking → calendar", "Invoice → accounts"];
   return (
     <svg viewBox="0 0 524 737" role="presentation" aria-hidden className={cn("h-auto w-full", className)}>
       <GridPaper id="n8n-tpl-grid" />
@@ -288,6 +209,10 @@ export function TemplatesArt({ className }: { className?: string }) {
             <text x="116" y={y + 48} className="fill-fg-on-dark text-[21px] font-semibold">
               {label}
             </text>
+            <rect x="388" y={y + 26} width="84" height="28" rx="14" className={on ? "fill-success-fill/20" : "fill-surface-dark-active"} />
+            <text x="430" y={y + 45} textAnchor="middle" className={cn("text-[13px] font-semibold", on ? "fill-success-fill" : "fill-fg-on-dark-muted")}>
+              {on ? "Active" : "Ready"}
+            </text>
           </g>
         );
       })}
@@ -309,7 +234,9 @@ export function TemplatesArt({ className }: { className?: string }) {
       <path d="M330 498v48h-60v36M330 546h66v36" className="stroke-line-on-dark" strokeWidth="1.5" fill="none" />
       <circle cx="270" cy="608" r="26" className="fill-surface-dark stroke-line-on-dark" strokeWidth="1.5" />
       <circle cx="396" cy="608" r="26" className="fill-surface-dark stroke-line-on-dark" strokeWidth="1.5" />
-      <ProviderMark kind="spiral" cx={270} cy={608} muted />
+      <text x="270" y="613" textAnchor="middle" className="fill-fg-on-dark-secondary text-[13px] font-semibold">CRM</text>
+      <text x="270" y="660" textAnchor="middle" className="fill-fg-on-dark-muted text-[12px]">New contact</text>
+      <text x="396" y="660" textAnchor="middle" className="fill-fg-on-dark-muted text-[12px]">Job sheet</text>
       <g transform="translate(380 594)" className="stroke-fg-on-dark-muted" fill="none" strokeWidth="1.8">
         <ellipse cx="16" cy="6" rx="11" ry="4" />
         <path d="M5 6v14c0 2.2 4.9 4 11 4s11-1.8 11-4V6" />
@@ -321,11 +248,11 @@ export function TemplatesArt({ className }: { className?: string }) {
 /** A workflow run list, ticking over. */
 export function RunsArt({ className }: { className?: string }) {
   const runs = [
-    ["Email processor", "#26177"],
-    ["Email processor", "#34169"],
-    ["Email receiver", "#16462"],
-    ["Email receiver", "#32264"],
-    ["Route generator", "#96175"],
+    ["Chat → CRM", "#1042"],
+    ["Booking → calendar", "#1041"],
+    ["Quote follow-up", "#1040"],
+    ["Review request", "#1039"],
+    ["Invoice → accounts", "#1038"],
   ];
   return (
     <svg viewBox="0 0 362 290" role="presentation" aria-hidden className={cn("h-auto w-full", className)}>
@@ -336,7 +263,7 @@ export function RunsArt({ className }: { className?: string }) {
 
       <rect x="30" y="50" width="302" height="228" rx="14" className="fill-surface-dark stroke-line-on-dark" strokeWidth="1.5" />
       <text x="50" y="82" className="fill-fg-on-dark text-[14px] font-semibold">
-        Campaign tracker flow
+        Enquiry handling
       </text>
       <text x="228" y="82" className="fill-success-fill text-[12px] font-semibold">
         Active
@@ -404,6 +331,7 @@ export function ValueArt({ className }: { className?: string }) {
 /** Community node palette, one picked. */
 export function CommunityArt({ className }: { className?: string }) {
   const tiles = ["megaphone", "headset", "branch", "clock"];
+  const names = ["Reviews", "Support", "Routing", "Reminders"];
   return (
     <svg viewBox="0 0 740 253" role="presentation" aria-hidden className={cn("h-auto w-full", className)}>
       <GridPaper id="n8n-com-grid" />
@@ -421,7 +349,7 @@ export function CommunityArt({ className }: { className?: string }) {
         <path d="M2 4h10l3 4h15a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" />
       </g>
       <text x="112" y="110" className="fill-fg-on-dark text-[18px] font-semibold">
-        Document Ops
+        Quote follow-up
       </text>
       <Cursor x={280} y={118} />
 
@@ -436,7 +364,10 @@ export function CommunityArt({ className }: { className?: string }) {
             className="fill-surface-dark stroke-line-on-dark"
             strokeWidth="1.5"
           />
-          <TileMark kind={kind} cx={379 + i * 124} cy={103} />
+          <TileMark kind={kind} cx={379 + i * 124} cy={96} />
+          <text x={379 + i * 124} y={134} textAnchor="middle" className="fill-fg-on-dark-muted text-[13px]">
+            {names[i]}
+          </text>
         </g>
       ))}
     </svg>
@@ -647,8 +578,8 @@ export function TutorialArt({ kind, className }: { kind: string; className?: str
           <text x="82" y="48" className="fill-fg-on-dark text-[20px] font-semibold">
             Automation
           </text>
-          <rect x="82" y="60" width="132" height="30" rx="4" className="fill-warning-fill" />
-          <text x="90" y="83" className="fill-ink-950 text-[20px] font-semibold">
+          <rect x="82" y="60" width="132" height="30" rx="4" className="fill-primary" />
+          <text x="90" y="83" className="fill-white text-[20px] font-semibold">
             Ideas
           </text>
           <path d="M104 100v18" className="stroke-fg-on-dark" strokeWidth="2" markerEnd="" />
@@ -672,16 +603,18 @@ export function TutorialArt({ kind, className }: { kind: string; className?: str
           <text x="150" y="92" className="fill-fg-on-dark text-[13px] font-semibold">
             Workflows
           </text>
-          <rect x="130" y="100" width="70" height="12" rx="3" className="fill-error-fill/80" />
-          {[0, 1, 2].map((i) => (
-            <rect key={i} x={96} y={122 + i * 20} width="54" height="12" rx="3" className="fill-line-on-dark" />
-          ))}
-          {[0, 1].map((i) => (
-            <rect key={i} x={172} y={126 + i * 26} width="44" height="16" rx="4" className="fill-brand-500/50" />
-          ))}
-          {[0, 1, 2, 3].map((i) => (
-            <rect key={i} x={244} y={104 + i * 20} width="56" height="12" rx="3" className="fill-line-on-dark" />
-          ))}
+          <text x="92" y="112" className="fill-fg-on-dark text-[11px]">Enquiry → record</text>
+          <rect x="248" y="102" width="52" height="14" rx="7" className="fill-success-fill/25" />
+          <text x="257" y="113" className="fill-success-fill text-[9px] font-semibold">Active</text>
+          <text x="92" y="131" className="fill-fg-on-dark text-[11px]">Booking → calendar</text>
+          <rect x="248" y="121" width="52" height="14" rx="7" className="fill-success-fill/25" />
+          <text x="257" y="132" className="fill-success-fill text-[9px] font-semibold">Active</text>
+          <text x="92" y="150" className="fill-fg-on-dark text-[11px]">Invoice reminder</text>
+          <rect x="248" y="140" width="52" height="14" rx="7" className="fill-success-fill/25" />
+          <text x="257" y="151" className="fill-success-fill text-[9px] font-semibold">Active</text>
+          <text x="92" y="169" className="fill-fg-on-dark text-[11px]">Review request</text>
+          <rect x="248" y="159" width="52" height="14" rx="7" className="fill-line-on-dark" />
+          <text x="257" y="170" className="fill-fg-on-dark-muted text-[9px] font-semibold">Paused</text>
         </>
       )}
 
@@ -699,8 +632,8 @@ export function TutorialArt({ kind, className }: { kind: string; className?: str
           <text x="60" y="132" className="fill-fg-on-dark text-[15px]">
             Model Context Protocol
           </text>
-          <rect x="56" y="146" width="174" height="30" rx="4" className="fill-warning-fill" />
-          <text x="64" y="169" className="fill-ink-950 text-[19px] font-semibold">
+          <rect x="56" y="146" width="174" height="30" rx="4" className="fill-primary" />
+          <text x="64" y="169" className="fill-white text-[19px] font-semibold">
             Automation
           </text>
         </>

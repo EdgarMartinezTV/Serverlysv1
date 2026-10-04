@@ -3,7 +3,6 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
 
 const PATH = "/terms-of-service";
-const EFFECTIVE = "2026-09-09";
 
 export const metadata = pageMetadata({
   title: "Terms of Service | Serverlys",
@@ -189,7 +188,7 @@ export default function TermsOfServicePage() {
       <LegalPage
         title="Terms of service"
         intro="The agreement between you and Serverlys. Written in plain language on purpose — terms nobody can read are terms nobody agreed to."
-        effective={EFFECTIVE}
+        path={PATH}
         trail={[{ name: "Home", href: "/" }, { name: "Terms of service" }]}
         sections={SECTIONS}
         contact="If a clause here does not make sense, ask. We would rather explain it now than argue about it later."

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Sans, JetBrains_Mono } from "next/font/google";
+import { DM_Sans, Noto_Sans, JetBrains_Mono } from "next/font/google";
 import { company } from "@/data/company";
 import { verification } from "@/lib/env";
 import { organizationGraph } from "@/lib/seo";
@@ -22,12 +22,16 @@ const ANNOUNCEMENT_STORAGE_KEY = `serverlys.announcement.${announcement.version}
  * Only the weights actually used are requested.
  */
 /**
- * DM Sans carries BOTH body and headings.
+ * DM Sans carries HEADINGS AND UI; Noto Sans carries BODY COPY.
  *
- * The reference sets its whole page in it — headings included — at regular
- * weight rather than semibold, which is most of why its large type reads as
- * open rather than heavy. Two families (Inter + Inter Tight) were doing a job
- * one family does here, so the second request is gone.
+ * Corrected 2026-09-19. The note here used to say the reference sets its whole
+ * page in DM Sans. It does not — its stylesheet declares DM Sans for display
+ * and UI and `Noto Sans` for running text, and the body face is the more
+ * frequently declared of the two. Matching it is why paragraph text now reads
+ * slightly larger at an unchanged `--text-body`.
+ *
+ * Headings stay at REGULAR weight rather than semibold, which is still most of
+ * why the large type reads open rather than heavy — that part was right.
  *
  * Loaded as the VARIABLE face (no `weight` array), not static 400/500 cuts.
  * Both reasons are measured, not stylistic:
@@ -45,6 +49,12 @@ const ANNOUNCEMENT_STORAGE_KEY = `serverlys.announcement.${announcement.version}
  */
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const notoSans = Noto_Sans({
+  variable: "--font-noto-sans",
   subsets: ["latin"],
   display: "swap",
 });
@@ -108,7 +118,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         instead of arriving there. This scopes the smoothness to anchors.
       */
       data-scroll-behavior="smooth"
-      className={`${dmSans.variable} ${jetbrainsMono.variable} h-full`}
+      className={`${dmSans.variable} ${notoSans.variable} ${jetbrainsMono.variable} h-full`}
     >
       <head>
         {/*

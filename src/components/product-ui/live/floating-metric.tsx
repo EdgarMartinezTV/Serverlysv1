@@ -16,7 +16,7 @@ const ACCENTS = {
   brand: { dot: "bg-primary", ring: "ring-primary/25" },
   cyan: { dot: "bg-cyan-400", ring: "ring-cyan-500/25" },
   green: { dot: "bg-success-fill", ring: "ring-green-500/25" },
-  violet: { dot: "bg-violet-500", ring: "ring-violet-500/25" },
+  violet: { dot: "bg-primary", ring: "ring-primary/25" },
 } as const;
 
 export function FloatingMetric({
@@ -44,7 +44,7 @@ export function FloatingMetric({
     >
       <span className="flex items-center gap-1.5">
         <span className={cn("h-1.5 w-1.5 shrink-0 rounded-full", tone.dot)} />
-        <span className="font-mono text-ui uppercase tracking-[0.1em] text-fg-muted">
+        <span className="text-ui text-fg-muted font-semibold">
           {label}
         </span>
       </span>

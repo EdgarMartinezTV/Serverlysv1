@@ -3,7 +3,6 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
 
 const PATH = "/privacy-policy";
-const EFFECTIVE = "2026-09-09";
 
 export const metadata = pageMetadata({
   title: "Privacy Policy | Serverlys",
@@ -183,7 +182,7 @@ export default function PrivacyPolicyPage() {
       <LegalPage
         title="Privacy policy"
         intro="What we collect, why we have it, who else sees it and what you can ask us to do about it. Written to be read rather than to be defensible."
-        effective={EFFECTIVE}
+        path={PATH}
         trail={[{ name: "Home", href: "/" }, { name: "Privacy policy" }]}
         sections={SECTIONS}
         contact="If something here is unclear, or you want to exercise one of the rights in section seven, ask us directly."

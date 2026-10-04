@@ -38,13 +38,17 @@ const BASE =
   "aria-disabled:pointer-events-none aria-disabled:opacity-50";
 
 const VARIANTS: Record<ButtonVariant, string> = {
-  /** The single highest-intent action in a view. Aim for one. */
+  /** The single highest-intent action in a view. Aim for one.
+      FLAT — no shadow. The reference's contained buttons sit flush on the
+      canvas and carry their weight with fill and label alone; the drop shadow
+      we had under this one was the other half of why our CTAs read as a
+      different component. */
   primary:
-    "bg-primary text-white shadow-e2 hover:bg-primary-hover active:bg-primary-active " +
+    "bg-primary text-white hover:bg-primary-hover active:bg-primary-active " +
     "focus-visible:outline-primary",
   /** Companion to primary. Solid surface so it holds its own on tinted bands. */
   secondary:
-    "bg-surface text-fg ring-1 ring-inset ring-line shadow-e1 " +
+    "bg-surface text-fg ring-1 ring-inset ring-line " +
     "hover:bg-canvas-secondary hover:ring-line-strong active:bg-canvas-inset " +
     "focus-visible:outline-primary",
   /** Transparent with a brand edge. For secondary CTAs on tinted surfaces. */
@@ -79,11 +83,24 @@ const VARIANTS: Record<ButtonVariant, string> = {
     "hover:bg-surface-dark-hover hover:ring-line-on-dark-hover active:bg-surface-dark-active focus-visible:outline-white",
 };
 
-/** Heights meet the 40px+ comfortable touch target; `sm` is 36px for dense UI. */
+/**
+ * Heights re-cut on the reference, 2026-09-19. Every size grew by one step and
+ * every label went 500 → 600.
+ *
+ *   sm  36 → 40   md  44 → 48   lg  48 → 56
+ *
+ * The weight is the half that matters most. The reference's contained buttons
+ * carry a 600 label; ours carried 500, and at the same size and fill a 500
+ * label is what made our CTAs read lighter than theirs beside an identical
+ * box. `nav` was already measured directly off their header CTA and is
+ * unchanged.
+ *
+ * All sizes still clear the 40px comfortable touch target.
+ */
 const SIZES: Record<ButtonSize, string> = {
-  sm: "h-9 px-3.5 text-small font-medium",
-  md: "h-11 px-5 text-small font-medium",
-  lg: "h-12 px-6 text-body font-medium",
+  sm: "h-10 px-4 text-small font-semibold",
+  md: "h-12 px-6 text-body font-semibold",
+  lg: "h-14 px-8 text-body font-semibold",
   /* Header bar only, measured off the target's own nav CTA: 40px tall, 16px
      horizontal padding, 16px / 600 label. `sm` (36px / 14px / 500) is what the
      header used to run and it sat visibly smaller than the reference beside an
@@ -94,9 +111,9 @@ const SIZES: Record<ButtonSize, string> = {
 
 /** `text` variant must not carry button padding. */
 const TEXT_SIZES: Record<ButtonSize, string> = {
-  sm: "h-auto text-small font-medium",
-  md: "h-auto text-small font-medium",
-  lg: "h-auto text-body font-medium",
+  sm: "h-auto text-small font-semibold",
+  md: "h-auto text-body font-semibold",
+  lg: "h-auto text-body font-semibold",
   nav: "h-auto text-body font-semibold",
 };
 
@@ -211,9 +228,10 @@ export function IconButton({
         BASE,
         VARIANTS[variant],
         "shrink-0 p-0",
-        size === "sm" && "h-9 w-9",
-        size === "md" && "h-11 w-11",
-        size === "lg" && "h-12 w-12",
+        size === "sm" && "h-10 w-10",
+        size === "md" && "h-12 w-12",
+        size === "lg" && "h-14 w-14",
+        size === "nav" && "h-10 w-10",
         className,
       )}
       {...rest}

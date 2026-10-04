@@ -1,16 +1,19 @@
-import Image from "next/image";
 import { JsonLd } from "@/components/ui/json-ld";
 import { Faqs } from "@/components/ref/faqs";
-import { Split } from "@/components/ref/split";
 import { groupById } from "@/data/pricing";
 import { breadcrumbGraph, faqGraph, pageMetadata, productGraph } from "@/lib/seo";
-import { FAQS, FAQ_HEAD, LAUNCH, MIGRATION, SECURITY, SPEED, SUPPORT } from "./_content";
-import { Agent } from "./_components/agent";
-import { Banner } from "./_components/banner";
-import { Email } from "./_components/email";
-import { Hero } from "./_components/hero";
+import { FAQS, FAQ_HEAD } from "./_content";
+import { PillNav } from "@/components/sections/pill-nav";
+import { Proof } from "../cloud-hosting/_components/proof";
+import { Banner } from "../cloud-hosting/_components/banner";
+import {
+  DarkBand,
+  Hero,
+  LaunchQuickly,
+  StoreAgent,
+  StoreSpeed,
+} from "./_components/sections";
 import { Pricing } from "./_components/pricing";
-import { ChatPanel } from "./_components/visuals";
 
 /**
  * Ecommerce hosting.
@@ -60,6 +63,14 @@ const FAQ_TEXT = FAQS.map((f) => ({
   scopes: [PATH],
 }));
 
+const NAV = [
+  { id: "pricing", label: "Pricing" },
+  { id: "agent", label: "AI agent" },
+  { id: "performance", label: "Performance" },
+  { id: "features", label: "Security" },
+  { id: "ecom-faq", label: "FAQ" },
+] as const;
+
 export default function EcommerceHostingPage() {
   return (
     /**
@@ -82,103 +93,27 @@ export default function EcommerceHostingPage() {
       <JsonLd data={faqGraph(FAQ_TEXT)} />
 
       <Hero />
-      <Pricing />
-
-      <Split
-        id="ecom-launch-heading"
-        title={LAUNCH.title}
-        description={LAUNCH.description}
-        items={LAUNCH.items}
-        media={
-          <Image
-            src="/Hosting-images/ecommerce-launch-quickly.png"
-            alt="The Serverlys panel adding a product, with AI generating the description, beside a WordPress site and the hosting behind it"
-            width={1536}
-            height={1024}
-            sizes="(min-width: 1280px) 600px, (min-width: 768px) 688px, 100vw"
-            className="h-auto w-full rounded-2xl"
-          />
-        }
-        reverse
-      />
-
-      <Agent />
-
-      <Split
-        id="ecom-speed-heading"
-        title={SPEED.title}
-        description={SPEED.description}
-        items={SPEED.items}
-        media={
-          <Image
-            src="/Hosting-images/Woocommerce-checkout-section.png"
-            alt="A WooCommerce order summary totalling $92 beside a sales overview, top products and store performance readout"
-            width={1403}
-            height={1121}
-            sizes="(min-width: 1280px) 600px, (min-width: 768px) 688px, 100vw"
-            className="h-auto w-full rounded-2xl"
-          />
-        }
-        reverse
-      />
-
-      <Email />
-
-      <Split
-        id="ecom-security-heading"
-        tone="dark"
-        title={SECURITY.title}
-        description={SECURITY.description}
-        items={SECURITY.items}
-        media={
-          <Image
-            src="/Hosting-images/Top-notch-security.png"
-            alt="A site in the Serverlys panel with SSL protection, cloud infrastructure and daily backups shown active"
-            width={1254}
-            height={1254}
-            sizes="(min-width: 1280px) 600px, (min-width: 768px) 688px, 100vw"
-            className="h-auto w-full rounded-2xl"
-          />
-        }
-        reverse
-      />
-
-      <Split
-        id="ecom-migration-heading"
-        tone="dark"
-        title={MIGRATION.title}
-        description={MIGRATION.description}
-        items={MIGRATION.items}
-        cta={{ label: "Request a migration", href: "/migrations" }}
-        /* Our own migration artwork rather than a second ChatPanel — the
-           support band below already uses that, and two identical panels two
-           sections apart reads as a mistake. */
-        media={
-          <Image
-            src="/Hosting-images/Migration.png"
-            alt="A store migration in progress, with products, orders, media and customers transferred"
-            width={1536}
-            height={1024}
-            sizes="(min-width: 1280px) 600px, (min-width: 768px) 688px, 100vw"
-            className="h-auto w-full rounded-2xl"
-          />
-        }
-      />
-
-      <Split
-        id="ecom-support-heading"
-        title={SUPPORT.title}
-        items={SUPPORT.items}
-        media={<ChatPanel className="aspect-[600/435] w-full" />}
-      />
-
-      <Banner />
-
+      {/* The wrapper bounds the sticky pill nav: it stops after the FAQ. */}
+      <div>
+        <PillNav items={NAV} />
+        <Pricing />
+        <LaunchQuickly />
+        <StoreAgent />
+        <StoreSpeed />
+        <DarkBand />
+        <Proof />
       <Faqs
         idPrefix="ecom"
+        id="ecom-faq"
         title={FAQ_HEAD.title}
         description={FAQ_HEAD.description}
         items={FAQS}
+      />
+      </div>
+      <Banner
+        title="Your store is one step away"
+        body="Try Serverlys ecommerce hosting risk-free. If it is not right, tell us within 30 days for a full refund."
+        href="#pricing"
       />
     </div>
   );

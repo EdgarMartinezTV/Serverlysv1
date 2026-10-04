@@ -60,7 +60,7 @@ export function AnnouncementBar() {
       className="relative bg-gradient-to-r from-brand-800 via-brand-700 to-primary text-fg-on-brand"
     >
       <div className="mx-auto flex w-full max-w-desktop items-center justify-center gap-x-3 px-12 py-2.5 sm:px-14">
-        <span className="hidden shrink-0 items-center rounded-full bg-white/20 px-2 py-0.5 font-mono text-caption uppercase text-fg-on-brand ring-1 ring-inset ring-white/30 sm:inline-flex">
+        <span className="hidden shrink-0 items-center rounded-full bg-white/20 px-2 py-0.5 text-micro text-fg-on-brand ring-1 ring-inset ring-white/30 sm:inline-flex font-semibold">
           {announcement.badge}
         </span>
 

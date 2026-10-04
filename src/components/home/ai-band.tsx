@@ -31,7 +31,7 @@ export function AiBand() {
       className="relative isolate overflow-hidden bg-canvas-dark py-14 sm:py-24 lg:py-28"
     >
       {/*
-        ⚠ CYAN, NOT VIOLET. This wash was `rgb(141 89 255 / 0.20)` —
+        ⚠ CYAN, NOT VIOLET. This wash was `rgb(0 0 255 / 0.20)` —
         `violet-500`. Recoloured rather than deleted for the same reason as the
         hero's: each of these dark bands is lit by TWO sources, and dropping one
         leaves a flat half.
@@ -55,7 +55,7 @@ export function AiBand() {
         {/* Heading, deliberately off to one side. */}
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:items-end">
           <div className="max-w-2xl">
-            <span className="font-mono text-caption uppercase text-primary-on-dark">
+            <span className="text-micro text-primary-on-dark font-semibold">
               AI that works your hours
             </span>
             <h2 id="ai-band-title" className="mt-4 text-h1 text-white">

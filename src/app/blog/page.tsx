@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { Container } from "@/components/ui/container";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { Section } from "@/components/ui/section";
 import { Badge } from "@/components/ui/badge";
 import { FinalCta } from "@/components/sections/final-cta";
@@ -13,6 +11,8 @@ import {
   readingMinutes,
 } from "@/data/articles";
 import { pageMetadata, breadcrumbGraph, collectionGraph } from "@/lib/seo";
+import { ArticleThumb } from "./_components/article-thumb";
+import { PageHero } from "../resources/_components/page-hero";
 
 const PATH = "/blog";
 
@@ -67,56 +67,49 @@ export default function BlogIndexPage() {
         })}
       />
 
-      <section className="relative isolate overflow-hidden bg-canvas-abyss">
-        <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(60%_55%_at_25%_-5%,rgb(34_126_255/0.3)_0%,transparent_68%)]" />
-        <div aria-hidden="true" className="absolute inset-0 bg-grid-dark" />
-        <Container className="relative pb-16 pt-8 sm:pb-20 sm:pt-10">
-          <Breadcrumbs trail={[{ name: "Home", href: "/" }, { name: "Blog" }]} tone="dark" />
-          <div className="mt-10 max-w-2xl">
-            <span className="font-mono text-caption uppercase text-accent-on-dark">Blog</span>
-            <h1 className="mt-4 text-h1 text-white">Things worth knowing before you buy</h1>
-            <p className="mt-5 text-body-lg text-fg-on-dark-secondary">
-              Guides on what hosting really costs, moving a site without
-              breaking it, making pages fast, and where AI agents earn their
-              keep. No listicles.
-            </p>
-          </div>
-          {/*
-            In-page anchors, not links to category routes. There are no
-            category pages: with the whole archive grouped by subject further
-            down this page, a separate route per category would be eight URLs
-            whose entire content already exists here.
-          */}
-          <ul className="mt-8 flex flex-wrap gap-2">
-            {articleCategories.map((c) => (
-              <li key={c}>
-                <a
-                  href={`#${categorySlug(c)}`}
-                  className="inline-flex min-h-6 items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-caption font-medium text-fg-on-dark-secondary ring-1 ring-inset ring-white/15 transition-colors hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                >
-                  {c}
-                  <span className="text-fg-on-dark-muted">{articlesByCategory(c).length}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </Container>
-      </section>
+      <PageHero
+        center
+        trail={[{ name: "Home", href: "/" }, { name: "Blog" }]}
+        label="Blog"
+        title="Things worth knowing before you buy"
+        lede={
+          <p>
+            Guides on what hosting really costs, moving a site without breaking it, making
+            pages fast, and where AI agents earn their keep. No listicles.
+          </p>
+        }
+      >
+        {/* In-page anchors to the grouped archive below; there are no
+            category routes (see the note on the archive). */}
+        <ul className="mt-8 flex flex-wrap justify-center gap-2">
+          {articleCategories.map((c) => (
+            <li key={c}>
+              <a
+                href={`#${categorySlug(c)}`}
+                className="inline-flex min-h-10 items-center gap-2 rounded-full bg-canvas-secondary px-4 text-small font-medium text-fg ring-1 ring-line transition-colors hover:bg-brand-50 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              >
+                {c}
+                <span className="text-fg-muted">{articlesByCategory(c).length}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </PageHero>
 
       <Section>
         {/* Lead article, given real hierarchy rather than an identical card. */}
         <Link
           href={`/blog/${lead.slug}`}
-          className="group grid gap-8 rounded-2xl bg-canvas-secondary p-8 ring-1 ring-inset ring-line transition-colors hover:bg-canvas-inset focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:p-10 lg:grid-cols-[1.4fr_1fr] lg:items-center"
+          className="group grid gap-8 rounded-3xl bg-canvas-secondary p-4 transition-colors hover:bg-brand-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:p-5 lg:grid-cols-[1.1fr_1fr] lg:items-center"
         >
-          <div>
+          <div className="p-4 sm:p-6">
             <div className="flex flex-wrap items-center gap-3">
               <Badge>{lead.category}</Badge>
               <span className="text-caption text-fg-muted">
                 {formatDate(lead.published)} · {readingMinutes(lead)} min read
               </span>
             </div>
-            <h2 className="mt-4 text-h3 text-fg group-hover:text-primary">{lead.title}</h2>
+            <h2 className="display-md mt-4 text-fg group-hover:text-primary">{lead.title}</h2>
             <p className="mt-4 max-w-[58ch] text-body text-fg-secondary">{lead.description}</p>
             <span className="mt-6 inline-flex items-center gap-1.5 text-small font-semibold text-primary">
               Read the guide
@@ -125,33 +118,24 @@ export default function BlogIndexPage() {
               </svg>
             </span>
           </div>
-          <div aria-hidden="true" className="hidden rounded-xl bg-canvas-abyss p-8 lg:block">
-            <div className="flex flex-col gap-3">
-              <div className="h-2 w-1/3 rounded-full bg-primary/60" />
-              <div className="h-2 w-full rounded-full bg-white/12" />
-              <div className="h-2 w-5/6 rounded-full bg-white/12" />
-              <div className="h-2 w-11/12 rounded-full bg-white/12" />
-              <div className="mt-3 h-2 w-1/4 rounded-full bg-accent-on-dark/60" />
-              <div className="h-2 w-4/5 rounded-full bg-white/12" />
-              <div className="h-2 w-2/3 rounded-full bg-white/12" />
-            </div>
-          </div>
+          <ArticleThumb category={lead.category} size="lg" className="aspect-[16/10] rounded-2xl lg:order-first" />
         </Link>
 
-        <ul className="mt-8 grid gap-px overflow-hidden rounded-xl bg-line sm:grid-cols-2">
+        <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {recent.map((a) => (
-            <li key={a.slug} className="bg-canvas">
+            <li key={a.slug}>
               <Link
                 href={`/blog/${a.slug}`}
-                className="group flex h-full flex-col gap-3 p-7 transition-colors hover:bg-canvas-secondary focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary"
+                className="group flex h-full flex-col gap-3 rounded-2xl bg-canvas p-3 pb-6 ring-1 ring-line transition-shadow hover:shadow-e3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
-                <div className="flex flex-wrap items-center gap-3">
+                <ArticleThumb category={a.category} className="aspect-[16/9]" />
+                <div className="flex flex-wrap items-center gap-3 px-3 pt-2">
                   <Badge>{a.category}</Badge>
                   <span className="text-caption text-fg-muted">{readingMinutes(a)} min read</span>
                 </div>
-                <h3 className="text-body-lg font-semibold text-fg group-hover:text-primary">{a.title}</h3>
-                <p className="text-small text-fg-secondary">{a.description}</p>
-                <span className="mt-auto pt-3 text-caption text-fg-muted">{formatDate(a.published)}</span>
+                <h3 className="px-3 text-body-lg font-medium text-fg group-hover:text-primary">{a.title}</h3>
+                <p className="px-3 text-small text-fg-secondary">{a.description}</p>
+                <span className="mt-auto px-3 pt-3 text-caption text-fg-muted">{formatDate(a.published)}</span>
               </Link>
             </li>
           ))}
@@ -160,7 +144,7 @@ export default function BlogIndexPage() {
 
       {/* The full archive, grouped. Every article is linked from here. */}
       <Section surface="subtle">
-        <h2 className="text-h3 text-fg">Everything, by subject</h2>
+        <h2 className="display-md text-fg">Everything, by subject</h2>
         <p className="mt-4 max-w-[60ch] text-body text-fg-secondary">
           {articles.length} articles across {articleCategories.length} subjects.
         </p>
@@ -171,7 +155,7 @@ export default function BlogIndexPage() {
             return (
               <div key={category} id={categorySlug(category)} className="scroll-mt-24">
                 <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-line pb-4">
-                  <h3 className="text-h4 text-fg">{category}</h3>
+                  <h3 className="text-h4 font-medium text-fg">{category}</h3>
                   <span className="text-small text-fg-muted">
                     {posts.length} {posts.length === 1 ? "article" : "articles"}
                   </span>

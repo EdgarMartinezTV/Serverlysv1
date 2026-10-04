@@ -203,7 +203,10 @@ export function SiteHeader() {
         ref={headerRef}
         data-site-header=""
         className={cn(
-          "sticky top-0 z-50 transition-[background-color,box-shadow,transform] duration-normal ease-hover",
+          /* DM Sans across the whole header (2026-10-03): links 14/400, action
+             buttons 16/600 — the reference's header type, measured. The body
+             face (Noto Sans) read narrower and smaller at the same 14px. */
+          "sticky top-0 z-50 font-display transition-[background-color,box-shadow,transform] duration-normal ease-hover",
           transparent && "bg-transparent",
           !transparent && dark && "bg-canvas-abyss",
           /* OPAQUE once scrolled. It used to stay `bg-canvas/85` with a
@@ -271,10 +274,10 @@ export function SiteHeader() {
                       "rounded-sm py-2 text-small font-normal leading-5 transition-colors duration-fast",
                       "focus-visible:outline-2 focus-visible:outline-offset-4",
                       dark
-                        ? "text-fg-on-dark-secondary hover:text-white focus-visible:outline-white"
+                        ? "text-[#f8f9fa] hover:text-white focus-visible:outline-white"
                         : active
                           ? "text-primary focus-visible:outline-primary"
-                          : "text-fg-secondary hover:text-fg focus-visible:outline-primary",
+                          : "text-fg hover:text-primary focus-visible:outline-primary",
                     )}
                   >
                     {item.label}
@@ -325,12 +328,12 @@ export function SiteHeader() {
                       dark
                         ? isOpen
                           ? "text-white focus-visible:outline-white"
-                          : "text-fg-on-dark-secondary hover:text-white focus-visible:outline-white"
+                          : "text-[#f8f9fa] hover:text-white focus-visible:outline-white"
                         : isOpen
                           ? "text-fg focus-visible:outline-primary"
                           : active
                             ? "text-primary focus-visible:outline-primary"
-                            : "text-fg-secondary hover:text-fg focus-visible:outline-primary",
+                            : "text-fg hover:text-primary focus-visible:outline-primary",
                     )}
                   >
                     {item.label}

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ProductHero } from "@/components/sections/product-hero";
-import { Section, SectionHeader } from "@/components/ui/section";
+import { Band, Heading, Pill } from "../hosting/_components/band";
 import { Button } from "@/components/ui/button";
 import { FaqSection } from "@/components/sections/faq";
 import { FinalCta } from "@/components/sections/final-cta";
@@ -69,7 +69,7 @@ export default function VpsHostingPage() {
       <JsonLd data={faqGraph(FAQS)} />
 
       <ProductHero
-        eyebrow="VPS hosting"
+        eyebrow="VPS hosting · coming soon"
         title="Root access, and a slice that is actually yours"
         lede="A guaranteed allocation of CPU, memory and NVMe, with full system access. Install what the application needs instead of asking whether you are allowed to."
         breadcrumb={[
@@ -88,29 +88,34 @@ export default function VpsHostingPage() {
         visual={<TerminalMock />}
       />
 
-      {/* Capability strip — what root actually buys you, in plain terms. */}
-      <Section spacing="tight">
-        <SectionHeader
-          eyebrow="What changes"
+      {/* What root buys you, in plain terms. */}
+      <Band labelledBy="vps-cap-heading">
+        <Heading
+          id="vps-cap-heading"
           title="The things shared hosting will not let you do"
           lede="This is the whole reason the tier exists. If none of it applies to you, save the money and stay where you are."
         />
-        <ul className="mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
-          {[
-            ["Choose your runtime", "A specific Node, Python, Ruby or PHP version — and keep it there while the rest of the world moves."],
-            ["Install system packages", "Image libraries, a headless browser, a search engine, a message broker. apt is yours."],
-            ["Run background work", "Queues, workers, schedulers and anything long-lived, rather than praying a web request finishes in time."],
-            ["Tune the web server", "Your own nginx or Apache configuration, your own cache rules, your own limits."],
-            ["Guaranteed resources", "The allocation is reserved. A neighbour having a spike is not your problem any more."],
-            ["Your own firewall", "Ports, rules and access policy set the way your security review wants them."],
-          ].map(([t, d]) => (
-            <li key={t} className="border-t border-line pt-5">
-              <h3 className="text-body font-semibold text-fg">{t}</h3>
-              <p className="mt-2 text-small text-fg-secondary">{d}</p>
+        <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {(
+            [
+              ["Choose your runtime", "A specific Node, Python, Ruby or PHP version, held there while the rest of the world moves.", "$ nvm use 20.11"],
+              ["Install system packages", "Image libraries, a headless browser, a search engine, a message broker.", "$ apt install imagemagick"],
+              ["Run background work", "Queues, workers and schedulers, instead of hoping a web request finishes in time.", "$ systemctl start worker"],
+              ["Tune the web server", "Your own nginx or Apache config, cache rules and limits.", "$ nginx -t && reload"],
+              ["Guaranteed resources", "The allocation is reserved. A neighbour's spike is not your problem.", "4 vCPU · 8 GB reserved"],
+              ["Your own firewall", "Ports, rules and access policy set the way your security review wants.", "$ ufw allow 443/tcp"],
+            ] as const
+          ).map(([t, d, cmd]) => (
+            <li key={t} className="flex flex-col rounded-2xl bg-canvas-secondary p-6">
+              <h3 className="text-body-lg font-medium text-fg">{t}</h3>
+              <p className="mt-2 flex-1 text-small text-fg-secondary">{d}</p>
+              <code aria-hidden="true" className="mt-5 block truncate rounded-lg bg-[#0d1117] px-3 py-2 font-mono text-[12px] text-[#7ee787]">
+                {cmd}
+              </code>
             </li>
           ))}
         </ul>
-      </Section>
+      </Band>
 
       <ShowcaseSplit
         id="managed"
@@ -129,74 +134,60 @@ export default function VpsHostingPage() {
         bleed
       />
 
-      {/* Sizing guidance — a genuinely useful table, not a spec dump. */}
-      <Section surface="dark">
-        <SectionHeader
-          eyebrow="Sizing"
-          tone="dark"
+      {/* Sizing guidance. */}
+      <Band tone="dark" labelledBy="vps-size-heading">
+        <Heading
+          id="vps-size-heading"
+          dark
           title="Start smaller than you think"
-          lede="Resizing is prorated and takes minutes. Over-buying on day one is the expensive mistake, not under-buying."
+          lede="Resizing will be prorated and quick. Over-buying on day one is the expensive mistake, not under-buying."
         />
-        <div className="mt-12 overflow-x-auto">
-          <table className="w-full min-w-[42rem] border-collapse text-left">
-            <caption className="sr-only">
-              Guidance on VPS sizing by workload
-            </caption>
-            <thead>
-              <tr className="border-b border-white/15">
-                {["If you are running", "Start around", "Watch"].map((h) => (
-                  <th key={h} scope="col" className="pb-3 pr-6 font-mono text-caption uppercase tracking-wider text-fg-on-dark-muted">
-                    {h}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/10">
-              {[
-                ["One busy WordPress site with a cache", "2 vCPU · 4 GB", "PHP worker count before CPU"],
-                ["A Node or Python application", "2 vCPU · 4 GB", "Memory, first and always"],
-                ["App plus its own database", "4 vCPU · 8 GB", "Disk I/O and connection limits"],
-                ["Several client sites on one box", "4 vCPU · 8 GB", "Memory, then storage"],
-                ["Anything with queues or media processing", "4 vCPU · 16 GB", "CPU during the burst, not the average"],
-              ].map(([a, b, c]) => (
-                <tr key={a}>
-                  <td className="py-4 pr-6 text-body text-white">{a}</td>
-                  <td className="py-4 pr-6 font-mono text-small text-accent-on-dark">{b}</td>
-                  <td className="py-4 text-small text-fg-on-dark-secondary">{c}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <p className="mt-8 max-w-2xl text-small text-fg-on-dark-muted">
-          These are starting points for a conversation, not a quote. Sizing
-          depends on what your code does per request, and the only honest way to
-          set it is to measure for a couple of weeks after you move.
+        <ul className="mt-12 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {[
+            ["One busy WordPress site with a cache", "2 vCPU · 4 GB", "PHP worker count before CPU"],
+            ["A Node or Python application", "2 vCPU · 4 GB", "Memory, first and always"],
+            ["App plus its own database", "4 vCPU · 8 GB", "Disk I/O and connection limits"],
+            ["Several client sites on one box", "4 vCPU · 8 GB", "Memory, then storage"],
+            ["Queues or media processing", "4 vCPU · 16 GB", "CPU during the burst, not the average"],
+          ].map(([a, b, c]) => (
+            <li key={a} className="rounded-2xl bg-white/[0.06] p-6 ring-1 ring-white/10">
+              <p className="text-body-lg font-medium text-white">{a}</p>
+              <p className="mt-4 flex items-center gap-2">
+                <Pill tone="on-dark">Start around</Pill>
+                <span className="text-body font-semibold text-white">{b}</span>
+              </p>
+              <p className="mt-3 text-small text-fg-on-dark-secondary">Watch: {c}</p>
+            </li>
+          ))}
+        </ul>
+        <p className="mx-auto mt-10 max-w-2xl text-center text-small text-fg-on-dark-secondary">
+          Starting points for a conversation, not a quote. The honest way to size is to measure
+          for a couple of weeks after you move.
         </p>
-      </Section>
+      </Band>
 
-      <Section surface="subtle" spacing="tight">
-        <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
+      <Band tone="subtle" labelledBy="vps-root-heading">
+        <div className="flex flex-col items-start justify-between gap-6 rounded-3xl bg-canvas p-8 ring-1 ring-line sm:flex-row sm:items-center sm:p-10">
           <div>
-            <h2 className="text-h4 text-fg">Do you actually need root?</h2>
-            <p className="mt-2 max-w-2xl text-body text-fg-secondary">
+            <h2 id="vps-root-heading" className="text-h3 font-medium tracking-[-0.02em] text-fg">Do you actually need root?</h2>
+            <p className="mt-3 max-w-2xl text-body text-fg-secondary">
               If the honest answer is no,{" "}
-              <Link href="/cloud-hosting" className="font-medium text-primary hover:text-primary-hover">
+              <Link href="/cloud-hosting" className="font-semibold text-primary hover:text-primary-hover">
                 cloud hosting
               </Link>{" "}
-              gives you the headroom without the administration. If the answer
-              is yes and the load is sustained,{" "}
-              <Link href="/dedicated-servers" className="font-medium text-primary hover:text-primary-hover">
+              gives you the headroom without the administration, and it is available today. If
+              the answer is yes and the load is sustained,{" "}
+              <Link href="/dedicated-servers" className="font-semibold text-primary hover:text-primary-hover">
                 a dedicated server
               </Link>{" "}
               may be cheaper per unit of work.
             </p>
           </div>
-          <Button href={billing.sales} variant="secondary" external>
+          <Button href={billing.sales} external>
             Talk it through
           </Button>
         </div>
-      </Section>
+      </Band>
 
       <FaqSection items={FAQS} />
       <FinalCta />

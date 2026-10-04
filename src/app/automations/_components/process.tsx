@@ -1,6 +1,6 @@
-import { Check, CtaButton, Grid, Headline } from "@/components/ref/kit";
+import { CtaButton, Grid, Headline } from "@/components/ref/kit";
 import { billing } from "@/data/company";
-import { INCLUDED, PROCESS } from "../_content";
+import { PROCESS } from "../_content";
 
 /**
  * "How an automation gets built".
@@ -52,7 +52,6 @@ export function Process() {
           ))}
         </ol>
 
-        <Included />
 
         <div className="mt-10 flex justify-center">
           <CtaButton href={billing.sales} tone="on-dark">
@@ -71,35 +70,3 @@ export function Process() {
  * (what you can see / what we handle / what stays yours) and re-flowing them
  * into row order would scramble that.
  */
-function Included() {
-  return (
-    <div className="mt-4 rounded-3xl bg-surface-dark px-3 py-8 xl:px-12">
-      <h3 className="text-center text-[20px] leading-7 font-semibold tracking-[-0.1px] text-fg-on-dark lg:text-[24px] lg:leading-8 lg:tracking-[-0.12px]">
-        {INCLUDED.titleBefore}
-        <b className="font-semibold text-brand-400">{INCLUDED.titleAccent}</b>
-        {INCLUDED.titleAfter}
-      </h3>
-
-      <div className="mt-8 flex flex-col items-center gap-8 xl:flex-row xl:items-start xl:justify-center xl:gap-x-24">
-        {INCLUDED.columns.map((column, i) => (
-          <ul key={i} className="flex flex-col gap-3">
-            {column.map((item) => (
-              <li
-                key={item.label}
-                className="flex items-center gap-2 text-[14px] leading-5 text-fg-on-dark"
-              >
-                <Check className="size-5 shrink-0 text-success-fill" />
-                <span>{item.label}</span>
-                {item.addon && (
-                  <span className="shrink-0 text-micro font-semibold text-brand-400">
-                    {INCLUDED.addonLabel}
-                  </span>
-                )}
-              </li>
-            ))}
-          </ul>
-        ))}
-      </div>
-    </div>
-  );
-}

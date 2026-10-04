@@ -542,6 +542,63 @@ export const routes: readonly RouteMeta[] = [
     changeFrequency: "yearly",
     parents: ["/"],
   },
+
+  /* Added 2026-09-19. Coverage gap closed against a registrar-grade document
+     set, limited to documents that are TRUE OF THIS BUSINESS — no affiliate,
+     referral or reseller agreement, because those programmes do not exist, and
+     none of the registrar-only policies (NPRD, expired-registration recovery,
+     change of registrant), because that obligation sits with the registrar of
+     record. See the note on /domain-registration-agreement. */
+  {
+    path: "/information-security-policy",
+    name: "Information security policy",
+    group: "legal",
+    built: true,
+    indexable: true,
+    priority: 0.3,
+    changeFrequency: "yearly",
+    parents: ["/"],
+  },
+  {
+    path: "/responsible-disclosure-policy",
+    name: "Responsible disclosure policy",
+    group: "legal",
+    built: true,
+    indexable: true,
+    priority: 0.3,
+    changeFrequency: "yearly",
+    parents: ["/"],
+  },
+  {
+    path: "/abuse-handling-policy",
+    name: "Abuse handling policy",
+    group: "legal",
+    built: true,
+    indexable: true,
+    priority: 0.3,
+    changeFrequency: "yearly",
+    parents: ["/"],
+  },
+  {
+    path: "/ai-services-terms",
+    name: "AI services terms",
+    group: "legal",
+    built: true,
+    indexable: true,
+    priority: 0.3,
+    changeFrequency: "yearly",
+    parents: ["/"],
+  },
+  {
+    path: "/customer-service-policy",
+    name: "Customer service policy",
+    group: "legal",
+    built: true,
+    indexable: true,
+    priority: 0.3,
+    changeFrequency: "yearly",
+    parents: ["/"],
+  },
 ];
 
 const byPath = new Map(routes.map((r) => [r.path, r]));

@@ -20,7 +20,6 @@ import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
  */
 
 const PATH = "/acceptable-use-policy";
-const EFFECTIVE = "2026-09-14";
 
 export const metadata = pageMetadata({
   title: "Acceptable Use Policy | Serverlys",
@@ -221,7 +220,7 @@ export default function AcceptableUsePolicyPage() {
       <LegalPage
         title="Acceptable Use Policy"
         intro="What you may and may not run on Serverlys infrastructure, how we handle breaches, and how to report something you have found."
-        effective={EFFECTIVE}
+        path={PATH}
         sections={SECTIONS}
         trail={[{ name: "Home", href: "/" }, { name: "Acceptable use policy" }]}
         contact="Questions about this policy, or want to check whether something is allowed before you build it? Ask first — we would rather answer than suspend."

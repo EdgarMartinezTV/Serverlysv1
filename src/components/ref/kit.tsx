@@ -114,7 +114,7 @@ export function Headline({
       <h2
         id={id}
         className={cn(
-          "max-w-[720px] text-[36px] leading-[44px] font-normal tracking-[-0.18px] lg:text-[48px] lg:leading-[56px] lg:tracking-[-0.24px]",
+          "display-lg max-w-[760px]",
           dark ? "text-fg-on-dark" : "text-fg",
         )}
       >
@@ -223,7 +223,7 @@ export function PillLabel({
         "inline-flex shrink-0 items-center rounded-md px-2 py-0.5 text-micro font-semibold",
         tone === "brand" && "bg-primary-soft text-primary",
         tone === "success" && "bg-success-soft text-success",
-        tone === "on-dark" && "bg-white/15 text-primary-on-dark",
+        tone === "on-dark" && "bg-white/15 text-white",
         className,
       )}
     >

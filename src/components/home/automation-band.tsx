@@ -40,7 +40,7 @@ export function AutomationBand() {
     >
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(50%_44%_at_18%_0%,rgb(95_80_255/0.24)_0%,transparent_70%)]"
+        className="absolute inset-0 bg-[radial-gradient(50%_44%_at_18%_0%,rgb(0_0_255/0.24)_0%,transparent_70%)]"
       />
       <div aria-hidden="true" className="absolute inset-0 bg-grid-dark" />
 
@@ -55,7 +55,7 @@ export function AutomationBand() {
         */}
         <div className="grid gap-10 lg:grid-cols-[minmax(0,19rem)_minmax(0,1fr)] lg:items-center lg:gap-14">
           <div>
-            <span className="font-mono text-caption uppercase text-primary-on-dark">
+            <span className="text-micro text-primary-on-dark font-semibold">
               Automations
             </span>
             <h2 id="automation-title" className="mt-4 text-h2 text-white">

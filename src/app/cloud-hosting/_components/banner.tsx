@@ -10,12 +10,22 @@ import { CtaButton } from "@/components/ref/kit";
  * in a 530px column the line breaks after "that", which is the break the
  * reference has.
  */
-export function Banner() {
+export function Banner({
+  title = "Your website is one step away",
+  body = "Try Serverlys cloud hosting risk-free. If it is not right, tell us within 30 days for a full refund.",
+  href = "#pricing",
+}: { title?: string; body?: string; href?: string } = {}) {
   return (
-    <section aria-labelledby="cloud-banner-heading" className="relative overflow-hidden bg-primary">
+    <section
+      aria-labelledby="cloud-banner-heading"
+      className="relative overflow-hidden bg-primary"
+    >
       {/* Decorative mark — two skewed slabs reading as a chevron, in the same
           role as the reference's oversized logo silhouette. */}
-      <span aria-hidden className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/2 md:block">
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/2 md:block"
+      >
         <span className="absolute top-0 left-[10%] h-1/2 w-[38%] -skew-x-[24deg] bg-brand-800/45" />
         <span className="absolute bottom-0 left-[34%] h-1/2 w-[38%] -skew-x-[24deg] bg-brand-800/45" />
         <span className="absolute top-[28%] left-[24%] h-[44%] w-[52%] -skew-x-[24deg] bg-brand-800/25" />
@@ -27,17 +37,14 @@ export function Banner() {
         {/* 560, not the reference's 530 — see the note on Headline in kit.tsx.
             At 530 our wider DM Sans breaks this to three lines. */}
         <div className="max-w-[560px] py-16 xl:py-26">
-          <h2
-            id="cloud-banner-heading"
-            className="text-[48px] leading-[56px] font-normal tracking-[-0.24px] text-white lg:text-[80px] lg:leading-[88px] lg:tracking-[-0.4px]"
-          >
-            {BANNER.title}
+          <h2 id="cloud-banner-heading" className="display-xl text-white">
+            {title}
           </h2>
           <p className="mt-4 max-w-[360px] text-body text-white">
-            {BANNER.description}
+            {body}
           </p>
           <div className="mt-6">
-            <CtaButton href="#pricing" tone="light">
+            <CtaButton href={href} tone="light">
               {BANNER.cta}
             </CtaButton>
           </div>

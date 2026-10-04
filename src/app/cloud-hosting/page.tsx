@@ -3,14 +3,15 @@ import { breadcrumbGraph, faqGraph, pageMetadata, productGraph } from "@/lib/seo
 import { groupById } from "@/data/pricing";
 import { FAQS, FAQ_HEAD } from "./_content";
 import { Banner } from "./_components/banner";
-import { Bento } from "./_components/bento";
-import { Comparison } from "./_components/comparison";
 import { Dashboard } from "./_components/dashboard";
 import { Faqs } from "@/components/ref/faqs";
 import { Hero } from "./_components/hero";
 import { Pricing } from "./_components/pricing";
-import { WhatIs } from "./_components/what-is";
-import { Reviews } from "./_components/reviews";
+import { PillNav } from "@/components/sections/pill-nav";
+import { Launch } from "./_components/launch";
+import { Performance } from "./_components/performance";
+import { Security } from "./_components/security";
+import { Proof } from "./_components/proof";
 
 /**
  * Cloud hosting.
@@ -36,9 +37,9 @@ import { Reviews } from "./_components/reviews";
 
 const PATH = "/cloud-hosting";
 
-const TITLE = "Managed cloud hosting | 4X more speed | 99.9% uptime";
+const TITLE = "Managed cloud hosting | NVMe, LiteSpeed and free migration";
 const DESCRIPTION =
-  "Our cloud hosting offers up to 20X more resources compared to traditional web hosting, providing great power and stability for your online success.";
+  "Managed cloud hosting on NVMe and LiteSpeed, with free migration, daily backups and the renewal price shown on every plan. 30-day money-back guarantee.";
 
 export const metadata = pageMetadata({
   title: TITLE,
@@ -65,7 +66,9 @@ const BREADCRUMB = [
 const FAQ_TEXT = FAQS.map((f) => ({
   question: f.q,
   answer: f.a
-    .map((b) => (b.type === "ul" ? b.items.join(" ") : b.runs.map((r) => r.text).join("")))
+    .map((b) =>
+      b.type === "ul" ? b.items.join(" ") : b.runs.map((r) => r.text).join(""),
+    )
     .join(" ")
     .replace(/\s+/g, " ")
     .trim(),
@@ -73,6 +76,15 @@ const FAQ_TEXT = FAQS.map((f) => ({
   // with this page rather than in data/faqs.ts, so the scope is just this path.
   scopes: [PATH],
 }));
+
+const NAV = [
+  { id: "pricing", label: "Pricing" },
+  { id: "build", label: "Build" },
+  { id: "performance", label: "Performance" },
+  { id: "security", label: "Security" },
+  { id: "ai-agent", label: "AI agent" },
+  { id: "cloud-faq", label: "FAQ" },
+] as const;
 
 export default function CloudHostingPage() {
   return (
@@ -97,19 +109,24 @@ export default function CloudHostingPage() {
       <JsonLd data={faqGraph(FAQ_TEXT)} />
 
       <Hero />
-      <Pricing />
-      <WhatIs />
-      <Comparison />
-      <Bento />
-      <Reviews />
-      <Dashboard />
+      {/* The wrapper bounds the sticky on-page nav: it stops after the FAQ. */}
+      <div>
+        <PillNav items={NAV} />
+        <Pricing />
+        <Launch />
+        <Performance />
+        <Security />
+        <Dashboard />
+        <Proof />
+        <Faqs
+          idPrefix="cloud"
+          id="cloud-faq"
+          title={FAQ_HEAD.title}
+          description={FAQ_HEAD.description}
+          items={FAQS}
+        />
+      </div>
       <Banner />
-      <Faqs
-        idPrefix="cloud"
-        title={FAQ_HEAD.title}
-        description={FAQ_HEAD.description}
-        items={FAQS}
-      />
     </div>
   );
 }

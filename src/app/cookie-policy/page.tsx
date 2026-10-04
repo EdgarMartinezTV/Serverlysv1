@@ -19,7 +19,6 @@ import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
  */
 
 const PATH = "/cookie-policy";
-const EFFECTIVE = "2026-09-14";
 
 export const metadata = pageMetadata({
   title: "Cookie Policy | Serverlys",
@@ -137,7 +136,7 @@ export default function CookiePolicyPage() {
       <LegalPage
         title="Cookie Policy"
         intro="What we store in your browser, what we deliberately do not, and how to change your mind at any time."
-        effective={EFFECTIVE}
+        path={PATH}
         sections={SECTIONS}
         trail={[{ name: "Home", href: "/" }, { name: "Cookie policy" }]}
         contact="Questions about what this site stores, or a request about your data? The privacy policy sets out your rights and how to exercise them."

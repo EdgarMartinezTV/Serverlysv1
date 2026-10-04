@@ -96,7 +96,7 @@ function Visual({ id }: { id: string }) {
         <div className="absolute inset-0 bg-grid-dark opacity-70" />
         <div className="absolute inset-x-5 bottom-4 rounded-lg bg-white/10 p-3 ring-1 ring-inset ring-white/15 backdrop-blur-sm">
           <div className="flex items-center justify-between">
-            <span className="font-mono text-caption uppercase text-white/70">
+            <span className="text-micro text-white/70 font-semibold">
               Turbo Cloud
             </span>
             <span className="h-1.5 w-1.5 rounded-full bg-success-fill" />
@@ -123,7 +123,7 @@ function Visual({ id }: { id: string }) {
           <p className="font-mono text-caption text-fg-muted">yourbusiness.com</p>
         </div>
         <div className="absolute inset-x-5 bottom-5 flex items-center justify-between rounded-lg bg-success-soft px-3 py-2.5 shadow-e2">
-          <span className="font-mono text-caption uppercase text-success">
+          <span className="text-micro text-success font-semibold">
             Available
           </span>
           <span className="tabular text-small font-semibold text-fg">$14.95</span>

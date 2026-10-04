@@ -1,7 +1,5 @@
-import { Section, SectionHeader } from "@/components/ui/section";
+import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/animations/reveal";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { formatPrice, groupById } from "@/data/pricing";
 
 /**
@@ -64,31 +62,53 @@ export function SetupsGrid() {
     },
   ];
 
+  /* 2026-10-03: varied surfaces, so the grid reads as a wall of different
+     businesses rather than six copies of one card. The order of tones is
+     fixed, not random, so the masonry balances at two and three columns. */
+  const tones = [
+    "bg-brand-50 text-fg",
+    "bg-canvas-abyss text-white",
+    "bg-canvas ring-1 ring-line text-fg",
+    "bg-gradient-to-br from-brand-500 to-brand-700 text-white",
+    "bg-canvas-secondary text-fg",
+    "bg-brand-50 text-fg",
+  ];
+
   return (
     <Section surface="light" spacing="base" width="wide" labelledBy="setups-heading">
-      <Reveal>
-        <SectionHeader
-          eyebrow="Typical setups"
-          title="What people put together here"
-          lede="Six common shapes, priced from the same table as everything else on this page."
-          id="setups-heading"
-          align="center"
-        />
+      <Reveal className="mx-auto max-w-[760px] text-center">
+        <h2 id="setups-heading" className="display-lg text-fg">
+          What people put together here
+        </h2>
+        <p className="mt-5 text-body-lg text-fg-secondary">
+          Six common shapes, priced from the same table as everything else on this page.
+        </p>
       </Reveal>
 
-      <Reveal delay={80} className="mt-12">
-        <ul className="gap-5 sm:columns-2 lg:columns-3">
-          {setups.map((setup) => (
-            <li key={setup.title} className="mb-5 break-inside-avoid">
-              <Card variant="elevated" padding="lg">
-                <Badge tone="brand" className="w-fit">
-                  {setup.tag}
-                </Badge>
-                <h3 className="mt-4 text-h4 text-fg">{setup.title}</h3>
-                <p className="mt-3 text-body text-fg-secondary">{setup.body}</p>
-              </Card>
-            </li>
-          ))}
+      <Reveal delay={80} className="mt-14">
+        <ul className="gap-4 sm:columns-2 lg:columns-3">
+          {setups.map((setup, i) => {
+            const dark = i === 1 || i === 3;
+            return (
+              <li key={setup.title} className="mb-4 break-inside-avoid">
+                <article className={`rounded-2xl p-7 ${tones[i]} ${i % 3 === 1 ? "lg:pb-16" : ""}`}>
+                  <span
+                    className={`inline-flex rounded-md px-2 py-0.5 text-micro font-semibold ${
+                      dark ? "bg-white/15 text-white" : "bg-white text-primary shadow-e1"
+                    }`}
+                  >
+                    {setup.tag}
+                  </span>
+                  <h3 className={`mt-10 text-[22px] leading-7 font-medium tracking-[-0.02em] ${dark ? "text-white" : "text-fg"}`}>
+                    {setup.title}
+                  </h3>
+                  <p className={`mt-3 text-small ${dark ? "text-fg-on-dark-secondary" : "text-fg-secondary"}`}>
+                    {setup.body}
+                  </p>
+                </article>
+              </li>
+            );
+          })}
         </ul>
       </Reveal>
     </Section>

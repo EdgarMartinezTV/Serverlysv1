@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { Container } from "@/components/ui/container";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { Badge } from "@/components/ui/badge";
 import { FinalCta } from "@/components/sections/final-cta";
@@ -9,6 +7,8 @@ import { NavIcon } from "@/components/navigation/nav-icons";
 import { articles, readingMinutes } from "@/data/articles";
 import { billing } from "@/data/company";
 import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
+import { PageHero } from "../resources/_components/page-hero";
+import { ArticleThumb } from "../blog/_components/article-thumb";
 
 const PATH = "/resources";
 
@@ -87,52 +87,41 @@ export default function ResourcesPage() {
         ])}
       />
 
-      <section className="relative isolate overflow-hidden bg-canvas-abyss">
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-[radial-gradient(60%_55%_at_25%_-5%,rgb(34_126_255/0.3)_0%,transparent_68%)]"
-        />
-        <div aria-hidden="true" className="absolute inset-0 bg-grid-dark" />
-        <Container className="relative pb-16 pt-8 sm:pb-20 sm:pt-10">
-          <Breadcrumbs
-            trail={[{ name: "Home", href: "/" }, { name: "Resources" }]}
-            tone="dark"
-          />
-          <div className="mt-10 max-w-2xl">
-            <span className="font-mono text-caption uppercase text-accent-on-dark">
-              Resources
-            </span>
-            <h1 className="mt-4 text-h1 text-white">Work out what you need</h1>
-            <p className="mt-5 text-body-lg text-fg-on-dark-secondary">
-              Guides, answers and tools — written to help you decide, including when the
-              answer is that you do not need to buy anything yet.
-            </p>
-          </div>
-        </Container>
-      </section>
+      <PageHero
+        center
+        trail={[{ name: "Home", href: "/" }, { name: "Resources" }]}
+        label="Resources"
+        title="Work out what you need"
+        lede={
+          <p>
+            Guides, answers and tools, written to help you decide, including when the answer
+            is that you do not need to buy anything yet.
+          </p>
+        }
+      />
 
       <Section>
-        <ul className="grid gap-px overflow-hidden rounded-xl bg-line sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {DESTINATIONS.map((d) => {
             const external = d.href.startsWith("http");
             const inner = (
               <>
-                <span aria-hidden="true" className="text-primary">
+                <span aria-hidden="true" className="inline-flex size-10 items-center justify-center rounded-lg bg-primary text-white">
                   <NavIcon name={d.icon} />
                 </span>
-                <h2 className="text-body-lg font-semibold text-fg group-hover:text-primary">
+                <h2 className="mt-3 text-body-lg font-medium text-fg group-hover:text-primary">
                   {d.title}
                 </h2>
                 <p className="flex-1 text-small text-fg-secondary">{d.detail}</p>
-                <span className="mt-2 text-small font-semibold text-primary">
-                  {d.action}
+                <span className="mt-3 inline-flex items-center gap-1 text-small font-semibold text-primary">
+                  {d.action} <span aria-hidden="true">→</span>
                 </span>
               </>
             );
             const className =
-              "group flex h-full flex-col gap-3 bg-canvas p-7 transition-colors hover:bg-canvas-secondary focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary";
+              "group flex h-full flex-col gap-2 rounded-2xl bg-canvas-secondary p-7 transition-colors hover:bg-brand-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
             return (
-              <li key={d.title} className="bg-canvas">
+              <li key={d.title}>
                 {external ? (
                   <a href={d.href} className={className}>
                     {inner}
@@ -162,19 +151,20 @@ export default function ResourcesPage() {
             All articles
           </Link>
         </div>
-        <ul className="mt-10 grid gap-px overflow-hidden rounded-xl bg-line sm:grid-cols-3">
+        <ul className="mt-10 grid gap-4 sm:grid-cols-3">
           {latest.map((a) => (
-            <li key={a.slug} className="bg-canvas">
+            <li key={a.slug}>
               <Link
                 href={`/blog/${a.slug}`}
-                className="group flex h-full flex-col gap-3 p-6 transition-colors hover:bg-canvas-secondary focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary"
+                className="group flex h-full flex-col gap-3 rounded-2xl bg-canvas p-3 pb-6 ring-1 ring-line transition-shadow hover:shadow-e3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
-                <Badge>{a.category}</Badge>
-                <h3 className="text-body font-semibold text-fg group-hover:text-primary">
+                <ArticleThumb category={a.category} className="aspect-[16/9]" />
+                <span className="px-3 pt-2"><Badge>{a.category}</Badge></span>
+                <h3 className="px-3 text-body font-semibold text-fg group-hover:text-primary">
                   {a.title}
                 </h3>
-                <p className="text-small text-fg-secondary">{a.description}</p>
-                <span className="mt-auto pt-3 text-caption text-fg-muted">
+                <p className="px-3 text-small text-fg-secondary">{a.description}</p>
+                <span className="mt-auto px-3 pt-3 text-caption text-fg-muted">
                   {readingMinutes(a)} min read
                 </span>
               </Link>

@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { MockPhoto } from "@/components/ui/mock-photo";
 import Link from "next/link";
 import { billing } from "@/data/company";
 import {
@@ -67,15 +67,15 @@ export function Hero() {
   return (
     <section
       aria-labelledby="wm-hero-heading"
-      className="bg-canvas pt-9 pb-14 md:pb-16 xl:pb-20"
+      className="bg-canvas pt-12 pb-16 lg:pt-20 lg:pb-24"
     >
       <Grid>
         <div className="flex flex-col items-stretch gap-8 xl:flex-row xl:items-center xl:justify-between xl:gap-x-[60px]">
           <div className="xl:w-[500px] xl:max-w-[600px] xl:shrink-0">
-            <h1
-              id="wm-hero-heading"
-              className="text-[32px] leading-10 font-normal tracking-[-0.16px] text-fg lg:text-[36px] lg:leading-[44px] lg:tracking-[-0.18px]"
-            >
+            <span className="inline-flex rounded-md bg-brand-50 px-2.5 py-1 text-small font-medium text-primary">
+              Free website migration
+            </span>
+            <h1 id="wm-hero-heading" className="display-lg mt-5 text-fg">
               {HERO.title}
             </h1>
 
@@ -104,20 +104,9 @@ export function Hero() {
           </div>
 
           <div className="xl:max-w-[700px] xl:flex-1">
-            {/* The hero artwork carries the whole story of the move — the old
-                site on the left, its files in flight, the new one live on the
-                right with the transfer still running. `sizes` keeps a phone
-                off the full 1672px file; width/height reserve the box so the
-                copy beside it does not jump. */}
-            <Image
-              src="/Hosting-images/migrations.png"
-              alt="A website being moved to Serverlys — the current site on one screen, its pages, images, database and code in transit, and the new site live on the other with the migration 2.3GB of 3GB through"
-              width={1672}
-              height={941}
-              priority
-              sizes="(min-width: 1280px) 700px, (min-width: 768px) 688px, 100vw"
-              className="h-auto w-full rounded-2xl"
-            />
+            {/* Coded, not a PNG (2026-10-03): the old host on the left, the
+                new site live on staging on the right, the transfer between. */}
+            <MoveVisual />
           </div>
         </div>
       </Grid>
@@ -140,10 +129,10 @@ export function Steps() {
                 key={s.title}
                 className="flex flex-col rounded-2xl bg-canvas-secondary p-8"
               >
-                <span className="grid size-10 place-items-center rounded-md bg-primary-soft text-fg">
+                <span className="grid size-10 place-items-center rounded-lg bg-primary text-white">
                   <Icon className="size-6" />
                 </span>
-                <h3 className="mt-6 text-[24px] leading-8 font-normal tracking-[-0.12px] text-fg">
+                <h3 className="mt-6 text-h4 font-medium tracking-[-0.02em] text-fg">
                   {s.title}
                 </h3>
                 <p className="mt-3 text-body text-fg-secondary">{s.body}</p>
@@ -162,28 +151,115 @@ export function How() {
   return (
     <section
       aria-labelledby="wm-how-heading"
-      className="bg-canvas-abyss py-14 md:py-16 xl:py-20"
+      className="relative isolate overflow-hidden bg-canvas-abyss py-20 lg:py-28"
     >
+      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[radial-gradient(55%_50%_at_50%_100%,rgb(0_0_255/0.5),transparent_70%)]" />
       <Grid>
-        <h2
-          id="wm-how-heading"
-          className="mx-auto max-w-[646px] text-center text-[36px] leading-[44px] font-normal tracking-[-0.18px] text-ink-50 lg:text-[48px] lg:leading-[56px] lg:tracking-[-0.24px]"
-        >
+        <h2 id="wm-how-heading" className="display-md mx-auto max-w-[760px] text-center text-white">
           {HOW.title}
         </h2>
-        {/* The reference plays a screen capture of its migration wizard here.
-            Ours is the real panel still — same information, a fraction of the
-            bytes on a page this long. */}
-        <Image
-          src="/Hosting-images/Migration.png"
-          alt="The Serverlys migration form, with a site's products, orders, media and customers transferring"
-          width={1536}
-          height={1024}
-          sizes="(min-width: 1280px) 1120px, 100vw"
-          className="mt-10 h-auto w-full rounded-2xl"
-        />
+        {/* The migration request as it is actually filled in, then the run
+            that follows it. Coded; replaces the Migration.png still. */}
+        <div aria-hidden="true" className="mx-auto mt-12 grid max-w-[1040px] gap-4 lg:grid-cols-2">
+          <div className="rounded-2xl bg-white p-6 shadow-e5">
+            <p className="text-body-lg font-semibold text-fg">Request a migration</p>
+            <p className="text-small text-fg-muted">Takes about two minutes</p>
+            <div className="mt-5 space-y-3 text-small">
+              {[
+                ["Website address", "harborgoods.com"],
+                ["Current host", "Another provider"],
+                ["Platform", "WordPress + WooCommerce"],
+                ["Access", "cPanel login shared securely"],
+              ].map(([k, v]) => (
+                <label key={k} className="block">
+                  <span className="text-micro font-semibold text-fg-secondary">{k}</span>
+                  <span className="mt-1 block rounded-lg bg-canvas-secondary px-3 py-2.5 text-fg ring-1 ring-line">{v}</span>
+                </label>
+              ))}
+            </div>
+            <span className="mt-5 flex h-11 items-center justify-center rounded-lg bg-primary text-small font-semibold text-white">Submit request</span>
+          </div>
+          <div className="flex flex-col gap-4">
+            <div className="rounded-2xl bg-white p-6 shadow-e5">
+              <div className="flex items-center justify-between">
+                <span>
+                  <span className="block text-body-lg font-semibold text-fg">Migration in progress</span>
+                  <span className="text-small text-fg-muted">2.3 GB of 3.0 GB copied to staging</span>
+                </span>
+                <span className="rounded-md bg-brand-50 px-2 py-0.5 text-micro font-semibold text-primary">76%</span>
+              </div>
+              <div className="mt-4 h-2 overflow-hidden rounded-full bg-brand-100">
+                <span className="block h-full w-[76%] rounded-full bg-primary" />
+              </div>
+              <ul className="mt-5 grid grid-cols-2 gap-3 text-small">
+                {[["Products", "1,284", true], ["Orders", "3,906", true], ["Media", "4.1 GB", true], ["Email", "12 mailboxes", false]].map(([k, v, done]) => (
+                  <li key={k as string} className="flex items-center justify-between rounded-lg bg-canvas-secondary px-3 py-2">
+                    <span><span className="block text-fg">{k}</span><span className="text-micro text-fg-muted">{v}</span></span>
+                    {done ? (
+                      <span className="inline-flex size-5 items-center justify-center rounded-full bg-success-fill text-white"><Check className="size-3" /></span>
+                    ) : (
+                      <span className="size-5 rounded-full border-2 border-brand-200 [border-top-color:var(--color-primary)]" />
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="flex items-center gap-4 rounded-2xl bg-white/[0.08] p-5 ring-1 ring-white/15">
+              <MockPhoto src="checkout" className="size-16 shrink-0 rounded-xl" />
+              <p className="text-small text-fg-on-dark-secondary">
+                <span className="block font-semibold text-white">Your store keeps selling</span>
+                The old host serves visitors until you check staging and approve the DNS switch.
+              </p>
+            </div>
+          </div>
+        </div>
       </Grid>
     </section>
+  );
+}
+
+/** Hero visual: old host → staging, coded. */
+function MoveVisual() {
+  return (
+    <div aria-hidden="true" className="relative isolate overflow-hidden rounded-3xl bg-brand-50 p-5 sm:p-8">
+      <div className="absolute inset-0 -z-10 grid grid-cols-4 grid-rows-3">
+        {Array.from({ length: 12 }, (_, i) => (
+          <span key={i} className={[1, 4, 6, 11].includes(i) ? "bg-brand-100" : ""} />
+        ))}
+      </div>
+      <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+        <div className="overflow-hidden rounded-xl bg-white opacity-80 shadow-e3">
+          <p className="border-b border-line-subtle px-3 py-2 text-[10px] text-fg-muted">old-host.example · harborgoods.com</p>
+          <MockPhoto src="sofa" className="h-24" sizes="260px" />
+          <p className="px-3 py-2 text-[11px] text-fg-secondary">Current host</p>
+        </div>
+        <span className="inline-flex size-11 items-center justify-center rounded-full bg-primary text-white shadow-e4">→</span>
+        <div className="overflow-hidden rounded-xl bg-white shadow-e5 ring-2 ring-primary">
+          <p className="flex items-center gap-1.5 border-b border-line-subtle px-3 py-2 text-[10px] text-fg-secondary">
+            <span className="size-1.5 rounded-full bg-success-fill" />staging.harborgoods.com
+          </p>
+          <MockPhoto src="sofa" className="h-24" sizes="260px" />
+          <p className="px-3 py-2 text-[11px] font-semibold text-fg">On Serverlys</p>
+        </div>
+      </div>
+      <div className="mt-5 rounded-xl bg-white p-4 shadow-e4">
+        <div className="flex items-center justify-between text-small">
+          <span className="font-semibold text-fg">Migration in progress</span>
+          <span className="text-micro text-fg-muted">2.3 GB of 3.0 GB</span>
+        </div>
+        <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-brand-100">
+          <span className="block h-full w-[76%] rounded-full bg-primary" />
+        </div>
+        <div className="mt-3 flex flex-wrap gap-2 text-micro">
+          {["Files", "Database", "SSL"].map((t) => (
+            <span key={t} className="inline-flex items-center gap-1 rounded-full bg-success-soft px-2 py-0.5 font-semibold text-success">
+              <Check className="size-3" /> {t}
+            </span>
+          ))}
+          <span className="rounded-full bg-brand-50 px-2 py-0.5 font-semibold text-primary">DNS when you approve</span>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -276,12 +352,13 @@ export function AiTools() {
   return (
     <section
       aria-labelledby="wm-ai-heading"
-      className="bg-canvas-abyss py-14 md:py-16 xl:py-20"
+      className="relative isolate overflow-hidden bg-canvas-abyss py-20 lg:py-28"
     >
+      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[radial-gradient(50%_45%_at_50%_0%,rgb(0_0_255/0.4),transparent_70%)]" />
       <Grid>
         <h2
           id="wm-ai-heading"
-          className="mx-auto max-w-[646px] text-center text-[36px] leading-[44px] font-normal tracking-[-0.18px] text-ink-50 lg:text-[48px] lg:leading-[56px] lg:tracking-[-0.24px]"
+          className="display-md mx-auto max-w-[760px] text-center text-white"
         >
           {AI_TOOLS.title}
         </h2>
@@ -289,9 +366,9 @@ export function AiTools() {
           {AI_TOOLS.items.map((t) => (
             <li
               key={t.title}
-              className="flex flex-col rounded-2xl bg-white/[0.06] p-8 ring-1 ring-white/10"
+              className="flex flex-col rounded-2xl bg-white/[0.06] p-7 ring-1 ring-white/10"
             >
-              <h3 className="text-[24px] leading-8 font-normal tracking-[-0.12px] text-white">
+              <h3 className="text-h4 font-medium tracking-[-0.02em] text-white">
                 {t.title}
               </h3>
               <p className="mt-3 flex-1 text-body text-fg-on-dark-secondary">
@@ -301,7 +378,7 @@ export function AiTools() {
                 href={t.href}
                 className="mt-6 inline-flex min-h-11 items-center gap-1.5 text-body font-semibold text-primary-on-dark hover:text-white"
               >
-                Learn more
+                {`About ${t.title}`}
                 <ArrowRight className="size-4" />
               </Link>
             </li>
@@ -316,24 +393,17 @@ export function AiTools() {
 
 export function Banner() {
   return (
-    <section
-      aria-labelledby="wm-banner-heading"
-      className="bg-canvas-abyss py-14 md:py-16 xl:py-20"
-    >
+    <section aria-labelledby="wm-banner-heading" className="relative isolate overflow-hidden bg-primary">
+      <div aria-hidden="true" className="absolute inset-y-0 right-0 -z-10 w-[60%] bg-white/[0.06] [clip-path:polygon(30%_0,100%_0,100%_100%,0_100%)]" />
+      <div aria-hidden="true" className="absolute inset-y-0 right-0 -z-10 w-[35%] bg-white/[0.05] [clip-path:polygon(45%_0,100%_0,100%_100%,0_100%)]" />
       <Grid>
-        <div className="mx-auto flex max-w-[676px] flex-col items-center text-center">
-          <h2
-            id="wm-banner-heading"
-            className="text-[36px] leading-[44px] font-normal tracking-[-0.18px] text-ink-50 lg:text-[48px] lg:leading-[56px] lg:tracking-[-0.24px]"
-          >
+        <div className="max-w-[620px] py-16 lg:py-24">
+          <h2 id="wm-banner-heading" className="display-lg text-white">
             {BANNER.title}
           </h2>
-          <p className="mt-4 text-body text-fg-on-dark-secondary">
+          <p className="mt-5 max-w-[500px] text-body-lg text-white/85">
             {BANNER.body}{" "}
-            <Link
-              href={BANNER.linkHref}
-              className="font-semibold text-primary-on-dark underline decoration-from-font hover:text-white"
-            >
+            <Link href={BANNER.linkHref} className="font-semibold text-white underline decoration-from-font">
               {BANNER.linkLabel}
             </Link>{" "}
             {BANNER.bodyTail}

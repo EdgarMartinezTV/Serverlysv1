@@ -112,14 +112,16 @@ export function StageDeck({
     return () => observer.disconnect();
   }, [tabbed]);
 
-  const current = tabbed ? selected : scrolled;
+  // Desktop shows the first stage as current until the reader scrolls into one,
+  // so the control never renders with nothing selected.
+  const current = tabbed ? selected : (scrolled ?? first);
 
   return (
     <div data-stage-deck="">
       <nav
         data-stage-rail=""
         aria-label="Stages"
-        className="sticky top-18 z-30 border-b border-line-subtle bg-canvas/85 backdrop-blur-md"
+        className="pointer-events-none sticky top-18 z-30 py-3"
       >
         <Container>
           <ul
@@ -127,12 +129,12 @@ export function StageDeck({
                tabs on a desktop, where they scroll rather than switch, would
                describe behaviour that is not there. */
             role={tabbed ? "tablist" : undefined}
-            className="-mx-1 flex items-center gap-2 overflow-x-auto py-3"
+            className="pointer-events-auto mx-auto grid w-full max-w-md grid-cols-4 gap-1 rounded-full bg-canvas/90 p-1.5 shadow-e3 ring-1 ring-line backdrop-blur-md sm:flex sm:w-fit sm:max-w-none sm:items-center"
           >
             {stages.map((stage) => {
               const active = current === stage.id;
               return (
-                <li key={stage.id} className="shrink-0 px-1" role={tabbed ? "presentation" : undefined}>
+                <li key={stage.id} className="min-w-0 sm:shrink-0" role={tabbed ? "presentation" : undefined}>
                   <a
                     href={`#${stage.id}`}
                     role={tabbed ? "tab" : undefined}
@@ -153,19 +155,12 @@ export function StageDeck({
                          only below `sm`: with a mouse the 33px pill is the right
                          density, with a thumb it is not. Height alone clears it —
                          these pills are already wide enough. */
-                      "inline-flex min-h-11 items-center gap-2 rounded-full px-3.5 py-1.5 text-small transition-colors duration-fast ease-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:min-h-0",
+                      "flex min-h-11 w-full items-center justify-center rounded-full px-2 py-2 text-small font-semibold sm:inline-flex sm:w-auto sm:px-5 sm:text-body transition-colors duration-fast ease-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:min-h-0",
                       active
-                        ? "bg-primary text-fg-on-brand"
-                        : "text-fg-secondary hover:bg-primary-soft hover:text-primary",
+                        ? "bg-fg text-white"
+                        : "text-fg hover:bg-canvas-secondary",
                     )}
                   >
-                    <span
-                      aria-hidden="true"
-                      className={cn(
-                        "h-1.5 w-1.5 rounded-full transition-colors duration-fast",
-                        active ? "bg-fg-on-brand" : "bg-line-strong",
-                      )}
-                    />
                     {stage.label}
                   </a>
                 </li>

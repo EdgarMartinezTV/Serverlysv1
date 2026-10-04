@@ -153,7 +153,7 @@ export function HostingConsole({ className }: { className?: string }) {
             <>
               <div className="mt-3 rounded-lg bg-canvas-secondary p-3">
                 <div className="flex items-baseline justify-between gap-3">
-                  <span className="font-mono text-ui uppercase tracking-[0.1em] text-fg-muted">
+                  <span className="text-ui text-fg-muted font-semibold">
                     Visits · 12 months
                   </span>
                   <span className="tabular text-ui font-semibold text-success">
@@ -187,7 +187,7 @@ export function HostingConsole({ className }: { className?: string }) {
 
               <div className="mt-2 rounded-lg bg-canvas-secondary p-3">
                 <div className="flex items-center justify-between gap-3">
-                  <span className="font-mono text-ui uppercase tracking-[0.1em] text-fg-muted">
+                  <span className="text-ui text-fg-muted font-semibold">
                     Disk usage
                   </span>
                   <span className="tabular text-ui font-medium text-fg">
@@ -219,7 +219,7 @@ export function HostingConsole({ className }: { className?: string }) {
                 <Metric label="PHP" value={site.phpVersion} sub="LiteSpeed + OPcache" />
               </dl>
               <div className="mt-2 rounded-lg bg-canvas-secondary p-3">
-                <span className="font-mono text-ui uppercase tracking-[0.1em] text-fg-muted">
+                <span className="text-ui text-fg-muted font-semibold">
                   Response time · 12 months
                 </span>
                 <div className="mt-2 h-14">

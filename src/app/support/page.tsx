@@ -1,5 +1,3 @@
-import { Container } from "@/components/ui/container";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { Button } from "@/components/ui/button";
 import { FeatureGrid } from "@/components/sections/feature-grid";
@@ -8,6 +6,7 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { NavIcon, ArrowUpRight } from "@/components/navigation/nav-icons";
 import { billing, company, emailDisplay } from "@/data/company";
 import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
+import { PageHero } from "../resources/_components/page-hero";
 
 const PATH = "/support";
 
@@ -54,29 +53,27 @@ export default function SupportPage() {
     <>
       <JsonLd data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "Support", path: PATH }])} />
 
-      <section className="relative isolate overflow-hidden bg-canvas-abyss">
-        <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(60%_55%_at_25%_-5%,rgb(34_126_255/0.3)_0%,transparent_68%)]" />
-        <div aria-hidden="true" className="absolute inset-0 bg-grid-dark" />
-        <Container className="relative pb-16 pt-8 sm:pb-20 sm:pt-10">
-          <Breadcrumbs trail={[{ name: "Home", href: "/" }, { name: "Support" }]} tone="dark" />
-          <div className="mt-10 max-w-2xl">
-            <span className="font-mono text-caption uppercase text-accent-on-dark">Support</span>
-            <h1 className="mt-4 text-h1 text-white">Get it fixed</h1>
-            <p className="mt-5 text-body-lg text-fg-on-dark-secondary">
-              Support is included on every plan at every tier. There is no
-              priority queue to buy — there is one queue, and one team.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button href={billing.sales} size="lg">
-                Open a ticket
-              </Button>
-              <Button href={billing.login} variant="inverse" size="lg">
-                Client area
-              </Button>
-            </div>
-          </div>
-        </Container>
-      </section>
+      <PageHero
+        trail={[{ name: "Home", href: "/" }, { name: "Support" }]}
+        label="Support"
+        title="How can we help?"
+        lede={
+          <p>
+            Support is included on every plan at every tier. There is no priority queue to
+            buy: there is one queue, and one team.
+          </p>
+        }
+        visual={<TicketMock />}
+      >
+        <div className="mt-8 flex flex-wrap gap-3">
+          <Button href={billing.sales} size="lg">
+            Open a ticket
+          </Button>
+          <Button href={billing.login} variant="outline" size="lg">
+            Client area
+          </Button>
+        </div>
+      </PageHero>
 
       <Section>
         <SectionHeader
@@ -84,10 +81,10 @@ export default function SupportPage() {
           title="Three routes, same team"
           lede="Pick whichever fits the problem. Nothing here routes to a bot."
         />
-        <ul className="mt-12 grid gap-px overflow-hidden rounded-xl bg-line sm:grid-cols-3">
+        <ul className="mt-12 grid gap-4 sm:grid-cols-3">
           {CHANNELS.map((c) => (
-            <li key={c.title} className="flex flex-col gap-4 bg-canvas p-7">
-              <span aria-hidden="true" className="text-primary">
+            <li key={c.title} className="flex flex-col gap-4 rounded-2xl bg-canvas-secondary p-7">
+              <span aria-hidden="true" className="inline-flex size-10 items-center justify-center rounded-lg bg-primary text-white">
                 <NavIcon name={c.icon} />
               </span>
               <h3 className="text-body-lg font-semibold text-fg">{c.title}</h3>
@@ -135,8 +132,8 @@ export default function SupportPage() {
               ["Who else sees it", "One browser, one device, or everyone. That single fact rules out half the causes."],
             ].map(([title, detail], i) => (
               <li key={title} className="flex gap-5 py-6">
-                <span aria-hidden="true" className="font-mono text-small text-fg-muted">
-                  {String(i + 1).padStart(2, "0")}
+                <span aria-hidden="true" className="inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-brand-50 text-micro font-semibold text-primary">
+                  {i + 1}
                 </span>
                 <div>
                   <h3 className="text-body font-semibold text-fg">{title}</h3>
@@ -148,8 +145,8 @@ export default function SupportPage() {
         </div>
       </Section>
 
-      <Section surface="subtle" spacing="tight">
-        <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
+      <Section surface="light" spacing="tight">
+        <div className="flex flex-col items-start justify-between gap-6 rounded-2xl bg-brand-50 p-7 sm:flex-row sm:items-center sm:p-8">
           <div>
             <h2 className="text-h4 text-fg">Question about buying rather than fixing?</h2>
             <p className="mt-2 text-body text-fg-secondary">
@@ -164,5 +161,41 @@ export default function SupportPage() {
 
       <FinalCta />
     </>
+  );
+}
+
+/**
+ * A support ticket as it looks in the client area: attached to the service,
+ * so the team sees the server without asking for screenshots (the claim the
+ * first channel card makes). Sample content, decorative only.
+ */
+function TicketMock() {
+  return (
+    <div aria-hidden="true" className="mx-auto max-w-[460px] overflow-hidden rounded-2xl bg-white ring-1 ring-black/5">
+      <div className="flex items-center justify-between border-b border-line-subtle px-4 py-3">
+        <span className="text-small font-semibold text-fg">Ticket #48213</span>
+        <span className="rounded-md bg-success-soft px-2 py-0.5 text-micro font-semibold text-success">Answered</span>
+      </div>
+      <div className="flex items-center gap-2 border-b border-line-subtle bg-canvas-secondary px-4 py-2 text-micro text-fg-secondary">
+        <span className="size-1.5 rounded-full bg-success-fill" />
+        Attached: hearthbakery.com · Starter Cloud
+      </div>
+      <div className="flex flex-col gap-3 p-4 text-small">
+        <p className="ml-auto max-w-[85%] rounded-xl rounded-br-sm bg-canvas-secondary px-3 py-2 text-fg">
+          Checkout shows a 502 since this morning. Nothing changed on our side.
+        </p>
+        <div className="max-w-[90%] rounded-xl rounded-bl-sm bg-brand-50 px-3 py-2 text-fg">
+          <p className="text-micro font-semibold text-primary">Serverlys support</p>
+          <p className="mt-1">
+            A plugin update hit the PHP memory limit. We raised it and restored the cache;
+            checkout is taking orders again.
+          </p>
+        </div>
+      </div>
+      <div className="flex items-center gap-2 border-t border-line-subtle px-4 py-3">
+        <span className="flex-1 rounded-md bg-canvas-secondary px-3 py-2 text-micro text-fg-muted">Write a reply…</span>
+        <span className="rounded-md bg-primary px-3 py-2 text-micro font-semibold text-white">Send</span>
+      </div>
+    </div>
   );
 }

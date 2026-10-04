@@ -20,7 +20,7 @@ export function DemoBadge({ tone = "light" }: { tone?: "light" | "dark" }) {
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 font-mono text-ui uppercase tracking-[0.1em]",
+        "inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-ui font-semibold",
         tone === "dark"
           ? "bg-white/10 text-fg-on-dark-secondary ring-1 ring-inset ring-white/15"
           : "bg-canvas-inset text-fg-muted ring-1 ring-inset ring-line",
@@ -262,7 +262,7 @@ export function Metric({
     >
       <dt
         className={cn(
-          "font-mono text-ui uppercase tracking-[0.1em]",
+          "text-ui font-semibold",
           dark ? "text-fg-on-dark-muted" : "text-fg-muted",
         )}
       >

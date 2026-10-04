@@ -4,10 +4,11 @@ import { FeatureGrid } from "@/components/sections/feature-grid";
 import { FaqSection } from "@/components/sections/faq";
 import { FinalCta } from "@/components/sections/final-cta";
 import { JsonLd } from "@/components/ui/json-ld";
-import { SeoMock, ChatMock } from "@/components/product-ui/mocks";
+import { ChatMock } from "@/components/product-ui/mocks";
 import { billing } from "@/data/company";
 import { faqsFor } from "@/data/faqs";
 import { pageMetadata, faqGraph, breadcrumbGraph, serviceGraph } from "@/lib/seo";
+import { CampaignBoard } from "../website-design/_components/shots";
 
 const PATH = "/marketing";
 const DESCRIPTION =
@@ -46,7 +47,7 @@ export default function MarketingPage() {
         ]}
         primary={{ label: "Talk about your goals", href: billing.sales }}
         secondary={{ label: "See SEO", href: "/seo" }}
-        visual={<SeoMock />}
+        visual={<CampaignBoard />}
       />
       <FeatureGrid
         eyebrow="What we run"
@@ -72,7 +73,6 @@ export default function MarketingPage() {
         visual={<ChatMock />}
         side="left"
         surface="dark"
-        bleed
       />
       <FaqSection items={faqs} />
       <FinalCta />

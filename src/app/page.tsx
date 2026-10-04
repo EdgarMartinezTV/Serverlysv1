@@ -8,13 +8,12 @@ import { ServicesRail } from "@/components/home/services-rail";
 import { SetupsGrid } from "@/components/home/setups-grid";
 import { PricingBand } from "@/components/home/pricing-band";
 import { BriefBand } from "@/components/home/brief-band";
-import { TrustBar } from "@/components/sections/trust-bar";
 import { PromoBento } from "@/components/home/promo-bento";
 import { CoworkerBand } from "@/components/home/coworker-band";
 import { ImaginedCta } from "@/components/home/imagined-cta";
 import { Migration } from "@/components/sections/migration";
 import { FaqSection } from "@/components/sections/faq";
-import { Section, SectionHeader } from "@/components/ui/section";
+import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/animations/reveal";
 import { JsonLd } from "@/components/ui/json-ld";
 import { faqsFor } from "@/data/faqs";
@@ -115,7 +114,6 @@ export default function HomePage() {
       />
 
       <Hero />
-      <TrustBar />
       {/* Reference order: hero → idea prompt → promo bento → tools tabs →
           essentials → AI co-worker → pricing → closing CTA.
           BriefBand IS the reference's prompt band — read its header: it was
@@ -123,18 +121,22 @@ export default function HomePage() {
           send that goes somewhere. It briefly got replaced here with a
           chips-only version, which was strictly worse and broke the coverage
           in test-home. */}
-      <BriefBand />
       <PromoBento />
+      <BriefBand />
 
       <Section spacing="tight" labelledBy="stages-heading">
         <Reveal>
-          <SectionHeader
-            id="stages-heading"
-            eyebrow="Everything, in order"
-            title="Tools for every stage of a project"
-            lede="Four jobs, and what handles each one. Start at whichever is yours."
-            align="center"
-          />
+          <div className="mx-auto flex max-w-[760px] flex-col items-center text-center">
+            <h2
+              id="stages-heading"
+              className="display-lg text-fg"
+            >
+              Tools for every stage of a project
+            </h2>
+            <p className="mt-5 text-body-lg text-fg-secondary">
+              Four jobs, and what handles each one. Start at whichever is yours.
+            </p>
+          </div>
         </Reveal>
       </Section>
 

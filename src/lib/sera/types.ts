@@ -243,6 +243,12 @@ export type WorkflowView = {
   requiredCount: number;
   /** Reference issued at submission, e.g. "SER-7QK3M2". Present when SUBMITTED. */
   reference?: string;
+  /**
+   * The field Sera asks for next (the first missing required one). When it is
+   * a `choice`, the panel renders its options as a tappable question card.
+   * Labels and option strings only — nothing the visitor has not been shown.
+   */
+  next?: { key: string; label: string; kind: FieldSpec["kind"]; options?: readonly string[] };
 };
 
 /** Safe, non-identifying context about the page the visitor is reading. */

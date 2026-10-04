@@ -183,7 +183,7 @@ function PlanGrid({ group, term }: { group: PlanGroup; term: Term }) {
               )}
             >
               {plan.popular && (
-                <span className="absolute -top-3 left-6 rounded-full bg-primary px-3 py-1 text-caption font-mono uppercase text-white">
+                <span className="absolute -top-3 left-6 rounded-full bg-primary px-3 py-1 text-micro text-white font-semibold">
                   Most popular
                 </span>
               )}

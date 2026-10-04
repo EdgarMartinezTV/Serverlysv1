@@ -75,6 +75,8 @@ export type SeraEventName =
   | "migration_started"
   | "migration_submitted"
   | "human_support_requested"
+  /** 👍 / 👎 on a reply. `rating` is "up" | "down". */
+  | "sera_feedback"
   | "sera_error";
 
 export type SeraEventProps = Record<string, string | number | boolean | undefined>;

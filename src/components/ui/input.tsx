@@ -20,7 +20,7 @@ import { describedBy, fieldIds } from "./field";
  * failed to appear. Splitting them removes the conflict entirely.
  */
 const CONTROL_BASE =
-  "w-full rounded-sm bg-surface text-body text-fg " +
+  "w-full rounded-md bg-surface text-body text-fg " +
   "ring-1 ring-inset placeholder:text-fg-muted " +
   "transition-[box-shadow,background-color] duration-fast ease-hover " +
   "focus:outline-none focus:ring-2 " +
@@ -59,7 +59,7 @@ export function Input({
         error: invalid,
         idPrefix,
       })}
-      className={cn(control(invalid), "h-11 px-3.5", className)}
+      className={cn(control(invalid), "h-12 px-4", className)}
       {...rest}
     />
   );
@@ -87,7 +87,7 @@ export function Textarea({
         error: invalid,
         idPrefix,
       })}
-      className={cn(control(invalid), "resize-y px-3.5 py-2.5", className)}
+      className={cn(control(invalid), "resize-y px-4 py-3", className)}
       {...rest}
     />
   );
@@ -121,7 +121,7 @@ export function Select({
         })}
         className={cn(
           control(invalid),
-          "h-11 cursor-pointer appearance-none pl-3.5 pr-10",
+          "h-12 cursor-pointer appearance-none pl-4 pr-10",
           className,
         )}
         {...rest}

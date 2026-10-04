@@ -54,7 +54,7 @@ export function MixedCards({
             className="absolute inset-0 -z-10 bg-[radial-gradient(70%_60%_at_85%_0%,rgb(34_126_255/0.38)_0%,transparent_70%)]"
           />
           {feature.eyebrow && (
-            <span className="font-mono text-caption uppercase text-primary-on-dark">
+            <span className="text-micro text-primary-on-dark font-semibold">
               {feature.eyebrow}
             </span>
           )}

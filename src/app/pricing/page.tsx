@@ -109,12 +109,16 @@ export default function PricingPage() {
           it inside the Grid and the light band renders inset. */}
       <section
         aria-labelledby="pricing-heading"
-        className="bg-canvas-abyss pt-14 xl:pt-20"
+        className="relative isolate overflow-hidden bg-canvas-abyss pt-20 xl:pt-28"
       >
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 -z-10 bg-[radial-gradient(60%_70%_at_50%_120%,rgb(0_0_255/0.55)_0%,transparent_70%)]"
+        />
         <Grid>
           <h1
             id="pricing-heading"
-            className="mx-auto max-w-[646px] text-center text-[36px] leading-[44px] font-normal tracking-[-0.18px] text-ink-50 lg:text-[56px] lg:leading-[64px] lg:tracking-[-0.28px]"
+            className="display-xl mx-auto max-w-[760px] text-center text-white"
           >
             {HERO.title}
           </h1>
@@ -125,7 +129,7 @@ export default function PricingPage() {
               return (
                 <li
                   key={t.label}
-                  className="flex items-center gap-2 text-body text-fg-on-dark-secondary"
+                  className="flex items-center gap-2 text-body text-white/85"
                 >
                   <Icon className="size-5 shrink-0" />
                   {t.label}

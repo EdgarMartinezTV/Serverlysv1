@@ -64,7 +64,7 @@ export function Products() {
                     {product.points.map((point) => (
                       <li
                         key={point}
-                        className="flex items-center gap-1.5 font-mono text-caption uppercase text-fg-muted"
+                        className="flex items-center gap-1.5 text-micro text-fg-muted font-semibold"
                       >
                         <span
                           aria-hidden="true"

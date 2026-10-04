@@ -3,13 +3,36 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
 import { company, emailDisplay } from "@/data/company";
 
+/**
+ * The legal hub.
+ *
+ * REBUILT 2026-09-19 as an INDEX. It previously restated the copyright/DMCA
+ * procedure, the law-enforcement procedure and the abuse route in full — all
+ * three of which have had their own pages since 2026-09-14. That duplication
+ * was the worst kind: two documents describing the same statutory process in
+ * different words, either of which a reader might find first, and no way to
+ * tell which was authoritative when they drifted apart.
+ *
+ * Those three sections are now ROUTING — one line each, pointing at the
+ * document that governs. The full procedures live on those pages and nowhere
+ * else. If you are about to restate a procedure here, link to it instead.
+ *
+ * What stays here is what has no other home: the company identity, the
+ * grouped index of the whole set, the ORDER OF PRECEDENCE (the one question
+ * a reader can only answer from a hub), trademark use, and the third-party
+ * position.
+ *
+ * ⚠ Still no address for service of process, and still no DMCA agent name.
+ * Neither is invented; both are launch tasks. See the notes on
+ * /dmca-policy and in data/legal.ts.
+ */
+
 const PATH = "/legal-information";
-const EFFECTIVE = "2026-09-09";
 
 export const metadata = pageMetadata({
   title: "Legal Information | Serverlys",
   description:
-    "Company details, the documents that govern Serverlys services, DMCA notice procedure, law enforcement requests and trademark use.",
+    "Company details, an index of every Serverlys legal document grouped by what it does, the order they take precedence in, and where to send a formal notice.",
   path: PATH,
 });
 
@@ -29,78 +52,47 @@ const SECTIONS: readonly LegalSection[] = [
     ],
   },
   {
-    id: "documents",
-    heading: "The documents that govern our services",
+    id: "index",
+    heading: "Every document, grouped",
     blocks: [
       {
         type: "p",
-        text: "Four documents apply, and they apply in this order where they conflict: registry and ICANN policy first for domain matters, then the terms of service, then the specific policy, then anything written on a product page.",
+        text: "Agreements bind both of us. Policies bind us. Each entry says what that document decides and when its current version took effect, so you can tell which one answers your question without opening four of them.",
+      },
+      { type: "index" },
+    ],
+  },
+  {
+    id: "precedence",
+    heading: "Which document wins",
+    blocks: [
+      {
+        type: "p",
+        text: "Where two of these appear to say different things, they apply in this order. This is the one question a reader can only answer from a page like this, which is why it is stated here rather than left to be inferred.",
+      },
+      { type: "precedence" },
+      {
+        type: "note",
+        text: "Marketing copy is last for a reason. A sentence on a product page describing what a plan does is a description; it is not a term, and it cannot quietly grant you something an agreement withholds or take away something an agreement gives you.",
+      },
+    ],
+  },
+  {
+    id: "notices",
+    heading: "Where to send a formal notice",
+    blocks: [
+      {
+        type: "p",
+        text: "Each of these has its own document setting out exactly what a notice must contain. They are not restated here — a statutory procedure described in two places is a procedure that will eventually be described two different ways.",
       },
       {
         type: "ul",
         items: [
-          "Terms of service — the agreement covering every service you buy from us.",
-          "Privacy policy — what personal data we hold and what you can ask us to do about it.",
-          "Refund policy — the 30-day hosting guarantee and why domains sit outside it.",
-          "Accessibility statement — the conformance target for this website and how to report a barrier.",
+          "Copyright infringement — the copyright and DMCA policy lists the six elements a notice needs under 17 U.S.C. § 512(c)(3), and the counter-notice route.",
+          "Law enforcement, subpoenas and court orders — the law enforcement and legal requests page sets out what we require before we disclose anything, and when we tell the customer.",
+          "Phishing, malware, spam and other abuse — use the abuse report form. The abuse handling policy explains what happens to it afterwards.",
+          "Security vulnerabilities — the responsible disclosure policy, which also carries our undertaking not to pursue researchers who follow it.",
         ],
-      },
-    ],
-  },
-  {
-    id: "dmca",
-    heading: "Copyright and DMCA notices",
-    blocks: [
-      {
-        type: "p",
-        text: "If material hosted on our platform infringes your copyright, send us a notice. To be actionable under 17 U.S.C. § 512(c)(3) it must contain all of the following, and a notice missing any of them will come back to you for completion rather than being actioned.",
-      },
-      {
-        type: "ul",
-        items: [
-          "Your physical or electronic signature.",
-          "Identification of the copyrighted work you say has been infringed.",
-          "The URL of the specific material — the page, not the domain.",
-          "Your address, telephone number and email address.",
-          "A statement that you have a good-faith belief the use is not authorised by the copyright owner, its agent, or the law.",
-          "A statement, under penalty of perjury, that the information is accurate and that you are the owner or authorised to act for the owner.",
-        ],
-      },
-      {
-        type: "p",
-        text: "Our customer may file a counter-notice. Where they do, and it meets the statutory requirements, we are permitted to restore the material after the statutory period unless you notify us that you have filed an action seeking a court order.",
-      },
-      {
-        type: "p",
-        text: "Knowingly making a material misrepresentation in a notice or counter-notice carries liability for damages under § 512(f). This is not a formality and we do not treat it as one.",
-      },
-    ],
-  },
-  {
-    id: "law-enforcement",
-    heading: "Law enforcement and legal requests",
-    blocks: [
-      {
-        type: "p",
-        text: "We respond to valid legal process from authorities with jurisdiction over us. We check that a request is valid and properly scoped before acting on it, and we produce only what the request actually compels.",
-      },
-      {
-        type: "p",
-        text: "Where we are permitted to tell a customer their data has been requested, we do. Where a court order forbids it, we do not. We will not disclose customer data to a private party on request — that requires legal process, and asking politely is not it.",
-      },
-      {
-        type: "p",
-        text: "Preservation requests are honoured for the period the law provides while process is obtained.",
-      },
-    ],
-  },
-  {
-    id: "abuse",
-    heading: "Abuse reports",
-    blocks: [
-      {
-        type: "p",
-        text: "Phishing, malware, spam and network abuse are reported through the abuse page, which routes to the queue that handles them. Reports need the exact URL to be actionable. What we do with a report, and what we will not do, is set out on that page.",
       },
     ],
   },
@@ -110,11 +102,15 @@ const SECTIONS: readonly LegalSection[] = [
     blocks: [
       {
         type: "p",
-        text: "Serverlys, ConvoAI and CallFlow, together with our logos, are our marks. You may refer to us by name in factual statements — that you are a customer, or that your site is hosted with us — without asking.",
+        text: "The Serverlys name, wordmark and the ConvoAI and CallFlow product names are ours. You may use them factually — to say that you host with us, that you are comparing us, or that you are writing about us — without asking.",
       },
       {
         type: "p",
-        text: "You may not use our marks in a way that suggests we endorse, sponsor or are affiliated with your product, nor register a domain or social account that would be confused with ours. Other names appearing on this site belong to their respective owners and are used only to identify what they are.",
+        text: "You may not use them in a way that suggests we endorse, partner with, or supply something we do not, and you may not use them in your own product name, domain or company name.",
+      },
+      {
+        type: "p",
+        text: "Third-party names elsewhere on this site — hosting platforms we migrate from, software we support, providers we compare against — belong to their owners and appear for identification only. Their appearance is not a claim of affiliation in either direction.",
       },
     ],
   },
@@ -124,7 +120,21 @@ const SECTIONS: readonly LegalSection[] = [
     blocks: [
       {
         type: "p",
-        text: "Parts of what we sell depend on third parties: domain registries, certificate authorities, payment processors and infrastructure providers. Their terms apply to their part of the service, and we cannot waive them on your behalf. Where one of them changes a fee or a policy in a way that affects you, we pass on the change and tell you rather than absorbing it silently.",
+        text: "Parts of what we sell depend on third parties: domain registries, certificate authorities, payment processors, infrastructure providers and the model vendors behind our AI services. Their terms apply to their part of the service, and we cannot waive them on your behalf. Where one of them changes a fee or a policy in a way that affects you, we pass on the change and tell you rather than absorbing it silently.",
+      },
+    ],
+  },
+  {
+    id: "changes",
+    heading: "Changes to these documents",
+    blocks: [
+      {
+        type: "p",
+        text: "Each document carries the date its current version took effect, shown at the top of the document and beside it in the index above.",
+      },
+      {
+        type: "p",
+        text: "Where we make a change that materially affects your rights or what you owe, we tell account holders rather than relying on you to notice a changed date. Corrections that do not change the substance — a typo, a clearer sentence, a fixed link — are made without notice.",
       },
     ],
   },
@@ -134,15 +144,18 @@ export default function LegalInformationPage() {
   return (
     <>
       <JsonLd
-        data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "Legal information", path: PATH }])}
+        data={breadcrumbGraph([
+          { name: "Home", path: "/" },
+          { name: "Legal information", path: PATH },
+        ])}
       />
       <LegalPage
+        path={PATH}
         title="Legal information"
-        intro="Company details, which document governs what, and the procedures for copyright notices, law-enforcement requests and abuse reports."
-        effective={EFFECTIVE}
+        intro="Company details, an index of every document that governs a Serverlys service, and the order they take precedence in when two of them appear to disagree."
         trail={[{ name: "Home", href: "/" }, { name: "Legal information" }]}
         sections={SECTIONS}
-        contact="For notices under section three, use the requirements listed there — a complete notice is actioned far faster than one we have to send back."
+        contact="If you cannot tell which document covers your question, ask us rather than reading all of them. Pointing you at the right clause is faster for both of us."
       />
     </>
   );

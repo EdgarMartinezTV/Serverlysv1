@@ -1,10 +1,6 @@
 import { JsonLd } from "@/components/ui/json-ld";
+import { DomainHero, Explainers, Manage, Popular, Reasons, Steps, TldTable } from "../domain-name/_components/domain-ui";
 import { Faqs } from "@/components/ref/faqs";
-import { DomainHero } from "@/components/ref/domain/hero";
-import { Popular } from "@/components/ref/domain/popular";
-import { Reasons } from "@/components/ref/domain/reasons";
-import { Steps } from "@/components/ref/domain/steps";
-import { TldTable } from "@/components/ref/domain/tld-table";
 import { DomainSearchApp } from "@/components/domain/domain-search-app";
 import { tlds } from "@/data/tlds";
 import { breadcrumbGraph, faqGraph, pageMetadata } from "@/lib/seo";
@@ -85,7 +81,9 @@ export default function TransferDomainPage() {
       <DomainHero copy={HERO} tool={<DomainSearchApp />} />
       <Reasons copy={REASONS} />
       <Popular />
+      <Manage />
       <Steps copy={STEPS} />
+      <Explainers />
       <TldTable />
 
       <Faqs

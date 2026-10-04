@@ -69,7 +69,7 @@ export function OverlapCard({
           (eyebrow && (
             <span
               className={cn(
-                "font-mono text-caption uppercase",
+                "text-micro font-semibold",
                 dark ? "text-primary-on-dark" : "text-primary",
               )}
             >

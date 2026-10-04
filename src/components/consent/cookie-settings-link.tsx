@@ -17,7 +17,7 @@ export function CookieSettingsLink() {
     <button
       type="button"
       onClick={() => window.dispatchEvent(new Event("consent:open"))}
-      className="inline-block rounded-sm py-1.5 text-small text-fg-secondary transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+      className="inline-block rounded-sm py-1.5 text-small text-fg transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
     >
       Cookie settings
     </button>

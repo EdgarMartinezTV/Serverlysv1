@@ -41,7 +41,7 @@ export default function ConvoAiPage() {
       <ProductHero
         eyebrow="ConvoAI"
         eyebrowSlot={
-          <ConvoAiLogo tone="dark" decorative={false} className="h-9 w-auto" />
+          <ConvoAiLogo tone="light" decorative={false} className="h-9 w-auto" />
         }
         title="An AI chatbot that answers before you wake up"
         lede="An AI chatbot trained on your own site. It handles the questions that make up most of your volume, and it knows which ones it should not attempt."
@@ -54,7 +54,7 @@ export default function ConvoAiPage() {
         ]}
         primary={{ label: "Open ConvoAI", href: convo?.href ?? billing.sales }}
         secondary={{ label: "Ask what it can do", href: billing.sales }}
-        visual={<ConvoChat tone="dark" />}
+        visual={<ConvoChat tone="light" />}
       />
 
       <FeatureGrid

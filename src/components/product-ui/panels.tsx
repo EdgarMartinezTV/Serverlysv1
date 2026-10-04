@@ -59,7 +59,7 @@ export function HostingPanel({ className }: { className?: string }) {
       <div className="p-3.5">
         <div className="flex items-center justify-between">
           <span className="text-ui font-semibold text-fg">Cloud · Turbo</span>
-          <span className="rounded-full bg-success-soft px-1.5 py-0.5 font-mono text-ui uppercase text-success">
+          <span className="rounded-full bg-success-soft px-1.5 py-0.5 text-ui text-success font-semibold">
             Live
           </span>
         </div>
@@ -70,7 +70,7 @@ export function HostingPanel({ className }: { className?: string }) {
             ["Disk", "6.2 GB"],
           ].map(([k, v]) => (
             <div key={k} className="rounded-md bg-canvas-secondary px-1.5 py-1">
-              <dt className="font-mono text-ui uppercase text-fg-muted">{k}</dt>
+              <dt className="text-ui text-fg-muted font-semibold">{k}</dt>
               <dd className="tabular text-ui font-semibold text-fg">{v}</dd>
             </div>
           ))}
@@ -130,7 +130,7 @@ export function DomainPanel({ className }: { className?: string }) {
               <span className="flex items-center gap-1.5">
                 <span
                   className={cn(
-                    "font-mono text-ui uppercase",
+                    "text-ui font-semibold",
                     free ? "text-success" : "text-fg-muted",
                   )}
                 >
@@ -153,7 +153,7 @@ export function ConvoPanel({ className }: { className?: string }) {
   return (
     <Shell className={className}>
       <div className="flex items-center gap-2 border-b border-line-subtle px-3 py-2">
-        <span className="flex h-5 w-5 items-center justify-center rounded-md bg-violet-500 text-ui font-bold text-white">
+        <span className="flex h-5 w-5 items-center justify-center rounded-md bg-primary text-ui font-bold text-white">
           C
         </span>
         <span className="text-ui font-semibold text-fg">ConvoAI</span>
@@ -183,7 +183,7 @@ export function UptimePanel({ className }: { className?: string }) {
       <div className="p-3.5">
         <div className="flex items-center justify-between">
           <span className="text-ui font-semibold text-fg">Status</span>
-          <span className="flex items-center gap-1 font-mono text-ui uppercase text-success">
+          <span className="flex items-center gap-1 text-ui text-success font-semibold">
             <span className="h-1.5 w-1.5 rounded-full bg-success-fill" />
             Operational
           </span>

@@ -1,6 +1,7 @@
 import { AppFrame, BrowserFrame, PhoneFrame } from "./frame";
 import { NavIcon } from "@/components/navigation/nav-icons";
 import { cn } from "@/lib/utils";
+import { MockPhoto } from "@/components/ui/mock-photo";
 
 /**
  * Serverlys product interfaces.
@@ -42,7 +43,7 @@ export function HostingMock({ className }: { className?: string }) {
           ["Storage", "6.2 GB", 12],
         ].map(([label, value, pct]) => (
           <div key={label as string} className="rounded-lg bg-canvas-secondary p-2.5">
-            <p className="font-mono text-ui uppercase text-fg-muted">{label}</p>
+            <p className="text-ui text-fg-muted font-semibold">{label}</p>
             <p className="tabular mt-1 text-small font-semibold text-fg">{value}</p>
             <span className="mt-2 block h-1 overflow-hidden rounded-full bg-line">
               <span
@@ -137,7 +138,7 @@ export function DomainMock({ className }: { className?: string }) {
               <span className="flex items-center gap-2.5">
                 <span
                   className={cn(
-                    "font-mono text-ui uppercase",
+                    "text-ui font-semibold",
                     state === "available" ? "text-success" : "text-fg-muted",
                   )}
                 >
@@ -169,7 +170,7 @@ export function ChatMock({ className }: { className?: string }) {
       )}
     >
       <div className="flex items-center gap-2.5 border-b border-line-subtle px-4 py-3">
-        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-500 text-small font-bold text-white">
+        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-small font-bold text-white">
           C
         </span>
         <div className="min-w-0">
@@ -179,7 +180,7 @@ export function ChatMock({ className }: { className?: string }) {
             Answering · hartley-bakery.com
           </p>
         </div>
-        <span className="ml-auto rounded-full bg-primary-soft px-2 py-0.5 font-mono text-ui uppercase text-primary">
+        <span className="ml-auto rounded-full bg-primary-soft px-2 py-0.5 text-ui text-primary font-semibold">
           Live
         </span>
       </div>
@@ -200,7 +201,7 @@ export function ChatMock({ className }: { className?: string }) {
 
         {/* The outcome — the thing the gap analysis said we never showed */}
         <div className="mt-1 rounded-lg bg-success-soft p-3 ring-1 ring-inset ring-success/20">
-          <p className="flex items-center gap-1.5 font-mono text-ui uppercase text-success">
+          <p className="flex items-center gap-1.5 text-ui text-success font-semibold">
             <NavIcon name="shield" className="h-3 w-3" />
             Lead captured
           </p>
@@ -228,7 +229,7 @@ export function CallMock({ className }: { className?: string }) {
   return (
     <PhoneFrame className={className}>
       <div className="flex flex-col items-center">
-        <span className="font-mono text-ui uppercase text-fg-muted">
+        <span className="text-ui text-fg-muted font-semibold">
           Incoming · 00:42
         </span>
         <span className="mt-2 flex h-12 w-12 items-center justify-center rounded-full bg-primary-soft text-primary">
@@ -260,7 +261,7 @@ export function CallMock({ className }: { className?: string }) {
       </div>
 
       <div className="mt-3 rounded-lg bg-success-soft px-2.5 py-2">
-        <p className="font-mono text-ui uppercase text-success">Booked</p>
+        <p className="text-ui text-success font-semibold">Booked</p>
         <p className="mt-0.5 text-ui font-medium text-fg">Sunday 13:00 · 6 covers</p>
       </div>
     </PhoneFrame>
@@ -285,10 +286,10 @@ export function AutomationMock({ className }: { className?: string }) {
       )}
     >
       <div className="flex items-center justify-between">
-        <p className="font-mono text-caption uppercase text-fg-on-dark-muted">
+        <p className="text-micro text-fg-on-dark-muted font-semibold">
           Enquiry workflow
         </p>
-        <span className="flex items-center gap-1.5 rounded-full bg-success-fill/15 px-2 py-0.5 font-mono text-ui uppercase text-success-fill">
+        <span className="flex items-center gap-1.5 rounded-full bg-success-fill/15 px-2 py-0.5 text-ui text-success-fill font-semibold">
           <span className="h-1.5 w-1.5 rounded-full bg-success-fill" />
           Running
         </span>
@@ -321,7 +322,7 @@ export function AutomationMock({ className }: { className?: string }) {
               </span>
               <span className="min-w-0">
                 <span className="block text-small font-medium text-white">{n.label}</span>
-                <span className="block font-mono text-ui uppercase text-fg-on-dark-muted">
+                <span className="block text-ui text-fg-on-dark-muted font-semibold">
                   {n.sub}
                 </span>
               </span>
@@ -432,16 +433,15 @@ export function SitePreviewMock({ className }: { className?: string }) {
         </div>
         {/* Product row */}
         <div className="grid grid-cols-3 gap-1.5 px-5 pb-5">
-          {["Sourdough", "Cakes", "Pastries"].map((label, i) => (
+          {(
+            [
+              ["Sourdough", "bread"],
+              ["Rye", "bread-sliced"],
+              ["Coffee", "coffee"],
+            ] as const
+          ).map(([label, photo]) => (
             <div key={label} className="overflow-hidden rounded-md bg-surface ring-1 ring-line-subtle">
-              <div
-                className={cn(
-                  "h-8",
-                  i === 0 && "bg-[linear-gradient(135deg,#e8d5b5,#c9a878)]",
-                  i === 1 && "bg-[linear-gradient(135deg,#f2d7d5,#d99a94)]",
-                  i === 2 && "bg-[linear-gradient(135deg,#f0e2c8,#d4b483)]",
-                )}
-              />
+              <MockPhoto src={photo} className="h-10" sizes="120px" />
               <p className="px-1.5 py-1 text-ui text-fg-secondary">{label}</p>
             </div>
           ))}

@@ -638,6 +638,14 @@ export function contextBlock(
     if (missing.length > 0) {
       lines.push(
         `Still required: ${missing.map((f) => `${f.label} (${f.key})`).join(", ")}`,
+        /* The panel shows a tappable card for the FIRST missing field, so the
+           question asked in text has to be that same field. */
+        "HARD RULE: one question per reply. Never stack two or three questions, never repeat a sentence you already said this turn, and never record a value the visitor did not say.",
+        `Ask next, and only this one question: ${missing[0].label} (${missing[0].key}).${
+          missing[0].kind === "choice"
+            ? " The visitor sees these choices as buttons under your message, so do not list them yourself — just ask the question in one short sentence."
+            : ""
+        }`,
       );
     } else if (record.stage === "AWAITING_CONFIRMATION") {
       lines.push(

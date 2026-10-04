@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ProductHero } from "@/components/sections/product-hero";
-import { Section, SectionHeader } from "@/components/ui/section";
+import { Band, Heading, Pill, Tick } from "../hosting/_components/band";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { FaqSection } from "@/components/sections/faq";
@@ -9,7 +9,6 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { SharedLimitsMock } from "@/components/product-ui/infra";
 import { NavIcon } from "@/components/navigation/nav-icons";
 import { billing } from "@/data/company";
-import { lowestRate, formatPrice } from "@/data/pricing";
 import { pageMetadata, breadcrumbGraph, faqGraph } from "@/lib/seo";
 import type { Faq } from "@/data/faqs";
 
@@ -17,7 +16,9 @@ const PATH = "/shared-hosting";
 
 
 export const metadata = pageMetadata({
-  title: `Shared Hosting from ${formatPrice(lowestRate)}/mo | Serverlys`,
+  /* No price in the title: the tier is not orderable yet, and a bare
+     monthly rate without its renewal breaks the both-prices rule. */
+  title: "Shared Hosting, coming soon | Serverlys",
   description:
     "The entry tier, described honestly: what shared hosting is genuinely good for, where it runs out, and how to tell when you have outgrown it.",
   path: PATH,
@@ -88,7 +89,7 @@ export default function SharedHostingPage() {
       <JsonLd data={faqGraph(FAQS)} />
 
       <ProductHero
-        eyebrow="Shared hosting"
+        eyebrow="Shared hosting · coming soon"
         title="The entry tier, described honestly"
         lede="Shared hosting is the right answer more often than the industry admits, and the wrong answer in a few specific cases. Here are both, before the price."
         breadcrumb={[
@@ -97,7 +98,7 @@ export default function SharedHostingPage() {
           { name: "Shared hosting" },
         ]}
         specs={[
-          { label: "From", value: `${formatPrice(lowestRate)}/mo` },
+          { label: "Status", value: "Coming soon" },
           { label: "SSL", value: "Free" },
           { label: "Backups", value: "Daily" },
           { label: "Migration", value: "Free" },
@@ -107,134 +108,131 @@ export default function SharedHostingPage() {
         visual={<SharedLimitsMock />}
       />
 
-      {/* Fit test. Two columns, deliberately not cards — this is a decision,
-          not a feature grid, and it reads as a decision. */}
-      <Section>
-        <SectionHeader
-          eyebrow="Before you buy"
+      {/* Fit test: a decision, two sides. */}
+      <Band labelledBy="sh-fit-heading">
+        <Heading
+          id="sh-fit-heading"
           title="Is this the right tier for you?"
-          lede="We would rather lose the sale than sell you a plan that will frustrate you in four months."
+          lede="We would rather lose the sale than sell you a plan that frustrates you in four months."
         />
-        <div className="mt-12 grid gap-10 lg:grid-cols-2 lg:gap-16">
-          <div>
-            <h3 className="flex items-center gap-2.5 text-body-lg font-semibold text-fg">
-              <span aria-hidden="true" className="text-success">
-                <NavIcon name="shield" />
-              </span>
-              Shared hosting suits this
-            </h3>
-            <ul className="mt-5 flex flex-col divide-y divide-line border-y border-line">
+        <div className="mt-12 grid gap-4 lg:grid-cols-2">
+          <div className="rounded-3xl bg-canvas-secondary p-7 sm:p-9">
+            <Pill tone="success">Shared hosting suits this</Pill>
+            <ul className="mt-6 flex flex-col gap-3.5">
               {FITS.map((f) => (
-                <li key={f} className="py-3.5 text-body text-fg-secondary">
+                <li key={f} className="flex items-start gap-3 text-body text-fg">
+                  <Tick />
                   {f}
                 </li>
               ))}
             </ul>
           </div>
-          <div>
-            <h3 className="flex items-center gap-2.5 text-body-lg font-semibold text-fg">
-              <span aria-hidden="true" className="text-warning">
-                <NavIcon name="bolt" />
-              </span>
-              Choose a different tier for this
-            </h3>
-            <ul className="mt-5 flex flex-col divide-y divide-line border-y border-line">
+          <div className="rounded-3xl bg-brand-50 p-7 sm:p-9">
+            <Pill tone="brand">Choose a different tier for this</Pill>
+            <ul className="mt-6 flex flex-col gap-3.5">
               {DOES_NOT_FIT.map((f) => (
-                <li key={f} className="py-3.5 text-body text-fg-secondary">
+                <li key={f} className="flex items-start gap-3 text-body text-fg">
+                  <span aria-hidden="true" className="mt-0.5 inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-bold text-white">→</span>
                   {f}
                 </li>
               ))}
             </ul>
-            <p className="mt-6 text-small text-fg-muted">
-              If you recognised yourself on this side,{" "}
-              <Link href="/cloud-hosting" className="font-medium text-primary hover:text-primary-hover">
+            <p className="mt-6 text-small text-fg-secondary">
+              If you recognised yourself here,{" "}
+              <Link href="/cloud-hosting" className="font-semibold text-primary hover:text-primary-hover">
                 cloud hosting
               </Link>{" "}
               is usually the next step, and{" "}
-              <Link href="/vps-hosting" className="font-medium text-primary hover:text-primary-hover">
+              <Link href="/vps-hosting" className="font-semibold text-primary hover:text-primary-hover">
                 a VPS
               </Link>{" "}
               if you need root.
             </p>
           </div>
         </div>
-      </Section>
+      </Band>
 
-      {/* What you get, as a dense spec strip rather than another card grid. */}
-      <Section surface="dark" spacing="tight">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,22rem)_1fr] lg:items-center lg:gap-16">
-          <SectionHeader
-            eyebrow="Included"
-            tone="dark"
-            title="Nothing held back for a higher tier"
-            lede="These are the same on every Serverlys plan. The tiers differ in resources, not in what we will let you have."
-          />
-          <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-xl bg-white/10 sm:grid-cols-3">
-            {[
-              ["Free SSL", "Issued and renewed"],
-              ["Daily backups", "Restores are free"],
-              ["Free migration", "Staged, then cut over"],
-              ["Email", "At your own domain"],
-              ["One-click WordPress", "Tuned before you arrive"],
-              ["Real support", "One queue, every plan"],
-            ].map(([t, d]) => (
-              <div key={t} className="bg-canvas-dark p-5">
-                <dt className="text-body font-semibold text-white">{t}</dt>
-                <dd className="mt-1 text-small text-fg-on-dark-secondary">{d}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </Section>
+      {/* Included on every plan. */}
+      <Band tone="dark" labelledBy="sh-included-heading">
+        <Heading
+          id="sh-included-heading"
+          dark
+          title="Nothing held back for a higher tier"
+          lede="These are the same on every Serverlys plan. Tiers differ in resources, not in what you are allowed to have."
+        />
+        <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {(
+            [
+              ["Free SSL", "Issued and renewed automatically.", "shield"],
+              ["Daily backups", "Restores are free, whole site or one file.", "gauge"],
+              ["Free migration", "Staged first, then cut over when you say.", "globe"],
+              ["Email", "Mailboxes at your own domain.", "mail"],
+              ["One-click WordPress", "Installed and tuned before you arrive.", "layout"],
+              ["Real support", "One queue, every plan.", "chat"],
+            ] as const
+          ).map(([t, d, icon]) => (
+            <li key={t} className="rounded-2xl bg-white/[0.06] p-6 ring-1 ring-white/10">
+              <span aria-hidden="true" className="inline-flex size-9 items-center justify-center rounded-lg bg-primary text-white">
+                <NavIcon name={icon} className="h-5 w-5" />
+              </span>
+              <h3 className="mt-5 text-body-lg font-medium text-white">{t}</h3>
+              <p className="mt-1.5 text-small text-fg-on-dark-secondary">{d}</p>
+            </li>
+          ))}
+        </ul>
+      </Band>
 
-      {/* Upgrade path as a horizontal ladder — the tier's exit, made explicit. */}
-      <Section surface="subtle">
-        <SectionHeader
-          eyebrow="Where it goes next"
+      {/* Upgrade path: a real sequence, so it keeps its order. */}
+      <Band tone="subtle" labelledBy="sh-path-heading">
+        <Heading
+          id="sh-path-heading"
           title="The upgrade path, prorated"
           lede="Moving up is a billing change, not a project. Your site, database and email stay where they are."
         />
-        <ol className="mt-12 grid gap-px overflow-hidden rounded-xl bg-line md:grid-cols-4">
+        <ol className="relative mt-12 grid gap-4 md:grid-cols-4">
+          <span aria-hidden="true" className="absolute top-9 right-[12%] left-[12%] hidden h-px bg-brand-200 md:block" />
           {[
-            { n: "01", t: "Shared", d: "You are here. Fine until traffic stops being predictable.", href: null },
-            { n: "02", t: "Cloud", d: "Pooled resources absorb the spike instead of dropping it.", href: "/cloud-hosting" },
-            { n: "03", t: "VPS", d: "Root access, guaranteed slice, your own system packages.", href: "/vps-hosting" },
-            { n: "04", t: "Dedicated", d: "The whole machine, for sustained heavy load.", href: "/dedicated-servers" },
-          ].map((s) => (
-            <li key={s.t} className="flex flex-col gap-2 bg-canvas p-6">
-              <span className="font-mono text-caption text-fg-muted">{s.n}</span>
-              <h3 className="text-body-lg font-semibold text-fg">{s.t}</h3>
-              <p className="flex-1 text-small text-fg-secondary">{s.d}</p>
-              {s.href ? (
-                <Link
-                  href={s.href}
-                  className="mt-2 inline-flex min-h-6 items-center text-small font-semibold text-primary hover:text-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                >
-                  {s.t} hosting
+            { t: "Shared", d: "Fine until traffic stops being predictable.", href: null, status: "Soon" },
+            { t: "Cloud", d: "Pooled resources absorb the spike instead of dropping it.", href: "/cloud-hosting", status: "Available now" },
+            { t: "VPS", d: "Root access, a guaranteed slice, your own system packages.", href: "/vps-hosting", status: "Soon" },
+            { t: "Dedicated", d: "The whole machine, for sustained heavy load.", href: "/dedicated-servers", status: "Soon" },
+          ].map((step, i) => (
+            <li key={step.t} className="relative flex flex-col rounded-2xl bg-canvas p-6 ring-1 ring-line">
+              <span className={`inline-flex size-7 items-center justify-center rounded-full text-micro font-semibold ${i === 0 ? "bg-primary text-white" : "bg-brand-50 text-primary"}`}>
+                {i + 1}
+              </span>
+              <span className="mt-5 flex items-center justify-between gap-2">
+                <h3 className="text-body-lg font-semibold text-fg">{step.t}</h3>
+                <Pill tone={step.status === "Available now" ? "success" : "warning"}>{step.status}</Pill>
+              </span>
+              <p className="mt-2 flex-1 text-small text-fg-secondary">{step.d}</p>
+              {step.href ? (
+                <Link href={step.href} className="mt-4 inline-flex min-h-6 items-center text-small font-semibold text-primary hover:text-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+                  {step.t} hosting →
                 </Link>
               ) : (
-                <span className="mt-2 text-small font-medium text-fg-muted">This plan</span>
+                <span className="mt-4 text-small font-medium text-fg-muted">This page</span>
               )}
             </li>
           ))}
         </ol>
-      </Section>
+      </Band>
 
       <FaqSection items={FAQS} />
 
       <Container className="pb-20">
-        <div className="flex flex-col items-start justify-between gap-6 rounded-2xl bg-canvas-secondary p-8 ring-1 ring-inset ring-line sm:flex-row sm:items-center sm:p-10">
+        <div className="flex flex-col items-start justify-between gap-6 rounded-2xl bg-[linear-gradient(90deg,var(--color-brand-950)_0%,var(--color-brand-700)_55%,var(--color-brand-500)_100%)] p-8 sm:flex-row sm:items-center sm:p-10">
           <div>
-            <h2 className="text-h4 text-fg">Not sure which tier you need?</h2>
-            <p className="mt-2 max-w-xl text-body text-fg-secondary">
+            <h2 className="text-h4 text-white">Not sure which tier you need?</h2>
+            <p className="mt-2 max-w-xl text-body text-fg-on-brand-muted">
               Tell us what the site does and roughly what traffic it gets. We
               will tell you the smallest plan that will hold it.
             </p>
           </div>
           <div className="flex shrink-0 flex-wrap gap-3">
-            <Button href={billing.sales}>Ask us</Button>
-            <Button href={billing.store("cloud-hosting")} variant="secondary">
-              See plans
+            <Button href={billing.sales} variant="inverse">Ask us</Button>
+            <Button href="/cloud-hosting#pricing" variant="onBrand">
+              See cloud plans
             </Button>
           </div>
         </div>

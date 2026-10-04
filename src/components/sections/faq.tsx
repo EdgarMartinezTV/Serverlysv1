@@ -1,4 +1,4 @@
-import { Section, SectionHeader } from "@/components/ui/section";
+import { Section } from "@/components/ui/section";
 import type { Faq } from "@/data/faqs";
 
 /**
@@ -28,15 +28,20 @@ export function FaqSection({
 
   return (
     <Section surface={surface} labelledBy="faq-heading">
-      <div className="grid gap-10 lg:grid-cols-[minmax(0,26rem)_1fr] lg:gap-16">
-        <SectionHeader
-          id="faq-heading"
-          eyebrow="Questions"
-          title="Before you buy"
-          lede="The things people actually ask us, answered plainly."
-        />
+      {/* 2026-10-03: centred, one column, like a document rather than a
+          sidebar layout. Same markup underneath, so every page using this
+          section picks it up. */}
+      <div className="mx-auto max-w-[760px]">
+        <div className="text-center">
+          <h2 id="faq-heading" className="display-md text-fg">
+            Before you buy
+          </h2>
+          <p className="mt-4 text-body-lg text-fg-secondary">
+            The things people actually ask us, answered plainly.
+          </p>
+        </div>
 
-        <ul className="divide-y divide-line border-t border-line">
+        <ul className="mt-12 divide-y divide-line border-y border-line">
           {items.map((faq) => (
             <li key={faq.question}>
               {/* The vertical padding lives on the SUMMARY, not on the
@@ -45,12 +50,12 @@ export function FaqSection({
                   thumb misses an accordion that visually fills the row. */}
               <details className="group">
                 <summary className="flex cursor-pointer list-none items-start justify-between gap-6 rounded-sm py-5 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&::-webkit-details-marker]:hidden">
-                  <span className="text-body-lg font-semibold text-fg">
+                  <span className="text-body-lg text-fg">
                     {faq.question}
                   </span>
                   <span
                     aria-hidden="true"
-                    className="mt-1 shrink-0 text-fg-muted transition-transform duration-normal ease-hover group-open:rotate-45"
+                    className="mt-1 shrink-0 text-fg transition-transform duration-normal ease-hover group-open:rotate-45"
                   >
                     <svg viewBox="0 0 16 16" className="h-4 w-4">
                       <path

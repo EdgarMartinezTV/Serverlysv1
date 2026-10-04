@@ -4,10 +4,11 @@ import { FeatureGrid } from "@/components/sections/feature-grid";
 import { FaqSection } from "@/components/sections/faq";
 import { FinalCta } from "@/components/sections/final-cta";
 import { JsonLd } from "@/components/ui/json-ld";
-import { ChatMock, SitePreviewMock } from "@/components/product-ui/mocks";
+import { ChatMock } from "@/components/product-ui/mocks";
 import { billing } from "@/data/company";
 import { faqsFor } from "@/data/faqs";
 import { pageMetadata, faqGraph, breadcrumbGraph, serviceGraph } from "@/lib/seo";
+import { SocialPlanner } from "../website-design/_components/shots";
 
 const PATH = "/social-media";
 const DESCRIPTION =
@@ -46,7 +47,7 @@ export default function SocialMediaPage() {
         ]}
         primary={{ label: "Talk about your channels", href: billing.sales }}
         secondary={{ label: "See marketing", href: "/marketing" }}
-        visual={<SitePreviewMock />}
+        visual={<SocialPlanner />}
       />
       <FeatureGrid
         eyebrow="How it works"
@@ -71,7 +72,6 @@ export default function SocialMediaPage() {
         visual={<ChatMock />}
         side="right"
         surface="dark"
-        bleed
       />
       <FaqSection items={faqs} />
       <FinalCta />

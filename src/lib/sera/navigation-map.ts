@@ -56,10 +56,10 @@ export const NAVIGABLE: readonly PageNav[] = [
     label: "WordPress hosting",
     sections: [
       { id: "plans", label: "Plans and pricing" },
-      { id: "features", label: "Features" },
+      { id: "agent", label: "The chat agent" },
       { id: "performance", label: "Performance" },
-      { id: "managed", label: "What we manage" },
-      { id: "fit-heading", label: "Which tier fits" },
+      { id: "features", label: "Protection" },
+      { id: "wp-move-heading", label: "Free migration" },
       { id: "faq-heading", label: "FAQ" },
     ],
   },
@@ -68,8 +68,9 @@ export const NAVIGABLE: readonly PageNav[] = [
     label: "Cloud hosting",
     sections: [
       { id: "pricing", label: "Plans and pricing" },
-      { id: "cloud-what-is-heading", label: "What cloud hosting is" },
-      { id: "cloud-comparison-heading", label: "How the tiers compare" },
+      { id: "build", label: "Start fresh or move a site" },
+      { id: "performance", label: "Performance" },
+      { id: "security", label: "Security" },
       { id: "cloud-faq-heading", label: "FAQ" },
     ],
   },
@@ -78,6 +79,7 @@ export const NAVIGABLE: readonly PageNav[] = [
     label: "Ecommerce hosting",
     sections: [
       { id: "pricing", label: "Plans and pricing" },
+      { id: "agent", label: "The store chat agent" },
       { id: "ecom-speed-heading", label: "Store speed" },
       { id: "ecom-security-heading", label: "Security" },
       { id: "ecom-migration-heading", label: "Moving an existing store" },

@@ -91,7 +91,7 @@ export function ScaleSteps() {
       className="relative isolate overflow-hidden bg-canvas-deep py-14 sm:py-24 lg:py-28"
     >
       {/*
-        ⚠ CYAN, NOT VIOLET. This wash was `rgb(141 89 255 / 0.20)` —
+        ⚠ CYAN, NOT VIOLET. This wash was `rgb(0 0 255 / 0.20)` —
         `violet-500`. Recoloured rather than deleted for the same reason as the
         hero's: each of these dark bands is lit by TWO sources, and dropping one
         leaves a flat half.
@@ -113,7 +113,7 @@ export function ScaleSteps() {
 
       <Container className="relative">
         <Reveal className="max-w-2xl">
-          <span className="font-mono text-caption uppercase text-accent-on-dark">
+          <span className="text-micro text-accent-on-dark font-semibold">
             Headroom
           </span>
           <h2 id="scale-heading" className="mt-5 text-h1 text-white">
@@ -136,12 +136,12 @@ export function ScaleSteps() {
                 aria-labelledby={`${baseId}-tab-${step.id}`}
                 className="flex flex-col justify-center"
               >
-                <span className="font-mono text-caption uppercase text-fg-on-dark-muted">
+                <span className="text-micro text-fg-on-dark-muted font-semibold">
                   Step {index + 1} of {STEPS.length}
                 </span>
                 <h3 className="mt-4 text-h3 text-white">{step.title}</h3>
                 <p className="mt-4 text-body text-fg-on-dark-secondary">{step.body}</p>
-                <p className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-white/8 px-3.5 py-1.5 font-mono text-caption uppercase text-accent-on-dark ring-1 ring-inset ring-white/12">
+                <p className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-white/8 px-3.5 py-1.5 text-micro text-accent-on-dark ring-1 ring-inset ring-white/12 font-semibold">
                   <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
                   {step.note}
                 </p>
@@ -233,7 +233,7 @@ function LoadChart({ step }: { step: Step }) {
         ].map(([label, dot]) => (
           <span key={label} className="flex items-center gap-2">
             <span className={cn("h-2 w-2 rounded-full", dot)} />
-            <span className="font-mono text-caption uppercase text-fg-on-dark-muted">
+            <span className="text-micro text-fg-on-dark-muted font-semibold">
               {label}
             </span>
           </span>

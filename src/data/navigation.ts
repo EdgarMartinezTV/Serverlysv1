@@ -1,4 +1,5 @@
 import { billing } from "./company";
+import { legalDoc } from "./legal";
 
 /**
  * Site navigation.
@@ -184,12 +185,6 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
         heading: "Available now",
         items: [
           {
-            label: "All hosting",
-            href: "/hosting",
-            icon: "server",
-            description: "Every plan, side by side, with renewals shown.",
-          },
-          {
             label: "Cloud hosting",
             href: "/cloud-hosting",
             icon: "server",
@@ -206,12 +201,6 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
             href: "/ecommerce-hosting",
             icon: "cart",
             description: "WooCommerce-ready, fast at checkout.",
-          },
-          {
-            label: "Managed hosting",
-            href: "/managed-hosting",
-            icon: "wrench",
-            description: "We handle security and updates.",
           },
         ],
       },
@@ -658,7 +647,10 @@ export const footerNav: readonly NavColumn[] = [
       { label: "About us", href: "/about" },
       { label: "Our process", href: "/our-process" },
       { label: "Blog", href: "/blog" },
-      { label: "Legal information", href: "/legal-information" },
+      /* "Legal information" was here until 2026-09-19. It moved to the legal
+         row below as the "All legal documents" gateway — having it in both
+         places meant the hub was linked twice from one footer, which is part
+         of what made that footer read as clutter. */
     ],
   },
   {
@@ -720,20 +712,47 @@ export const footerGuarantees = [
  * footer is the one place a legal document is reliably reachable from, so a
  * policy that exists but is not listed here is, in practice, unpublished.
  */
-export const legalNav: readonly NavLink[] = [
-  { label: "Privacy policy", href: "/privacy-policy" },
-  { label: "Terms of service", href: "/terms-of-service" },
-  { label: "Refund policy", href: "/refund-policy" },
-  { label: "Acceptable use policy", href: "/acceptable-use-policy" },
-  { label: "Cookie policy", href: "/cookie-policy" },
-  { label: "Data processing agreement", href: "/data-processing-agreement" },
-  { label: "Domain registration agreement", href: "/domain-registration-agreement" },
-  { label: "Copyright and DMCA", href: "/dmca-policy" },
-  { label: "Law enforcement requests", href: "/law-enforcement-requests" },
-  { label: "Legal information", href: "/legal-information" },
-  { label: "Report abuse", href: "/report-abuse" },
-  { label: "Accessibility", href: "/accessibility" },
+/**
+ * The footer's legal row — FOUR documents and a gateway, not the whole set.
+ *
+ * ⚠ THIS IS DELIBERATELY NOT `legalDocuments`. Mapping the full registry into
+ * the footer was tried on 2026-09-19 and immediately reverted: seventeen
+ * documents plus the cookie link wrapped to THREE dense lines of near-identical
+ * grey text under the wordmark, which is not an index — it is a wall. It also
+ * put "Report abuse" and "Legal information" in the footer twice, since both
+ * already appear in the columns above.
+ *
+ * The hub at `/legal-information` is the index. It groups all seventeen by
+ * what they do and carries the order of precedence, which a flat footer row
+ * can never convey. The footer's job is the handful a visitor actually reaches
+ * for, plus one obvious way through to the rest.
+ *
+ * These four earn the slot on different grounds and each is load-bearing:
+ *   · terms + privacy — the two every visitor and every app store, payment
+ *     provider and ad platform expects to find in a footer.
+ *   · refund — this company's commercial position. Burying it would be odd
+ *     given the homepage leads on honest pricing.
+ *   · accessibility — conventionally footer-linked, and the statement is how
+ *     someone reports a barrier.
+ *
+ * Titles are still READ from the registry, so a renamed document cannot show a
+ * stale label here. Only the selection is hand-held; `legalDoc()` throws at
+ * build time if one of these paths stops existing.
+ *
+ * The gateway link to the hub is rendered by the footer itself, not listed
+ * here, because it is styled differently — see site-footer.tsx.
+ */
+const FOOTER_LEGAL: readonly string[] = [
+  "/terms-of-service",
+  "/privacy-policy",
+  "/refund-policy",
+  "/accessibility",
 ];
+
+export const legalNav: readonly NavLink[] = FOOTER_LEGAL.map((path) => {
+  const doc = legalDoc(path);
+  return { label: doc.title, href: doc.path };
+});
 
 export const socialLinks = [
   { label: "X", href: "https://x.com/serverlys" },
@@ -779,14 +798,33 @@ export function isActivePath(href: string, pathname: string): boolean {
   return pathname === path || pathname.startsWith(path + "/");
 }
 
-/** True when any item inside a nav entry points at the current section. */
-export function isActiveItem(item: NavItem, pathname: string): boolean {
-  if (!item.categories) return isActivePath(item.href, pathname);
-  return item.categories.some((c) =>
-    c.groups.some((g) =>
-      g.items.some((i) => !i.external && isActivePath(i.href, pathname)),
+/**
+ * The ONE top-level entry that owns the current page, so the header never
+ * highlights two at once.
+ *
+ * Menus cross-link on purpose (Solutions points at /pricing, /cloud-hosting
+ * and /#migration), so "any child matches" lit Solutions on the homepage and
+ * next to Pricing on /pricing. Ownership is now: a direct link wins, then the
+ * first menu in header order that lists the page. Anchor links never count,
+ * since `/#migration` is a section of the homepage, not a page in a menu.
+ */
+function owningItem(pathname: string): NavItem | undefined {
+  const direct = primaryNav.find((i) => !i.categories && isActivePath(i.href, pathname));
+  if (direct) return direct;
+  return primaryNav.find((item) =>
+    item.categories?.some((c) =>
+      c.groups.some((g) =>
+        g.items.some(
+          (i) => !i.external && !i.href.includes("#") && isActivePath(i.href, pathname),
+        ),
+      ),
     ),
   );
+}
+
+/** True when this nav entry is the one that owns the current page. */
+export function isActiveItem(item: NavItem, pathname: string): boolean {
+  return owningItem(pathname) === item;
 }
 
 /** Flattened view for the mobile drawer. */

@@ -1,5 +1,3 @@
-import { Container } from "@/components/ui/container";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { FeatureGrid } from "@/components/sections/feature-grid";
 import { ShowcaseSplit } from "@/components/sections/showcase-split";
 import { FinalCta } from "@/components/sections/final-cta";
@@ -7,6 +5,10 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { DashboardMock } from "@/components/product-ui/dashboard";
 import { company } from "@/data/company";
 import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
+import { formatPrice, groupById } from "@/data/pricing";
+import { MockPhoto } from "@/components/ui/mock-photo";
+import { Button } from "@/components/ui/button";
+import { PageHero } from "../resources/_components/page-hero";
 
 const PATH = "/about";
 
@@ -29,25 +31,24 @@ export default function AboutPage() {
     <>
       <JsonLd data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "About", path: PATH }])} />
 
-      <section className="relative isolate overflow-hidden bg-canvas-abyss">
-        <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(60%_55%_at_25%_-5%,rgb(34_126_255/0.3)_0%,transparent_68%)]" />
-        <div aria-hidden="true" className="absolute inset-0 bg-grid-dark" />
-        <Container className="relative pb-16 pt-8 sm:pb-20 sm:pt-10">
-          <Breadcrumbs trail={[{ name: "Home", href: "/" }, { name: "About" }]} tone="dark" />
-          <div className="mt-10 max-w-2xl">
-            <span className="font-mono text-caption uppercase text-accent-on-dark">About</span>
-            <h1 className="mt-4 text-h1 text-white">
-              {company.legalName}
-            </h1>
-            <p className="mt-5 text-body-lg text-fg-on-dark-secondary">
-              We host small business websites, register their domains, build the
-              sites when asked, and run the AI that answers their customers. All
-              of it on one bill, with the renewal price printed next to the
-              first-year price.
-            </p>
-          </div>
-        </Container>
-      </section>
+      <PageHero
+        trail={[{ name: "Home", href: "/" }, { name: "About" }]}
+        label="About Serverlys"
+        title={company.legalName}
+        lede={
+          <p>
+            We host small business websites, register their domains, build the sites when
+            asked, and run the AI that answers their customers. All of it on one bill, with
+            the renewal price printed next to the first-year price.
+          </p>
+        }
+        visual={<OneBill />}
+      >
+        <div className="mt-8 flex flex-wrap gap-3">
+          <Button href="/pricing" size="lg">See plans</Button>
+          <Button href="/our-process" variant="outline" size="lg">How a project runs</Button>
+        </div>
+      </PageHero>
 
       <FeatureGrid
         eyebrow="How we work"
@@ -76,5 +77,60 @@ export default function AboutPage() {
 
       <FinalCta />
     </>
+  );
+}
+
+/**
+ * "One bill" — the claim this page makes, drawn: a single account statement
+ * carrying hosting, the domain and ConvoAI. Prices are read from
+ * data/pricing.ts, both rates shown, so this cannot drift from the store.
+ */
+function OneBill() {
+  const starter = groupById("cloud")?.plans.find((p) => p.tier === "starter");
+  return (
+    <div aria-hidden="true" className="relative mx-auto max-w-[460px]">
+      <div className="overflow-hidden rounded-2xl bg-white ring-1 ring-black/5">
+        <div className="flex items-center gap-3 border-b border-line-subtle p-4">
+          <MockPhoto src="bread" className="size-11 rounded-lg" />
+          <div className="min-w-0 flex-1">
+            <p className="text-small font-semibold text-fg">Hearth Bakery</p>
+            <p className="text-micro text-fg-muted">One account · one invoice</p>
+          </div>
+          <span className="rounded-md bg-success-soft px-2 py-0.5 text-micro font-semibold text-success">Paid</span>
+        </div>
+        <ul className="divide-y divide-line-subtle text-small">
+          {starter && (
+            <li className="flex items-center justify-between gap-4 px-4 py-3">
+              <span>
+                <span className="block font-medium text-fg">{starter.name} hosting</span>
+                <span className="text-micro text-fg-muted">Renews at {formatPrice(starter.standard)}/mo</span>
+              </span>
+              <span className="font-semibold text-fg">{formatPrice(starter.monthly)}/mo</span>
+            </li>
+          )}
+          <li className="flex items-center justify-between gap-4 px-4 py-3">
+            <span>
+              <span className="block font-medium text-fg">hearthbakery.com</span>
+              <span className="text-micro text-fg-muted">Domain · DNS managed</span>
+            </span>
+            <span className="text-micro font-semibold text-primary">Registered</span>
+          </li>
+          <li className="flex items-center justify-between gap-4 px-4 py-3">
+            <span>
+              <span className="block font-medium text-fg">ConvoAI chat agent</span>
+              <span className="text-micro text-fg-muted">Answering on the site</span>
+            </span>
+            <span className="text-micro font-semibold text-success">Included</span>
+          </li>
+          <li className="flex items-center justify-between gap-4 px-4 py-3">
+            <span>
+              <span className="block font-medium text-fg">Migration and daily backups</span>
+              <span className="text-micro text-fg-muted">Every plan</span>
+            </span>
+            <span className="text-micro font-semibold text-success">Free</span>
+          </li>
+        </ul>
+      </div>
+    </div>
   );
 }

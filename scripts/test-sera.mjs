@@ -286,14 +286,15 @@ console.log("\nHIGHLIGHT — every markable target must exist on the live page\n
    */
   /*
    * ⚠ MIRRORS `GROUP_PAGES` IN `highlight.ts`, AND THE PAIRINGS ARE NOT THE
-   * OBVIOUS ONES. Cloud plans are markable on /pricing rather than on
-   * /cloud-hosting, because /cloud-hosting shows one plan at a time behind a
-   * slider. The long note in that file explains each case; this is the check
-   * that keeps it true.
+   * OBVIOUS ONES. Cloud plans are markable on /pricing and, since the
+   * 2026-10-03 rebuild put all four cards on it, on /cloud-hosting. The long
+   * note in that file explains each case; this is the check that keeps it true.
    */
   const TIERS = ["starter", "plus", "turbo", "business"];
   const PLAN_PAGES = {
     "/pricing": TIERS.map((t) => `cloud-${t}`),
+    "/cloud-hosting": TIERS.map((t) => `cloud-${t}`),
+    "/migrations": TIERS.map((t) => `cloud-${t}`),
     "/wordpress-hosting": TIERS.map((t) => `wordpress-${t}`),
     "/ecommerce-hosting": TIERS.map((t) => `ecommerce-${t}`),
   };
@@ -347,8 +348,8 @@ console.log("\nHIGHLIGHT — every markable target must exist on the live page\n
   );
   const cloudHtml = await (await fetch(`${base}/cloud-hosting`)).text();
   assert(
-    !cloudHtml.includes("data-sera-target="),
-    "/cloud-hosting registers nothing — it shows one plan at a time",
+    !cloudHtml.includes('data-sera-target="wordpress-'),
+    "/cloud-hosting registers only cloud cards, never WordPress ones",
   );
 }
 

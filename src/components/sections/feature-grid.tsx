@@ -43,22 +43,16 @@ export function FeatureGrid({
       {dark && (
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-[radial-gradient(55%_45%_at_50%_0%,rgb(34_126_255/0.18)_0%,transparent_70%)]"
+          className="absolute inset-0 bg-[radial-gradient(55%_45%_at_50%_0%,rgb(0_0_255/0.35)_0%,transparent_70%)]"
         />
       )}
-      <Container className="relative">
-        <Reveal className="max-w-2xl">
-          <span
-            className={cn(
-              "font-mono text-caption uppercase",
-              dark ? "text-accent-on-dark" : "text-primary",
-            )}
-          >
-            {eyebrow}
-          </span>
+      <Container width="wide" className="relative">
+        <Reveal className="mx-auto max-w-[760px] text-center">
+          {/* `eyebrow` kept in the API, no longer rendered (2026-10-03). */}
+          <span className="sr-only">{eyebrow}</span>
           <h2
             id={id ? `${id}-heading` : undefined}
-            className={cn("mt-4 text-h2", dark ? "text-white" : "text-fg")}
+            className={cn("display-md", dark ? "text-white" : "text-fg")}
           >
             {title}
           </h2>
@@ -76,7 +70,7 @@ export function FeatureGrid({
 
         <ul
           className={cn(
-            "mt-14 grid gap-x-10 gap-y-10 sm:grid-cols-2",
+            "mt-12 grid gap-4 sm:grid-cols-2",
             columns === 3 && "lg:grid-cols-3",
             columns === 4 && "lg:grid-cols-4",
           )}
@@ -85,19 +79,19 @@ export function FeatureGrid({
             <Reveal as="li" key={item.label} delay={(i % 4) * 60}>
               <div
                 className={cn(
-                  "border-t pt-5",
-                  dark ? "border-line-on-dark" : "border-line",
+                  "h-full rounded-2xl p-6",
+                  dark ? "bg-white/[0.06] ring-1 ring-white/10" : "bg-canvas-secondary",
                 )}
               >
                 <span
                   aria-hidden="true"
-                  className={cn(dark ? "text-accent-on-dark" : "text-primary")}
+                  className="inline-flex size-9 items-center justify-center rounded-lg bg-primary text-white"
                 >
                   <NavIcon name={item.icon} className="h-5 w-5" />
                 </span>
                 <h3
                   className={cn(
-                    "mt-4 text-h4",
+                    "mt-6 text-body-lg font-medium",
                     dark ? "text-white" : "text-fg",
                   )}
                 >

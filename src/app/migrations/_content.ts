@@ -68,7 +68,7 @@ export const WHY: SwitchCopy = {
     {
       icon: "spark",
       title: "Built for speed",
-      body: "Our managed hosting is powered by LiteSpeed. For even better performance, we offer object cache and a CDN that can speed up your website by 40%.",
+      body: "Every plan runs on LiteSpeed servers with NVMe storage and server-level caching built in, so pages are served fast without a stack of plugins.",
     },
     {
       icon: "shield",
@@ -110,7 +110,6 @@ export const SAVINGS = {
   rows: [
     { feature: "Website migration", market: "$30–$100 per site" },
     { feature: "Free SSL certificate", market: "$10–$70 per year" },
-    { feature: "Global CDN", market: "$8–$20/mo" },
     { feature: "Control panel (cPanel)", market: "$10–$15/mo" },
     { feature: "Daily automated backups", market: "$2–$10/mo" },
     { feature: "WHOIS privacy", market: "$5–$15 per year" },

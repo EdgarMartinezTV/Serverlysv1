@@ -73,6 +73,15 @@ const PATHS: Record<string, React.ReactNode> = {
      that is already round; a second ring around the glyph reads as a target
      inside a target. */
   stop: <rect x="7" y="7" width="10" height="10" rx="2" fill="currentColor" stroke="none" />,
+  /* 2026-10-03 panel upgrade */
+  compose: <path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />,
+  thumbUp: <path d="M7 10v11M15 5.9 14 10h5.6a2 2 0 0 1 2 2.3l-1.4 7A2 2 0 0 1 18.2 21H7V10l4-8a2.5 2.5 0 0 1 4 3.9Z" />,
+  thumbDown: <path d="M17 14V3M9 18.1 10 14H4.4a2 2 0 0 1-2-2.3l1.4-7A2 2 0 0 1 5.8 3H17v11l-4 8a2.5 2.5 0 0 1-4-3.9Z" />,
+  copy: <path d="M9 9h11v11H9zM5 15H4V4h11v1" />,
+  tag: <path d="M3 12V4h8l10 10-8 8L3 12Zm5-4h.01" />,
+  bulb: <path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3Z" />,
+  wallet: <path d="M3 7h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Zm0 0V6a2 2 0 0 1 2-2h11M16 13h.01" />,
+  globe: <path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm-9 9h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3Z" />,
 };
 
 export type SeraIconName = keyof typeof PATHS;

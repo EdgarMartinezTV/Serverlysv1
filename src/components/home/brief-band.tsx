@@ -2,11 +2,9 @@
 
 import { useState } from "react";
 import { Container } from "@/components/ui/container";
-import { Button } from "@/components/ui/button";
 import { SeraIcon, SeraMark } from "@/components/sera/sera-mark";
 import { useSeraOptional } from "@/components/sera/sera-provider";
-import { company, billing } from "@/data/company";
-import { cn } from "@/lib/utils";
+import { company } from "@/data/company";
 
 /**
  * Brief band — "tell us what you are building".
@@ -59,13 +57,6 @@ import { cn } from "@/lib/utils";
  * The chips still REPLACE the draft rather than appending. Appending produced
  * run-on briefs in testing, and a chip reads as "start here", not "add this".
  */
-const PROMPTS = [
-  "Move my WordPress site over without downtime",
-  "A store that can take orders this month",
-  "Answer the enquiries my site already gets",
-  "Something faster than the host I am on now",
-] as const;
-
 export function BriefBand() {
   const [draft, setDraft] = useState("");
   const sera = useSeraOptional();
@@ -120,163 +111,93 @@ export function BriefBand() {
     }
   };
 
+  /*
+   * ── 2026-10-03 RE-COMPOSITION ─────────────────────────────────────────────
+   * Edgar asked for this band to read as one calm prompt: a mark, a two-line
+   * headline, ONE input with an arrow, one helper line. The chips, the
+   * "Sera · AI agent" header row, the mono eyebrow and the long lede all went;
+   * together they made the band read as a form instead of an invitation. The
+   * mail fallback is unchanged — without Sera mounted, the arrow becomes the
+   * mailto link it always was.
+   *
+   * The gradient line is BLUE ONLY (brand-900 → brand-600 → brand-500). Every
+   * stop is ≥ 5.5:1 on this band, which is what the old violet-ended gradient
+   * version could not say, and violet stays off-brand.
+   */
   return (
     <section
       aria-labelledby="brief-heading"
-      className="relative isolate overflow-hidden bg-canvas-secondary py-14 sm:py-24"
+      className="relative isolate overflow-hidden bg-brand-50 py-20 sm:py-28"
     >
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(50%_60%_at_50%_0%,rgb(34_126_255/0.10)_0%,transparent_70%)]"
+        className="absolute inset-0 -z-10 bg-[radial-gradient(60%_80%_at_0%_0%,rgb(148_180_255/0.55)_0%,transparent_60%),radial-gradient(50%_70%_at_100%_100%,rgb(148_180_255/0.5)_0%,transparent_60%),linear-gradient(180deg,rgb(255_255_255/0.6),rgb(255_255_255/0))]"
       />
 
       <Container className="relative">
-        <div className="mx-auto flex max-w-[680px] flex-col items-center text-center">
-          <span className="font-mono text-caption uppercase text-primary">
-            Not sure what you need?
-          </span>
-          <h2 id="brief-heading" className="mt-4 text-h1 text-fg">
-            Describe it in one line.
-            {/*
-              Solid brand blue rather than the old `to-violet-600` gradient:
-              clipped-text gradients cannot be contrast-checked by
-              validate-tokens.mjs, and every stop light enough to read as a
-              gradient fell under 4.5:1 on this band. `primary` is 8.59:1.
-            */}
-            <span className="block text-primary">We will tell you what it takes.</span>
+        <div className="mx-auto flex max-w-[880px] flex-col items-center text-center">
+          <SeraMark className="h-10 w-10 text-fg" />
+          <h2
+            id="brief-heading"
+            className="display-lg mt-6 text-fg"
+          >
+            Tell us your idea.
+            <span className="block bg-[linear-gradient(90deg,var(--color-brand-900),var(--color-brand-600)_45%,var(--color-brand-500))] bg-clip-text pb-1 text-transparent">
+              Sera tells you what it takes.
+            </span>
           </h2>
-          <p className="mt-5 text-body-lg text-fg-secondary">
-            {sera
-              ? "Sera answers straight away, from the real plans and prices — and hands you to a person the moment that is the better answer."
-              : "A real person reads this and replies with the plan, the timeline and the price. No sales sequence."}
-          </p>
-        </div>
 
-        {/* ── The panel ──────────────────────────────────────────────────── */}
-        <div className="mx-auto mt-9 max-w-2xl">
-          <div className="overflow-hidden rounded-xl bg-canvas shadow-e4 ring-1 ring-line">
-            {/* The same fading brand hairline the guarantee strip carries. */}
-            <div
-              aria-hidden="true"
-              className="h-0.5 w-full bg-[linear-gradient(90deg,transparent,var(--color-primary)_16%,var(--color-primary)_84%,transparent)]"
-            />
-
-            {/*
-              Who is going to answer. Only rendered when Sera is actually
-              mounted — claiming an assistant is standing by and then opening a
-              mail client would be the exact dishonesty this file was written to
-              avoid.
-            */}
-            {sera && (
-              <div className="flex items-center gap-2.5 border-b border-line px-5 py-3.5">
-                <SeraMark className="h-5 w-5 shrink-0 text-primary" />
-                <span className="text-small font-medium text-fg">Sera</span>
-                <span className="text-small text-fg-muted">·</span>
-                <span className="text-small text-fg-secondary">AI agent</span>
-                <span className="ml-auto flex items-center gap-1.5">
-                  <span
-                    aria-hidden="true"
-                    className="h-1.5 w-1.5 rounded-full bg-success-fill"
-                  />
-                  <span className="text-caption text-fg-muted">Answers in seconds</span>
-                </span>
-              </div>
-            )}
-
-            <div className="p-3">
-              <label htmlFor="brief" className="sr-only">
-                What are you building?
-              </label>
-              <textarea
+          <form
+            className="mt-10 w-full max-w-[850px]"
+            onSubmit={(event) => {
+              event.preventDefault();
+              askSera();
+            }}
+          >
+            <label htmlFor="brief" className="sr-only">
+              What do you want to build?
+            </label>
+            <div className="flex items-center gap-2 rounded-xl bg-canvas p-1.5 pl-5 shadow-e2 ring-1 ring-brand-200 transition-shadow duration-fast focus-within:ring-2 focus-within:ring-primary">
+              <input
                 id="brief"
                 name="brief"
-                rows={2}
+                type="text"
+                autoComplete="off"
                 value={draft}
                 onChange={(event) => setDraft(event.target.value)}
-                /*
-                  ⚠ ENTER SENDS, SHIFT+ENTER NEWLINES — the convention every
-                  chat input uses, and this is now a chat input. Only wired
-                  when Sera is present: with the mail fallback there is nothing
-                  to submit to, and hijacking Enter to open a mail client from
-                  a textarea would be a surprise.
-                */
-                onKeyDown={(event) => {
-                  if (!sera) return;
-                  if (event.key === "Enter" && !event.shiftKey) {
-                    event.preventDefault();
-                    askSera();
-                  }
-                }}
-                placeholder="I run a cleaning company and need a site that books jobs…"
-                className="min-h-16 w-full resize-none rounded-lg bg-transparent px-3 py-2 text-body text-fg placeholder:text-fg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                placeholder="What do you want to build?"
+                className="h-11 min-w-0 flex-1 bg-transparent text-body-lg text-fg placeholder:text-fg-secondary focus:outline-none"
               />
-
-              <ul className="mt-1 flex flex-wrap gap-2 px-1">
-                {PROMPTS.map((prompt) => {
-                  const active = trimmed === prompt;
-                  return (
-                    <li key={prompt}>
-                      <button
-                        type="button"
-                        aria-pressed={active}
-                        onClick={() => setDraft(prompt)}
-                        className={cn(
-                          /* 44px minimum below `sm` — see stage-deck. */
-                          "inline-flex min-h-11 items-center rounded-full px-3 py-1.5 text-left text-small transition-colors duration-fast ease-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:min-h-0",
-                          active
-                            ? "bg-primary text-fg-on-brand"
-                            : "bg-canvas-secondary text-fg-secondary ring-1 ring-inset ring-line hover:bg-primary-soft hover:text-primary",
-                        )}
-                      >
-                        {prompt}
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul>
-
-              <div className="mt-3 flex items-center justify-between gap-3 px-1">
-                <p className="text-caption text-fg-muted">
-                  {sera ? "Enter to send · Shift + Enter for a new line" : "Opens your mail client"}
-                </p>
-
-                {/*
-                  ⚠ TWO CONTROLS, ONE RENDERED. With Sera this is a button that
-                  opens the conversation; without it, the original link to mail.
-                  Not one control with a conditional handler — a `<button>` and
-                  an `<a>` are different things to a screen reader and to a
-                  middle click, and the label has to match which one it is.
-                */}
-                {sera ? (
-                  <Button onClick={askSera} size="lg" className="shrink-0">
-                    Ask Sera
-                    <SeraIcon name="arrowRight" className="h-4 w-4" />
-                  </Button>
-                ) : (
-                  <Button href={mailHref} external size="lg" className="shrink-0">
-                    Send brief
-                  </Button>
-                )}
-              </div>
+              {/*
+                ⚠ TWO CONTROLS, ONE RENDERED. With Sera this is a submit button
+                that opens the conversation; without it, the original link to
+                mail. A `<button>` and an `<a>` are different things to a screen
+                reader and to a middle click, so the label matches which it is.
+              */}
+              {sera ? (
+                <button
+                  type="submit"
+                  className="inline-flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary text-white transition-colors duration-fast ease-hover hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                >
+                  <span className="sr-only">Ask Sera</span>
+                  <SeraIcon name="arrowRight" className="h-5 w-5" />
+                </button>
+              ) : (
+                <a
+                  href={mailHref}
+                  className="inline-flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary text-white transition-colors duration-fast ease-hover hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                >
+                  <span className="sr-only">Send brief by email</span>
+                  <SeraIcon name="arrowRight" className="h-5 w-5" />
+                </a>
+              )}
             </div>
-          </div>
+          </form>
 
-          <p className="mt-5 text-center text-small text-fg-muted">
-            Prefer to write instead?{" "}
-            <a
-              href={mailHref}
-              className="inline-block rounded-sm py-1 text-primary underline underline-offset-2 hover:text-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-            >
-              Email the team
-            </a>
-            , use{" "}
-            <a
-              href={billing.sales}
-              className="inline-block rounded-sm py-1 text-primary underline underline-offset-2 hover:text-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-            >
-              the contact form
-            </a>{" "}
-            or call {company.phone}.
+          <p className="mt-4 text-small text-fg-secondary">
+            {sera
+              ? "Get a plan and the real price in seconds. Free, no signup."
+              : `A person replies with the plan and the price. Or call ${company.phone}.`}
           </p>
         </div>
       </Container>

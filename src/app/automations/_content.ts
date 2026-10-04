@@ -54,6 +54,7 @@ export const HERO = {
  * not — its labels pointed at bands that did not match them.
  */
 export const SUBNAV = [
+  { id: "plans", label: "Plans" },
   { id: "how-it-works", label: "How it works" },
   { id: "workflows", label: "Workflows" },
   { id: "integrations", label: "Integrations" },

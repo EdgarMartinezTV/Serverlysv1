@@ -33,17 +33,17 @@ export function Pricing() {
     <section
       id="pricing"
       aria-labelledby="ecom-pricing-heading"
-      className="scroll-mt-24 bg-canvas-secondary py-12 md:py-14 xl:py-12"
+      className="scroll-mt-14 bg-canvas-secondary py-16 lg:py-24"
     >
       <Grid>
         <Headline
           id="ecom-pricing-heading"
           title={PRICING_HEAD.title}
           description={PRICING_HEAD.description}
-          className="mb-6 md:mb-8"
+          className="mb-10 xl:mb-12"
         />
 
-        <ul className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {GROUP.plans.map((plan) => (
             <li key={plan.tier}>
               <PlanCard plan={plan} group={GROUP} why={WHY[plan.tier]} cta={PRICING_HEAD.cta} />

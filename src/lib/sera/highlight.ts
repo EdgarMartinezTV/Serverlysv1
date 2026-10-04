@@ -60,9 +60,9 @@ export type HighlightTarget = {
  * plus /pricing plus /hosting. Three of those were wrong, and the live-HTML
  * check found all three immediately:
  *
- *   /cloud-hosting  renders ONE plan at a time behind a slider
- *                   (`_components/pricing.tsx`). There are no four cards to
- *                   mark, so cloud is not markable there at all.
+ *   /cloud-hosting  used to render ONE plan at a time behind a slider. Since
+ *                   2026-10-03 it renders all four PlanCards, so cloud IS
+ *                   markable there now (re-checked against the HTML).
  *   /pricing        renders only the ACTIVE tab's group. Cloud is the default,
  *                   so cloud is reliably present and the other two are not —
  *                   they appear only after the visitor switches tabs, which is
@@ -70,9 +70,7 @@ export type HighlightTarget = {
  *   /hosting        renders no plan cards whatsoever.
  *
  * So each group is registered exactly where all four of its cards are in the
- * DOM at load. The consequence is worth stating plainly: a cloud plan can be
- * marked on /pricing and nowhere else, and that is a property of how
- * /cloud-hosting chooses to present itself rather than an oversight here.
+ * DOM at load.
  *
  * ⚠ DO NOT ADD A PAGE TO THIS MAP WITHOUT CHECKING THE HTML. A registered
  * target that is not in the DOM is the one failure mode that matters: Sera says
@@ -81,7 +79,9 @@ export type HighlightTarget = {
  * there, so a wrong entry fails the suite rather than a visitor's trust.
  */
 const GROUP_PAGES: Record<string, readonly string[]> = {
-  cloud: ["/pricing"],
+  /* /cloud-hosting renders all four cloud cards since 2026-10-03 (the
+     one-plan slider is gone), so the cards are markable there too. */
+  cloud: ["/pricing", "/cloud-hosting", "/migrations"],
   wordpress: ["/wordpress-hosting"],
   ecommerce: ["/ecommerce-hosting"],
 };

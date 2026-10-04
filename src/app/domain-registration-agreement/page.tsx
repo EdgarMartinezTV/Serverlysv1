@@ -28,7 +28,6 @@ import { emailDisplay } from "@/data/company";
  */
 
 const PATH = "/domain-registration-agreement";
-const EFFECTIVE = "2026-09-14";
 
 export const metadata = pageMetadata({
   title: "Domain Registration Agreement | Serverlys",
@@ -197,7 +196,7 @@ export default function DomainRegistrationAgreementPage() {
       <LegalPage
         title="Domain Registration Agreement"
         intro="The terms that apply to every domain registered, renewed or transferred through Serverlys — including WHOIS privacy and how requests for registrant data are handled."
-        effective={EFFECTIVE}
+        path={PATH}
         sections={SECTIONS}
         trail={[{ name: "Home", href: "/" }, { name: "Domain registration agreement" }]}
         contact="Questions about a domain you hold with us, or a registrant data request? Write to the address above and mark it clearly so it reaches the right team."

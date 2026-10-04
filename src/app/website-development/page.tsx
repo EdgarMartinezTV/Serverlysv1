@@ -1,12 +1,24 @@
 import { JsonLd } from "@/components/ui/json-ld";
 import { pageMetadata, faqGraph, breadcrumbGraph, serviceGraph } from "@/lib/seo";
-import { Hero, Expert, Ways, Plans, Tackle, Commitments, Chat } from "./_components/sections";
-import { Faq } from "./_components/faq";
-import { FAQS } from "./_content";
+import { FinalCta } from "@/components/sections/final-cta";
+import {
+  Chat,
+  Commitments,
+  Expert,
+  Faq,
+  Hero,
+  Plans,
+  Process,
+  Tackle,
+  Ways,
+} from "./_components/sections";
+import { FAQS } from "./_copy";
 
 /**
- * /website-development — a 1:1 rebuild of
- * https://www.dreamhost.com/pro-services/development/ (2026-09-14).
+ * /website-development — rebuilt 2026-10-03 in the site-wide Hostinger-layout
+ * style (see _components/sections.tsx). Earlier history below.
+ *
+ * Previously a 1:1 layout rebuild of a DreamHost page (2026-09-14).
  *
  * LAYOUT ONLY. Edgar asked for this page to look exactly like that one, so the
  * section order, grid, type scale and measurements are the reference's — all in
@@ -62,16 +74,13 @@ export default function WebsiteDevelopmentPage() {
       <Hero />
       <Expert />
       <Ways />
+      <Process />
       <Plans />
       <Tackle />
-      {/* Commitments stands in the testimonial slot. Serverlys has no collected
-          customer reviews yet, and the band's job — give a stranger a reason to
-          believe you — is better done by things that are checkable than by
-          quotes nobody said. Swap back to <Reviews /> once real ones exist;
-          `REVIEWS` and its `check:reviews` gate are still in place. */}
       <Commitments />
       <Chat />
       <Faq />
+      <FinalCta plansHref="#plans" />
     </>
   );
 }

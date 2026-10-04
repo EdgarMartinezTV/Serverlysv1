@@ -25,7 +25,7 @@ export function ProductHero({
   primary,
   secondary,
   visual,
-  tone = "dark",
+  tone = "light",
 }: {
   eyebrow: string;
   /**
@@ -68,13 +68,8 @@ export function ProductHero({
         <>
           <div
             aria-hidden="true"
-            className="absolute inset-0 bg-[radial-gradient(65%_55%_at_25%_-5%,rgb(34_126_255/0.34)_0%,transparent_68%)]"
+            className="absolute inset-0 bg-[radial-gradient(60%_60%_at_80%_110%,rgb(0_0_255/0.55)_0%,transparent_70%)]"
           />
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 bg-[radial-gradient(45%_40%_at_88%_20%,rgb(34_211_238/0.14)_0%,transparent_70%)]"
-          />
-          <div aria-hidden="true" className="absolute inset-0 bg-grid-dark" />
         </>
       ) : (
         /* One soft brand wash, nothing else. A grid or a hard gradient behind a
@@ -82,7 +77,7 @@ export function ProductHero({
            undoes the blend the light tone exists to create. */
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-[radial-gradient(60%_60%_at_75%_0%,rgb(34_126_255/0.07)_0%,transparent_70%)]"
+          className="absolute inset-0 bg-[radial-gradient(55%_60%_at_80%_10%,rgb(0_0_255/0.06)_0%,transparent_70%)]"
         />
       )}
 
@@ -93,7 +88,7 @@ export function ProductHero({
           composition. */}
       <Container
         width="wide"
-        className="relative pb-16 pt-8 sm:pb-20 sm:pt-10 lg:pb-24 lg:pt-12"
+        className="relative pb-16 pt-6 sm:pb-20 lg:pb-24 lg:pt-10"
       >
         <Breadcrumbs trail={breadcrumb} tone={dark ? "dark" : "light"} />
 
@@ -107,14 +102,14 @@ export function ProductHero({
             {eyebrowSlot ?? (
               <span
                 className={cn(
-                  "font-mono text-caption uppercase",
-                  dark ? "text-accent-on-dark" : "text-primary",
+                  "inline-flex rounded-md px-2.5 py-1 text-small font-medium",
+                  dark ? "bg-white/10 text-white" : "bg-brand-50 text-primary",
                 )}
               >
                 {eyebrow}
               </span>
             )}
-            <h1 className={cn("mt-4 text-h1", dark ? "text-white" : "text-fg")}>{title}</h1>
+            <h1 className={cn("display-lg mt-5", dark ? "text-white" : "text-fg")}>{title}</h1>
             <p
               className={cn(
                 "mt-5 max-w-xl text-body-lg",
@@ -154,7 +149,7 @@ export function ProductHero({
                   <div key={spec.label}>
                     <dt
                       className={cn(
-                        "font-mono text-caption uppercase",
+                        "text-small",
                         dark ? "text-fg-on-dark-muted" : "text-fg-muted",
                       )}
                     >
@@ -178,9 +173,21 @@ export function ProductHero({
               AT the gutter — measured 80px from the viewport edge at 1440 —
               rather than running off the side of the page. Pulling it out made
               the image look cropped by the window instead of composed in it. */}
+          {/* 2026-10-03: the visual sits on a pale tiled brand stage with angled
+              slabs, the framing every rebuilt product page uses, so a dark
+              console or a light mock both read as a composed product shot. */}
           {visual && (
             <Reveal delay={80}>
-              {visual}
+              <div className="relative isolate overflow-hidden rounded-3xl bg-brand-50 p-5 sm:p-8">
+                <div aria-hidden="true" className="absolute inset-0 -z-10 grid grid-cols-4 grid-rows-3">
+                  {Array.from({ length: 12 }, (_, i) => (
+                    <span key={i} className={[1, 4, 6, 11].includes(i) ? "bg-brand-100" : ""} />
+                  ))}
+                </div>
+                <div aria-hidden="true" className="absolute top-0 right-[8%] -z-10 h-[30%] w-[40%] bg-brand-300/70 [clip-path:polygon(18%_0,100%_0,100%_100%,0_100%)]" />
+                <div aria-hidden="true" className="absolute bottom-0 left-[14%] -z-10 h-[18%] w-[34%] bg-brand-400/60 [clip-path:polygon(0_0,100%_0,82%_100%,0_100%)]" />
+                <div className="drop-shadow-[0_24px_40px_rgb(0_0_60/0.18)]">{visual}</div>
+              </div>
             </Reveal>
           )}
         </div>

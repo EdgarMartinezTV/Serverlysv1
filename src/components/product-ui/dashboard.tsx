@@ -50,7 +50,7 @@ export function DashboardMock({ className }: { className?: string }) {
           ["Automations", "5", "running"],
         ].map(([label, value, sub]) => (
           <div key={label} className="rounded-lg bg-canvas-secondary p-2.5">
-            <p className="font-mono text-ui uppercase text-fg-muted">{label}</p>
+            <p className="text-ui text-fg-muted font-semibold">{label}</p>
             <p className="tabular mt-1 text-h4 leading-none text-fg">{value}</p>
             <p className="mt-1 text-ui text-fg-muted">{sub}</p>
           </div>
@@ -98,7 +98,7 @@ export function DashboardMock({ className }: { className?: string }) {
         {/* Traffic + activity */}
         <div className="flex flex-col gap-3">
           <div className="rounded-lg bg-canvas-secondary p-3">
-            <p className="font-mono text-ui uppercase text-fg-muted">
+            <p className="text-ui text-fg-muted font-semibold">
               Requests · 24h
             </p>
             <svg viewBox="0 0 120 40" className="mt-2 h-12 w-full" preserveAspectRatio="none">

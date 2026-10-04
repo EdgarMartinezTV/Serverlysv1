@@ -109,7 +109,6 @@ const MIGRATION: WorkflowSpec = {
         "GoDaddy",
         "Bluehost",
         "HostGator",
-        "Hostinger",
         "SiteGround",
         "Namecheap",
         "WP Engine",
@@ -744,5 +743,9 @@ export function toView(record: WorkflowRecord): WorkflowView {
     missing: missingRequired(record).map((f) => f.label),
     requiredCount: spec.fields.filter((f) => f.required).length,
     reference: record.reference,
+    next: (() => {
+      const f = record.stage === "COLLECTING" ? missingRequired(record)[0] : undefined;
+      return f ? { key: f.key, label: f.label, kind: f.kind, options: f.kind === "choice" ? f.options : undefined } : undefined;
+    })(),
   };
 }

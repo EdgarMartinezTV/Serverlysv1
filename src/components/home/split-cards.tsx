@@ -30,7 +30,7 @@ export function SplitCards() {
               className="absolute inset-0 bg-[radial-gradient(60%_80%_at_100%_100%,rgb(34_211_238/0.22)_0%,transparent_70%)]"
             />
             <div className="relative">
-              <span className="inline-flex items-center rounded-full bg-white/12 px-3 py-1 font-mono text-caption uppercase text-white ring-1 ring-inset ring-white/20">
+              <span className="inline-flex items-center rounded-full bg-white/12 px-3 py-1 text-micro text-white ring-1 ring-inset ring-white/20 font-semibold">
                 Plans and prices
               </span>
               <h2 className="mt-6 max-w-md text-h2 text-white">
@@ -56,10 +56,10 @@ export function SplitCards() {
         <Reveal delay={80} className="h-full">
           <article className="flex h-full flex-col justify-between rounded-2xl bg-surface p-7 shadow-e2 ring-1 ring-line sm:p-8">
             <div>
-              <span className="inline-flex items-center gap-2 font-mono text-caption uppercase text-fg-muted">
+              <span className="inline-flex items-center gap-2 text-micro text-fg-muted font-semibold">
                 <span
                   aria-hidden="true"
-                  className="flex h-5 w-5 items-center justify-center rounded-md bg-violet-500 text-micro font-bold text-white"
+                  className="flex h-5 w-5 items-center justify-center rounded-md bg-primary text-micro font-bold text-white"
                 >
                   C
                 </span>

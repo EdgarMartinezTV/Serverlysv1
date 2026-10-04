@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ProductHero } from "@/components/sections/product-hero";
-import { Section, SectionHeader } from "@/components/ui/section";
+import { Section } from "@/components/ui/section";
 import { Button } from "@/components/ui/button";
 import { FaqSection } from "@/components/sections/faq";
 import { FinalCta } from "@/components/sections/final-cta";
@@ -98,15 +98,17 @@ export default function SiteManagementPage() {
 
       {/* The distinction, stated immediately. */}
       <Section spacing="tight">
-        <div className="grid gap-8 rounded-2xl bg-canvas-secondary p-8 ring-1 ring-inset ring-line sm:grid-cols-2 sm:p-10">
+        <div className="grid gap-8 rounded-3xl bg-canvas-secondary p-8 sm:grid-cols-2 sm:p-12">
           <div>
-            <h2 className="font-mono text-caption uppercase tracking-wider text-fg-muted">
+            <span className="inline-flex rounded-md bg-canvas px-2.5 py-1 text-small font-medium text-fg-secondary ring-1 ring-line">
               Managed hosting covers
+            </span>
+            <h2 className="mt-4 text-h3 font-medium tracking-[-0.02em] text-fg">
+              The server
             </h2>
-            <p className="mt-3 text-body-lg text-fg">The server</p>
             <p className="mt-2 text-small text-fg-secondary">
-              Operating system, web server, patching, firewall, SSL, backups of
-              the machine. Everything underneath your site.
+              Operating system, web server, patching, firewall, SSL, backups of the
+              machine. Everything underneath your site.
             </p>
             <Link
               href="/managed-hosting"
@@ -116,13 +118,15 @@ export default function SiteManagementPage() {
             </Link>
           </div>
           <div className="border-t border-line pt-8 sm:border-l sm:border-t-0 sm:pl-10 sm:pt-0">
-            <h2 className="font-mono text-caption uppercase tracking-wider text-primary">
+            <span className="inline-flex rounded-md bg-brand-50 px-2.5 py-1 text-small font-medium text-primary">
               Site management covers
+            </span>
+            <h2 className="mt-4 text-h3 font-medium tracking-[-0.02em] text-fg">
+              The website
             </h2>
-            <p className="mt-3 text-body-lg text-fg">The website</p>
             <p className="mt-2 text-small text-fg-secondary">
-              Plugin and theme updates, content edits, broken links, forms,
-              performance, and the small changes you keep meaning to make.
+              Plugin and theme updates, content edits, broken links, forms, performance,
+              and the small changes you keep meaning to make.
             </p>
             <span className="mt-4 inline-flex min-h-6 items-center text-small font-semibold text-fg-muted">
               You are on this page
@@ -132,68 +136,91 @@ export default function SiteManagementPage() {
       </Section>
 
       {/* The calendar — the product's real shape. */}
-      <Section surface="dark">
-        <SectionHeader
-          eyebrow="What the month looks like"
-          tone="dark"
-          title="Recurring work, on a schedule"
-          lede="Not 'proactive monitoring'. Actual jobs, at actual intervals, that you can hold us to."
+      <section
+        aria-labelledby="sm-calendar"
+        className="relative isolate overflow-hidden bg-canvas-abyss py-20 lg:py-28"
+      >
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 -z-10 bg-[radial-gradient(60%_50%_at_50%_0%,rgb(0_0_255/0.35),transparent_70%)]"
         />
-        <div className="mt-12 grid gap-px overflow-hidden rounded-xl bg-white/10 md:grid-cols-2 lg:grid-cols-4">
-          {[
-            {
-              when: "Weekly",
-              items: [
-                "Core, plugin and theme updates on staging",
-                "Checked, then applied to production",
-                "Backup taken before anything changes",
-                "Uptime and error log reviewed",
-              ],
-            },
-            {
-              when: "Monthly",
-              items: [
-                "A restore actually tested, not assumed",
-                "Broken links and 404s swept",
-                "Form submissions confirmed arriving",
-                "Your content changes made",
-              ],
-            },
-            {
-              when: "Quarterly",
-              items: [
-                "Page speed measured and reported",
-                "Unused plugins removed",
-                "PHP version reviewed",
-                "Search Console errors triaged",
-              ],
-            },
-            {
-              when: "When needed",
-              items: [
-                "Something breaks — we fix it",
-                "A security advisory lands",
-                "A plugin is abandoned upstream",
-                "You need a change this week",
-              ],
-            },
-          ].map((col) => (
-            <div key={col.when} className="bg-canvas-dark p-7">
-              <h3 className="font-mono text-caption uppercase tracking-wider text-accent-on-dark">
-                {col.when}
-              </h3>
-              <ul className="mt-4 flex flex-col gap-3">
-                {col.items.map((i) => (
-                  <li key={i} className="flex gap-2.5 text-small text-fg-on-dark-secondary">
-                    <span aria-hidden="true" className="mt-2 h-1 w-1 shrink-0 rounded-full bg-primary-on-dark" />
-                    {i}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+        <div className="mx-auto w-full max-w-[1280px] px-5 sm:px-8 lg:px-10">
+          <div className="mx-auto max-w-[760px] text-center">
+            <h2 id="sm-calendar" className="display-md text-white">
+              Recurring work, on a schedule
+            </h2>
+            <p className="mt-4 text-body-lg text-fg-on-dark-secondary">
+              Not &lsquo;proactive monitoring&rsquo;. Actual jobs, at actual intervals,
+              that you can hold us to.
+            </p>
+          </div>
+          <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {[
+              {
+                when: "Weekly",
+                items: [
+                  "Core, plugin and theme updates on staging",
+                  "Checked, then applied to production",
+                  "Backup taken before anything changes",
+                  "Uptime and error log reviewed",
+                ],
+              },
+              {
+                when: "Monthly",
+                items: [
+                  "A restore actually tested, not assumed",
+                  "Broken links and 404s swept",
+                  "Form submissions confirmed arriving",
+                  "Your content changes made",
+                ],
+              },
+              {
+                when: "Quarterly",
+                items: [
+                  "Page speed measured and reported",
+                  "Unused plugins removed",
+                  "PHP version reviewed",
+                  "Search Console errors triaged",
+                ],
+              },
+              {
+                when: "When needed",
+                items: [
+                  "Something breaks — we fix it",
+                  "A security advisory lands",
+                  "A plugin is abandoned upstream",
+                  "You need a change this week",
+                ],
+              },
+            ].map((col) => (
+              <div
+                key={col.when}
+                className="rounded-2xl bg-white/[0.06] p-6 ring-1 ring-white/10"
+              >
+                <h3 className="inline-flex rounded-md bg-primary px-2.5 py-1 text-small font-semibold text-white">
+                  {col.when}
+                </h3>
+                <ul className="mt-4 flex flex-col gap-3">
+                  {col.items.map((i) => (
+                    <li
+                      key={i}
+                      className="flex gap-2.5 text-small text-fg-on-dark-secondary"
+                    >
+                      <span
+                        aria-hidden="true"
+                        className="mt-1.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full bg-success-fill/20 text-[9px] text-success-fill"
+                      >
+                        ✓
+                      </span>
+                      {i}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
-      </Section>
+      </section>
 
       <ShowcaseSplit
         id="reporting"
@@ -201,28 +228,39 @@ export default function SiteManagementPage() {
         title="A report you can actually read"
         body="Every month you get what was updated, what broke, what was fixed, and what we think needs attention next. Written in English, not a dashboard export with a logo on it. If a month was quiet, the report says the month was quiet."
         points={[
-          { label: "What changed", detail: "Every update applied, and what it touched.", icon: "wrench" },
-          { label: "What we caught", detail: "Problems found before they reached your visitors.", icon: "shield" },
-          { label: "What is next", detail: "The thing we would fix if you gave us the go-ahead.", icon: "compass" },
+          {
+            label: "What changed",
+            detail: "Every update applied, and what it touched.",
+            icon: "wrench",
+          },
+          {
+            label: "What we caught",
+            detail: "Problems found before they reached your visitors.",
+            icon: "shield",
+          },
+          {
+            label: "What is next",
+            detail: "The thing we would fix if you gave us the go-ahead.",
+            icon: "compass",
+          },
         ]}
         cta={{ label: "See what we would find", href: billing.sales }}
         visual={<UptimePanel />}
         side="right"
         surface="subtle"
-        bleed
       />
 
       {/* Honest cost framing — no invented prices. */}
       <Section>
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 className="text-h3 text-fg">What it costs</h2>
+            <h2 className="display-md text-fg">What it costs</h2>
             <p className="mt-4 max-w-[60ch] text-body text-fg-secondary">
-              Site management is quoted, not listed, because the honest price
-              depends on how many sites, how complex they are and how much
-              change you want each month. A five-page brochure site and a
-              WooCommerce store with forty plugins are not the same job, and
-              pretending otherwise means one of you is subsidising the other.
+              Site management is quoted, not listed, because the honest price depends on
+              how many sites, how complex they are and how much change you want each
+              month. A five-page brochure site and a WooCommerce store with forty
+              plugins are not the same job, and pretending otherwise means one of you is
+              subsidising the other.
             </p>
             <p className="mt-4 max-w-[60ch] text-body text-fg-secondary">
               Tell us the site and we will give you a monthly figure and what it
@@ -235,14 +273,23 @@ export default function SiteManagementPage() {
               </Button>
             </div>
           </div>
-          <ul className="flex flex-col divide-y divide-line border-y border-line">
+          <ul className="grid gap-3 sm:grid-cols-2">
             {[
               ["Number of sites", "One, or a portfolio you manage for clients."],
-              ["What it runs", "A brochure site, a store, a membership, a custom application."],
-              ["Change allowance", "How much content and small-change work you expect each month."],
-              ["Response expectation", "Whether an outage needs someone at the weekend."],
+              [
+                "What it runs",
+                "A brochure site, a store, a membership, a custom application.",
+              ],
+              [
+                "Change allowance",
+                "How much content and small-change work you expect each month.",
+              ],
+              [
+                "Response expectation",
+                "Whether an outage needs someone at the weekend.",
+              ],
             ].map(([t, d]) => (
-              <li key={t} className="py-5">
+              <li key={t} className="rounded-2xl bg-canvas-secondary p-6">
                 <h3 className="text-body font-semibold text-fg">{t}</h3>
                 <p className="mt-1 text-small text-fg-secondary">{d}</p>
               </li>

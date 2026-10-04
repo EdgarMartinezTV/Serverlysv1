@@ -48,7 +48,16 @@ export function SeraWidget() {
 
   /* ── Focus return ─────────────────────────────────────────────────────── */
   useEffect(() => {
-    if (wasOpen.current && !isOpen) launcher.current?.focus({ preventScroll: true });
+    if (wasOpen.current && !isOpen) {
+      /* From `sm` up the launcher is display:none (the header button replaces
+         it), and focusing a hidden element silently drops focus to <body>.
+         Return it to whichever Sera control is actually on screen. */
+      const target =
+        Array.from(
+          document.querySelectorAll<HTMLElement>('[aria-controls="sera-panel"]'),
+        ).find((el) => el.getClientRects().length > 0) ?? launcher.current;
+      target?.focus({ preventScroll: true });
+    }
     wasOpen.current = isOpen;
   }, [isOpen]);
 

@@ -21,7 +21,6 @@ import { company, emailDisplay } from "@/data/company";
  */
 
 const PATH = "/law-enforcement-requests";
-const EFFECTIVE = "2026-09-14";
 
 export const metadata = pageMetadata({
   title: "Law Enforcement and Legal Requests | Serverlys",
@@ -175,7 +174,7 @@ export default function LawEnforcementRequestsPage() {
       <LegalPage
         title="Law Enforcement and Legal Requests"
         intro="What we require before disclosing customer data, what records we actually hold, and when we tell the customer that someone has asked."
-        effective={EFFECTIVE}
+        path={PATH}
         sections={SECTIONS}
         trail={[{ name: "Home", href: "/" }, { name: "Law enforcement and legal requests" }]}
         contact="Legal process should be sent to the address above, marked “Legal request”. Abuse and copyright complaints have their own faster routes."

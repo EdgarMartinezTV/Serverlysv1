@@ -15,12 +15,26 @@ import { cn } from "@/lib/utils";
 
 export type CardVariant = "basic" | "elevated" | "interactive";
 
+/**
+ * Re-cut on the reference, 2026-09-19. Radius follows `--radius-lg`, which
+ * moved 12 → 16 in the same pass.
+ *
+ * `elevated` and `interactive` DROPPED their hairline ring. The reference
+ * separates a lifted card from the canvas with shadow alone — carrying both a
+ * ring and a shadow is what made ours read as a bordered box that happened to
+ * have a shadow, rather than as a lifted surface. `basic` keeps its ring,
+ * because a flat card with neither would have no edge at all.
+ *
+ * `interactive` also lifts 2px on hover. That is the reference's behaviour and
+ * it is why the hover felt inert here before.
+ */
 const VARIANTS: Record<CardVariant, string> = {
   basic: "bg-surface ring-1 ring-line",
-  elevated: "bg-surface-elevated shadow-e3 ring-1 ring-line",
+  elevated: "bg-surface-elevated shadow-e3",
   interactive:
-    "bg-surface-elevated shadow-e2 ring-1 ring-line transition-shadow duration-normal ease-hover " +
-    "hover:shadow-e4 hover:ring-line-strong focus-within:ring-2 focus-within:ring-primary",
+    "bg-surface-elevated shadow-e2 transition-[box-shadow,transform] duration-normal ease-hover " +
+    "hover:-translate-y-0.5 hover:shadow-e4 focus-within:ring-2 focus-within:ring-primary " +
+    "motion-reduce:hover:translate-y-0 motion-reduce:transition-shadow",
 };
 
 export function Card({

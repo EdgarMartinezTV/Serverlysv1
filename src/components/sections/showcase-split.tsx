@@ -58,31 +58,32 @@ export function ShowcaseSplit({
         <>
           <div
             aria-hidden="true"
-            className="absolute inset-0 bg-[radial-gradient(60%_50%_at_70%_0%,rgb(34_126_255/0.22)_0%,transparent_68%)]"
+            className="absolute inset-0 bg-[radial-gradient(55%_55%_at_25%_60%,rgb(0_0_255/0.4)_0%,transparent_70%)]"
           />
-          <div aria-hidden="true" className="absolute inset-0 bg-grid-dark opacity-50" />
         </>
       )}
 
-      <Container className="relative">
+      <Container width="wide" className="relative">
         <div
           className={cn(
-            "grid items-center gap-12 lg:gap-16",
+            "grid items-center gap-12 lg:gap-20",
             bleed ? "lg:grid-cols-[0.85fr_1.15fr]" : "lg:grid-cols-2",
+            /* `bleed` now only widens the visual column; the negative margins
+               that pushed it past the gutter clip inside the framed stage. */
           )}
         >
           <div className={cn(side === "left" && "lg:order-2")}>
             <span
               className={cn(
-                "font-mono text-caption uppercase",
-                dark ? "text-accent-on-dark" : "text-primary",
+                "inline-flex rounded-md px-2.5 py-1 text-small font-medium",
+                dark ? "bg-white/10 text-white" : "bg-brand-50 text-primary",
               )}
             >
               {eyebrow}
             </span>
             <h2
               id={id ? `${id}-heading` : undefined}
-              className={cn("mt-4 text-h2", dark ? "text-white" : "text-fg")}
+              className={cn("display-md mt-5", dark ? "text-white" : "text-fg")}
             >
               {title}
             </h2>
@@ -102,8 +103,8 @@ export function ShowcaseSplit({
                     <span
                       aria-hidden="true"
                       className={cn(
-                        "mt-0.5 shrink-0",
-                        dark ? "text-accent-on-dark" : "text-primary",
+                        "inline-flex size-9 shrink-0 items-center justify-center rounded-lg",
+                        dark ? "bg-white/10 text-white" : "bg-brand-50 text-primary",
                       )}
                     >
                       <NavIcon name={p.icon} className="h-[1.125rem] w-[1.125rem]" />
@@ -173,11 +174,25 @@ export function ShowcaseSplit({
               side === "left" && "lg:order-1",
               // Break the column on wide viewports so the visual reads as a
               // moment rather than a boxed illustration.
-              bleed && side === "right" && "lg:-mr-16 xl:-mr-24",
-              bleed && side === "left" && "lg:-ml-16 xl:-ml-24",
             )}
           >
-            {visual}
+            {/* Same framing as ProductHero: a tiled brand stage, so every
+                visual reads as a composed product shot (2026-10-03). */}
+            <div
+              className={cn(
+                "relative isolate overflow-hidden rounded-3xl p-5 sm:p-8",
+                dark ? "bg-white/[0.04] ring-1 ring-white/10" : "bg-brand-50",
+              )}
+            >
+              {!dark && (
+                <div aria-hidden="true" className="absolute inset-0 -z-10 grid grid-cols-4 grid-rows-3">
+                  {Array.from({ length: 12 }, (_, i) => (
+                    <span key={i} className={[1, 4, 6, 11].includes(i) ? "bg-brand-100" : ""} />
+                  ))}
+                </div>
+              )}
+              <div className="drop-shadow-[0_24px_40px_rgb(0_0_60/0.16)]">{visual}</div>
+            </div>
           </Reveal>
         </div>
       </Container>

@@ -98,7 +98,7 @@ export function ProductFit() {
           <thead>
             <tr>
               <th scope="col" className="w-40 pb-4 pr-4 align-bottom">
-                <span className="font-mono text-caption uppercase text-fg-muted">
+                <span className="text-micro text-fg-muted font-semibold">
                   Compare
                 </span>
               </th>

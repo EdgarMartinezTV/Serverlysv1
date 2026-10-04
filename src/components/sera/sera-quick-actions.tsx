@@ -33,30 +33,18 @@ type Option = {
 };
 
 const PRIMARY: Option & { sub: string } = {
-  label: "Move my website",
-  sub: "Free migration, handled for you",
-  message: "I want to move my website to Serverlys.",
+  label: "Help me find what I need",
+  sub: "Tell me what you're trying to do and I'll point you to the right plan.",
+  message: "Help me work out which Serverlys plan or service fits what I'm trying to do.",
   icon: "spark",
-  workflow: "WEBSITE_MIGRATION",
 };
 
 const EXPLORE: readonly Option[] = [
-  {
-    label: "Explore hosting",
-    message: "What hosting plans do you have?",
-    icon: "bolt",
-  },
-  {
-    label: "Find a domain",
-    message: "I want to find and register a domain name.",
-    icon: "search",
-  },
-  {
-    label: "Talk to the team",
-    message: "I would like someone from Serverlys to get in touch with me.",
-    icon: "mail",
-    workflow: "HUMAN_CONTACT",
-  },
+  { label: "Compare hosting plans", message: "Compare your hosting plans for me, with the renewal prices.", icon: "tag" },
+  { label: "Move my website", message: "I want to move my website to Serverlys.", icon: "arrowRight", workflow: "WEBSITE_MIGRATION" },
+  { label: "Find a domain", message: "I want to find and register a domain name.", icon: "globe" },
+  { label: "Understand the pricing", message: "How does your pricing work, including renewals and setup fees?", icon: "wallet" },
+  { label: "Talk to the team", message: "I would like someone from Serverlys to get in touch with me.", icon: "mail", workflow: "HUMAN_CONTACT" },
 ];
 
 export function SeraQuickActions() {
@@ -68,33 +56,30 @@ export function SeraQuickActions() {
   return (
     <div className={styles.options} data-disabled={busy}>
       <button type="button" className={styles.primary} onClick={() => choose(PRIMARY)}>
-        <span className={styles.primaryTile}>
-          <SeraIcon name={PRIMARY.icon} className="h-5 w-5" />
-        </span>
         <span className={styles.primaryText}>
           <span className={styles.primaryTitle}>{PRIMARY.label}</span>
           <span className={styles.primarySub}>{PRIMARY.sub}</span>
         </span>
-        <SeraIcon name="chevronRight" className={`${styles.primaryChevron} h-4 w-4`} />
+        <span className={styles.primaryGo}>
+          <SeraIcon name="chevronRight" className="h-4 w-4" />
+        </span>
       </button>
 
       <p className={styles.divider}>or explore</p>
 
-      <div className={styles.tiles}>
+      <ul className={styles.rows}>
         {EXPLORE.map((option) => (
-          <button
-            key={option.label}
-            type="button"
-            className={styles.tile}
-            onClick={() => choose(option)}
-          >
-            <span className={styles.tileBadge}>
-              <SeraIcon name={option.icon} className="h-4 w-4" />
-            </span>
-            <span className={styles.tileLabel}>{option.label}</span>
-          </button>
+          <li key={option.label}>
+            <button type="button" className={styles.rowButton} onClick={() => choose(option)}>
+              <span className={styles.rowIcon}>
+                <SeraIcon name={option.icon} className="h-4 w-4" />
+              </span>
+              <span className={styles.rowLabel}>{option.label}</span>
+              <SeraIcon name="chevronRight" className="h-4 w-4 text-[var(--sera-muted)]" />
+            </button>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 }

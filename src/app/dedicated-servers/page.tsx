@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ProductHero } from "@/components/sections/product-hero";
-import { Section, SectionHeader } from "@/components/ui/section";
+import { Band, Heading, Pill } from "../hosting/_components/band";
 import { Button } from "@/components/ui/button";
 import { FaqSection } from "@/components/sections/faq";
 import { FinalCta } from "@/components/sections/final-cta";
@@ -68,7 +68,7 @@ export default function DedicatedServersPage() {
       <JsonLd data={faqGraph(FAQS)} />
 
       <ProductHero
-        eyebrow="Dedicated servers"
+        eyebrow="Dedicated servers · by request"
         title="One tenant. The whole machine."
         lede="Single-tenant hardware for workloads that are heavy all the time, need predictable I/O, or sit under a compliance rule that forbids sharing a box."
         breadcrumb={[
@@ -88,117 +88,156 @@ export default function DedicatedServersPage() {
       />
 
       {/* Qualify hard and early. This tier is wrong for most visitors. */}
-      <Section>
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,24rem)_1fr] lg:gap-16">
-          <SectionHeader
-            eyebrow="Who this is for"
-            title="Three reasons to take a whole machine"
-            lede="If none of these describe you, a VPS or cloud plan will do the same job for less. We will tell you that on the call."
-          />
-          <ol className="flex flex-col divide-y divide-line border-t border-line">
-            {[
-              [
-                "The load is heavy and constant",
-                "Not spiky — constant. When you are paying for peak capacity around the clock anyway, owning the peak is cheaper than renting it.",
-              ],
-              [
-                "I/O has to be predictable",
-                "Database-heavy workloads feel virtualised storage. On single-tenant hardware the disk and the network belong to you, and the numbers stop moving.",
-              ],
-              [
-                "Shared tenancy is not permitted",
-                "Some contracts, audits and regulatory regimes require it. That is a requirement, not a preference, and no amount of isolation on a shared host satisfies it.",
-              ],
-            ].map(([t, d], i) => (
-              <li key={t} className="flex gap-5 py-6">
-                <span aria-hidden="true" className="font-mono text-small text-fg-muted">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <div>
-                  <h3 className="text-body-lg font-semibold text-fg">{t}</h3>
-                  <p className="mt-2 max-w-[62ch] text-body text-fg-secondary">{d}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </Section>
-
-      {/* What gets decided — a spec sheet, because that is the artefact. */}
-      <Section surface="dark">
-        <SectionHeader
-          eyebrow="The specification"
-          tone="dark"
-          title="What we agree before anything is built"
-          lede="Every line here is a decision with a cost and a consequence. We go through them with you rather than publishing a configurator that guesses."
+      <Band labelledBy="ded-who-heading">
+        <Heading
+          id="ded-who-heading"
+          title="Three reasons to take a whole machine"
+          lede="If none of these describe you, a VPS or cloud plan will do the same job for less. We will tell you that on the call."
         />
-        <dl className="mt-12 grid gap-px overflow-hidden rounded-xl bg-white/10 sm:grid-cols-2 lg:grid-cols-3">
-          {[
-            ["Processor", "Core count against clock speed. Databases and PHP want different answers."],
-            ["Memory", "Sized to the working set, with headroom for the cache you will add later."],
-            ["Storage", "NVMe capacity and the RAID level. Redundancy is a choice, not a default."],
-            ["Network", "Port speed and monthly transfer, sized to real peaks rather than averages."],
-            ["Operating system", "Distribution and version, and who patches it."],
-            ["Management", "Managed or unmanaged, decided in writing before provisioning."],
-            ["Backups", "Destination, retention and how a restore is tested."],
-            ["Monitoring", "What is watched, what pages someone, and at what threshold."],
-            ["Access", "Who holds root, how they authenticate, and what happens when they leave."],
-          ].map(([t, d]) => (
-            <div key={t} className="bg-canvas-dark p-6">
-              <dt className="text-body font-semibold text-white">{t}</dt>
-              <dd className="mt-2 text-small text-fg-on-dark-secondary">{d}</dd>
-            </div>
+        <ul className="mt-12 grid gap-4 md:grid-cols-3">
+          {(
+            [
+              ["The load is heavy and constant", "Not spiky, constant. When you pay for peak capacity around the clock anyway, owning the peak is cheaper than renting it.", "CPU · 30 days", [72, 78, 74, 81, 77, 83, 79, 85, 80, 84]],
+              ["I/O has to be predictable", "Database-heavy workloads feel virtualised storage. On single-tenant hardware the disk and network are yours, and the numbers stop moving.", "Disk latency", [22, 21, 23, 22, 22, 21, 22, 23, 22, 21]],
+              ["Shared tenancy is not permitted", "Some contracts, audits and regulatory regimes require it. That is a requirement, not a preference.", "Tenants on host", [100, 100, 100, 100, 100, 100, 100, 100, 100, 100]],
+            ] as const
+          ).map(([t, d, metric, bars]) => (
+            <li key={t} className="flex flex-col overflow-hidden rounded-3xl bg-canvas-secondary">
+              <div aria-hidden="true" className="relative bg-brand-50 p-5">
+                <div className="rounded-xl bg-white p-4 shadow-e2">
+                  <p className="flex items-center justify-between text-micro">
+                    <span className="text-fg-secondary">{metric}</span>
+                    <span className="font-semibold text-fg">
+                      {metric === "Tenants on host" ? "1" : metric === "Disk latency" ? "0.22 ms" : "81%"}
+                    </span>
+                  </p>
+                  <div className="mt-3 flex h-14 items-end gap-1">
+                    {bars.map((h, i) => (
+                      <span key={i} style={{ height: `${h}%` }} className={`flex-1 rounded-sm ${i === bars.length - 1 ? "bg-primary" : "bg-brand-200"}`} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="p-6">
+                <h3 className="text-body-lg font-semibold text-fg">{t}</h3>
+                <p className="mt-2 text-small text-fg-secondary">{d}</p>
+              </div>
+            </li>
           ))}
-        </dl>
-      </Section>
+        </ul>
+      </Band>
 
-      {/* Procurement timeline. Honest about the fact that this is not instant. */}
-      <Section surface="subtle">
-        <SectionHeader
-          eyebrow="How it is bought"
+      {/* What gets decided: a spec sheet, because that is the artefact. */}
+      <Band tone="dark" labelledBy="ded-spec-heading">
+        <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
+          <div>
+            <Heading
+              id="ded-spec-heading"
+              dark
+              align="left"
+              title="What we agree before anything is built"
+              lede="Every line is a decision with a cost and a consequence. We go through them with you rather than publishing a configurator that guesses."
+            />
+            <ul className="mt-8 grid gap-x-6 gap-y-4 sm:grid-cols-2">
+              {[
+                ["Processor", "Core count against clock speed."],
+                ["Memory", "Sized to the working set, with headroom."],
+                ["Storage", "NVMe capacity and the RAID level."],
+                ["Network", "Port speed and transfer, sized to real peaks."],
+                ["Operating system", "Distribution, version, and who patches it."],
+                ["Management", "Managed or not, decided in writing."],
+                ["Backups", "Destination, retention, tested restores."],
+                ["Access", "Who holds root, and what happens when they leave."],
+              ].map(([t, d]) => (
+                <li key={t} className="border-t border-white/15 pt-3">
+                  <p className="text-body font-medium text-white">{t}</p>
+                  <p className="mt-1 text-small text-fg-on-dark-secondary">{d}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+          {/* An example specification sheet, as it would be sent. */}
+          <div aria-hidden="true" className="rounded-3xl bg-white/[0.04] p-5 ring-1 ring-white/10 sm:p-8">
+            <div className="rounded-2xl bg-white p-6 shadow-e5">
+              <div className="flex items-center justify-between border-b border-line-subtle pb-4">
+                <span>
+                  <span className="block text-small font-semibold text-fg">Specification · draft 2</span>
+                  <span className="text-micro text-fg-muted">Harbor Goods · order database</span>
+                </span>
+                <Pill tone="warning">Awaiting approval</Pill>
+              </div>
+              <dl className="mt-4 divide-y divide-line-subtle text-small">
+                {[
+                  ["Processor", "16 cores · 3.4 GHz"],
+                  ["Memory", "128 GB ECC"],
+                  ["Storage", "2 × 3.84 TB NVMe · RAID 1"],
+                  ["Network", "1 Gbps · 20 TB transfer"],
+                  ["Operating system", "Ubuntu 24.04 LTS"],
+                  ["Management", "Managed · you keep root"],
+                  ["Backups", "Nightly · 30-day retention"],
+                ].map(([k, v]) => (
+                  <div key={k} className="flex justify-between gap-4 py-2.5">
+                    <dt className="text-fg-secondary">{k}</dt>
+                    <dd className="text-right font-medium text-fg">{v}</dd>
+                  </div>
+                ))}
+              </dl>
+              <p className="mt-4 rounded-lg bg-brand-50 px-3 py-2 text-micro text-primary">
+                Example only. Every specification is quoted for the workload in front of us.
+              </p>
+            </div>
+          </div>
+        </div>
+      </Band>
+
+      {/* Procurement: a real sequence, so it keeps its numbers. */}
+      <Band tone="subtle" labelledBy="ded-buy-heading">
+        <Heading
+          id="ded-buy-heading"
           title="No checkout button, on purpose"
           lede="Dedicated hardware is specified, quoted and built. A one-click order for a machine nobody has sized is how people end up with the wrong one."
         />
-        <ol className="mt-12 grid gap-px overflow-hidden rounded-xl bg-line md:grid-cols-4">
+        <ol className="relative mt-12 grid gap-4 md:grid-cols-4">
+          <span aria-hidden="true" className="absolute top-9 right-[12%] left-[12%] hidden h-px bg-brand-200 md:block" />
           {[
             ["Tell us the workload", "What it runs, how heavy, and what the constraint is."],
             ["We specify it", "A written configuration with the reasoning for each choice."],
             ["You get a quote", "Monthly cost, provisioning date, and what is included."],
             ["We build and migrate", "Hardware allocated, OS built, your site moved and checked."],
           ].map(([t, d], i) => (
-            <li key={t} className="flex flex-col gap-2 bg-canvas p-6">
-              <span className="font-mono text-caption text-fg-muted">
-                {String(i + 1).padStart(2, "0")}
+            <li key={t} className="relative flex flex-col rounded-2xl bg-canvas p-6 ring-1 ring-line">
+              <span className="inline-flex size-7 items-center justify-center rounded-full bg-primary text-micro font-semibold text-white">
+                {i + 1}
               </span>
-              <h3 className="text-body-lg font-semibold text-fg">{t}</h3>
-              <p className="text-small text-fg-secondary">{d}</p>
+              <h3 className="mt-5 text-body-lg font-semibold text-fg">{t}</h3>
+              <p className="mt-2 text-small text-fg-secondary">{d}</p>
             </li>
           ))}
         </ol>
 
-        <div className="mt-10 flex flex-col items-start justify-between gap-6 rounded-2xl bg-canvas p-8 ring-1 ring-inset ring-line sm:flex-row sm:items-center">
+        <div className="mt-10 flex flex-col items-start justify-between gap-6 rounded-2xl bg-[linear-gradient(90deg,var(--color-brand-950)_0%,var(--color-brand-700)_55%,var(--color-brand-500)_100%)] p-8 sm:flex-row sm:items-center sm:px-10">
           <div>
-            <h3 className="text-h4 text-fg">Start with the workload, not the hardware</h3>
-            <p className="mt-2 max-w-2xl text-body text-fg-secondary">
+            <h3 className="text-h4 text-white">Start with the workload, not the hardware</h3>
+            <p className="mt-2 max-w-2xl text-body text-fg-on-brand-muted">
               Tell us what it does and where it hurts today. If a{" "}
-              <Link href="/vps-hosting" className="font-medium text-primary hover:text-primary-hover">
+              <Link href="/vps-hosting" className="font-semibold text-white underline underline-offset-2">
                 VPS
               </Link>{" "}
               or{" "}
-              <Link href="/cloud-hosting" className="font-medium text-primary hover:text-primary-hover">
+              <Link href="/cloud-hosting" className="font-semibold text-white underline underline-offset-2">
                 cloud plan
               </Link>{" "}
               would do the same job, we will say so.
             </p>
           </div>
           <div className="flex shrink-0 flex-wrap gap-3">
-            <Button href={billing.sales}>Request a specification</Button>
-            <Button href={billing.sales} variant="secondary" external>
+            <Button href={billing.sales} variant="inverse">Request a specification</Button>
+            <Button href={billing.sales} variant="onBrand" external>
               Open a sales ticket
             </Button>
           </div>
         </div>
-      </Section>
+      </Band>
 
       <FaqSection items={FAQS} />
       <FinalCta />

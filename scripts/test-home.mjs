@@ -271,19 +271,21 @@ const spy = await evaluate(`(async () => {
 })()`);
 check("stage rail highlights the current section", spy === "#grow", String(spy));
 
-// ── 6. Brief band chips fill the textarea ─────────────────────────────────
+// ── 6. Brief band input carries the draft ──────────────────────────────────
+// The chips were removed in the 2026-10-03 re-composition (one input, one
+// arrow). What still has to hold: typing reaches React state, and the control
+// that sends it is present. The native setter + input event is how a script
+// types into a controlled React input.
 const brief = await evaluate(`(async () => {
-  const chip = [...document.querySelectorAll('button[aria-pressed]')][0];
-  if (!chip) return { error: "no chip" };
-  chip.click();
-  await new Promise((r) => setTimeout(r, 300));
   const field = document.getElementById("brief");
-  const send = [...document.querySelectorAll('a[href^="mailto:"]')][0];
-  return { value: field?.value ?? "", pressed: chip.getAttribute("aria-pressed"), mailto: (send?.getAttribute("href") || "").length };
+  if (!field) return { error: "no brief field" };
+  const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value").set;
+  set.call(field, "I run a cleaning company and need a site that books jobs");
+  field.dispatchEvent(new Event("input", { bubbles: true }));
+  await new Promise((r) => setTimeout(r, 300));
+  return { value: document.getElementById("brief").value };
 })()`);
-check("chip fills the brief field", brief.value.length > 10, brief.value.slice(0, 40));
-check("chip reports pressed state", brief.pressed === "true");
-check("email fallback carries the brief", brief.mailto > 60, `${brief.mailto} chars`);
+check("typing fills the brief field", (brief.value ?? "").length > 10, brief.error ?? brief.value?.slice(0, 40));
 
 /*
  * ── 6a. The brief band hands the draft to Sera ───────────────────────────
@@ -323,86 +325,10 @@ check("Ask Sera opens the panel", askSera.opened === true);
 check("the draft arrives in Sera as a message", askSera.carried === true);
 check("the draft is cleared after sending", askSera.cleared === true);
 
-// ── 6b. Hero domain search, end to end against the real provider ─────────
-const domain = await evaluate(`(async () => {
-  window.scrollTo(0, 0);
-  await new Promise((r) => setTimeout(r, 400));
-  const form = document.querySelector('form[role="search"]');
-  const input = form?.querySelector('input[type="text"]');
-  if (!input) return { error: "no hero search input" };
-
-  const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
-  setter.call(input, "zzqx-free-77213.com");
-  input.dispatchEvent(new Event("input", { bubbles: true }));
-  form.querySelector('button[type="submit"]').click();
-
-  // Real network call to a real registry.
-  for (let i = 0; i < 60; i++) {
-    await new Promise((r) => setTimeout(r, 250));
-    if (form.parentElement.querySelectorAll("li").length) break;
-  }
-  const rows = [...form.parentElement.querySelectorAll("li")].map((li) => li.textContent.trim());
-  const carts = [...form.parentElement.querySelectorAll('a[href*="cart.php"]')].map((a) => a.getAttribute("href"));
-  return { rows: rows.slice(0, 4), carts: carts.slice(0, 3), count: rows.length };
-})()`);
-check("hero search returns rows from the live registry", domain.count > 0, `${domain.count} rows`);
-check(
-  "the searched name is row one",
-  !!domain.rows && domain.rows[0]?.startsWith("zzqx-free-77213.com"),
-  domain.rows?.[0]?.slice(0, 40),
-);
-check(
-  "every row hands off to the WHMCS domain cart",
-  !!domain.carts?.length &&
-    domain.carts.every((h) => h.startsWith("https://serverlys.com/billing/cart.php?a=add&domain=register&query=")),
-  domain.carts?.[0]?.slice(0, 78),
-);
-
-// A TLD with no registry lookup must never be guessed as available.
-const unsold = await evaluate(`(async () => {
-  const form = document.querySelector('form[role="search"]');
-  const input = form.querySelector('input[type="text"]');
-  const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
-  setter.call(input, "mysite.io");
-  input.dispatchEvent(new Event("input", { bubbles: true }));
-  form.querySelector('button[type="submit"]').click();
-  for (let i = 0; i < 60; i++) {
-    await new Promise((r) => setTimeout(r, 250));
-    const first = form.parentElement.querySelector("li");
-    if (first && first.textContent.includes("mysite.io")) break;
-  }
-  const first = form.parentElement.querySelector("li");
-  return { text: first?.textContent.trim() ?? "", hasCart: !!first?.querySelector('a[href*="cart.php"]') };
-})()`);
-// A taken name must still offer the one purchase that applies: a transfer.
-const taken = await evaluate(`(async () => {
-  const form = document.querySelector('form[role="search"]');
-  const input = form.querySelector('input[type="text"]');
-  const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
-  setter.call(input, "example.com");
-  input.dispatchEvent(new Event("input", { bubbles: true }));
-  form.querySelector('button[type="submit"]').click();
-  for (let i = 0; i < 60; i++) {
-    await new Promise((r) => setTimeout(r, 250));
-    const first = form.parentElement.querySelector("li");
-    if (first && first.textContent.includes("example.com")) break;
-  }
-  const first = form.parentElement.querySelector("li");
-  const t = first?.querySelector('a[href*="domain=transfer"]');
-  return { text: first?.textContent.trim() ?? "", href: t?.getAttribute("href") ?? "" };
-})()`);
-check(
-  "a taken name offers a transfer to checkout",
-  taken.href.startsWith("https://serverlys.com/billing/cart.php?a=add&domain=transfer&query="),
-  taken.href.slice(0, 74) || taken.text.slice(0, 40),
-);
-
-check(
-  "an unanswerable TLD is never shown as available",
-  !/\$|\/yr|Get it/.test(unsold.text),
-  unsold.text.slice(0, 50),
-);
-check("it still reaches checkout", unsold.hasCart === true, unsold.text.slice(0, 50));
+// ── 6b. (removed) ─────────────────────────────────────────────────────────
+// The hero domain search was taken off the homepage on 2026-10-03. The
+// end-to-end registry check now belongs to `npm run test:domains`, which
+// exercises the same component on the domain pages.
 
 // ── 6c. Cookie consent ────────────────────────────────────────────────────
 const consent = await evaluate(`(async () => {

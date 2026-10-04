@@ -17,16 +17,16 @@ export function MegaMenuPromo({ promo }: { promo: MegaPromo }) {
   const isExternal = promo.cta.external;
 
   const cta = (
-    <span className="mt-4 flex h-11 w-full items-center justify-center rounded-lg bg-white px-4 text-small font-medium text-fg transition-colors duration-fast group-hover/promo:bg-ink-100">
+    <span className="mt-5 flex h-12 w-full items-center justify-center rounded-md bg-white px-4 text-body font-semibold text-fg transition-colors duration-fast group-hover/promo:bg-ink-100">
       {promo.cta.label}
     </span>
   );
 
   return (
-    <div className="relative flex h-full flex-col overflow-hidden rounded-xl bg-white/[0.045] p-5 ring-1 ring-inset ring-white/10">
+    <div className="relative flex h-full flex-col overflow-hidden rounded-2xl bg-white/[0.05] p-6 ring-1 ring-inset ring-white/10">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(75%_60%_at_50%_0%,rgb(34_126_255/0.28)_0%,transparent_70%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_45%_at_50%_35%,rgb(0_0_255/0.35)_0%,transparent_70%)]"
       />
 
       <div className="relative flex items-start justify-between gap-3">
@@ -36,20 +36,20 @@ export function MegaMenuPromo({ promo }: { promo: MegaPromo }) {
         {promo.brand === "convoai" ? (
           <ConvoAiLogo tone="dark" className="h-6 w-auto" />
         ) : (
-          <span className="font-mono text-caption uppercase text-fg-on-dark-muted">
+          <span className="text-caption uppercase font-semibold tracking-[0.04em] text-white">
             {promo.eyebrow}
           </span>
         )}
-        <span aria-hidden="true" className="text-fg-on-dark-muted">
+        <span aria-hidden="true" className="text-white">
           <ArrowUpRight />
         </span>
       </div>
 
       <PromoVisual kind={promo.visual} />
 
-      <div className="relative">
-        <p className="text-h4 text-white">{promo.title}</p>
-        <p className="mt-2 text-small text-fg-on-dark-muted">{promo.body}</p>
+      <div className="relative mt-auto">
+        <p className="text-[22px] leading-7 font-medium tracking-[-0.02em] text-white">{promo.title}</p>
+        <p className="mt-2 text-small text-white/75">{promo.body}</p>
 
         {isExternal ? (
           <a
@@ -79,29 +79,33 @@ export function MegaMenuPromo({ promo }: { promo: MegaPromo }) {
  */
 function PromoVisual({ kind }: { kind: MegaPromo["visual"] }) {
   const frame =
-    "relative my-4 flex h-24 items-center justify-center overflow-hidden rounded-lg bg-black/25 ring-1 ring-inset ring-white/8";
+    "relative my-6 flex h-44 items-center justify-center overflow-hidden rounded-xl";
 
   if (kind === "ai") {
     return (
       <div aria-hidden="true" className={frame}>
-        {/* Stacked glow plates, echoing the target's layered card visual. */}
+        {/* Nested glowing tiles with a sparkle key and a cursor: one object,
+            lit from inside, instead of three faint outlines. */}
         {[0, 1, 2].map((i) => (
           <span
             key={i}
-            style={{ transform: `scale(${1 - i * 0.16}) translateY(${i * 4}px)` }}
+            style={{ width: `${168 - i * 36}px`, height: `${168 - i * 36}px` }}
             className={cn(
-              "absolute h-20 w-20 rounded-xl ring-1 ring-inset",
-              i === 0 && "bg-primary/10 ring-primary/20",
-              i === 1 && "bg-primary/15 ring-primary/30",
-              i === 2 && "bg-primary/25 ring-primary/50",
+              "absolute rounded-[28px] ring-1 ring-inset",
+              i === 0 && "bg-primary/[0.08] ring-primary/25",
+              i === 1 && "bg-primary/[0.14] ring-primary/35",
+              i === 2 && "bg-primary/25 shadow-[0_0_40px_rgb(0_0_255/0.45)] ring-primary/55",
             )}
           />
         ))}
-        <svg viewBox="0 0 24 24" className="relative h-7 w-7 text-white">
-          <path
-            d="M12 3.5 13.6 8 18 9.6 13.6 11.2 12 15.7 10.4 11.2 6 9.6 10.4 8 12 3.5Z"
-            fill="currentColor"
-          />
+        <span className="relative inline-flex size-[4.5rem] items-center justify-center rounded-2xl bg-[linear-gradient(160deg,#2a2a33,#121216)] shadow-[0_10px_30px_rgb(0_0_0/0.5)] ring-1 ring-white/15">
+          <svg viewBox="0 0 24 24" className="h-8 w-8 text-white">
+            <path d="M10 3.5 11.6 8 16 9.6 11.6 11.2 10 15.7 8.4 11.2 4 9.6 8.4 8 10 3.5Z" fill="currentColor" />
+            <path d="M17.5 13.5 18.3 15.7 20.5 16.5 18.3 17.3 17.5 19.5 16.7 17.3 14.5 16.5 16.7 15.7Z" fill="currentColor" opacity="0.8" />
+          </svg>
+        </span>
+        <svg viewBox="0 0 24 24" className="absolute top-[58%] left-[60%] h-9 w-9 drop-shadow-lg">
+          <path d="M5 3l14 7-6 2-2 6L5 3Z" fill="white" stroke="#121214" strokeWidth="1.2" strokeLinejoin="round" />
         </svg>
       </div>
     );
@@ -109,14 +113,14 @@ function PromoVisual({ kind }: { kind: MegaPromo["visual"] }) {
 
   if (kind === "hosting") {
     return (
-      <div aria-hidden="true" className={cn(frame, "flex-col gap-2 px-4")}>
+      <div aria-hidden="true" className={cn(frame, "flex-col gap-2 bg-black/25 px-4 ring-1 ring-inset ring-white/10")}>
         {[
           ["Monthly rate", "$17.95", "bg-primary"],
           ["Standard rate", "$21.37", "bg-white/25"],
         ].map(([label, price, bar], i) => (
           <div key={label} className="w-full">
             <div className="flex items-baseline justify-between">
-              <span className="font-mono text-caption uppercase text-fg-on-dark-muted">
+              <span className="text-micro text-white/70">
                 {label}
               </span>
               <span className="tabular text-small font-semibold text-white">
@@ -135,7 +139,7 @@ function PromoVisual({ kind }: { kind: MegaPromo["visual"] }) {
 
   if (kind === "domains") {
     return (
-      <div aria-hidden="true" className={cn(frame, "flex-col gap-1.5 px-4")}>
+      <div aria-hidden="true" className={cn(frame, "flex-col gap-1.5 bg-black/25 px-4 ring-1 ring-inset ring-white/10")}>
         {[
           [".com", "Available", true],
           [".net", "Available", true],
@@ -148,11 +152,11 @@ function PromoVisual({ kind }: { kind: MegaPromo["visual"] }) {
               free ? "bg-success-fill/15" : "bg-white/[0.06]",
             )}
           >
-            <span className="font-mono text-micro text-white">serverlys{tld}</span>
+            <span className="text-small text-white">serverlys{tld}</span>
             <span
               className={cn(
-                "font-mono text-caption uppercase",
-                free ? "text-success-fill" : "text-fg-on-dark-muted",
+                "text-micro font-semibold",
+                free ? "text-success-fill" : "text-white/60",
               )}
             >
               {state}
@@ -164,7 +168,7 @@ function PromoVisual({ kind }: { kind: MegaPromo["visual"] }) {
   }
 
   return (
-    <div aria-hidden="true" className={cn(frame, "flex-col gap-2 px-5")}>
+    <div aria-hidden="true" className={cn(frame, "flex-col gap-2 bg-black/25 px-5 ring-1 ring-inset ring-white/10")}>
       {["Old host", "Staging", "Live"].map((label, i) => (
         <div key={label} className="flex w-full items-center gap-2.5">
           <span

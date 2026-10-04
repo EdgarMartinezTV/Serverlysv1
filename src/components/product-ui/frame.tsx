@@ -94,7 +94,7 @@ export function AppFrame({
       <div className="flex">
         {/* Sidebar */}
         <div className="hidden w-[8.5rem] shrink-0 flex-col gap-0.5 border-r border-line-subtle bg-canvas-secondary p-2.5 sm:flex">
-          <span className="mb-2 px-2 font-mono text-ui uppercase tracking-[0.12em] text-fg-muted">
+          <span className="mb-2 px-2 text-ui text-fg-muted font-semibold">
             Serverlys
           </span>
           {nav.map((item) => (

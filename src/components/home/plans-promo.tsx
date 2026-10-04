@@ -37,7 +37,7 @@ export function PlansPromo() {
   return (
     <Section surface="subtle" spacing="base" labelledBy="promo-heading" width="wide">
       <Reveal className="mx-auto max-w-[680px] text-center">
-        <span className="font-mono text-caption uppercase text-primary">
+        <span className="text-micro text-primary font-semibold">
           Plans and prices
         </span>
         <h2 id="promo-heading" className="mt-4 text-h1 text-fg">
@@ -58,7 +58,7 @@ export function PlansPromo() {
           />
           <div aria-hidden="true" className="absolute inset-0 -z-10 bg-grid-dark" />
 
-          <span className="inline-flex w-fit items-center rounded-full bg-white/10 px-2.5 py-1 font-mono text-caption uppercase text-fg-on-dark-secondary ring-1 ring-inset ring-white/15">
+          <span className="inline-flex w-fit items-center rounded-full bg-white/10 px-2.5 py-1 text-micro text-fg-on-dark-secondary ring-1 ring-inset ring-white/15 font-semibold">
             Most chosen · {cloud.label}
           </span>
 
@@ -128,7 +128,7 @@ export function PlansPromo() {
           <Reveal delay={80} className="h-full">
             <Card variant="interactive" padding="lg" className="h-full justify-between">
               <div>
-                <span className="font-mono text-caption uppercase text-primary">
+                <span className="text-micro text-primary font-semibold">
                   Domains
                 </span>
                 <h3 className="mt-3 text-h3 text-fg">

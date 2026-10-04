@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { FinalCta } from "@/components/sections/final-cta";
 import { JsonLd } from "@/components/ui/json-ld";
 import { RichText } from "@/components/ui/rich-text";
+import { ArticleThumb } from "../_components/article-thumb";
 import {
   articles,
   articleBySlug,
@@ -75,7 +76,7 @@ function BlockView({ block }: { block: Block }) {
   switch (block.type) {
     case "h2":
       return (
-        <h2 id={block.id} className="mt-14 scroll-mt-28 text-h4 text-fg first:mt-0">
+        <h2 id={block.id} className="mt-14 scroll-mt-28 text-h3 font-medium tracking-[-0.02em] text-fg first:mt-0">
           {block.text}
         </h2>
       );
@@ -109,7 +110,7 @@ function BlockView({ block }: { block: Block }) {
             <li key={item} className="flex gap-4 text-body text-fg-secondary">
               <span
                 aria-hidden="true"
-                className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-canvas-inset font-mono text-caption text-fg"
+                className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-50 text-micro font-semibold text-primary"
               >
                 {i + 1}
               </span>
@@ -122,7 +123,7 @@ function BlockView({ block }: { block: Block }) {
       );
     case "callout":
       return (
-        <aside className="mt-8 rounded-xl border-l-2 border-primary bg-canvas-secondary p-6">
+        <aside className="mt-8 rounded-2xl bg-brand-50 p-6">
           <p className="text-body font-semibold text-fg">{block.title}</p>
           <p className="mt-2 text-small text-fg-secondary">
             <RichText text={block.text} />
@@ -131,7 +132,7 @@ function BlockView({ block }: { block: Block }) {
       );
     case "quote":
       return (
-        <blockquote className="mt-8 border-l-2 border-line pl-6 text-body-lg text-fg">
+        <blockquote className="mt-8 rounded-2xl bg-canvas-secondary px-6 py-5 text-body-lg text-fg">
           <RichText text={block.text} />
         </blockquote>
       );
@@ -219,25 +220,31 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
         })}
       />
 
-      <section className="relative isolate overflow-hidden bg-canvas-abyss">
-        <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(60%_55%_at_25%_-5%,rgb(34_126_255/0.28)_0%,transparent_68%)]" />
-        <div aria-hidden="true" className="absolute inset-0 bg-grid-dark" />
-        <Container className="relative pb-14 pt-8 sm:pb-16 sm:pt-10">
+      {/* 2026-10-03: light article header with the category thumbnail,
+          in place of the dark band and its mono category label. */}
+      <section className="relative isolate overflow-hidden bg-canvas">
+        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[radial-gradient(55%_60%_at_80%_10%,rgb(0_0_255/0.06)_0%,transparent_70%)]" />
+        <Container className="pb-12 pt-6 sm:pb-16 lg:pt-10">
           <Breadcrumbs
             trail={[{ name: "Home", href: "/" }, { name: "Blog", href: "/blog" }, { name: article.category }]}
-            tone="dark"
+            tone="light"
           />
-          <div className="mt-10 max-w-3xl">
-            <span className="font-mono text-caption uppercase text-accent-on-dark">
-              {article.category}
-            </span>
-            <h1 className="mt-4 text-h2 text-white">{article.title}</h1>
-            <p className="mt-5 text-body-lg text-fg-on-dark-secondary">{article.description}</p>
-            <p className="mt-6 text-small text-fg-on-dark-muted">
-              {company.name} ·{" "}
-              <time dateTime={article.published}>{formatDate(article.published)}</time> ·{" "}
-              {readingMinutes(article)} min read
-            </p>
+          <div className="mt-10 grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-center lg:gap-16">
+            <div>
+              <span className="inline-flex rounded-md bg-brand-50 px-2.5 py-1 text-small font-medium text-primary">
+                {article.category}
+              </span>
+              <h1 className="display-lg mt-5 text-fg">{article.title}</h1>
+              <p className="mt-5 max-w-[60ch] text-body-lg text-fg-secondary">{article.description}</p>
+              <p className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-small text-fg-secondary">
+                <span className="font-medium text-fg">{company.name}</span>
+                <span aria-hidden="true">·</span>
+                <time dateTime={article.published}>{formatDate(article.published)}</time>
+                <span aria-hidden="true">·</span>
+                {readingMinutes(article)} min read
+              </p>
+            </div>
+            <ArticleThumb category={article.category} size="lg" className="aspect-[4/3] rounded-3xl" />
           </div>
         </Container>
       </section>
@@ -268,7 +275,7 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
               <BlockView key={i} block={block} />
             ))}
 
-            <div className="mt-14 border-t border-line pt-8">
+            <div className="mt-14 rounded-2xl bg-canvas-secondary p-7">
               <p className="text-body text-fg-secondary">
                 Questions about anything above? We answer them without a sales
                 script.
@@ -285,15 +292,13 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
           {/* Contents. Native anchors, sticky on desktop only. */}
           {headings.length > 1 && (
             <nav aria-label="On this page" className="order-first lg:order-none lg:sticky lg:top-24 lg:self-start">
-              <p className="text-caption font-semibold uppercase tracking-wider text-fg-muted">
-                On this page
-              </p>
-              <ul className="mt-4 flex flex-col gap-1 border-l border-line">
+              <p className="text-small font-semibold text-fg">On this page</p>
+              <ul className="mt-4 flex flex-col gap-1">
                 {headings.map((h) => (
                   <li key={h.id}>
                     <a
                       href={`#${h.id}`}
-                      className="flex min-h-[2.5rem] items-center border-l-2 border-transparent px-3 text-small text-fg-secondary transition-colors hover:border-primary hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                      className="flex min-h-[2.5rem] items-center rounded-md px-3 text-small text-fg-secondary transition-colors hover:bg-brand-50 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                     >
                       {h.text}
                     </a>
@@ -306,18 +311,19 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
       </Section>
 
       <Section surface="subtle">
-        <h2 className="text-h4 text-fg">Keep reading</h2>
-        <ul className="mt-8 grid gap-px overflow-hidden rounded-xl bg-line sm:grid-cols-3">
+        <h2 className="display-md text-fg">Keep reading</h2>
+        <ul className="mt-10 grid gap-4 sm:grid-cols-3">
           {related.map((a) => (
-            <li key={a.slug} className="bg-canvas">
+            <li key={a.slug}>
               <Link
                 href={`/blog/${a.slug}`}
-                className="group flex h-full flex-col gap-3 p-6 transition-colors hover:bg-canvas-secondary focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary"
+                className="group flex h-full flex-col gap-3 rounded-2xl bg-canvas p-3 pb-6 ring-1 ring-line transition-shadow hover:shadow-e3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
-                <Badge>{a.category}</Badge>
-                <h3 className="text-body font-semibold text-fg group-hover:text-primary">{a.title}</h3>
-                <p className="text-small text-fg-secondary">{a.description}</p>
-                <span className="mt-auto pt-3 text-caption text-fg-muted">
+                <ArticleThumb category={a.category} className="aspect-[16/9]" />
+                <span className="px-3 pt-2"><Badge>{a.category}</Badge></span>
+                <h3 className="px-3 text-body font-semibold text-fg group-hover:text-primary">{a.title}</h3>
+                <p className="px-3 text-small text-fg-secondary">{a.description}</p>
+                <span className="mt-auto px-3 pt-3 text-caption text-fg-muted">
                   {readingMinutes(a)} min read
                 </span>
               </Link>

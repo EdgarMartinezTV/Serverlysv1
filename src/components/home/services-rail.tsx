@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Section, SectionHeader } from "@/components/ui/section";
+import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/animations/reveal";
 import { Button } from "@/components/ui/button";
 import { NavIcon, ArrowUpRight } from "@/components/navigation/nav-icons";
@@ -113,24 +113,24 @@ export function ServicesRail() {
           our ramp toward white to chase it gives periwinkle, which is the exact
           complaint that triggered the brand retune. Both pools are `primary`
           (brand-600 #0000ff) over abyss. */}
+      {/* 2026-10-03: one wash rising from the bottom edge (the logo blue over
+          the dark ground) instead of two side pools, so the cards sit in the
+          light rather than between two lamps. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -left-40 top-0 -z-10 h-full w-[26rem] rounded-full bg-primary/50 blur-3xl"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-40 top-0 -z-10 h-full w-[26rem] rounded-full bg-primary/45 blur-3xl"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(80%_70%_at_50%_115%,rgb(0_0_255/0.85)_0%,rgb(0_0_255/0.25)_45%,transparent_75%)]"
       />
 
       <Reveal className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-        <SectionHeader
-          eyebrow="Done for you"
-          title="Or hand the build over entirely"
-          lede="Not everyone wants a control panel. The same team that runs the infrastructure will design it, build it and market it."
-          id="services-heading"
-          tone="dark"
-          accent="neutral"
-        />
+        <div className="max-w-[640px]">
+          <h2 id="services-heading" className="display-md text-white">
+            Or hand the build over entirely
+          </h2>
+          <p className="mt-4 text-body-lg text-fg-on-dark-secondary">
+            The same team that runs the infrastructure will design it, build it and
+            market it.
+          </p>
+        </div>
         <div className="shrink-0">
           <Button href={billing.sales} variant="inverse">
             Talk about a project
@@ -148,7 +148,7 @@ export function ServicesRail() {
                   no nested interactive element to reason about. */}
               <Link
                 href={service.href}
-                className="group/card flex h-full min-h-81 flex-col gap-2 rounded-xl bg-canvas-dark/50 p-6 ring-1 ring-inset ring-white/10 transition-colors duration-fast hover:bg-canvas-dark/70 hover:ring-white/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                className="group/card flex h-full min-h-64 flex-col gap-2 rounded-2xl bg-[linear-gradient(180deg,rgb(255_255_255/0.05)_0%,rgb(31_85_255/0.22)_100%)] p-6 ring-1 ring-inset ring-white/10 backdrop-blur-sm transition-colors duration-fast hover:bg-white/10 hover:ring-white/25 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               >
                 <span className="flex items-start justify-between gap-4">
                   {/* WHITE, not brand-400. brand-400 (#7d7dff) is hue 240 and
@@ -166,8 +166,8 @@ export function ServicesRail() {
                   />
                 </span>
 
-                <h3 className="mt-4 text-body-lg text-fg-on-dark">{service.title}</h3>
-                <p className="text-small leading-5 text-fg-on-dark-muted">{service.body}</p>
+                <h3 className="mt-6 text-body-lg font-medium text-white">{service.title}</h3>
+                <p className="text-small leading-5 text-fg-on-dark-secondary">{service.body}</p>
               </Link>
             </CardRailItem>
           ))}

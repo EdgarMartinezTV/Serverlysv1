@@ -40,7 +40,10 @@ export function Section({
       className={cn(
         surface === "light" && "bg-canvas text-fg-secondary",
         surface === "subtle" && "bg-canvas-secondary text-fg-secondary",
-        surface === "dark" && "bg-canvas-dark text-fg-on-dark-secondary",
+        /* Brand navy with a blue glow from the top (2026-10-03), the dark band
+           every rebuilt page uses, instead of near-black ink-950. */
+        surface === "dark" &&
+          "bg-canvas-abyss bg-[radial-gradient(60%_45%_at_50%_0%,rgb(0_0_255/0.3),transparent_70%)] text-fg-on-dark-secondary",
         /* Each step now starts SMALLER than `sm` rather than carrying the
            tablet value down to a phone. `base` used to be py-20 at every width
            below 640px, so a 390px screen paid 160px of band padding — desktop
@@ -64,13 +67,13 @@ export function Section({
  * everywhere and wires the heading id used by the parent's aria-labelledby.
  */
 export function SectionHeader({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- kept for call sites; no longer rendered
   eyebrow,
   title,
   lede,
   id,
   align = "left",
   tone = "light",
-  accent = "brand",
 }: {
   eyebrow?: string;
   title: string;
@@ -93,27 +96,14 @@ export function SectionHeader({
   return (
     <div
       className={cn(
-        "flex max-w-[680px] flex-col gap-4",
+        "flex max-w-[760px] flex-col gap-4",
         align === "center" ? "mx-auto items-center text-center" : "items-start",
       )}
     >
-      {eyebrow && (
-        <span
-          className={cn(
-            "font-mono text-caption uppercase",
-            accent === "neutral"
-              ? tone === "dark"
-                ? "text-fg-on-dark-secondary"
-                : "text-fg-secondary"
-              : tone === "dark"
-                ? "text-primary-on-dark"
-                : "text-primary",
-          )}
-        >
-          {eyebrow}
-        </span>
-      )}
-      <h2 id={id} className={cn("text-h2", tone === "dark" ? "text-white" : "text-fg")}>
+      {/* 2026-10-03: `eyebrow` is accepted but no longer rendered. A small
+          uppercase label above every section was the single most repeated
+          template tell on the site; the rebuilt pages carry none. */}
+      <h2 id={id} className={cn("display-md", tone === "dark" ? "text-white" : "text-fg")}>
         {title}
       </h2>
       {lede && (

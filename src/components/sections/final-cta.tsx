@@ -1,4 +1,3 @@
-import { Section } from "@/components/ui/section";
 import { Button } from "@/components/ui/button";
 import { billing, company } from "@/data/company";
 
@@ -25,52 +24,45 @@ import { billing, company } from "@/data/company";
  *
  * `scripts/audit-links.mjs` is what found this and is what will catch it again.
  */
+/**
+ * Closing banner, shared by ~24 pages. 2026-10-03: the reference's closing
+ * band (brand blue, angled slabs, big headline, one white button) replaces
+ * the flat two-button row. Same props, same links.
+ */
 export function FinalCta({ plansHref = "/#plans" }: { plansHref?: string } = {}) {
   return (
-    <Section
-      surface="light"
-      spacing="base"
-      labelledBy="final-cta-heading"
-      className="bg-primary"
-    >
-      <div className="flex flex-col items-start gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-12">
-        <div className="max-w-2xl">
-          <h2 id="final-cta-heading" className="text-h2 text-fg-on-brand">
-            Start on a plan that still makes sense in year two.
+    <section aria-labelledby="final-cta-heading" className="relative isolate overflow-hidden bg-primary">
+      <div aria-hidden="true" className="absolute inset-y-0 right-0 -z-10 w-[60%] bg-white/[0.06] [clip-path:polygon(30%_0,100%_0,100%_100%,0_100%)]" />
+      <div aria-hidden="true" className="absolute inset-y-0 right-0 -z-10 w-[35%] bg-white/[0.05] [clip-path:polygon(45%_0,100%_0,100%_100%,0_100%)]" />
+      <div className="mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8 lg:px-10 lg:py-24">
+        <div className="max-w-[620px]">
+          <h2 id="final-cta-heading" className="display-lg text-white">
+            A plan that still makes sense in year two
           </h2>
-          <p className="mt-4 text-body-lg text-fg-on-brand-muted">
+          <p className="mt-5 max-w-[480px] text-body-lg text-white/85">
             Free migration, free SSL and daily backups on every plan, with a 30-day
-            money-back guarantee. Not sure which tier fits? Tell us what the site does
-            and we will say.
+            money-back guarantee.
+          </p>
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <Button href={plansHref} variant="inverse" size="lg">
+              Compare plans
+            </Button>
+            <Button href={billing.sales} variant="onBrand" size="lg">
+              Talk to an expert
+            </Button>
+          </div>
+          <p className="mt-8 text-small text-white/80">
+            Prefer the phone?{" "}
+            <a href={company.phoneHref} className="tabular inline-block py-1 text-white underline underline-offset-2">
+              {company.phone}
+            </a>{" "}
+            · Existing customer?{" "}
+            <a href={billing.login} className="inline-block py-1 text-white underline underline-offset-2">
+              Client login
+            </a>
           </p>
         </div>
-
-        <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row lg:shrink-0">
-          <Button href={plansHref} variant="inverse" size="lg" block>
-            Compare plans
-          </Button>
-          <Button href={billing.sales} variant="onBrand" size="lg" block>
-            Talk to an expert
-          </Button>
-        </div>
       </div>
-
-      <p className="mt-10 border-t border-line-on-brand pt-6 text-small text-fg-on-brand-muted">
-        Prefer the phone?{" "}
-        <a
-          href={company.phoneHref}
-          className="tabular inline-block py-1 text-fg-on-brand underline underline-offset-2 hover:text-fg-on-brand-muted"
-        >
-          {company.phone}
-        </a>{" "}
-        · Existing customer?{" "}
-        <a
-          href={billing.login}
-          className="inline-block py-1 text-fg-on-brand underline underline-offset-2 hover:text-fg-on-brand-muted"
-        >
-          Client login
-        </a>
-      </p>
-    </Section>
+    </section>
   );
 }

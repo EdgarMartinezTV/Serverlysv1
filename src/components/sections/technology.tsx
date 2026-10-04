@@ -65,7 +65,7 @@ export function Technology() {
             column balances the datasheet instead of leaving a void beneath. */}
         <div className="flex flex-col items-start lg:justify-between">
           <div className="flex flex-col items-start">
-            <span className="font-mono text-caption uppercase text-primary-on-dark">
+            <span className="text-micro text-primary-on-dark font-semibold">
               Infrastructure
             </span>
             <h2 id="tech-heading" className="mt-4 text-h2 text-white">
@@ -94,7 +94,7 @@ export function Technology() {
               key={row.label}
               className="grid grid-cols-[6.5rem_1fr] items-baseline gap-x-5 gap-y-1 py-4 sm:grid-cols-[8rem_1fr]"
             >
-              <dt className="font-mono text-caption uppercase text-fg-on-dark-muted">
+              <dt className="text-micro text-fg-on-dark-muted font-semibold">
                 {row.label}
               </dt>
               <dd className="text-body-lg font-semibold text-white">{row.value}</dd>

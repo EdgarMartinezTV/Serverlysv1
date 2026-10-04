@@ -11,11 +11,14 @@ import { cn } from "@/lib/utils";
  * and no honest interim target. Linking every page of the site to a 404 wastes
  * crawl budget and sends people nowhere; `resolveNavTarget` owns that decision.
  */
+/* Soft sentence-case pills (2026-10-03). The brand/success tones are a FILL
+   with white text rather than tinted text, which is what kept "Live" reading
+   as a label instead of a status light. */
 const BADGE_TONE = {
-  brand: "bg-primary/20 text-primary-on-dark ring-primary/30",
-  success: "bg-success-fill/15 text-success-fill ring-success-fill/25",
-  warning: "bg-warning-fill/15 text-warning-fill ring-warning-fill/25",
-  neutral: "bg-white/10 text-fg-on-dark-secondary ring-white/15",
+  brand: "bg-primary/45 text-white ring-primary/50",
+  success: "bg-success-fill/25 text-white ring-success-fill/35",
+  warning: "bg-warning-fill/20 text-white ring-warning-fill/30",
+  neutral: "bg-white/10 text-white/80 ring-white/15",
 } as const;
 
 export function MegaMenuItem({
@@ -35,8 +38,8 @@ export function MegaMenuItem({
         className={cn(
           "mt-0.5 shrink-0 transition-colors duration-fast",
           interactive
-            ? "text-fg-on-dark-muted group-hover/item:text-primary-on-dark"
-            : "text-fg-on-dark-muted/60",
+            ? "text-white/80 group-hover/item:text-white"
+            : "text-white/40",
         )}
       >
         <NavIcon name={item.icon} className="h-5 w-5" />
@@ -46,7 +49,7 @@ export function MegaMenuItem({
         <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
           <span
             className={cn(
-              "text-small font-semibold leading-5 transition-colors duration-fast",
+              "text-body font-semibold leading-6 transition-colors duration-fast",
               interactive ? "text-white" : "text-fg-on-dark-secondary",
             )}
           >
@@ -58,7 +61,7 @@ export function MegaMenuItem({
                 // 12px / 600 / 16px — the target's badge is the same size as its
                 // group eyebrow. Ours was 9px, which read as a footnote next to
                 // a 14px title rather than a label.
-                "whitespace-nowrap rounded-full px-1.5 py-0.5 font-mono text-caption uppercase leading-4 ring-1 ring-inset",
+                "whitespace-nowrap rounded-md px-2 py-0.5 text-micro font-semibold leading-4 ring-1 ring-inset",
                 BADGE_TONE[item.badge.tone],
               )}
             >
@@ -71,7 +74,7 @@ export function MegaMenuItem({
             </span>
           )}
         </span>
-        <span className="mt-1 block text-small leading-5 text-fg-on-dark-muted">
+        <span className="mt-1 block text-small leading-[1.45] text-white/70">
           {item.description}
         </span>
       </span>
@@ -92,7 +95,7 @@ export function MegaMenuItem({
      the target's uniform 368.5px. It is also why descriptions now wrap across
      the full column instead of sitting on one short line. */
   const classes =
-    "group/item -m-2 flex min-w-0 flex-1 gap-3 rounded-lg p-2 transition-colors duration-fast " +
+    "group/item -m-2.5 flex min-w-0 flex-1 gap-3.5 rounded-xl p-2.5 transition-colors duration-fast " +
     "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white";
 
   if (!interactive) {
@@ -106,7 +109,7 @@ export function MegaMenuItem({
         target="_blank"
         rel="noopener noreferrer"
         onClick={onNavigate}
-        className={cn(classes, "hover:bg-white/[0.05]")}
+        className={cn(classes, "hover:bg-white/[0.06]")}
       >
         {body}
       </a>
@@ -117,7 +120,7 @@ export function MegaMenuItem({
     <Link
       href={target.href}
       onClick={onNavigate}
-      className={cn(classes, "hover:bg-white/[0.05]")}
+      className={cn(classes, "hover:bg-white/[0.06]")}
     >
       {body}
     </Link>

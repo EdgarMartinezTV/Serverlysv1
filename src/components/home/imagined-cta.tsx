@@ -1,9 +1,14 @@
-import Image from "next/image";
+import { SeraMark } from "@/components/sera/sera-mark";
+import { MockPhoto } from "@/components/ui/mock-photo";
 import { CtaButton } from "@/components/ref/kit";
 
 /**
- * "Imagined it. Now make it real." — the reference's closing
- * `h-banner-with-image`.
+ * The closing banner — layout from the reference's `h-banner-with-image`.
+ *
+ * ⚠ COPY IS OUR OWN. This shipped with the reference's headline verbatim
+ * ("Imagined it. Now make it real."), which is copied ad copy, not a layout.
+ * Replaced 2026-10-03. Do not restore it; measured geometry is fair to match,
+ * someone else's slogan is not.
  *
  * The layout below is not an approximation of the reference; it is its measured
  * box model, read off the live page at 375 / 768 / 1024 / 1025 / 1280 / 1440
@@ -51,40 +56,80 @@ import { CtaButton } from "@/components/ref/kit";
  */
 export function ImaginedCta() {
   return (
-    <section aria-labelledby="imagined-heading" className="overflow-hidden bg-primary">
-      <div className="mx-auto flex min-h-[550px] w-full max-w-[1600px] flex-col items-center gap-12 min-[1025px]:flex-row min-[1025px]:items-stretch min-[1025px]:pl-20 min-[1025px]:pr-0">
-        <div className="relative z-[1] mx-auto flex w-full max-w-[530px] flex-col px-4 pb-0 pt-16 min-[1025px]:ml-0 min-[1025px]:mr-auto min-[1025px]:px-0 min-[1025px]:py-20">
-          <h2
-            id="imagined-heading"
-            className="text-[40px] leading-[48px] font-normal tracking-[-0.2px] text-white lg:text-[64px] lg:leading-[72px] lg:tracking-[-0.32px]"
-          >
-            Imagined it.
-            <span className="block">Now make it real.</span>
+    <section aria-labelledby="imagined-heading" className="relative isolate overflow-hidden bg-primary">
+      {/* 2026-10-03: the AI "STAND OUT" photograph is gone. The art is now a
+          coded browser (a small bakery site), a domain pill and a Sera prompt,
+          layered the way the reference layers its own, in the site's type. */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-y-0 right-0 -z-10 w-[60%] bg-white/[0.06] [clip-path:polygon(30%_0,100%_0,100%_100%,0_100%)]"
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-y-0 right-0 -z-10 w-[35%] bg-white/[0.05] [clip-path:polygon(45%_0,100%_0,100%_100%,0_100%)]"
+      />
+      <div className="mx-auto grid w-full max-w-[1280px] items-center gap-12 px-5 py-16 sm:px-8 lg:grid-cols-2 lg:px-10 lg:py-24">
+        <div>
+          <h2 id="imagined-heading" className="display-lg text-white">
+            Pick a plan.
+            <span className="block">We move your site free.</span>
           </h2>
-          <p className="mt-3 max-w-[360px] text-body text-white min-[1025px]:mt-4">
+          <p className="mt-5 max-w-[380px] text-body text-white/85">
             30-day money-back guarantee. Free migration. The renewal price shown before you buy.
           </p>
-          {/*
-            `mt-auto` at ≥1025 is what pins the button to the bottom of a
-            550px-tall column — which is the reason the left column is a flex
-            column rather than a plain block.
-          */}
-          <div className="mt-6 flex w-full flex-col gap-2 md:w-fit md:flex-row min-[1025px]:mt-auto min-[1025px]:pt-6">
+          <div className="mt-10">
             <CtaButton href="/pricing" tone="light">
-              Get started
+              Choose a plan
             </CtaButton>
           </div>
         </div>
 
-        <div className="w-full max-w-[690px] min-[1025px]:my-auto min-[1025px]:flex min-[1025px]:h-max min-[1025px]:justify-end">
-          <Image
-            src="/Hosting-images/botton-section.png"
-            alt="A Serverlys-built website in a browser: a yourbusiness.com domain search above a live homepage reading Stand Out, with a prompt to create a website for your business"
-            width={1532}
-            height={1027}
-            sizes="(min-width: 1025px) 690px, 100vw"
-            className="h-auto w-full"
-          />
+        <div aria-hidden="true" className="relative mx-auto w-full max-w-[520px] pb-10 lg:mr-0">
+          <div className="overflow-hidden rounded-2xl bg-white shadow-e5 ring-1 ring-white/30">
+            <div className="flex items-center justify-between bg-[#1b1206] px-5 py-3 text-micro text-white/80">
+              <span className="flex gap-4">
+                <span>Home</span>
+                <span>Menu</span>
+                <span>Order</span>
+              </span>
+              <span className="font-semibold tracking-[0.2em] text-white">HEARTH</span>
+              <span>Cart (2)</span>
+            </div>
+            <div className="relative h-[230px] overflow-hidden p-6 sm:h-[260px]">
+              <div className="absolute inset-0">
+                <MockPhoto src="bread" className="h-full" sizes="520px" />
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/25 to-transparent" />
+              <p className="relative mt-8 max-w-[260px] text-[30px] leading-[1.05] font-semibold tracking-[-0.03em] text-white sm:text-[34px]">
+                Fresh bread, every morning
+              </p>
+              <span className="relative mt-5 inline-flex rounded-full bg-white px-4 py-2 text-micro font-semibold text-[#1b1206]">
+                Order for pickup
+              </span>
+            </div>
+          </div>
+
+          <div className="absolute -top-5 -left-4 flex items-center gap-2.5 rounded-xl bg-white/95 py-2.5 pr-4 pl-2.5 shadow-e4 backdrop-blur sm:-left-8">
+            <span className="inline-flex size-8 items-center justify-center rounded-lg bg-primary text-white">
+              <svg viewBox="0 0 24 24" fill="none" className="size-4">
+                <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" />
+                <path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3Z" stroke="currentColor" strokeWidth="1.8" />
+              </svg>
+            </span>
+            <span className="text-body text-fg">
+              hearthbakery<span className="font-semibold">.com</span>
+            </span>
+          </div>
+
+          <div className="absolute right-0 bottom-0 flex w-[82%] items-center gap-3 rounded-xl bg-white py-2 pr-2 pl-4 shadow-e5 ring-2 ring-brand-200 sm:-right-6">
+            <SeraMark className="h-4 w-4 shrink-0 text-primary" />
+            <span className="flex-1 truncate text-small text-fg">Create a website for my bakery</span>
+            <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary text-white">
+              <svg viewBox="0 0 16 16" fill="none" className="size-4">
+                <path d="M3 8h9m-3.5-3.5L12 8l-3.5 3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+          </div>
         </div>
       </div>
     </section>

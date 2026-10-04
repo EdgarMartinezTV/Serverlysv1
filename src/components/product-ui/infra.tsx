@@ -91,7 +91,7 @@ export function RackMock({ className }: { className?: string }) {
       )}
     >
       <div className="flex items-center justify-between">
-        <p className="font-mono text-ui uppercase tracking-wider text-fg-on-dark-muted">
+        <p className="text-ui text-fg-on-dark-muted font-semibold">
           Cabinet 04 · your machine
         </p>
         <span className="inline-flex items-center gap-1.5 rounded-full bg-success-fill/15 px-2 py-0.5">
@@ -150,7 +150,7 @@ export function RackMock({ className }: { className?: string }) {
           ["Disk", "NVMe RAID"],
         ].map(([k, v]) => (
           <div key={k}>
-            <dt className="font-mono text-ui uppercase text-fg-on-dark-muted">{k}</dt>
+            <dt className="text-ui text-fg-on-dark-muted font-semibold">{k}</dt>
             <dd className="mt-0.5 text-ui font-semibold text-white">{v}</dd>
           </div>
         ))}
@@ -189,8 +189,8 @@ export function ResponsibilityMock({ className }: { className?: string }) {
       className={className}
     >
       <div className="grid grid-cols-[1fr_auto] gap-x-3">
-        <p className="pb-1.5 font-mono text-ui uppercase text-fg-muted">Task</p>
-        <p className="pb-1.5 text-right font-mono text-ui uppercase text-fg-muted">
+        <p className="pb-1.5 text-ui text-fg-muted font-semibold">Task</p>
+        <p className="pb-1.5 text-right text-ui text-fg-muted font-semibold">
           Owner
         </p>
         {DUTIES.map(([task, owner]) => (

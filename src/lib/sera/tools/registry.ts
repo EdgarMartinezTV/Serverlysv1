@@ -977,12 +977,56 @@ export async function runTool(
         };
       }
 
+      /*
+       * ⚠ ONLY WHAT THE VISITOR ACTUALLY TYPED (2026-10-03). The model was
+       * seen recording a domain nobody had given ("paintitcompany.com" on a
+       * first turn), which then blocked the real answer. For identifying
+       * kinds — domain, email, phone, url, name — the value must appear in the
+       * visitor's own messages. Choices and free text are paraphrasable and
+       * still pass through to `mergeIntoWorkflow` as before.
+       */
+      const said = (context.conversation.history as { role?: string; content?: unknown }[])
+        .filter((h) => h && h.role === "user" && typeof h.content === "string")
+        .map((h) => (h.content as string).toLowerCase())
+        .join("\n");
+      const spec = WORKFLOWS[record.id];
       const values: Record<string, unknown> = {};
+      const unheard: string[] = [];
       for (const entry of raw.slice(0, 20)) {
         if (!entry || typeof entry !== "object") continue;
         const field = (entry as Record<string, unknown>).field;
         const value = (entry as Record<string, unknown>).value;
-        if (typeof field === "string") values[field] = value;
+        if (typeof field !== "string") continue;
+        const kind = spec.fields.find((f) => f.key === field)?.kind;
+        if (
+          typeof value === "string" &&
+          kind &&
+          ["domain", "email", "phone", "url", "name"].includes(kind)
+        ) {
+          const needle =
+            kind === "phone" ? value.replace(/\D/g, "") : value.trim().toLowerCase().replace(/^https?:\/\/(www\.)?/, "");
+          const haystack = kind === "phone" ? said.replace(/\D/g, "") : said;
+          if (needle && !haystack.includes(needle)) {
+            unheard.push(field);
+            continue;
+          }
+        }
+        /* A choice must be something the visitor mentioned ("Other" aside),
+           so a guessed platform or host never fills the form for them. */
+        /* Yes / No / Not sure are exempt: "I can log in" means yes and
+           will never contain the word. */
+        if (
+          kind === "choice" &&
+          typeof value === "string" &&
+          !["other", "yes", "no", "not sure"].includes(value.trim().toLowerCase())
+        ) {
+          const word = value.trim().toLowerCase();
+          if (!said.includes(word) && !said.includes(word.split(" ")[0])) {
+            unheard.push(field);
+            continue;
+          }
+        }
+        values[field] = value;
       }
 
       const outcome = mergeIntoWorkflow(record, values);
@@ -990,6 +1034,9 @@ export async function runTool(
         saved: outcome.accepted,
         rejected: outcome.rejected,
         unknownFields: outcome.unknown,
+        ...(unheard.length
+          ? { notGivenByVisitor: unheard, note: "Those values were not in anything the visitor wrote. Ask them instead of guessing." }
+          : {}),
         ...statusPayload(context.conversation),
       };
     }

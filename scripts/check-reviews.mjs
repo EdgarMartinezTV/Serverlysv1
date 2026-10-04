@@ -17,13 +17,10 @@
 import { readFileSync, existsSync } from "node:fs";
 
 /** Every band that publishes third-party words, and its gate. */
-const GATED = [
-  {
-    label: "/website-development — “What clients say”",
-    file: "src/app/website-development/_content.ts",
-    flag: "REVIEWS_ARE_REAL",
-  },
-];
+/* Empty since 2026-10-03: the only band (/website-development "What clients
+   say", placeholder quotes) was removed from the page. Add an entry here the
+   day a page publishes real third-party words. */
+const GATED = [];
 
 /** Text that gives a placeholder away even if someone flips the flag early. */
 const TELLS = [

@@ -5,10 +5,11 @@ import { Migration } from "@/components/sections/migration";
 import { FaqSection } from "@/components/sections/faq";
 import { FinalCta } from "@/components/sections/final-cta";
 import { JsonLd } from "@/components/ui/json-ld";
-import { SitePreviewMock, SeoMock, ChatMock } from "@/components/product-ui/mocks";
+import { SeoMock, ChatMock } from "@/components/product-ui/mocks";
 import { billing } from "@/data/company";
 import { faqsFor } from "@/data/faqs";
 import { pageMetadata, faqGraph, breadcrumbGraph, serviceGraph } from "@/lib/seo";
+import { BakerySite } from "./_components/shots";
 
 const PATH = "/website-design";
 const DESCRIPTION =
@@ -49,7 +50,7 @@ export default function WebsiteDesignPage() {
         ]}
         primary={{ label: "Start a project", href: billing.sales }}
         secondary={{ label: "See hosting", href: "/hosting" }}
-        visual={<SitePreviewMock />}
+        visual={<BakerySite />}
       />
 
       <FeatureGrid
@@ -77,7 +78,6 @@ export default function WebsiteDesignPage() {
         visual={<SeoMock />}
         side="right"
         surface="subtle"
-        bleed
       />
 
       <ShowcaseSplit

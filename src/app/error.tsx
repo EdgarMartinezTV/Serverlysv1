@@ -60,7 +60,7 @@ export default function RouteError({
     <section className="bg-canvas pt-20 pb-24 sm:pt-28 sm:pb-32 lg:pt-32 lg:pb-36">
       <Container>
         <div className="mx-auto max-w-[680px] text-center">
-          <p className="font-mono text-caption uppercase text-primary">Error</p>
+          <p className="text-micro text-primary font-semibold">Error</p>
 
           <h1 className="mt-5 text-h1 text-fg">Something went wrong on our side</h1>
 
