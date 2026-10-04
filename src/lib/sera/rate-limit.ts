@@ -100,3 +100,34 @@ export function check(key: string, window: Window): LimitResult {
   bucket.count += 1;
   return { ok: true, retryAfterSeconds: 0 };
 }
+
+/**
+ * Several limits as one decision: every bucket is checked before ANY is
+ * charged, and nothing is charged unless all of them have room.
+ *
+ * Charging them one after another lets a refusal by a later bucket still spend
+ * the earlier ones. With the instance ceiling first and the per-address limit
+ * second, one client sending past its own 429s would drain the shared ceiling
+ * and lock out every other visitor — the opposite of what the ceiling is for.
+ *
+ * `failed` is the index of the first limit without room, so the caller can
+ * word its response for the limit that actually tripped.
+ */
+export function checkAll(
+  limits: ReadonlyArray<readonly [key: string, window: Window]>,
+): LimitResult & { failed?: number } {
+  const now = Date.now();
+  for (let i = 0; i < limits.length; i++) {
+    const [key, window] = limits[i];
+    const bucket = buckets.get(key);
+    if (bucket && bucket.resetAt > now && bucket.count >= window.limit) {
+      return {
+        ok: false,
+        retryAfterSeconds: Math.max(1, Math.ceil((bucket.resetAt - now) / 1000)),
+        failed: i,
+      };
+    }
+  }
+  for (const [key, window] of limits) check(key, window);
+  return { ok: true, retryAfterSeconds: 0 };
+}

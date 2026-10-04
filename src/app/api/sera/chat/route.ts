@@ -6,6 +6,7 @@ import {
   GLOBAL_CHAT,
   GLOBAL_CHAT_KEY,
   check,
+  checkAll,
 } from "@/lib/sera/rate-limit";
 import {
   createConversation,
@@ -92,26 +93,31 @@ export async function POST(request: Request) {
 
   // ── Rate limit ──────────────────────────────────────────────────────────
   /*
-   * The instance ceiling is checked FIRST, before the per-address bucket, and
-   * the order is the point: every limit after this one is keyed on a value
-   * derived from request headers, and an origin reached directly has no proxy
-   * to write those headers honestly. This check asks nothing about the caller,
-   * so there is no answer that gets past it. It is the one that bounds the
-   * OpenAI bill in the case where the deployment is misconfigured.
+   * The instance ceiling comes FIRST, before the per-address bucket: every
+   * limit after it is keyed on a value derived from request headers, and an
+   * origin reached directly has no proxy to write those headers honestly. This
+   * check asks nothing about the caller, so there is no answer that gets past
+   * it. It is the one that bounds the OpenAI bill in the case where the
+   * deployment is misconfigured.
+   *
+   * Both are decided together (`checkAll`), so a request the per-address limit
+   * refuses does not also spend the shared ceiling.
    */
-  const global = check(GLOBAL_CHAT_KEY, GLOBAL_CHAT);
-  if (!global.ok) {
+  const limited = checkAll([
+    [GLOBAL_CHAT_KEY, GLOBAL_CHAT],
+    [clientKey(request, "sera-chat"), CHAT_BY_ADDRESS],
+  ]);
+  if (limited.failed === 0) {
     log.warn("rate_limited", { error: "chat_global_ceiling" });
     return fail(
       "I am handling more conversations than usual right now. Email " +
         "support@serverlys.com or call (305) 671-1272 and the team will pick it up.",
       503,
-      { "Retry-After": String(global.retryAfterSeconds) },
+      { "Retry-After": String(limited.retryAfterSeconds) },
     );
   }
 
-  const address = check(clientKey(request, "sera-chat"), CHAT_BY_ADDRESS);
-  if (!address.ok) {
+  if (!limited.ok) {
     /*
      * No address, no key, no fingerprint in the log line. The count of these
      * over time is the abuse signal; identifying who tripped it would mean
@@ -122,7 +128,7 @@ export async function POST(request: Request) {
     return fail(
       "That is a lot of messages at once — give me a moment and try again.",
       429,
-      { "Retry-After": String(address.retryAfterSeconds) },
+      { "Retry-After": String(limited.retryAfterSeconds) },
     );
   }
 

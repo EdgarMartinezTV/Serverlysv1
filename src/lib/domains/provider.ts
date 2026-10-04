@@ -236,56 +236,45 @@ const GLOBAL_KEY = " global";
 const GLOBAL_MAX_PER_WINDOW = 600;
 
 export function rateLimit(key: string): { ok: boolean; retryAfterSeconds: number } {
-  // Checked first: a tripped ceiling must not consume the caller's own budget,
-  // or a burst from elsewhere would lock out someone who did nothing.
-  if (key !== GLOBAL_KEY) {
-    const ceiling = rateLimitGlobal();
-    if (!ceiling.ok) return ceiling;
-  }
-
+  /*
+   * Both buckets are checked before EITHER is charged. A request the ceiling
+   * refuses must not spend the caller's own allowance — or a burst from
+   * elsewhere would lock out someone who did nothing — and a request the
+   * caller's own limit refuses must not spend the ceiling, or one client
+   * hammering past its 429s would exhaust it and lock out everyone else.
+   */
   const now = Date.now();
-  const bucket = buckets.get(key);
+  const own = verdict(key, MAX_PER_WINDOW, now);
+  if (!own.ok) return own;
+  const ceiling = verdict(GLOBAL_KEY, GLOBAL_MAX_PER_WINDOW, now);
+  if (!ceiling.ok) return ceiling;
 
-  if (!bucket || bucket.resetAt <= now) {
-    buckets.set(key, { count: 1, resetAt: now + WINDOW_MS });
-    // Opportunistic sweep so the map cannot grow without bound.
-    if (buckets.size > 10_000) {
-      for (const [k, v] of buckets) if (v.resetAt <= now) buckets.delete(k);
-    }
-    return { ok: true, retryAfterSeconds: 0 };
-  }
-
-  if (bucket.count >= MAX_PER_WINDOW) {
-    return {
-      ok: false,
-      retryAfterSeconds: Math.max(1, Math.ceil((bucket.resetAt - now) / 1000)),
-    };
-  }
-
-  bucket.count += 1;
+  charge(key, now);
+  charge(GLOBAL_KEY, now);
   return { ok: true, retryAfterSeconds: 0 };
 }
 
-/**
- * The ceiling's own bucket. Separate function so it reuses the same window
- * bookkeeping without recursing back through the guard above.
- */
-function rateLimitGlobal(): { ok: boolean; retryAfterSeconds: number } {
-  const now = Date.now();
-  const bucket = buckets.get(GLOBAL_KEY);
-
-  if (!bucket || bucket.resetAt <= now) {
-    buckets.set(GLOBAL_KEY, { count: 1, resetAt: now + WINDOW_MS });
+/** Whether `key` has room in its current window. Charges nothing. */
+function verdict(key: string, max: number, now: number): { ok: boolean; retryAfterSeconds: number } {
+  const bucket = buckets.get(key);
+  if (!bucket || bucket.resetAt <= now || bucket.count < max) {
     return { ok: true, retryAfterSeconds: 0 };
   }
+  return {
+    ok: false,
+    retryAfterSeconds: Math.max(1, Math.ceil((bucket.resetAt - now) / 1000)),
+  };
+}
 
-  if (bucket.count >= GLOBAL_MAX_PER_WINDOW) {
-    return {
-      ok: false,
-      retryAfterSeconds: Math.max(1, Math.ceil((bucket.resetAt - now) / 1000)),
-    };
+function charge(key: string, now: number) {
+  const bucket = buckets.get(key);
+  if (bucket && bucket.resetAt > now) {
+    bucket.count += 1;
+    return;
   }
-
-  bucket.count += 1;
-  return { ok: true, retryAfterSeconds: 0 };
+  buckets.set(key, { count: 1, resetAt: now + WINDOW_MS });
+  // Opportunistic sweep so the map cannot grow without bound.
+  if (buckets.size > 10_000) {
+    for (const [k, v] of buckets) if (v.resetAt <= now) buckets.delete(k);
+  }
 }
