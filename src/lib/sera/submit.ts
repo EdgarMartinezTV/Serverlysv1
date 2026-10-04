@@ -93,7 +93,24 @@ function confirmation(reference: string, notified: boolean): string {
  * visitor who reopens the widget and presses the button again all land on the
  * same request rather than three copies in the team's inbox.
  */
-export async function submitWorkflow(conversation: Conversation): Promise<SubmitOutcome> {
+export function submitWorkflow(conversation: Conversation): Promise<SubmitOutcome> {
+  /*
+   * ONE SUBMISSION AT A TIME PER CONVERSATION. The idempotency check below
+   * reads `stage`, but the stage only flips after two awaited writes, so a
+   * double tap used to pass the check twice and file two requests under two
+   * references. A second call while the first is in flight now shares its
+   * outcome — same reference, one email.
+   */
+  const pending = inProgress.get(conversation.id);
+  if (pending) return pending;
+  const run = fileWorkflow(conversation).finally(() => inProgress.delete(conversation.id));
+  inProgress.set(conversation.id, run);
+  return run;
+}
+
+const inProgress = new Map<string, Promise<SubmitOutcome>>();
+
+async function fileWorkflow(conversation: Conversation): Promise<SubmitOutcome> {
   const request = newRequestId();
   const record = conversation.workflow;
 
@@ -118,7 +135,7 @@ export async function submitWorkflow(conversation: Conversation): Promise<Submit
     return {
       ok: true,
       reference: record.reference,
-      notified: true,
+      notified: record.notified ?? true,
       view: toView(record),
       duplicate: true,
       message:
@@ -217,6 +234,7 @@ export async function submitWorkflow(conversation: Conversation): Promise<Submit
 
   record.reference = reference;
   record.submittedAt = Date.now();
+  record.notified = delivery.delivered;
   record.stage = "SUBMITTED";
   record.updatedAt = Date.now();
   conversation.submitted.push(reference);

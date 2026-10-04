@@ -410,6 +410,8 @@ export type WorkflowRecord = {
   /** Set once, at submission. Also the idempotency marker. */
   reference?: string;
   submittedAt?: number;
+  /** Whether the team was actually notified at submission, not just recorded. */
+  notified?: boolean;
 };
 
 /**
