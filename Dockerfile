@@ -46,4 +46,14 @@ RUN mkdir -p /app/.sera && chown nextjs:nodejs /app/.sera
 
 USER nextjs
 EXPOSE 3000
+
+# Swarm uses this twice. A container that stops answering is marked unhealthy
+# and replaced, even though its process is still alive. And on a deploy (the
+# service updates start-first), the new container must turn healthy before the
+# old one is stopped, so a build that boots but cannot serve never takes the
+# site down. Both the probe and the homepage must answer: the probe proves the
+# server is up, the homepage proves the build can render.
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+  CMD wget -q -O /dev/null http://127.0.0.1:3000/api/health \
+   && wget -q -O /dev/null http://127.0.0.1:3000/ || exit 1
 CMD ["node", "server.js"]
