@@ -772,7 +772,7 @@ export const socialLinks = [
  * pricing position is that it does not do that.
  */
 export const announcement = {
-  enabled: true,
+  enabled: false,
   version: "2026-09-callflow",
   badge: "New",
   title: "A voice agent that answers your phone",
