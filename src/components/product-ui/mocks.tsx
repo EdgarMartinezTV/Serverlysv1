@@ -108,7 +108,7 @@ export function HostingMock({ className }: { className?: string }) {
 export function DomainMock({ className }: { className?: string }) {
   const rows = [
     [".com", "$14.95", "available"],
-    [".co", "$29.95", "available"],
+    [".eu", "$9.95", "available"],
     [".io", "—", "not sold"],
     [".net", "$16.95", "available"],
     [".org", "$16.95", "taken"],

@@ -127,7 +127,7 @@ export function PricingTable({ only }: { only?: string } = {}) {
               </label>
             ))}
           </div>
-          <span className="text-small text-success">Save up to 25% annually</span>
+          <span className="text-small text-success">Save 37% on the standard rate</span>
         </fieldset>
       </div>
 

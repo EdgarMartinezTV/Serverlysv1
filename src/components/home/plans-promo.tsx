@@ -44,8 +44,8 @@ export function PlansPromo() {
           The offer, without the asterisk
         </h2>
         <p className="mt-5 text-body-lg text-fg-secondary">
-          Annual pricing, the renewal rate printed next to it, and 30 days to change
-          your mind.
+          One monthly price, the renewal rate printed next to it, and 30 days to
+          change your mind.
         </p>
       </Reveal>
 
