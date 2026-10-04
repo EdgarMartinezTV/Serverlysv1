@@ -29,7 +29,8 @@ export function resolveProvider(): DomainProvider | null {
 type Entry = { result: DomainResult; expiresAt: number };
 
 const cache = new Map<string, Entry>();
-const inFlight = new Map<string, Promise<DomainResult>>();
+/** Null: that lookup was cancelled by its caller and is not an answer to share. */
+const inFlight = new Map<string, Promise<DomainResult | null>>();
 const MAX_CACHE = 5000;
 
 /** Available names get a short TTL — they can be taken at any moment. */
@@ -89,16 +90,20 @@ export async function checkDomains(
     }
     const pending = inFlight.get(key);
     if (pending) {
-      // Someone else is already asking upstream for this exact domain.
-      results.set(domain, await pending);
-      continue;
+      // Someone else is already asking upstream for this exact domain. Null
+      // means their request was cancelled, so its answer is not one to share.
+      const shared = await pending;
+      if (shared) {
+        results.set(domain, shared);
+        continue;
+      }
     }
     misses.push(domain);
   }
 
   if (misses.length > 0) {
-    let settle: (batch: DomainResult[]) => void = () => {};
-    const batchPromise = new Promise<DomainResult[]>((r) => {
+    let settle: (batch: DomainResult[] | null) => void = () => {};
+    const batchPromise = new Promise<DomainResult[] | null>((r) => {
       settle = r;
     });
 
@@ -106,30 +111,39 @@ export async function checkDomains(
       const key = cacheKey(provider.name, domain);
       inFlight.set(
         key,
-        batchPromise.then(
-          (batch) =>
-            batch.find((r) => r.domain === domain) ?? {
-              domain,
-              sld: domain,
-              tld: "",
-              status: "unknown" as const,
-              price: null,
-              source: provider.name,
-              reason: "No answer for this name.",
-            },
+        batchPromise.then((batch) =>
+          batch === null
+            ? null
+            : (batch.find((r) => r.domain === domain) ?? {
+                domain,
+                sld: domain,
+                tld: "",
+                status: "unknown" as const,
+                price: null,
+                source: provider.name,
+                reason: "No answer for this name.",
+              }),
         ),
       );
     }
 
     try {
       const fresh = await provider.check(misses, signal);
-      settle(fresh);
+      /*
+       * Providers report a cancelled fetch as an "unknown" row rather than
+       * throwing. When the cancellation was this caller's (they navigated away,
+       * or the overall timeout fired), those rows describe their request, not
+       * the domain: caching them, or handing them to anyone waiting on the same
+       * lookup, would show strangers "did not respond" for 30 seconds.
+       */
+      const cancelled = signal.aborted;
+      settle(cancelled ? null : fresh);
       for (const result of fresh) {
-        writeCache(cacheKey(provider.name, result.domain), result);
+        if (!cancelled) writeCache(cacheKey(provider.name, result.domain), result);
         results.set(result.domain, result);
       }
     } catch (err) {
-      settle([]);
+      settle(null);
       throw err;
     } finally {
       for (const domain of misses) inFlight.delete(cacheKey(provider.name, domain));
@@ -202,7 +216,10 @@ export function clientKey(request: Request, scope: string): string {
   const forwarded = request.headers.get("x-forwarded-for");
   if (!forwarded) return anonymous;
 
-  const hops = forwarded.split(",").map((h) => h.trim()).filter(Boolean);
+  const hops = forwarded
+    .split(",")
+    .map((h) => h.trim())
+    .filter(Boolean);
   // Count from the right: 1 hop => the last entry, 2 => the one before it.
   const index = hops.length - source.hops;
   if (index < 0) return anonymous;
@@ -255,7 +272,11 @@ export function rateLimit(key: string): { ok: boolean; retryAfterSeconds: number
 }
 
 /** Whether `key` has room in its current window. Charges nothing. */
-function verdict(key: string, max: number, now: number): { ok: boolean; retryAfterSeconds: number } {
+function verdict(
+  key: string,
+  max: number,
+  now: number,
+): { ok: boolean; retryAfterSeconds: number } {
   const bucket = buckets.get(key);
   if (!bucket || bucket.resetAt <= now || bucket.count < max) {
     return { ok: true, retryAfterSeconds: 0 };
