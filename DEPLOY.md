@@ -92,6 +92,13 @@ Environment:
 | `PORT` | `3000` | Must match the exposed port |
 | `HOSTNAME` | `0.0.0.0` | Standalone binds localhost otherwise, and the proxy cannot reach it |
 
+**Mount a volume at `/app/.sera`.** Sera writes every submitted request to
+`/app/.sera/requests.jsonl` before it tries to notify anyone. That file is the
+record of last resort — if no notification channel is configured or delivery
+fails, it is the only copy — and without a volume it is wiped on every
+redeploy. To use another path, set `SERA_REQUEST_LOG` (it must be writable by
+the container's `nextjs` user, uid 1001).
+
 ## Hardening
 
 ### The origin must be reachable only through the proxy
@@ -169,6 +176,7 @@ the number above — size them deliberately before scaling out, and set
 - [ ] Port 3000 NOT publicly reachable (see Hardening) — verified with `nmap` from outside
 - [ ] Rate-limit forgery check run against staging (see Hardening)
 - [ ] `public/` and `.next/static` present in the image
+- [ ] Volume mounted at `/app/.sera` (Sera's request log) and writable by uid 1001
 - [ ] Redirects mapped for any legacy URL whose path changed
 - [ ] `https://serverlys.com/sitemap.xml` and `robots.txt` served
 - [ ] Reversed/white Serverlys logo supplied (see DESIGN_SYSTEM.md) — footer currently

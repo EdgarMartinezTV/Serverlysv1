@@ -34,6 +34,11 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+# Sera's local lead log (lib/sera/notify/store.ts) writes to /app/.sera.
+# /app belongs to root, so without this the non-root user cannot create it and
+# every lead write fails. Mount a volume here to keep the log across deploys.
+RUN mkdir -p /app/.sera && chown nextjs:nodejs /app/.sera
+
 USER nextjs
 EXPOSE 3000
 CMD ["node", "server.js"]
