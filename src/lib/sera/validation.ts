@@ -266,7 +266,11 @@ export function safeNavigationOutcome(
   if (!raw || typeof raw !== "object") return undefined;
   const value = raw as { label?: unknown; accepted?: unknown };
   if (typeof value.accepted !== "boolean") return undefined;
-  const label = typeof value.label === "string" ? clean(value.label).slice(0, 120) : "";
+  // Quotes are stripped because the label is quoted inside the developer
+  // context block; one that carried its own `"` could close that quote early
+  // and continue as text the model reads at developer authority.
+  const label =
+    typeof value.label === "string" ? clean(value.label.replace(/["“”`]/g, "")).slice(0, 120) : "";
   if (!label) return undefined;
   return { label, accepted: value.accepted };
 }
