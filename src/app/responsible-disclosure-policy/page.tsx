@@ -31,7 +31,7 @@ const PATH = "/responsible-disclosure-policy";
 export const metadata = pageMetadata({
   title: "Responsible Disclosure Policy | Serverlys",
   description:
-    "How to report a security vulnerability to Serverlys: what is in scope, what is not, how we respond, and our undertaking not to pursue researchers who follow this policy.",
+    "How to report a vulnerability to Serverlys: what is in scope, how we respond, and our undertaking not to pursue researchers who follow this policy.",
   path: PATH,
 });
 

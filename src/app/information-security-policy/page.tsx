@@ -30,7 +30,7 @@ const PATH = "/information-security-policy";
 export const metadata = pageMetadata({
   title: "Information Security Policy | Serverlys",
   description:
-    "The security controls Serverlys operates — access, encryption, backups, logging and patching — what we commit to when one fails, and the certifications we do not hold.",
+    "Serverlys security controls — access, encryption, backups, logging, patching — what we commit to when one fails, and the certifications we do not hold.",
   path: PATH,
 });
 

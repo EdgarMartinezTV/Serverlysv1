@@ -34,7 +34,7 @@ const PATH = "/ai-services-terms";
 export const metadata = pageMetadata({
   title: "AI Services Terms — ConvoAI and CallFlow | Serverlys",
   description:
-    "Terms for the Serverlys AI services: who owns the conversations, what the models are not trained on, call recording consent, and what an automated agent must never be relied on to do.",
+    "Serverlys AI services terms: who owns conversations, what models are not trained on, call recording consent, and what an AI agent must never be relied on for.",
   path: PATH,
 });
 
