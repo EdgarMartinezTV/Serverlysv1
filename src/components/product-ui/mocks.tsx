@@ -366,7 +366,7 @@ export function SeoMock({ className }: { className?: string }) {
                     <span
                       className={cn(
                         "tabular rounded px-1.5 py-0.5 text-ui font-medium",
-                        up ? "bg-success-soft text-success" : "bg-canvas-inset text-fg-muted",
+                        up ? "bg-success-soft text-success" : "bg-canvas-inset text-fg-secondary",
                       )}
                     >
                       {delta}

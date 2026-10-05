@@ -130,7 +130,7 @@ export function ContentSwitch({
                         : "bg-primary-soft text-primary"
                       : dark
                         ? "bg-white/8 text-fg-on-dark-muted"
-                        : "bg-canvas-inset text-fg-muted",
+                        : "bg-canvas-inset text-fg-secondary",
                   )}
                 >
                   <NavIcon name={item.icon} />

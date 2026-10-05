@@ -160,15 +160,15 @@ runs; desktop = 1 run (desktop is stable at 99–100).
 | `/managed-hosting` | 92 | 3.29 s | 74 ms | 0 | 100 | 100 | 100 | 100 |
 | `/pricing` | 92 | 3.35 s | 65 ms | 0 | 100 | 100 | 100 | 100 |
 | `/domain-name` | 89 (was **0**) | 3.79 s | 64 ms | 0 | 99 (was **0**) | 100 | 100 | 100 |
-| `/ai-agents` | 93 | 3.24 s | 53 ms | 0 | — | 100 | 100 | 100 |
-| `/website-development` | 90 | 3.53 s | 69 ms | 0 | — | 100 (was 96) | 100 | 100 |
-| `/seo` | 86 | 4.10 s | 68 ms | 0 | — | 100 | 100 | 100 |
-| `/blog` | 92 | 3.28 s | 71 ms | 0 | — | 100 | 100 | 100 |
-| `/blog/core-web-vitals-for-small-sites` | 93 | 3.23 s | 48 ms | 0 | — | 100 | 100 | 100 |
+| `/ai-agents` | 93 | 3.24 s | 53 ms | 0 | 100 | 100 | 100 | 100 |
+| `/website-development` | 90 | 3.53 s | 69 ms | 0 | 100 | 100 (was 96) | 100 | 100 |
+| `/seo` | 86 | 4.10 s | 68 ms | 0 | 99 | 100 | 100 | 100 |
+| `/blog` | 92 | 3.28 s | 71 ms | 0 | 100 | 100 | 100 | 100 |
+| `/blog/core-web-vitals-for-small-sites` | 93 | 3.23 s | 48 ms | 0 | 100 | 100 | 100 | 100 |
 
-Desktop "—" = final pass still running at commit time; the baseline pass on
-the same routes scored 99–100. Desktop accessibility: `/pricing` 90 → 100,
-`/hosting` 97 → 100.
+Desktop accessibility: `/pricing` 90 → 100, `/hosting` 97 → 100, `/seo`
+96 → 100 (the final pass caught one more muted-on-inset contrast pair; all
+five remaining instances of that pattern were fixed together).
 
 **Accessibility, Best Practices and SEO: 100 on every route measured, both
 form factors** (SEO on a production-configured build; staging stays 69 by

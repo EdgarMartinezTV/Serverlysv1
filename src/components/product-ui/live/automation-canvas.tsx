@@ -162,7 +162,7 @@ export function AutomationCanvas({
             "rounded-full px-2 py-0.5 text-ui font-semibold",
             dark
               ? "bg-white/8 text-fg-on-dark-secondary"
-              : "bg-canvas-inset text-fg-muted",
+              : "bg-canvas-inset text-fg-secondary",
           )}
         >
           n8n

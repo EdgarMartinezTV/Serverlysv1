@@ -432,7 +432,7 @@ function ManageShowcase() {
                     "flex h-6 w-6 shrink-0 items-center justify-center rounded-full",
                     done
                       ? "bg-success-fill text-white"
-                      : "bg-canvas-inset text-fg-muted",
+                      : "bg-canvas-inset text-fg-secondary",
                   )}
                 >
                   {done ? (

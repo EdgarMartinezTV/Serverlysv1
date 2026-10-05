@@ -245,7 +245,7 @@ export function MigrationPanel({ className }: { className?: string }) {
               <span
                 className={cn(
                   "flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full",
-                  done ? "bg-success-fill text-white" : "bg-canvas-inset text-fg-muted",
+                  done ? "bg-success-fill text-white" : "bg-canvas-inset text-fg-secondary",
                 )}
               >
                 {done ? (
