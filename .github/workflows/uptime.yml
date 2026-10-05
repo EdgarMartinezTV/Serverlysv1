@@ -12,8 +12,7 @@ on:
   workflow_dispatch:
 
 env:
-  # Switch to https://serverlys.com at DNS cutover.
-  SITE: https://webhosting-serverlys.rf90qw.easypanel.host
+  SITE: https://serverlys.com
 
 jobs:
   check:
