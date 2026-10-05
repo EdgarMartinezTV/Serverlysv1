@@ -206,12 +206,18 @@ export function organizationGraph() {
   };
 }
 
-/** FAQPage graph. Only emit on pages that visibly render these same Q&As. */
-export function faqGraph(items: readonly Faq[]) {
+/**
+ * FAQPage graph. Only emit on pages that visibly render these same Q&As.
+ *
+ * `path` keys the @id to the page. It used to be a fixed `/#faq`, so thirty
+ * pages each declared different content under ONE node id, and a crawler
+ * merging the graph by @id sees those as a single contradictory FAQPage.
+ */
+export function faqGraph(items: readonly Faq[], path = "/") {
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "@id": `${company.url}/#faq`,
+    "@id": path === "/" ? `${company.url}/#faq` : `${canonical(path)}#faq`,
     isPartOf: { "@id": SITE_ID },
     publisher: { "@id": ORG_ID },
     mainEntity: items.map((f) => ({
@@ -240,6 +246,7 @@ export function productGraph({
   highPrice,
   offerCount,
   currency = "USD",
+  category = "Web Hosting",
 }: {
   name: string;
   description: string;
@@ -255,6 +262,8 @@ export function productGraph({
    */
   offerCount: number;
   currency?: string;
+  /** Schema.org product category. Domains are not "Web Hosting". */
+  category?: string;
 }) {
   const url = canonical(path);
   return {
@@ -265,7 +274,7 @@ export function productGraph({
     description,
     url,
     brand: { "@id": ORG_ID },
-    category: "Web Hosting",
+    category,
     offers: {
       "@type": "AggregateOffer",
       priceCurrency: currency,

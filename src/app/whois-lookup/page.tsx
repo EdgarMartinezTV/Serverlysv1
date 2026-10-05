@@ -69,7 +69,7 @@ export default function WhoisLookupPage() {
   return (
     /** globals.css balances headings; the reference wraps normally. */
     <div className="[&_h1]:text-wrap [&_h2]:text-wrap [&_h3]:text-wrap [&_p]:text-wrap">
-      <JsonLd data={faqGraph(FAQS)} />
+      <JsonLd data={faqGraph(FAQS, "/whois-lookup")} />
 
       <DomainHero copy={HERO} tool={<WhoisLookup />} />
       <Reasons copy={REASONS} />

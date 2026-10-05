@@ -37,7 +37,7 @@ export default function ConvoAiPage() {
           path: PATH,
         })}
       />
-      <JsonLd data={faqGraph(faqs)} />
+      <JsonLd data={faqGraph(faqs, "/convoai")} />
 
       <ProductHero
         eyebrow="ConvoAI"

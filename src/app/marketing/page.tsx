@@ -33,7 +33,7 @@ export default function MarketingPage() {
           path: PATH,
         })}
       />
-      <JsonLd data={faqGraph(faqs)} />
+      <JsonLd data={faqGraph(faqs, "/marketing")} />
       <ProductHero
         eyebrow="Marketing"
         title="Judged on enquiries, not impressions"

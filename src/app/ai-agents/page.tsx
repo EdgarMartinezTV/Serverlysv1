@@ -34,7 +34,7 @@ export default function AiAgentsPage() {
           path: PATH,
         })}
       />
-      <JsonLd data={faqGraph(faqs)} />
+      <JsonLd data={faqGraph(faqs, "/ai-agents")} />
 
       <ProductHero
         eyebrow="AI agents"

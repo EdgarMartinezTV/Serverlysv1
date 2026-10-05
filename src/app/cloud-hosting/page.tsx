@@ -102,7 +102,7 @@ export default function CloudHostingPage() {
           offerCount: CLOUD_RATES.length,
         })}
       />
-      <JsonLd data={faqGraph(FAQ_TEXT)} />
+      <JsonLd data={faqGraph(FAQ_TEXT, "/cloud-hosting")} />
 
       <Hero />
       {/* The wrapper bounds the sticky on-page nav: it stops after the FAQ. */}

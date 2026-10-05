@@ -33,7 +33,7 @@ export default function SeoPage() {
           path: PATH,
         })}
       />
-      <JsonLd data={faqGraph(faqs)} />
+      <JsonLd data={faqGraph(faqs, "/seo")} />
       <ProductHero
         eyebrow="SEO"
         title="Rank for the searches that end in an order"

@@ -7,7 +7,7 @@ import { FinalCta } from "@/components/sections/final-cta";
 import { JsonLd } from "@/components/ui/json-ld";
 import { ResponsibilityMock } from "@/components/product-ui/infra";
 import { UptimePanel } from "@/components/product-ui/panels";
-import { pageMetadata, faqGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph, serviceGraph } from "@/lib/seo";
 import type { Faq } from "@/data/faqs";
 import { billing } from "@/data/company";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
@@ -62,7 +62,15 @@ const FAQS: readonly Faq[] = [
 export default function ManagedHostingPage() {
   return (
     <>
-      <JsonLd data={faqGraph(FAQS)} />
+      <JsonLd data={faqGraph(FAQS, "/managed-hosting")} />
+      <JsonLd
+        data={serviceGraph({
+          name: "Serverlys Managed Hosting",
+          serviceType: "Managed web hosting",
+          description: String(metadata.description ?? ""),
+          path: PATH,
+        })}
+      />
 
       <ProductHero
         eyebrow="Managed hosting"

@@ -86,7 +86,7 @@ export default function EcommerceHostingPage() {
           offerCount: RATES.length,
         })}
       />
-      <JsonLd data={faqGraph(FAQ_TEXT)} />
+      <JsonLd data={faqGraph(FAQ_TEXT, "/ecommerce-hosting")} />
 
       <Hero />
       {/* The wrapper bounds the sticky pill nav: it stops after the FAQ. */}

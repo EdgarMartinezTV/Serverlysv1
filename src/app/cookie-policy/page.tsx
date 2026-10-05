@@ -2,6 +2,9 @@ import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { pageMetadata } from "@/lib/seo";
 import { publicEnv } from "@/lib/env";
+import { analyticsDisclosures } from "@/lib/analytics/config";
+
+const ANALYTICS_ITEMS = analyticsDisclosures(publicEnv.analytics);
 
 /**
  * Cookie policy.
@@ -14,7 +17,7 @@ import { publicEnv } from "@/lib/env";
  * ⚠ DESCRIBES WHAT THE SITE ACTUALLY SETS. The consent implementation in
  * components/consent/ stores a preference and nothing else by default, and the
  * site ships no advertising cookie, and an analytics cookie only when a GA4 ID
- * resolves (lib/analytics-id.ts — on by default for the serverlys.com build). Do not add
+ * resolves (lib/analytics/config.ts — off unless the build sets its IDs). Do not add
  * a vendor to this page speculatively, and do not ship a tracker without
  * adding it here.
  */
@@ -75,12 +78,13 @@ const SECTIONS: readonly LegalSection[] = [
         type: "p",
         text: "If analytics is enabled on the site, it is loaded only after you accept, and rejecting means it is never loaded at all — not loaded-and-told-not-to-record. If you accepted and change your mind, rejecting stops future collection.",
       },
-      ...(publicEnv.analyticsId
+      ...(ANALYTICS_ITEMS.length
         ? [
             {
               type: "p" as const,
-              text: "The analytics we use is Google Analytics 4. Once you accept, it sets a _ga cookie and a _ga_ cookie for this site's property, which expire after 2 years, and sends Google which pages you view, how you arrived and your general location. Google's advertising features are switched off. Rejecting later stops collection immediately and deletes those cookies.",
+              text: "Once you accept analytics, these are loaded. They record which pages you view, what you click, how you arrived and your general location — never your name, email, phone number, password or billing details. Google's advertising features are switched off. Rejecting later stops collection immediately and deletes their cookies on this site.",
             },
+            { type: "ul" as const, items: ANALYTICS_ITEMS },
           ]
         : []),
       {

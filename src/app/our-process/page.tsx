@@ -102,7 +102,7 @@ const FAQS: readonly Faq[] = [
 export default function OurProcessPage() {
   return (
     <>
-      <JsonLd data={faqGraph(FAQS)} />
+      <JsonLd data={faqGraph(FAQS, "/our-process")} />
 
       <PageHero
         trail={[

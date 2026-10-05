@@ -1,16 +1,14 @@
 import { hasConsent } from "@/lib/consent";
+import { track as trackSite, type AnalyticsEvent } from "@/lib/analytics";
 
 /**
  * Sera's analytics seam.
  *
- * NO ANALYTICS PLATFORM IS INSTALLED ON THIS SITE, and this does not install
- * one. `data/../cookie-policy` states plainly that nothing in the analytics
- * category is running, and `lib/consent` exists to keep that promise. Shipping
- * a vendor script alongside an assistant would quietly make that page wrong.
- *
- * What this does instead is define the EVENTS, so that the day a platform is
- * connected it is a single `forward` implementation rather than thirty call
- * sites sprinkled through the widget. Until then:
+ * Site analytics (GTM / GA4 / Clarity) lives in lib/analytics and loads only
+ * after consent. Sera's own fine-grained events are NOT mirrored there — a
+ * stream of phase and highlight events would bury the business events in GA.
+ * The one that matters, a filed request, is translated into the site's lead
+ * events by `forwardLead()` below. Everything else:
  *
  *  · every event is dispatched as a DOM CustomEvent on `window`, which stays
  *    in the page and touches no network — useful for debugging and for a
@@ -105,6 +103,8 @@ export function track(event: SeraEventName, props?: SeraEventProps): void {
    */
   window.dispatchEvent(new CustomEvent(SERA_EVENT, { detail: { event, props } }));
 
+  if (event === "sera_lead_completed") forwardLead(props);
+
   /*
    * A registered sink is assumed to be a real analytics integration — i.e. it
    * may send data somewhere — so it is gated on consent. `hasConsent` reads
@@ -117,4 +117,26 @@ export function track(event: SeraEventName, props?: SeraEventProps): void {
   } catch {
     // An analytics sink must never be able to break the conversation.
   }
+}
+
+/**
+ * Which site-level lead event each Sera workflow counts as. Every filed
+ * request is a `generate_lead`; these add the service-specific one. Only the
+ * workflow id is sent — never anything the visitor typed into the request.
+ */
+const SERVICE_LEAD: Partial<Record<string, AnalyticsEvent>> = {
+  WEBSITE_DEVELOPMENT: "web_development_lead",
+  WEBSITE_MAINTENANCE: "web_development_lead",
+  SEO: "seo_service_lead",
+  AI_AGENT: "ai_agent_lead",
+  CHATBOT: "ai_agent_lead",
+  AUTOMATION: "ai_agent_lead",
+};
+
+function forwardLead(props?: SeraEventProps): void {
+  const workflow = typeof props?.workflow === "string" ? props.workflow : "UNKNOWN";
+  const params = { lead_source: "sera", lead_type: workflow.toLowerCase() };
+  trackSite("generate_lead", params);
+  const service = SERVICE_LEAD[workflow];
+  if (service) trackSite(service, params);
 }

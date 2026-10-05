@@ -73,7 +73,7 @@ export default function SiteManagementPage() {
           path: PATH,
         })}
       />
-      <JsonLd data={faqGraph(FAQS)} />
+      <JsonLd data={faqGraph(FAQS, "/site-management")} />
 
       <ProductHero
         eyebrow="Site management"

@@ -55,6 +55,5 @@ export default function robots(): MetadataRoute.Robots {
     // `Sitemap:` directive means one specific thing — a crawler that fetches a
     // markdown file expecting sitemap XML has been given a broken instruction.
     sitemap: canonical("/sitemap.xml"),
-    host: canonical("/"),
   };
 }

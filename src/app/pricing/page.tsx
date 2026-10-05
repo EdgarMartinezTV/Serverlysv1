@@ -95,7 +95,7 @@ export default function PricingPage() {
           offerCount: RATES.length,
         })}
       />
-      <JsonLd data={faqGraph(FAQ_TEXT)} />
+      <JsonLd data={faqGraph(FAQ_TEXT, "/pricing")} />
 
       {/* Dark hero. The category pills live inside it, as on the reference,
           which is why <Plans> renders both the pills and the panel below. */}

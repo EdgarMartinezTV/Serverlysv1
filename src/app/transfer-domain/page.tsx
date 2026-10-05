@@ -72,7 +72,7 @@ export default function TransferDomainPage() {
   return (
     /** globals.css balances headings; the reference wraps normally. */
     <div className="[&_h1]:text-wrap [&_h2]:text-wrap [&_h3]:text-wrap [&_p]:text-wrap">
-      <JsonLd data={faqGraph(FAQ_TEXT)} />
+      <JsonLd data={faqGraph(FAQ_TEXT, "/transfer-domain")} />
 
       <DomainHero copy={HERO} tool={<DomainSearchApp />} />
       <Reasons copy={REASONS} />

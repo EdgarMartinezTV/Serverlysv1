@@ -73,9 +73,10 @@ export default function DomainNamePage() {
           lowPrice: Math.min(...PRICES),
           highPrice: Math.max(...PRICES),
           offerCount: PRICES.length,
+          category: "Domain Registration",
         })}
       />
-      <JsonLd data={faqGraph(FAQ_TEXT)} />
+      <JsonLd data={faqGraph(FAQ_TEXT, "/domain-name")} />
 
       <DomainHero copy={HERO} tool={<DomainSearchApp />} />
       <Reasons copy={REASONS} />

@@ -33,7 +33,7 @@ export default function SocialMediaPage() {
           path: PATH,
         })}
       />
-      <JsonLd data={faqGraph(faqs)} />
+      <JsonLd data={faqGraph(faqs, "/social-media")} />
       <ProductHero
         eyebrow="Social media"
         title="Show up without it eating your week"

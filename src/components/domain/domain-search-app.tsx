@@ -49,6 +49,7 @@ import type { CheckError, DomainResult } from "@/lib/domains/types";
 import { tlds } from "@/data/tlds";
 import { billing } from "@/data/company";
 import { cn } from "@/lib/utils";
+import { track } from "@/lib/analytics";
 
 type Phase =
   | { kind: "idle" }
@@ -210,6 +211,15 @@ export function DomainSearchApp() {
 
       if (outcome.ok) {
         setPhase({ kind: "results", query, results: outcome.data.results, source: outcome.data.source });
+        // The extension and the outcome, never the name itself — a domain
+        // someone is checking can be their own name or an unannounced brand.
+        const exact = outcome.data.results[0];
+        track("domain_search", {
+          search_tld: exact?.tld,
+          availability: exact?.status,
+          result_count: outcome.data.results.length,
+          source: outcome.data.source,
+        });
         // Shareable: the address bar now opens straight onto these results.
         window.history.replaceState(null, "", `?domain=${encodeURIComponent(query)}${window.location.hash}`);
         recentStore.set(recentSearches.add(query));

@@ -6,7 +6,7 @@
  * are read lazily so a missing optional variable never breaks the build.
  */
 
-import { resolveAnalyticsId } from "./analytics-id";
+import { resolveAnalytics } from "./analytics/config";
 
 /**
  * The brand's permanent public origin. The ONLY place this literal is allowed
@@ -49,12 +49,16 @@ export const publicEnv = {
     (process.env.NEXT_PUBLIC_ALLOW_INDEXING !== "false" &&
       siteUrl === PRODUCTION_ORIGIN),
   /**
-   * GA4 measurement ID, or undefined when analytics is off for this build.
-   * See lib/analytics-id.ts for how it resolves. Even when set, nothing loads
-   * until the visitor accepts the analytics category.
+   * GTM / GA4 / Clarity IDs this build loads — empty when analytics is off.
+   * See lib/analytics/config.ts for how they resolve. Even when set, nothing
+   * loads until the visitor accepts the analytics category. Each variable is
+   * named in full so Next inlines it at build time.
    */
-  analyticsId: resolveAnalyticsId({
-    NEXT_PUBLIC_ANALYTICS_ID: process.env.NEXT_PUBLIC_ANALYTICS_ID,
+  analytics: resolveAnalytics({
+    NEXT_PUBLIC_ANALYTICS_ENABLED: process.env.NEXT_PUBLIC_ANALYTICS_ENABLED,
+    NEXT_PUBLIC_GTM_ID: process.env.NEXT_PUBLIC_GTM_ID,
+    NEXT_PUBLIC_GA_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
+    NEXT_PUBLIC_CLARITY_PROJECT_ID: process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID,
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
     NODE_ENV: process.env.NODE_ENV,
   }),
@@ -80,8 +84,10 @@ export const publicEnv = {
  * ownership of the production property.
  */
 export const verification = {
-  google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
-  bing: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION,
+  // `|| undefined`: the Dockerfile passes unset build args through as "",
+  // and an empty token must emit no tag, not an empty one.
+  google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim() || undefined,
+  bing: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION?.trim() || undefined,
 } as const;
 
 /**

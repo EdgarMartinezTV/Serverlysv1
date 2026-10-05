@@ -63,6 +63,7 @@ export default function WebsiteDevelopmentPage() {
            are page-local, so the scope is this path and nothing else. */
         data={faqGraph(
           FAQS.items.map((f) => ({ question: f.q, answer: f.a, scopes: [PATH] })),
+          PATH,
         )}
       />
 

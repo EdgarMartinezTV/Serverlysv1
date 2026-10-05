@@ -37,7 +37,7 @@ export default function CallFlowPage() {
           path: PATH,
         })}
       />
-      <JsonLd data={faqGraph(faqs)} />
+      <JsonLd data={faqGraph(faqs, "/callflow-ai")} />
 
       <ProductHero
         eyebrow="CallFlow"

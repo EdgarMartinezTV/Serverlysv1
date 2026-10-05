@@ -129,7 +129,7 @@ const FAQS: readonly Faq[] = [
 export default function HostingAlternativesPage() {
   return (
     <>
-      <JsonLd data={faqGraph(FAQS)} />
+      <JsonLd data={faqGraph(FAQS, "/hosting-alternatives")} />
 
       {/* Hero: light, copy left, a coded tier picker right (2026-10-03). */}
       <section className="relative isolate overflow-hidden bg-canvas">

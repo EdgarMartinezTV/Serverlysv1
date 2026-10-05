@@ -51,7 +51,7 @@ export default function FaqPage() {
 
   return (
     <>
-      <JsonLd data={faqGraph(faqs)} />
+      <JsonLd data={faqGraph(faqs, "/faq")} />
 
       <PageHero
         center

@@ -7,7 +7,8 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { SiteHeader } from "@/components/navigation/site-header";
 import { AnnouncementBar } from "@/components/navigation/announcement-bar";
 import { CookieConsent } from "@/components/consent/cookie-consent";
-import { GoogleAnalytics } from "@/components/analytics/google-analytics";
+import { Analytics } from "@/components/analytics/analytics";
+import { analyticsDisclosures, vendorNames } from "@/lib/analytics/config";
 import { SeraRoot } from "@/components/sera/sera-root";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { announcement } from "@/data/navigation";
@@ -170,9 +171,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             {children}
           </main>
           <SiteFooter />
-          <CookieConsent analyticsEnabled={Boolean(publicEnv.analyticsId)} />
-          {/* Renders nothing; loads GA4 only after an analytics Accept. */}
-          {publicEnv.analyticsId && <GoogleAnalytics id={publicEnv.analyticsId} />}
+          <CookieConsent
+            analyticsVendors={vendorNames(publicEnv.analytics)}
+            analyticsItems={analyticsDisclosures(publicEnv.analytics)}
+          />
+          {/* Renders nothing. GTM / GA4 / Clarity load only after an analytics
+              Accept; page views, events and WHMCS attribution start here. */}
+          <Analytics config={publicEnv.analytics} />
         </SeraRoot>
       </body>
     </html>

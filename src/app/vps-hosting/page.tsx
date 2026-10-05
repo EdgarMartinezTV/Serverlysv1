@@ -8,7 +8,7 @@ import { ShowcaseSplit } from "@/components/sections/showcase-split";
 import { JsonLd } from "@/components/ui/json-ld";
 import { TerminalMock, ResponsibilityMock } from "@/components/product-ui/infra";
 import { billing } from "@/data/company";
-import { pageMetadata, faqGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph, serviceGraph } from "@/lib/seo";
 import type { Faq } from "@/data/faqs";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { breadcrumbTrail } from "@/data/routes";
@@ -61,7 +61,15 @@ const FAQS: readonly Faq[] = [
 export default function VpsHostingPage() {
   return (
     <>
-      <JsonLd data={faqGraph(FAQS)} />
+      <JsonLd data={faqGraph(FAQS, "/vps-hosting")} />
+      <JsonLd
+        data={serviceGraph({
+          name: "Serverlys VPS Hosting",
+          serviceType: "Virtual private server hosting",
+          description: String(metadata.description ?? ""),
+          path: PATH,
+        })}
+      />
 
       <ProductHero
         eyebrow="VPS hosting · coming soon"

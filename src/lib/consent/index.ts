@@ -3,8 +3,9 @@
  *
  * ⚠ READ THIS BEFORE CHANGING THE COPY.
  *
- * Update 2026-10-05: Google Analytics 4 is installed (components/analytics),
- * behind hasConsent("analytics") — it never loads before an Accept. Everything
+ * Update 2026-10-05: GTM / GA4 / Microsoft Clarity can be installed
+ * (components/analytics, lib/analytics), each behind hasConsent("analytics")
+ * — none loads before an Accept, and only the ones the build configures. Everything
  * below about the ORIGINAL state still explains why the copy is worded as it is.
  *
  * As of 2026-09-11 this site sets NO cookies and loads NO third-party
@@ -35,8 +36,8 @@ export type ConsentState = Record<ConsentCategory, boolean>;
  * What is actually installed, per category.
  *
  * Marketing is EMPTY. Analytics is empty here too, because whether it is in
- * use depends on the build (lib/analytics-id.ts): `trackersFor()` adds GA4
- * when a measurement ID is configured. The settings panel reads the result and
+ * use depends on the build (lib/analytics/config.ts): `trackersFor()` adds
+ * each configured vendor via analyticsDisclosures(). The settings panel reads the result and
  * says "nothing in this category is in use" rather than implying otherwise.
  * Never leave a vendor out of this list — it is what the user is shown.
  */
@@ -51,12 +52,10 @@ export const TRACKERS: Record<ConsentCategory, readonly string[]> = {
   marketing: [],
 };
 
-/** What the visitor is shown for the analytics category when GA4 is on. */
-export const GA4_TRACKER =
-  "Google Analytics 4 (_ga and _ga_* cookies, which expire after 2 years)";
-
-export function trackersFor(analyticsEnabled: boolean): Record<ConsentCategory, readonly string[]> {
-  return analyticsEnabled ? { ...TRACKERS, analytics: [GA4_TRACKER] } : TRACKERS;
+export function trackersFor(
+  analytics: readonly string[],
+): Record<ConsentCategory, readonly string[]> {
+  return analytics.length ? { ...TRACKERS, analytics } : TRACKERS;
 }
 
 /**
@@ -64,7 +63,7 @@ export function trackersFor(analyticsEnabled: boolean): Record<ConsentCategory, 
  * an old description is not consent to a new one, and a stored "accept all"
  * must not silently carry over to a vendor added later.
  */
-// 2026-10-05: Google Analytics 4 added to the analytics category.
+// 2026-10-05: analytics vendors (GTM, GA4, Clarity) added to the analytics category.
 export const CONSENT_VERSION = "2026-10-05";
 export const CONSENT_KEY = `serverlys.consent.${CONSENT_VERSION}`;
 

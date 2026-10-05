@@ -61,8 +61,17 @@ const CATEGORY_COPY: Record<
   },
 };
 
-export function CookieConsent({ analyticsEnabled }: { analyticsEnabled: boolean }) {
-  const trackers = trackersFor(analyticsEnabled);
+export function CookieConsent({
+  analyticsVendors,
+  analyticsItems,
+}: {
+  /** Vendor names this build loads, e.g. ["Google Analytics", "Microsoft Clarity"]. */
+  analyticsVendors: readonly string[];
+  /** Line items for the settings panel — lib/analytics/config.ts. */
+  analyticsItems: readonly string[];
+}) {
+  const analyticsEnabled = analyticsVendors.length > 0;
+  const trackers = trackersFor(analyticsItems);
   /**
    * Whether a choice exists is EXTERNAL state (localStorage), so it is read
    * through useSyncExternalStore rather than copied into state inside an
@@ -161,7 +170,7 @@ export function CookieConsent({ analyticsEnabled }: { analyticsEnabled: boolean 
               <h2 className="text-body font-semibold text-fg">Your privacy</h2>
               <p className="mt-1.5 text-small text-fg-secondary">
                 {analyticsEnabled
-                  ? "We store what the site needs to work, like a notice you closed or your domain shortlist. With your OK we also use Google Analytics to see which pages help people. No advertising cookies."
+                  ? `We store what the site needs to work, like a notice you closed or your domain shortlist. With your OK we also use ${analyticsVendors.join(" and ")} to see which pages help people. No advertising cookies.`
                   : "We store only what the site needs to work, like a notice you closed or your domain shortlist. No advertising or analytics cookies, and no third-party trackers."}{" "}
                 <Link
                   href="/privacy-policy#cookies"

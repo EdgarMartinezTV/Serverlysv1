@@ -1,5 +1,5 @@
 import type { NextConfig } from "next";
-import { resolveAnalyticsId } from "./src/lib/analytics-id";
+import { analyticsCspSources, resolveAnalytics } from "./src/lib/analytics/config";
 
 /**
  * Serverlys — Next.js configuration.
@@ -117,20 +117,15 @@ const nextConfig: NextConfig = {
   async headers() {
     const isDev = process.env.NODE_ENV !== "production";
     /*
-     * Google's origins enter the CSP only when the build has a GA4 ID — the
-     * same resolution the layout uses, so the tag is never blocked and the
-     * policy never opens for a tag that is not there. gtag.js comes from
-     * googletagmanager.com and beacons to region-specific
-     * *.google-analytics.com / *.analytics.google.com hosts, hence wildcards.
+     * Analytics origins (GTM, GA4, Clarity) enter the CSP only for the vendors
+     * this build actually loads — the same resolution the layout uses, so a
+     * tag is never blocked and the policy never opens for one that is absent.
+     * See lib/analytics/config.ts. ⚠ A tag added INSIDE GTM that loads from a
+     * new origin (an ad pixel, a chat widget) will be blocked until its origin
+     * is added there — check the console after publishing a GTM change.
      */
-    const ga = resolveAnalyticsId(process.env)
-      ? {
-          script: " https://www.googletagmanager.com",
-          connect:
-            " https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com",
-          img: " https://*.google-analytics.com https://*.googletagmanager.com",
-        }
-      : { script: "", connect: "", img: "" };
+    const ext = analyticsCspSources(resolveAnalytics(process.env));
+    const more = (list: string[]) => (list.length ? ` ${list.join(" ")}` : "");
     /*
      * /public files are NOT content-hashed, so they cannot be `immutable` like
      * /_next/static. They were served `max-age=0` — revalidated on every page
@@ -216,7 +211,7 @@ const nextConfig: NextConfig = {
              *
              * connect-src is 'self': the domain search calls our own /api and
              * nothing else. Fonts are self-hosted by next/font, so no external
-             * font origin is needed. GA4 adds its origins via `ga` above.
+             * font origin is needed. Analytics vendors add theirs via `ext`.
              */
             key: "Content-Security-Policy",
             value: [
@@ -230,13 +225,13 @@ const nextConfig: NextConfig = {
                * production bundle was verified to raise zero CSP violations —
                * so the shipped policy must not carry it.
                */
-              `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}${ga.script}`,
+              `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}${more(ext.script)}`,
               // Tailwind and next/font emit inline <style>; no external sheets.
-              "style-src 'self' 'unsafe-inline'",
+              `style-src 'self' 'unsafe-inline'${more(ext.style)}`,
               // data: for inlined SVG/blur placeholders, blob: for canvas work.
-              `img-src 'self' data: blob:${ga.img}`,
-              "font-src 'self' data:",
-              `connect-src 'self'${ga.connect}`,
+              `img-src 'self' data: blob:${more(ext.img)}`,
+              `font-src 'self' data:${more(ext.font)}`,
+              `connect-src 'self'${more(ext.connect)}`,
               "object-src 'none'",
               "base-uri 'self'",
               "form-action 'self'",

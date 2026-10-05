@@ -70,7 +70,7 @@ export default function WpMigrationsPage() {
           path: PATH,
         })}
       />
-      <JsonLd data={faqGraph(FAQ_TEXT)} />
+      <JsonLd data={faqGraph(FAQ_TEXT, "/migrations")} />
 
       <Hero />
       <Steps />

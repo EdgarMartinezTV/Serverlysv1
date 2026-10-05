@@ -35,7 +35,7 @@ export default function WebsiteDesignPage() {
           path: PATH,
         })}
       />
-      <JsonLd data={faqGraph(faqs)} />
+      <JsonLd data={faqGraph(faqs, "/website-design")} />
 
       <ProductHero
         eyebrow="Website design"

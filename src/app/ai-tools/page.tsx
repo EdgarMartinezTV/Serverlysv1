@@ -91,7 +91,7 @@ const FAQS: readonly Faq[] = [
 export default function AiToolsPage() {
   return (
     <>
-      <JsonLd data={faqGraph(FAQS)} />
+      <JsonLd data={faqGraph(FAQS, "/ai-tools")} />
 
       {/* 2026-10-03: light hero, pill label, display title (was dark navy + mono). */}
       <section className="relative isolate overflow-hidden bg-canvas">

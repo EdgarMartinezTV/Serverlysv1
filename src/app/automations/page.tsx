@@ -123,7 +123,7 @@ export default function AutomationsPage() {
           path: PATH,
         })}
       />
-      <JsonLd data={faqGraph(FAQ_TEXT)} />
+      <JsonLd data={faqGraph(FAQ_TEXT, "/automations")} />
 
       <Hero />
       <SubNav />

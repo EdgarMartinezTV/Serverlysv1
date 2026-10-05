@@ -9,7 +9,7 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { SharedLimitsMock } from "@/components/product-ui/infra";
 import { NavIcon } from "@/components/navigation/nav-icons";
 import { billing } from "@/data/company";
-import { pageMetadata, faqGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph, serviceGraph } from "@/lib/seo";
 import type { Faq } from "@/data/faqs";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { breadcrumbTrail } from "@/data/routes";
@@ -80,7 +80,15 @@ const FAQS: readonly Faq[] = [
 export default function SharedHostingPage() {
   return (
     <>
-      <JsonLd data={faqGraph(FAQS)} />
+      <JsonLd data={faqGraph(FAQS, "/shared-hosting")} />
+      <JsonLd
+        data={serviceGraph({
+          name: "Serverlys Shared Hosting",
+          serviceType: "Shared web hosting",
+          description: String(metadata.description ?? ""),
+          path: PATH,
+        })}
+      />
 
       <ProductHero
         eyebrow="Shared hosting · coming soon"

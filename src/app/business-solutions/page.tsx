@@ -33,7 +33,7 @@ export default function BusinessSolutionsPage() {
           path: PATH,
         })}
       />
-      <JsonLd data={faqGraph(faqs)} />
+      <JsonLd data={faqGraph(faqs, "/business-solutions")} />
       <ProductHero
         eyebrow="Business solutions"
         title="One supplier for the whole online side"

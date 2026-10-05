@@ -62,7 +62,7 @@ export default function WordPressHostingPage() {
           offerCount: prices.length,
         })}
       />
-      <JsonLd data={faqGraph(faqs)} />
+      <JsonLd data={faqGraph(faqs, "/wordpress-hosting")} />
 
       <Hero />
       {/* The wrapper bounds the sticky pill nav: it stops after the FAQ. */}

@@ -44,7 +44,7 @@ export default function HostingPage() {
           offerCount: prices.length,
         })}
       />
-      <JsonLd data={faqGraph(faqs)} />
+      <JsonLd data={faqGraph(faqs, "/hosting")} />
 
       <ProductHero
         eyebrow="Web hosting"
