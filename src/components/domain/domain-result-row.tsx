@@ -34,7 +34,9 @@ export function DomainResultRow({
 }) {
   const { domain, status, price } = result;
   const sellable = status === "available" && price !== null;
-  const registerUrl = billing.searchDomain(domain);
+  // A WHMCS "available" goes straight into the cart. Anything else (the RDAP
+  // fallback) goes to the WHMCS search, which re-checks before selling it.
+  const registerUrl = result.source === "whmcs" ? billing.addDomain(domain) : billing.searchDomain(domain);
   const transferUrl = billing.transferDomainSearch(domain);
   const dot = domain.indexOf(".");
   const name = (

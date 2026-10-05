@@ -65,6 +65,15 @@ export const billing = {
   searchDomain: (domain: string) =>
     `${BILLING}/cart.php?a=add&domain=register&query=${encodeURIComponent(domain)}`,
   /**
+   * Puts the name straight into the WHMCS cart and lands on its domain
+   * configuration step (verified live 2026-10-05: GET `domains[]` adds it and
+   * 302s to cart.php?a=confdomains). Use only for a name WHMCS itself just
+   * reported available — this path skips WHMCS's own lookup. The `query`
+   * prefill is not a handoff on the live cart: its AI search box ignores it.
+   */
+  addDomain: (domain: string) =>
+    `${BILLING}/cart.php?a=add&domain=register&domains[]=${encodeURIComponent(domain)}&domainsregperiod[${encodeURIComponent(domain)}]=1`,
+  /**
    * The transfer cart, prefilled. Same `query` contract as `searchDomain`, and
    * verified the same way: the transfer page fills `#inputTransferDomain` from
    * it. A name that came back registered is not a dead end — it is a transfer

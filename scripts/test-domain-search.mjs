@@ -268,7 +268,9 @@ check(
 );
 check(
   "available row links to the real WHMCS cart",
-  await ev(`const a=[...document.querySelectorAll('a')].find(a=>(a.getAttribute('href')||'').includes('a=add&domain=register&query='));
+  // WHMCS answers link straight into the cart (domains[]=); RDAP answers link
+  // to the WHMCS search (query=), which re-checks first.
+  await ev(`const a=[...document.querySelectorAll('a')].find(a=>/a=add&domain=register&(query=|domains)/.test(a.getAttribute('href')||''));
     return !!a && a.getAttribute('href').includes('${AVAILABLE}')`),
 );
 check(
@@ -409,7 +411,7 @@ check(
 check(
   "sellable alternates still offered alongside it",
   await ev(`return [...document.querySelectorAll('a')]
-    .some(a=>(a.getAttribute('href')||'').includes('a=add&domain=register&query=github.eu'))`),
+    .some(a=>/a=add&domain=register&(query=|domains%5B%5D=|domains\\[\\]=)github\\.eu/.test(a.getAttribute('href')||''))`),
 );
 
 console.log("\n── Mobile 375 ──");
