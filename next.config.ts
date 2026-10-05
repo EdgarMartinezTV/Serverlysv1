@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { resolveAnalyticsId } from "./src/lib/analytics-id";
 
 /**
  * Serverlys — Next.js configuration.
@@ -116,6 +117,21 @@ const nextConfig: NextConfig = {
   async headers() {
     const isDev = process.env.NODE_ENV !== "production";
     /*
+     * Google's origins enter the CSP only when the build has a GA4 ID — the
+     * same resolution the layout uses, so the tag is never blocked and the
+     * policy never opens for a tag that is not there. gtag.js comes from
+     * googletagmanager.com and beacons to region-specific
+     * *.google-analytics.com / *.analytics.google.com hosts, hence wildcards.
+     */
+    const ga = resolveAnalyticsId(process.env)
+      ? {
+          script: " https://www.googletagmanager.com",
+          connect:
+            " https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com",
+          img: " https://*.google-analytics.com https://*.googletagmanager.com",
+        }
+      : { script: "", connect: "", img: "" };
+    /*
      * /public files are NOT content-hashed, so they cannot be `immutable` like
      * /_next/static. They were served `max-age=0` — revalidated on every page
      * view. A day fresh plus a week stale-while-revalidate means a replaced
@@ -200,8 +216,7 @@ const nextConfig: NextConfig = {
              *
              * connect-src is 'self': the domain search calls our own /api and
              * nothing else. Fonts are self-hosted by next/font, so no external
-             * font origin is needed. Analytics is not wired (see cookie-policy)
-             * — if it ever is, it needs an entry here or it will silently fail.
+             * font origin is needed. GA4 adds its origins via `ga` above.
              */
             key: "Content-Security-Policy",
             value: [
@@ -215,13 +230,13 @@ const nextConfig: NextConfig = {
                * production bundle was verified to raise zero CSP violations —
                * so the shipped policy must not carry it.
                */
-              `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
+              `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}${ga.script}`,
               // Tailwind and next/font emit inline <style>; no external sheets.
               "style-src 'self' 'unsafe-inline'",
               // data: for inlined SVG/blur placeholders, blob: for canvas work.
-              "img-src 'self' data: blob:",
+              `img-src 'self' data: blob:${ga.img}`,
               "font-src 'self' data:",
-              "connect-src 'self'",
+              `connect-src 'self'${ga.connect}`,
               "object-src 'none'",
               "base-uri 'self'",
               "form-action 'self'",

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import {
   ACCEPT_ALL,
   DEFAULT_CONSENT,
-  TRACKERS,
+  trackersFor,
   readConsent,
   readConsentRaw,
   subscribeConsent,
@@ -52,8 +52,7 @@ const CATEGORY_COPY: Record<
   },
   analytics: {
     label: "Analytics",
-    detail:
-      "Would measure which pages people use so we can improve them. Nothing in this category is installed today.",
+    detail: "Measures which pages people use so we can improve them.",
   },
   marketing: {
     label: "Marketing",
@@ -62,7 +61,8 @@ const CATEGORY_COPY: Record<
   },
 };
 
-export function CookieConsent() {
+export function CookieConsent({ analyticsEnabled }: { analyticsEnabled: boolean }) {
+  const trackers = trackersFor(analyticsEnabled);
   /**
    * Whether a choice exists is EXTERNAL state (localStorage), so it is read
    * through useSyncExternalStore rather than copied into state inside an
@@ -160,9 +160,9 @@ export function CookieConsent() {
             <div className="min-w-0">
               <h2 className="text-body font-semibold text-fg">Your privacy</h2>
               <p className="mt-1.5 text-small text-fg-secondary">
-                We store only what the site needs to work, like a notice you closed
-                or your domain shortlist. No advertising or analytics cookies, and no
-                third-party trackers.{" "}
+                {analyticsEnabled
+                  ? "We store what the site needs to work, like a notice you closed or your domain shortlist. With your OK we also use Google Analytics to see which pages help people. No advertising cookies."
+                  : "We store only what the site needs to work, like a notice you closed or your domain shortlist. No advertising or analytics cookies, and no third-party trackers."}{" "}
                 <Link
                   href="/privacy-policy#cookies"
                   className="font-medium text-primary underline underline-offset-2 hover:text-primary-hover"
@@ -206,15 +206,16 @@ export function CookieConsent() {
               Cookie settings
             </h2>
             <p className="mt-2 text-small text-fg-secondary">
-              Every category is listed with exactly what it currently covers. Two of
-              the three are empty, and we would rather show you that than pad the
-              list.
+              Every category is listed with exactly what it currently covers.
+              {analyticsEnabled
+                ? " Marketing is empty, and we would rather show you that than pad the list."
+                : " Two of the three are empty, and we would rather show you that than pad the list."}
             </p>
 
             <ul className="mt-5 flex flex-col gap-3">
               {(Object.keys(CATEGORY_COPY) as ConsentCategory[]).map((key) => {
                 const copy = CATEGORY_COPY[key];
-                const items = TRACKERS[key];
+                const items = trackers[key];
                 const checked = copy.locked ? true : draft[key];
                 return (
                   <li

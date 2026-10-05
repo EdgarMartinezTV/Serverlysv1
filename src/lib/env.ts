@@ -6,6 +6,8 @@
  * are read lazily so a missing optional variable never breaks the build.
  */
 
+import { resolveAnalyticsId } from "./analytics-id";
+
 /**
  * The brand's permanent public origin. The ONLY place this literal is allowed
  * outside of copy: everything SEO-shaped (canonicals, og:url, JSON-LD @ids,
@@ -46,6 +48,16 @@ export const publicEnv = {
     process.env.NEXT_PUBLIC_ALLOW_INDEXING === "true" ||
     (process.env.NEXT_PUBLIC_ALLOW_INDEXING !== "false" &&
       siteUrl === PRODUCTION_ORIGIN),
+  /**
+   * GA4 measurement ID, or undefined when analytics is off for this build.
+   * See lib/analytics-id.ts for how it resolves. Even when set, nothing loads
+   * until the visitor accepts the analytics category.
+   */
+  analyticsId: resolveAnalyticsId({
+    NEXT_PUBLIC_ANALYTICS_ID: process.env.NEXT_PUBLIC_ANALYTICS_ID,
+    NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
+    NODE_ENV: process.env.NODE_ENV,
+  }),
 } as const;
 
 /**

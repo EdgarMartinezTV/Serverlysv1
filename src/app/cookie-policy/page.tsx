@@ -1,6 +1,7 @@
 import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { pageMetadata } from "@/lib/seo";
+import { publicEnv } from "@/lib/env";
 
 /**
  * Cookie policy.
@@ -12,8 +13,8 @@ import { pageMetadata } from "@/lib/seo";
  *
  * ⚠ DESCRIBES WHAT THE SITE ACTUALLY SETS. The consent implementation in
  * components/consent/ stores a preference and nothing else by default, and the
- * site ships no advertising or analytics cookie unless one is configured
- * (NEXT_PUBLIC_ANALYTICS_ID, absent by default — see .env.example). Do not add
+ * site ships no advertising cookie, and an analytics cookie only when a GA4 ID
+ * resolves (lib/analytics-id.ts — on by default for the serverlys.com build). Do not add
  * a vendor to this page speculatively, and do not ship a tracker without
  * adding it here.
  */
@@ -74,6 +75,14 @@ const SECTIONS: readonly LegalSection[] = [
         type: "p",
         text: "If analytics is enabled on the site, it is loaded only after you accept, and rejecting means it is never loaded at all — not loaded-and-told-not-to-record. If you accepted and change your mind, rejecting stops future collection.",
       },
+      ...(publicEnv.analyticsId
+        ? [
+            {
+              type: "p" as const,
+              text: "The analytics we use is Google Analytics 4. Once you accept, it sets a _ga cookie and a _ga_ cookie for this site's property, which expire after 2 years, and sends Google which pages you view, how you arrived and your general location. Google's advertising features are switched off. Rejecting later stops collection immediately and deletes those cookies.",
+            },
+          ]
+        : []),
       {
         type: "p",
         text: "We do not set advertising cookies, we do not run cross-site tracking pixels, and we do not sell or share browsing data with advertising networks. If that ever changes, this page changes first and the banner will ask again.",

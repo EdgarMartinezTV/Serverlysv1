@@ -21,8 +21,11 @@ COPY . .
 # at itself); "false" forces noindex. Inlined at build, like the URL.
 ARG NEXT_PUBLIC_SITE_URL
 ARG NEXT_PUBLIC_ALLOW_INDEXING
+# Optional: unset = GA4 on for the serverlys.com build only ("off" disables).
+ARG NEXT_PUBLIC_ANALYTICS_ID
 ENV NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL:-https://serverlys.com} \
     NEXT_PUBLIC_ALLOW_INDEXING=${NEXT_PUBLIC_ALLOW_INDEXING} \
+    NEXT_PUBLIC_ANALYTICS_ID=${NEXT_PUBLIC_ANALYTICS_ID} \
     NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 

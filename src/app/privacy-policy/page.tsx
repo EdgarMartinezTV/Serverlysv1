@@ -1,5 +1,6 @@
 import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
 import { pageMetadata } from "@/lib/seo";
+import { publicEnv } from "@/lib/env";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 const PATH = "/privacy-policy";
@@ -147,7 +148,9 @@ const SECTIONS: readonly LegalSection[] = [
       },
       {
         type: "p",
-        text: "This site sets no advertising or analytics cookies and loads no third-party trackers. The cookie panel lists every category with exactly what it covers, and two of the three are empty — we would rather show you that than pad the list. You can reopen it any time from Cookie settings in the footer.",
+        text: publicEnv.analyticsId
+          ? "If you accept analytics, this site loads Google Analytics, which sets _ga cookies so we can see which pages people use. It is not loaded at all unless you accept, and advertising features are switched off. We set no advertising cookies. The cookie panel lists every category with exactly what it covers, and you can reopen it any time from Cookie settings in the footer."
+          : "This site sets no advertising or analytics cookies and loads no third-party trackers. The cookie panel lists every category with exactly what it covers, and two of the three are empty — we would rather show you that than pad the list. You can reopen it any time from Cookie settings in the footer.",
       },
     ],
   },

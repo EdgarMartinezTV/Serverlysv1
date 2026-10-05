@@ -1,12 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Sans, Noto_Sans, JetBrains_Mono } from "next/font/google";
 import { company } from "@/data/company";
-import { verification } from "@/lib/env";
+import { publicEnv, verification } from "@/lib/env";
 import { organizationGraph } from "@/lib/seo";
 import { JsonLd } from "@/components/ui/json-ld";
 import { SiteHeader } from "@/components/navigation/site-header";
 import { AnnouncementBar } from "@/components/navigation/announcement-bar";
 import { CookieConsent } from "@/components/consent/cookie-consent";
+import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import { SeraRoot } from "@/components/sera/sera-root";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { announcement } from "@/data/navigation";
@@ -169,7 +170,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             {children}
           </main>
           <SiteFooter />
-          <CookieConsent />
+          <CookieConsent analyticsEnabled={Boolean(publicEnv.analyticsId)} />
+          {/* Renders nothing; loads GA4 only after an analytics Accept. */}
+          {publicEnv.analyticsId && <GoogleAnalytics id={publicEnv.analyticsId} />}
         </SeraRoot>
       </body>
     </html>
