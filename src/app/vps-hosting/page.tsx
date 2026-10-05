@@ -8,8 +8,10 @@ import { ShowcaseSplit } from "@/components/sections/showcase-split";
 import { JsonLd } from "@/components/ui/json-ld";
 import { TerminalMock, ResponsibilityMock } from "@/components/product-ui/infra";
 import { billing } from "@/data/company";
-import { pageMetadata, breadcrumbGraph, faqGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph } from "@/lib/seo";
 import type { Faq } from "@/data/faqs";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { breadcrumbTrail } from "@/data/routes";
 
 const PATH = "/vps-hosting";
 
@@ -59,13 +61,6 @@ const FAQS: readonly Faq[] = [
 export default function VpsHostingPage() {
   return (
     <>
-      <JsonLd
-        data={breadcrumbGraph([
-          { name: "Home", path: "/" },
-          { name: "Hosting", path: "/hosting" },
-          { name: "VPS hosting", path: PATH },
-        ])}
-      />
       <JsonLd data={faqGraph(FAQS)} />
 
       <ProductHero
@@ -191,6 +186,7 @@ export default function VpsHostingPage() {
 
       <FaqSection items={FAQS} />
       <FinalCta />
+      <PageBreadcrumbs trail={breadcrumbTrail(PATH)} />
     </>
   );
 }

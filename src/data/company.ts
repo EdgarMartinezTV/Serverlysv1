@@ -1,3 +1,5 @@
+import { publicEnv } from "@/lib/env";
+
 /**
  * Serverlys identity and the external systems this site links out to.
  *
@@ -10,7 +12,11 @@ export const company = {
   legalName: "Serverlys, LLC",
   name: "Serverlys",
   domain: "serverlys.com",
-  url: "https://serverlys.com",
+  /**
+   * The SEO identity of THIS deployment — canonicals, og:url, JSON-LD, sitemap.
+   * Set by NEXT_PUBLIC_SITE_URL (see lib/env.ts); never hard-code a host.
+   */
+  url: publicEnv.siteUrl,
   tagline: "Premium web hosting, domains and cloud solutions",
   description:
     "Managed cloud, WordPress and ecommerce hosting with free migration, free SSL and daily backups. Renewal pricing shown up front.",
@@ -39,7 +45,7 @@ export const emailDisplay =
  * by this Next.js app. It runs on the existing cPanel host under the same
  * origin. Easypanel must reverse-proxy /billing/* there. See DEPLOY.md.
  */
-const BILLING = "https://serverlys.com/billing";
+const BILLING = publicEnv.billingOrigin;
 
 export const billing = {
   root: BILLING,

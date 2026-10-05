@@ -17,7 +17,8 @@ import {
   type Block,
 } from "@/data/articles";
 import { company, billing } from "@/data/company";
-import { pageMetadata, breadcrumbGraph, articleGraph } from "@/lib/seo";
+import { pageMetadata, articleGraph, ogImageFor } from "@/lib/seo";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 /**
  * Article.
@@ -204,18 +205,12 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
   return (
     <>
       <JsonLd
-        data={breadcrumbGraph([
-          { name: "Home", path: "/" },
-          { name: "Blog", path: "/blog" },
-          { name: article.title, path },
-        ])}
-      />
-      <JsonLd
         data={articleGraph({
           headline: article.title,
           description: article.description,
           path,
           published: article.published,
+          image: ogImageFor(path),
           section: article.category,
         })}
       />
@@ -333,6 +328,11 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
       </Section>
 
       <FinalCta />
+      <PageBreadcrumbs trail={[
+          { name: "Home", path: "/" },
+          { name: "Blog", path: "/blog" },
+          { name: article.title, path },
+        ]} />
     </>
   );
 }

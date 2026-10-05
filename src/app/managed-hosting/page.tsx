@@ -7,9 +7,11 @@ import { FinalCta } from "@/components/sections/final-cta";
 import { JsonLd } from "@/components/ui/json-ld";
 import { ResponsibilityMock } from "@/components/product-ui/infra";
 import { UptimePanel } from "@/components/product-ui/panels";
-import { pageMetadata, breadcrumbGraph, faqGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph } from "@/lib/seo";
 import type { Faq } from "@/data/faqs";
 import { billing } from "@/data/company";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { breadcrumbTrail } from "@/data/routes";
 
 const PATH = "/managed-hosting";
 
@@ -60,13 +62,6 @@ const FAQS: readonly Faq[] = [
 export default function ManagedHostingPage() {
   return (
     <>
-      <JsonLd
-        data={breadcrumbGraph([
-          { name: "Home", path: "/" },
-          { name: "Hosting", path: "/hosting" },
-          { name: "Managed hosting", path: PATH },
-        ])}
-      />
       <JsonLd data={faqGraph(FAQS)} />
 
       <ProductHero
@@ -202,6 +197,7 @@ export default function ManagedHostingPage() {
 
       <FaqSection items={FAQS} />
       <FinalCta />
+      <PageBreadcrumbs trail={breadcrumbTrail(PATH)} />
     </>
   );
 }

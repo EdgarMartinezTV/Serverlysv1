@@ -16,8 +16,13 @@ COPY . .
 # NEXT_PUBLIC_* values are inlined at BUILD time, so a runtime env var alone
 # changes nothing. Staging must set this to its own origin: robots.txt then
 # disallows everything and canonicals stop claiming serverlys.com.
+# NEXT_PUBLIC_ALLOW_INDEXING: unset = index only when the origin IS
+# serverlys.com; "true" opts a non-production origin in (its canonicals point
+# at itself); "false" forces noindex. Inlined at build, like the URL.
 ARG NEXT_PUBLIC_SITE_URL
+ARG NEXT_PUBLIC_ALLOW_INDEXING
 ENV NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL:-https://serverlys.com} \
+    NEXT_PUBLIC_ALLOW_INDEXING=${NEXT_PUBLIC_ALLOW_INDEXING} \
     NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 

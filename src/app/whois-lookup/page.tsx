@@ -3,8 +3,10 @@ import { DomainHero, Explainers, Manage, Popular, Reasons, Steps, TldTable } fro
 import { Faqs } from "@/components/ref/faqs";
 import { WhoisLookup } from "@/components/whois/whois-lookup";
 import type { Faq } from "@/data/faqs";
-import { breadcrumbGraph, faqGraph, pageMetadata } from "@/lib/seo";
+import { faqGraph, pageMetadata } from "@/lib/seo";
 import { FAQ_HEAD, HERO, REASONS, STEPS } from "./_content";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { breadcrumbTrail } from "@/data/routes";
 
 /**
  * WHOIS lookup.
@@ -63,16 +65,10 @@ const FAQS: readonly Faq[] = [
   },
 ];
 
-const BREADCRUMB = [
-  { name: "Home", path: "/" },
-  { name: "WHOIS lookup", path: PATH },
-];
-
 export default function WhoisLookupPage() {
   return (
     /** globals.css balances headings; the reference wraps normally. */
     <div className="[&_h1]:text-wrap [&_h2]:text-wrap [&_h3]:text-wrap [&_p]:text-wrap">
-      <JsonLd data={breadcrumbGraph(BREADCRUMB)} />
       <JsonLd data={faqGraph(FAQS)} />
 
       <DomainHero copy={HERO} tool={<WhoisLookup />} />
@@ -92,6 +88,7 @@ export default function WhoisLookupPage() {
           a: [{ type: "p" as const, runs: [{ text: f.answer }] }],
         }))}
       />
+      <PageBreadcrumbs trail={breadcrumbTrail(PATH)} />
     </div>
   );
 }

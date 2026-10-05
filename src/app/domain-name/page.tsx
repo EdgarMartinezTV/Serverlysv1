@@ -2,9 +2,10 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { DomainHero, Explainers, Manage, Popular, Reasons, Steps, TldTable } from "./_components/domain-ui";
 import { Faqs } from "@/components/ref/faqs";
 import { cheapestTld, tlds } from "@/data/tlds";
-import { breadcrumbGraph, faqGraph, pageMetadata, productGraph } from "@/lib/seo";
+import { faqGraph, pageMetadata, productGraph } from "@/lib/seo";
 import { FAQS, FAQ_HEAD, HERO, REASONS, STEPS } from "./_content";
 import { DomainSearchApp } from "@/components/domain/domain-search-app";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 /**
  * Domain name search.
@@ -33,7 +34,7 @@ import { DomainSearchApp } from "@/components/domain/domain-search-app";
 
 const PATH = "/domain-name";
 
-const TITLE = "Domain Name Search – Check and Buy a Domain In Minutes";
+const TITLE = "Domain Name Search — Check & Register | Serverlys";
 const DESCRIPTION =
   "Check domain availability against the registry, then register at Serverlys. Free WHOIS privacy where the registry allows it.";
 
@@ -64,7 +65,6 @@ export default function DomainNamePage() {
      * reference wraps normally. Reset for this page only, as on the other two.
      */
     <div className="[&_h1]:text-wrap [&_h2]:text-wrap [&_h3]:text-wrap [&_p]:text-wrap">
-      <JsonLd data={breadcrumbGraph(BREADCRUMB)} />
       <JsonLd
         data={productGraph({
           name: "Serverlys Domain Registration",
@@ -91,6 +91,7 @@ export default function DomainNamePage() {
         description={FAQ_HEAD.description}
         items={FAQS}
       />
+      <PageBreadcrumbs trail={BREADCRUMB} />
     </div>
   );
 }

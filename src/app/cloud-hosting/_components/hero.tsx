@@ -69,7 +69,7 @@ function HeroVisual() {
         </div>
         <div className="relative h-[300px] overflow-hidden rounded-xl sm:h-[340px]">
           <div className="absolute inset-0">
-            <MockPhoto src="house" className="h-full" sizes="540px" position="center 60%" />
+            <MockPhoto src="house" className="h-full" sizes="540px" position="center 60%" eager />
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-black/20" />
           <div className="absolute inset-x-0 top-0 flex items-center justify-between px-6 py-4 text-[11px] text-white/90">

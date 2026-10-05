@@ -12,7 +12,8 @@ import { HostingMock, DomainMock } from "@/components/product-ui/mocks";
 import { billing } from "@/data/company";
 import { groupById, formatPrice } from "@/data/pricing";
 import { faqsFor } from "@/data/faqs";
-import { pageMetadata, faqGraph, breadcrumbGraph, productGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph, productGraph } from "@/lib/seo";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 const PATH = "/hosting";
 const DESCRIPTION =
@@ -22,7 +23,7 @@ const cloud = groupById("cloud");
 const prices = cloud?.plans.map((p) => p.monthly) ?? [0];
 
 export const metadata = pageMetadata({
-  title: `Web Hosting — managed plans from ${formatPrice(Math.min(...prices))}/mo | Serverlys`,
+  title: `Web Hosting for Small Business from ${formatPrice(Math.min(...prices))}/mo | Serverlys`,
   description: DESCRIPTION,
   path: PATH,
 });
@@ -33,7 +34,6 @@ export default function HostingPage() {
 
   return (
     <>
-      <JsonLd data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "Hosting", path: PATH }])} />
       <JsonLd
         data={productGraph({
           name: "Serverlys Web Hosting",
@@ -114,6 +114,7 @@ export default function HostingPage() {
       {/* This page owns an id="plans" section, so the closing CTA scrolls
           there rather than leaving for the homepage. */}
       <FinalCta plansHref="#plans" />
+      <PageBreadcrumbs trail={[{ name: "Home", path: "/" }, { name: "Hosting", path: PATH }]} />
     </>
   );
 }

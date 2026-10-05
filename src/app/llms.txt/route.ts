@@ -1,6 +1,6 @@
 import { routes } from "@/data/routes";
 import { canonical } from "@/lib/seo";
-import { company } from "@/data/company";
+import { company, billing } from "@/data/company";
 import {
   LLMS_BLURB,
   LLMS_CONTEXT,
@@ -85,7 +85,7 @@ export function GET() {
   lines.push("");
   lines.push(`- Email: ${company.email}`);
   lines.push(`- Telephone: ${company.phone}`);
-  lines.push(`- Billing and account login: ${company.url}/billing`);
+  lines.push(`- Billing and account login: ${billing.root}`);
   lines.push(`- Full XML sitemap: ${canonical("/sitemap.xml")}`);
   lines.push("");
 

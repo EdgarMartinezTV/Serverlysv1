@@ -106,13 +106,22 @@ export function Compare() {
           ))}
         </ul>
 
-        <div className="hidden md:block" role="table" aria-label="Compare cloud hosting plans">
+        {/*
+          ONE TABLE PER GROUP, not one around everything. The groups collapse,
+          and <details> is not a legal child of role="table" — the old single
+          table left every rowgroup without a table parent (axe:
+          aria-required-children / -parent). Each group is now a complete
+          table whose sr-only header row names the plans, so a screen reader
+          still hears "Starter, NVMe storage, 50 GB" per cell; the sticky
+          header below is the SIGHTED version of that row, and carries the CTAs.
+        */}
+        <div className="hidden md:block">
           {/* Sticky plan header */}
-          <div role="rowgroup" className="sticky top-18 z-20 bg-canvas pt-4 pb-5 shadow-[0_1px_0_var(--color-line)]">
-            <div role="row" className={cols}>
-              <span role="columnheader"><span className="sr-only">Feature</span></span>
+          <div className="sticky top-18 z-20 bg-canvas pt-4 pb-5 shadow-[0_1px_0_var(--color-line)]">
+            <div className={cols}>
+              <span aria-hidden="true" />
               {g.plans.map((p) => (
-                <div role="columnheader" key={p.tier} className="min-w-0">
+                <div key={p.tier} className="min-w-0">
                   <p className="flex items-center gap-2 text-body font-semibold text-fg">
                     {p.name}
                     {p.popular && (
@@ -147,6 +156,17 @@ export function Compare() {
                   <path d="M8 3v10" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" className="group-open/cmp:hidden" />
                 </svg>
               </summary>
+              <div role="table" aria-label={`${grp.title}: compare cloud hosting plans`}>
+                <div role="rowgroup" className="sr-only">
+                  <div role="row">
+                    <span role="columnheader">Feature</span>
+                    {g.plans.map((p) => (
+                      <span role="columnheader" key={p.tier}>
+                        {p.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               <div role="rowgroup">
                 {grp.rows.map((r) => (
                   <div key={r.label} role="row" className={cn(cols, "items-center border-t border-line-subtle py-4")}>
@@ -158,6 +178,7 @@ export function Compare() {
                     ))}
                   </div>
                 ))}
+              </div>
               </div>
             </details>
           ))}

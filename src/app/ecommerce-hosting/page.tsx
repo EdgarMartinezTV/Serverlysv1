@@ -1,7 +1,7 @@
 import { JsonLd } from "@/components/ui/json-ld";
 import { Faqs } from "@/components/ref/faqs";
 import { groupById } from "@/data/pricing";
-import { breadcrumbGraph, faqGraph, pageMetadata, productGraph } from "@/lib/seo";
+import { faqGraph, pageMetadata, productGraph } from "@/lib/seo";
 import { FAQS, FAQ_HEAD } from "./_content";
 import { PillNav } from "@/components/sections/pill-nav";
 import { Proof } from "../cloud-hosting/_components/proof";
@@ -14,6 +14,8 @@ import {
   StoreSpeed,
 } from "./_components/sections";
 import { Pricing } from "./_components/pricing";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { breadcrumbTrail } from "@/data/routes";
 
 /**
  * Ecommerce hosting.
@@ -38,16 +40,11 @@ import { Pricing } from "./_components/pricing";
 
 const PATH = "/ecommerce-hosting";
 
-const TITLE = "Managed WooCommerce hosting for your eCommerce store";
+const TITLE = "Ecommerce Hosting for WooCommerce Stores | Serverlys";
 const DESCRIPTION =
-  "Quick setup, AI tools, and 24/7 support – our Managed WooCommerce hosting has everything for eCommerce.";
+  "Managed WooCommerce hosting on NVMe and LiteSpeed with free SSL, daily backups and free store migration. Renewal price shown on every plan.";
 
 export const metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH });
-
-const BREADCRUMB = [
-  { name: "Home", path: "/" },
-  { name: "Ecommerce hosting", path: PATH },
-];
 
 /** Derived, so the schema cannot disagree with the cards. */
 const RATES = (groupById("ecommerce")?.plans ?? []).map((p) => p.monthly);
@@ -79,7 +76,6 @@ export default function EcommerceHostingPage() {
      * normally. Reset for this page only, as on /cloud-hosting.
      */
     <div className="[&_h1]:text-wrap [&_h2]:text-wrap [&_h3]:text-wrap [&_p]:text-wrap">
-      <JsonLd data={breadcrumbGraph(BREADCRUMB)} />
       <JsonLd
         data={productGraph({
           name: "Serverlys Ecommerce Hosting",
@@ -115,6 +111,7 @@ export default function EcommerceHostingPage() {
         body="Try Serverlys ecommerce hosting risk-free. If it is not right, tell us within 30 days for a full refund."
         href="#pricing"
       />
+      <PageBreadcrumbs trail={breadcrumbTrail(PATH)} />
     </div>
   );
 }

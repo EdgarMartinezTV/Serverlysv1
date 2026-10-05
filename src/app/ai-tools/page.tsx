@@ -8,9 +8,10 @@ import { FinalCta } from "@/components/sections/final-cta";
 import { JsonLd } from "@/components/ui/json-ld";
 import { ChatMock, CallMock, AutomationMock } from "@/components/product-ui/mocks";
 import { NavIcon } from "@/components/navigation/nav-icons";
-import { pageMetadata, breadcrumbGraph, faqGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph } from "@/lib/seo";
 import type { Faq } from "@/data/faqs";
 import { billing } from "@/data/company";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 const PATH = "/ai-tools";
 
@@ -90,13 +91,6 @@ const FAQS: readonly Faq[] = [
 export default function AiToolsPage() {
   return (
     <>
-      <JsonLd
-        data={breadcrumbGraph([
-          { name: "Home", path: "/" },
-          { name: "AI agents", path: "/ai-agents" },
-          { name: "AI tools", path: PATH },
-        ])}
-      />
       <JsonLd data={faqGraph(FAQS)} />
 
       {/* 2026-10-03: light hero, pill label, display title (was dark navy + mono). */}
@@ -216,6 +210,11 @@ export default function AiToolsPage() {
 
       <FaqSection items={FAQS} />
       <FinalCta />
+      <PageBreadcrumbs trail={[
+          { name: "Home", path: "/" },
+          { name: "AI agents", path: "/ai-agents" },
+          { name: "AI tools", path: PATH },
+        ]} />
     </>
   );
 }

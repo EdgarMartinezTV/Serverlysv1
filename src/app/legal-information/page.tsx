@@ -1,6 +1,6 @@
 import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
-import { JsonLd } from "@/components/ui/json-ld";
-import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { pageMetadata } from "@/lib/seo";
 import { company, emailDisplay } from "@/data/company";
 
 /**
@@ -143,12 +143,6 @@ const SECTIONS: readonly LegalSection[] = [
 export default function LegalInformationPage() {
   return (
     <>
-      <JsonLd
-        data={breadcrumbGraph([
-          { name: "Home", path: "/" },
-          { name: "Legal information", path: PATH },
-        ])}
-      />
       <LegalPage
         path={PATH}
         title="Legal information"
@@ -156,6 +150,12 @@ export default function LegalInformationPage() {
         trail={[{ name: "Home", href: "/" }, { name: "Legal information" }]}
         sections={SECTIONS}
         contact="If you cannot tell which document covers your question, ask us rather than reading all of them. Pointing you at the right clause is faster for both of us."
+      />
+      <PageBreadcrumbs
+        trail={[
+          { name: "Home", path: "/" },
+          { name: "Legal information", path: PATH },
+        ]}
       />
     </>
   );

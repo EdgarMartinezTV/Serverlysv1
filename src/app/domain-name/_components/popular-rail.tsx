@@ -55,7 +55,10 @@ export function PopularRail({
 
       <ul
         ref={track}
-        className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-4 pb-2 md:px-10 xl:px-20 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        /* scroll-px MUST equal px. Without it mandatory snapping nudges the rail
+           16px on load, and Chrome treats that scroll as the end of the page load:
+           no LCP is ever recorded and Lighthouse scores performance 0. */
+        className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth scroll-px-4 px-4 pb-2 md:scroll-px-10 md:px-10 xl:scroll-px-20 xl:px-20 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {tlds.map((t, i) => (
           <li

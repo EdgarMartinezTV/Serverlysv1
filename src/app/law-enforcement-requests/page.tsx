@@ -1,7 +1,7 @@
 import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
-import { JsonLd } from "@/components/ui/json-ld";
-import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 import { company, emailDisplay } from "@/data/company";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 /**
  * Law enforcement and legal requests policy.
@@ -165,12 +165,6 @@ const SECTIONS: readonly LegalSection[] = [
 export default function LawEnforcementRequestsPage() {
   return (
     <>
-      <JsonLd
-        data={breadcrumbGraph([
-          { name: "Home", path: "/" },
-          { name: "Law enforcement and legal requests", path: PATH },
-        ])}
-      />
       <LegalPage
         title="Law Enforcement and Legal Requests"
         intro="What we require before disclosing customer data, what records we actually hold, and when we tell the customer that someone has asked."
@@ -179,6 +173,10 @@ export default function LawEnforcementRequestsPage() {
         trail={[{ name: "Home", href: "/" }, { name: "Law enforcement and legal requests" }]}
         contact="Legal process should be sent to the address above, marked “Legal request”. Abuse and copyright complaints have their own faster routes."
       />
+      <PageBreadcrumbs trail={[
+          { name: "Home", path: "/" },
+          { name: "Law enforcement and legal requests", path: PATH },
+        ]} />
     </>
   );
 }

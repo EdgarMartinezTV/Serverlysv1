@@ -9,7 +9,9 @@ import { AutomationMock } from "@/components/product-ui/mocks";
 import { DashboardMock as Panel } from "@/components/product-ui/dashboard";
 import { billing, sisterProducts } from "@/data/company";
 import { faqsFor } from "@/data/faqs";
-import { pageMetadata, faqGraph, breadcrumbGraph, serviceGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph, serviceGraph } from "@/lib/seo";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { breadcrumbTrail } from "@/data/routes";
 
 const PATH = "/callflow-ai";
 const DESCRIPTION =
@@ -35,7 +37,6 @@ export default function CallFlowPage() {
           path: PATH,
         })}
       />
-      <JsonLd data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "AI agents", path: "/ai-agents" }, { name: "CallFlow", path: PATH }])} />
       <JsonLd data={faqGraph(faqs)} />
 
       <ProductHero
@@ -94,6 +95,7 @@ export default function CallFlowPage() {
 
       <FaqSection items={faqs} />
       <FinalCta />
+      <PageBreadcrumbs trail={breadcrumbTrail(PATH)} />
     </>
   );
 }

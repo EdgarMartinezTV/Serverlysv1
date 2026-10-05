@@ -6,11 +6,46 @@
  * are read lazily so a missing optional variable never breaks the build.
  */
 
+/**
+ * The brand's permanent public origin. The ONLY place this literal is allowed
+ * outside of copy: everything SEO-shaped (canonicals, og:url, JSON-LD @ids,
+ * sitemap, robots) derives from `publicEnv.siteUrl`, which defaults to it.
+ */
+export const PRODUCTION_ORIGIN = "https://serverlys.com";
+
+/** No trailing slash, ever — `canonical()` appends paths to this verbatim. */
+const normalizeOrigin = (value: string | undefined) =>
+  (value?.trim() || PRODUCTION_ORIGIN).replace(/\/+$/, "");
+
+const siteUrl = normalizeOrigin(process.env.NEXT_PUBLIC_SITE_URL);
+
 /** Values that are safe to expose to the browser. */
 export const publicEnv = {
-  siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "https://serverlys.com",
-  billingOrigin:
-    process.env.NEXT_PUBLIC_BILLING_ORIGIN ?? "https://serverlys.com/billing",
+  siteUrl,
+  /**
+   * WHMCS — a TRANSACTIONAL origin, deliberately independent of `siteUrl`.
+   * Staging still checks out on the live store; rewriting this to the staging
+   * hostname would 404 every cart and login.
+   */
+  billingOrigin: normalizeOrigin(
+    process.env.NEXT_PUBLIC_BILLING_ORIGIN ?? `${PRODUCTION_ORIGIN}/billing`,
+  ),
+  /**
+   * Whether search engines may index this deployment.
+   *
+   * Default: only when `siteUrl` IS the production origin. A staging copy that
+   * is indexable competes with production for the same queries.
+   *
+   * `NEXT_PUBLIC_ALLOW_INDEXING=true` opts a non-production origin in — e.g. a
+   * staging host that is temporarily the public face. Its canonicals then
+   * point at ITSELF (they derive from `siteUrl`), so there is never a
+   * cross-host canonical conflict; when the brand domain goes live, 301 the
+   * old host to it. `=false` forces noindex even on production.
+   */
+  allowIndexing:
+    process.env.NEXT_PUBLIC_ALLOW_INDEXING === "true" ||
+    (process.env.NEXT_PUBLIC_ALLOW_INDEXING !== "false" &&
+      siteUrl === PRODUCTION_ORIGIN),
 } as const;
 
 /**

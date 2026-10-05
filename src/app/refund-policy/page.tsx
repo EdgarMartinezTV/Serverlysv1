@@ -1,6 +1,6 @@
 import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
-import { JsonLd } from "@/components/ui/json-ld";
-import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 const PATH = "/refund-policy";
 
@@ -111,9 +111,6 @@ const SECTIONS: readonly LegalSection[] = [
 export default function RefundPolicyPage() {
   return (
     <>
-      <JsonLd
-        data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "Refund policy", path: PATH }])}
-      />
       <LegalPage
         title="Refund policy"
         intro="30 days on hosting, no questions. Domains are not refundable, and this page explains exactly why rather than burying it in a clause."
@@ -122,6 +119,7 @@ export default function RefundPolicyPage() {
         sections={SECTIONS}
         contact="If you think a refund is due and something here says otherwise, write to us anyway. Policies have edge cases and people are better at those than documents."
       />
+      <PageBreadcrumbs trail={[{ name: "Home", path: "/" }, { name: "Refund policy", path: PATH }]} />
     </>
   );
 }

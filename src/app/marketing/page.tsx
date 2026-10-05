@@ -7,8 +7,9 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { ChatMock } from "@/components/product-ui/mocks";
 import { billing } from "@/data/company";
 import { faqsFor } from "@/data/faqs";
-import { pageMetadata, faqGraph, breadcrumbGraph, serviceGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph, serviceGraph } from "@/lib/seo";
 import { CampaignBoard } from "../website-design/_components/shots";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 const PATH = "/marketing";
 const DESCRIPTION =
@@ -32,7 +33,6 @@ export default function MarketingPage() {
           path: PATH,
         })}
       />
-      <JsonLd data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "Marketing", path: PATH }])} />
       <JsonLd data={faqGraph(faqs)} />
       <ProductHero
         eyebrow="Marketing"
@@ -76,6 +76,7 @@ export default function MarketingPage() {
       />
       <FaqSection items={faqs} />
       <FinalCta />
+      <PageBreadcrumbs trail={[{ name: "Home", path: "/" }, { name: "Marketing", path: PATH }]} />
     </>
   );
 }

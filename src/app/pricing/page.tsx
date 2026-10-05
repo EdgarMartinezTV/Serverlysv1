@@ -1,8 +1,9 @@
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { JsonLd } from "@/components/ui/json-ld";
 import { Faqs } from "@/components/ref/faqs";
 import { Grid, ShieldCheck } from "@/components/ref/kit";
 import { lowestRate, planGroups } from "@/data/pricing";
-import { breadcrumbGraph, faqGraph, pageMetadata, productGraph } from "@/lib/seo";
+import { faqGraph, pageMetadata, productGraph } from "@/lib/seo";
 import { FAQS, FAQ_HEAD, HERO } from "./_content";
 import { Plans } from "./_components/plans";
 import { Compare } from "./_components/compare";
@@ -85,12 +86,6 @@ export default function PricingPage() {
     /** globals.css balances headings; the reference wraps normally. */
     <div className="[&_h1]:text-wrap [&_h2]:text-wrap [&_h3]:text-wrap [&_p]:text-wrap">
       <JsonLd
-        data={breadcrumbGraph([
-          { name: "Home", path: "/" },
-          { name: "Pricing", path: PATH },
-        ])}
-      />
-      <JsonLd
         data={productGraph({
           name: "Serverlys hosting plans",
           description: DESCRIPTION,
@@ -149,6 +144,12 @@ export default function PricingPage() {
         title={FAQ_HEAD.title}
         description={FAQ_HEAD.description}
         items={FAQS}
+      />
+      <PageBreadcrumbs
+        trail={[
+          { name: "Home", path: "/" },
+          { name: "Pricing", path: PATH },
+        ]}
       />
     </div>
   );

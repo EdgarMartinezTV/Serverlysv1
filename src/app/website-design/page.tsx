@@ -8,15 +8,16 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { SeoMock, ChatMock } from "@/components/product-ui/mocks";
 import { billing } from "@/data/company";
 import { faqsFor } from "@/data/faqs";
-import { pageMetadata, faqGraph, breadcrumbGraph, serviceGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph, serviceGraph } from "@/lib/seo";
 import { BakerySite } from "./_components/shots";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 const PATH = "/website-design";
 const DESCRIPTION =
   "Custom website design built to convert, hosted on Serverlys infrastructure, with the AI agent and analytics wired in from day one.";
 
 export const metadata = pageMetadata({
-  title: "Website Design — sites built to convert | Serverlys",
+  title: "Website Design for Small Business | Serverlys",
   description: DESCRIPTION,
   path: PATH,
 });
@@ -34,7 +35,6 @@ export default function WebsiteDesignPage() {
           path: PATH,
         })}
       />
-      <JsonLd data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "Website design", path: PATH }])} />
       <JsonLd data={faqGraph(faqs)} />
 
       <ProductHero
@@ -97,6 +97,7 @@ export default function WebsiteDesignPage() {
       <Migration tone="subtle" />
       <FaqSection items={faqs} />
       <FinalCta />
+      <PageBreadcrumbs trail={[{ name: "Home", path: "/" }, { name: "Website design", path: PATH }]} />
     </>
   );
 }

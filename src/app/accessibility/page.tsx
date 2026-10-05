@@ -1,6 +1,6 @@
 import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
-import { JsonLd } from "@/components/ui/json-ld";
-import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 const PATH = "/accessibility";
 
@@ -109,9 +109,6 @@ const SECTIONS: readonly LegalSection[] = [
 export default function AccessibilityPage() {
   return (
     <>
-      <JsonLd
-        data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "Accessibility", path: PATH }])}
-      />
       <LegalPage
         title="Accessibility statement"
         intro="What we target, what we have actually tested, and — the part most statements omit — what we know is not done yet."
@@ -120,6 +117,7 @@ export default function AccessibilityPage() {
         sections={SECTIONS}
         contact="Report a barrier and we will treat it as a bug with a priority, not a suggestion for a future release."
       />
+      <PageBreadcrumbs trail={[{ name: "Home", path: "/" }, { name: "Accessibility", path: PATH }]} />
     </>
   );
 }

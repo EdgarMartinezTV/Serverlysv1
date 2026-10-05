@@ -3,8 +3,9 @@ import { Section } from "@/components/ui/section";
 import { FinalCta } from "@/components/sections/final-cta";
 import { JsonLd } from "@/components/ui/json-ld";
 import { faqs, type Faq } from "@/data/faqs";
-import { pageMetadata, breadcrumbGraph, faqGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph } from "@/lib/seo";
 import { PageHero } from "../resources/_components/page-hero";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 const PATH = "/faq";
 
@@ -50,7 +51,6 @@ export default function FaqPage() {
 
   return (
     <>
-      <JsonLd data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "FAQ", path: PATH }])} />
       <JsonLd data={faqGraph(faqs)} />
 
       <PageHero
@@ -136,6 +136,7 @@ export default function FaqPage() {
       </Section>
 
       <FinalCta />
+      <PageBreadcrumbs trail={[{ name: "Home", path: "/" }, { name: "FAQ", path: PATH }]} />
     </>
   );
 }

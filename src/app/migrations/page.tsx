@@ -4,10 +4,11 @@ import { ContentSwitch } from "@/components/ref/content-switch";
 import { PlanCard } from "@/components/ref/plan-card";
 import { groupById } from "@/data/pricing";
 import { Grid, Headline } from "@/components/ref/kit";
-import { breadcrumbGraph, faqGraph, pageMetadata, serviceGraph } from "@/lib/seo";
+import { faqGraph, pageMetadata, serviceGraph } from "@/lib/seo";
 import { FAQS, FAQ_HEAD, PRICING_HEAD, WHY } from "./_content";
 import { AiTools, Banner, Hero, How, Savings, Steps } from "./_components/sections";
 import { WhyPanel } from "./_components/visuals";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 /**
  * Website migration.
@@ -69,7 +70,6 @@ export default function WpMigrationsPage() {
           path: PATH,
         })}
       />
-      <JsonLd data={breadcrumbGraph(BREADCRUMB)} />
       <JsonLd data={faqGraph(FAQ_TEXT)} />
 
       <Hero />
@@ -117,6 +117,7 @@ export default function WpMigrationsPage() {
         description={FAQ_HEAD.description}
         items={FAQS}
       />
+      <PageBreadcrumbs trail={BREADCRUMB} />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
-import { JsonLd } from "@/components/ui/json-ld";
-import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { pageMetadata } from "@/lib/seo";
 import { company, emailDisplay } from "@/data/company";
 
 /**
@@ -181,12 +181,6 @@ const SECTIONS: readonly LegalSection[] = [
 export default function ResponsibleDisclosurePolicyPage() {
   return (
     <>
-      <JsonLd
-        data={breadcrumbGraph([
-          { name: "Home", path: "/" },
-          { name: "Responsible disclosure policy", path: PATH },
-        ])}
-      />
       <LegalPage
         path={PATH}
         title="Responsible disclosure policy"
@@ -194,6 +188,12 @@ export default function ResponsibleDisclosurePolicyPage() {
         trail={[{ name: "Home", href: "/" }, { name: "Responsible disclosure policy" }]}
         sections={SECTIONS}
         contact="If you are partway through a test and something looks like it is heading out of scope, stop and write to us. Asking is always the right call and it has never gone badly for anyone who did."
+      />
+      <PageBreadcrumbs
+        trail={[
+          { name: "Home", path: "/" },
+          { name: "Responsible disclosure policy", path: PATH },
+        ]}
       />
     </>
   );

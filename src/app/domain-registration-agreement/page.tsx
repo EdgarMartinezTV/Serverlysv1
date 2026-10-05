@@ -1,7 +1,7 @@
 import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
-import { JsonLd } from "@/components/ui/json-ld";
-import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 import { emailDisplay } from "@/data/company";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 /**
  * Domain registration agreement.
@@ -187,12 +187,6 @@ const SECTIONS: readonly LegalSection[] = [
 export default function DomainRegistrationAgreementPage() {
   return (
     <>
-      <JsonLd
-        data={breadcrumbGraph([
-          { name: "Home", path: "/" },
-          { name: "Domain registration agreement", path: PATH },
-        ])}
-      />
       <LegalPage
         title="Domain Registration Agreement"
         intro="The terms that apply to every domain registered, renewed or transferred through Serverlys — including WHOIS privacy and how requests for registrant data are handled."
@@ -201,6 +195,10 @@ export default function DomainRegistrationAgreementPage() {
         trail={[{ name: "Home", href: "/" }, { name: "Domain registration agreement" }]}
         contact="Questions about a domain you hold with us, or a registrant data request? Write to the address above and mark it clearly so it reaches the right team."
       />
+      <PageBreadcrumbs trail={[
+          { name: "Home", path: "/" },
+          { name: "Domain registration agreement", path: PATH },
+        ]} />
     </>
   );
 }

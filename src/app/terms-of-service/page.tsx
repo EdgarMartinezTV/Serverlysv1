@@ -1,6 +1,6 @@
 import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
-import { JsonLd } from "@/components/ui/json-ld";
-import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 const PATH = "/terms-of-service";
 
@@ -182,9 +182,6 @@ const SECTIONS: readonly LegalSection[] = [
 export default function TermsOfServicePage() {
   return (
     <>
-      <JsonLd
-        data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "Terms of service", path: PATH }])}
-      />
       <LegalPage
         title="Terms of service"
         intro="The agreement between you and Serverlys. Written in plain language on purpose — terms nobody can read are terms nobody agreed to."
@@ -193,6 +190,7 @@ export default function TermsOfServicePage() {
         sections={SECTIONS}
         contact="If a clause here does not make sense, ask. We would rather explain it now than argue about it later."
       />
+      <PageBreadcrumbs trail={[{ name: "Home", path: "/" }, { name: "Terms of service", path: PATH }]} />
     </>
   );
 }

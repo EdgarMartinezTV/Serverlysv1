@@ -1,6 +1,6 @@
 import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
-import { JsonLd } from "@/components/ui/json-ld";
-import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { pageMetadata } from "@/lib/seo";
 
 /**
  * Cookie policy.
@@ -127,12 +127,6 @@ const SECTIONS: readonly LegalSection[] = [
 export default function CookiePolicyPage() {
   return (
     <>
-      <JsonLd
-        data={breadcrumbGraph([
-          { name: "Home", path: "/" },
-          { name: "Cookie policy", path: PATH },
-        ])}
-      />
       <LegalPage
         title="Cookie Policy"
         intro="What we store in your browser, what we deliberately do not, and how to change your mind at any time."
@@ -140,6 +134,12 @@ export default function CookiePolicyPage() {
         sections={SECTIONS}
         trail={[{ name: "Home", href: "/" }, { name: "Cookie policy" }]}
         contact="Questions about what this site stores, or a request about your data? The privacy policy sets out your rights and how to exercise them."
+      />
+      <PageBreadcrumbs
+        trail={[
+          { name: "Home", path: "/" },
+          { name: "Cookie policy", path: PATH },
+        ]}
       />
     </>
   );

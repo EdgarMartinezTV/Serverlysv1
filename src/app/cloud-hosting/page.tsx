@@ -1,5 +1,7 @@
+import { breadcrumbTrail } from "@/data/routes";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { JsonLd } from "@/components/ui/json-ld";
-import { breadcrumbGraph, faqGraph, pageMetadata, productGraph } from "@/lib/seo";
+import { faqGraph, pageMetadata, productGraph } from "@/lib/seo";
 import { groupById } from "@/data/pricing";
 import { FAQS, FAQ_HEAD } from "./_content";
 import { Banner } from "./_components/banner";
@@ -37,7 +39,7 @@ import { Proof } from "./_components/proof";
 
 const PATH = "/cloud-hosting";
 
-const TITLE = "Managed cloud hosting | NVMe, LiteSpeed and free migration";
+const TITLE = "Managed NVMe Cloud Hosting, Free Migration | Serverlys";
 const DESCRIPTION =
   "Managed cloud hosting on NVMe and LiteSpeed, with free migration, daily backups and the renewal price shown on every plan. 30-day money-back guarantee.";
 
@@ -52,11 +54,6 @@ export const metadata = pageMetadata({
  * here would silently disagree with the slider the first time a rate moves.
  */
 const CLOUD_RATES = (groupById("cloud")?.plans ?? []).map((p) => p.monthly);
-
-const BREADCRUMB = [
-  { name: "Home", path: "/" },
-  { name: "Cloud hosting", path: PATH },
-];
 
 /**
  * FAQPage needs plain-text answers, so the block structure the accordion
@@ -95,7 +92,6 @@ export default function CloudHostingPage() {
      * "WordPress / tools, built in" under balance. Reset for this page only.
      */
     <div className="[&_h1]:text-wrap [&_h2]:text-wrap [&_h3]:text-wrap [&_p]:text-wrap">
-      <JsonLd data={breadcrumbGraph(BREADCRUMB)} />
       <JsonLd
         data={productGraph({
           name: "Serverlys Cloud Hosting",
@@ -127,6 +123,7 @@ export default function CloudHostingPage() {
         />
       </div>
       <Banner />
+      <PageBreadcrumbs trail={breadcrumbTrail(PATH)} />
     </div>
   );
 }

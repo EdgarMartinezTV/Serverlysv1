@@ -1,6 +1,6 @@
 import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
-import { JsonLd } from "@/components/ui/json-ld";
-import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { pageMetadata } from "@/lib/seo";
 
 /**
  * AI services terms — ConvoAI and CallFlow.
@@ -207,12 +207,6 @@ const SECTIONS: readonly LegalSection[] = [
 export default function AiServicesTermsPage() {
   return (
     <>
-      <JsonLd
-        data={breadcrumbGraph([
-          { name: "Home", path: "/" },
-          { name: "AI services terms", path: PATH },
-        ])}
-      />
       <LegalPage
         path={PATH}
         title="AI services terms"
@@ -220,6 +214,12 @@ export default function AiServicesTermsPage() {
         trail={[{ name: "Home", href: "/" }, { name: "AI services terms" }]}
         sections={SECTIONS}
         contact="If you are planning a deployment and are not sure whether it sits inside these terms — an unusual sector, a regulated one, or callers in several states — ask us before you launch it. That conversation is much easier before the agent is live."
+      />
+      <PageBreadcrumbs
+        trail={[
+          { name: "Home", path: "/" },
+          { name: "AI services terms", path: PATH },
+        ]}
       />
     </>
   );

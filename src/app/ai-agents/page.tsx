@@ -7,14 +7,15 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { ChatMock, CallMock, AutomationMock } from "@/components/product-ui/mocks";
 import { billing } from "@/data/company";
 import { faqsFor } from "@/data/faqs";
-import { pageMetadata, faqGraph, breadcrumbGraph, serviceGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph, serviceGraph } from "@/lib/seo";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 const PATH = "/ai-agents";
 const DESCRIPTION =
   "Serverlys AI agents answer your customers in chat and on the phone, capture the lead, book the appointment and hand the rest to a person.";
 
 export const metadata = pageMetadata({
-  title: "AI Agents — chat and voice for your business | Serverlys",
+  title: "AI Agents for Small Business — Chat & Phone | Serverlys",
   description: DESCRIPTION,
   path: PATH,
 });
@@ -33,7 +34,6 @@ export default function AiAgentsPage() {
           path: PATH,
         })}
       />
-      <JsonLd data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "AI agents", path: PATH }])} />
       <JsonLd data={faqGraph(faqs)} />
 
       <ProductHero
@@ -107,6 +107,7 @@ export default function AiAgentsPage() {
 
       <FaqSection items={faqs} />
       <FinalCta />
+      <PageBreadcrumbs trail={[{ name: "Home", path: "/" }, { name: "AI agents", path: PATH }]} />
     </>
   );
 }

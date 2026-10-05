@@ -4,9 +4,10 @@ import { Badge } from "@/components/ui/badge";
 import { FinalCta } from "@/components/sections/final-cta";
 import { JsonLd } from "@/components/ui/json-ld";
 import { tutorials, tutorialCategories } from "@/data/tutorials";
-import { canonical, pageMetadata, breadcrumbGraph } from "@/lib/seo";
+import { canonical, pageMetadata } from "@/lib/seo";
 import { company } from "@/data/company";
 import { PageHero } from "../resources/_components/page-hero";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 const PATH = "/tutorials";
 
@@ -50,13 +51,6 @@ function howToGraph() {
 export default function TutorialsPage() {
   return (
     <>
-      <JsonLd
-        data={breadcrumbGraph([
-          { name: "Home", path: "/" },
-          { name: "Resources", path: "/resources" },
-          { name: "Tutorials", path: PATH },
-        ])}
-      />
       <JsonLd data={howToGraph()} />
 
       <PageHero
@@ -248,6 +242,11 @@ function DnsMock() {
         <span className="size-1.5 rounded-full bg-success-fill" />
         Propagated · HTTPS certificate issued
       </p>
+      <PageBreadcrumbs trail={[
+          { name: "Home", path: "/" },
+          { name: "Resources", path: "/resources" },
+          { name: "Tutorials", path: PATH },
+        ]} />
     </div>
   );
 }

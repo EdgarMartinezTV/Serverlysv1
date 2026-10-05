@@ -1,6 +1,6 @@
 import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
-import { JsonLd } from "@/components/ui/json-ld";
-import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 const PATH = "/privacy-policy";
 
@@ -176,9 +176,6 @@ const SECTIONS: readonly LegalSection[] = [
 export default function PrivacyPolicyPage() {
   return (
     <>
-      <JsonLd
-        data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "Privacy policy", path: PATH }])}
-      />
       <LegalPage
         title="Privacy policy"
         intro="What we collect, why we have it, who else sees it and what you can ask us to do about it. Written to be read rather than to be defensible."
@@ -187,6 +184,7 @@ export default function PrivacyPolicyPage() {
         sections={SECTIONS}
         contact="If something here is unclear, or you want to exercise one of the rights in section seven, ask us directly."
       />
+      <PageBreadcrumbs trail={[{ name: "Home", path: "/" }, { name: "Privacy policy", path: PATH }]} />
     </>
   );
 }

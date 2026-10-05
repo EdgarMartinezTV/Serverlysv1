@@ -23,7 +23,9 @@ export function DemoBadge({ tone = "light" }: { tone?: "light" | "dark" }) {
         "inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-ui font-semibold",
         tone === "dark"
           ? "bg-white/10 text-fg-on-dark-secondary ring-1 ring-inset ring-white/15"
-          : "bg-canvas-inset text-fg-muted ring-1 ring-inset ring-line",
+          : // fg-secondary, not fg-muted: muted is 4.41:1 on canvas-inset at
+            // 11px — a WCAG AA failure Lighthouse flagged on /hosting.
+            "bg-canvas-inset text-fg-secondary ring-1 ring-inset ring-line",
       )}
     >
       <span
@@ -174,7 +176,7 @@ export function Segmented<T extends string>({
                   : "text-fg-on-dark-muted hover:text-white focus-visible:outline-white"
                 : active
                   ? "bg-surface text-fg shadow-e1 focus-visible:outline-primary"
-                  : "text-fg-muted hover:text-fg focus-visible:outline-primary",
+                  : "text-fg-secondary hover:text-fg focus-visible:outline-primary",
             )}
           >
             {option.label}

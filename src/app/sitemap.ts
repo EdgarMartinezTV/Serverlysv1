@@ -16,11 +16,12 @@ import { canonical } from "@/lib/seo";
  * "now" on every crawl, which teaches crawlers to distrust the field.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
-
+  // NO lastModified on pages. It used to be `new Date()` — build time — which
+  // told Google every page changed on every deploy. Google learns to ignore a
+  // sitemap whose lastmod is not trustworthy, and that would cost the articles
+  // below, whose dates ARE real. An absent lastmod is honest; a fake one is not.
   const pages = sitemapRoutes().map((route) => ({
     url: canonical(route.path),
-    lastModified,
     changeFrequency: route.changeFrequency,
     priority: route.priority,
   }));

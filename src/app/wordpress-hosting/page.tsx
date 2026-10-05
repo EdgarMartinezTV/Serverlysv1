@@ -1,9 +1,11 @@
+import { breadcrumbTrail } from "@/data/routes";
 import { PillNav } from "@/components/sections/pill-nav";
 import { FaqSection } from "@/components/sections/faq";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { JsonLd } from "@/components/ui/json-ld";
 import { groupById, formatPrice } from "@/data/pricing";
 import { faqsFor } from "@/data/faqs";
-import { pageMetadata, faqGraph, breadcrumbGraph, productGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph, productGraph } from "@/lib/seo";
 import { Proof } from "../cloud-hosting/_components/proof";
 import { Banner } from "../cloud-hosting/_components/banner";
 import { Hero } from "./_components/hero";
@@ -25,7 +27,7 @@ const group = groupById("wordpress");
 const prices = group?.plans.map((p) => p.monthly) ?? [0];
 
 export const metadata = pageMetadata({
-  title: `WordPress Hosting — managed plans from ${formatPrice(Math.min(...prices))}/mo | Serverlys`,
+  title: `Managed WordPress Hosting from ${formatPrice(Math.min(...prices))}/mo | Serverlys`,
   description: DESCRIPTION,
   path: PATH,
 });
@@ -50,12 +52,6 @@ export default function WordPressHostingPage() {
 
   return (
     <>
-      <JsonLd
-        data={breadcrumbGraph([
-          { name: "Home", path: "/" },
-          { name: "WordPress hosting", path: PATH },
-        ])}
-      />
       <JsonLd
         data={productGraph({
           name: "Serverlys WordPress Hosting",
@@ -89,6 +85,7 @@ export default function WordPressHostingPage() {
         body="Try Serverlys WordPress hosting risk-free. If it is not right, tell us within 30 days for a full refund."
         href="#plans"
       />
+      <PageBreadcrumbs trail={breadcrumbTrail(PATH)} />
     </>
   );
 }

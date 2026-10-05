@@ -2,13 +2,13 @@ import Link from "next/link";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { Badge } from "@/components/ui/badge";
 import { FinalCta } from "@/components/sections/final-cta";
-import { JsonLd } from "@/components/ui/json-ld";
 import { NavIcon } from "@/components/navigation/nav-icons";
 import { articles, readingMinutes } from "@/data/articles";
 import { billing } from "@/data/company";
-import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 import { PageHero } from "../resources/_components/page-hero";
 import { ArticleThumb } from "../blog/_components/article-thumb";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 const PATH = "/resources";
 
@@ -80,12 +80,6 @@ export default function ResourcesPage() {
 
   return (
     <>
-      <JsonLd
-        data={breadcrumbGraph([
-          { name: "Home", path: "/" },
-          { name: "Resources", path: PATH },
-        ])}
-      />
 
       <PageHero
         center
@@ -174,6 +168,10 @@ export default function ResourcesPage() {
       </Section>
 
       <FinalCta />
+      <PageBreadcrumbs trail={[
+          { name: "Home", path: "/" },
+          { name: "Resources", path: PATH },
+        ]} />
     </>
   );
 }

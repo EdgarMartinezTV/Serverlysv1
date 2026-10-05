@@ -45,7 +45,7 @@ function EditorMock() {
       {/* Page canvas */}
       <div className="relative h-[330px] overflow-hidden rounded-2xl shadow-e4 sm:h-[360px]">
         <div className="absolute inset-0">
-          <MockPhoto src="bread-sliced" className="h-full" sizes="560px" position="center 60%" />
+          <MockPhoto src="bread-sliced" className="h-full" sizes="560px" position="center 60%" eager />
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/70 to-white/0" />
         <div className="relative flex justify-end gap-6 px-8 pt-5 text-[10px] font-semibold tracking-[0.18em] text-fg">

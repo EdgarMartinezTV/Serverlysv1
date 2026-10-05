@@ -308,7 +308,7 @@ export const routes: readonly RouteMeta[] = [
     indexable: true,
     priority: 0.7,
     changeFrequency: "monthly",
-    parents: ["/"],
+    parents: ["/", "/hosting"],
   },
   {
     path: "/shared-hosting",

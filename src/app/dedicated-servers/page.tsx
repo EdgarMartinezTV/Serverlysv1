@@ -7,8 +7,10 @@ import { FinalCta } from "@/components/sections/final-cta";
 import { JsonLd } from "@/components/ui/json-ld";
 import { RackMock } from "@/components/product-ui/infra";
 import { billing } from "@/data/company";
-import { pageMetadata, breadcrumbGraph, faqGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph } from "@/lib/seo";
 import type { Faq } from "@/data/faqs";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { breadcrumbTrail } from "@/data/routes";
 
 const PATH = "/dedicated-servers";
 
@@ -58,13 +60,6 @@ const FAQS: readonly Faq[] = [
 export default function DedicatedServersPage() {
   return (
     <>
-      <JsonLd
-        data={breadcrumbGraph([
-          { name: "Home", path: "/" },
-          { name: "Hosting", path: "/hosting" },
-          { name: "Dedicated servers", path: PATH },
-        ])}
-      />
       <JsonLd data={faqGraph(FAQS)} />
 
       <ProductHero
@@ -241,6 +236,7 @@ export default function DedicatedServersPage() {
 
       <FaqSection items={FAQS} />
       <FinalCta />
+      <PageBreadcrumbs trail={breadcrumbTrail(PATH)} />
     </>
   );
 }

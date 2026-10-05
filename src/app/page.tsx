@@ -28,7 +28,7 @@ import { company } from "@/data/company";
  * dropped it once and only the SEO audit caught it.
  */
 export const metadata = pageMetadata({
-  title: `${company.name} — ${company.tagline}`,
+  title: `${company.name} — Web Hosting, Domains & AI for Small Business`,
   description: company.description,
   path: "/",
 });

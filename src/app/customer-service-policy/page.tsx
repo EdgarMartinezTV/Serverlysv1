@@ -1,7 +1,7 @@
 import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
-import { JsonLd } from "@/components/ui/json-ld";
-import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 import { company, emailDisplay } from "@/data/company";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 /**
  * Customer service policy.
@@ -31,7 +31,7 @@ const PATH = "/customer-service-policy";
 export const metadata = pageMetadata({
   title: "Customer Service Policy | Serverlys",
   description:
-    "How to reach Serverlys support, what we aim to respond in, how we handle complaints, and the things we will not do — including the retention scripts we do not run.",
+    "How to reach Serverlys support, what we aim to respond in, how complaints are handled, and what we will not do — including retention scripts.",
   path: PATH,
 });
 
@@ -175,12 +175,6 @@ const SECTIONS: readonly LegalSection[] = [
 export default function CustomerServicePolicyPage() {
   return (
     <>
-      <JsonLd
-        data={breadcrumbGraph([
-          { name: "Home", path: "/" },
-          { name: "Customer service policy", path: PATH },
-        ])}
-      />
       <LegalPage
         path={PATH}
         title="Customer service policy"
@@ -189,6 +183,10 @@ export default function CustomerServicePolicyPage() {
         sections={SECTIONS}
         contact="If your experience of us has not matched what this page says, that is worth telling us directly. A policy nobody is held to is just decoration."
       />
+      <PageBreadcrumbs trail={[
+          { name: "Home", path: "/" },
+          { name: "Customer service policy", path: PATH },
+        ]} />
     </>
   );
 }

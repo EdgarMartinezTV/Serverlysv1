@@ -191,7 +191,7 @@ export const article: Article = {
     {
       type: "callout",
       title: "Ready to rank higher?",
-      text: "Great SEO starts with great hosting. [Serverlys WordPress hosting](/wordpress-hosting) provides the technical foundation — fast servers, free SSL, CDN, and optimal server configuration — so you can focus on content and optimization. [Compare plans](/pricing).",
+      text: "Great SEO starts with great hosting. [Serverlys WordPress hosting](/wordpress-hosting) provides the technical foundation — fast servers, free SSL, CDN, and optimal server configuration — so you can focus on content and optimization. [Compare plans](/pricing), or if you would rather hand the SEO work itself over, see our [SEO services](/seo).",
     },
     { type: "h2", id: "frequently-asked-questions", text: "Frequently Asked Questions" },
     { type: "h3", text: "Is WordPress good for SEO?" },

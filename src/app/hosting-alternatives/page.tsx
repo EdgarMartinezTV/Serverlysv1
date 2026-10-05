@@ -6,9 +6,10 @@ import { Button } from "@/components/ui/button";
 import { FaqSection } from "@/components/sections/faq";
 import { FinalCta } from "@/components/sections/final-cta";
 import { JsonLd } from "@/components/ui/json-ld";
-import { pageMetadata, breadcrumbGraph, faqGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph } from "@/lib/seo";
 import type { Faq } from "@/data/faqs";
 import { billing } from "@/data/company";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 const PATH = "/hosting-alternatives";
 
@@ -128,13 +129,6 @@ const FAQS: readonly Faq[] = [
 export default function HostingAlternativesPage() {
   return (
     <>
-      <JsonLd
-        data={breadcrumbGraph([
-          { name: "Home", path: "/" },
-          { name: "Resources", path: "/resources" },
-          { name: "Hosting comparison", path: PATH },
-        ])}
-      />
       <JsonLd data={faqGraph(FAQS)} />
 
       {/* Hero: light, copy left, a coded tier picker right (2026-10-03). */}
@@ -312,6 +306,11 @@ export default function HostingAlternativesPage() {
 
       <FaqSection items={FAQS} />
       <FinalCta />
+      <PageBreadcrumbs trail={[
+          { name: "Home", path: "/" },
+          { name: "Resources", path: "/resources" },
+          { name: "Hosting comparison", path: PATH },
+        ]} />
     </>
   );
 }

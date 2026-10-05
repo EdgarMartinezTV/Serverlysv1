@@ -5,10 +5,11 @@ import { Button } from "@/components/ui/button";
 import { FaqSection } from "@/components/sections/faq";
 import { FinalCta } from "@/components/sections/final-cta";
 import { ShowcaseSplit } from "@/components/sections/showcase-split";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { JsonLd } from "@/components/ui/json-ld";
 import { DashboardMock } from "@/components/product-ui/dashboard";
 import { UptimePanel } from "@/components/product-ui/panels";
-import { pageMetadata, breadcrumbGraph, faqGraph, serviceGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph, serviceGraph } from "@/lib/seo";
 import type { Faq } from "@/data/faqs";
 import { billing } from "@/data/company";
 
@@ -71,12 +72,6 @@ export default function SiteManagementPage() {
           description: DESCRIPTION,
           path: PATH,
         })}
-      />
-      <JsonLd
-        data={breadcrumbGraph([
-          { name: "Home", path: "/" },
-          { name: "Site management", path: PATH },
-        ])}
       />
       <JsonLd data={faqGraph(FAQS)} />
 
@@ -300,6 +295,12 @@ export default function SiteManagementPage() {
 
       <FaqSection items={FAQS} />
       <FinalCta />
+      <PageBreadcrumbs
+        trail={[
+          { name: "Home", path: "/" },
+          { name: "Site management", path: PATH },
+        ]}
+      />
     </>
   );
 }

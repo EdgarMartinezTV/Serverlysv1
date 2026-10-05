@@ -45,7 +45,17 @@ export function MockPhoto({
 }) {
   return (
     <span className={cn("relative block overflow-hidden", className)}>
-      <Image src={`/mock/${src}.jpg`} alt={alt} fill sizes={sizes} priority={eager} className="object-cover" style={{ objectPosition: position }} />
+      {/* `priority` is deprecated in Next 16. For an LCP photo the docs prescribe
+          eager loading at high fetch priority rather than a <head> preload. */}
+      <Image
+        src={`/mock/${src}.jpg`}
+        alt={alt}
+        fill
+        sizes={sizes}
+        {...(eager ? { loading: "eager" as const, fetchPriority: "high" as const } : {})}
+        className="object-cover"
+        style={{ objectPosition: position }}
+      />
     </span>
   );
 }

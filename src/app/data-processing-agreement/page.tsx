@@ -1,7 +1,7 @@
 import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
-import { JsonLd } from "@/components/ui/json-ld";
-import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 import { emailDisplay } from "@/data/company";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 /**
  * Data Processing Agreement.
@@ -200,12 +200,6 @@ const SECTIONS: readonly LegalSection[] = [
 export default function DataProcessingAgreementPage() {
   return (
     <>
-      <JsonLd
-        data={breadcrumbGraph([
-          { name: "Home", path: "/" },
-          { name: "Data processing agreement", path: PATH },
-        ])}
-      />
       <LegalPage
         title="Data Processing Agreement"
         intro="The Article 28 terms that apply whenever we process personal data on your behalf — roles, security, sub-processors, transfers and what happens at the end."
@@ -214,6 +208,10 @@ export default function DataProcessingAgreementPage() {
         trail={[{ name: "Home", href: "/" }, { name: "Data processing agreement" }]}
         contact="Need a countersigned copy, the current sub-processor list, or the Standard Contractual Clauses for your file? Ask and we will send them."
       />
+      <PageBreadcrumbs trail={[
+          { name: "Home", path: "/" },
+          { name: "Data processing agreement", path: PATH },
+        ]} />
     </>
   );
 }

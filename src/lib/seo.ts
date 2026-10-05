@@ -3,6 +3,7 @@ import { company } from "@/data/company";
 import { ogCards, ogKeyFor } from "@/data/og-cards";
 import type { Faq } from "@/data/faqs";
 import { socialLinks } from "@/data/navigation";
+import { publicEnv } from "@/lib/env";
 
 /**
  * SEO / structured data.
@@ -27,6 +28,11 @@ const LOGO_ID = `${company.url}/#logo`;
 
 export function canonical(path: string): string {
   return path === "/" ? company.url : `${company.url}${path}`;
+}
+
+/** Absolute URL of a page's 1200x630 social card, falling back to the site card. */
+export function ogImageFor(path: string): string {
+  return canonical(ogCards[path] ? `/og/${ogKeyFor(path)}` : "/opengraph-image");
 }
 
 type PageMetaInput = {
@@ -54,14 +60,23 @@ export function pageMetadata({
   // file-based opengraph-image for that route. So the card is resolved here,
   // from the registry, and a page with no registered card falls back to the
   // site card rather than shipping with none.
-  const card = ogCards[path] ? `/og/${ogKeyFor(path)}` : "/opengraph-image";
-  const images = [{ url: canonical(card), width: 1200, height: 630, alt: title }];
+  const images = [{ url: ogImageFor(path), width: 1200, height: 630, alt: title }];
 
   return {
     title: { absolute: title },
     description,
     alternates: { canonical: url },
-    robots: index ? { index: true, follow: true } : { index: false, follow: true },
+    // A deployment that may not be indexed (staging — see lib/env.ts) says so
+    // on every page as well as in robots.txt, so a stray inbound link cannot
+    // get a staging URL into the index.
+    robots:
+      index && publicEnv.allowIndexing
+        ? {
+            index: true,
+            follow: true,
+            googleBot: { "max-image-preview": "large", "max-snippet": -1 },
+          }
+        : { index: false, follow: true },
     openGraph: {
       type: "website",
       siteName: company.name,
@@ -160,17 +175,30 @@ export function organizationGraph() {
         },
       },
       {
+        /*
+         * The logo Google may show beside the brand. SQUARE, on WHITE, PNG:
+         * search surfaces crop to a square and render on white, and the wide
+         * 1653x409 lockup (`logo.webp`) became an unreadable sliver there.
+         * This is the official mark cropped out of that lockup — not redrawn.
+         * Stable URL: do not rename it, Google caches logos for months.
+         */
         "@type": "ImageObject",
         "@id": LOGO_ID,
-        url: `${company.url}/brand/logo.webp`,
-        contentUrl: `${company.url}/brand/logo.webp`,
+        url: `${company.url}/brand/logo-square.png`,
+        contentUrl: `${company.url}/brand/logo-square.png`,
+        width: 512,
+        height: 512,
         caption: company.name,
       },
       {
         "@type": "WebSite",
         "@id": SITE_ID,
-        url: company.url,
+        // `url` must be the homepage with a trailing slash for Google's site-name
+        // system to match it to the domain root.
+        url: `${company.url}/`,
         name: company.name,
+        alternateName: [`${company.name} Hosting`, company.domain],
+        inLanguage: "en",
         description: company.description,
         publisher: { "@id": ORG_ID },
       },
@@ -326,12 +354,18 @@ export function articleGraph({
   description,
   path,
   published,
+  modified,
+  image,
   section,
 }: {
   headline: string;
   description: string;
   path: string;
   published: string;
+  /** Only when the article was genuinely revised; never build time. */
+  modified?: string;
+  /** Absolute URL of the image shown for the article (its OG card). */
+  image?: string;
   section: string;
 }) {
   const url = canonical(path);
@@ -343,8 +377,10 @@ export function articleGraph({
     description,
     articleSection: section,
     datePublished: published,
-    dateModified: published,
+    dateModified: modified ?? published,
+    ...(image ? { image: [image] } : {}),
     inLanguage: "en",
+    isPartOf: { "@id": SITE_ID },
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     author: { "@id": ORG_ID },
     publisher: { "@id": ORG_ID },

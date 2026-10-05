@@ -7,8 +7,9 @@ import { AI_ANSWER_AGENTS, AI_TRAINING_AGENTS } from "@/data/ai-agents";
 /**
  * robots.txt.
  *
- * Staging must never be indexed: when NEXT_PUBLIC_SITE_URL is not the
- * production origin, everything is disallowed. A staging site competing with
+ * Staging must never be indexed: unless `publicEnv.allowIndexing` (true by
+ * default only on the production origin — see lib/env.ts), everything is
+ * disallowed. A staging site competing with
  * production in the index is a real and common SEO incident, and it is
  * cheapest to prevent here.
  *
@@ -23,9 +24,7 @@ import { AI_ANSWER_AGENTS, AI_TRAINING_AGENTS } from "@/data/ai-agents";
  * Both are allowed today. See `data/ai-agents.ts` for what that means.
  */
 export default function robots(): MetadataRoute.Robots {
-  const isProduction = publicEnv.siteUrl === "https://serverlys.com";
-
-  if (!isProduction) {
+  if (!publicEnv.allowIndexing) {
     return {
       rules: [{ userAgent: "*", disallow: "/" }],
     };

@@ -2,11 +2,11 @@ import { Section, SectionHeader } from "@/components/ui/section";
 import { Button } from "@/components/ui/button";
 import { FeatureGrid } from "@/components/sections/feature-grid";
 import { FinalCta } from "@/components/sections/final-cta";
-import { JsonLd } from "@/components/ui/json-ld";
 import { NavIcon, ArrowUpRight } from "@/components/navigation/nav-icons";
 import { billing, company, emailDisplay } from "@/data/company";
-import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 import { PageHero } from "../resources/_components/page-hero";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 const PATH = "/support";
 
@@ -51,7 +51,6 @@ const CHANNELS = [
 export default function SupportPage() {
   return (
     <>
-      <JsonLd data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "Support", path: PATH }])} />
 
       <PageHero
         trail={[{ name: "Home", href: "/" }, { name: "Support" }]}
@@ -196,6 +195,7 @@ function TicketMock() {
         <span className="flex-1 rounded-md bg-canvas-secondary px-3 py-2 text-micro text-fg-muted">Write a reply…</span>
         <span className="rounded-md bg-primary px-3 py-2 text-micro font-semibold text-white">Send</span>
       </div>
+      <PageBreadcrumbs trail={[{ name: "Home", path: "/" }, { name: "Support", path: PATH }]} />
     </div>
   );
 }

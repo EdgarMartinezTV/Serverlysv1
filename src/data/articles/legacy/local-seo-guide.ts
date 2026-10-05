@@ -115,7 +115,7 @@ export const article: Article = {
     {
       type: "callout",
       title: "Serverlys Tip",
-      text: "A fast, mobile-friendly website is essential for local SEO. Mobile users expect pages to load in under 2 seconds. Our [cloud hosting](/cloud-hosting) delivers sub-200ms server response times that keep your local visitors engaged. Need a professional local business website? Our [web design team](/website-design) can help.",
+      text: "A fast, mobile-friendly website is essential for local SEO. Mobile users expect pages to load in under 2 seconds. Our [cloud hosting](/cloud-hosting) delivers sub-200ms server response times that keep your local visitors engaged. Need a professional local business website? Our [web design team](/website-design) can help, and our [SEO services](/seo) can take the technical and content work off your plate.",
     },
     { type: "h2", id: "step-5-build-local-backlinks", text: "Step 5: Build Local Backlinks" },
     { type: "p", text: "Backlinks from local websites carry more weight for local SEO than links from national or international sites. Here are strategies that work:" },

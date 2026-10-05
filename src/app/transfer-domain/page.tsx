@@ -3,8 +3,10 @@ import { DomainHero, Explainers, Manage, Popular, Reasons, Steps, TldTable } fro
 import { Faqs } from "@/components/ref/faqs";
 import { DomainSearchApp } from "@/components/domain/domain-search-app";
 import { tlds } from "@/data/tlds";
-import { breadcrumbGraph, faqGraph, pageMetadata } from "@/lib/seo";
+import { faqGraph, pageMetadata } from "@/lib/seo";
 import { FAQ_HEAD, HERO, REASONS, STEPS } from "./_content";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { breadcrumbTrail } from "@/data/routes";
 
 /**
  * Transfer a domain.
@@ -29,11 +31,6 @@ const DESCRIPTION =
   "Move a domain to Serverlys without downtime. Your remaining registration carries over, DNS keeps resolving, and the 60-day ICANN rule is explained up front.";
 
 export const metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH });
-
-const BREADCRUMB = [
-  { name: "Home", path: "/" },
-  { name: "Transfer a domain", path: PATH },
-];
 
 /** Kept so the TLD bands have something to show; registration prices. */
 void tlds;
@@ -75,7 +72,6 @@ export default function TransferDomainPage() {
   return (
     /** globals.css balances headings; the reference wraps normally. */
     <div className="[&_h1]:text-wrap [&_h2]:text-wrap [&_h3]:text-wrap [&_p]:text-wrap">
-      <JsonLd data={breadcrumbGraph(BREADCRUMB)} />
       <JsonLd data={faqGraph(FAQ_TEXT)} />
 
       <DomainHero copy={HERO} tool={<DomainSearchApp />} />
@@ -95,6 +91,7 @@ export default function TransferDomainPage() {
           a: [{ type: "p" as const, runs: [{ text: f.answer }] }],
         }))}
       />
+      <PageBreadcrumbs trail={breadcrumbTrail(PATH)} />
     </div>
   );
 }

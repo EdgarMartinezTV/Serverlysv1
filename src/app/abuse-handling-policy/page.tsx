@@ -1,6 +1,6 @@
 import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
-import { JsonLd } from "@/components/ui/json-ld";
-import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { pageMetadata } from "@/lib/seo";
 import { emailDisplay } from "@/data/company";
 
 /**
@@ -190,12 +190,6 @@ const SECTIONS: readonly LegalSection[] = [
 export default function AbuseHandlingPolicyPage() {
   return (
     <>
-      <JsonLd
-        data={breadcrumbGraph([
-          { name: "Home", path: "/" },
-          { name: "Abuse handling policy", path: PATH },
-        ])}
-      />
       <LegalPage
         path={PATH}
         title="Abuse handling policy"
@@ -203,6 +197,12 @@ export default function AbuseHandlingPolicyPage() {
         trail={[{ name: "Home", href: "/" }, { name: "Abuse handling policy" }]}
         sections={SECTIONS}
         contact="If you have reported something and it is still live, tell us again and say so. A second message about the same URL is not a nuisance — it is how we find out the first one went astray."
+      />
+      <PageBreadcrumbs
+        trail={[
+          { name: "Home", path: "/" },
+          { name: "Abuse handling policy", path: PATH },
+        ]}
       />
     </>
   );

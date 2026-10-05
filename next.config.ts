@@ -23,6 +23,9 @@ const nextConfig: NextConfig = {
     // Only widths we actually render, so we don't generate dead variants.
     deviceSizes: [375, 430, 640, 768, 834, 1024, 1280, 1440, 1920],
     imageSizes: [16, 24, 32, 48, 64, 96, 128, 256, 384],
+    // Optimized variants of /public images. Next 16's default is 4h, which
+    // re-encodes the same AVIF all day; these sources change only on deploy.
+    minimumCacheTTL: 60 * 60 * 24 * 30,
   },
 
   /**
@@ -112,7 +115,25 @@ const nextConfig: NextConfig = {
 
   async headers() {
     const isDev = process.env.NODE_ENV !== "production";
+    /*
+     * /public files are NOT content-hashed, so they cannot be `immutable` like
+     * /_next/static. They were served `max-age=0` — revalidated on every page
+     * view. A day fresh plus a week stale-while-revalidate means a replaced
+     * logo still propagates within a day, without a round trip per visit.
+     */
+    const publicAssetCache = {
+      key: "Cache-Control",
+      value: "public, max-age=86400, stale-while-revalidate=604800",
+    };
     return [
+      { source: "/brand/:path*", headers: [publicAssetCache] },
+      { source: "/mock/:path*", headers: [publicAssetCache] },
+      { source: "/Hosting-images/:path*", headers: [publicAssetCache] },
+      {
+        source:
+          "/:file(favicon\\.ico|favicon\\.svg|favicon-96x96\\.png|icon\\.png|apple-icon\\.png|apple-touch-icon\\.png)",
+        headers: [publicAssetCache],
+      },
       {
         source: "/:path*",
         headers: [

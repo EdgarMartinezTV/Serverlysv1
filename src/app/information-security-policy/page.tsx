@@ -1,6 +1,6 @@
 import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
-import { JsonLd } from "@/components/ui/json-ld";
-import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { pageMetadata } from "@/lib/seo";
 import { emailDisplay } from "@/data/company";
 
 /**
@@ -180,12 +180,6 @@ const SECTIONS: readonly LegalSection[] = [
 export default function InformationSecurityPolicyPage() {
   return (
     <>
-      <JsonLd
-        data={breadcrumbGraph([
-          { name: "Home", path: "/" },
-          { name: "Information security policy", path: PATH },
-        ])}
-      />
       <LegalPage
         path={PATH}
         title="Information security policy"
@@ -193,6 +187,12 @@ export default function InformationSecurityPolicyPage() {
         trail={[{ name: "Home", href: "/" }, { name: "Information security policy" }]}
         sections={SECTIONS}
         contact="If you are evaluating us against a security questionnaire and something here does not answer it, send us the question rather than guessing at the answer. We would rather tell you we do not meet a requirement than have you find out later."
+      />
+      <PageBreadcrumbs
+        trail={[
+          { name: "Home", path: "/" },
+          { name: "Information security policy", path: PATH },
+        ]}
       />
     </>
   );

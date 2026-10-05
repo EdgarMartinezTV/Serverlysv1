@@ -15,6 +15,7 @@
     "audit:crawl": "node scripts/crawl.mjs",
     "audit:cwv": "node scripts/cwv.mjs",
     "audit:seo": "node scripts/seo-audit.mjs",
+    "audit:lighthouse": "node scripts/lighthouse.mjs",
     "test:home": "node scripts/test-home.mjs",
     "test:whois": "node scripts/test-whois.mjs",
     "test:responsive": "node scripts/test-responsive.mjs",

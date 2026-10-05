@@ -1,7 +1,7 @@
 import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
-import { JsonLd } from "@/components/ui/json-ld";
-import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 import { company, emailDisplay } from "@/data/company";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 /**
  * Copyright and DMCA policy.
@@ -169,12 +169,6 @@ const SECTIONS: readonly LegalSection[] = [
 export default function DmcaPolicyPage() {
   return (
     <>
-      <JsonLd
-        data={breadcrumbGraph([
-          { name: "Home", path: "/" },
-          { name: "Copyright and DMCA policy", path: PATH },
-        ])}
-      />
       <LegalPage
         title="Copyright and DMCA Policy"
         intro="How to report copyright infringement on material we host, what a valid notice has to contain, and how the customer answers back."
@@ -183,6 +177,10 @@ export default function DmcaPolicyPage() {
         trail={[{ name: "Home", href: "/" }, { name: "Copyright and DMCA policy" }]}
         contact="Copyright notices and counter-notices go to the address above, marked “DMCA notice”. Anything else reaches us faster through the abuse report form."
       />
+      <PageBreadcrumbs trail={[
+          { name: "Home", path: "/" },
+          { name: "Copyright and DMCA policy", path: PATH },
+        ]} />
     </>
   );
 }

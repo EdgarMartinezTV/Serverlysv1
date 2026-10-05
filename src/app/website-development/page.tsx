@@ -1,5 +1,6 @@
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { JsonLd } from "@/components/ui/json-ld";
-import { pageMetadata, faqGraph, breadcrumbGraph, serviceGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph, serviceGraph } from "@/lib/seo";
 import { FinalCta } from "@/components/sections/final-cta";
 import {
   Chat,
@@ -58,12 +59,6 @@ export default function WebsiteDevelopmentPage() {
         })}
       />
       <JsonLd
-        data={breadcrumbGraph([
-          { name: "Home", path: "/" },
-          { name: "Web development", path: PATH },
-        ])}
-      />
-      <JsonLd
         /* `scopes` is what decides which pages a SHARED faq appears on. These
            are page-local, so the scope is this path and nothing else. */
         data={faqGraph(
@@ -81,6 +76,12 @@ export default function WebsiteDevelopmentPage() {
       <Chat />
       <Faq />
       <FinalCta plansHref="#plans" />
+      <PageBreadcrumbs
+        trail={[
+          { name: "Home", path: "/" },
+          { name: "Web development", path: PATH },
+        ]}
+      />
     </>
   );
 }

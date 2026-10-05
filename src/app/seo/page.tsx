@@ -7,15 +7,16 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { SeoMock, HostingMock } from "@/components/product-ui/mocks";
 import { billing } from "@/data/company";
 import { faqsFor } from "@/data/faqs";
-import { pageMetadata, faqGraph, breadcrumbGraph, serviceGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph, serviceGraph } from "@/lib/seo";
 import { BakerySite } from "../website-design/_components/shots";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 const PATH = "/seo";
 const DESCRIPTION =
   "Technical and content SEO for small businesses: fix what is broken, earn the terms that bring buyers, and report honestly on what changed.";
 
 export const metadata = pageMetadata({
-  title: "SEO — get found by people ready to buy | Serverlys",
+  title: "SEO Services for Small Businesses | Serverlys",
   description: DESCRIPTION,
   path: PATH,
 });
@@ -32,7 +33,6 @@ export default function SeoPage() {
           path: PATH,
         })}
       />
-      <JsonLd data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "SEO", path: PATH }])} />
       <JsonLd data={faqGraph(faqs)} />
       <ProductHero
         eyebrow="SEO"
@@ -86,6 +86,7 @@ export default function SeoPage() {
       />
       <FaqSection items={faqs} />
       <FinalCta />
+      <PageBreadcrumbs trail={[{ name: "Home", path: "/" }, { name: "SEO", path: PATH }]} />
     </>
   );
 }

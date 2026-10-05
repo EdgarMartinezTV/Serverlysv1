@@ -93,7 +93,7 @@ function HeroShot() {
           <span className="size-2.5 rounded-full bg-[#febc2e]" />
           <span className="size-2.5 rounded-full bg-[#28c840]" />
           <span className="ml-2">booking/availability.ts</span>
-          <span className="ml-auto rounded bg-success-fill/20 px-1.5 py-0.5 text-success-fill">+42 −6</span>
+          <span className="ml-auto rounded bg-success-fill/20 px-1.5 py-0.5 text-[#4ade80]">+42 −6</span>
         </div>
         <pre className="overflow-hidden px-4 py-3 font-mono text-[11px] leading-5 text-white/80">
 {`export function openSlots(day: Date, partySize: number) {

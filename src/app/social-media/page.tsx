@@ -7,8 +7,9 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { ChatMock } from "@/components/product-ui/mocks";
 import { billing } from "@/data/company";
 import { faqsFor } from "@/data/faqs";
-import { pageMetadata, faqGraph, breadcrumbGraph, serviceGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph, serviceGraph } from "@/lib/seo";
 import { SocialPlanner } from "../website-design/_components/shots";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 const PATH = "/social-media";
 const DESCRIPTION =
@@ -32,7 +33,6 @@ export default function SocialMediaPage() {
           path: PATH,
         })}
       />
-      <JsonLd data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "Social media", path: PATH }])} />
       <JsonLd data={faqGraph(faqs)} />
       <ProductHero
         eyebrow="Social media"
@@ -75,6 +75,7 @@ export default function SocialMediaPage() {
       />
       <FaqSection items={faqs} />
       <FinalCta />
+      <PageBreadcrumbs trail={[{ name: "Home", path: "/" }, { name: "Social media", path: PATH }]} />
     </>
   );
 }

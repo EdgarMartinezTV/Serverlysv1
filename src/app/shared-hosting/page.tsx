@@ -9,11 +9,12 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { SharedLimitsMock } from "@/components/product-ui/infra";
 import { NavIcon } from "@/components/navigation/nav-icons";
 import { billing } from "@/data/company";
-import { pageMetadata, breadcrumbGraph, faqGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph } from "@/lib/seo";
 import type { Faq } from "@/data/faqs";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { breadcrumbTrail } from "@/data/routes";
 
 const PATH = "/shared-hosting";
-
 
 export const metadata = pageMetadata({
   /* No price in the title: the tier is not orderable yet, and a bare
@@ -79,13 +80,6 @@ const FAQS: readonly Faq[] = [
 export default function SharedHostingPage() {
   return (
     <>
-      <JsonLd
-        data={breadcrumbGraph([
-          { name: "Home", path: "/" },
-          { name: "Hosting", path: "/hosting" },
-          { name: "Shared hosting", path: PATH },
-        ])}
-      />
       <JsonLd data={faqGraph(FAQS)} />
 
       <ProductHero
@@ -239,6 +233,7 @@ export default function SharedHostingPage() {
       </Container>
 
       <FinalCta />
+      <PageBreadcrumbs trail={breadcrumbTrail(PATH)} />
     </>
   );
 }

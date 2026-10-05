@@ -9,7 +9,9 @@ import { ConvoChat } from "@/components/product-ui/live/convo-chat";
 import { AutomationMock, SitePreviewMock } from "@/components/product-ui/mocks";
 import { billing, sisterProducts } from "@/data/company";
 import { faqsFor } from "@/data/faqs";
-import { pageMetadata, faqGraph, breadcrumbGraph, serviceGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph, serviceGraph } from "@/lib/seo";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { breadcrumbTrail } from "@/data/routes";
 
 const PATH = "/convoai";
 const DESCRIPTION =
@@ -35,7 +37,6 @@ export default function ConvoAiPage() {
           path: PATH,
         })}
       />
-      <JsonLd data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "ConvoAI", path: PATH }])} />
       <JsonLd data={faqGraph(faqs)} />
 
       <ProductHero
@@ -98,6 +99,7 @@ export default function ConvoAiPage() {
 
       <FaqSection items={faqs} />
       <FinalCta />
+      <PageBreadcrumbs trail={breadcrumbTrail(PATH)} />
     </>
   );
 }

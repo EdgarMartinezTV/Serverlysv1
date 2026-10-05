@@ -8,7 +8,8 @@ import { DashboardMock } from "@/components/product-ui/dashboard";
 import { AutomationMock, ChatMock } from "@/components/product-ui/mocks";
 import { billing } from "@/data/company";
 import { faqsFor } from "@/data/faqs";
-import { pageMetadata, faqGraph, breadcrumbGraph, serviceGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph, serviceGraph } from "@/lib/seo";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 const PATH = "/business-solutions";
 const DESCRIPTION =
@@ -32,7 +33,6 @@ export default function BusinessSolutionsPage() {
           path: PATH,
         })}
       />
-      <JsonLd data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "Business solutions", path: PATH }])} />
       <JsonLd data={faqGraph(faqs)} />
       <ProductHero
         eyebrow="Business solutions"
@@ -86,6 +86,7 @@ export default function BusinessSolutionsPage() {
       />
       <FaqSection items={faqs} />
       <FinalCta />
+      <PageBreadcrumbs trail={[{ name: "Home", path: "/" }, { name: "Business solutions", path: PATH }]} />
     </>
   );
 }

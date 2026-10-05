@@ -88,7 +88,7 @@ export const article: Article = {
     {
       type: "callout",
       title: "Serverlys Tip",
-      text: "Our [web design services](/website-design) offer agency-quality results at freelancer-friendly prices. We handle design, development, hosting, and ongoing maintenance in one package — so you get professional results without managing multiple vendors.",
+      text: "Our [web design services](/website-design) offer agency-quality results at freelancer-friendly prices. We handle design, development, hosting, and ongoing maintenance in one package — so you get professional results without managing multiple vendors. [Our process](/our-process) sets out each stage and what we need from you.",
     },
     { type: "h2", id: "cost-component-4-content-0-5000", text: "Cost Component 4: Content ($0 – $5,000)" },
     { type: "p", text: "Content is often the hidden cost that catches businesses off guard. You can build a beautiful website, but if the text is weak, visitors won't convert. Here's what content typically costs:" },

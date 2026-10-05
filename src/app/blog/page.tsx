@@ -10,9 +10,10 @@ import {
   categorySlug,
   readingMinutes,
 } from "@/data/articles";
-import { pageMetadata, breadcrumbGraph, collectionGraph } from "@/lib/seo";
+import { pageMetadata, collectionGraph } from "@/lib/seo";
 import { ArticleThumb } from "./_components/article-thumb";
 import { PageHero } from "../resources/_components/page-hero";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 const PATH = "/blog";
 
@@ -53,7 +54,6 @@ export default function BlogIndexPage() {
 
   return (
     <>
-      <JsonLd data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "Blog", path: PATH }])} />
       <JsonLd
         data={collectionGraph({
           name: "Serverlys blog",
@@ -179,6 +179,7 @@ export default function BlogIndexPage() {
       </Section>
 
       <FinalCta />
+      <PageBreadcrumbs trail={[{ name: "Home", path: "/" }, { name: "Blog", path: PATH }]} />
     </>
   );
 }

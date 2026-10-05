@@ -1,14 +1,14 @@
 import { FeatureGrid } from "@/components/sections/feature-grid";
 import { ShowcaseSplit } from "@/components/sections/showcase-split";
 import { FinalCta } from "@/components/sections/final-cta";
-import { JsonLd } from "@/components/ui/json-ld";
 import { DashboardMock } from "@/components/product-ui/dashboard";
 import { company } from "@/data/company";
-import { pageMetadata, breadcrumbGraph } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 import { formatPrice, groupById } from "@/data/pricing";
 import { MockPhoto } from "@/components/ui/mock-photo";
 import { Button } from "@/components/ui/button";
 import { PageHero } from "../resources/_components/page-hero";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 const PATH = "/about";
 
@@ -29,7 +29,6 @@ export const metadata = pageMetadata({
 export default function AboutPage() {
   return (
     <>
-      <JsonLd data={breadcrumbGraph([{ name: "Home", path: "/" }, { name: "About", path: PATH }])} />
 
       <PageHero
         trail={[{ name: "Home", href: "/" }, { name: "About" }]}
@@ -131,6 +130,7 @@ function OneBill() {
           </li>
         </ul>
       </div>
+      <PageBreadcrumbs trail={[{ name: "Home", path: "/" }, { name: "About", path: PATH }]} />
     </div>
   );
 }

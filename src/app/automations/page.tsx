@@ -1,6 +1,6 @@
 import { JsonLd } from "@/components/ui/json-ld";
 import { Faqs } from "@/components/ref/faqs";
-import { breadcrumbGraph, faqGraph, pageMetadata, serviceGraph } from "@/lib/seo";
+import { faqGraph, pageMetadata, serviceGraph } from "@/lib/seo";
 import { FAQS, FAQ_HEAD } from "./_content";
 import { Banner } from "./_components/banner";
 import { Bento } from "./_components/bento";
@@ -12,6 +12,8 @@ import { Reliability } from "./_components/reliability";
 import { SubNav } from "./_components/subnav";
 import { Triggers } from "./_components/triggers";
 import { Tutorials } from "./_components/tutorials";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { breadcrumbTrail } from "@/data/routes";
 
 /**
  * Automations.
@@ -81,11 +83,6 @@ export const metadata = pageMetadata({
   path: PATH,
 });
 
-const BREADCRUMB = [
-  { name: "Home", path: "/" },
-  { name: "Automations", path: PATH },
-];
-
 /**
  * FAQPage needs plain-text answers, so the block structure the accordion
  * renders is flattened here rather than duplicated as a second copy of the
@@ -126,7 +123,6 @@ export default function AutomationsPage() {
           path: PATH,
         })}
       />
-      <JsonLd data={breadcrumbGraph(BREADCRUMB)} />
       <JsonLd data={faqGraph(FAQ_TEXT)} />
 
       <Hero />
@@ -148,6 +144,7 @@ export default function AutomationsPage() {
         description={FAQ_HEAD.description}
         items={FAQS}
       />
+      <PageBreadcrumbs trail={breadcrumbTrail(PATH)} />
     </div>
   );
 }

@@ -4,8 +4,10 @@ import { Faqs } from "@/components/ref/faqs";
 import { DomainSearchApp } from "@/components/domain/domain-search-app";
 import { cheapestTld, tlds } from "@/data/tlds";
 import { faqsFor } from "@/data/faqs";
-import { breadcrumbGraph, faqGraph, pageMetadata, productGraph } from "@/lib/seo";
+import { faqGraph, pageMetadata, productGraph } from "@/lib/seo";
 import { FAQ_HEAD, HERO, REASONS, STEPS } from "./_content";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { breadcrumbTrail } from "@/data/routes";
 
 /**
  * Register a domain.
@@ -32,11 +34,6 @@ const DESCRIPTION =
 
 export const metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH });
 
-const BREADCRUMB = [
-  { name: "Home", path: "/" },
-  { name: "Register a domain", path: PATH },
-];
-
 const PRICES = tlds.map((t) => t.price);
 
 export default function RegisterDomainPage() {
@@ -45,7 +42,6 @@ export default function RegisterDomainPage() {
   return (
     /** globals.css balances headings; the reference wraps normally. */
     <div className="[&_h1]:text-wrap [&_h2]:text-wrap [&_h3]:text-wrap [&_p]:text-wrap">
-      <JsonLd data={breadcrumbGraph(BREADCRUMB)} />
       <JsonLd
         data={productGraph({
           name: "Serverlys Domain Registration",
@@ -75,6 +71,7 @@ export default function RegisterDomainPage() {
           a: [{ type: "p" as const, runs: [{ text: f.answer }] }],
         }))}
       />
+      <PageBreadcrumbs trail={breadcrumbTrail(PATH)} />
     </div>
   );
 }

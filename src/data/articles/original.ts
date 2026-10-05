@@ -108,7 +108,7 @@ export const originalArticles: readonly Article[] = [
       },
       {
         type: "p",
-        text: "Any provider worth buying from can answer all three in one reply. We publish the renewal rate next to the introductory rate on every plan for exactly this reason: it costs us some sign-ups, and it saves the conversation that would otherwise happen twelve months later.",
+        text: "Any provider worth buying from can answer all three in one reply. We publish the renewal rate next to the introductory rate on [every plan](/pricing) for exactly this reason: it costs us some sign-ups, and it saves the conversation that would otherwise happen twelve months later.",
       },
     ],
   },
@@ -167,7 +167,7 @@ export const originalArticles: readonly Article[] = [
       },
       {
         type: "p",
-        text: "If this sounds like a job you would rather hand over: migration is free on every Serverlys hosting plan, and we do it in this order — staging first, your approval, then DNS.",
+        text: "If this sounds like a job you would rather hand over: [migration is free](/migrations) on every Serverlys hosting plan, and we do it in this order — staging first, your approval, then DNS.",
       },
     ],
   },
@@ -181,7 +181,7 @@ export const originalArticles: readonly Article[] = [
     body: [
       {
         type: "p",
-        text: "The four categories are not four quality tiers. They are four ways of dividing up a physical machine, and each one trades cost against isolation and control. Picking well means being honest about which of those you need.",
+        text: "[The four categories](/hosting-alternatives) are not four quality tiers. They are four ways of dividing up a physical machine, and each one trades cost against isolation and control. Picking well means being honest about which of those you need.",
       },
       { type: "h2", id: "shared", text: "Shared hosting" },
       {
@@ -233,7 +233,7 @@ export const originalArticles: readonly Article[] = [
       {
         type: "callout",
         title: "Managed is a separate axis",
-        text: "Managed and unmanaged is not the same question as shared and dedicated. You can have a managed VPS or an unmanaged one. If nobody in your organisation wants to patch a server at 2am, choose managed at whichever tier fits the workload.",
+        text: "Managed and unmanaged is not the same question as shared and dedicated. You can have a managed VPS or an unmanaged one. If nobody in your organisation wants to patch a server at 2am, [choose managed](/managed-hosting) at whichever tier fits the workload.",
       },
     ],
   },
@@ -247,7 +247,7 @@ export const originalArticles: readonly Article[] = [
     body: [
       {
         type: "p",
-        text: "Core Web Vitals are three measurements of how a page feels to the person loading it: how quickly the main content appears, how quickly it responds when they interact, and how much it moves around while it loads. Google publishes a threshold for each, measured at the 75th percentile of real visits.",
+        text: "Core Web Vitals are three measurements of how a page feels to the person loading it: how quickly the main content appears, how quickly it responds when they interact, and how much it moves around while it loads. Google publishes a threshold for each, measured at the 75th percentile of real visits. This is the short version; the [full Core Web Vitals guide](/blog/core-web-vitals-guide) walks through every fix in depth.",
       },
       { type: "h2", id: "lcp", text: "LCP — Largest Contentful Paint" },
       {
@@ -297,7 +297,7 @@ export const originalArticles: readonly Article[] = [
       },
       {
         type: "p",
-        text: "For a small site, the honest priority order is: get the hosting response time down, then fix the images, then remove the JavaScript you are not using. Those three account for most of the gap on most sites, and none of them require a rebuild.",
+        text: "For a small site, the honest priority order is: get the [hosting response time](/blog/reduce-ttfb) down, then fix the images, then remove the JavaScript you are not using. Those three account for most of the gap on most sites, and none of them require a rebuild.",
       },
     ],
   },
@@ -311,13 +311,13 @@ export const originalArticles: readonly Article[] = [
     body: [
       {
         type: "p",
-        text: "An AI agent is worth having when the alternative is nobody answering. That is the whole case, and it is a strong one: a missed call at a trades business or a clinic is usually a lost customer who calls the next name on the list. It is a much weaker case when it replaces a person who was answering well.",
+        text: "An [AI agent](/ai-agents) is worth having when the alternative is nobody answering. That is the whole case, and it is a strong one: a missed call at a trades business or a clinic is usually a lost customer who calls the next name on the list. It is a much weaker case when it replaces a person who was answering well.",
       },
       { type: "h2", id: "works", text: "Where it works" },
       {
         type: "ul",
         items: [
-          "Out of hours, weekends and holidays, when the phone would otherwise ring out",
+          "Out of hours, weekends and holidays, when the phone would otherwise [ring out](/callflow-ai)",
           "Overflow, when your team is already on another call",
           "Repetitive questions with stable answers — opening times, service areas, what you charge for a standard job, where to park",
           "Qualifying and capturing: name, number, what they need, and when — written into your inbox or CRM before the caller hangs up",

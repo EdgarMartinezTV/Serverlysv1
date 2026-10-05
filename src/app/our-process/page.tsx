@@ -6,9 +6,10 @@ import { FaqSection } from "@/components/sections/faq";
 import { FinalCta } from "@/components/sections/final-cta";
 import { JsonLd } from "@/components/ui/json-ld";
 import { SitePreviewMock } from "@/components/product-ui/mocks";
-import { pageMetadata, breadcrumbGraph, faqGraph } from "@/lib/seo";
+import { pageMetadata, faqGraph } from "@/lib/seo";
 import type { Faq } from "@/data/faqs";
 import { billing } from "@/data/company";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 const PATH = "/our-process";
 
@@ -101,13 +102,6 @@ const FAQS: readonly Faq[] = [
 export default function OurProcessPage() {
   return (
     <>
-      <JsonLd
-        data={breadcrumbGraph([
-          { name: "Home", path: "/" },
-          { name: "About", path: "/about" },
-          { name: "Our process", path: PATH },
-        ])}
-      />
       <JsonLd data={faqGraph(FAQS)} />
 
       <PageHero
@@ -249,6 +243,11 @@ export default function OurProcessPage() {
 
       <FaqSection items={FAQS} />
       <FinalCta />
+      <PageBreadcrumbs trail={[
+          { name: "Home", path: "/" },
+          { name: "About", path: "/about" },
+          { name: "Our process", path: PATH },
+        ]} />
     </>
   );
 }

@@ -1,9 +1,9 @@
-import { JsonLd } from "@/components/ui/json-ld";
 import { Grid } from "@/components/ref/kit";
 import { company, emailDisplay } from "@/data/company";
-import { breadcrumbGraph, pageMetadata } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 import { HERO } from "./_content";
 import { AbuseForm } from "./_components/abuse-form";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 /**
  * Report abuse.
@@ -34,12 +34,6 @@ export const metadata = pageMetadata({
 export default function ReportAbusePage() {
   return (
     <div className="[&_h1]:text-wrap [&_h2]:text-wrap [&_p]:text-wrap">
-      <JsonLd
-        data={breadcrumbGraph([
-          { name: "Home", path: "/" },
-          { name: "Report abuse", path: PATH },
-        ])}
-      />
 
       <section aria-labelledby="ra-heading" className="relative isolate overflow-hidden bg-canvas py-14 md:py-16 xl:py-20">
         <div aria-hidden="true" className="absolute inset-x-0 top-0 -z-10 h-[420px] bg-[radial-gradient(55%_70%_at_50%_0%,rgb(0_0_255/0.07),transparent_70%)]" />
@@ -64,6 +58,10 @@ export default function ReportAbusePage() {
           <AbuseForm />
         </Grid>
       </section>
+      <PageBreadcrumbs trail={[
+          { name: "Home", path: "/" },
+          { name: "Report abuse", path: PATH },
+        ]} />
     </div>
   );
 }
