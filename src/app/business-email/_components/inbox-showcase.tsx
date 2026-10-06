@@ -268,7 +268,7 @@ const TitleBar = memo(function TitleBar() {
     <div className="flex items-center gap-[1cqw] bg-[#f5f6f8] px-[1cqw] py-[0.55cqw]">
       <span className="relative size-[1.5cqw] overflow-hidden rounded-[0.3cqw]">
         <Image
-          src="/brand/logo-square.png"
+          src="/brand/logo-mark-transparent.png"
           alt=""
           fill
           sizes="24px"

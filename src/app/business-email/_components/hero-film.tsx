@@ -123,10 +123,10 @@ function BrandCard() {
         initial={{ rotate: -90, scale: 0.6, opacity: 0 }}
         animate={{ rotate: 0, scale: 1, opacity: 1 }}
         transition={{ type: "spring", stiffness: 180, damping: 16 }}
-        className="relative size-[clamp(40px,7vw,72px)] shrink-0"
+        className="relative size-[clamp(36px,5.6vw,60px)] shrink-0"
       >
         <Image
-          src="/brand/logo-square.png"
+          src="/brand/logo-mark-transparent.png"
           alt=""
           fill
           sizes="72px"
@@ -137,7 +137,7 @@ function BrandCard() {
         initial={{ opacity: 0, x: -12 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.2, duration: 0.6, ease: EASE }}
-        className="flex items-center gap-[0.5em] font-display text-[clamp(22px,3.4vw,40px)] font-semibold tracking-[0.08em] text-[var(--color-brand-950)]"
+        className="flex items-center gap-[0.5em] font-display text-[clamp(18px,2.7vw,32px)] font-semibold tracking-[0.08em] text-[var(--color-brand-950)]"
       >
         SERVERLYS <span className="h-[1.1em] w-px bg-[var(--color-brand-950)]/50" />
         <span className="whitespace-nowrap font-normal tracking-[-0.01em]">
@@ -194,7 +194,7 @@ function SetupScene() {
       >
         <span className="relative size-[9%] min-h-6 min-w-6">
           <Image
-            src="/brand/logo-square.png"
+            src="/brand/logo-mark-transparent.png"
             alt=""
             fill
             sizes="32px"
