@@ -617,7 +617,6 @@ export const footerNav: readonly NavColumn[] = [
   {
     heading: "AI and automation",
     links: [
-      { label: "AI agents", href: "/ai-agents" },
       { label: "ConvoAI", href: "https://convoai.cloud/", external: true },
       { label: "CallFlow AI", href: "https://callflow.serverlys.com/", external: true },
       { label: "Automations", href: "/automations" },
