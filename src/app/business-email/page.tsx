@@ -201,9 +201,13 @@ export default function BusinessEmailPage() {
       </section>
 
       {/* ── Make the right impression (dark) ───────────────────────────── */}
-      <section aria-labelledby="impression" className="bg-[#030a1f]">
+      <section aria-labelledby="impression" className="bg-canvas">
         <ImpressionStage />
-        <div className="mx-auto max-w-[1280px] px-5 pb-20 sm:px-8 lg:px-10 lg:pb-28">
+      </section>
+
+      {/* ── Feature tabs (dark) ─────────────────────────────────────────── */}
+      <section aria-label="Business email features" className="bg-canvas-abyss">
+        <div className="mx-auto max-w-[1280px] px-5 pb-20 pt-4 sm:px-8 lg:px-10 lg:pb-28">
           <FeatureTabs
             cta={{ label: "Choose plan", href: plansHref }}
             tabs={[
