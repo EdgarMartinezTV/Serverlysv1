@@ -1,14 +1,14 @@
-import Image from "next/image";
 import Link from "next/link";
-import { FaqSection } from "@/components/sections/faq";
 import { JsonLd } from "@/components/ui/json-ld";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { SeraOpenButton } from "@/components/sera/sera-open-button";
-import { billing } from "@/data/company";
+import { billing, company } from "@/data/company";
 import { faqGraph, pageMetadata, productGraph } from "@/lib/seo";
 import { FeatureShowcase } from "./_components/feature-showcase";
 import { AppsCards } from "./_components/apps-cards";
-import { MotionIn, Parallax } from "./_components/mail-motion";
+import { MotionIn } from "./_components/mail-motion";
+import { DomainStage, SeraStage } from "./_components/story-stages";
+import { EmailFaq } from "./_components/email-faq";
 import { ImpressionStage } from "./_components/impression-stage";
 import { HeroShowcase } from "./_components/hero-showcase";
 import { StatsRoll } from "./_components/stats-roll";
@@ -331,54 +331,57 @@ export default function BusinessEmailPage() {
       </section>
 
       {/* ── Get a domain for your email ────────────────────────────────── */}
-      <section aria-labelledby="domain-title" className="overflow-hidden bg-canvas">
-        <div className="mx-auto grid max-w-[1180px] items-center gap-12 px-5 py-20 sm:px-8 lg:grid-cols-2 lg:py-28">
-          <div className="relative mx-auto w-full max-w-[460px]">
-            <MotionIn
-              variant="left"
-              className="relative aspect-[4/5] overflow-hidden rounded-3xl"
-            >
-              <Image
-                src="/email/owner-phone.webp"
-                alt=""
-                fill
-                sizes="(min-width: 1024px) 460px, 100vw"
-                className="object-cover"
-              />
-            </MotionIn>
-            <div className="absolute -bottom-10 left-1/2 w-[115%] -translate-x-1/2">
-              <Parallax speed={40}>
-                <MotionIn variant="rise" delay={250}>
-                  <Image
-                    src="/email/domain-card.webp"
-                    alt=""
-                    width={1343}
-                    height={597}
-                    sizes="(min-width: 1024px) 460px, 90vw"
-                    className="h-auto w-full drop-shadow-[0_24px_40px_rgb(15_23_42/0.25)]"
-                  />
-                </MotionIn>
-              </Parallax>
-            </div>
-          </div>
-          <div>
-            <p className="text-small font-semibold text-primary">Domains</p>
+      <section aria-labelledby="domain-title" className="relative isolate overflow-hidden bg-canvas">
+        <div className="mx-auto grid max-w-[1180px] items-center gap-14 px-5 py-20 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:py-28">
+          <MotionIn variant="rise">
+            <DomainStage />
+          </MotionIn>
+          <div className="text-center lg:text-left">
+            <p className="mx-auto flex w-fit items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-caption font-semibold uppercase tracking-[0.16em] text-primary shadow-[0_1px_2px_rgb(15_23_42/0.06),0_0_0_1px_var(--color-brand-100)] lg:mx-0">
+              <span className="size-1.5 rounded-full bg-primary" />
+              Domains
+            </p>
             <h2
               id="domain-title"
-              className="mt-3 font-display text-[32px] font-normal leading-[1.15] tracking-[-0.02em] text-fg sm:text-[40px]"
+              className="mt-5 font-display text-[36px] font-normal leading-[1.08] tracking-[-0.03em] text-fg sm:text-[52px]"
             >
-              Need a domain for your email?
+              Need a <span className="text-primary">domain</span> for your email?
             </h2>
-            <p className="mt-4 max-w-[480px] text-body text-fg-secondary">
-              Your email address lives at your domain. Find the right name, register it
-              with Serverlys and set up your mailboxes on it in the same order.
+            <p className="mx-auto mt-4 max-w-[480px] text-body-lg text-fg-secondary lg:mx-0">
+              Your email address lives at your domain. Find the name, register it with
+              Serverlys and set up your mailboxes on it in the same order.
             </p>
-            <Link
-              href="/domain-name"
-              className="mt-8 inline-flex h-12 items-center rounded-md bg-primary px-7 text-body font-semibold text-white transition-colors hover:bg-primary-hover"
-            >
-              Find a domain
-            </Link>
+            <ol className="mx-auto mt-8 flex max-w-[440px] flex-col gap-4 text-left lg:mx-0">
+              {[
+                ["Search for your name", "See which endings are free, like .com or .co."],
+                ["Register it in the same order", "Add the domain and your email plan together."],
+                ["Create your mailboxes on it", "you@yourbusiness.com, ready in webmail and your apps."],
+              ].map(([title, body], i) => (
+                <li key={title} className="flex gap-3.5">
+                  <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-primary font-mono text-[12px] font-semibold text-white shadow-[0_6px_14px_-4px_rgb(0_0_255/0.6)]">
+                    {i + 1}
+                  </span>
+                  <span>
+                    <span className="block text-body font-semibold text-fg">{title}</span>
+                    <span className="block text-small text-fg-secondary">{body}</span>
+                  </span>
+                </li>
+              ))}
+            </ol>
+            <div className="mt-9 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+              <Link
+                href="/domain-name"
+                className="inline-flex h-12 items-center rounded-xl bg-primary px-7 text-body font-semibold text-white shadow-[0_10px_30px_-10px_rgb(0_0_255/0.7)] transition-colors hover:bg-primary-hover"
+              >
+                Find a domain
+              </Link>
+              <a
+                href={plansHref}
+                className="inline-flex h-12 items-center rounded-xl px-6 text-body font-semibold text-primary ring-1 ring-inset ring-brand-200 transition-colors hover:bg-brand-50"
+              >
+                See email plans
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -386,77 +389,56 @@ export default function BusinessEmailPage() {
       {/* ── Sera ───────────────────────────────────────────────────────── */}
       <section
         aria-labelledby="sera-title"
-        className="overflow-hidden bg-canvas-secondary"
+        className="relative isolate overflow-hidden bg-[linear-gradient(180deg,var(--color-brand-50),#ffffff)]"
       >
-        <div className="mx-auto grid max-w-[1180px] items-center gap-12 px-5 py-20 sm:px-8 lg:grid-cols-2 lg:py-24">
-          <div className="relative mx-auto w-full max-w-[480px]">
-            <MotionIn
-              variant="left"
-              className="relative aspect-[3/2] overflow-hidden rounded-3xl"
-            >
-              <Image
-                src="/email/laptop-email.webp"
-                alt=""
-                fill
-                sizes="(min-width: 1024px) 480px, 100vw"
-                className="object-cover"
-              />
-            </MotionIn>
-            <Parallax
-              speed={50}
-              className="absolute -bottom-12 -right-4 w-[52%] sm:-right-10"
-            >
-              <MotionIn variant="pop" delay={300}>
-                <Image
-                  src="/email/sera-chat.webp"
-                  alt=""
-                  width={728}
-                  height={857}
-                  sizes="(min-width: 1024px) 260px, 50vw"
-                  className="h-auto w-full drop-shadow-[0_24px_40px_rgb(15_23_42/0.3)]"
-                />
-              </MotionIn>
-            </Parallax>
-          </div>
-          <div className="pt-8 lg:pt-0">
+        <div className="mx-auto grid max-w-[1180px] items-center gap-14 px-5 py-20 sm:px-8 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16 lg:py-28">
+          <div className="text-center lg:order-1 lg:text-left">
+            <p className="mx-auto flex w-fit items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-caption font-semibold uppercase tracking-[0.16em] text-primary shadow-[0_1px_2px_rgb(15_23_42/0.06),0_0_0_1px_var(--color-brand-100)] lg:mx-0">
+              <span className="size-1.5 rounded-full bg-primary" />
+              Sera · Serverlys assistant
+            </p>
             <h2
               id="sera-title"
-              className="font-display text-[32px] font-normal leading-[1.15] tracking-[-0.02em] text-fg sm:text-[40px]"
+              className="mt-5 font-display text-[36px] font-normal leading-[1.08] tracking-[-0.03em] text-fg sm:text-[52px]"
             >
-              Sera, the Serverlys assistant, can:
+              Questions? <span className="text-primary">Ask Sera</span>
             </h2>
-            <ul className="mt-6 flex flex-col gap-3">
+            <p className="mx-auto mt-4 max-w-[480px] text-body-lg text-fg-secondary lg:mx-0">
+              Sera, the Serverlys assistant, knows the email plans and the setup, and
+              brings in a person from the team when you need one.
+            </p>
+            <ul className="mt-8 grid gap-3 text-left sm:grid-cols-2">
               {[
-                "Help you choose the right email plan for your team",
-                "Start a migration request for your site and mailboxes",
-                "Answer questions about setting up your email apps",
-                "Connect you with a person on the team when you need one",
-              ].map((t) => (
-                <li key={t} className="flex gap-2.5 text-body text-fg-secondary">
-                  <svg
-                    viewBox="0 0 16 16"
-                    className="mt-1 size-4 shrink-0 text-success"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
-                  >
-                    <path d="m3.5 8.5 3 3 6-7" />
-                  </svg>
-                  {t}
+                ["Pick the right plan", "Tell it your team size, get the plan that fits.", "M4 6h16M4 12h10M4 18h6"],
+                ["Start a migration", "Request a move for your site and mailboxes.", "M4 12h12M12 6l6 6-6 6"],
+                ["Set up your apps", "Outlook, Apple Mail, iPhone and Android.", "M7 3h10v18H7zM11 18h2"],
+                ["Reach a real person", "Hand off to the team in the same chat.", "M12 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"],
+              ].map(([title, body, d]) => (
+                <li
+                  key={title}
+                  className="rounded-2xl bg-white p-4 shadow-[0_1px_2px_rgb(15_23_42/0.04),0_12px_28px_-18px_rgb(0_0_255/0.3)] ring-1 ring-brand-100"
+                >
+                  <span className="flex size-9 items-center justify-center rounded-xl bg-brand-50 text-primary ring-1 ring-brand-100">
+                    <svg viewBox="0 0 24 24" className="size-[18px]" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d={d} />
+                    </svg>
+                  </span>
+                  <span className="mt-3 block text-body font-semibold text-fg">{title}</span>
+                  <span className="mt-0.5 block text-small text-fg-secondary">{body}</span>
                 </li>
               ))}
             </ul>
-            <div className="mt-8">
+            <div className="mt-8 flex justify-center lg:justify-start">
               <SeraOpenButton label="Ask Sera" />
             </div>
           </div>
+          <MotionIn variant="rise">
+            <SeraStage />
+          </MotionIn>
         </div>
       </section>
 
-      <FaqSection items={FAQS} />
+      <EmailFaq items={FAQS} supportEmail={company.email} />
 
       {/* ── Start today ────────────────────────────────────────────────── */}
       <section
