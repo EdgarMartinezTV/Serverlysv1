@@ -7,7 +7,7 @@ import { SeraOpenButton } from "@/components/sera/sera-open-button";
 import { billing } from "@/data/company";
 import { faqGraph, pageMetadata, productGraph } from "@/lib/seo";
 import { cn } from "@/lib/utils";
-import { FeatureTabs } from "./_components/feature-tabs";
+import { FeatureShowcase } from "./_components/feature-showcase";
 import { MotionIn, Parallax } from "./_components/mail-motion";
 import { ImpressionStage } from "./_components/impression-stage";
 import { HeroShowcase } from "./_components/hero-showcase";
@@ -206,61 +206,16 @@ export default function BusinessEmailPage() {
       </section>
 
       {/* ── Feature tabs (dark) ─────────────────────────────────────────── */}
-      <section aria-label="Business email features" className="bg-canvas-abyss">
-        <div className="mx-auto max-w-[1280px] px-5 pb-20 pt-4 sm:px-8 lg:px-10 lg:pb-28">
-          <FeatureTabs
-            cta={{ label: "Choose plan", href: plansHref }}
-            tabs={[
-              {
-                id: "setup",
-                label: "Set-up",
-                title: "Easy setup and migration",
-                points: [
-                  "Connect your mailbox to Outlook, Apple Mail and your phone",
-                  "Bring your existing email with you when you move your site",
-                  "Mailboxes created at your own domain, ready to use",
-                ],
-                image: "/email/phone-email.webp",
-                imageAlt: "A business owner reading her work email on her phone",
-              },
-              {
-                id: "anywhere",
-                label: "Anywhere",
-                title: "Your inbox, wherever you work",
-                points: [
-                  "Webmail in any browser, nothing to install",
-                  "IMAP and POP3 for every email app on desktop and mobile",
-                  "Send securely from any device with SMTP",
-                ],
-                image: "/email/laptop-email.webp",
-                imageAlt: "A man replying to email on a laptop in a café",
-              },
-              {
-                id: "scale",
-                label: "Scale",
-                title: "The inbox that scales with you",
-                points: [
-                  "From 2 accounts on Essentials to 20 on Enterprise Pro",
-                  "Up to 60 GB of storage for mail and attachments",
-                  "Move up a plan as the team grows",
-                ],
-                image: "/email/team-inbox.webp",
-                imageAlt: "Two coworkers reading a shared inbox on a monitor",
-              },
-              {
-                id: "secure",
-                label: "Security",
-                title: "Private by default",
-                points: [
-                  "Encrypted TLS connections for webmail, IMAP, POP3 and SMTP",
-                  "Your mail on your domain, not a free provider's",
-                  "Real people on support when something looks wrong",
-                ],
-                image: "/email/owner-phone.webp",
-                imageAlt: "A smiling man holding his phone",
-              },
-            ]}
-          />
+      <section
+        aria-labelledby="features-title"
+        className="relative isolate overflow-hidden bg-[#030a1f]"
+      >
+        <div
+          aria-hidden="true"
+          className="absolute left-1/2 top-0 -z-10 h-[70%] w-[min(1400px,140vw)] -translate-x-1/2 bg-[radial-gradient(50%_55%_at_50%_0%,rgb(31_85_255/0.4),transparent_75%)]"
+        />
+        <div className="mx-auto max-w-[1280px] px-5 py-24 sm:px-8 lg:px-10 lg:py-32">
+          <FeatureShowcase cta={{ label: "Choose plan", href: plansHref }} />
         </div>
       </section>
 
