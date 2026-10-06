@@ -27,7 +27,7 @@ export function ArticleCover({
   return (
     <div className={cn("relative overflow-hidden rounded-xl bg-canvas-inset", className)}>
       <Image
-        src={`/blog/covers/${slug}.jpg`}
+        src={`/blog/covers/${slug}.webp`}
         alt=""
         fill
         sizes={sizes}

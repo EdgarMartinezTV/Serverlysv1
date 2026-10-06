@@ -1,5 +1,5 @@
 /**
- * Articles that have a cover photo at /blog/covers/<slug>.jpg.
+ * Articles that have a cover photo at /blog/covers/<slug>.webp.
  * CC0 / public-domain photos — sources in public/blog/covers/CREDITS.txt.
  * A new article without one falls back to the coded category thumbnail.
  */
