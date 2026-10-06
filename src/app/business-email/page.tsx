@@ -7,7 +7,6 @@ import { SeraOpenButton } from "@/components/sera/sera-open-button";
 import { billing } from "@/data/company";
 import { faqGraph, pageMetadata, productGraph } from "@/lib/seo";
 import { cn } from "@/lib/utils";
-import { AppScene, ComposeMock, InboxMock } from "./_components/mail-mocks";
 import { FeatureTabs } from "./_components/feature-tabs";
 
 /**
@@ -131,9 +130,15 @@ export default function BusinessEmailPage() {
           <div className="relative">
             <div aria-hidden="true" className="absolute -right-10 -top-8 h-[70%] w-[85%] rounded-3xl bg-gradient-to-br from-brand-100 to-brand-50" />
             <div aria-hidden="true" className="absolute -bottom-6 -left-6 h-[45%] w-[40%] rounded-3xl bg-brand-50" />
-            <div className="relative">
-              <InboxMock />
-            </div>
+            <Image
+              src="/email/inbox.webp"
+              alt="The Serverlys webmail inbox, showing an email to jordan@brightleaf.co"
+              width={1440}
+              height={919}
+              priority
+              sizes="(min-width: 1024px) 680px, 100vw"
+              className="relative h-auto w-full drop-shadow-[0_40px_60px_rgb(0_0_255/0.18)]"
+            />
           </div>
         </div>
       </section>
@@ -148,8 +153,15 @@ export default function BusinessEmailPage() {
             Every email you send says something about your business. Stand out with your own domain and a
             signature that reflects your brand.
           </p>
-          <div className="mt-16 pb-10">
-            <ComposeMock />
+          <div className="mx-auto mt-14 max-w-[880px]">
+            <Image
+              src="/email/compose.webp"
+              alt="Composing an email from jordan@brightleaf.co with a branded signature"
+              width={1415}
+              height={870}
+              sizes="(min-width: 1024px) 880px, 100vw"
+              className="h-auto w-full drop-shadow-[0_40px_70px_rgb(0_0_0/0.5)]"
+            />
           </div>
 
           <FeatureTabs
@@ -310,13 +322,15 @@ export default function BusinessEmailPage() {
           </h2>
           <ul className="mt-14 grid gap-5 text-left md:grid-cols-3">
             {[
-              { kind: "webmail" as const, title: "Webmail in your browser", body: "Open your inbox from any computer. Nothing to install, nothing to configure." },
-              { kind: "desktop" as const, title: "Outlook and Apple Mail", body: "Add your account with IMAP and SMTP, and your folders stay in sync everywhere." },
-              { kind: "phone" as const, title: "On your phone", body: "Read and reply from the mail app on iPhone or Android, the moment a customer writes." },
+              { kind: "webmail" as const, img: "/email/app-webmail.webp", w: 1367, h: 872, title: "Webmail in your browser", body: "Open your inbox from any computer. Nothing to install, nothing to configure." },
+              { kind: "desktop" as const, img: "/email/app-desktop.webp", w: 1409, h: 915, title: "Outlook and Apple Mail", body: "Add your account with IMAP and SMTP, and your folders stay in sync everywhere." },
+              { kind: "phone" as const, img: "/email/app-phone.webp", w: 690, h: 1429, title: "On your phone", body: "Read and reply from the mail app on iPhone or Android, the moment a customer writes." },
             ].map((c) => (
               <li key={c.kind} className="flex flex-col overflow-hidden rounded-2xl bg-white/[0.06] ring-1 ring-white/10">
-                <div className="flex h-56 items-center bg-gradient-to-b from-white/[0.08] to-transparent px-4 pt-6">
-                  <AppScene kind={c.kind} />
+                <div className="relative h-60 bg-gradient-to-b from-white/[0.08] to-transparent px-5 pt-6">
+                  <div className="relative h-full w-full">
+                    <Image src={c.img} alt="" fill sizes="(min-width: 768px) 380px, 100vw" className="object-contain object-bottom" />
+                  </div>
                 </div>
                 <div className="p-6">
                   <h3 className="text-body-lg font-semibold text-white">{c.title}</h3>
@@ -350,23 +364,20 @@ export default function BusinessEmailPage() {
       </section>
 
       {/* ── Get a domain for your email ────────────────────────────────── */}
-      <section aria-labelledby="domain-title" className="bg-canvas">
+      <section aria-labelledby="domain-title" className="overflow-hidden bg-canvas">
         <div className="mx-auto grid max-w-[1180px] items-center gap-12 px-5 py-20 sm:px-8 lg:grid-cols-2 lg:py-28">
           <div className="relative mx-auto w-full max-w-[460px]">
             <div className="relative aspect-[4/5] overflow-hidden rounded-3xl">
               <Image src="/email/owner-phone.webp" alt="" fill sizes="(min-width: 1024px) 460px, 100vw" className="object-cover" />
             </div>
-            <div aria-hidden="true" className="absolute -right-4 top-10 w-[62%] rounded-2xl bg-white p-4 shadow-e4 ring-1 ring-line sm:-right-10">
-              <p className="text-caption font-semibold text-fg-muted">Domain search</p>
-              <p className="mt-2 rounded-lg bg-canvas-secondary px-3 py-2 text-small font-medium text-fg">brightleaf.co</p>
-              <p className="mt-2 flex items-center gap-1.5 text-caption font-semibold text-success">
-                <span className="size-1.5 rounded-full bg-success-fill" /> Available
-              </p>
-            </div>
-            <div aria-hidden="true" className="absolute -left-4 bottom-10 w-[64%] rounded-2xl bg-white p-4 shadow-e4 ring-1 ring-line sm:-left-10">
-              <p className="text-caption font-semibold text-fg-muted">New mailbox</p>
-              <p className="mt-2 text-small font-semibold text-primary">jordan@brightleaf.co</p>
-            </div>
+            <Image
+              src="/email/domain-card.webp"
+              alt=""
+              width={1343}
+              height={597}
+              sizes="(min-width: 1024px) 460px, 90vw"
+              className="absolute -bottom-10 left-1/2 h-auto w-[115%] max-w-none -translate-x-1/2 drop-shadow-[0_24px_40px_rgb(15_23_42/0.25)]"
+            />
           </div>
           <div>
             <p className="text-small font-semibold text-primary">Domains</p>
@@ -385,19 +396,20 @@ export default function BusinessEmailPage() {
       </section>
 
       {/* ── Sera ───────────────────────────────────────────────────────── */}
-      <section aria-labelledby="sera-title" className="bg-canvas-secondary">
+      <section aria-labelledby="sera-title" className="overflow-hidden bg-canvas-secondary">
         <div className="mx-auto grid max-w-[1180px] items-center gap-12 px-5 py-20 sm:px-8 lg:grid-cols-2 lg:py-24">
           <div className="relative mx-auto w-full max-w-[480px]">
             <div className="relative aspect-[3/2] overflow-hidden rounded-3xl">
               <Image src="/email/laptop-email.webp" alt="" fill sizes="(min-width: 1024px) 480px, 100vw" className="object-cover" />
             </div>
-            <div aria-hidden="true" className="absolute -bottom-8 left-4 w-[78%] rounded-2xl bg-white p-4 shadow-e4 ring-1 ring-line">
-              <p className="text-small font-semibold text-fg">Hi, I&apos;m Sera 👋</p>
-              <p className="text-caption text-fg-muted">How can I help you today?</p>
-              {["I want to move my email to Serverlys", "Which email plan fits my team?"].map((q) => (
-                <p key={q} className="mt-2 rounded-lg bg-canvas-secondary px-3 py-2 text-caption font-medium text-fg">↗ {q}</p>
-              ))}
-            </div>
+            <Image
+              src="/email/sera-chat.webp"
+              alt=""
+              width={728}
+              height={857}
+              sizes="(min-width: 1024px) 260px, 50vw"
+              className="absolute -bottom-12 -right-4 h-auto w-[52%] drop-shadow-[0_24px_40px_rgb(15_23_42/0.3)] sm:-right-10"
+            />
           </div>
           <div className="pt-8 lg:pt-0">
             <h2 id="sera-title" className="font-display text-[32px] font-normal leading-[1.15] tracking-[-0.02em] text-fg sm:text-[40px]">
