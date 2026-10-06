@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { sitemapRoutes } from "@/data/routes";
-import { articles } from "@/data/articles";
+import { articles, articleCategories, categorySlug } from "@/data/articles";
 import { canonical } from "@/lib/seo";
 
 /**
@@ -36,5 +36,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
-  return [...pages, ...posts];
+  // Category archives (/blog/category/<slug>), linked from the blog index.
+  const categories = articleCategories.map((c) => ({
+    url: canonical(`/blog/category/${categorySlug(c)}`),
+    changeFrequency: "weekly" as const,
+    priority: 0.5,
+  }));
+
+  return [...pages, ...categories, ...posts];
 }

@@ -1,19 +1,19 @@
 import Link from "next/link";
-import { Section } from "@/components/ui/section";
-import { Badge } from "@/components/ui/badge";
 import { FinalCta } from "@/components/sections/final-cta";
 import { JsonLd } from "@/components/ui/json-ld";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import {
   articles,
   articleCategories,
   articlesByCategory,
+  categoryDescriptions,
   categorySlug,
-  readingMinutes,
 } from "@/data/articles";
-import { pageMetadata, collectionGraph } from "@/lib/seo";
+import { collectionGraph, pageMetadata } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 import { ArticleThumb } from "./_components/article-thumb";
-import { PageHero } from "../resources/_components/page-hero";
-import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { AUTHOR, BlogNav, Byline, PostCard, ViewAll, listDate } from "./_components/blog-ui";
+import { StoryList } from "./_components/story-list";
 
 const PATH = "/blog";
 
@@ -24,33 +24,18 @@ export const metadata = pageMetadata({
   path: PATH,
 });
 
-function formatDate(iso: string): string {
-  return new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    timeZone: "UTC",
-  });
-}
-
 /**
- * Blog index.
+ * Blog index, laid out after Hostinger's blog (2026-10-05): a category bar,
+ * a featured story, one section per category with its three newest posts and
+ * "View all", then every article in a paginated "All stories" list.
  *
- * The category row used to be a set of inert labels, on the reasoning that a
- * filter over five articles would be decoration. The archive is 76 now, so
- * they jump to the matching section of the grouped archive below.
- *
- * The page shows the newest article with real hierarchy, then the rest of the
- * recent ones, then the whole archive grouped by subject. That last part
- * matters for more than browsing: it is the only place every article is linked
- * from a single page, which is what stops a post 60 items down the list being
- * effectively orphaned.
+ * Every article stays linked from this page (the All stories list renders all
+ * of them; pagination only hides), and each category has its own archive at
+ * /blog/category/<slug>.
  */
-const RECENT_COUNT = 12;
-
 export default function BlogIndexPage() {
-  const [lead, ...rest] = articles;
-  const recent = rest.slice(0, RECENT_COUNT);
+  const [lead] = articles;
+  const searchIndex = articles.map((a) => ({ slug: a.slug, title: a.title, category: a.category }));
 
   return (
     <>
@@ -60,123 +45,90 @@ export default function BlogIndexPage() {
           description:
             "Practical guides on hosting, WordPress, performance, security and domains for small business websites.",
           path: PATH,
-          // The lead and the recent list — not all 76. An ItemList claiming to
-          // be the page's main entity should describe what the page actually
-          // leads with, and a 76-item list is not that.
-          items: [lead, ...recent].map((a) => ({ name: a.title, path: `/blog/${a.slug}` })),
+          items: articles.slice(0, 13).map((a) => ({ name: a.title, path: `/blog/${a.slug}` })),
         })}
       />
 
-      <PageHero
-        center
-        trail={[{ name: "Home", href: "/" }, { name: "Blog" }]}
-        label="Blog"
-        title="Things worth knowing before you buy"
-        lede={
-          <p>
-            Guides on what hosting really costs, moving a site without breaking it, making
-            pages fast, and where AI agents earn their keep. No listicles.
-          </p>
-        }
-      >
-        {/* In-page anchors to the grouped archive below; there are no
-            category routes (see the note on the archive). */}
-        <ul className="mt-8 flex flex-wrap justify-center gap-2">
-          {articleCategories.map((c) => (
-            <li key={c}>
-              <a
-                href={`#${categorySlug(c)}`}
-                className="inline-flex min-h-10 items-center gap-2 rounded-full bg-canvas-secondary px-4 text-small font-medium text-fg ring-1 ring-line transition-colors hover:bg-brand-50 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+      <BlogNav categories={articleCategories} active="all" searchIndex={searchIndex} />
+      <h1 className="sr-only">Serverlys blog</h1>
+
+      {/* ── Featured story ─────────────────────────────────────────────── */}
+      <section aria-labelledby="featured-title" className="bg-canvas">
+        <div className="mx-auto max-w-[1280px] px-5 pb-16 pt-12 sm:px-8 lg:px-10 lg:pb-20 lg:pt-16">
+          <Link
+            href={`/blog/${lead.slug}`}
+            className="group grid items-center gap-8 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary lg:grid-cols-[1.05fr_1fr] lg:gap-12"
+          >
+            <ArticleThumb category={lead.category} size="lg" className="aspect-[16/10] rounded-xl" />
+            <div>
+              <p className="text-caption font-semibold uppercase tracking-[0.08em] text-fg-secondary">Featured story</p>
+              <h2
+                id="featured-title"
+                className="mt-3 font-display text-[26px] font-normal leading-[1.3] tracking-[-0.015em] text-fg transition-colors group-hover:text-primary sm:text-[30px]"
               >
-                {c}
-                <span className="text-fg-muted">{articlesByCategory(c).length}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </PageHero>
-
-      <Section>
-        {/* Lead article, given real hierarchy rather than an identical card. */}
-        <Link
-          href={`/blog/${lead.slug}`}
-          className="group grid gap-8 rounded-3xl bg-canvas-secondary p-4 transition-colors hover:bg-brand-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:p-5 lg:grid-cols-[1.1fr_1fr] lg:items-center"
-        >
-          <div className="p-4 sm:p-6">
-            <div className="flex flex-wrap items-center gap-3">
-              <Badge>{lead.category}</Badge>
-              <span className="text-caption text-fg-muted">
-                {formatDate(lead.published)} · {readingMinutes(lead)} min read
-              </span>
-            </div>
-            <h2 className="display-md mt-4 text-fg group-hover:text-primary">{lead.title}</h2>
-            <p className="mt-4 max-w-[58ch] text-body text-fg-secondary">{lead.description}</p>
-            <span className="mt-6 inline-flex items-center gap-1.5 text-small font-semibold text-primary">
-              Read the guide
-              <svg viewBox="0 0 16 16" className="h-4 w-4 transition-transform duration-normal ease-hover group-hover:translate-x-0.5" aria-hidden="true">
-                <path d="M3 8h9m0 0-3.5-3.5M12 8l-3.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-              </svg>
-            </span>
-          </div>
-          <ArticleThumb category={lead.category} size="lg" className="aspect-[16/10] rounded-2xl lg:order-first" />
-        </Link>
-
-        <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {recent.map((a) => (
-            <li key={a.slug}>
-              <Link
-                href={`/blog/${a.slug}`}
-                className="group flex h-full flex-col gap-3 rounded-2xl bg-canvas p-3 pb-6 ring-1 ring-line transition-shadow hover:shadow-e3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-              >
-                <ArticleThumb category={a.category} className="aspect-[16/9]" />
-                <div className="flex flex-wrap items-center gap-3 px-3 pt-2">
-                  <Badge>{a.category}</Badge>
-                  <span className="text-caption text-fg-muted">{readingMinutes(a)} min read</span>
-                </div>
-                <h3 className="px-3 text-body-lg font-medium text-fg group-hover:text-primary">{a.title}</h3>
-                <p className="px-3 text-small text-fg-secondary">{a.description}</p>
-                <span className="mt-auto px-3 pt-3 text-caption text-fg-muted">{formatDate(a.published)}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </Section>
-
-      {/* The full archive, grouped. Every article is linked from here. */}
-      <Section surface="subtle">
-        <h2 className="display-md text-fg">Everything, by subject</h2>
-        <p className="mt-4 max-w-[60ch] text-body text-fg-secondary">
-          {articles.length} articles across {articleCategories.length} subjects.
-        </p>
-
-        <div className="mt-12 flex flex-col gap-12">
-          {articleCategories.map((category) => {
-            const posts = articlesByCategory(category);
-            return (
-              <div key={category} id={categorySlug(category)} className="scroll-mt-24">
-                <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-line pb-4">
-                  <h3 className="text-h4 font-medium text-fg">{category}</h3>
-                  <span className="text-small text-fg-muted">
-                    {posts.length} {posts.length === 1 ? "article" : "articles"}
-                  </span>
-                </div>
-                <ul className="mt-5 grid gap-x-10 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
-                  {posts.map((a) => (
-                    <li key={a.slug}>
-                      <Link
-                        href={`/blog/${a.slug}`}
-                        className="block py-1 text-small text-fg-secondary transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                      >
-                        {a.title}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+                {lead.title}
+              </h2>
+              <p className="mt-4 line-clamp-3 max-w-[56ch] text-body text-fg-secondary">{lead.description}</p>
+              <div className="mt-6">
+                <Byline date={lead.published} />
               </div>
-            );
-          })}
+            </div>
+          </Link>
         </div>
-      </Section>
+      </section>
+
+      {/* ── One section per category, alternating grounds ───────────────── */}
+      {articleCategories.map((category, i) => {
+        const posts = articlesByCategory(category).slice(0, 3);
+        const slug = categorySlug(category);
+        return (
+          <section
+            key={category}
+            id={slug}
+            aria-labelledby={`${slug}-title`}
+            className={cn("scroll-mt-24", i % 2 === 0 ? "bg-canvas-secondary" : "bg-canvas")}
+          >
+            <div className="mx-auto max-w-[1280px] px-5 py-16 sm:px-8 lg:px-10 lg:py-20">
+              <h2 id={`${slug}-title`} className="font-display text-[34px] font-normal tracking-[-0.02em] text-fg sm:text-[40px]">
+                {category}
+              </h2>
+              <p className="mt-3 max-w-[70ch] text-small text-fg-secondary">{categoryDescriptions[category]}</p>
+              <ul className="mt-10 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+                {posts.map((a) => (
+                  <li key={a.slug}>
+                    <PostCard article={a} />
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-10">
+                <ViewAll href={`/blog/category/${slug}`} label={`View all ${category} articles`} />
+              </div>
+            </div>
+          </section>
+        );
+      })}
+
+      {/* ── All stories ──────────────────────────────────────────────────── */}
+      <section aria-labelledby="all-stories-title" className={articleCategories.length % 2 === 0 ? "bg-canvas-secondary" : "bg-canvas"}>
+        <div className="mx-auto max-w-[1280px] px-5 py-16 sm:px-8 lg:px-10 lg:py-24">
+          <h2 id="all-stories-title" className="font-display text-[34px] font-normal tracking-[-0.02em] text-fg sm:text-[40px]">
+            All stories
+          </h2>
+          <p className="mt-3 text-small text-fg-secondary">
+            Every guide we have published on hosting, domains, performance, security and AI — newest first.
+          </p>
+          <StoryList
+            stories={articles.map((a) => ({
+              slug: a.slug,
+              title: a.title,
+              description: a.description,
+              category: a.category,
+              date: listDate(a.published),
+              author: AUTHOR,
+            }))}
+          />
+        </div>
+      </section>
 
       <FinalCta />
       <PageBreadcrumbs trail={[{ name: "Home", path: "/" }, { name: "Blog", path: PATH }]} />

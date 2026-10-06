@@ -164,9 +164,25 @@ export const articleCategories: readonly ArticleCategory[] = CATEGORY_ORDER.filt
 );
 
 /**
- * Stable id for a category. Used as the in-page anchor target on the blog
- * index — there are no category routes, so this never appears in a URL path.
+ * Stable slug for a category: the in-page anchor on the blog index AND the
+ * path segment of its archive page, /blog/category/<slug>.
  */
 export function categorySlug(category: ArticleCategory): string {
   return category.toLowerCase().replace(/\s+/g, "-");
 }
+
+export function categoryBySlug(slug: string): ArticleCategory | undefined {
+  return articleCategories.find((c) => categorySlug(c) === slug);
+}
+
+/** One line under each category heading on the blog. */
+export const categoryDescriptions: Record<ArticleCategory, string> = {
+  Hosting: "What hosting actually costs, which kind you need, and how to tell a good plan from a cheap one.",
+  WordPress: "Running WordPress well: themes, plugins, updates and the settings that matter.",
+  Performance: "Making pages fast, measuring it properly, and fixing what slows them down.",
+  Security: "Keeping a small business site safe without becoming a security engineer.",
+  Domains: "Choosing, registering, transferring and protecting the name your business lives at.",
+  Ecommerce: "Selling online: stores, checkout and the hosting that keeps them up on a busy day.",
+  AI: "Where AI genuinely helps a small business, and where it does not.",
+  "Getting started": "First steps for a new website, explained without the jargon.",
+};
