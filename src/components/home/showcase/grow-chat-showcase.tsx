@@ -1,69 +1,109 @@
 "use client";
 
 import Image from "next/image";
-import { useRef } from "react";
-import { ConvoAiLogo } from "@/components/layout/convoai-logo";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useLoop } from "./use-loop";
 
 /**
  * Grow, first row: ConvoAI working on a real small-business site at 2am.
  *
- * A bakery's homepage in a browser, on a pale gradient plate. A cursor goes to
- * the chat launcher and clicks; the ConvoAI widget opens and a visitor asks
- * about a custom cake. The agent answers from the bakery's own details, takes
- * the order request and hands it to the team — the claims on this row, shown
- * rather than told.
+ * The chat window is the REAL ConvoAI widget, rebuilt from its source
+ * (ConvoAI repo, static/js/convoai-widget.js — byte-identical to what
+ * convoai.cloud serves, checked 2026-10-05): the #18181b window, the zinc
+ * bot bubbles with "Name · time" under them, the accent-coloured visitor
+ * bubbles, the three-dot typing indicator, the rounded input with its round
+ * send button, the "Privacy Policy · Powered by ConvoAI" footer, and the
+ * white launcher whose chat icon turns into a chevron while open. Accent is
+ * convoai.cloud's own, #2292A4. Change that file, change this.
+ *
+ * Every measurement is the widget's own pixel value times `--u`, the scale at
+ * which a 380px widget fits this mockup, so proportions stay exact at any
+ * width.
  *
  * Decorative (aria-hidden) with a figcaption. Stops off-screen; under
  * prefers-reduced-motion it shows the finished conversation, no cursor.
  */
 
-type Msg = { from: "visitor" | "agent"; text: string };
+const ACCENT = "#2292A4";
+const AGENT = "Crumb & Co.";
+const GREETING = "Hi! I'm the Crumb & Co. assistant. Ask me about our breads, cakes or opening hours.";
+
+type Msg = { role: "user" | "bot"; text: string; time: string };
 
 const MESSAGES: readonly Msg[] = [
-  { from: "visitor", text: "Hi! Do you do custom cakes for Saturday?" },
+  { role: "user", text: "Do you do custom cakes for Saturday?", time: "02:04 AM" },
   {
-    from: "agent",
-    text: "We do. Order by Thursday 6pm for Saturday pickup. Want me to start one for you?",
+    role: "bot",
+    text: "We do! Order by Thursday 6pm for Saturday pickup. Want me to start one for you?",
+    time: "02:04 AM",
   },
-  { from: "visitor", text: "Yes please, chocolate, for 12 people." },
+  { role: "user", text: "Yes please, chocolate, for 12 people.", time: "02:05 AM" },
   {
-    from: "agent",
-    text: "Done. I've sent it to the team; they'll confirm by 9am with the price.",
+    role: "bot",
+    text: "Done. I've sent your order to the team, and they'll confirm the price by 9am.",
+    time: "02:05 AM",
   },
 ];
 
 /*
- * Steps (ms each holds):
- *  0 page at rest          1 cursor travels to the launcher
- *  2 click                 3 widget open, empty
- *  4 visitor 1             5 agent typing
- *  6 agent 1               7 visitor 2
- *  8 agent typing          9 agent 2 + handover chip
- * 10 widget closes, reset
+ * Steps (ms each holds). The cursor's part — rest, travel, click — is
+ * unchanged from the first version.
+ *  0 page at rest        1 cursor to the launcher    2 click
+ *  3 open, greeting      4 visitor types message 1   5 sent
+ *  6 agent typing        7 agent reply 1             8 visitor types message 2
+ *  9 sent               10 agent typing             11 agent reply 2
+ * 12 closes, reset
  */
-const STEPS = [900, 950, 260, 650, 1150, 1000, 1900, 1400, 950, 3400, 650] as const;
+const STEPS = [900, 950, 260, 1100, 1450, 350, 1100, 1900, 1400, 350, 1000, 3400, 700] as const;
+const SHOWN = [0, 0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4] as const;
+const COMPOSE: Partial<Record<number, number>> = { 4: 0, 8: 2 };
+const CHAR_MS = 32;
 
-/** How many messages are visible, and whether the agent is typing, per step. */
-function frame(step: number) {
-  const shown = [0, 0, 0, 0, 1, 1, 2, 3, 3, 4, 4][step];
-  const typing = step === 5 || step === 8;
-  return { shown, typing, open: step >= 3 && step <= 9, handover: step === 9 };
-}
+/** Widget pixels → this mockup. 380px widget ≈ 45.8cqw. */
+const u = (px: number) => `calc(var(--u) * ${px})`;
 
 export function GrowChatShowcase() {
   const root = useRef<HTMLElement>(null);
   const { step, reduced } = useLoop(STEPS, root);
-  const f = reduced ? { shown: 4, typing: false, open: true, handover: true } : frame(step);
-  const cursorAtLauncher = !reduced && step >= 1 && step <= 2;
+  // Stamped with the step it belongs to, so a new message never flashes the
+  // previous one's length before the first frame resets it.
+  const [typed, setTyped] = useState({ step: -1, chars: 0 });
+
+  // The visitor's words go into the input a character at a time.
+  const composing = !reduced ? COMPOSE[step] : undefined;
+  useEffect(() => {
+    if (composing === undefined) return;
+    const start = performance.now();
+    let raf = 0;
+    const tick = (now: number) => {
+      setTyped({ step, chars: Math.floor((now - start) / CHAR_MS) });
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [composing, step]);
+
+  const open = reduced || (step >= 3 && step <= 11);
+  const shown = reduced ? MESSAGES.length : SHOWN[step];
+  const typing = !reduced && (step === 6 || step === 10);
+  const draft =
+    composing === undefined || typed.step !== step ? "" : MESSAGES[composing].text.slice(0, typed.chars);
+  // The cursor travels to the launcher and clicks (steps 1-2), then stays
+  // there, invisible, until the loop restarts; it jumps home unseen.
+  const cursorAtLauncher = !reduced && step >= 1;
+  const cursorHidden = open || step === 12;
   const pressed = !reduced && step === 2;
 
   return (
-    <figure ref={root} className="@container relative w-full">
+    <figure
+      ref={root}
+      className="@container relative w-full"
+      style={{ "--u": "0.1205cqw" } as React.CSSProperties}
+    >
       <figcaption className="sr-only">
-        A bakery&apos;s website at 2:04am. A visitor opens the ConvoAI chat, asks about a custom
-        cake for Saturday, and the agent answers and sends the order request to the team.
+        A bakery&apos;s website at 2:04am with the ConvoAI chat widget. A visitor opens it, asks
+        about a custom cake for Saturday, and the agent answers and sends the order to the team.
       </figcaption>
 
       <div
@@ -85,7 +125,7 @@ export function GrowChatShowcase() {
           </div>
 
           {/* The bakery's homepage */}
-          <div className="relative aspect-[16/11]">
+          <div className="relative aspect-[4/3.3]">
             <Image
               src="/mock/site-bakery.jpg"
               alt=""
@@ -112,100 +152,185 @@ export function GrowChatShowcase() {
               sunrise.
             </p>
 
-            {/* Chat launcher */}
-            <span
-              className={cn(
-                "absolute bottom-[5%] right-[4%] flex size-[8cqw] items-center justify-center rounded-full bg-primary text-white shadow-[0_10px_24px_-8px_rgb(0_0_255/0.6)]",
-                "transition-[transform,opacity] duration-200",
-                f.open ? "scale-50 opacity-0" : pressed ? "scale-90" : "scale-100",
-              )}
-            >
-              <svg viewBox="0 0 24 24" className="size-[3.6cqw]" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M20 12.5a7.5 7.5 0 0 1-11 6.6L4 20l1-4.4A7.5 7.5 0 1 1 20 12.5Z" />
-              </svg>
-            </span>
-
-            {/* ConvoAI widget */}
+            {/* ── ConvoAI widget: window (.cw-window) ── */}
             <div
-              className={cn(
-                "absolute bottom-[4%] right-[3%] flex h-[88%] w-[52%] origin-bottom-right flex-col overflow-hidden rounded-[2cqw] bg-white",
-                "shadow-[0_24px_50px_-20px_rgb(15_23_42/0.5),0_0_0_1px_rgb(15_23_42/0.06)]",
-                "transition-[transform,opacity] duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)]",
-                f.open ? "scale-100 opacity-100" : "pointer-events-none scale-90 opacity-0",
-              )}
+              className="absolute flex flex-col overflow-hidden text-white"
+              style={{
+                right: u(20),
+                bottom: u(90),
+                top: u(14),
+                width: u(380),
+                background: "#18181b",
+                borderRadius: u(16),
+                boxShadow: "0 12px 40px rgba(0,0,0,0.4)",
+                fontFamily:
+                  '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif',
+                lineHeight: 1.5,
+                fontSize: u(15),
+                transformOrigin: "bottom right",
+                transition: "opacity .3s cubic-bezier(.4,0,.2,1), transform .3s cubic-bezier(.4,0,.2,1)",
+                opacity: open ? 1 : 0,
+                transform: open ? "none" : `translateY(${u(20)}) scale(0.95)`,
+              }}
             >
-              <div className="flex items-center gap-[1.2cqw] bg-primary px-[2cqw] py-[1.6cqw] text-white">
-                <span className="flex size-[4.2cqw] items-center justify-center rounded-full bg-white/20 font-display text-[1.6cqw] font-semibold">
-                  C&amp;
-                </span>
-                <span className="min-w-0">
-                  <span className="block text-[1.7cqw] font-semibold leading-tight">Crumb &amp; Co. assistant</span>
-                  <span className="flex items-center gap-[0.6cqw] text-[1.3cqw] text-white/80">
-                    <span className="size-[0.9cqw] rounded-full bg-[#4ade80]" />
-                    Online · replies instantly
+              {/* .cw-header */}
+              <div className="flex shrink-0 items-center justify-between" style={{ padding: `${u(16)} ${u(20)}` }}>
+                <div className="flex items-center" style={{ gap: u(12) }}>
+                  <span className="relative shrink-0 overflow-hidden" style={{ width: u(32), height: u(32), borderRadius: u(8) }}>
+                    <Image src="/brand/convoai-favicon.png" alt="" fill sizes="32px" className="object-cover" />
                   </span>
+                  <span>
+                    <span className="block font-bold" style={{ fontSize: u(15), letterSpacing: u(-0.2) }}>
+                      {AGENT}
+                    </span>
+                    <span className="block" style={{ fontSize: u(13), color: "#a1a1aa", marginTop: u(2) }}>
+                      Ask me anything
+                    </span>
+                  </span>
+                </div>
+                <span className="flex opacity-70" style={{ gap: u(12) }}>
+                  <svg viewBox="0 0 24 24" fill="#fff" style={{ width: u(20), height: u(20) }}>
+                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                  </svg>
+                  <svg viewBox="0 0 24 24" fill="#fff" style={{ width: u(20), height: u(20) }}>
+                    <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                  </svg>
                 </span>
               </div>
 
-              <div className="flex min-h-0 flex-1 flex-col justify-end gap-[1.1cqw] overflow-hidden bg-[#f7f8fb] px-[1.8cqw] py-[1.6cqw]">
-                <span className="mx-auto rounded-full bg-white px-[1.4cqw] py-[0.3cqw] text-[1.2cqw] text-[#6b7280] shadow-[0_0_0_1px_rgb(15_23_42/0.05)]">
-                  Today 2:04 AM
-                </span>
-                {MESSAGES.slice(0, f.shown).map((m, i) => (
-                  <span
-                    key={i}
-                    className={cn(
-                      "max-w-[84%] animate-[chatIn_260ms_ease-out_both] rounded-[1.6cqw] px-[1.6cqw] py-[1cqw] text-[1.45cqw] leading-snug",
-                      m.from === "visitor"
-                        ? "self-end rounded-br-[0.4cqw] bg-primary text-white"
-                        : "self-start rounded-bl-[0.4cqw] bg-white text-[#1f2430] shadow-[0_1px_2px_rgb(15_23_42/0.08)]",
-                    )}
-                  >
-                    {m.text}
-                  </span>
-                ))}
-                {f.typing && (
-                  <span className="flex gap-[0.6cqw] self-start rounded-[1.6cqw] rounded-bl-[0.4cqw] bg-white px-[1.6cqw] py-[1.3cqw] shadow-[0_1px_2px_rgb(15_23_42/0.08)]">
-                    {[0, 150, 300].map((d) => (
+              {/* .cw-messages — anchored to the bottom, older turns scroll off the top */}
+              <div
+                className="flex min-h-0 flex-1 flex-col justify-end overflow-hidden"
+                style={{ padding: `${u(20)} ${u(20)} 0`, gap: u(24) }}
+              >
+                <BotMessage text={GREETING} time="02:04 AM" />
+                {MESSAGES.slice(0, shown).map((m, i) =>
+                  m.role === "bot" ? (
+                    <BotMessage key={i} text={m.text} time={m.time} />
+                  ) : (
+                    <div key={i} className="flex animate-[cwMsgIn_.3s_ease-out_both] flex-col">
                       <span
-                        key={d}
-                        className="size-[0.9cqw] animate-bounce rounded-full bg-[#9aa1ad]"
-                        style={{ animationDelay: `${d}ms` }}
-                      />
-                    ))}
-                  </span>
+                        className="self-end"
+                        style={{
+                          maxWidth: "85%",
+                          padding: `${u(12)} ${u(16)}`,
+                          background: ACCENT,
+                          borderRadius: u(16),
+                          borderBottomRightRadius: u(4),
+                        }}
+                      >
+                        {m.text}
+                      </span>
+                    </div>
+                  ),
                 )}
-                {f.handover && (
-                  <span className="flex animate-[chatIn_260ms_ease-out_both] items-center gap-[0.8cqw] self-center rounded-full bg-[#e8f7ee] px-[1.6cqw] py-[0.6cqw] text-[1.25cqw] font-semibold text-[#15803d]">
-                    <svg viewBox="0 0 16 16" className="size-[1.5cqw]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="m3.5 8.5 3 3 6-7" />
-                    </svg>
-                    Order request sent to the team
-                  </span>
-                )}
+                {/* .cw-typing */}
+                <div
+                  className={cn("items-center self-start", typing ? "flex" : "hidden")}
+                  style={{ gap: u(4), padding: `0 ${u(16)}`, marginBottom: u(20) }}
+                >
+                  {[-320, -160, 0].map((d) => (
+                    <span
+                      key={d}
+                      className="animate-[cwBounce_1.4s_ease-in-out_infinite_both] rounded-full"
+                      style={{ width: u(6), height: u(6), background: "#666", animationDelay: `${d}ms` }}
+                    />
+                  ))}
+                </div>
+                {!typing && <span style={{ height: u(1) }} />}
               </div>
 
-              <div className="flex items-center gap-[1cqw] border-t border-[#eceef2] px-[1.8cqw] py-[1.2cqw]">
-                <span className="flex-1 rounded-full bg-[#f2f3f6] px-[1.6cqw] py-[0.8cqw] text-[1.3cqw] text-[#9aa1ad]">
-                  Type a message…
-                </span>
-                <span className="flex items-center gap-[0.6cqw] text-[1.05cqw] text-[#9aa1ad]">
-                  by
-                  <ConvoAiLogo tone="light" className="h-[1.8cqw] w-auto" />
-                </span>
+              {/* .cw-footer-container */}
+              <div className="shrink-0" style={{ padding: `${u(16)} ${u(20)} ${u(20)}` }}>
+                <div
+                  className="flex flex-col"
+                  style={{
+                    background: "#27272a",
+                    border: `1px solid ${draft ? "#52525b" : "#3f3f46"}`,
+                    borderRadius: u(24),
+                    padding: `${u(8)} ${u(8)} ${u(8)} ${u(16)}`,
+                    gap: u(8),
+                  }}
+                >
+                  <span className="truncate" style={{ padding: `${u(4)} 0`, color: draft ? "#fff" : "#71717a" }}>
+                    {draft || "Ask a question..."}
+                    {draft && <span className="ml-px inline-block animate-pulse" style={{ width: 1, height: "1em", background: "#fff", verticalAlign: "-0.15em" }} />}
+                  </span>
+                  <span className="flex justify-end">
+                    <span
+                      className="flex items-center justify-center rounded-full transition-colors duration-200"
+                      style={{
+                        width: u(32),
+                        height: u(32),
+                        background: draft ? "#fff" : "#3f3f46",
+                        color: draft ? "#000" : "#71717a",
+                      }}
+                    >
+                      <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: u(16), height: u(16) }}>
+                        <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" transform="rotate(-90 12 12)" />
+                      </svg>
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              {/* .cw-powered */}
+              <div className="text-center" style={{ fontSize: u(11), color: "#71717a", padding: `${u(10)} 0` }}>
+                <span style={{ color: "#a1a1aa" }}>Privacy Policy</span> · Powered by{" "}
+                <span style={{ color: "#a1a1aa" }}>ConvoAI</span>
               </div>
             </div>
 
-            {/* Cursor */}
+            {/* ── ConvoAI widget: launcher (.cw-launcher) ── */}
+            <span
+              className="absolute flex items-center justify-center rounded-full bg-white"
+              style={{
+                right: u(20),
+                bottom: u(20),
+                width: u(56),
+                height: u(56),
+                boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+                transition: "transform .2s cubic-bezier(.25,.1,.25,1)",
+                transform: pressed ? "scale(0.92)" : "none",
+              }}
+            >
+              <svg
+                viewBox="0 0 24 24"
+                className="absolute transition-[opacity,transform] duration-200"
+                style={{
+                  width: u(24),
+                  height: u(24),
+                  opacity: open ? 0 : 1,
+                  transform: open ? "rotate(90deg) scale(.5)" : "none",
+                }}
+              >
+                <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" fill="#000" />
+              </svg>
+              <svg
+                viewBox="0 0 24 24"
+                className="absolute transition-[opacity,transform] duration-200"
+                style={{
+                  width: u(24),
+                  height: u(24),
+                  opacity: open ? 1 : 0,
+                  transform: open ? "none" : "rotate(-90deg) scale(.5)",
+                }}
+              >
+                <path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" fill="#000" />
+              </svg>
+            </span>
+
+            {/* Cursor — same path, timing and click as before */}
             {!reduced && (
               <svg
                 viewBox="0 0 24 24"
                 className={cn(
                   "absolute size-[4.4cqw] drop-shadow-[0_2px_4px_rgb(0_0_0/0.35)]",
-                  "transition-[left,top,opacity,transform] duration-[900ms] ease-[cubic-bezier(0.45,0,0.2,1)]",
-                  cursorAtLauncher ? "left-[89%] top-[85%]" : "left-[60%] top-[48%]",
+                  step !== 0 &&
+                    "transition-[left,top,opacity,transform] duration-[900ms] ease-[cubic-bezier(0.45,0,0.2,1)]",
+                  cursorAtLauncher ? "left-[92.4%] top-[91.4%]" : "left-[60%] top-[48%]",
                   pressed ? "scale-90" : "scale-100",
-                  f.open ? "opacity-0" : "opacity-100",
+                  cursorHidden ? "opacity-0 duration-200" : "opacity-100",
                 )}
               >
                 <path d="M5 2.5 19 13l-6.2.9 3.7 6.9-2.7 1.4-3.6-7L5 19.5Z" fill="#111" stroke="#fff" strokeWidth="1.4" strokeLinejoin="round" />
@@ -215,5 +340,28 @@ export function GrowChatShowcase() {
         </div>
       </div>
     </figure>
+  );
+}
+
+/** .cw-message.cw-bot + .cw-bot-meta */
+function BotMessage({ text, time }: { text: string; time: string }) {
+  return (
+    <div className="flex animate-[cwMsgIn_.3s_ease-out_both] flex-col" style={{ gap: u(4) }}>
+      <span
+        className="self-start"
+        style={{
+          maxWidth: "85%",
+          padding: `${u(12)} ${u(16)}`,
+          background: "#27272a",
+          borderRadius: u(16),
+          borderBottomLeftRadius: u(4),
+        }}
+      >
+        {text}
+      </span>
+      <span className="self-start" style={{ fontSize: u(11), color: "#a1a1aa", marginTop: u(4), marginLeft: u(2) }}>
+        {AGENT} · {time}
+      </span>
+    </div>
   );
 }
