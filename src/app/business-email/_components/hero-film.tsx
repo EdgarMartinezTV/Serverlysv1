@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useInView } from "motion/react";
+import { useReducedAfterMount } from "./use-reduced";
 import { cn } from "@/lib/utils";
 
 /**
@@ -44,7 +45,7 @@ const sceneMotion = {
 export function HeroFilm() {
   const root = useRef<HTMLDivElement>(null);
   const inView = useInView(root, { amount: 0.3 });
-  const reduced = useReducedMotion();
+  const reduced = useReducedAfterMount();
   const [scene, setScene] = useState<Scene>("title");
   const running = inView && !reduced;
 

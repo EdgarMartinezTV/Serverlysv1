@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
+import { useReducedAfterMount } from "./use-reduced";
 
 /**
  * Scroll motion for the /business-email mockups, built with motion
@@ -34,7 +35,7 @@ export function MotionIn({
   delay?: number;
   className?: string;
 }) {
-  const reduced = useReducedMotion();
+  const reduced = useReducedAfterMount();
   return (
     <motion.div
       className={className}
@@ -69,7 +70,7 @@ export function Parallax({
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
+  const reduced = useReducedAfterMount();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
