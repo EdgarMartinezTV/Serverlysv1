@@ -11,6 +11,7 @@ import { Avatar, Check, Icon } from "./inbox-showcase";
  * The feature tabs, at product-launch quality: a heading, a tab bar whose
  * pills fill as each chapter plays (auto-advancing, paused on hover/focus and
  * off screen), and a spotlit panel where each chapter is a scene — a photo
+ * (cards are placed per photo so they never cover a face)
  * with real product UI floating over it in glass, animating in.
  *
  * Every number is real: plans and storage from the WHMCS catalogue, the mail
@@ -362,7 +363,7 @@ function Progress({ to, delay }: { to: number; delay: number }) {
 function SetupScene() {
   return (
     <>
-      <Card className="left-[5%] top-[8%] w-[56%]" delay={0.25}>
+      <Card className="left-[4%] bottom-[6%] w-[50%]" delay={0.25}>
         <p className="flex items-center gap-[1cqw] font-semibold">
           <span className="flex size-[4.4cqw] items-center justify-center rounded-[1cqw] bg-primary text-white">
             <Icon d="M3 6h18v12H3ZM3 7l9 6 9-6" className="size-[2.4cqw]" />
@@ -388,7 +389,7 @@ function SetupScene() {
           <Check className="size-[2cqw]" /> Verified · syncing folders
         </p>
       </Card>
-      <Card className="bottom-[9%] right-[5%] w-[48%]" delay={0.55}>
+      <Card className="bottom-[6%] right-[3%] w-[41%]" delay={0.55}>
         <p className="flex items-center justify-between font-semibold">
           Moving your email
           <span className="text-[1.9cqw] font-medium text-primary">from old host</span>
@@ -413,7 +414,7 @@ function AnywhereScene() {
   ];
   return (
     <>
-      <Card className="left-[5%] top-[8%] w-[60%]" delay={0.25}>
+      <Card className="right-[3%] top-[4%] w-[56%]" delay={0.25}>
         <p className="font-semibold">Signed in on 5 devices</p>
         <div className="mt-[1.4cqw] grid grid-cols-5 gap-[1cqw]">
           {devices.map((d, i) => (
@@ -435,7 +436,7 @@ function AnywhereScene() {
           ))}
         </div>
       </Card>
-      <Card className="bottom-[9%] right-[5%] w-[52%]" delay={0.7}>
+      <Card className="bottom-[6%] left-[4%] w-[50%]" delay={0.7}>
         <div className="flex items-center gap-[1.2cqw]">
           <Avatar src="/email/avatars/ethan.webp" className="size-[5cqw]" />
           <span className="min-w-0 leading-tight">
@@ -471,7 +472,7 @@ function ScaleScene() {
   ];
   return (
     <>
-      <Card className="left-[5%] top-[8%] w-[54%]" delay={0.25}>
+      <Card className="left-[4%] top-[6%] w-[52%]" delay={0.25}>
         <p className="flex items-center justify-between font-semibold">
           Team mailboxes
           <span className="rounded-full bg-brand-50 px-[1.2cqw] text-[1.8cqw] font-semibold text-primary">
@@ -508,7 +509,7 @@ function ScaleScene() {
           </motion.div>
         </div>
       </Card>
-      <Card className="bottom-[9%] right-[5%] w-[46%]" delay={0.6}>
+      <Card className="bottom-[6%] left-[4%] w-[46%]" delay={0.6}>
         <p className="flex items-center justify-between font-semibold">
           Storage
           <span className="tabular-nums text-[1.9cqw] font-medium text-[#64748b]">
@@ -536,7 +537,7 @@ function SecurityScene() {
   ];
   return (
     <>
-      <Card className="left-[5%] top-[8%] w-[52%]" delay={0.25}>
+      <Card className="bottom-[6%] left-[4%] w-[50%]" delay={0.25}>
         <p className="flex items-center gap-[1.2cqw] font-semibold">
           <motion.span
             initial={{ scale: 0.6, rotate: -15 }}
@@ -574,7 +575,7 @@ function SecurityScene() {
           ))}
         </div>
       </Card>
-      <Card className="bottom-[9%] right-[5%] w-[46%]" delay={0.6}>
+      <Card className="right-[3%] top-[4%] w-[33%]" delay={0.6}>
         <p className="font-semibold">Certificate</p>
         <div className="mt-[1cqw] space-y-[0.7cqw] text-[1.9cqw]">
           <p className="flex justify-between">
