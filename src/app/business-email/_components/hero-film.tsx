@@ -62,7 +62,7 @@ export function HeroFilm() {
     <div
       ref={root}
       aria-hidden="true"
-      className="relative aspect-[16/11] w-full overflow-hidden rounded-[28px] bg-[linear-gradient(125deg,#dfe8ff_0%,#e7e2ff_48%,#f4dcff_100%)] shadow-[0_40px_90px_-40px_rgb(0_0_255/0.45)]"
+      className="relative aspect-[16/11] w-full overflow-hidden rounded-[28px] bg-[linear-gradient(125deg,var(--color-brand-50)_0%,var(--color-brand-100)_50%,var(--color-brand-200)_100%)] shadow-[0_40px_90px_-40px_rgb(0_0_255/0.45)]"
     >
       <AnimatePresence mode="wait">
         {shown === "title" && <TitleCard key="title" />}
@@ -87,7 +87,7 @@ function TitleCard() {
       {...sceneMotion}
       className="absolute inset-0 flex items-center justify-center p-8"
     >
-      <p className="text-center font-display text-[clamp(28px,4.4vw,56px)] font-normal leading-[1.1] tracking-[-0.03em] text-[#14143c]">
+      <p className="text-center font-display text-[clamp(28px,4.4vw,56px)] font-normal leading-[1.1] tracking-[-0.03em] text-[var(--color-brand-950)]">
         {words.map((x, i) => (
           <motion.span
             key={i}
@@ -98,7 +98,7 @@ function TitleCard() {
               "inline-block",
               i === 2 && "ml-0",
               x.hi &&
-                "bg-gradient-to-r from-primary to-[#7c5cff] bg-clip-text text-transparent",
+                "bg-gradient-to-r from-primary to-brand-400 bg-clip-text text-transparent",
             )}
           >
             {x.w}
@@ -136,10 +136,12 @@ function BrandCard() {
         initial={{ opacity: 0, x: -12 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.2, duration: 0.6, ease: EASE }}
-        className="flex items-center gap-[0.5em] font-display text-[clamp(22px,3.4vw,40px)] font-semibold tracking-[0.08em] text-[#14143c]"
+        className="flex items-center gap-[0.5em] font-display text-[clamp(22px,3.4vw,40px)] font-semibold tracking-[0.08em] text-[var(--color-brand-950)]"
       >
-        SERVERLYS <span className="h-[1.1em] w-px bg-[#14143c]/50" />
-        <span className="whitespace-nowrap font-normal tracking-[-0.01em]">Business Email</span>
+        SERVERLYS <span className="h-[1.1em] w-px bg-[var(--color-brand-950)]/50" />
+        <span className="whitespace-nowrap font-normal tracking-[-0.01em]">
+          Business Email
+        </span>
       </motion.p>
     </motion.div>
   );
@@ -198,7 +200,7 @@ function SetupScene() {
             className="object-contain"
           />
         </span>
-        <p className="mt-[6%] font-display text-[clamp(14px,1.9vw,24px)] leading-[1.15] tracking-[-0.02em] text-[#14143c]">
+        <p className="mt-[6%] font-display text-[clamp(14px,1.9vw,24px)] leading-[1.15] tracking-[-0.02em] text-[var(--color-brand-950)]">
           Your inbox starts here, <em className="font-medium">Jordan!</em>
         </p>
         <p className="mt-[3%] text-[clamp(9px,0.95vw,12px)] text-[#6b7280]">
@@ -216,7 +218,11 @@ function SetupScene() {
             )}
           >
             <span
-              className={step >= 3 ? "font-medium text-[#14143c]" : "text-[#9aa1ad]"}
+              className={
+                step >= 3
+                  ? "font-medium text-[var(--color-brand-950)]"
+                  : "text-[#9aa1ad]"
+              }
             >
               {step >= 3 ? "brightleaf.co" : "Select a domain"}
             </span>
@@ -305,7 +311,7 @@ function SetupScene() {
               </svg>
             </span>
             <span className="leading-tight">
-              <span className="block font-semibold text-[#14143c]">
+              <span className="block font-semibold text-[var(--color-brand-950)]">
                 New mailbox created
               </span>
               <span className="block text-[#6b7280]">jordan@brightleaf.co</span>
@@ -342,19 +348,19 @@ function SetupScene() {
 const ARRIVALS = [
   {
     initials: "LT",
-    tone: "bg-[#2563eb]",
+    tone: "bg-primary",
     name: "Lucas Taylor",
     subject: "Re: revised quote for phase 2",
   },
   {
     initials: "AP",
-    tone: "bg-[#7c5cff]",
+    tone: "bg-brand-900",
     name: "Avery Patel",
     subject: "Next steps for the Q3 campaign",
   },
   {
     initials: "DS",
-    tone: "bg-[#0d9488]",
+    tone: "bg-brand-400",
     name: "Daniel Smith",
     subject: "Onboarding documents attached",
   },

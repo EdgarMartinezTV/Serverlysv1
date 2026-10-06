@@ -81,7 +81,7 @@ export function FeatureTabs({
               <li key={p} className="flex gap-3 text-body text-white/85">
                 <svg
                   viewBox="0 0 16 16"
-                  className="mt-1 size-4 shrink-0 text-[#4ade80]"
+                  className="mt-1 size-4 shrink-0 text-accent-on-dark"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2"

@@ -8,7 +8,8 @@ import { billing } from "@/data/company";
 import { faqGraph, pageMetadata, productGraph } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 import { FeatureTabs } from "./_components/feature-tabs";
-import { ComposeSend, MotionIn, Parallax } from "./_components/mail-motion";
+import { MotionIn, Parallax } from "./_components/mail-motion";
+import { ImpressionStage } from "./_components/impression-stage";
 import { HeroFilm } from "./_components/hero-film";
 import { StatsRoll } from "./_components/stats-roll";
 
@@ -201,19 +202,8 @@ export default function BusinessEmailPage() {
 
       {/* ── Make the right impression (dark) ───────────────────────────── */}
       <section aria-labelledby="impression" className="bg-canvas-abyss">
-        <div className="mx-auto max-w-[1280px] px-5 py-20 sm:px-8 lg:px-10 lg:py-28">
-          <h2
-            id="impression"
-            className="text-center font-display text-[36px] font-normal tracking-[-0.02em] text-white sm:text-[52px]"
-          >
-            Make the right impression
-          </h2>
-          <p className="mx-auto mt-4 max-w-[560px] text-center text-body-lg text-white/70">
-            Every email you send says something about your business. Stand out with your
-            own domain and a signature that reflects your brand.
-          </p>
-          <ComposeSend />
-
+        <ImpressionStage />
+        <div className="mx-auto max-w-[1280px] px-5 pb-20 sm:px-8 lg:px-10 lg:pb-28">
           <FeatureTabs
             cta={{ label: "Choose plan", href: plansHref }}
             tabs={[
