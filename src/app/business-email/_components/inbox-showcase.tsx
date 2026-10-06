@@ -186,7 +186,7 @@ export function InboxShowcase() {
 
 /* ═══ Backdrop: folded brand card + pale card ═════════════════════════ */
 
-const Backdrop = memo(function Backdrop() {
+export const Backdrop = memo(function Backdrop() {
   return (
     <>
       {/* Pale card, lower left */}
@@ -205,7 +205,7 @@ const Backdrop = memo(function Backdrop() {
   );
 });
 
-function Glass({
+export function Glass({
   className,
   children,
 }: {
@@ -263,7 +263,7 @@ function DesktopClient({ now, live }: { now: number; live: boolean }) {
   );
 }
 
-const TitleBar = memo(function TitleBar() {
+export const TitleBar = memo(function TitleBar() {
   return (
     <div className="flex items-center gap-[1cqw] bg-[#f5f6f8] px-[1cqw] py-[0.55cqw]">
       <span className="relative size-[1.5cqw] overflow-hidden rounded-[0.3cqw]">
@@ -377,7 +377,7 @@ function Ribbon({ now }: { now: number }) {
   );
 }
 
-const Rail = memo(function Rail() {
+export const Rail = memo(function Rail() {
   const icons = [
     { d: "M3 6h18v12H3ZM3 7l9 6 9-6", on: true },
     { d: "M4 6h16v14H4ZM4 10h16M9 3v4M15 3v4" },
@@ -514,7 +514,7 @@ const MESSAGES = [
   },
 ];
 
-const MessageList = memo(function MessageList() {
+export const MessageList = memo(function MessageList() {
   return (
     <div className="min-w-0 overflow-hidden border-r border-[#edf0f4]">
       <div className="flex items-center gap-[1.4cqw] px-[1cqw] pb-[0.4cqw] pt-[0.8cqw]">
@@ -837,7 +837,7 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
   );
 }
 
-const CalendarPane = memo(function CalendarPane() {
+export const CalendarPane = memo(function CalendarPane() {
   const days = [
     ["S", 4],
     ["M", 5],
@@ -1144,7 +1144,7 @@ function PhoneInbox({ now }: { now: number }) {
   );
 }
 
-const PhoneList = memo(function PhoneList() {
+export const PhoneList = memo(function PhoneList() {
   return (
     <>
       {PHONE_MAIL.map((m) => (
@@ -1211,7 +1211,7 @@ const PhoneList = memo(function PhoneList() {
 
 /* ═══ Primitives ══════════════════════════════════════════════════════ */
 
-function Avatar({ src, className }: { src: string; className?: string }) {
+export function Avatar({ src, className }: { src: string; className?: string }) {
   return (
     <span
       className={cn(
@@ -1224,7 +1224,7 @@ function Avatar({ src, className }: { src: string; className?: string }) {
   );
 }
 
-function Icon({ d, className }: { d: string; className?: string }) {
+export function Icon({ d, className }: { d: string; className?: string }) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -1240,7 +1240,7 @@ function Icon({ d, className }: { d: string; className?: string }) {
   );
 }
 
-function Check({ className }: { className?: string }) {
+export function Check({ className }: { className?: string }) {
   return (
     <svg
       viewBox="0 0 16 16"

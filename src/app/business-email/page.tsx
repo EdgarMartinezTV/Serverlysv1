@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { FeatureTabs } from "./_components/feature-tabs";
 import { MotionIn, Parallax } from "./_components/mail-motion";
 import { ImpressionStage } from "./_components/impression-stage";
-import { HeroFilm } from "./_components/hero-film";
+import { HeroShowcase } from "./_components/hero-showcase";
 import { StatsRoll } from "./_components/stats-roll";
 
 /**
@@ -130,7 +130,7 @@ export default function BusinessEmailPage() {
 
       {/* ── Hero ──────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-canvas">
-        <div className="mx-auto grid max-w-[1280px] items-center gap-12 px-5 pb-20 pt-14 sm:px-8 lg:grid-cols-[0.85fr_1.15fr] lg:px-10 lg:pb-28 lg:pt-20">
+        <div className="mx-auto grid max-w-[1400px] items-center gap-10 px-5 pb-20 pt-14 sm:px-8 lg:grid-cols-[0.72fr_1.28fr] lg:px-10 lg:pb-28 lg:pt-20">
           <div>
             <p className="text-small font-semibold text-primary">
               Serverlys Business Email
@@ -172,7 +172,7 @@ export default function BusinessEmailPage() {
             </p>
           </div>
           <div className="relative">
-            <HeroFilm />
+            <HeroShowcase />
           </div>
         </div>
       </section>
