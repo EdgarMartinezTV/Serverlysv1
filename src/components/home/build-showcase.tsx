@@ -21,8 +21,9 @@ import { cn } from "@/lib/utils";
  * Accessibility:
  *  · The moving picture is decoration (aria-hidden); the figure carries one
  *    sentence describing it.
- *  · It moves for longer than five seconds, so it has a real pause control
- *    (WCAG 2.2.2), and it pauses itself while off-screen or in a hidden tab.
+ *  · No pause control, by request (2026-10-05) — note this sits below WCAG
+ *    2.2.2 for motion over five seconds. It stops itself while off-screen or
+ *    in a hidden tab.
  *  · prefers-reduced-motion: no cycling and no typing — the first site with
  *    its request shown whole.
  */
@@ -153,7 +154,6 @@ export function BuildShowcase() {
   const [typed, setTyped] = useState(0);
   const [phase, setPhase] = useState<Phase>("type");
   const [cycle, setCycle] = useState(0);
-  const [paused, setPaused] = useState(false);
   const [visible, setVisible] = useState(true);
   const [reduced, setReduced] = useState(false);
   const root = useRef<HTMLElement>(null);
@@ -179,7 +179,7 @@ export function BuildShowcase() {
   }, []);
 
   const prompt = SITES[active].prompt;
-  const running = !paused && visible && !reduced;
+  const running = visible && !reduced;
   const shown = reduced ? prompt.length : typed;
 
   useEffect(() => {
@@ -217,7 +217,7 @@ export function BuildShowcase() {
   const entering = running && phase === "switch";
 
   return (
-    <figure ref={root} className="relative mx-auto mb-10 w-full max-w-[680px] sm:mb-0">
+    <figure ref={root} className="relative mx-auto w-full max-w-[680px]">
       <figcaption className="sr-only">
         Example sites hosted on Serverlys — a furniture store, an architecture studio and a café —
         with the request that started each one.
@@ -289,25 +289,6 @@ export function BuildShowcase() {
         </div>
       </div>
 
-      {!reduced && (
-        <button
-          type="button"
-          onClick={() => setPaused((p) => !p)}
-          aria-label={paused ? "Play the example sites animation" : "Pause the example sites animation"}
-          className="absolute -bottom-10 right-2 flex size-8 sm:-bottom-2 sm:-right-3 items-center justify-center rounded-full bg-canvas-inset text-fg-secondary transition-colors duration-fast hover:bg-line hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-        >
-          {paused ? (
-            <svg viewBox="0 0 16 16" className="size-3.5" fill="currentColor" aria-hidden="true">
-              <path d="M5 3.5v9l7.5-4.5L5 3.5Z" />
-            </svg>
-          ) : (
-            <svg viewBox="0 0 16 16" className="size-3.5" fill="currentColor" aria-hidden="true">
-              <rect x="4" y="3.5" width="2.6" height="9" rx="0.8" />
-              <rect x="9.4" y="3.5" width="2.6" height="9" rx="0.8" />
-            </svg>
-          )}
-        </button>
-      )}
     </figure>
   );
 }
