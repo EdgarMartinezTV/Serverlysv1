@@ -1,23 +1,22 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Container } from "@/components/ui/container";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
-import { Section } from "@/components/ui/section";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import { FinalCta } from "@/components/sections/final-cta";
 import { JsonLd } from "@/components/ui/json-ld";
 import { RichText } from "@/components/ui/rich-text";
 import { ArticleCover } from "../_components/article-cover";
+import { AUTHOR, BlogNav, PostCard } from "../_components/blog-ui";
+import { ShareBar } from "../_components/share-bar";
 import {
   articles,
   articleBySlug,
+  articleCategories,
+  categorySlug,
   readingMinutes,
   relatedArticles,
   type Block,
 } from "@/data/articles";
-import { company, billing } from "@/data/company";
-import { pageMetadata, articleGraph, ogImageFor } from "@/lib/seo";
+import { pageMetadata, articleGraph, ogImageFor, canonical } from "@/lib/seo";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 /**
@@ -57,13 +56,11 @@ export async function generateMetadata(props: PageProps<"/blog/[slug]">) {
   };
 }
 
+/** "Friday September 18, 2026" — the reference's article date. */
 function formatDate(iso: string): string {
-  return new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    timeZone: "UTC",
-  });
+  return new Date(`${iso}T00:00:00Z`)
+    .toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })
+    .replace(",", "");
 }
 
 /**
@@ -77,17 +74,17 @@ function BlockView({ block }: { block: Block }) {
   switch (block.type) {
     case "h2":
       return (
-        <h2 id={block.id} className="mt-14 scroll-mt-28 text-h3 font-medium tracking-[-0.02em] text-fg first:mt-0">
+        <h2 id={block.id} className="mt-14 scroll-mt-28 font-display text-[28px] font-normal leading-[1.25] tracking-[-0.02em] text-fg first:mt-0 sm:text-[34px]">
           {block.text}
         </h2>
       );
     case "h3":
       return (
-        <h3 className="mt-10 text-body-lg font-semibold text-fg">{block.text}</h3>
+        <h3 className="mt-10 font-display text-[21px] font-medium leading-snug text-fg sm:text-[23px]">{block.text}</h3>
       );
     case "p":
       return (
-        <p className="mt-5 text-body text-fg-secondary">
+        <p className="mt-6 text-[17px] leading-[1.75] text-fg sm:text-[19px]">
           <RichText text={block.text} />
         </p>
       );
@@ -95,8 +92,8 @@ function BlockView({ block }: { block: Block }) {
       return (
         <ul className="mt-5 flex flex-col gap-3">
           {block.items.map((item) => (
-            <li key={item} className="flex gap-3 text-body text-fg-secondary">
-              <span aria-hidden="true" className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+            <li key={item} className="flex gap-3 text-[17px] leading-[1.7] text-fg sm:text-[19px]">
+              <span aria-hidden="true" className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
               <span>
                 <RichText text={item} />
               </span>
@@ -108,10 +105,10 @@ function BlockView({ block }: { block: Block }) {
       return (
         <ol className="mt-5 flex flex-col gap-4">
           {block.items.map((item, i) => (
-            <li key={item} className="flex gap-4 text-body text-fg-secondary">
+            <li key={item} className="flex gap-4 text-[17px] leading-[1.7] text-fg sm:text-[19px]">
               <span
                 aria-hidden="true"
-                className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-50 text-micro font-semibold text-primary"
+                className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-50 text-micro font-semibold text-primary"
               >
                 {i + 1}
               </span>
@@ -133,7 +130,7 @@ function BlockView({ block }: { block: Block }) {
       );
     case "quote":
       return (
-        <blockquote className="mt-8 rounded-2xl bg-canvas-secondary px-6 py-5 text-body-lg text-fg">
+        <blockquote className="mt-8 border-l-4 border-primary py-1 pl-6 font-display text-[20px] leading-[1.6] text-fg sm:text-[22px]">
           <RichText text={block.text} />
         </blockquote>
       );
@@ -199,7 +196,6 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
   if (!article) notFound();
 
   const path = `/blog/${article.slug}`;
-  const headings = article.body.filter((b) => b.type === "h2");
   const related = relatedArticles(article);
 
   return (
@@ -215,117 +211,79 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
         })}
       />
 
-      {/* 2026-10-03: light article header with the category thumbnail,
-          in place of the dark band and its mono category label. */}
-      <section className="relative isolate overflow-hidden bg-canvas">
-        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[radial-gradient(55%_60%_at_80%_10%,rgb(0_0_255/0.06)_0%,transparent_70%)]" />
-        <Container className="pb-12 pt-6 sm:pb-16 lg:pt-10">
-          <Breadcrumbs
-            trail={[{ name: "Home", href: "/" }, { name: "Blog", href: "/blog" }, { name: article.category }]}
-            tone="light"
-          />
-          <div className="mt-10 grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-center lg:gap-16">
-            <div>
-              <span className="inline-flex rounded-md bg-brand-50 px-2.5 py-1 text-small font-medium text-primary">
-                {article.category}
-              </span>
-              <h1 className="display-lg mt-5 text-fg">{article.title}</h1>
-              <p className="mt-5 max-w-[60ch] text-body-lg text-fg-secondary">{article.description}</p>
-              <p className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-small text-fg-secondary">
-                <span className="font-medium text-fg">{company.name}</span>
-                <span aria-hidden="true">·</span>
-                <time dateTime={article.published}>{formatDate(article.published)}</time>
-                <span aria-hidden="true">·</span>
-                {readingMinutes(article)} min read
-              </p>
-            </div>
-            <ArticleCover slug={article.slug} category={article.category} size="lg" priority sizes="(min-width: 1024px) 560px, 100vw" className="aspect-[4/3] rounded-3xl" />
-          </div>
-        </Container>
-      </section>
+      <BlogNav
+        categories={articleCategories}
+        active={article.category}
+        searchIndex={articles.map((a) => ({ slug: a.slug, title: a.title, category: a.category }))}
+      />
 
-      <Section spacing="tight">
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_15rem] lg:gap-16">
-          {/*
-            min-w-0 is required, not cosmetic. A grid item defaults to
-            `min-width: auto`, which means it refuses to shrink below its
-            content's min-content width — so a wide table or code block inside
-            pushes the article column past the viewport and the whole PAGE
-            scrolls sideways on a phone, `overflow-x-auto` on the inner
-            container notwithstanding. That inner scroll only works once the
-            column itself is allowed to be narrower than its contents.
-          */}
-          {/* `overflow-wrap: break-word` on the whole column, not just on
-              <code>. Article prose quotes raw strings in places that are not
-              code spans — `/blog/mysql-database-guide` puts a PHP DSN
-              (`mysql:host=localhost;dbname=…`) inside a <blockquote>, which has
-              no spaces to break at and pushed the layout viewport to 608px on
-              every phone width up to 430. `break-word` rather than `anywhere`
-              because this applies to ordinary sentences too: it breaks a word
-              only when that word cannot otherwise fit, and leaves intrinsic
-              sizing alone. Inline <code> keeps the stricter `anywhere` — see
-              components/ui/rich-text.tsx. */}
-          <article className="min-w-0 max-w-[68ch] [overflow-wrap:break-word]">
-            {article.body.map((block, i) => (
-              <BlockView key={i} block={block} />
-            ))}
+      {/* One centred reading column, as on the reference: meta row, headline,
+          full-width cover, summarize/share, then the body. */}
+      <article className="mx-auto w-full max-w-[760px] px-5 pb-20 pt-10 sm:px-8 sm:pt-14 [overflow-wrap:break-word]">
+        <p className="flex flex-wrap items-center gap-x-4 gap-y-2 text-caption font-semibold text-fg">
+          <Link
+            href={`/blog/category/${categorySlug(article.category)}`}
+            className="rounded-full bg-brand-50 px-2.5 py-1 font-medium text-primary transition-colors hover:bg-brand-100"
+          >
+            {article.category}
+          </Link>
+          <time dateTime={article.published}>{formatDate(article.published)}</time>
+          <span>{AUTHOR}</span>
+          <span className="font-normal text-fg-muted">{readingMinutes(article)} min read</span>
+        </p>
+        <h1 className="mt-5 font-display text-[34px] font-normal leading-[1.15] tracking-[-0.025em] text-fg sm:text-[46px] lg:text-[52px]">
+          {article.title}
+        </h1>
+        <ArticleCover
+          slug={article.slug}
+          category={article.category}
+          size="lg"
+          priority
+          sizes="(min-width: 800px) 704px, 100vw"
+          className="mt-8 aspect-[16/9.5] rounded-xl"
+        />
+        <ShareBar url={canonical(path)} title={article.title} />
 
-            <div className="mt-14 rounded-2xl bg-canvas-secondary p-7">
-              <p className="text-body text-fg-secondary">
-                Questions about anything above? We answer them without a sales
-                script.
-              </p>
-              <div className="mt-5 flex flex-wrap gap-3">
-                <Button href={billing.sales}>Talk to us</Button>
-                <Button href="/pricing" variant="secondary">
-                  See pricing
-                </Button>
-              </div>
-            </div>
-          </article>
-
-          {/* Contents. Native anchors, sticky on desktop only. */}
-          {headings.length > 1 && (
-            <nav aria-label="On this page" className="order-first lg:order-none lg:sticky lg:top-24 lg:self-start">
-              <p className="text-small font-semibold text-fg">On this page</p>
-              <ul className="mt-4 flex flex-col gap-1">
-                {headings.map((h) => (
-                  <li key={h.id}>
-                    <a
-                      href={`#${h.id}`}
-                      className="flex min-h-[2.5rem] items-center rounded-md px-3 text-small text-fg-secondary transition-colors hover:bg-brand-50 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                    >
-                      {h.text}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          )}
-        </div>
-      </Section>
-
-      <Section surface="subtle">
-        <h2 className="display-md text-fg">Keep reading</h2>
-        <ul className="mt-10 grid gap-4 sm:grid-cols-3">
-          {related.map((a) => (
-            <li key={a.slug}>
-              <Link
-                href={`/blog/${a.slug}`}
-                className="group flex h-full flex-col gap-3 rounded-2xl bg-canvas p-3 pb-6 ring-1 ring-line transition-shadow hover:shadow-e3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-              >
-                <ArticleCover slug={a.slug} category={a.category} className="aspect-[16/9]" />
-                <span className="px-3 pt-2"><Badge>{a.category}</Badge></span>
-                <h3 className="px-3 text-body font-semibold text-fg group-hover:text-primary">{a.title}</h3>
-                <p className="px-3 text-small text-fg-secondary">{a.description}</p>
-                <span className="mt-auto px-3 pt-3 text-caption text-fg-muted">
-                  {readingMinutes(a)} min read
-                </span>
-              </Link>
-            </li>
+        <div className="mt-10 border-t border-line pt-2">
+          <p className="mt-6 text-[19px] leading-[1.7] text-fg-secondary sm:text-[21px]">{article.description}</p>
+          {article.body.map((block, i) => (
+            <BlockView key={i} block={block} />
           ))}
-        </ul>
-      </Section>
+        </div>
+
+        {/* Author box */}
+        <div className="mt-16 flex gap-5 rounded-2xl bg-canvas-secondary p-6 sm:p-7">
+          <span className="relative size-14 shrink-0 overflow-hidden rounded-full bg-white ring-1 ring-line">
+            <Image src="/brand/logo-square.png" alt="" fill sizes="56px" className="object-contain p-1.5" />
+          </span>
+          <div>
+            <p className="text-caption font-semibold uppercase tracking-[0.06em] text-fg-muted">The author</p>
+            <p className="mt-1 text-body-lg font-medium text-fg">{AUTHOR}</p>
+            <p className="mt-2 text-small leading-relaxed text-fg-secondary">
+              The people who run Serverlys hosting, domains and support. We write about what we see every
+              day helping small businesses keep their websites fast, safe and online.
+            </p>
+            <Link href="/blog" className="mt-3 inline-block text-small font-semibold text-primary hover:text-primary-hover">
+              More from {AUTHOR}
+            </Link>
+          </div>
+        </div>
+      </article>
+
+      <section aria-labelledby="related-title" className="bg-canvas-secondary">
+        <div className="mx-auto max-w-[1280px] px-5 py-16 sm:px-8 lg:px-10 lg:py-20">
+          <h2 id="related-title" className="text-center font-display text-[34px] font-normal tracking-[-0.02em] text-fg sm:text-[40px]">
+            Related posts
+          </h2>
+          <ul className="mt-12 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+            {related.map((a) => (
+              <li key={a.slug}>
+                <PostCard article={a} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
 
       <FinalCta />
       <PageBreadcrumbs trail={[
