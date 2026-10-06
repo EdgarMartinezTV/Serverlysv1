@@ -13,6 +13,10 @@ import { compactCount, demoSites, trend, type DemoSite } from "./demo-data";
  * shown. Three views, because that is the honest split of what the product
  * actually reports — traffic and resources, speed, and what was blocked.
  *
+ * Layout follows the console's OWN width (container queries, `@lg` = 32rem),
+ * not the viewport: inside the homepage laptop it is laid out at a fixed
+ * width and scaled, so viewport breakpoints would pick the phone layout.
+ *
  * The site list is a `tablist`: sites and views are both single-choice, so both
  * get roving focus and arrow-key movement rather than a row of tab stops.
  */
@@ -36,7 +40,14 @@ const STATUS: Record<DemoSite["status"], { label: string; dot: string; text: str
     },
   };
 
-export function HostingConsole({ className }: { className?: string }) {
+export function HostingConsole({
+  className,
+  frameless,
+}: {
+  className?: string;
+  /** Inside a device frame that supplies its own chrome. See ConsoleShell. */
+  frameless?: boolean;
+}) {
   const [siteId, setSiteId] = useState(demoSites[0].id);
   const [view, setView] = useState<View>("overview");
   const listId = useId();
@@ -61,6 +72,7 @@ export function HostingConsole({ className }: { className?: string }) {
     <ConsoleShell
       label="Serverlys hosting console demonstration"
       title="Sites"
+      frameless={frameless}
       toolbar={
         <Segmented
           label="Console view"
@@ -71,14 +83,14 @@ export function HostingConsole({ className }: { className?: string }) {
       }
       className={className}
     >
-      <div className="grid sm:grid-cols-[minmax(0,11.5rem)_minmax(0,1fr)]">
+      <div className="grid @lg:grid-cols-[minmax(0,11.5rem)_minmax(0,1fr)]">
         {/* ── Site list ─────────────────────────────────────────────────── */}
         <div
           role="tablist"
           aria-orientation="vertical"
           aria-label="Choose a site"
           onKeyDown={onListKeyDown}
-          className="flex gap-1 overflow-x-auto border-b border-line-subtle p-2 sm:flex-col sm:overflow-visible sm:border-b-0 sm:border-r"
+          className="flex gap-1 overflow-x-auto border-b border-line-subtle p-2 @lg:flex-col @lg:overflow-visible @lg:border-b-0 @lg:border-r"
         >
           {demoSites.map((entry) => {
             const active = entry.id === siteId;
@@ -94,7 +106,7 @@ export function HostingConsole({ className }: { className?: string }) {
                 tabIndex={active ? 0 : -1}
                 onClick={() => setSiteId(entry.id)}
                 className={cn(
-                  "min-w-[9.5rem] shrink-0 rounded-lg px-2.5 py-2 text-left transition-colors duration-fast ease-hover sm:min-w-0",
+                  "min-w-[9.5rem] shrink-0 rounded-lg px-2.5 py-2 text-left transition-colors duration-fast ease-hover @lg:min-w-0",
                   "focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary",
                   active
                     ? "bg-primary-soft ring-1 ring-inset ring-primary/25"
@@ -129,7 +141,7 @@ export function HostingConsole({ className }: { className?: string }) {
           id={`${listId}-panel`}
           aria-labelledby={`${listId}-${site.id}`}
           tabIndex={-1}
-          className="min-w-0 p-3 sm:p-4"
+          className="min-w-0 p-3 @lg:p-4"
         >
           <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
             <p className="truncate font-mono text-small font-medium text-fg">
