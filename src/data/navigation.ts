@@ -124,14 +124,16 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
           },
           {
             label: "ConvoAI",
-            href: "/convoai",
+            href: "https://convoai.cloud/",
+            external: true,
             icon: "chat",
             badge: { text: "Live", tone: "success" },
             description: "Answers your customers around the clock.",
           },
           {
             label: "CallFlow",
-            href: "/callflow-ai",
+            href: "https://callflow.serverlys.com/",
+            external: true,
             icon: "phone",
             description: "Picks up the phone when nobody can.",
           },
@@ -172,7 +174,7 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
       brand: "convoai",
       title: "An agent that answers at 2am",
       body: "Hours, bookings and pricing answered the moment they are asked — and handed over when they are not routine.",
-      cta: { label: "Explore ConvoAI", href: "/convoai" },
+      cta: { label: "Explore ConvoAI", href: "https://convoai.cloud/", external: true },
       visual: "ai",
     },
   },
@@ -622,8 +624,8 @@ export const footerNav: readonly NavColumn[] = [
     heading: "AI and automation",
     links: [
       { label: "AI agents", href: "/ai-agents" },
-      { label: "ConvoAI", href: "/convoai" },
-      { label: "CallFlow AI", href: "/callflow-ai" },
+      { label: "ConvoAI", href: "https://convoai.cloud/", external: true },
+      { label: "CallFlow AI", href: "https://callflow.serverlys.com/", external: true },
       { label: "Automations", href: "/automations" },
       { label: "AI tools", href: "/ai-tools" },
     ],
@@ -784,7 +786,7 @@ export const announcement = {
   titleShort: "Your phone, answered by AI",
   /** Dropped below md, where there is no room for a second clause. */
   detail: "CallFlow books the job and sends you the transcript.",
-  href: "/callflow-ai",
+  href: "https://callflow.serverlys.com/",
   linkLabel: "Hear it answer",
   linkLabelShort: "Hear it",
 } as const;

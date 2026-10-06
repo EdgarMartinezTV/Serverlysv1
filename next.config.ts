@@ -72,8 +72,8 @@ const nextConfig: NextConfig = {
       { source: "/domains", destination: "/domain-name", permanent: true },
 
       // Aliases. ChatRep is the campaign name; ConvoAI is the product name
-      // used by the live application at convoai.cloud, so /convoai is canonical.
-      { source: "/chatrep", destination: "/convoai", permanent: true },
+      // used by the live application at convoai.cloud, which is where it now goes.
+      { source: "/chatrep", destination: "https://convoai.cloud/", permanent: true },
       { source: "/n8n-automations", destination: "/automations", permanent: true },
       {
         source: "/domain-name-search",
@@ -98,7 +98,7 @@ const nextConfig: NextConfig = {
        * real search results into 404s.
        *
        *   /features            → the hosting page carries the same feature set.
-       *   /callflow + children → the voice product now lives at /callflow-ai.
+       *   /callflow + children → the voice product, now its own site.
        *   /case-studies,
        *   /success-stories     → deliberately NOT rebuilt: the originals were
        *                          invented results ("300% traffic growth") and
@@ -107,8 +107,15 @@ const nextConfig: NextConfig = {
        *                          the page that answers "how do you work".
        */
       { source: "/features", destination: "/hosting", permanent: true },
-      { source: "/callflow", destination: "/callflow-ai", permanent: true },
-      { source: "/callflow/:slug", destination: "/callflow-ai", permanent: true },
+      { source: "/callflow", destination: "https://callflow.serverlys.com/", permanent: true },
+      { source: "/callflow/:slug", destination: "https://callflow.serverlys.com/", permanent: true },
+      /*
+       * ConvoAI and CallFlow are their own sites (2026-10-05). Their pages
+       * here were removed; these keep every old link and search result
+       * landing on the product rather than a 404.
+       */
+      { source: "/convoai", destination: "https://convoai.cloud/", permanent: true },
+      { source: "/callflow-ai", destination: "https://callflow.serverlys.com/", permanent: true },
       { source: "/case-studies", destination: "/our-process", permanent: true },
       { source: "/success-stories", destination: "/our-process", permanent: true },
     ];

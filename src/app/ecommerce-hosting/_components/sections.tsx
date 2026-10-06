@@ -252,7 +252,7 @@ export function StoreAgent() {
               person.
             </p>
             <div className="mt-7">
-              <CtaButton href="/convoai">Explore ConvoAI</CtaButton>
+              <CtaButton href="https://convoai.cloud/">Explore ConvoAI</CtaButton>
             </div>
           </div>
         </div>

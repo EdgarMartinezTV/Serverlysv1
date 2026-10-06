@@ -155,7 +155,7 @@ export function PlansPromo() {
               <div>
                 <ConvoAiLogo tone="light" className="h-6 w-auto" />
                 <h3 className="mt-3 text-h3 text-fg">
-                  <CardLink href="/convoai">Answer visitors at 2am</CardLink>
+                  <CardLink href="https://convoai.cloud/">Answer visitors at 2am</CardLink>
                 </h3>
                 <p className="mt-2 text-body text-fg-secondary">
                   {convo?.description ??

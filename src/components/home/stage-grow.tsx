@@ -60,7 +60,7 @@ export function StageGrow() {
             title="The 2am enquiry gets an answer at 2am"
             body={`${convo?.description ?? "Answers your customers, day and night."} Trained on your own pages, so it answers about your prices and your hours. Ask it something.`}
             links={[
-              { label: "How the chat agent works", href: "/convoai" },
+              { label: "How the chat agent works", href: "https://convoai.cloud/", external: true },
               { label: "Automations that follow up", href: "/automations" },
               ...(convo ? [{ label: "Open ConvoAI", href: convo.href, external: true }] : []),
             ]}
@@ -75,7 +75,7 @@ export function StageGrow() {
             title="And the missed call gets picked up"
             body={`${callflow?.description ?? "Picks up the phone when you cannot."} It takes the details, books the slot and leaves you a transcript instead of a voicemail.`}
             links={[
-              { label: "What CallFlow handles", href: "/callflow-ai" },
+              { label: "What CallFlow handles", href: "https://callflow.serverlys.com/", external: true },
               { label: "Marketing that feeds it", href: "/marketing" },
               ...(callflow ? [{ label: "Open CallFlow", href: callflow.href, external: true }] : []),
             ]}

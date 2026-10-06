@@ -113,7 +113,7 @@ export const AGENT = {
   description:
     "It answers the questions that make up most of a store’s volume — shipping, returns, sizing, stock — captures the customer’s name and intent, and hands anything it should not attempt to a person with the full transcript.",
   cta: "Explore ConvoAI",
-  ctaHref: "/convoai",
+  ctaHref: "https://convoai.cloud/",
   cards: [
     {
       icon: "spark" as const,

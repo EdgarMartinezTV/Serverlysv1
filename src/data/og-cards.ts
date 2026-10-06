@@ -63,16 +63,6 @@ const PAGES: Record<string, OgCard> = {
     title: "Nobody should reach a ringing phone.",
     detail: "Chat and voice agents that capture the lead instead of losing it.",
   },
-  "/convoai": {
-    eyebrow: "ConvoAI",
-    title: "Answers your customers, day and night.",
-    detail: "Trained on your business. Escalates when it should.",
-  },
-  "/callflow-ai": {
-    eyebrow: "CallFlow AI",
-    title: "Picks up the phone when you cannot.",
-    detail: "Books the job, takes the details, sends you the summary.",
-  },
   "/automations": {
     eyebrow: "Automations",
     title: "The daily work, done without anyone remembering.",

@@ -85,7 +85,7 @@ export default function WebsiteDesignPage() {
         eyebrow="After launch"
         title="Someone has to answer the enquiries"
         body="A site that works generates questions. Add ConvoAI and they get answered in the moment rather than accumulating in an inbox."
-        cta={{ label: "See ConvoAI", href: "/convoai" }}
+        cta={{ label: "See ConvoAI", href: "https://convoai.cloud/" }}
         visual={<ChatMock />}
         side="left"
         surface="dark"

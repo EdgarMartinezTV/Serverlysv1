@@ -6,7 +6,7 @@ import { pageMetadata } from "@/lib/seo";
  * AI services terms — ConvoAI and CallFlow.
  *
  * Grounded in what those two products ALREADY DO on their own pages, not in
- * generic AI boilerplate. Both /convoai and /callflow-ai publish that the
+ * generic AI boilerplate. Both ConvoAI and CallFlow (now on their own sites) publish that the
  * customer is told they are speaking to an assistant; this document turns that
  * published behaviour into a term, which is the right direction of travel. Do
  * not add a clause describing a capability neither page claims.

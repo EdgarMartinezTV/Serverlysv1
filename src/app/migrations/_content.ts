@@ -124,12 +124,12 @@ export const AI_TOOLS = {
     {
       title: "ConvoAI",
       body: "A chat agent trained on your own site. It answers the questions that make up most of your volume and hands the rest to a person with the transcript.",
-      href: "/convoai",
+      href: "https://convoai.cloud/",
     },
     {
       title: "CallFlow",
       body: "A voice agent that answers your phone, books the job, and sends you the transcript.",
-      href: "/callflow-ai",
+      href: "https://callflow.serverlys.com/",
     },
     {
       title: "Automations",

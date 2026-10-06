@@ -317,7 +317,7 @@ export const originalArticles: readonly Article[] = [
       {
         type: "ul",
         items: [
-          "Out of hours, weekends and holidays, when the phone would otherwise [ring out](/callflow-ai)",
+          "Out of hours, weekends and holidays, when the phone would otherwise [ring out](https://callflow.serverlys.com/)",
           "Overflow, when your team is already on another call",
           "Repetitive questions with stable answers — opening times, service areas, what you charge for a standard job, where to park",
           "Qualifying and capturing: name, number, what they need, and when — written into your inbox or CRM before the caller hangs up",

@@ -38,7 +38,7 @@ export const article: Article = {
     {
       type: "callout",
       title: "Serverlys Tip",
-      text: "If you want a chatbot without stitching one together yourself, [ConvoAI](/convoai) is the Serverlys AI chatbot: trained on your own site, it answers customers around the clock, captures the lead and hands the rest to a person. For calls rather than chat, see the [AI agents](/ai-agents) page.",
+      text: "If you want a chatbot without stitching one together yourself, [ConvoAI](https://convoai.cloud/) is the Serverlys AI chatbot: trained on your own site, it answers customers around the clock, captures the lead and hands the rest to a person. For calls rather than chat, see the [AI agents](/ai-agents) page.",
     },
     { type: "h2", id: "ai-content-creation-write-better-faster", text: "AI Content Creation: Write Better, Faster" },
     { type: "p", text: "Content creation is the most time-consuming marketing task for small businesses. AI doesn't replace good writing, but it dramatically accelerates the process. Here's how smart businesses use AI for content without sacrificing quality." },

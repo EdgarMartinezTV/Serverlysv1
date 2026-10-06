@@ -69,7 +69,7 @@ export default function MarketingPage() {
         eyebrow="After the click"
         title="Traffic you do not answer is wasted spend"
         body="Getting someone to the site is the expensive part. An agent that answers immediately is often the cheapest improvement available to a campaign."
-        cta={{ label: "See ConvoAI", href: "/convoai" }}
+        cta={{ label: "See ConvoAI", href: "https://convoai.cloud/" }}
         visual={<ChatMock />}
         side="left"
         surface="dark"

@@ -47,7 +47,7 @@ export default function AiAgentsPage() {
           { label: "Handover", value: "To a person" },
           { label: "Trained on", value: "Your site" },
         ]}
-        primary={{ label: "See ConvoAI", href: "/convoai" }}
+        primary={{ label: "See ConvoAI", href: "https://convoai.cloud/" }}
         secondary={{ label: "Talk to us", href: billing.sales }}
         visual={<ChatMock />}
       />
@@ -76,7 +76,7 @@ export default function AiAgentsPage() {
           { label: "Captures the lead", detail: "Name, need and contact land in the panel and your inbox.", icon: "book" },
           { label: "Knows when to stop", detail: "Refunds and complaints go to a person, with the transcript.", icon: "lifebuoy" },
         ]}
-        cta={{ label: "See ConvoAI", href: "/convoai" }}
+        cta={{ label: "See ConvoAI", href: "https://convoai.cloud/" }}
         visual={<ChatMock />}
         side="right"
         surface="subtle"
@@ -88,7 +88,7 @@ export default function AiAgentsPage() {
         eyebrow="CallFlow"
         title="The phone still rings"
         body="A missed call is a lost customer far more often than a missed email. CallFlow answers, handles the routine, and takes a proper message when it cannot."
-        cta={{ label: "See CallFlow", href: "/callflow-ai" }}
+        cta={{ label: "See CallFlow", href: "https://callflow.serverlys.com/" }}
         visual={<div className="flex justify-center"><CallMock /></div>}
         side="left"
         surface="dark"

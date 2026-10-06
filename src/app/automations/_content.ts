@@ -204,7 +204,7 @@ export const TRIGGERS = {
   title: "Most of it starts with a customer saying something",
   body: "A question in a chat box, a call to a number nobody could answer, a form at eleven at night. The useful automations begin there — the agent captures what was said, and the workflow decides what has to happen next.",
   cta: "See how the agent answers",
-  ctaHref: "/convoai",
+  ctaHref: "https://convoai.cloud/",
   features: [
     {
       icon: "chart",

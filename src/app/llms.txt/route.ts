@@ -1,6 +1,6 @@
 import { routes } from "@/data/routes";
 import { canonical } from "@/lib/seo";
-import { company, billing } from "@/data/company";
+import { company, billing, sisterProducts } from "@/data/company";
 import {
   LLMS_BLURB,
   LLMS_CONTEXT,
@@ -53,7 +53,9 @@ export function GET() {
   for (const section of LLMS_SECTIONS) {
     const entries = section.paths
       .filter((path) => {
-        if (!eligible.has(path)) return false;
+        // Sister products live on their own sites; listed by absolute URL.
+        const external = /^https?:\/\//.test(path);
+        if (!external && !eligible.has(path)) return false;
         // A listed page with no summary would emit a bare link, which is worse
         // than omitting it: an answer engine reads a bare link as a page with
         // nothing to say. Record it so the test can fail on it.
@@ -64,6 +66,10 @@ export function GET() {
         return true;
       })
       .map((path) => {
+        if (/^https?:\/\//.test(path)) {
+          const name = sisterProducts.find((p) => p.href === path)?.name ?? path;
+          return `- [${name}](${path}): ${LLMS_SUMMARIES[path]}`;
+        }
         const route = eligible.get(path)!;
         const name = path === "/" ? company.name : route.name;
         return `- [${name}](${canonical(path)}): ${LLMS_SUMMARIES[path]}`;

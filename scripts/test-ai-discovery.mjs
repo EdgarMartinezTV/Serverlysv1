@@ -148,8 +148,7 @@ console.log("\n── extraction without JavaScript ──");
 const PAGES = [
   "/",
   "/pricing",
-  "/convoai",
-  "/callflow-ai",
+  "/ai-agents",
   "/automations",
   "/wordpress-hosting",
   "/website-design",
@@ -180,7 +179,7 @@ check(
   "no Organization at " + ORG_ID,
 );
 
-const SERVICE_PAGES = ["/convoai", "/callflow-ai", "/automations", "/website-design", "/seo"];
+const SERVICE_PAGES = ["/ai-agents", "/automations", "/website-design", "/seo"];
 for (const path of SERVICE_PAGES) {
   const blocks = jsonLd(pages.get(path).body).flatMap((b) => b["@graph"] ?? [b]);
   const service = blocks.find((n) => n["@type"] === "Service");

@@ -69,7 +69,7 @@ export function CoworkerBand() {
               attempt to a person with the full transcript.
             </p>
             <Link
-              href="/convoai"
+              href="https://convoai.cloud/"
               className="mt-5 inline-flex items-center gap-2 rounded-full px-4 py-2 text-small font-semibold text-white ring-1 ring-white/40 transition-colors duration-fast hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
               <SeraMark className="h-4 w-4" />

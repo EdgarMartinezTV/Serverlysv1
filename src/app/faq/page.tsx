@@ -32,7 +32,7 @@ const TOPICS: ReadonlyArray<{ id: string; label: string; scopes: readonly string
   { id: "wordpress", label: "WordPress", scopes: ["/wordpress-hosting"] },
   { id: "ecommerce", label: "Ecommerce", scopes: ["/ecommerce-hosting"] },
   { id: "domains", label: "Domains", scopes: ["/register-domain"] },
-  { id: "ai", label: "AI agents and automations", scopes: ["/ai-agents", "/convoai", "/callflow-ai", "/automations"] },
+  { id: "ai", label: "AI agents and automations", scopes: ["/ai-agents", "/automations"] },
 ];
 
 function group(): ReadonlyArray<{ id: string; label: string; items: Faq[] }> {

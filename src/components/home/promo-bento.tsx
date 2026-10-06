@@ -15,13 +15,13 @@ const SIDE = [
     pill: "Live",
     title: "ConvoAI",
     body: "A chat agent trained on your own site, answering before you wake up.",
-    href: "/convoai",
+    href: "https://convoai.cloud/",
   },
   {
     pill: "Live",
     title: "CallFlow",
     body: "A voice agent that answers the phone, books the job and sends the transcript.",
-    href: "/callflow-ai",
+    href: "https://callflow.serverlys.com/",
   },
 ] as const;
 

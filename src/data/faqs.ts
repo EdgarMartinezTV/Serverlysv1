@@ -139,25 +139,25 @@ export const faqs: readonly Faq[] = [
     question: "What can an AI agent actually answer?",
     answer:
       "The routine questions that make up most of the volume: hours, location, delivery, pricing, availability, booking. It is trained on your own site and the details you give it, so it answers about your business rather than in general.",
-    scopes: ["/ai-agents", "/convoai"],
+    scopes: ["/ai-agents"],
   },
   {
     question: "What happens when it does not know?",
     answer:
       "It hands over rather than guesses. A refund dispute or an unusual request is passed to a person with the conversation attached, so nobody starts from scratch.",
-    scopes: ["/ai-agents", "/convoai"],
+    scopes: ["/ai-agents"],
   },
   {
     question: "Will callers know it is not a person?",
     answer:
       "It introduces itself as an assistant. Pretending otherwise damages trust the first time someone notices, and in several places it is not permitted.",
-    scopes: ["/callflow-ai"],
+    scopes: ["/ai-agents"],
   },
   {
     question: "What happens outside opening hours?",
     answer:
       "The call is answered, the caller gets the information they asked for, and anything needing a person is captured as a message with a callback number.",
-    scopes: ["/callflow-ai"],
+    scopes: ["/ai-agents"],
   },
   {
     question: "Do I need to know n8n to use automations?",

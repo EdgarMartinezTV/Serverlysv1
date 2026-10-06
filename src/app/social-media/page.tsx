@@ -68,7 +68,7 @@ export default function SocialMediaPage() {
         eyebrow="The messages"
         title="Most social enquiries arrive as a DM"
         body="And they arrive in the evening. An agent can answer the routine ones immediately so the enquiry does not go cold before morning."
-        cta={{ label: "See ConvoAI", href: "/convoai" }}
+        cta={{ label: "See ConvoAI", href: "https://convoai.cloud/" }}
         visual={<ChatMock />}
         side="right"
         surface="dark"

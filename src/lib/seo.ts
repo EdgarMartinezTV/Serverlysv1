@@ -105,8 +105,9 @@ const SERVICES = [
   { name: "WordPress hosting", path: "/wordpress-hosting" },
   { name: "Ecommerce hosting", path: "/ecommerce-hosting" },
   { name: "Domain registration", path: "/register-domain" },
-  { name: "AI chatbot", path: "/convoai" },
-  { name: "AI voice agent", path: "/callflow-ai" },
+  // Sister products on their own sites — the page that sells them is there.
+  { name: "AI chatbot", url: "https://convoai.cloud/" },
+  { name: "AI voice agent", url: "https://callflow.serverlys.com/" },
   { name: "Web development", path: "/website-development" },
   { name: "Business automations", path: "/automations" },
 ] as const;
@@ -168,7 +169,7 @@ export function organizationGraph() {
             itemOffered: {
               "@type": "Service",
               name: service.name,
-              url: canonical(service.path),
+              url: "url" in service ? service.url : canonical(service.path),
               provider: { "@id": ORG_ID },
             },
           })),

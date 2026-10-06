@@ -34,7 +34,7 @@ export const metadata = pageMetadata({
 const TOOLS = [
   {
     name: "ConvoAI",
-    href: "/convoai",
+    href: "https://convoai.cloud/",
     icon: "chat" as const,
     symptom: "People arrive on your website, do not find the answer, and leave.",
     does: "Answers questions on the site in a conversation, using what you told it about your business, and captures the lead when it cannot finish the job.",
@@ -43,7 +43,7 @@ const TOOLS = [
   },
   {
     name: "CallFlow",
-    href: "/callflow-ai",
+    href: "https://callflow.serverlys.com/",
     icon: "phone" as const,
     symptom: "The phone rings out and the caller phones the next name on the list.",
     does: "Answers the call, handles the routine questions, takes the details or books the appointment, and sends you the summary.",

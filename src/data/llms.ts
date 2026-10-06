@@ -105,7 +105,7 @@ export const LLMS_SECTIONS = [
     note:
       "ConvoAI and CallFlow are Serverlys products. Automations are built on " +
       "n8n and run on Serverlys infrastructure, owned by the customer.",
-    paths: ["/ai-agents", "/convoai", "/callflow-ai", "/automations", "/ai-tools"],
+    paths: ["/ai-agents", "https://convoai.cloud/", "https://callflow.serverlys.com/", "/automations", "/ai-tools"],
   },
   {
     title: "Websites and growth",
@@ -204,9 +204,9 @@ export const LLMS_SUMMARIES: Record<string, string> = {
 
   "/ai-agents":
     "Serverlys AI agents answer your customers in chat and on the phone, capture the lead, book the appointment and hand the rest to a person.",
-  "/convoai":
+  "https://convoai.cloud/":
     "ConvoAI is the Serverlys chat agent: trained on your own site, it answers customers around the clock, captures the lead and hands the rest to a person.",
-  "/callflow-ai":
+  "https://callflow.serverlys.com/":
     "CallFlow is the Serverlys voice agent: it answers the phone when nobody can, handles routine calls, books appointments and takes a proper message otherwise.",
   "/automations":
     "Serverlys builds and runs the automations that handle daily admin — enquiry to record, booking to calendar, form to the right person. Built on n8n, owned by the customer.",

@@ -25,7 +25,7 @@ import Image from "next/image";
  * only thing naming it.
  */
 /**
- * Widest this mark is rendered anywhere: `h-9` on /convoai against the asset's
+ * Widest this mark is rendered anywhere: `h-9` (formerly on /convoai) against the asset's
  * 1362×320 ratio (4.256), so 36 × 4.256 ≈ 153px. Every other use is smaller —
  * `h-7` is 119px, `h-6` is 102px, `h-5` is 85px.
  *

@@ -93,7 +93,7 @@ export function Answering() {
               It answers about your prices, your hours and your products from your own pages,
               captures the enquiry, and hands anything it should not attempt to a person.
             </p>
-            <Link href="/convoai" className="mt-6 inline-flex items-center gap-1.5 text-body font-semibold text-primary hover:text-primary-hover">
+            <Link href="https://convoai.cloud/" className="mt-6 inline-flex items-center gap-1.5 text-body font-semibold text-primary hover:text-primary-hover">
               See how ConvoAI works
               <span aria-hidden="true">›</span>
             </Link>

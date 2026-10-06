@@ -125,10 +125,10 @@ const LINK_MAP = {
   "/features": "/hosting",
   "/case-studies": "/our-process",
   "/success-stories": "/our-process",
-  "/callflow": "/callflow-ai",
+  "/callflow": "https://callflow.serverlys.com/",
   "/contact": "/support",
   "/contact-us": "/support",
-  "/chatrep": "/convoai",
+  "/chatrep": "https://convoai.cloud/",
 };
 
 /** Routes that exist on the new site. Anything else is dropped to plain text. */
@@ -190,7 +190,7 @@ function rewriteHref(href) {
   h = h.replace(/^https?:\/\/(www\.)?serverlys\.com/, "");
   if (h === "") h = "/";
   // Legacy callflow children all collapse onto the one product page.
-  if (h.startsWith("/callflow/")) h = "/callflow-ai";
+  if (h.startsWith("/callflow/")) h = "https://callflow.serverlys.com/";
   h = h.replace(/\.html$/, "");
   h = LINK_MAP[h] ?? h;
   return h;
