@@ -124,14 +124,35 @@ const POSITIONS = [
   "z-20 -translate-y-[6%] scale-[0.94]",
   "z-10 -translate-y-[11.5%] scale-[0.88]",
 ] as const;
-const DIM = ["opacity-0", "opacity-100 bg-black/15", "opacity-100 bg-black/35"] as const;
+/** Cards further back are washed out toward the page, as in the reference. */
+const WASH = ["opacity-0", "opacity-[0.15]", "opacity-[0.45]"] as const;
 
-const TYPE_MS = 34;
-const HOLD_MS = 2600;
+/*
+ * One cycle, timed against the reference video (25 fps, ~4 s per site):
+ *   type   ~45 characters a second
+ *   hold   the finished request sits
+ *   send   the send button presses
+ *   clear  the text fades out of the bar
+ *   switch the card at the BACK rises from below into the front slot; the
+ *          others each step back one place; a copy fades out at the top
+ *   settle a beat with the bar empty before the next request types
+ */
+type Phase = "type" | "hold" | "send" | "clear" | "switch" | "settle";
+const TYPE_MS = 22;
+const AFTER: Record<Exclude<Phase, "type">, number> = {
+  hold: 1400,
+  send: 260,
+  clear: 170,
+  switch: 520,
+  settle: 380,
+};
+const EASE = "cubic-bezier(0.2,0.8,0.2,1)";
 
 export function BuildShowcase() {
   const [active, setActive] = useState(0);
   const [typed, setTyped] = useState(0);
+  const [phase, setPhase] = useState<Phase>("type");
+  const [cycle, setCycle] = useState(0);
   const [paused, setPaused] = useState(false);
   const [visible, setVisible] = useState(true);
   const [reduced, setReduced] = useState(false);
@@ -163,16 +184,37 @@ export function BuildShowcase() {
 
   useEffect(() => {
     if (!running) return;
-    if (typed < prompt.length) {
-      const t = window.setTimeout(() => setTyped((n) => n + 1), TYPE_MS);
-      return () => window.clearTimeout(t);
+    let next: () => void;
+    let wait: number;
+    if (phase === "type") {
+      if (typed < prompt.length) {
+        next = () => setTyped((n) => n + 1);
+        wait = TYPE_MS;
+      } else {
+        next = () => setPhase("hold");
+        wait = 0;
+      }
+    } else {
+      wait = AFTER[phase];
+      next = {
+        hold: () => setPhase("send"),
+        send: () => setPhase("clear"),
+        clear: () => {
+          // The BACK card comes forward, so the deck steps backwards.
+          setActive((a) => (a - 1 + SITES.length) % SITES.length);
+          setTyped(0);
+          setCycle((c) => c + 1);
+          setPhase("switch");
+        },
+        switch: () => setPhase("settle"),
+        settle: () => setPhase("type"),
+      }[phase];
     }
-    const t = window.setTimeout(() => {
-      setActive((a) => (a + 1) % SITES.length);
-      setTyped(0);
-    }, HOLD_MS);
+    const t = window.setTimeout(next, wait);
     return () => window.clearTimeout(t);
-  }, [running, typed, prompt.length]);
+  }, [running, phase, typed, prompt.length]);
+
+  const entering = running && phase === "switch";
 
   return (
     <figure ref={root} className="relative mx-auto mb-10 w-full max-w-[680px] sm:mb-0">
@@ -188,67 +230,55 @@ export function BuildShowcase() {
         <div className="relative aspect-[16/10]">
           {SITES.map((site, i) => {
             const pos = (i - active + SITES.length) % SITES.length;
+            const rising = entering && pos === 0;
             return (
-              <div
+              <SiteCard
                 key={site.key}
+                site={site}
                 className={cn(
-                  "@container absolute inset-0 origin-top overflow-hidden rounded-[18px] bg-canvas-inset",
-                  "shadow-[0_24px_60px_-28px_rgb(15_23_42/0.45),0_0_0_1px_rgb(15_23_42/0.06)]",
-                  "transition-[transform,box-shadow] duration-[800ms] ease-[cubic-bezier(0.22,0.7,0.2,1)] motion-reduce:transition-none",
                   POSITIONS[pos],
+                  // The rising card is animated, everything else transitions
+                  // one slot back on the same curve and clock.
+                  rising
+                    ? "animate-[deckEnter_520ms_cubic-bezier(0.2,0.8,0.2,1)_both]"
+                    : "transition-transform duration-[520ms] motion-reduce:transition-none",
                 )}
-              >
-                <Image
-                  src={site.image}
-                  alt=""
-                  fill
-                  sizes="(min-width: 1024px) 680px, 100vw"
-                  className="object-cover"
-                  style={{ objectPosition: site.focus }}
-                />
-                <div className={cn("absolute inset-0", site.wash)} />
-
-                {/* Site navigation */}
-                <div className="absolute inset-x-[2.6%] top-[3.6%] flex items-center justify-between rounded-[1.6cqw] bg-white/95 px-[3cqw] py-[1.5cqw] shadow-[0_1px_2px_rgb(15_23_42/0.08)]">
-                  <span className="font-display text-[2.3cqw] font-semibold tracking-[-0.02em] text-[#141414]">
-                    {site.brand}
-                  </span>
-                  <span className="flex items-center gap-[2.6cqw] text-[1.75cqw] font-medium text-[#3a3a3a]">
-                    <span>{site.links[0]}</span>
-                    <span>{site.links[1]}</span>
-                    <span className={cn("rounded-[1cqw] px-[1.8cqw] py-[0.7cqw] font-semibold", site.accent.className)}>
-                      {site.accent.label}
-                    </span>
-                  </span>
-                </div>
-
-                {site.hero}
-
-                {/* Depth: cards further back read darker. */}
-                <div
-                  className={cn(
-                    "pointer-events-none absolute inset-0 transition-opacity duration-[800ms] motion-reduce:transition-none",
-                    DIM[pos],
-                  )}
-                />
-              </div>
+                style={rising ? undefined : { transitionTimingFunction: EASE }}
+                wash={WASH[pos]}
+              />
             );
           })}
+          {/* Where the rising card used to sit: a copy fading out at the back. */}
+          {entering && (
+            <SiteCard
+              key={`ghost-${cycle}`}
+              site={SITES[active]}
+              className={cn(POSITIONS[2], "animate-[deckGhost_450ms_ease-out_both]")}
+              wash={WASH[2]}
+            />
+          )}
         </div>
 
         {/* The request, overlapping the front card's lower edge. */}
         <div className="absolute inset-x-[3%] bottom-0 z-40 rounded-[22px] bg-gradient-to-r from-[#00c46a] via-primary to-[#7c5cff] p-[2px] shadow-[0_18px_40px_-20px_rgb(0_0_255/0.45)]">
           <div className="flex items-center gap-4 rounded-[20px] bg-white py-3 pl-5 pr-3 sm:py-4 sm:pl-7 sm:pr-4">
-            <p className="min-h-[2lh] flex-1 font-display text-[15px] leading-snug tracking-[-0.01em] text-fg sm:text-[20px]">
+            <p
+              className={cn(
+                "min-h-[2lh] flex-1 font-display text-[15px] leading-snug tracking-[-0.01em] text-fg transition-opacity duration-150 sm:text-[20px]",
+                running && phase === "clear" && "opacity-0",
+              )}
+            >
               {prompt.slice(0, shown)}
-              {running && shown < prompt.length && (
+              {running && (phase === "type" || phase === "settle") && (
                 <span className="ml-0.5 inline-block h-[1.05em] w-[2px] translate-y-[0.15em] animate-pulse bg-primary" />
               )}
             </p>
             <span
               className={cn(
-                "flex size-11 shrink-0 items-center justify-center rounded-xl transition-colors duration-300 sm:size-[52px]",
-                shown >= prompt.length ? "bg-primary text-white" : "bg-brand-100 text-primary",
+                "flex size-11 shrink-0 items-center justify-center rounded-xl transition-[background-color,color,transform] duration-200 sm:size-[52px]",
+                running && phase === "send"
+                  ? "scale-95 bg-primary text-white"
+                  : "bg-brand-100 text-primary",
               )}
             >
               <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
@@ -279,5 +309,62 @@ export function BuildShowcase() {
         </button>
       )}
     </figure>
+  );
+}
+
+function SiteCard({
+  site,
+  className,
+  style,
+  wash,
+}: {
+  site: Site;
+  className?: string;
+  style?: React.CSSProperties;
+  wash: string;
+}) {
+  return (
+    <div
+      style={style}
+      className={cn(
+        "@container absolute inset-0 origin-top overflow-hidden rounded-[18px] bg-canvas-inset",
+        "shadow-[0_24px_60px_-28px_rgb(15_23_42/0.45),0_0_0_1px_rgb(15_23_42/0.06)]",
+        className,
+      )}
+    >
+      <Image
+        src={site.image}
+        alt=""
+        fill
+        sizes="(min-width: 1024px) 680px, 100vw"
+        className="object-cover"
+        style={{ objectPosition: site.focus }}
+      />
+      <div className={cn("absolute inset-0", site.wash)} />
+
+      {/* Site navigation */}
+      <div className="absolute inset-x-[2.6%] top-[3.6%] flex items-center justify-between rounded-[1.6cqw] bg-white/95 px-[3cqw] py-[1.5cqw] shadow-[0_1px_2px_rgb(15_23_42/0.08)]">
+        <span className="font-display text-[2.3cqw] font-semibold tracking-[-0.02em] text-[#141414]">
+          {site.brand}
+        </span>
+        <span className="flex items-center gap-[2.6cqw] text-[1.75cqw] font-medium text-[#3a3a3a]">
+          <span>{site.links[0]}</span>
+          <span>{site.links[1]}</span>
+          <span className={cn("rounded-[1cqw] px-[1.8cqw] py-[0.7cqw] font-semibold", site.accent.className)}>
+            {site.accent.label}
+          </span>
+        </span>
+      </div>
+
+      {site.hero}
+
+      {/* Depth: cards further back wash out toward the page. */}
+      <div
+        className={cn(
+          "pointer-events-none absolute inset-0 bg-white transition-opacity duration-[520ms] motion-reduce:transition-none",
+          wash,
+        )}
+      />
+    </div>
   );
 }

@@ -1147,3 +1147,30 @@
     stroke-dashoffset: -16;
   }
 }
+
+/*
+ * Build-stage deck (components/home/build-showcase.tsx). Matched frame by
+ * frame to the reference: the card leaving the back of the deck rises from
+ * BELOW the prompt bar — narrow, nearly transparent — and grows into the
+ * front slot, while a copy of it fades out where it used to sit at the top.
+ * Only ever applied while motion is allowed; the component never sets these
+ * classes under prefers-reduced-motion.
+ */
+@keyframes deckEnter {
+  0% {
+    opacity: 0.2;
+    transform: translateY(46%) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes deckGhost {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
