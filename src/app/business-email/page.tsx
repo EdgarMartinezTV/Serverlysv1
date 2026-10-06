@@ -8,6 +8,7 @@ import { billing } from "@/data/company";
 import { faqGraph, pageMetadata, productGraph } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 import { FeatureShowcase } from "./_components/feature-showcase";
+import { AppsCards } from "./_components/apps-cards";
 import { MotionIn, Parallax } from "./_components/mail-motion";
 import { ImpressionStage } from "./_components/impression-stage";
 import { HeroShowcase } from "./_components/hero-showcase";
@@ -345,72 +346,26 @@ export default function BusinessEmailPage() {
       </section>
 
       {/* ── Works with the apps you use (dark) ─────────────────────────── */}
-      <section aria-labelledby="apps-title" className="bg-canvas-abyss">
+      <section
+        aria-labelledby="apps-title"
+        className="bg-[linear-gradient(180deg,#ffffff,var(--color-brand-50))]"
+      >
         <div className="mx-auto max-w-[1280px] px-5 py-20 text-center sm:px-8 lg:px-10 lg:py-28">
-          <p className="mx-auto w-fit rounded-full bg-white/10 px-3 py-1 text-caption font-semibold text-white/80">
+          <p className="mx-auto flex w-fit items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-caption font-semibold uppercase tracking-[0.16em] text-primary shadow-[0_1px_2px_rgb(15_23_42/0.06),0_0_0_1px_var(--color-brand-100)]">
+            <span className="size-1.5 rounded-full bg-primary" />
             Anywhere
           </p>
           <h2
             id="apps-title"
-            className="mt-4 font-display text-[34px] font-normal tracking-[-0.02em] text-white sm:text-[48px]"
+            className="mt-5 font-display text-[36px] font-normal leading-[1.08] tracking-[-0.03em] text-fg sm:text-[52px]"
           >
             Works with the apps you already use
           </h2>
-          <ul className="mt-14 grid gap-5 text-left md:grid-cols-3">
-            {[
-              {
-                kind: "webmail" as const,
-                img: "/email/app-webmail.webp",
-                w: 1367,
-                h: 872,
-                title: "Webmail in your browser",
-                body: "Open your inbox from any computer. Nothing to install, nothing to configure.",
-              },
-              {
-                kind: "desktop" as const,
-                img: "/email/app-desktop.webp",
-                w: 1409,
-                h: 915,
-                title: "Outlook and Apple Mail",
-                body: "Add your account with IMAP and SMTP, and your folders stay in sync everywhere.",
-              },
-              {
-                kind: "phone" as const,
-                img: "/email/app-phone.webp",
-                w: 690,
-                h: 1429,
-                title: "On your phone",
-                body: "Read and reply from the mail app on iPhone or Android, the moment a customer writes.",
-              },
-            ].map((c, i) => (
-              <li
-                key={c.kind}
-                className="group flex flex-col overflow-hidden rounded-2xl bg-white/[0.06] ring-1 ring-white/10"
-              >
-                <div className="relative h-60 bg-gradient-to-b from-white/[0.08] to-transparent px-5 pt-6">
-                  <MotionIn
-                    variant="rise"
-                    delay={i * 140}
-                    className="relative h-full w-full"
-                  >
-                    <div className="relative h-60 w-full transition-transform duration-500 ease-out group-hover:-translate-y-1.5">
-                      <Image
-                        src={c.img}
-                        alt=""
-                        fill
-                        sizes="(min-width: 768px) 380px, 100vw"
-                        className="object-contain object-bottom"
-                      />
-                    </div>
-                  </MotionIn>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-body-lg font-semibold text-white">{c.title}</h3>
-                  <p className="mt-2 text-small text-white/70">{c.body}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
+          <p className="mx-auto mt-4 max-w-[560px] text-body-lg text-fg-secondary">
+            One mailbox at your own domain, in the browser, on the desktop and in your
+            pocket, without changing how you work.
+          </p>
+          <AppsCards />
           <a
             href={plansHref}
             className="mt-12 inline-flex h-12 items-center rounded-md bg-primary px-8 text-body font-semibold text-white transition-colors hover:bg-primary-hover"
