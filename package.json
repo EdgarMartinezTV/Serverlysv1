@@ -33,7 +33,8 @@
     "test:ai": "node scripts/test-ai-discovery.mjs",
     "audit:claims": "node scripts/audit-article-claims.mjs",
     "port:legacy": "node scripts/port-legacy-articles.mjs",
-    "audit:browsers": "node scripts/cross-browser.mjs"
+    "audit:browsers": "node scripts/cross-browser.mjs",
+    "cover": "node scripts/generate-cover.mjs"
   },
   "dependencies": {
     "next": "16.3.4",
