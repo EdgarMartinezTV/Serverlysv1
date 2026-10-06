@@ -8,6 +8,7 @@ import { billing } from "@/data/company";
 import { faqGraph, pageMetadata, productGraph } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 import { FeatureTabs } from "./_components/feature-tabs";
+import { ComposeSend, HeroInbox, MotionIn } from "./_components/mail-motion";
 
 /**
  * /business-email — laid out section for section after Hostinger's business
@@ -31,9 +32,31 @@ const PATH = "/business-email";
 const GROUP = "email-solutions";
 
 const PLANS = [
-  { slug: "email-essentials", name: "Email Essentials", fit: "Best for: solo businesses", price: 5.95, storage: "35 GB", accounts: 2 },
-  { slug: "business-plus", name: "Business Plus", fit: "Best for: small teams", price: 7.95, storage: "45 GB", accounts: 5, popular: true },
-  { slug: "enterprise-pro", name: "Enterprise Pro", fit: "Best for: growing companies", price: 14.95, storage: "60 GB", accounts: 20 },
+  {
+    slug: "email-essentials",
+    name: "Email Essentials",
+    fit: "Best for: solo businesses",
+    price: 5.95,
+    storage: "35 GB",
+    accounts: 2,
+  },
+  {
+    slug: "business-plus",
+    name: "Business Plus",
+    fit: "Best for: small teams",
+    price: 7.95,
+    storage: "45 GB",
+    accounts: 5,
+    popular: true,
+  },
+  {
+    slug: "enterprise-pro",
+    name: "Enterprise Pro",
+    fit: "Best for: growing companies",
+    price: 14.95,
+    storage: "60 GB",
+    accounts: 20,
+  },
 ] as const;
 const SETUP_FEE = 2.95;
 
@@ -106,39 +129,55 @@ export default function BusinessEmailPage() {
       <section className="relative overflow-hidden bg-canvas">
         <div className="mx-auto grid max-w-[1280px] items-center gap-12 px-5 pb-20 pt-14 sm:px-8 lg:grid-cols-[0.85fr_1.15fr] lg:px-10 lg:pb-28 lg:pt-20">
           <div>
-            <p className="text-small font-semibold text-primary">Serverlys Business Email</p>
+            <p className="text-small font-semibold text-primary">
+              Serverlys Business Email
+            </p>
             <h1 className="mt-3 font-display text-[40px] font-normal leading-[1.08] tracking-[-0.03em] text-fg sm:text-[52px]">
               Business email that builds trust
             </h1>
             <ul className="mt-6 flex flex-col gap-2.5">
-              {["Look professional with an address at your own domain", "Works in your browser, on your phone and in any email app"].map((t) => (
+              {[
+                "Look professional with an address at your own domain",
+                "Works in your browser, on your phone and in any email app",
+              ].map((t) => (
                 <li key={t} className="flex gap-2.5 text-body text-fg-secondary">
-                  <svg viewBox="0 0 16 16" className="mt-1 size-4 shrink-0 text-success" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <svg
+                    viewBox="0 0 16 16"
+                    className="mt-1 size-4 shrink-0 text-success"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
                     <path d="m3.5 8.5 3 3 6-7" />
                   </svg>
                   {t}
                 </li>
               ))}
             </ul>
-            <a href={plansHref} className="mt-8 inline-flex h-12 items-center rounded-md bg-primary px-8 text-body font-semibold text-white transition-colors hover:bg-primary-hover">
+            <a
+              href={plansHref}
+              className="mt-8 inline-flex h-12 items-center rounded-md bg-primary px-8 text-body font-semibold text-white transition-colors hover:bg-primary-hover"
+            >
               Choose plan
             </a>
             <p className="mt-4 text-small text-fg-secondary">
-              From <span className="font-semibold text-fg">${PLANS[0].price}/mo</span>. One-time ${SETUP_FEE} setup.
+              From <span className="font-semibold text-fg">${PLANS[0].price}/mo</span>.
+              One-time ${SETUP_FEE} setup.
             </p>
           </div>
           <div className="relative">
-            <div aria-hidden="true" className="absolute -right-10 -top-8 h-[70%] w-[85%] rounded-3xl bg-gradient-to-br from-brand-100 to-brand-50" />
-            <div aria-hidden="true" className="absolute -bottom-6 -left-6 h-[45%] w-[40%] rounded-3xl bg-brand-50" />
-            <Image
-              src="/email/inbox.webp"
-              alt="The Serverlys webmail inbox, showing an email to jordan@brightleaf.co"
-              width={1440}
-              height={919}
-              priority
-              sizes="(min-width: 1024px) 680px, 100vw"
-              className="relative h-auto w-full drop-shadow-[0_40px_60px_rgb(0_0_255/0.18)]"
+            <div
+              aria-hidden="true"
+              className="absolute -right-10 -top-8 h-[70%] w-[85%] rounded-3xl bg-gradient-to-br from-brand-100 to-brand-50"
             />
+            <div
+              aria-hidden="true"
+              className="absolute -bottom-6 -left-6 h-[45%] w-[40%] rounded-3xl bg-brand-50"
+            />
+            <HeroInbox />
           </div>
         </div>
       </section>
@@ -146,23 +185,17 @@ export default function BusinessEmailPage() {
       {/* ── Make the right impression (dark) ───────────────────────────── */}
       <section aria-labelledby="impression" className="bg-canvas-abyss">
         <div className="mx-auto max-w-[1280px] px-5 py-20 sm:px-8 lg:px-10 lg:py-28">
-          <h2 id="impression" className="text-center font-display text-[36px] font-normal tracking-[-0.02em] text-white sm:text-[52px]">
+          <h2
+            id="impression"
+            className="text-center font-display text-[36px] font-normal tracking-[-0.02em] text-white sm:text-[52px]"
+          >
             Make the right impression
           </h2>
           <p className="mx-auto mt-4 max-w-[560px] text-center text-body-lg text-white/70">
-            Every email you send says something about your business. Stand out with your own domain and a
-            signature that reflects your brand.
+            Every email you send says something about your business. Stand out with your
+            own domain and a signature that reflects your brand.
           </p>
-          <div className="mx-auto mt-14 max-w-[880px]">
-            <Image
-              src="/email/compose.webp"
-              alt="Composing an email from jordan@brightleaf.co with a branded signature"
-              width={1415}
-              height={870}
-              sizes="(min-width: 1024px) 880px, 100vw"
-              className="h-auto w-full drop-shadow-[0_40px_70px_rgb(0_0_0/0.5)]"
-            />
-          </div>
+          <ComposeSend />
 
           <FeatureTabs
             cta={{ label: "Choose plan", href: plansHref }}
@@ -221,9 +254,16 @@ export default function BusinessEmailPage() {
       </section>
 
       {/* ── Plans ─────────────────────────────────────────────────────── */}
-      <section id="plans" aria-labelledby="plans-title" className="scroll-mt-20 bg-canvas-secondary">
+      <section
+        id="plans"
+        aria-labelledby="plans-title"
+        className="scroll-mt-20 bg-canvas-secondary"
+      >
         <div className="mx-auto max-w-[1180px] px-5 py-20 sm:px-8 lg:py-28">
-          <h2 id="plans-title" className="mx-auto max-w-[620px] text-center font-display text-[34px] font-normal leading-[1.15] tracking-[-0.02em] text-fg sm:text-[44px]">
+          <h2
+            id="plans-title"
+            className="mx-auto max-w-[620px] text-center font-display text-[34px] font-normal leading-[1.15] tracking-[-0.02em] text-fg sm:text-[44px]"
+          >
             Purchase your business email plan
           </h2>
           <ul className="mt-14 grid items-stretch gap-5 lg:grid-cols-3">
@@ -234,7 +274,9 @@ export default function BusinessEmailPage() {
                   key={p.slug}
                   className={cn(
                     "flex flex-col rounded-2xl bg-canvas",
-                    popular ? "shadow-e4 ring-2 ring-primary lg:-mt-6" : "shadow-e1 ring-1 ring-line",
+                    popular
+                      ? "shadow-e4 ring-2 ring-primary lg:-mt-6"
+                      : "shadow-e1 ring-1 ring-line",
                   )}
                 >
                   {popular && (
@@ -246,14 +288,18 @@ export default function BusinessEmailPage() {
                     <h3 className="text-h4 font-semibold text-fg">{p.name}</h3>
                     <p className="mt-1 text-small text-fg-secondary">{p.fit}</p>
                     <p className="mt-7 flex items-baseline gap-1">
-                      <span className="font-display text-[44px] font-semibold leading-none tracking-[-0.02em] text-fg">${p.price}</span>
+                      <span className="font-display text-[44px] font-semibold leading-none tracking-[-0.02em] text-fg">
+                        ${p.price}
+                      </span>
                       <span className="text-body text-fg-secondary">/mo</span>
                     </p>
                     <a
                       href={billing.order(GROUP, p.slug)}
                       className={cn(
                         "mt-6 inline-flex h-12 items-center justify-center rounded-md text-body font-semibold transition-colors",
-                        popular ? "bg-primary text-white hover:bg-primary-hover" : "text-primary ring-1 ring-inset ring-primary hover:bg-brand-50",
+                        popular
+                          ? "bg-primary text-white hover:bg-primary-hover"
+                          : "text-primary ring-1 ring-inset ring-primary hover:bg-brand-50",
                       )}
                     >
                       Choose plan
@@ -269,7 +315,16 @@ export default function BusinessEmailPage() {
                         "Webmail, IMAP, POP3 and SMTP",
                       ].map((f) => (
                         <li key={f} className="flex gap-2.5 text-small text-fg">
-                          <svg viewBox="0 0 16 16" className="mt-0.5 size-4 shrink-0 text-primary" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                          <svg
+                            viewBox="0 0 16 16"
+                            className="mt-0.5 size-4 shrink-0 text-primary"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            aria-hidden="true"
+                          >
                             <path d="m3.5 8.5 3 3 6-7" />
                           </svg>
                           {f}
@@ -299,7 +354,16 @@ export default function BusinessEmailPage() {
                 "Upgrade as your team grows",
               ].map((f) => (
                 <li key={f} className="flex gap-2.5 text-small text-fg">
-                  <svg viewBox="0 0 16 16" className="mt-0.5 size-4 shrink-0 text-success" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <svg
+                    viewBox="0 0 16 16"
+                    className="mt-0.5 size-4 shrink-0 text-success"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
                     <path d="m3.5 8.5 3 3 6-7" />
                   </svg>
                   {f}
@@ -308,7 +372,8 @@ export default function BusinessEmailPage() {
             </ul>
           </div>
           <p className="mt-6 text-center text-caption text-fg-muted">
-            Prices in USD, billed monthly. The setup fee is charged once, on the first invoice.
+            Prices in USD, billed monthly. The setup fee is charged once, on the first
+            invoice.
           </p>
         </div>
       </section>
@@ -316,21 +381,62 @@ export default function BusinessEmailPage() {
       {/* ── Works with the apps you use (dark) ─────────────────────────── */}
       <section aria-labelledby="apps-title" className="bg-canvas-abyss">
         <div className="mx-auto max-w-[1280px] px-5 py-20 text-center sm:px-8 lg:px-10 lg:py-28">
-          <p className="mx-auto w-fit rounded-full bg-white/10 px-3 py-1 text-caption font-semibold text-white/80">Anywhere</p>
-          <h2 id="apps-title" className="mt-4 font-display text-[34px] font-normal tracking-[-0.02em] text-white sm:text-[48px]">
+          <p className="mx-auto w-fit rounded-full bg-white/10 px-3 py-1 text-caption font-semibold text-white/80">
+            Anywhere
+          </p>
+          <h2
+            id="apps-title"
+            className="mt-4 font-display text-[34px] font-normal tracking-[-0.02em] text-white sm:text-[48px]"
+          >
             Works with the apps you already use
           </h2>
           <ul className="mt-14 grid gap-5 text-left md:grid-cols-3">
             {[
-              { kind: "webmail" as const, img: "/email/app-webmail.webp", w: 1367, h: 872, title: "Webmail in your browser", body: "Open your inbox from any computer. Nothing to install, nothing to configure." },
-              { kind: "desktop" as const, img: "/email/app-desktop.webp", w: 1409, h: 915, title: "Outlook and Apple Mail", body: "Add your account with IMAP and SMTP, and your folders stay in sync everywhere." },
-              { kind: "phone" as const, img: "/email/app-phone.webp", w: 690, h: 1429, title: "On your phone", body: "Read and reply from the mail app on iPhone or Android, the moment a customer writes." },
-            ].map((c) => (
-              <li key={c.kind} className="flex flex-col overflow-hidden rounded-2xl bg-white/[0.06] ring-1 ring-white/10">
+              {
+                kind: "webmail" as const,
+                img: "/email/app-webmail.webp",
+                w: 1367,
+                h: 872,
+                title: "Webmail in your browser",
+                body: "Open your inbox from any computer. Nothing to install, nothing to configure.",
+              },
+              {
+                kind: "desktop" as const,
+                img: "/email/app-desktop.webp",
+                w: 1409,
+                h: 915,
+                title: "Outlook and Apple Mail",
+                body: "Add your account with IMAP and SMTP, and your folders stay in sync everywhere.",
+              },
+              {
+                kind: "phone" as const,
+                img: "/email/app-phone.webp",
+                w: 690,
+                h: 1429,
+                title: "On your phone",
+                body: "Read and reply from the mail app on iPhone or Android, the moment a customer writes.",
+              },
+            ].map((c, i) => (
+              <li
+                key={c.kind}
+                className="group flex flex-col overflow-hidden rounded-2xl bg-white/[0.06] ring-1 ring-white/10"
+              >
                 <div className="relative h-60 bg-gradient-to-b from-white/[0.08] to-transparent px-5 pt-6">
-                  <div className="relative h-full w-full">
-                    <Image src={c.img} alt="" fill sizes="(min-width: 768px) 380px, 100vw" className="object-contain object-bottom" />
-                  </div>
+                  <MotionIn
+                    variant="rise"
+                    delay={i * 140}
+                    className="relative h-full w-full"
+                  >
+                    <div className="relative h-60 w-full transition-transform duration-500 ease-out group-hover:-translate-y-1.5">
+                      <Image
+                        src={c.img}
+                        alt=""
+                        fill
+                        sizes="(min-width: 768px) 380px, 100vw"
+                        className="object-contain object-bottom"
+                      />
+                    </div>
+                  </MotionIn>
                 </div>
                 <div className="p-6">
                   <h3 className="text-body-lg font-semibold text-white">{c.title}</h3>
@@ -339,25 +445,44 @@ export default function BusinessEmailPage() {
               </li>
             ))}
           </ul>
-          <a href={plansHref} className="mt-12 inline-flex h-12 items-center rounded-md bg-primary px-8 text-body font-semibold text-white transition-colors hover:bg-primary-hover">
+          <a
+            href={plansHref}
+            className="mt-12 inline-flex h-12 items-center rounded-md bg-primary px-8 text-body font-semibold text-white transition-colors hover:bg-primary-hover"
+          >
             Choose plan
           </a>
         </div>
       </section>
 
       {/* ── Bring your inbox with you (brand banner) ───────────────────── */}
-      <section aria-labelledby="migrate-title" className="relative isolate overflow-hidden bg-primary">
-        <div aria-hidden="true" className="absolute inset-y-0 right-0 -z-10 w-[55%] bg-white/[0.07] [clip-path:polygon(25%_0,100%_0,100%_100%,0_100%)]" />
-        <div aria-hidden="true" className="absolute inset-y-0 right-0 -z-10 w-[30%] bg-white/[0.06] [clip-path:polygon(40%_0,100%_0,100%_100%,0_100%)]" />
+      <section
+        aria-labelledby="migrate-title"
+        className="relative isolate overflow-hidden bg-primary"
+      >
+        <div
+          aria-hidden="true"
+          className="absolute inset-y-0 right-0 -z-10 w-[55%] bg-white/[0.07] [clip-path:polygon(25%_0,100%_0,100%_100%,0_100%)]"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-y-0 right-0 -z-10 w-[30%] bg-white/[0.06] [clip-path:polygon(40%_0,100%_0,100%_100%,0_100%)]"
+        />
         <div className="mx-auto max-w-[1280px] px-5 py-20 sm:px-8 lg:px-10 lg:py-28">
-          <h2 id="migrate-title" className="max-w-[520px] font-display text-[40px] font-normal leading-[1.05] tracking-[-0.02em] text-white sm:text-[56px]">
+          <h2
+            id="migrate-title"
+            className="max-w-[520px] font-display text-[40px] font-normal leading-[1.05] tracking-[-0.02em] text-white sm:text-[56px]"
+          >
             Bring your inbox with you
           </h2>
           <p className="mt-6 max-w-[440px] text-body text-white/85">
-            Moving from another provider? When your site moves to Serverlys, your mailboxes move with it as part
-            of the free migration, staged first and switched over when you say.
+            Moving from another provider? When your site moves to Serverlys, your
+            mailboxes move with it as part of the free migration, staged first and
+            switched over when you say.
           </p>
-          <Link href="/migrations" className="mt-8 inline-flex h-12 items-center rounded-md bg-white px-7 text-body font-semibold text-primary transition-colors hover:bg-white/90">
+          <Link
+            href="/migrations"
+            className="mt-8 inline-flex h-12 items-center rounded-md bg-white px-7 text-body font-semibold text-primary transition-colors hover:bg-white/90"
+          >
             Migrate mailbox
           </Link>
         </div>
@@ -367,28 +492,47 @@ export default function BusinessEmailPage() {
       <section aria-labelledby="domain-title" className="overflow-hidden bg-canvas">
         <div className="mx-auto grid max-w-[1180px] items-center gap-12 px-5 py-20 sm:px-8 lg:grid-cols-2 lg:py-28">
           <div className="relative mx-auto w-full max-w-[460px]">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-3xl">
-              <Image src="/email/owner-phone.webp" alt="" fill sizes="(min-width: 1024px) 460px, 100vw" className="object-cover" />
+            <MotionIn
+              variant="left"
+              className="relative aspect-[4/5] overflow-hidden rounded-3xl"
+            >
+              <Image
+                src="/email/owner-phone.webp"
+                alt=""
+                fill
+                sizes="(min-width: 1024px) 460px, 100vw"
+                className="object-cover"
+              />
+            </MotionIn>
+            <div className="absolute -bottom-10 left-1/2 w-[115%] -translate-x-1/2">
+              <MotionIn variant="rise" delay={250} float>
+                <Image
+                  src="/email/domain-card.webp"
+                  alt=""
+                  width={1343}
+                  height={597}
+                  sizes="(min-width: 1024px) 460px, 90vw"
+                  className="h-auto w-full drop-shadow-[0_24px_40px_rgb(15_23_42/0.25)]"
+                />
+              </MotionIn>
             </div>
-            <Image
-              src="/email/domain-card.webp"
-              alt=""
-              width={1343}
-              height={597}
-              sizes="(min-width: 1024px) 460px, 90vw"
-              className="absolute -bottom-10 left-1/2 h-auto w-[115%] max-w-none -translate-x-1/2 drop-shadow-[0_24px_40px_rgb(15_23_42/0.25)]"
-            />
           </div>
           <div>
             <p className="text-small font-semibold text-primary">Domains</p>
-            <h2 id="domain-title" className="mt-3 font-display text-[32px] font-normal leading-[1.15] tracking-[-0.02em] text-fg sm:text-[40px]">
+            <h2
+              id="domain-title"
+              className="mt-3 font-display text-[32px] font-normal leading-[1.15] tracking-[-0.02em] text-fg sm:text-[40px]"
+            >
               Need a domain for your email?
             </h2>
             <p className="mt-4 max-w-[480px] text-body text-fg-secondary">
-              Your email address lives at your domain. Find the right name, register it with Serverlys and set up
-              your mailboxes on it in the same order.
+              Your email address lives at your domain. Find the right name, register it
+              with Serverlys and set up your mailboxes on it in the same order.
             </p>
-            <Link href="/domain-name" className="mt-8 inline-flex h-12 items-center rounded-md bg-primary px-7 text-body font-semibold text-white transition-colors hover:bg-primary-hover">
+            <Link
+              href="/domain-name"
+              className="mt-8 inline-flex h-12 items-center rounded-md bg-primary px-7 text-body font-semibold text-white transition-colors hover:bg-primary-hover"
+            >
               Find a domain
             </Link>
           </div>
@@ -396,23 +540,45 @@ export default function BusinessEmailPage() {
       </section>
 
       {/* ── Sera ───────────────────────────────────────────────────────── */}
-      <section aria-labelledby="sera-title" className="overflow-hidden bg-canvas-secondary">
+      <section
+        aria-labelledby="sera-title"
+        className="overflow-hidden bg-canvas-secondary"
+      >
         <div className="mx-auto grid max-w-[1180px] items-center gap-12 px-5 py-20 sm:px-8 lg:grid-cols-2 lg:py-24">
           <div className="relative mx-auto w-full max-w-[480px]">
-            <div className="relative aspect-[3/2] overflow-hidden rounded-3xl">
-              <Image src="/email/laptop-email.webp" alt="" fill sizes="(min-width: 1024px) 480px, 100vw" className="object-cover" />
-            </div>
-            <Image
-              src="/email/sera-chat.webp"
-              alt=""
-              width={728}
-              height={857}
-              sizes="(min-width: 1024px) 260px, 50vw"
-              className="absolute -bottom-12 -right-4 h-auto w-[52%] drop-shadow-[0_24px_40px_rgb(15_23_42/0.3)] sm:-right-10"
-            />
+            <MotionIn
+              variant="left"
+              className="relative aspect-[3/2] overflow-hidden rounded-3xl"
+            >
+              <Image
+                src="/email/laptop-email.webp"
+                alt=""
+                fill
+                sizes="(min-width: 1024px) 480px, 100vw"
+                className="object-cover"
+              />
+            </MotionIn>
+            <MotionIn
+              variant="pop"
+              delay={300}
+              float
+              className="absolute -bottom-12 -right-4 w-[52%] sm:-right-10"
+            >
+              <Image
+                src="/email/sera-chat.webp"
+                alt=""
+                width={728}
+                height={857}
+                sizes="(min-width: 1024px) 260px, 50vw"
+                className="h-auto w-full drop-shadow-[0_24px_40px_rgb(15_23_42/0.3)]"
+              />
+            </MotionIn>
           </div>
           <div className="pt-8 lg:pt-0">
-            <h2 id="sera-title" className="font-display text-[32px] font-normal leading-[1.15] tracking-[-0.02em] text-fg sm:text-[40px]">
+            <h2
+              id="sera-title"
+              className="font-display text-[32px] font-normal leading-[1.15] tracking-[-0.02em] text-fg sm:text-[40px]"
+            >
               Sera, the Serverlys assistant, can:
             </h2>
             <ul className="mt-6 flex flex-col gap-3">
@@ -423,7 +589,16 @@ export default function BusinessEmailPage() {
                 "Connect you with a person on the team when you need one",
               ].map((t) => (
                 <li key={t} className="flex gap-2.5 text-body text-fg-secondary">
-                  <svg viewBox="0 0 16 16" className="mt-1 size-4 shrink-0 text-success" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <svg
+                    viewBox="0 0 16 16"
+                    className="mt-1 size-4 shrink-0 text-success"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
                     <path d="m3.5 8.5 3 3 6-7" />
                   </svg>
                   {t}
@@ -440,22 +615,40 @@ export default function BusinessEmailPage() {
       <FaqSection items={FAQS} />
 
       {/* ── Start today ────────────────────────────────────────────────── */}
-      <section aria-labelledby="start-title" className="relative isolate overflow-hidden bg-primary">
-        <div aria-hidden="true" className="absolute inset-y-0 right-0 -z-10 w-[45%] bg-white/[0.07] [clip-path:polygon(35%_0,100%_0,100%_100%,0_100%)]" />
+      <section
+        aria-labelledby="start-title"
+        className="relative isolate overflow-hidden bg-primary"
+      >
+        <div
+          aria-hidden="true"
+          className="absolute inset-y-0 right-0 -z-10 w-[45%] bg-white/[0.07] [clip-path:polygon(35%_0,100%_0,100%_100%,0_100%)]"
+        />
         <div className="mx-auto max-w-[1280px] px-5 py-20 sm:px-8 lg:px-10 lg:py-24">
-          <h2 id="start-title" className="font-display text-[40px] font-normal tracking-[-0.02em] text-white sm:text-[56px]">
+          <h2
+            id="start-title"
+            className="font-display text-[40px] font-normal tracking-[-0.02em] text-white sm:text-[56px]"
+          >
             Start today
           </h2>
           <p className="mt-4 max-w-[460px] text-body text-white/85">
-            Get your business email at your own domain up and running, with real people on support.
+            Get your business email at your own domain up and running, with real people
+            on support.
           </p>
-          <a href={plansHref} className="mt-8 inline-flex h-12 items-center rounded-md bg-white px-8 text-body font-semibold text-primary transition-colors hover:bg-white/90">
+          <a
+            href={plansHref}
+            className="mt-8 inline-flex h-12 items-center rounded-md bg-white px-8 text-body font-semibold text-primary transition-colors hover:bg-white/90"
+          >
             Choose plan
           </a>
         </div>
       </section>
 
-      <PageBreadcrumbs trail={[{ name: "Home", path: "/" }, { name: "Business email", path: PATH }]} />
+      <PageBreadcrumbs
+        trail={[
+          { name: "Home", path: "/" },
+          { name: "Business email", path: PATH },
+        ]}
+      />
     </>
   );
 }
