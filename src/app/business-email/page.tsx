@@ -6,13 +6,13 @@ import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { SeraOpenButton } from "@/components/sera/sera-open-button";
 import { billing } from "@/data/company";
 import { faqGraph, pageMetadata, productGraph } from "@/lib/seo";
-import { cn } from "@/lib/utils";
 import { FeatureShowcase } from "./_components/feature-showcase";
 import { AppsCards } from "./_components/apps-cards";
 import { MotionIn, Parallax } from "./_components/mail-motion";
 import { ImpressionStage } from "./_components/impression-stage";
 import { HeroShowcase } from "./_components/hero-showcase";
 import { StatsRoll } from "./_components/stats-roll";
+import { IncludedPanel, PlansShowcase } from "./_components/plans-showcase";
 
 /**
  * /business-email — laid out section for section after Hostinger's business
@@ -41,7 +41,7 @@ const PLANS = [
     name: "Email Essentials",
     fit: "Best for: solo businesses",
     price: 5.95,
-    storage: "35 GB",
+    storageGb: 35,
     accounts: 2,
   },
   {
@@ -49,7 +49,7 @@ const PLANS = [
     name: "Business Plus",
     fit: "Best for: small teams",
     price: 7.95,
-    storage: "45 GB",
+    storageGb: 45,
     accounts: 5,
     popular: true,
   },
@@ -58,7 +58,7 @@ const PLANS = [
     name: "Enterprise Pro",
     fit: "Best for: growing companies",
     price: 14.95,
-    storage: "60 GB",
+    storageGb: 60,
     accounts: 20,
   },
 ] as const;
@@ -224,120 +224,41 @@ export default function BusinessEmailPage() {
       <section
         id="plans"
         aria-labelledby="plans-title"
-        className="scroll-mt-20 bg-canvas-secondary"
+        className="relative isolate scroll-mt-20 overflow-hidden bg-[linear-gradient(180deg,var(--color-canvas-secondary),#ffffff_45%,var(--color-brand-50))]"
       >
+        <div
+          aria-hidden="true"
+          className="absolute left-1/2 top-0 -z-10 h-[520px] w-[min(1200px,120vw)] -translate-x-1/2 bg-[radial-gradient(50%_55%_at_50%_0%,rgb(31_85_255/0.12),transparent_70%)]"
+        />
         <div className="mx-auto max-w-[1180px] px-5 py-20 sm:px-8 lg:py-28">
+          <p className="mx-auto flex w-fit items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-caption font-semibold uppercase tracking-[0.16em] text-primary shadow-[0_1px_2px_rgb(15_23_42/0.06),0_0_0_1px_var(--color-brand-100)]">
+            <span className="size-1.5 rounded-full bg-primary" />
+            Pricing
+          </p>
           <h2
             id="plans-title"
-            className="mx-auto max-w-[620px] text-center font-display text-[34px] font-normal leading-[1.15] tracking-[-0.02em] text-fg sm:text-[44px]"
+            className="mx-auto mt-5 max-w-[720px] text-center font-display text-[36px] font-normal leading-[1.08] tracking-[-0.03em] text-fg sm:text-[52px]"
           >
-            Purchase your business email plan
+            Purchase your <span className="text-primary">business email</span> plan
           </h2>
-          <ul className="mt-14 grid items-stretch gap-5 lg:grid-cols-3">
-            {PLANS.map((p) => {
-              const popular = "popular" in p && p.popular;
-              return (
-                <li
-                  key={p.slug}
-                  className={cn(
-                    "flex flex-col rounded-2xl bg-canvas",
-                    popular
-                      ? "shadow-e4 ring-2 ring-primary lg:-mt-6"
-                      : "shadow-e1 ring-1 ring-line",
-                  )}
-                >
-                  {popular && (
-                    <p className="rounded-t-[14px] bg-primary py-2.5 text-center text-caption font-semibold uppercase tracking-[0.08em] text-white">
-                      Most popular
-                    </p>
-                  )}
-                  <div className="flex flex-1 flex-col p-7">
-                    <h3 className="text-h4 font-semibold text-fg">{p.name}</h3>
-                    <p className="mt-1 text-small text-fg-secondary">{p.fit}</p>
-                    <p className="mt-7 flex items-baseline gap-1">
-                      <span className="font-display text-[44px] font-semibold leading-none tracking-[-0.02em] text-fg">
-                        ${p.price}
-                      </span>
-                      <span className="text-body text-fg-secondary">/mo</span>
-                    </p>
-                    <a
-                      href={billing.order(GROUP, p.slug)}
-                      className={cn(
-                        "mt-6 inline-flex h-12 items-center justify-center rounded-md text-body font-semibold transition-colors",
-                        popular
-                          ? "bg-primary text-white hover:bg-primary-hover"
-                          : "text-primary ring-1 ring-inset ring-primary hover:bg-brand-50",
-                      )}
-                    >
-                      Choose plan
-                    </a>
-                    <p className="mt-3 text-caption text-fg-muted">
-                      Billed monthly. One-time ${SETUP_FEE} setup fee.
-                    </p>
-                    <ul className="mt-6 flex flex-col gap-3 border-t border-line pt-6">
-                      {[
-                        `${p.accounts} email accounts`,
-                        `${p.storage} email storage`,
-                        "Email at your own domain",
-                        "Webmail, IMAP, POP3 and SMTP",
-                      ].map((f) => (
-                        <li key={f} className="flex gap-2.5 text-small text-fg">
-                          <svg
-                            viewBox="0 0 16 16"
-                            className="mt-0.5 size-4 shrink-0 text-primary"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            aria-hidden="true"
-                          >
-                            <path d="m3.5 8.5 3 3 6-7" />
-                          </svg>
-                          {f}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-
-          <div className="mx-auto mt-10 max-w-[1000px] rounded-2xl bg-canvas p-8 shadow-e1 ring-1 ring-line">
-            <p className="text-center text-h4 font-medium text-fg">
-              Every plan has <span className="text-primary">everything you need</span>
-            </p>
-            <ul className="mt-6 grid gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
-              {[
-                "An address at your own domain",
-                "Webmail in any browser",
-                "Works in Outlook and Apple Mail",
-                "Works on iPhone and Android",
-                "IMAP, POP3 and secure SMTP",
-                "Encrypted TLS connections",
-                "Mailboxes moved with your site",
-                "Support from real people",
-                "Upgrade as your team grows",
-              ].map((f) => (
-                <li key={f} className="flex gap-2.5 text-small text-fg">
-                  <svg
-                    viewBox="0 0 16 16"
-                    className="mt-0.5 size-4 shrink-0 text-success"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
-                  >
-                    <path d="m3.5 8.5 3 3 6-7" />
-                  </svg>
-                  {f}
-                </li>
-              ))}
-            </ul>
-          </div>
+          <p className="mx-auto mt-4 max-w-[540px] text-center text-body-lg text-fg-secondary">
+            Same mail server and features on every plan. Choose by how many
+            mailboxes your team needs.
+          </p>
+          <PlansShowcase
+            setupFee={SETUP_FEE}
+            plans={PLANS.map((p) => ({
+              slug: p.slug,
+              name: p.name,
+              fit: p.fit,
+              price: p.price,
+              storageGb: p.storageGb,
+              accounts: p.accounts,
+              popular: "popular" in p && p.popular,
+              href: billing.order(GROUP, p.slug),
+            }))}
+          />
+          <IncludedPanel />
           <p className="mt-6 text-center text-caption text-fg-muted">
             Prices in USD, billed monthly. The setup fee is charged once, on the first
             invoice.

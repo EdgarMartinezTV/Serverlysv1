@@ -1209,3 +1209,38 @@
   }
 }
 
+
+/* Business email plan finder — a brand-filled range input. */
+.plan-range {
+  appearance: none;
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--color-brand-400), var(--color-primary)) 0 / var(--fill, 0%) 100% no-repeat,
+    var(--color-brand-100);
+  cursor: pointer;
+}
+.plan-range:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 6px;
+}
+.plan-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: #fff;
+  border: 6px solid var(--color-primary);
+  box-shadow: 0 4px 14px -2px rgb(0 0 255 / 0.5);
+  transition: transform 0.15s;
+}
+.plan-range::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+.plan-range::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: #fff;
+  border: 6px solid var(--color-primary);
+  box-shadow: 0 4px 14px -2px rgb(0 0 255 / 0.5);
+}
