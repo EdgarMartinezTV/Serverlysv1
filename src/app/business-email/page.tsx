@@ -201,7 +201,7 @@ export default function BusinessEmailPage() {
       </section>
 
       {/* ── Make the right impression (dark) ───────────────────────────── */}
-      <section aria-labelledby="impression" className="bg-canvas-abyss">
+      <section aria-labelledby="impression" className="bg-[#030a1f]">
         <ImpressionStage />
         <div className="mx-auto max-w-[1280px] px-5 pb-20 sm:px-8 lg:px-10 lg:pb-28">
           <FeatureTabs
