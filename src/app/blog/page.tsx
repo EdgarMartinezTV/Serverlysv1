@@ -11,7 +11,7 @@ import {
 } from "@/data/articles";
 import { collectionGraph, pageMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
-import { ArticleThumb } from "./_components/article-thumb";
+import { ArticleCover } from "./_components/article-cover";
 import { AUTHOR, BlogNav, Byline, PostCard, ViewAll, listDate } from "./_components/blog-ui";
 import { StoryList } from "./_components/story-list";
 
@@ -59,7 +59,7 @@ export default function BlogIndexPage() {
             href={`/blog/${lead.slug}`}
             className="group grid items-center gap-8 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary lg:grid-cols-[1.05fr_1fr] lg:gap-12"
           >
-            <ArticleThumb category={lead.category} size="lg" className="aspect-[16/10] rounded-xl" />
+            <ArticleCover slug={lead.slug} category={lead.category} size="lg" priority sizes="(min-width: 1024px) 620px, 100vw" className="aspect-[16/10] rounded-xl" />
             <div>
               <p className="text-caption font-semibold uppercase tracking-[0.08em] text-fg-secondary">Featured story</p>
               <h2

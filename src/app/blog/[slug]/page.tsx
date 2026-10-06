@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { FinalCta } from "@/components/sections/final-cta";
 import { JsonLd } from "@/components/ui/json-ld";
 import { RichText } from "@/components/ui/rich-text";
-import { ArticleThumb } from "../_components/article-thumb";
+import { ArticleCover } from "../_components/article-cover";
 import {
   articles,
   articleBySlug,
@@ -239,7 +239,7 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
                 {readingMinutes(article)} min read
               </p>
             </div>
-            <ArticleThumb category={article.category} size="lg" className="aspect-[4/3] rounded-3xl" />
+            <ArticleCover slug={article.slug} category={article.category} size="lg" priority sizes="(min-width: 1024px) 560px, 100vw" className="aspect-[4/3] rounded-3xl" />
           </div>
         </Container>
       </section>
@@ -314,7 +314,7 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
                 href={`/blog/${a.slug}`}
                 className="group flex h-full flex-col gap-3 rounded-2xl bg-canvas p-3 pb-6 ring-1 ring-line transition-shadow hover:shadow-e3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
-                <ArticleThumb category={a.category} className="aspect-[16/9]" />
+                <ArticleCover slug={a.slug} category={a.category} className="aspect-[16/9]" />
                 <span className="px-3 pt-2"><Badge>{a.category}</Badge></span>
                 <h3 className="px-3 text-body font-semibold text-fg group-hover:text-primary">{a.title}</h3>
                 <p className="px-3 text-small text-fg-secondary">{a.description}</p>

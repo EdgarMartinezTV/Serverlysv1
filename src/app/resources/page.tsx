@@ -7,7 +7,7 @@ import { articles, readingMinutes } from "@/data/articles";
 import { billing } from "@/data/company";
 import { pageMetadata } from "@/lib/seo";
 import { PageHero } from "../resources/_components/page-hero";
-import { ArticleThumb } from "../blog/_components/article-thumb";
+import { ArticleCover } from "../blog/_components/article-cover";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 const PATH = "/resources";
@@ -152,7 +152,7 @@ export default function ResourcesPage() {
                 href={`/blog/${a.slug}`}
                 className="group flex h-full flex-col gap-3 rounded-2xl bg-canvas p-3 pb-6 ring-1 ring-line transition-shadow hover:shadow-e3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
-                <ArticleThumb category={a.category} className="aspect-[16/9]" />
+                <ArticleCover slug={a.slug} category={a.category} className="aspect-[16/9]" />
                 <span className="px-3 pt-2"><Badge>{a.category}</Badge></span>
                 <h3 className="px-3 text-body font-semibold text-fg group-hover:text-primary">
                   {a.title}

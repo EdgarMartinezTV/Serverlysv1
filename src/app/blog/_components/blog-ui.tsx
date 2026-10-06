@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { categorySlug, readingMinutes, type Article, type ArticleCategory } from "@/data/articles";
 import { cn } from "@/lib/utils";
-import { ArticleThumb } from "./article-thumb";
+import { ArticleCover } from "./article-cover";
 import { BlogSearch } from "./blog-search";
 
 /**
@@ -77,7 +77,7 @@ export function PostCard({ article }: { article: Article }) {
       href={`/blog/${article.slug}`}
       className="group flex h-full flex-col focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
     >
-      <ArticleThumb category={article.category} className="aspect-[16/10.5] rounded-lg transition-transform duration-normal ease-hover group-hover:-translate-y-0.5" />
+      <ArticleCover slug={article.slug} category={article.category} className="aspect-[16/10.5] rounded-lg transition-transform duration-normal ease-hover group-hover:-translate-y-0.5" />
       <p className="mt-5 text-caption uppercase tracking-[0.02em] text-fg-secondary">
         {shortDate(article.published)} <span aria-hidden="true">•</span> {article.category}{" "}
         <span aria-hidden="true">•</span> <span className="normal-case">{readingMinutes(article)}min</span>
