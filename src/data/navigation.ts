@@ -117,12 +117,6 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
         heading: "Answer and automate",
         items: [
           {
-            label: "AI agents",
-            href: "/ai-agents",
-            icon: "sparkles",
-            description: "Chat and voice, working the hours you cannot.",
-          },
-          {
             label: "ConvoAI",
             href: "https://convoai.cloud/",
             external: true,
