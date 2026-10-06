@@ -121,6 +121,16 @@ export const routes: readonly RouteMeta[] = [
 
   // AI products.
   {
+    path: "/business-email",
+    name: "Business email",
+    group: "commercial",
+    built: true,
+    indexable: true,
+    priority: 0.8,
+    changeFrequency: "monthly",
+    parents: ["/"],
+  },
+  {
     path: "/ai-agents",
     name: "AI agents",
     group: "commercial",

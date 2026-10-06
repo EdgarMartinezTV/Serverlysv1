@@ -374,7 +374,7 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
         items: [
           {
             label: "Email at your domain",
-            href: "/managed-hosting",
+            href: "/business-email",
             icon: "mail",
             description: "Mailboxes on your own domain.",
           },
@@ -391,7 +391,7 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
       eyebrow: "Included",
       title: "Email moves with the site",
       body: "Mailboxes are part of the migration, not an afterthought you discover on cutover day.",
-      cta: { label: "See what is included", href: "/cloud-hosting" },
+      cta: { label: "See email plans", href: "/business-email" },
       visual: "growth",
     },
   },
@@ -599,6 +599,7 @@ export const footerNav: readonly NavColumn[] = [
       { label: "Cloud hosting", href: "/cloud-hosting" },
       { label: "WordPress hosting", href: "/wordpress-hosting" },
       { label: "Ecommerce hosting", href: "/ecommerce-hosting" },
+      { label: "Business email", href: "/business-email" },
       { label: "Managed hosting", href: "/managed-hosting" },
       { label: "Shared hosting", href: "/shared-hosting", status: "soon" },
       { label: "VPS hosting", href: "/vps-hosting", status: "soon" },
