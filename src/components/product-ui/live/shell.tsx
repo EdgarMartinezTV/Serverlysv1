@@ -49,7 +49,6 @@ export function ConsoleShell({
   toolbar,
   children,
   tone = "light",
-  frameless = false,
   className,
 }: {
   label: string;
@@ -57,12 +56,6 @@ export function ConsoleShell({
   toolbar?: React.ReactNode;
   children: React.ReactNode;
   tone?: "light" | "dark";
-  /**
-   * Drop the window chrome (rounding, shadow, ring, traffic lights) when the
-   * console is shown INSIDE another frame — a laptop screen with its own
-   * browser bar. Two sets of traffic lights read as a window in a window.
-   */
-  frameless?: boolean;
   className?: string;
 }) {
   const dark = tone === "dark";
@@ -70,16 +63,10 @@ export function ConsoleShell({
     <section
       aria-label={label}
       className={cn(
-        // A size container: consoles lay out by their own width (see
-        // hosting-console), which keeps them correct inside a scaled frame.
-        "@container overflow-hidden",
-        frameless
-          ? dark
-            ? "bg-surface-dark-elevated"
-            : "bg-surface"
-          : dark
-            ? "rounded-xl bg-surface-dark-elevated shadow-e5 ring-1 ring-inset ring-white/10"
-            : "rounded-xl bg-surface shadow-e5 ring-1 ring-line",
+        "overflow-hidden rounded-xl",
+        dark
+          ? "bg-surface-dark-elevated shadow-e5 ring-1 ring-inset ring-white/10"
+          : "bg-surface shadow-e5 ring-1 ring-line",
         className,
       )}
     >
@@ -91,7 +78,7 @@ export function ConsoleShell({
             : "border-line-subtle bg-canvas-secondary",
         )}
       >
-        <span aria-hidden="true" className={cn("hidden gap-1.5", !frameless && "sm:flex")}>
+        <span aria-hidden="true" className="hidden gap-1.5 sm:flex">
           {["bg-red-500/45", "bg-amber-500/45", "bg-green-500/45"].map((c) => (
             <span key={c} className={cn("h-2.5 w-2.5 rounded-full", c)} />
           ))}

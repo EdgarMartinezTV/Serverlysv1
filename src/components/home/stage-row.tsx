@@ -29,6 +29,7 @@ export function StageRow({
   media,
   mediaSide = "left",
   tone = "light",
+  bareMedia = false,
 }: {
   id?: string;
   icon?: Icon;
@@ -41,6 +42,11 @@ export function StageRow({
   media: React.ReactNode;
   mediaSide?: "left" | "right";
   tone?: "light" | "dark";
+  /**
+   * Media that brings its own depth (the Build deck of sites) sits straight
+   * on the section — no tinted tile plate, which would box it back in.
+   */
+  bareMedia?: boolean;
 }) {
   const dark = tone === "dark";
 
@@ -48,19 +54,20 @@ export function StageRow({
     <div className="grid items-center gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-20">
       <div
         className={cn(
-          "relative isolate min-w-0 overflow-hidden rounded-3xl p-4 sm:p-8 lg:p-10",
-          dark ? "bg-white/[0.04] ring-1 ring-white/10" : "bg-brand-50",
+          "relative isolate min-w-0",
+          !bareMedia && "overflow-hidden rounded-3xl p-4 sm:p-8 lg:p-10",
+          !bareMedia && (dark ? "bg-white/[0.04] ring-1 ring-white/10" : "bg-brand-50"),
           mediaSide === "right" && "lg:order-2",
         )}
       >
-        {!dark && (
+        {!dark && !bareMedia && (
           <div aria-hidden="true" className="absolute inset-0 -z-10 grid grid-cols-4 grid-rows-3">
             {Array.from({ length: 12 }, (_, i) => (
               <span key={i} className={[1, 4, 6, 11].includes(i) ? "bg-brand-100" : ""} />
             ))}
           </div>
         )}
-        {dark && (
+        {dark && !bareMedia && (
           <div
             aria-hidden="true"
             className="absolute inset-0 -z-10 bg-[radial-gradient(60%_60%_at_30%_20%,rgb(0_0_255/0.35),transparent_70%)]"

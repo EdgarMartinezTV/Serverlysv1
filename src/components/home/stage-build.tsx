@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/animations/reveal";
-import { BuildLaptop } from "./build-laptop";
+import { BuildShowcase } from "./build-showcase";
 import { upcomingProducts } from "@/data/products";
 import { StageRow } from "./stage-row";
 import { stageById } from "./stages";
@@ -47,7 +47,8 @@ export function StageBuild() {
           body={stage.lede}
           links={LINKS}
           proof={PROOF}
-          media={<BuildLaptop />}
+          media={<BuildShowcase />}
+          bareMedia
         />
       </Reveal>
 
