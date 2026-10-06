@@ -8,7 +8,9 @@ import { billing } from "@/data/company";
 import { faqGraph, pageMetadata, productGraph } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 import { FeatureTabs } from "./_components/feature-tabs";
-import { ComposeSend, HeroInbox, MotionIn } from "./_components/mail-motion";
+import { ComposeSend, MotionIn, Parallax } from "./_components/mail-motion";
+import { HeroFilm } from "./_components/hero-film";
+import { StatsRoll } from "./_components/stats-roll";
 
 /**
  * /business-email — laid out section for section after Hostinger's business
@@ -169,16 +171,31 @@ export default function BusinessEmailPage() {
             </p>
           </div>
           <div className="relative">
-            <div
-              aria-hidden="true"
-              className="absolute -right-10 -top-8 h-[70%] w-[85%] rounded-3xl bg-gradient-to-br from-brand-100 to-brand-50"
-            />
-            <div
-              aria-hidden="true"
-              className="absolute -bottom-6 -left-6 h-[45%] w-[40%] rounded-3xl bg-brand-50"
-            />
-            <HeroInbox />
+            <HeroFilm />
           </div>
+        </div>
+      </section>
+
+      {/* ── Stats band (rolling digits) ─────────────────────────────────── */}
+      <section aria-label="Business email at a glance" className="bg-canvas-abyss">
+        <div className="mx-auto max-w-[1280px] px-5 py-10 sm:px-8 lg:px-10 lg:py-14">
+          <StatsRoll
+            stats={[
+              {
+                prefix: "$",
+                value: "5.95",
+                suffix: "/mo",
+                label: "Business email at your own domain, starting from",
+              },
+              {
+                value: "60",
+                suffix: "GB",
+                label: "Of email storage on Enterprise Pro",
+              },
+              { value: "20", label: "Email accounts on one plan, for the whole team" },
+              { value: "3", label: "Plans, so you only pay for the mailboxes you use" },
+            ]}
+          />
         </div>
       </section>
 
@@ -505,16 +522,18 @@ export default function BusinessEmailPage() {
               />
             </MotionIn>
             <div className="absolute -bottom-10 left-1/2 w-[115%] -translate-x-1/2">
-              <MotionIn variant="rise" delay={250} float>
-                <Image
-                  src="/email/domain-card.webp"
-                  alt=""
-                  width={1343}
-                  height={597}
-                  sizes="(min-width: 1024px) 460px, 90vw"
-                  className="h-auto w-full drop-shadow-[0_24px_40px_rgb(15_23_42/0.25)]"
-                />
-              </MotionIn>
+              <Parallax speed={40}>
+                <MotionIn variant="rise" delay={250}>
+                  <Image
+                    src="/email/domain-card.webp"
+                    alt=""
+                    width={1343}
+                    height={597}
+                    sizes="(min-width: 1024px) 460px, 90vw"
+                    className="h-auto w-full drop-shadow-[0_24px_40px_rgb(15_23_42/0.25)]"
+                  />
+                </MotionIn>
+              </Parallax>
             </div>
           </div>
           <div>
@@ -558,21 +577,21 @@ export default function BusinessEmailPage() {
                 className="object-cover"
               />
             </MotionIn>
-            <MotionIn
-              variant="pop"
-              delay={300}
-              float
+            <Parallax
+              speed={50}
               className="absolute -bottom-12 -right-4 w-[52%] sm:-right-10"
             >
-              <Image
-                src="/email/sera-chat.webp"
-                alt=""
-                width={728}
-                height={857}
-                sizes="(min-width: 1024px) 260px, 50vw"
-                className="h-auto w-full drop-shadow-[0_24px_40px_rgb(15_23_42/0.3)]"
-              />
-            </MotionIn>
+              <MotionIn variant="pop" delay={300}>
+                <Image
+                  src="/email/sera-chat.webp"
+                  alt=""
+                  width={728}
+                  height={857}
+                  sizes="(min-width: 1024px) 260px, 50vw"
+                  className="h-auto w-full drop-shadow-[0_24px_40px_rgb(15_23_42/0.3)]"
+                />
+              </MotionIn>
+            </Parallax>
           </div>
           <div className="pt-8 lg:pt-0">
             <h2

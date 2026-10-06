@@ -17,7 +17,13 @@ export type FeatureTab = {
  * The reference's pill tabs over a panel: a heading and checklist on the left,
  * a photo on the right. A real tablist (arrow keys move between tabs).
  */
-export function FeatureTabs({ tabs, cta }: { tabs: readonly FeatureTab[]; cta: { label: string; href: string } }) {
+export function FeatureTabs({
+  tabs,
+  cta,
+}: {
+  tabs: readonly FeatureTab[];
+  cta: { label: string; href: string };
+}) {
   const [active, setActive] = useState(0);
   const base = useId();
   const tab = tabs[active];
@@ -31,7 +37,8 @@ export function FeatureTabs({ tabs, cta }: { tabs: readonly FeatureTab[]; cta: {
         onKeyDown={(e) => {
           if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
           e.preventDefault();
-          const next = (active + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length;
+          const next =
+            (active + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length;
           setActive(next);
           document.getElementById(`${base}-tab-${next}`)?.focus();
         }}
@@ -62,12 +69,26 @@ export function FeatureTabs({ tabs, cta }: { tabs: readonly FeatureTab[]; cta: {
         aria-labelledby={`${base}-tab-${active}`}
         className="mt-8 grid overflow-hidden rounded-3xl bg-white/[0.06] ring-1 ring-white/10 lg:grid-cols-2"
       >
-        <div key={tab.id} className="flex animate-[chatIn_350ms_ease-out_both] flex-col justify-center p-8 sm:p-12">
-          <h3 className="font-display text-[32px] font-normal leading-[1.15] tracking-[-0.02em] text-white sm:text-[40px]">{tab.title}</h3>
+        <div
+          key={tab.id}
+          className="flex animate-[chatIn_350ms_ease-out_both] flex-col justify-center p-8 sm:p-12"
+        >
+          <h3 className="font-display text-[32px] font-normal leading-[1.15] tracking-[-0.02em] text-white sm:text-[40px]">
+            {tab.title}
+          </h3>
           <ul className="mt-6 flex flex-col gap-3">
             {tab.points.map((p) => (
               <li key={p} className="flex gap-3 text-body text-white/85">
-                <svg viewBox="0 0 16 16" className="mt-1 size-4 shrink-0 text-[#4ade80]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <svg
+                  viewBox="0 0 16 16"
+                  className="mt-1 size-4 shrink-0 text-[#4ade80]"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
                   <path d="m3.5 8.5 3 3 6-7" />
                 </svg>
                 {p}
@@ -89,7 +110,10 @@ export function FeatureTabs({ tabs, cta }: { tabs: readonly FeatureTab[]; cta: {
               alt={i === active ? t.imageAlt : ""}
               fill
               sizes="(min-width: 1024px) 600px, 100vw"
-              className={cn("object-cover transition-opacity duration-500", i === active ? "opacity-100" : "opacity-0")}
+              className={cn(
+                "object-cover transition-opacity duration-500",
+                i === active ? "opacity-100" : "opacity-0",
+              )}
             />
           ))}
         </div>

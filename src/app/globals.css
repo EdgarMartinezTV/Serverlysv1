@@ -1209,35 +1209,3 @@
   }
 }
 
-/* ── /business-email mockup motion (components in app/business-email) ─── */
-@keyframes mailFloat {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-/* A notification: slides in, holds, slides out — one cycle of the toast. */
-@keyframes mailToast {
-  0% {
-    opacity: 0;
-    transform: translate3d(24px, -6px, 0) scale(0.96);
-  }
-  12%,
-  82% {
-    opacity: 1;
-    transform: none;
-  }
-  100% {
-    opacity: 0;
-    transform: translate3d(0, -12px, 0) scale(0.98);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  [class*="mailFloat"],
-  [class*="mailToast"] {
-    animation: none !important;
-  }
-}
