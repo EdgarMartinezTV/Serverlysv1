@@ -60,6 +60,14 @@ export function cleanLocation(): string {
 }
 
 export function loadVendors(config: AnalyticsConfig, consent: ConsentState): void {
+  // Lift GA's kill switch FIRST, whichever transport carries GA4.
+  // disableVendors() sets it on every page load that starts without consent,
+  // so a visitor who accepts on that page would otherwise load GTM and GA4
+  // and have every hit silently dropped. That shipped once (2026-10-05):
+  // GTM and gtag.js loaded, page_view reached the dataLayer, nothing left.
+  if (config.gaId) {
+    (window as unknown as Record<string, unknown>)[`ga-disable-${config.gaId}`] = false;
+  }
   if (config.gtmId) {
     const gtag = ensureGtag();
     if (!loaded.gtm) {
@@ -80,7 +88,6 @@ export function loadVendors(config: AnalyticsConfig, consent: ConsentState): voi
   } else if (config.gaId) {
     // Fallback ONLY when there is no GTM container — never both.
     const gtag = ensureGtag();
-    (window as unknown as Record<string, unknown>)[`ga-disable-${config.gaId}`] = false;
     if (!loaded.gtag) {
       loaded.gtag = true;
       gtag("consent", "default", consentSignals(consent));
