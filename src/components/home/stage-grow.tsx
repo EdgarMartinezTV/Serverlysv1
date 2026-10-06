@@ -1,7 +1,7 @@
 import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/animations/reveal";
-import { ConvoChat } from "@/components/product-ui/live/convo-chat";
-import { CallFlowConsole } from "@/components/product-ui/live/callflow-console";
+import { GrowChatShowcase } from "./showcase/grow-chat-showcase";
+import { GrowCallShowcase } from "./showcase/grow-call-showcase";
 import { sisterProducts } from "@/data/company";
 import { ConvoAiLogo } from "@/components/layout/convoai-logo";
 import { StageRow } from "./stage-row";
@@ -14,15 +14,10 @@ const callflow = sisterProducts.find((product) => product.name === "CallFlow");
 /**
  * Stage 3 — Grow.
  *
- * Two panels, and both media are operable. Type into the chat and it answers;
- * start the call console and it runs. That is the argument the section is
- * making — these are products you already have access to, not a roadmap — so a
- * static mock here would undercut the copy it sits next to.
- *
- * Panel tones are set by what the media needs, not by rhythm. ConvoChat has a
- * light tone and sits on the light panel; CallFlowConsole is dark-only, so its
- * panel is dark. Putting the dark console on a light panel produced a floating
- * black rectangle with no relationship to the card around it.
+ * Two rows, each with a realistic animated mockup (2026-10-05, replacing the
+ * interactive chat and call consoles, which read as basic UI): ConvoAI working
+ * on a bakery's site at 2am, and CallFlow answering that bakery's phone, the
+ * booking and call summary landing beside it. See components/home/showcase.
  *
  * The cross-links carry py-1.5 to clear WCAG 2.5.8's 24px target floor. As
  * bare text they measured 17px tall, and they are standalone links rather than
@@ -58,13 +53,14 @@ export function StageGrow() {
             mediaSide="right"
             brandSlot={<ConvoAiLogo tone="light" className="h-7 w-auto" />}
             title="The 2am enquiry gets an answer at 2am"
-            body={`${convo?.description ?? "Answers your customers, day and night."} Trained on your own pages, so it answers about your prices and your hours. Ask it something.`}
+            body={`${convo?.description ?? "Answers your customers, day and night."} Trained on your own pages, so it answers about your prices and your hours.`}
             links={[
               { label: "How the chat agent works", href: "https://convoai.cloud/", external: true },
               { label: "Automations that follow up", href: "/automations" },
               ...(convo ? [{ label: "Open ConvoAI", href: convo.href, external: true }] : []),
             ]}
-            media={<ConvoChat tone="light" />}
+            media={<GrowChatShowcase />}
+            bareMedia
           />
         </Reveal>
 
@@ -79,7 +75,8 @@ export function StageGrow() {
               { label: "Marketing that feeds it", href: "/marketing" },
               ...(callflow ? [{ label: "Open CallFlow", href: callflow.href, external: true }] : []),
             ]}
-            media={<CallFlowConsole />}
+            media={<GrowCallShowcase />}
+            bareMedia
           />
         </Reveal>
       </div>

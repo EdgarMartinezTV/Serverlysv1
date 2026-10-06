@@ -26,3 +26,4 @@ Wide 1440×1000 crops for the homepage Build showcase (same photos, larger):
 site-furniture  1555041469-a586c61ea9bc   (sofa)
 site-studio     1600585154340-be6161a56a0c (house)
 site-cafe       1509042239860-f550ce710b93 (coffee)
+site-bakery     1549931319-a545dcf3bc73   (bread-sliced, homepage Grow showcase)

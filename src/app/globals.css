@@ -1174,3 +1174,15 @@
     opacity: 0;
   }
 }
+
+/* Chat and call bubbles arriving in the Grow showcases. */
+@keyframes chatIn {
+  0% {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
