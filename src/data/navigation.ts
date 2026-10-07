@@ -73,7 +73,16 @@ export type MegaPromo = {
   body: string;
   cta: { label: string; href: string; external?: boolean };
   /** Selects the code-built visual composition. */
-  visual: "ai" | "hosting" | "domains" | "growth";
+  visual:
+    | "ai"
+    | "hosting"
+    | "domains"
+    | "growth"
+    | "email"
+    | "finder"
+    | "switch"
+    | "guide"
+    | "support";
 };
 
 export type MegaCategory = {
@@ -392,7 +401,7 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
       title: "Email moves with the site",
       body: "Mailboxes are part of the migration, not an afterthought you discover on cutover day.",
       cta: { label: "See email plans", href: "/business-email" },
-      visual: "growth",
+      visual: "email",
     },
   },
 ];
@@ -447,7 +456,7 @@ const SOLUTION_CATEGORIES: readonly MegaCategory[] = [
       title: "Tell us what you run",
       body: "Pick the closest description and we will name the tier that fits — with what it renews at.",
       cta: { label: "Find my plan", href: "/pricing" },
-      visual: "hosting",
+      visual: "finder",
     },
   },
   {
@@ -484,7 +493,7 @@ const SOLUTION_CATEGORIES: readonly MegaCategory[] = [
       title: "We move it for you",
       body: "Our team copies the site, database and email to a staging URL. You approve it before anything changes.",
       cta: { label: "How migration works", href: "/#migration" },
-      visual: "growth",
+      visual: "switch",
     },
   },
 ];
@@ -539,7 +548,7 @@ const RESOURCE_CATEGORIES: readonly MegaCategory[] = [
       title: "What renewal really costs",
       body: "The number that decides the price of hosting is year two, not year one. We publish both.",
       cta: { label: "See pricing", href: "/pricing" },
-      visual: "hosting",
+      visual: "guide",
     },
   },
   {
@@ -577,7 +586,7 @@ const RESOURCE_CATEGORIES: readonly MegaCategory[] = [
       title: "A person, not a queue",
       body: "Migration questions, DNS problems and billing all reach the same team.",
       cta: { label: "Talk to us", href: billing.sales, external: true },
-      visual: "ai",
+      visual: "support",
     },
   },
 ];

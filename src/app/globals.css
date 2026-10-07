@@ -1246,3 +1246,14 @@
   border: 6px solid var(--color-primary);
   box-shadow: 0 4px 14px -2px rgb(0 0 255 / 0.5);
 }
+
+/* Mega-menu promo mockups — short loops; paused for free while the panel is
+   display:none, and only applied under motion-safe. */
+@keyframes promoPop { 0%, 12% { opacity: 0; transform: translateY(6px) scale(0.97); } 22%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+@keyframes promoPop2 { 0%, 34% { opacity: 0; transform: translateY(6px) scale(0.97); } 44%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+@keyframes promoPop3 { 0%, 56% { opacity: 0; transform: translateY(6px) scale(0.97); } 66%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+@keyframes promoGrow { 0% { transform: scaleX(0); } 45%, 100% { transform: scaleX(1); } }
+@keyframes promoRise { 0% { transform: scaleY(0); } 40%, 100% { transform: scaleY(1); } }
+@keyframes promoRow { 0%, 6% { opacity: 0; transform: translateY(6px); } 18%, 94% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+@keyframes promoType { 0% { max-width: 0; } 40%, 100% { max-width: 10ch; } }
+@keyframes promoFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
