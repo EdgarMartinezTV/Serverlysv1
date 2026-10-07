@@ -46,10 +46,10 @@ export function StatsRoll({ stats }: { stats: readonly Stat[] }) {
       {stats.map((s, i) => (
         <div
           key={s.label}
-          className="flex flex-col gap-4 px-6 py-8 text-center lg:py-4"
+          className="flex flex-col gap-4 px-2 py-8 text-center min-[400px]:px-6 lg:py-4"
         >
           <dt className="mx-auto max-w-[220px] text-small text-white/75">{s.label}</dt>
-          <dd className="font-display text-[40px] font-medium leading-none tracking-[-0.02em] text-white sm:text-[52px]">
+          <dd className="whitespace-nowrap font-display text-[34px] font-medium leading-none tracking-[-0.02em] text-white min-[400px]:text-[40px] sm:text-[52px]">
             <span className="sr-only">
               {s.prefix}
               {s.value}

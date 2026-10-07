@@ -75,7 +75,7 @@ export function ImpressionStage() {
         </motion.p>
 
         <motion.div
-          className="relative mx-auto mt-12 w-full max-w-[min(1180px,calc((100svh-110px)*1.51))] sm:mt-16"
+          className="relative mx-auto mt-12 w-full max-w-[min(1180px,max(680px,calc((100svh-110px)*1.51)))] sm:mt-16"
           {...(reduced
             ? {}
             : {

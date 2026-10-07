@@ -61,7 +61,7 @@ export function EmailFaq({
               <SeraOpenButton onDark label="Ask Sera" />
               <a
                 href={`mailto:${supportEmail}`}
-                className="text-small font-semibold text-[#bfd2ff] underline-offset-4 hover:text-white hover:underline"
+                className="inline-block py-2.5 text-small font-semibold text-[#bfd2ff] underline-offset-4 hover:text-white hover:underline"
               >
                 {supportEmail}
               </a>

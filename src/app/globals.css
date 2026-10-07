@@ -1213,11 +1213,13 @@
 /* Business email plan finder — a brand-filled range input. */
 .plan-range {
   appearance: none;
-  height: 8px;
+  height: 32px; /* tap target; the visible track is the 8px strip below */
+  background:
+    linear-gradient(90deg, var(--color-brand-400), var(--color-primary)) left center / var(--fill, 0%) 8px no-repeat,
+    linear-gradient(var(--color-brand-100), var(--color-brand-100)) left center / 100% 8px no-repeat;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--color-brand-400), var(--color-primary)) 0 / var(--fill, 0%) 100% no-repeat,
-    var(--color-brand-100);
   cursor: pointer;
+  touch-action: pan-y;
 }
 .plan-range:focus-visible {
   outline: 2px solid var(--color-primary);

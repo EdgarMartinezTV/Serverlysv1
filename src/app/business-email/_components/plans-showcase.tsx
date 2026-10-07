@@ -54,7 +54,7 @@ export function PlansShowcase({
       {/* Team-size finder */}
       <div className="mx-auto mt-10 max-w-[560px] rounded-2xl bg-white/80 p-5 shadow-[0_1px_2px_rgb(15_23_42/0.06),0_12px_32px_-12px_rgb(0_0_255/0.18)] ring-1 ring-brand-100 backdrop-blur sm:p-6">
         <div className="flex items-baseline justify-between gap-4">
-          <label htmlFor={sliderId} className="text-small font-medium text-fg">
+          <label htmlFor={sliderId} className="min-w-0 flex-1 text-small font-medium text-fg">
             How many mailboxes do you need?
           </label>
           <p className="shrink-0 text-small text-fg-secondary" aria-live="polite">
@@ -96,7 +96,7 @@ export function PlansShowcase({
         </p>
       </div>
 
-      <ul className="mt-14 grid items-stretch gap-6 lg:mt-16 lg:grid-cols-3 lg:gap-5">
+      <ul className="mx-auto mt-14 grid max-w-[520px] items-stretch gap-6 lg:mt-16 lg:max-w-none lg:grid-cols-3 lg:gap-5">
         {plans.map((p, i) => (
           <Card
             key={p.slug}
@@ -137,7 +137,7 @@ function Card({
   const body = (
     <div
       className={cn(
-        "relative flex h-full flex-col overflow-hidden rounded-[23px] p-7 sm:p-8",
+        "relative flex h-full flex-col overflow-hidden rounded-[23px] p-5 min-[400px]:p-7 sm:p-8",
         dark
           ? "bg-[linear-gradient(165deg,#0f1f4d,#071230_50%,#040b22)] text-white"
           : "bg-white text-fg",
@@ -174,7 +174,7 @@ function Card({
       </div>
       <p
         className={cn(
-          "relative mt-3 w-fit rounded-full px-2.5 py-1 text-caption font-medium",
+          "relative mt-3 w-fit whitespace-nowrap rounded-full px-2.5 py-1 text-caption font-medium",
           dark ? "bg-white/10 text-[#7dd3fc]" : "bg-success/10 text-success",
         )}
       >
@@ -404,7 +404,7 @@ export function IncludedPanel() {
       </div>
       <ul className="grid gap-px bg-line/60 sm:grid-cols-2 lg:grid-cols-3 [&>li]:bg-white">
         {INCLUDED.map((f) => (
-          <li key={f.label} className="flex items-center gap-3.5 px-6 py-5 sm:px-8">
+          <li key={f.label} className="flex items-center gap-3.5 px-6 py-5 sm:px-8 sm:last:col-span-2 sm:last:justify-center lg:last:col-span-1 lg:last:justify-start">
             <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[linear-gradient(150deg,var(--color-brand-50),#fff)] text-primary ring-1 ring-brand-100">
               <svg
                 viewBox="0 0 16 16"
