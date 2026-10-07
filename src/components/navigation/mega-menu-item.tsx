@@ -15,10 +15,10 @@ import { cn } from "@/lib/utils";
    with white text rather than tinted text, which is what kept "Live" reading
    as a label instead of a status light. */
 const BADGE_TONE = {
-  brand: "bg-primary/45 text-white ring-primary/50",
-  success: "bg-success-fill/25 text-white ring-success-fill/35",
-  warning: "bg-warning-fill/20 text-white ring-warning-fill/30",
-  neutral: "bg-white/10 text-white/80 ring-white/15",
+  brand: "bg-brand-50 text-primary ring-brand-100",
+  success: "bg-success-soft text-success ring-success/20",
+  warning: "bg-warning-soft text-warning ring-warning/20",
+  neutral: "bg-ink-100 text-fg-secondary ring-line",
 } as const;
 
 export function MegaMenuItem({
@@ -38,8 +38,8 @@ export function MegaMenuItem({
         className={cn(
           "mt-0.5 shrink-0 transition-colors duration-fast",
           interactive
-            ? "text-white/80 group-hover/item:text-white"
-            : "text-white/40",
+            ? "text-fg group-hover/item:text-primary"
+            : "text-fg-muted",
         )}
       >
         <NavIcon name={item.icon} className="h-5 w-5" />
@@ -49,8 +49,8 @@ export function MegaMenuItem({
         <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
           <span
             className={cn(
-              "text-body font-semibold leading-6 transition-colors duration-fast",
-              interactive ? "text-white" : "text-fg-on-dark-secondary",
+              "text-small font-semibold leading-5 transition-colors duration-fast",
+              interactive ? "text-fg group-hover/item:text-primary" : "text-fg-muted",
             )}
           >
             {item.label}
@@ -69,12 +69,12 @@ export function MegaMenuItem({
             </span>
           )}
           {item.external && (
-            <span aria-hidden="true" className="text-fg-on-dark-muted">
+            <span aria-hidden="true" className="text-fg-muted">
               <ArrowUpRight className="h-3 w-3" />
             </span>
           )}
         </span>
-        <span className="mt-1 block text-small leading-[1.45] text-white/70">
+        <span className="mt-1 block text-small leading-[1.45] text-fg-secondary">
           {item.description}
         </span>
       </span>
@@ -96,7 +96,7 @@ export function MegaMenuItem({
      the full column instead of sitting on one short line. */
   const classes =
     "group/item -m-2.5 flex min-w-0 flex-1 gap-3.5 rounded-xl p-2.5 transition-colors duration-fast " +
-    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white";
+    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
 
   if (!interactive) {
     return <span className={cn(classes, "cursor-default")}>{body}</span>;
@@ -109,7 +109,7 @@ export function MegaMenuItem({
         target="_blank"
         rel="noopener noreferrer"
         onClick={onNavigate}
-        className={cn(classes, "hover:bg-white/[0.06]")}
+        className={cn(classes, "hover:bg-ink-50")}
       >
         {body}
       </a>
@@ -120,7 +120,7 @@ export function MegaMenuItem({
     <Link
       href={target.href}
       onClick={onNavigate}
-      className={cn(classes, "hover:bg-white/[0.06]")}
+      className={cn(classes, "hover:bg-ink-50")}
     >
       {body}
     </Link>

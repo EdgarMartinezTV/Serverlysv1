@@ -96,23 +96,23 @@ export function MegaMenu({
          margin each side up to 1600px, and opens 8px below the 72px bar. It is
          deliberately far wider than the 1200px content column — three columns
          of items need real width or every description wraps to four lines. */
-      className="absolute left-1/2 top-full z-10 w-[calc(100vw-2rem)] max-w-mega -translate-x-1/2 pt-2 xl:w-[calc(100vw-6rem)]"
+      className="absolute left-1/2 top-full z-10 w-[calc(100vw-2rem)] max-w-mega -translate-x-1/2 pt-2"
     >
       <div
         className={cn(
-          "max-h-[calc(100vh-6rem)] overflow-auto rounded-2xl bg-[#121214]/[0.97] shadow-e5 ring-1 ring-inset ring-white/10 backdrop-blur-xl",
+          "max-h-[calc(100vh-6rem)] overflow-auto rounded-2xl bg-canvas shadow-[0_24px_60px_-12px_rgb(0_0_0/0.35)]",
           "motion-safe:animate-[megaIn_180ms_cubic-bezier(0.16,1,0.3,1)]",
         )}
       >
         {/* Flex, not grid: the rail and the promo are FIXED widths (240 / 300)
             and the content takes whatever is left. A three-column grid made the
             content column collapse on narrow laptops instead of the promo. */}
-        <div className="flex gap-8 p-7">
+        <div className="flex gap-6 p-6">
           {/* ── Zone 1: category rail ──────────────────────────────────── */}
-          <div className="flex w-60 shrink-0 flex-col gap-6">
+          <div className="flex w-60 shrink-0 flex-col gap-5">
             {/* 12px / 600 / 16px line box — the target's eyebrow exactly.
                 `text-caption` alone is 12/16.8 (the site's 1.4 ratio). */}
-            <p className="text-caption uppercase leading-4 font-semibold tracking-[0.04em] text-white">
+            <p className="text-caption uppercase leading-4 font-semibold tracking-[0.04em] text-fg">
               {railLabel}
             </p>
             <div
@@ -150,18 +150,18 @@ export function MegaMenu({
                        every row look selected and the 21px line box pushed the
                        pill to 33px. */
                     className={cn(
-                      "flex items-center gap-3 rounded-lg px-3.5 py-2.5 text-left text-body leading-5 transition-colors duration-fast",
-                      "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white",
+                      "flex items-center gap-3 rounded-full px-3 py-1.5 text-left text-small leading-5 transition-colors duration-fast",
+                      "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
                       selected
-                        ? "bg-white/[0.09] font-semibold text-white"
-                        : "font-normal text-white/85 hover:bg-white/[0.05] hover:text-white",
+                        ? "bg-brand-50 font-semibold text-fg"
+                        : "font-normal text-fg hover:bg-ink-100",
                     )}
                   >
                     <NavIcon
                       name={c.icon}
                       className={cn(
                         "h-5 w-5 shrink-0",
-                        selected ? "text-white" : "text-white/70",
+                        selected ? "text-primary" : "text-fg",
                       )}
                     />
                     <span className="truncate">{c.label}</span>
@@ -171,7 +171,7 @@ export function MegaMenu({
             </div>
           </div>
 
-          <div aria-hidden="true" className="w-px shrink-0 bg-white/10" />
+          <div aria-hidden="true" className="w-px shrink-0 bg-line" />
 
           {/* ── Zone 2: grouped content ────────────────────────────────── */}
           <div
@@ -184,9 +184,9 @@ export function MegaMenu({
             {category.groups.map((group, gi) => (
               <section
                 key={group.heading}
-                className={cn("flex flex-col gap-6", gi > 0 && "border-t border-white/10 pt-7")}
+                className={cn("flex flex-col gap-6", gi > 0 && "border-t border-line pt-7")}
               >
-                <h3 className="text-caption uppercase leading-4 font-semibold tracking-[0.04em] text-white">
+                <h3 className="text-caption uppercase leading-4 font-semibold tracking-[0.04em] text-fg">
                   {group.heading}
                 </h3>
                 {/* auto-fit at a 264px floor, exactly as the target: columns

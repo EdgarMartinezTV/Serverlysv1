@@ -103,7 +103,9 @@ export function SiteHeader() {
     setMobileOpen(false);
   }
 
-  const dark = open !== null || (OVERLAY_ROUTES.has(pathname) && !scrolled);
+  // A menu open turns the bar WHITE (the reference, 2026-10-06): the panel is a
+  // light surface under a light bar, and the page behind both is dimmed.
+  const dark = open === null && OVERLAY_ROUTES.has(pathname) && !scrolled;
   const transparent = open === null && OVERLAY_ROUTES.has(pathname) && !scrolled;
 
   useEffect(() => {
@@ -197,7 +199,7 @@ export function SiteHeader() {
         aria-hidden="true"
         onClick={() => setOpen(null)}
         className={cn(
-          "fixed inset-0 z-40 bg-canvas-abyss/55 transition-opacity duration-normal ease-hover",
+          "fixed inset-0 z-40 bg-[#0b0b14]/70 transition-opacity duration-normal ease-hover",
           open ? "opacity-100" : "pointer-events-none opacity-0",
         )}
       />
@@ -221,9 +223,9 @@ export function SiteHeader() {
              only at the top of a non-overlay route, where what is behind the
              bar is the page's own light canvas and the blur reads as depth
              rather than as mud. */
-          !dark && !scrolled && "bg-canvas/85 backdrop-blur-md ring-1 ring-line-subtle",
-          !dark && scrolled && "bg-canvas shadow-e2 ring-1 ring-line",
-          open && "shadow-e5",
+          !dark && !open && !scrolled && "bg-canvas/85 backdrop-blur-md ring-1 ring-line-subtle",
+          !dark && !open && scrolled && "bg-canvas shadow-e2 ring-1 ring-line",
+          open && "bg-canvas",
         )}
         onBlur={(e) => {
           if (!e.currentTarget.contains(e.relatedTarget as Node)) setOpen(null);
@@ -333,7 +335,7 @@ export function SiteHeader() {
                           ? "text-white focus-visible:outline-white"
                           : "text-[#f8f9fa] hover:text-white focus-visible:outline-white"
                         : isOpen
-                          ? "text-fg focus-visible:outline-primary"
+                          ? "text-fg-muted focus-visible:outline-primary"
                           : active
                             ? "text-primary focus-visible:outline-primary"
                             : "text-fg hover:text-primary focus-visible:outline-primary",

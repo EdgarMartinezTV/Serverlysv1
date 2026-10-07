@@ -8,8 +8,8 @@ import { usePathname } from "next/navigation";
 import {
   primaryNav,
   isActivePath,
+  type MegaCategory,
   type MegaItem,
-  type NavItem,
 } from "@/data/navigation";
 import { resolveNavTarget } from "@/data/routes";
 import { billing, company } from "@/data/company";
@@ -55,6 +55,12 @@ export function MobileNav({
   if (lastPath !== pathname) {
     setLastPath(pathname);
     setExpanded(null);
+  }
+  // Reopening starts at the root screen, not the category left open last time.
+  const [wasOpen, setWasOpen] = useState(open);
+  if (wasOpen !== open) {
+    setWasOpen(open);
+    if (!open) setExpanded(null);
   }
 
   /*
@@ -116,6 +122,8 @@ export function MobileNav({
     if (open) panelRef.current?.focus();
   }, [open]);
 
+  const drill = expanded ? findCategory(expanded) : null;
+
   const drawer = (
     <div
       className="fixed inset-0 z-50 lg:hidden"
@@ -132,10 +140,21 @@ export function MobileNav({
         onClick={(e) => {
           if ((e.target as HTMLElement).closest("a[href]")) onOpenChange(false);
         }}
-        className="absolute inset-0 flex flex-col bg-canvas-abyss outline-none motion-safe:animate-[sheetIn_220ms_cubic-bezier(0.16,1,0.3,1)]"
+        className="absolute inset-0 flex flex-col overflow-hidden bg-canvas font-display outline-none motion-safe:animate-[sheetIn_220ms_cubic-bezier(0.16,1,0.3,1)]"
       >
-        <div className="flex h-16 shrink-0 items-center justify-between border-b border-line-on-dark px-5 sm:px-8">
-          <Wordmark tone="light" />
+        <div className="flex h-16 shrink-0 items-center justify-between px-5 sm:px-8">
+          {drill ? (
+            <button
+              type="button"
+              onClick={() => setExpanded(null)}
+              className="-ml-2 inline-flex h-11 items-center gap-1.5 rounded-lg px-2 text-body font-medium text-fg focus-visible:outline-2 focus-visible:outline-primary"
+            >
+              <Chevron className="h-5 w-5 rotate-90" />
+              Back
+            </button>
+          ) : (
+            <Wordmark tone="dark" className="h-10" />
+          )}
           <button
             type="button"
             onClick={() => {
@@ -143,9 +162,9 @@ export function MobileNav({
               toggleRef.current?.focus();
             }}
             aria-label="Close menu"
-            className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-fg-on-dark-secondary transition-colors duration-fast hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-fg transition-colors duration-fast hover:bg-ink-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
-            <svg viewBox="0 0 20 20" aria-hidden="true" className="h-5 w-5">
+            <svg viewBox="0 0 20 20" aria-hidden="true" className="h-6 w-6">
               <path
                 d="m5 5 10 10M15 5 5 15"
                 fill="none"
@@ -157,119 +176,128 @@ export function MobileNav({
           </button>
         </div>
 
-        <nav
-          aria-label="Mobile"
-          className="flex-1 overflow-y-auto overscroll-contain px-5 pb-8 pt-2 sm:px-8"
-        >
-          <ul className="flex flex-col divide-y divide-line-on-dark">
-            {primaryNav.map((item) => {
+        <div className="relative flex-1">
+          {/* ROOT — the reference's drill-down: top-level links, then each
+              menu's categories as large rows that open their own screen. */}
+          <nav
+            aria-label="Mobile"
+            inert={!!drill}
+            className={cn(
+              "absolute inset-0 overflow-y-auto overscroll-contain px-5 pb-8 sm:px-8 transition-transform duration-slow ease-hover",
+              drill && "-translate-x-full",
+            )}
+          >
+            {primaryNav.map((item, i) => {
               if (!item.categories) {
                 const target = resolveNavTarget(item.href);
                 const active = isActivePath(item.href, pathname);
                 return (
-                  <li key={item.label}>
+                  <div key={item.label} className={cn("border-b border-line", i > 0 && "pt-2")}>
                     <Link
                       href={target.href}
                       aria-current={active ? "page" : undefined}
                       className={cn(
-                        "flex min-h-14 items-center text-body-lg font-semibold",
-                        active ? "text-primary-on-dark" : "text-white",
+                        "flex min-h-16 items-center text-[18px] leading-6",
+                        active ? "text-primary" : "text-fg",
                       )}
                     >
                       {item.label}
                     </Link>
-                  </li>
+                  </div>
                 );
               }
-
-              const isExpanded = expanded === item.label;
-              const sectionId = `mnav-${item.label}`;
-
               return (
-                <li key={item.label}>
-                  <button
-                    type="button"
-                    aria-expanded={isExpanded}
-                    aria-controls={sectionId}
-                    onClick={() => setExpanded(isExpanded ? null : item.label)}
-                    className="flex min-h-14 w-full items-center justify-between gap-4 text-left text-body-lg font-semibold text-white"
-                  >
-                    {item.label}
-                    <Chevron
-                      className={cn(
-                        "h-3.5 w-3.5 shrink-0 text-fg-on-dark-muted transition-transform duration-normal ease-hover",
-                        isExpanded && "rotate-180",
-                      )}
-                    />
-                  </button>
-
-                  <div
-                    id={sectionId}
-                    inert={!isExpanded}
-                    className={cn(
-                      "grid transition-[grid-template-rows] duration-slow ease-hover",
-                      isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
-                    )}
-                  >
-                    <div className="overflow-hidden">
-                      <div className="pb-4">
-                        {(
-                          item as Extract<NavItem, { categories: unknown }>
-                        ).categories.map((category) => (
-                          <div key={category.id} className="pb-3">
-                            <p className="flex items-center gap-2 pb-2 text-micro text-fg-on-dark-muted font-semibold">
-                              <NavIcon name={category.icon} className="h-3.5 w-3.5" />
-                              {category.label}
-                            </p>
-                            <ul className="flex flex-col gap-0.5">
-                              {category.groups
-                                .flatMap((g) => g.items)
-                                .map((entry) => (
-                                  <li key={entry.label}>
-                                    <MobileItem item={entry} pathname={pathname} />
-                                  </li>
-                                ))}
-                            </ul>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </li>
+                <section key={item.label} className="border-b border-line py-5">
+                  <h2 className="pb-2 text-small font-semibold uppercase tracking-[0.02em] text-fg-secondary">
+                    {item.railLabel}
+                  </h2>
+                  <ul>
+                    {item.categories.map((c) => (
+                      <li key={c.id}>
+                        <button
+                          type="button"
+                          onClick={() => setExpanded(`${item.label}::${c.id}`)}
+                          className="flex min-h-14 w-full items-center gap-4 text-left text-[18px] leading-6 text-fg focus-visible:outline-2 focus-visible:outline-primary"
+                        >
+                          <NavIcon name={c.icon} className="h-6 w-6 shrink-0" />
+                          <span className="flex-1">{c.label}</span>
+                          <Chevron className="h-5 w-5 shrink-0 -rotate-90" />
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
               );
             })}
-          </ul>
 
-          <div className="mt-7 flex flex-col gap-3">
-            {/*
-              Matches the desktop header. `onOpen` closes the drawer first —
-              opening the chat panel behind an open full-screen drawer would
-              put it somewhere the visitor cannot see it.
-            */}
-            <SeraOpenButton onDark block onOpen={() => onOpenChange(false)} />
-            <Button href={billing.login} variant="inverseOutline" size="lg" block>
-              Client login
-            </Button>
-          </div>
+            <div className="mt-7 flex flex-col gap-3">
+              {/*
+                Matches the desktop header. `onOpen` closes the drawer first —
+                opening the chat panel behind an open full-screen drawer would
+                put it somewhere the visitor cannot see it.
+              */}
+              <SeraOpenButton block onOpen={() => onOpenChange(false)} />
+              <Button href={billing.login} variant="secondary" size="lg" block>
+                Client login
+              </Button>
+            </div>
 
-          <div className="mt-6 flex items-center justify-between border-t border-line-on-dark pt-5">
-            <span className="flex items-center gap-2 text-small text-fg-on-dark-muted">
-              <span
-                aria-hidden="true"
-                className="flex h-4 w-4 items-center justify-center rounded-full text-micro font-bold text-white ring-1 ring-inset ring-white/25"
-              >
-                E
+            <div className="mt-6 flex items-center justify-between border-t border-line pt-5">
+              <span className="flex items-center gap-2 text-small text-fg-secondary">
+                <span
+                  aria-hidden="true"
+                  className="flex h-4 w-4 items-center justify-center rounded-full text-micro font-bold text-fg ring-1 ring-inset ring-line-strong"
+                >
+                  E
+                </span>
+                English
               </span>
-              English
-            </span>
-            <a
-              href={company.phoneHref}
-              className="tabular text-small text-fg-on-dark-secondary underline underline-offset-4"
-            >
-              {company.phone}
-            </a>
+              <a
+                href={company.phoneHref}
+                className="tabular text-small text-fg-secondary underline underline-offset-4"
+              >
+                {company.phone}
+              </a>
+            </div>
+          </nav>
+
+          {/* CATEGORY SCREEN — slides in from the right. */}
+          <div
+            inert={!drill}
+            aria-hidden={!drill}
+            className={cn(
+              "absolute inset-0 overflow-y-auto overscroll-contain px-5 pb-10 sm:px-8 transition-transform duration-slow ease-hover",
+              drill ? "translate-x-0" : "translate-x-full",
+            )}
+          >
+            {drill && (
+              <>
+                <p className="pt-2 text-small font-semibold uppercase tracking-[0.02em] text-fg-secondary">
+                  {drill.railLabel}
+                </p>
+                <h2 className="mt-1 flex items-center gap-3 text-[24px] font-medium leading-8 tracking-[-0.01em] text-fg">
+                  <NavIcon name={drill.category.icon} className="h-6 w-6 text-primary" />
+                  {drill.category.label}
+                </h2>
+                {drill.category.groups.map((g) => (
+                  <section key={g.heading} className="mt-7">
+                    <h3 className="text-caption font-semibold uppercase tracking-[0.04em] text-fg-secondary">
+                      {g.heading}
+                    </h3>
+                    <ul className="mt-3 flex flex-col gap-1">
+                      {g.items.map((entry) => (
+                        <li key={entry.label}>
+                          <MobileItem item={entry} pathname={pathname} />
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                ))}
+                <MobilePromo promo={drill.category.promo} />
+              </>
+            )}
           </div>
-        </nav>
+        </div>
       </div>
     </div>
   );
@@ -307,45 +335,69 @@ export function MobileNav({
   );
 }
 
+/** `expanded` holds "<menu label>::<category id>" while a category is open. */
+function findCategory(key: string) {
+  const [label, id] = key.split("::");
+  const item = primaryNav.find((i) => i.label === label);
+  const category = item?.categories?.find((c) => c.id === id);
+  return item?.categories && category ? { railLabel: item.railLabel, category } : null;
+}
+
+/** The category's promo, as the reference's card at the foot of the screen. */
+function MobilePromo({ promo }: { promo: MegaCategory["promo"] }) {
+  const target = resolveNavTarget(promo.cta.href);
+  const cls =
+    "mt-4 flex h-11 w-full items-center justify-center rounded-lg bg-white text-body font-semibold text-fg";
+  return (
+    <div className="mt-8 rounded-2xl bg-[linear-gradient(165deg,#2a5bff,var(--color-primary)_55%,#0000d6)] p-5 text-white">
+      <p className="text-caption font-semibold uppercase tracking-[0.04em] text-white/85">{promo.eyebrow}</p>
+      <p className="mt-3 text-[20px] font-medium leading-[26px]">{promo.title}</p>
+      <p className="mt-2 text-small text-white/85">{promo.body}</p>
+      {promo.cta.external ? (
+        <a href={promo.cta.href} target="_blank" rel="noopener noreferrer" className={cls}>
+          {promo.cta.label}
+        </a>
+      ) : (
+        <Link href={target.href} className={cls}>
+          {promo.cta.label}
+        </Link>
+      )}
+    </div>
+  );
+}
+
 function MobileItem({ item, pathname }: { item: MegaItem; pathname: string }) {
   const target = resolveNavTarget(item.href);
   const interactive = item.external || target.mode === "link";
   const active = !item.external && isActivePath(item.href, pathname);
 
   const inner = (
-    <span className="flex min-h-12 items-start gap-3 py-2">
-      <span
-        aria-hidden="true"
-        className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/[0.06] text-fg-on-dark-secondary ring-1 ring-inset ring-white/10"
-      >
-        <NavIcon name={item.icon} className="h-4 w-4" />
+    <span className="-mx-2 flex min-h-12 items-start gap-3.5 rounded-xl px-2 py-3 active:bg-ink-50">
+      <span aria-hidden="true" className="mt-0.5 shrink-0 text-fg">
+        <NavIcon name={item.icon} className="h-5 w-5" />
       </span>
       <span className="min-w-0">
         <span className="flex items-center gap-2">
           <span
             className={cn(
-              "text-small font-medium",
-              active
-                ? "text-primary-on-dark"
-                : interactive
-                  ? "text-white"
-                  : "text-fg-on-dark-secondary",
+              "text-body font-semibold",
+              active ? "text-primary" : interactive ? "text-fg" : "text-fg-muted",
             )}
           >
             {item.label}
           </span>
           {item.badge && (
-            <span className="rounded-full bg-white/10 px-1.5 py-0.5 text-micro leading-4 text-fg-on-dark-muted font-semibold">
+            <span className="rounded-md bg-brand-50 px-1.5 py-0.5 text-micro leading-4 font-semibold text-primary ring-1 ring-inset ring-brand-100">
               {item.badge.text}
             </span>
           )}
           {item.external && (
-            <span aria-hidden="true" className="text-fg-on-dark-muted">
+            <span aria-hidden="true" className="text-fg-muted">
               <ArrowUpRight className="h-3 w-3" />
             </span>
           )}
         </span>
-        <span className="mt-0.5 block text-caption leading-snug text-fg-on-dark-muted">
+        <span className="mt-1 block text-small leading-snug text-fg-secondary">
           {item.description}
         </span>
       </span>

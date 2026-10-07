@@ -17,16 +17,16 @@ export function MegaMenuPromo({ promo }: { promo: MegaPromo }) {
   const isExternal = promo.cta.external;
 
   const cta = (
-    <span className="mt-5 flex h-12 w-full items-center justify-center rounded-md bg-white px-4 text-body font-semibold text-fg transition-colors duration-fast group-hover/promo:bg-ink-100">
+    <span className="mt-5 flex h-11 w-full items-center justify-center rounded-lg bg-white px-4 text-body font-semibold text-fg transition-colors duration-fast group-hover/promo:bg-brand-50">
       {promo.cta.label}
     </span>
   );
 
   return (
-    <div className="relative flex h-full flex-col overflow-hidden rounded-2xl bg-white/[0.05] p-6 ring-1 ring-inset ring-white/10">
+    <div className="relative flex h-full flex-col overflow-hidden rounded-2xl bg-[linear-gradient(165deg,#2a5bff,var(--color-primary)_55%,#0000d6)] p-5">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_45%_at_50%_35%,rgb(0_0_255/0.35)_0%,transparent_70%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_45%_at_50%_35%,rgb(255_255_255/0.22)_0%,transparent_70%)]"
       />
 
       <div className="relative flex items-start justify-between gap-3">
@@ -34,7 +34,9 @@ export function MegaMenuPromo({ promo }: { promo: MegaPromo }) {
             band, so the light-surface asset would put black "Convo" on
             near-black and leave a floating "AI". */}
         {promo.brand === "convoai" ? (
-          <ConvoAiLogo tone="dark" className="h-6 w-auto" />
+          <span className="inline-flex rounded-lg bg-white px-2.5 py-1.5 shadow-sm">
+            <ConvoAiLogo tone="light" className="h-5 w-auto" />
+          </span>
         ) : (
           <span className="text-caption uppercase font-semibold tracking-[0.04em] text-white">
             {promo.eyebrow}
@@ -48,8 +50,8 @@ export function MegaMenuPromo({ promo }: { promo: MegaPromo }) {
       <PromoVisual kind={promo.visual} />
 
       <div className="relative mt-auto">
-        <p className="text-[22px] leading-7 font-medium tracking-[-0.02em] text-white">{promo.title}</p>
-        <p className="mt-2 text-small text-white/75">{promo.body}</p>
+        <p className="text-[20px] leading-[26px] font-medium tracking-[-0.01em] text-white">{promo.title}</p>
+        <p className="mt-2 text-small text-white/85">{promo.body}</p>
 
         {isExternal ? (
           <a
@@ -92,9 +94,9 @@ function PromoVisual({ kind }: { kind: MegaPromo["visual"] }) {
             style={{ width: `${168 - i * 36}px`, height: `${168 - i * 36}px` }}
             className={cn(
               "absolute rounded-[28px] ring-1 ring-inset",
-              i === 0 && "bg-primary/[0.08] ring-primary/25",
-              i === 1 && "bg-primary/[0.14] ring-primary/35",
-              i === 2 && "bg-primary/25 shadow-[0_0_40px_rgb(0_0_255/0.45)] ring-primary/55",
+              i === 0 && "bg-white/[0.06] ring-white/20",
+              i === 1 && "bg-white/[0.1] ring-white/30",
+              i === 2 && "bg-white/[0.16] shadow-[0_0_40px_rgb(255_255_255/0.25)] ring-white/45",
             )}
           />
         ))}
@@ -113,10 +115,10 @@ function PromoVisual({ kind }: { kind: MegaPromo["visual"] }) {
 
   if (kind === "hosting") {
     return (
-      <div aria-hidden="true" className={cn(frame, "flex-col gap-2 bg-black/25 px-4 ring-1 ring-inset ring-white/10")}>
+      <div aria-hidden="true" className={cn(frame, "flex-col gap-2 bg-[#00008f]/45 px-4 ring-1 ring-inset ring-white/15")}>
         {[
-          ["Monthly rate", "$17.95", "bg-primary"],
-          ["Standard rate", "$21.37", "bg-white/25"],
+          ["Monthly rate", "$17.95", "bg-[#22d3ee]"],
+          ["Standard rate", "$21.37", "bg-white/30"],
         ].map(([label, price, bar], i) => (
           <div key={label} className="w-full">
             <div className="flex items-baseline justify-between">
@@ -139,7 +141,7 @@ function PromoVisual({ kind }: { kind: MegaPromo["visual"] }) {
 
   if (kind === "domains") {
     return (
-      <div aria-hidden="true" className={cn(frame, "flex-col gap-1.5 bg-black/25 px-4 ring-1 ring-inset ring-white/10")}>
+      <div aria-hidden="true" className={cn(frame, "flex-col gap-1.5 bg-[#00008f]/45 px-4 ring-1 ring-inset ring-white/15")}>
         {[
           [".com", "Available", true],
           [".net", "Available", true],
@@ -168,7 +170,7 @@ function PromoVisual({ kind }: { kind: MegaPromo["visual"] }) {
   }
 
   return (
-    <div aria-hidden="true" className={cn(frame, "flex-col gap-2 bg-black/25 px-5 ring-1 ring-inset ring-white/10")}>
+    <div aria-hidden="true" className={cn(frame, "flex-col gap-2 bg-[#00008f]/45 px-5 ring-1 ring-inset ring-white/15")}>
       {["Old host", "Staging", "Live"].map((label, i) => (
         <div key={label} className="flex w-full items-center gap-2.5">
           <span
