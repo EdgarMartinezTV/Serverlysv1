@@ -339,11 +339,12 @@ export function GrowChatShowcase() {
                   <Message key={i} role={m.role} text={m.text} />
                 ))}
 
-                {/* .cw-typing */}
+                {/* .cw-typing — a .cw-msg, so it enters like one; `.cw-msg + .cw-msg`
+                    beats `.cw-typing`'s 16px, leaving it 4px under the visitor's turn */}
                 {typing && (
                   <span
-                    className="flex shrink-0 self-start"
-                    style={{ marginTop: u(16) }}
+                    className="flex shrink-0 animate-[cwIn_260ms_cubic-bezier(0.16,1,0.3,1)_both] self-start"
+                    style={{ marginTop: u(4) }}
                   >
                     <span
                       className="flex items-center"
