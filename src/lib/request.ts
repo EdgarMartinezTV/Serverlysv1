@@ -30,10 +30,14 @@ export type BodyOutcome<T> =
 /** Comfortably above any real payload, far below anything that hurts. */
 export const MAX_JSON_BODY_BYTES = 16 * 1024;
 
-export async function readJsonObject(
+/**
+ * The body as text, under the same cap. For callers that must see the exact
+ * bytes — a signature is computed over what was sent, not over a re-encoding.
+ */
+export async function readBodyText(
   request: Request,
   maxBytes: number = MAX_JSON_BODY_BYTES,
-): Promise<BodyOutcome<Record<string, unknown>>> {
+): Promise<BodyOutcome<string>> {
   const tooLarge = {
     ok: false as const,
     status: 413 as const,
@@ -85,6 +89,16 @@ export async function readJsonObject(
   } catch {
     return { ok: false, status: 400, reason: "Malformed request." };
   }
+  return { ok: true, value: text };
+}
+
+export async function readJsonObject(
+  request: Request,
+  maxBytes: number = MAX_JSON_BODY_BYTES,
+): Promise<BodyOutcome<Record<string, unknown>>> {
+  const read = await readBodyText(request, maxBytes);
+  if (!read.ok) return read;
+  const text = read.value;
 
   try {
     const parsed = JSON.parse(text);

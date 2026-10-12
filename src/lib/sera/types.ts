@@ -337,6 +337,13 @@ export type SeraStreamEvent =
    * the model, so the button cannot promise something the workflow does not do.
    */
   | { t: "propose-action"; workflow: WorkflowId; label: string; detail: string }
+  /**
+   * Client area only: ask the portal to show a button for one of the client's
+   * own invoices or domains. Carries an id, never a URL — the portal looks the
+   * id up in the snapshot it signed, builds WHMCS's own link, writes the label,
+   * and drops the event if the id is not the client's or not actionable.
+   */
+  | { t: "portal-action"; kind: "pay_invoice" | "pay_all" | "renew_domain"; ref: string }
   /** Workflow state changed. The client replaces its view wholesale. */
   | { t: "workflow"; view: WorkflowView | null }
   /** Detected intent, for analytics and the panel's context line. */
@@ -446,6 +453,12 @@ export type Conversation = {
   offered: string[];
   /** Model turns spent. A hard per-conversation ceiling on cost. */
   turns: number;
+  /**
+   * The WHMCS client this conversation belongs to, set only by the client-area
+   * route. A conversation holding one client's invoices is never continued for
+   * another client, nor on the public route.
+   */
+  customerId?: number;
 };
 
 /** What a tool handler hands back to the model. Always JSON-serialisable. */

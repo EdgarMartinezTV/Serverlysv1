@@ -29,6 +29,7 @@ import {
 } from "../highlight";
 import { classifiedNames, isExposed, policyFor, type Surface } from "../policy";
 import type { Conversation, Intent, PageContext, ToolResult, WorkflowId } from "../types";
+import type { VerifiedCustomer } from "../customer";
 
 /**
  * The tools Sera is allowed to call.
@@ -425,6 +426,86 @@ export const TOOL_DEFINITIONS: readonly ToolDefinition[] = [
     parameters: { type: "object", properties: {}, additionalProperties: false },
     strict: false,
   },
+
+  /* ── Client area only (CUSTOMER surface). See customer.ts. ──────────── */
+  {
+    type: "function",
+    name: "get_my_account",
+    description:
+      "Overview of the signed-in client's own account: how many unpaid and " +
+      "overdue invoices and the total due, domains expiring soon, active " +
+      "services. Call it first for any question about their account.",
+    parameters: { type: "object", properties: {}, additionalProperties: false },
+    strict: false,
+  },
+  {
+    type: "function",
+    name: "get_my_invoices",
+    description:
+      "The signed-in client's invoices: every unpaid one (number, total, due " +
+      "date, days overdue) and their most recent others. The ONLY source for " +
+      "anything about their bills — never guess an amount or a date.",
+    parameters: { type: "object", properties: {}, additionalProperties: false },
+    strict: false,
+  },
+  {
+    type: "function",
+    name: "get_my_domains",
+    description:
+      "The signed-in client's domains: status, expiry date, days left, " +
+      "auto-renew, renewal price, and whether it can be renewed now.",
+    parameters: {
+      type: "object",
+      properties: {
+        domain: { type: "string", description: "Optional: one domain, e.g. 'example.com'." },
+      },
+      additionalProperties: false,
+    },
+    strict: false,
+  },
+  {
+    type: "function",
+    name: "get_my_services",
+    description:
+      "The signed-in client's hosting and other services: product, domain, " +
+      "status, next due date and amount.",
+    parameters: { type: "object", properties: {}, additionalProperties: false },
+    strict: false,
+  },
+  {
+    type: "function",
+    name: "offer_invoice_payment",
+    description:
+      "Put a Pay button in the chat for one of the client's UNPAID invoices, " +
+      "or for all of them at once. It pays nothing: the client presses it and " +
+      "pays in the billing checkout. Never say an invoice is paid.",
+    parameters: {
+      type: "object",
+      properties: {
+        invoice_id: { type: "integer", description: "The invoice id from get_my_invoices." },
+        all: { type: "boolean", description: "True to offer paying every unpaid invoice together." },
+      },
+      additionalProperties: false,
+    },
+    strict: false,
+  },
+  {
+    type: "function",
+    name: "offer_domain_renewal",
+    description:
+      "Put a Renew button in the chat for one of the client's domains. It " +
+      "orders nothing: the client presses it, picks the renewal term and " +
+      "checks out. Never say a domain is renewed.",
+    parameters: {
+      type: "object",
+      properties: {
+        domain: { type: "string", description: "The domain name, e.g. 'example.com'." },
+      },
+      required: ["domain"],
+      additionalProperties: false,
+    },
+    strict: false,
+  },
 ];
 
 /* ── Execution ───────────────────────────────────────────────────────────── */
@@ -461,7 +542,20 @@ export type ToolContext = {
    * frequently both.
    */
   mark: (target: HighlightTarget) => void;
+  /**
+   * The signed-in client, on the CUSTOMER surface only. Absent on PUBLIC, and
+   * the account tools refuse without it even though the policy already keeps
+   * them off that surface.
+   */
+  customer?: VerifiedCustomer;
+  /**
+   * Asks the client area for a Pay / Renew button. Returns false once this
+   * turn has offered three — past that it is a list, and the list is the page.
+   */
+  portalAction?: (kind: PortalActionKind, ref: string) => boolean;
 };
+
+export type PortalActionKind = "pay_invoice" | "pay_all" | "renew_domain";
 
 /** Progress labels. Deliberately vague about internals; they are shown to the visitor. */
 const LABELS: Record<string, string> = {
@@ -478,6 +572,12 @@ const LABELS: Record<string, string> = {
   record_details: "Noting that down…",
   get_request_status: "",
   prepare_request: "Putting your request together…",
+  get_my_account: "Checking your account…",
+  get_my_invoices: "Checking your invoices…",
+  get_my_domains: "Checking your domains…",
+  get_my_services: "Checking your services…",
+  offer_invoice_payment: "Getting that ready…",
+  offer_domain_renewal: "Getting that ready…",
 };
 
 export function isKnownTool(name: string): boolean {
@@ -535,11 +635,13 @@ export function registryAudit(): {
   registered: readonly string[];
   classified: readonly string[];
   publicTools: readonly string[];
+  customerTools: readonly string[];
 } {
   return {
     registered: TOOL_DEFINITIONS.map((t) => t.name),
     classified: classifiedNames(),
     publicTools: definitionsFor("PUBLIC").map((t) => t.name),
+    customerTools: definitionsFor("CUSTOMER").map((t) => t.name),
   };
 }
 
@@ -1074,6 +1176,14 @@ export async function runTool(
       };
     }
 
+    case "get_my_account":
+    case "get_my_invoices":
+    case "get_my_domains":
+    case "get_my_services":
+    case "offer_invoice_payment":
+    case "offer_domain_renewal":
+      return runCustomerTool(name, args, context);
+
     default:
       /*
        * Unreachable through the model: the API only ever returns a tool name it
@@ -1106,4 +1216,170 @@ function statusPayload(conversation: Conversation): ToolResult {
       .slice(0, 4)
       .map((f) => ({ field: f.key, label: f.label, ask: f.ask, options: f.options?.length ? f.options : undefined })),
   };
+}
+
+/* ── Client area tools ───────────────────────────────────────────────────── */
+
+/** Told to the model when a section is outside this portal user's permissions. */
+const NOT_PERMITTED = {
+  available: false,
+  note:
+    "This portal user is not permitted to see this part of the account. Say so " +
+    "plainly and suggest the account owner, or opening a ticket.",
+};
+
+/** "www.Example.com." → "example.com". */
+function normaliseDomain(raw: string): string {
+  return raw.trim().toLowerCase().replace(/^https?:\/\//, "").replace(/\/.*$/, "").replace(/^www\./, "").replace(/\.$/, "");
+}
+
+function runCustomerTool(
+  name: string,
+  args: Record<string, unknown>,
+  context: ToolContext,
+): ToolResult {
+  /*
+   * Second lock on the same door. The policy keeps these tools off every
+   * surface but CUSTOMER, and only the portal route builds a context with a
+   * customer — but if either of those ever slips, there is still no account to
+   * read here.
+   */
+  const customer = context.customer;
+  if (!customer) {
+    return { error: "not_permitted", note: "Account details are only available inside the client area." };
+  }
+  const soon = (d: { daysLeft: number | null }) => d.daysLeft !== null && d.daysLeft <= 30;
+  /** Said in every result, so "show me client 4243" is answered by the data itself. */
+  const scope =
+    "Only the signed-in client's own account is visible. No other client's account can be looked up, whoever asks.";
+  const result = (body: ToolResult): ToolResult => ({ scope, ...body });
+
+  switch (name) {
+    case "get_my_account": {
+      const inv = customer.invoices;
+      return result({
+        firstName: customer.firstName || null,
+        asOf: customer.asOf,
+        invoices: inv
+          ? {
+              unpaid: inv.unpaid.length,
+              overdue: inv.unpaid.filter((i) => i.daysLeft !== null && i.daysLeft < 0).length,
+              totalDue: inv.unpaid.length ? inv.unpaidTotal : null,
+            }
+          : NOT_PERMITTED,
+        domains: customer.domains
+          ? {
+              total: customer.domains.length,
+              expiringWithin30Days: customer.domains.filter(soon).map((d) => d.domain),
+            }
+          : NOT_PERMITTED,
+        services: customer.services
+          ? {
+              total: customer.services.length,
+              active: customer.services.filter((x) => x.status === "Active").length,
+            }
+          : NOT_PERMITTED,
+      });
+    }
+
+    case "get_my_invoices":
+      if (!customer.invoices) return NOT_PERMITTED;
+      return result({
+        asOf: customer.asOf,
+        unpaid: customer.invoices.unpaid,
+        unpaidTotal: customer.invoices.unpaid.length ? customer.invoices.unpaidTotal : null,
+        recentOther: customer.invoices.recent,
+        note: customer.invoices.unpaid.length
+          ? "daysLeft below 0 means overdue by that many days. Offer offer_invoice_payment if they want to pay."
+          : "No unpaid invoices. Say so plainly.",
+      });
+
+    case "get_my_domains": {
+      if (!customer.domains) return NOT_PERMITTED;
+      const wanted = str(args, "domain");
+      if (wanted) {
+        const match = customer.domains.find((d) => d.domain === normaliseDomain(wanted));
+        return match
+          ? { domain: match }
+          : { domain: null, note: `${normaliseDomain(wanted)} is not in this account.`, inAccount: customer.domains.map((d) => d.domain) };
+      }
+      return result({ asOf: customer.asOf, domains: customer.domains });
+    }
+
+    case "get_my_services":
+      if (!customer.services) return NOT_PERMITTED;
+      return result({ asOf: customer.asOf, services: customer.services });
+
+    case "offer_invoice_payment": {
+      const inv = customer.invoices;
+      if (!inv) return NOT_PERMITTED;
+      if (!inv.unpaid.length) {
+        return { offered: false, noButtonShown: true, note: "There are no unpaid invoices. NO button was shown. Say so." };
+      }
+      if (args.all === true) {
+        if (!context.portalAction?.("pay_all", "all")) return { offered: false, note: "Enough buttons are on screen already." };
+        return {
+          offered: true,
+          button: `Pay all ${inv.unpaid.length} unpaid invoices (${inv.unpaidTotal})`,
+          note: "A button is on screen. They pay in the checkout; do not say anything is paid.",
+        };
+      }
+      const id = typeof args.invoice_id === "number" ? args.invoice_id : Number(args.invoice_id);
+      const target = inv.unpaid.find((i) => i.id === id);
+      if (!target) {
+        const other = inv.recent.find((i) => i.id === id);
+        return {
+          offered: false,
+          noButtonShown: true,
+          note: other
+            ? `Invoice #${other.number} is ${other.status}, not unpaid, so there is nothing to pay. NO button was shown. Tell them it is already ${other.status.toLowerCase()}.`
+            : "That is not one of this client's unpaid invoices. NO button was shown. Say so.",
+        };
+      }
+      if (!context.portalAction?.("pay_invoice", String(target.id))) {
+        return { offered: false, note: "Enough buttons are on screen already." };
+      }
+      return {
+        offered: true,
+        button: `Pay invoice #${target.number} (${target.total})`,
+        note: "A button is on screen. They pay in the checkout; do not say it is paid.",
+      };
+    }
+
+    case "offer_domain_renewal": {
+      if (!customer.domains) return NOT_PERMITTED;
+      const wanted = str(args, "domain");
+      const match = wanted ? customer.domains.find((d) => d.domain === normaliseDomain(wanted)) : undefined;
+      if (!match) {
+        return {
+          offered: false,
+          noButtonShown: true,
+          note: "That domain is not in this account. NO button was shown. Say so.",
+          inAccount: customer.domains.map((d) => d.domain),
+        };
+      }
+      if (!match.renewable) {
+        return {
+          offered: false,
+          noButtonShown: true,
+          note:
+            `${match.domain} cannot be renewed online right now (status: ${match.status}). NO button ` +
+            "was shown. Say so and give them the ticket link.",
+        };
+      }
+      if (!context.portalAction?.("renew_domain", String(match.id))) {
+        return { offered: false, note: "Enough buttons are on screen already." };
+      }
+      return {
+        offered: true,
+        button: `Renew ${match.domain}`,
+        note:
+          "A button is on screen. It opens the renewal page where they choose the term " +
+          "and pay. Do not say the domain is renewed.",
+      };
+    }
+
+    default:
+      return { error: `Unknown tool: ${name}` };
+  }
 }

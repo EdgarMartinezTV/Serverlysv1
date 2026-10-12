@@ -40,6 +40,13 @@ export const CHAT_BY_ADDRESS: Window = { limit: 12, windowMs: 60_000 };
 export const CHAT_BY_CONVERSATION: Window = { limit: 20, windowMs: 60_000 };
 
 /**
+ * Client area, per WHMCS client. The address is useless there — every portal
+ * request comes from the WHMCS server — and the portal applies its own
+ * per-user limit before relaying, so this is the backstop, not the first line.
+ */
+export const PORTAL_BY_CLIENT: Window = { limit: 12, windowMs: 60_000 };
+
+/**
  * Submission is cheap to serve but expensive to get wrong — every success is an
  * email in someone's inbox. The real duplicate defence is idempotency in
  * `submit.ts`; this stops the volume.

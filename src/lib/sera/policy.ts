@@ -106,7 +106,15 @@ export function decide(name: string, surface: Surface): Verdict {
     };
   }
 
-  if (policy.surface !== surface) {
+  /*
+   * A signed-in client may still ask what a plan costs: PUBLIC tools marked
+   * `alsoForCustomers` run on the CUSTOMER surface too. Nothing flows the other
+   * way — a CUSTOMER tool is never reachable from PUBLIC.
+   */
+  const sharedWithCustomers =
+    surface === "CUSTOMER" && policy.surface === "PUBLIC" && policy.alsoForCustomers === true;
+
+  if (policy.surface !== surface && !sharedWithCustomers) {
     /*
      * Same copy as `blocked` on purpose. "That tool exists but not on this
      * surface" tells a probing conversation which capabilities are one
@@ -122,7 +130,14 @@ export function decide(name: string, surface: Surface): Verdict {
     };
   }
 
-  if (policy.gate === "AUTHENTICATION_REQUIRED") {
+  /*
+   * Reaching here with AUTHENTICATION_REQUIRED means the surface matched, i.e.
+   * the caller is CUSTOMER — which only `/api/sera/portal` constructs, after
+   * checking the client area's signature. On any other surface the check above
+   * has already refused. Kept as an explicit test rather than relying on that
+   * ordering, so reordering the checks cannot open it.
+   */
+  if (policy.gate === "AUTHENTICATION_REQUIRED" && surface !== "CUSTOMER") {
     return {
       allowed: false,
       code: "needs_auth",

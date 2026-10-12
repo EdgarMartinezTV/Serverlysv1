@@ -436,6 +436,37 @@ console.log("\nPOLICY — the authorisation table, no network, no model\n");
     POLICY.get_invoice?.permission === "READ_ONLY" && POLICY.get_invoice?.gate === "BLOCKED",
     "a read-only capability can still be blocked (permission is not authorisation)",
   );
+
+  /*
+   * The client-area tools. They read one signed-in client's own account, so
+   * they must sit on the CUSTOMER surface behind AUTHENTICATION_REQUIRED —
+   * never PUBLIC — and none of them may spend money: Pay / Renew are buttons a
+   * person presses in WHMCS's checkout.
+   */
+  const ACCOUNT_TOOLS = [
+    "get_my_account", "get_my_invoices", "get_my_domains", "get_my_services",
+    "offer_invoice_payment", "offer_domain_renewal",
+  ];
+  const misfiled = ACCOUNT_TOOLS.filter(
+    (n) => POLICY[n]?.surface !== "CUSTOMER" || POLICY[n]?.gate !== "AUTHENTICATION_REQUIRED",
+  );
+  assert(
+    misfiled.length === 0,
+    "account tools are CUSTOMER-surface and need a signed-in client",
+    misfiled.length ? misfiled.join(", ") : `${ACCOUNT_TOOLS.length} tools`,
+  );
+  assert(
+    ACCOUNT_TOOLS.every((n) => POLICY[n]?.permission === "READ_ONLY"),
+    "no account tool spends money or changes anything",
+  );
+  const sharedDown = Object.entries(POLICY).filter(
+    ([, p]) => p.alsoForCustomers && (p.surface !== "PUBLIC" || p.permission !== "READ_ONLY"),
+  );
+  assert(
+    sharedDown.length === 0,
+    "only read-only PUBLIC tools are shared with the client area",
+    sharedDown.length ? sharedDown.map(([n]) => n).join(", ") : "clean",
+  );
 }
 
 /* ── Structural ──────────────────────────────────────────────────────────── */
@@ -459,6 +490,38 @@ console.log("\nSTRUCTURAL — no model required\n");
     body: JSON.stringify({ message: "", pathname: "/" }),
   });
   assert(response.status === 400, "empty message is rejected", `status ${response.status}`);
+}
+
+{
+  /*
+   * THE CLIENT-AREA DOOR. /api/sera/portal answers only a request signed by
+   * the WHMCS hook. Unsigned, or signed with a guess, it must never stream —
+   * 401 when the secret is configured, 503 when it is not. A 200 here means
+   * anyone could hand Sera an invented account and get it treated as real.
+   */
+  const account = { clientId: 1, invoices: { unpaid: [], recent: [], unpaidTotal: "" }, domains: [], services: [] };
+  const attempt = async (header) => {
+    const headers = { "Content-Type": "application/json" };
+    if (header) headers["X-Sera-Portal"] = header;
+    const r = await fetch(`${base}/api/sera/portal`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ message: "Do I owe anything?", account }),
+    });
+    return r.status;
+  };
+  const now = Math.floor(Date.now() / 1000);
+  const codes = [
+    await attempt(null),
+    await attempt(`t=${now},s=${"0".repeat(64)}`),
+    await attempt(`t=${now - 3600},s=${"a".repeat(64)}`),
+    await attempt("garbage"),
+  ];
+  assert(
+    codes.every((c) => c === 401 || c === 503),
+    "client-area route refuses unsigned and forged requests",
+    codes.join(", "),
+  );
 }
 
 {

@@ -63,14 +63,21 @@ export type Gate =
   | "NO_CONFIRMATION"
   /** Not reachable from the model. A person must trigger it out-of-band. */
   | "CONFIRMATION_REQUIRED"
-  /** Needs a signed-in customer identity, which this product does not yet have. */
+  /**
+   * Needs a signed-in customer. Runs ONLY on the CUSTOMER surface, which only
+   * exists behind `/api/sera/portal` and its signature check (see
+   * `customer.ts`). Refused everywhere else.
+   */
   | "AUTHENTICATION_REQUIRED"
   /** Needs staff identity on an administrative surface. */
   | "ADMIN_ONLY"
   /** Refused unconditionally. Not "off by default" — off. */
   | "BLOCKED";
 
-/** Which registry a tool belongs to. Sera's chat route is PUBLIC, always. */
+/**
+ * Which registry a tool belongs to. Sera's chat route is PUBLIC, always; the
+ * client-area relay (`/api/sera/portal`) is CUSTOMER.
+ */
 export type Surface = "PUBLIC" | "CUSTOMER" | "ADMIN";
 
 export type ToolPolicy = {
@@ -82,6 +89,13 @@ export type ToolPolicy = {
    * later and needs to know what they are overruling.
    */
   because: string;
+  /**
+   * A PUBLIC tool that is also offered on the CUSTOMER surface. Only the ones
+   * that read published facts: the client area cannot scroll the marketing
+   * site, show a request form or take a filing, so the tools that do those are
+   * left out there rather than offered and silently ignored.
+   */
+  alsoForCustomers?: true;
 };
 
 /* ── The table ───────────────────────────────────────────────────────────── */
@@ -99,30 +113,35 @@ export const POLICY: Record<string, ToolPolicy> = {
     permission: "READ_ONLY",
     gate: "NO_CONFIRMATION",
     surface: "PUBLIC",
+    alsoForCustomers: true,
     because: "Reads static facts already published on the site.",
   },
   get_hosting_plans: {
     permission: "READ_ONLY",
     gate: "NO_CONFIRMATION",
     surface: "PUBLIC",
+    alsoForCustomers: true,
     because: "Reads the same price table the pricing page renders.",
   },
   get_services: {
     permission: "READ_ONLY",
     gate: "NO_CONFIRMATION",
     surface: "PUBLIC",
+    alsoForCustomers: true,
     because: "Reads the service catalogue and page summaries.",
   },
   search_faq: {
     permission: "READ_ONLY",
     gate: "NO_CONFIRMATION",
     surface: "PUBLIC",
+    alsoForCustomers: true,
     because: "Reads published FAQ answers.",
   },
   get_contact_channels: {
     permission: "READ_ONLY",
     gate: "NO_CONFIRMATION",
     surface: "PUBLIC",
+    alsoForCustomers: true,
     because: "Reads the published support address and phone number.",
   },
 
@@ -213,6 +232,56 @@ export const POLICY: Record<string, ToolPolicy> = {
     because:
       "Sends a real person an email about a real customer. Only a human tap " +
       "on /api/sera/submit files anything; the model has no path to it.",
+  },
+
+  /* ── The signed-in client's own account. CUSTOMER surface only. ──────── */
+  /*
+   * Every one of these reads the snapshot the client area signed for THIS
+   * request (see `customer.ts`). None takes a client id, none calls WHMCS, and
+   * none can reach another account: the data on this side is exactly what the
+   * signed-in portal user may already see on screen.
+   */
+  get_my_account: {
+    permission: "READ_ONLY",
+    gate: "AUTHENTICATION_REQUIRED",
+    surface: "CUSTOMER",
+    because: "Counts and totals from the signed-in client's own snapshot.",
+  },
+  get_my_invoices: {
+    permission: "READ_ONLY",
+    gate: "AUTHENTICATION_REQUIRED",
+    surface: "CUSTOMER",
+    because: "The signed-in client's own invoices, as their portal user may see them.",
+  },
+  get_my_domains: {
+    permission: "READ_ONLY",
+    gate: "AUTHENTICATION_REQUIRED",
+    surface: "CUSTOMER",
+    because: "The signed-in client's own domains, as their portal user may see them.",
+  },
+  get_my_services: {
+    permission: "READ_ONLY",
+    gate: "AUTHENTICATION_REQUIRED",
+    surface: "CUSTOMER",
+    because: "The signed-in client's own services, as their portal user may see them.",
+  },
+  offer_invoice_payment: {
+    permission: "READ_ONLY",
+    gate: "AUTHENTICATION_REQUIRED",
+    surface: "CUSTOMER",
+    because:
+      "Puts a 'Pay' button in the chat and pays nothing. The portal builds the " +
+      "link itself, only for an unpaid invoice in its own snapshot, and the " +
+      "client pays through WHMCS's checkout. The person is the confirmation.",
+  },
+  offer_domain_renewal: {
+    permission: "READ_ONLY",
+    gate: "AUTHENTICATION_REQUIRED",
+    surface: "CUSTOMER",
+    because:
+      "Puts a 'Renew' button in the chat and orders nothing. The portal builds " +
+      "WHMCS's own renewal link, only for a renewable domain in its snapshot, " +
+      "and the client chooses the term and checks out there.",
   },
 
   /* ── Privileged operations. Interfaces exist; none is connected. ──────── */

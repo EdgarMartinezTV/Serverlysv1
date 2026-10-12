@@ -1,7 +1,7 @@
 import "server-only";
 import OpenAI from "openai";
 import { LIMITS, openAiConfig } from "./config";
-import { SYSTEM_PROMPT, contextBlock } from "./prompts";
+import { SYSTEM_PROMPT, contextBlock, customerBlock } from "./prompts";
 import { definitionsFor, isKnownTool, permissionOf, runTool } from "./tools/registry";
 import { decide, type Surface } from "./policy";
 import { PhaseTracker } from "./phases";
@@ -10,21 +10,39 @@ import { trimHistory, touch } from "./session";
 import { actionOfferFor, mergeIntoWorkflow, missingRequired, toView, workflowForIntent } from "./workflows";
 import type { NavTarget } from "./navigation";
 import type { Conversation, PageContext, SeraStreamEvent } from "./types";
+import type { VerifiedCustomer } from "./customer";
 
 /**
  * Which registry Sera runs against.
  *
- * ⚠ A CONSTANT, NOT A PARAMETER, AND DELIBERATELY NOT CONFIGURABLE. Sera is
- * mounted in the root layout of a public marketing site and every caller is an
- * anonymous visitor. There is no code path that could legitimately pass
- * "CUSTOMER" or "ADMIN" here, because there is no signed-in identity in this
- * product to authorise one. Making it an argument would create the appearance
- * of one and invite a future caller to supply it from a request body.
- *
- * When customer authentication exists, the change is a new entry point with its
- * own session check — not a new value threaded through this function.
+ * ⚠ NOT A REQUEST PARAMETER. The surface is derived from ONE thing: whether the
+ * turn carries a `VerifiedCustomer`, a branded type that only
+ * `verifyPortalRequest()` (customer.ts) can produce, and only
+ * `/api/sera/portal` calls — after checking the client area's signature. The
+ * public chat route never passes one, so everything there runs as it always
+ * did, against the PUBLIC registry. No string from a request body can select
+ * CUSTOMER, and nothing selects ADMIN.
  */
-const SURFACE: Surface = "PUBLIC";
+function surfaceFor(customer: VerifiedCustomer | undefined): Surface {
+  return customer ? "CUSTOMER" : "PUBLIC";
+}
+
+/**
+ * Whether a client-area message is about their account, so the first model
+ * round must look it up (see `tool_choice` below). English and Spanish, plus
+ * anything carrying a number or a domain-shaped token — an invoice id or a
+ * domain name is never small talk. Erring towards "yes" costs one local lookup.
+ */
+function aboutAccount(message: string): boolean {
+  return (
+    /invoice|bill|pay|owe|due|balance|domain|renew|expir|service|hosting|plan|account|order|factura|pag|deb|saldo|dominio|renov|venc|servicio|cuenta/i.test(
+      message,
+    ) || /\d|[a-z0-9-]+\.[a-z]{2,}/i.test(message)
+  );
+}
+
+/** Pay / Renew buttons one answer may put on screen. */
+const MAX_PORTAL_ACTIONS = 3;
 
 /**
  * The orchestration loop: visitor message in, streamed answer out.
@@ -74,6 +92,8 @@ export type TurnInput = {
   emit: (event: SeraStreamEvent) => void;
   /** Aborts when the visitor closes the tab mid-answer. */
   signal: AbortSignal;
+  /** Client area only. See `surfaceFor`. */
+  customer?: VerifiedCustomer;
 };
 
 /**
@@ -90,8 +110,10 @@ export async function runTurn({
   message,
   emit,
   signal,
+  customer,
 }: TurnInput): Promise<void> {
   const request = newRequestId();
+  const surface = surfaceFor(customer);
   /*
    * Phases go out on the stream AND into the log from one place, so the two can
    * never tell different stories about the same turn. The widget treats them as
@@ -161,9 +183,17 @@ export async function runTurn({
     ...conversation.history,
     {
       role: "developer",
-      content: contextBlock(page, conversation.workflow, isFirstTurn),
+      /*
+       * In the client area the context is the client's account, not a page of
+       * the marketing site — and the account snapshot is per request, so like
+       * the page context it is sent, never stored.
+       */
+      content: customer
+        ? customerBlock(customer, isFirstTurn)
+        : contextBlock(page, conversation.workflow, isFirstTurn),
     },
   ];
+  const portalActions = { count: 0 };
 
   const emittedIntent = conversation.intent;
   let sawAnyText = false;
@@ -231,7 +261,18 @@ export async function runTurn({
            * filter is what makes that a fact about the policy table rather
            * than a fact about this line.
            */
-          tools: definitionsFor(SURFACE) as unknown as never,
+          tools: definitionsFor(surface) as unknown as never,
+          /*
+           * ⚠ CLIENT AREA: THE FIRST ROUND MUST CALL A TOOL. Nearly every
+           * question there is about their account, and when the model answered
+           * from memory instead it told a client "I have put a pay button here"
+           * for an invoice it never looked up — no button existed. Forcing a
+           * lookup first means the answer is written after the facts (and after
+           * any real offer), not before them. Later rounds are free to reply.
+           * Only when the message is about the account: forcing a lookup on
+           * "thanks!" produced an unasked-for recap of their domains.
+           */
+          tool_choice: customer && round === 0 && aboutAccount(message) ? "required" : "auto",
           stream: true,
           store: false,
           // With store:false a reasoning model's items cannot be looked up by
@@ -332,8 +373,8 @@ export async function runTurn({
           conversation,
           page,
           emit,
-          { offered, navigated, nav },
-          { request, surface: SURFACE },
+          { offered, navigated, nav, portalActions },
+          { request, surface, customer },
         );
         const outputItem = {
           type: "function_call_output",
@@ -613,8 +654,9 @@ async function executeCall(
     offered: { fired: boolean };
     navigated: { fired: boolean };
     nav: { current: { target: NavTarget; highlight?: string } | null };
+    portalActions: { count: number };
   },
-  meta: { request: string; surface: Surface },
+  meta: { request: string; surface: Surface; customer?: VerifiedCustomer },
 ) {
   const base = {
     request: meta.request,
@@ -665,6 +707,9 @@ async function executeCall(
       page,
       emit: (label) => emit({ t: "tool", label }),
       navigate: (target, highlight) => {
+        // The client area is not the marketing site: there is no page there
+        // to open, so nothing is queued and the model is told so.
+        if (meta.customer) return false;
         const held = budget.nav.current;
 
         if (held) {
@@ -705,6 +750,15 @@ async function executeCall(
        * something already ringed.
        */
       mark: (target) => emit({ t: "highlight", target: target.name, label: target.label }),
+      customer: meta.customer,
+      portalAction: meta.customer
+        ? (kind, ref) => {
+            if (budget.portalActions.count >= MAX_PORTAL_ACTIONS) return false;
+            budget.portalActions.count += 1;
+            emit({ t: "portal-action", kind, ref });
+            return true;
+          }
+        : undefined,
     });
 
     /*

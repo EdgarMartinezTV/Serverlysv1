@@ -135,6 +135,12 @@ export async function POST(request: Request) {
   // ── Conversation ────────────────────────────────────────────────────────
   const requestedId = typeof body.conversationId === "string" ? body.conversationId : null;
   let conversation = requestedId ? getConversation(requestedId, sessionId) : null;
+  /*
+   * A client-area conversation holds that customer's invoices in its history.
+   * It is never continued here, on the anonymous surface, whatever cookie and
+   * id are presented.
+   */
+  if (conversation?.customerId !== undefined) conversation = null;
 
   /*
    * An unknown or foreign conversation id silently becomes a NEW conversation
