@@ -5,6 +5,7 @@
  */
 export const COVERS: ReadonlySet<string> = new Set([
   "ai-tools-small-business",
+  "answer-every-website-visitor-with-convoai",
   "best-free-wordpress-themes",
   "best-hosting-startups",
   "best-web-hosting-small-business",

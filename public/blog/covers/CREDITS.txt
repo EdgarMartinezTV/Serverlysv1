@@ -6,3 +6,10 @@ describing that article's subject. Owned by Serverlys under OpenAI's terms.
 Every image reviewed by eye for relevance and for brand logos (none allowed).
 Cropped to 3:2, 1200x800, WebP. Prompts are kept with the generation notes, not in
 the repo; regenerate an article's cover by writing a new prompt for it.
+
+Exception, NOT AI-generated:
+answer-every-website-visitor-with-convoai.webp (2026-10-11) is a frame of the
+ConvoAI homepage video (convoai.cloud): Pexels stock footage of a cafe (Ron Lach,
+Pexels License, free to use) with the real ConvoAI messenger, captured from the
+product, layered on top. Edgar's rule from 2026-10-09: no AI-generated images;
+use real photos and real ConvoAI mockups.

@@ -43,6 +43,119 @@ import type { Article } from "./types";
 
 export const originalArticles: readonly Article[] = [
   {
+    slug: "answer-every-website-visitor-with-convoai",
+    title: "Your website never closes. Now it can answer, too.",
+    description:
+      "How ConvoAI puts an AI agent on your website that answers questions, books appointments and hands real conversations to your team, and how to start for free this afternoon.",
+    category: "AI",
+    published: "2026-10-11",
+    body: [
+      {
+        type: "p",
+        text: "It is 10:40 on a Tuesday night. Someone has found your website, likes what they see, and has one question before they buy, book or call: do you deliver to my area, are you open on Sunday, can you fit me in this week? There is nobody to ask. So they close the tab and ask the next business on the list, and in the morning you never know they were there.",
+      },
+      {
+        type: "p",
+        text: "That is the quiet cost of a website that only talks. It is open every hour of every day, and it cannot answer a single question. [ConvoAI](https://convoai.cloud/) exists to fix exactly that, and it is the reason we built it alongside Serverlys hosting: a site that loads fast is only half the job if the visitor still leaves with their question unanswered.",
+      },
+      { type: "h2", id: "what-it-is", text: "What ConvoAI actually is" },
+      {
+        type: "p",
+        text: "ConvoAI is an **AI agent trained on your business**, living in a messenger on your website. A visitor opens the chat bubble in the corner, asks a question in their own words, and gets an answer from your information: your hours, your services, your prices, your policies. Not a menu of buttons, not a form that promises a reply in two business days. An answer, in the moment they asked.",
+      },
+      {
+        type: "p",
+        text: "The website comes first, because that is where people look for you. The same agent also answers **WhatsApp and email** (with Instagram, Messenger and SMS in private beta), and every conversation from every channel lands in **one shared inbox** where you and your team can read it, reply to it or take it over.",
+      },
+      {
+        type: "quote",
+        text: "The goal is not a cleverer chatbot. It is that nobody who wanted to become your customer leaves without an answer.",
+      },
+      { type: "h2", id: "a-day", text: "What a day looks like with it" },
+      {
+        type: "p",
+        text: "Picture a small café that also does catering. This is an illustration rather than a customer story, but every step in it is something ConvoAI does today.",
+      },
+      {
+        type: "ul",
+        items: [
+          "**7:02 am.** Before the doors open, a visitor asks whether there is oat milk and what the Sunday hours are. The agent answers both from the café's own information. Nobody had to be awake for it.",
+          "**9:15 am.** The morning rush. Three questions arrive at once on the website and WhatsApp. The agent handles all three while the owner is behind the counter.",
+          "**11:40 am.** Someone wants a table for eight on Saturday. The agent checks the agenda and books it, and the booking appears in the calendar with the customer's name and number.",
+          "**1:25 pm.** A local office asks about catering for forty people. The agent asks the questions the owner would ask (date, headcount, budget) and saves the answers to that contact in the built-in CRM, so the lead is qualified before anyone picks up the phone.",
+          "**3:10 pm.** A wholesale enquiry needs a real decision. The agent hands it to the owner with a short summary, and steps back as soon as she replies, so the customer never has to repeat themselves.",
+        ],
+      },
+      {
+        type: "p",
+        text: "None of that is magic, and none of it replaces the owner. It means the questions that used to be lost after closing time, or ignored during the busiest hour, become conversations, bookings and leads instead.",
+      },
+      { type: "h2", id: "what-it-does", text: "What it does for your business" },
+      { type: "h3", text: "Answers like your best employee" },
+      {
+        type: "p",
+        text: "You describe your business once, and the agent answers from it. On the Pro plan you can also upload your own documents (menus, price lists, policies, FAQs) and the agent answers from those, so you stay in control of every answer. Safety checks run on every reply, and when the agent does not know something, it says so and brings in your team rather than guessing.",
+      },
+      { type: "h3", text: "Turns conversations into customers" },
+      {
+        type: "p",
+        text: "Every conversation is linked to a contact in a built-in CRM, and on Pro the agent qualifies leads with scoring and tags as it talks. It remembers returning customers and accepts photos, voice notes and documents, and on Pro it can follow up later with proactive messages, so an interested visitor does not go cold.",
+      },
+      { type: "h3", text: "Fills your calendar" },
+      {
+        type: "p",
+        text: "With the smart agenda on Pro, the agent offers real availability and books appointments straight into your calendar: consultations, viewings, tables, service calls. The visitor gets a confirmed time in the chat instead of a request you have to chase.",
+      },
+      { type: "h3", text: "Knows when to bring in a person" },
+      {
+        type: "p",
+        text: "Some conversations should not be handled by software, and ConvoAI is built around that. The handoff to your team arrives with the context already written up, routing can send it to the right department, and the moment a teammate replies, the AI pauses on that conversation. Your customer gets a person when they need one, without starting again.",
+      },
+      {
+        type: "callout",
+        title: "Be honest about what it is",
+        text: "ConvoAI tells visitors they are talking to an AI assistant and that a person can step in. That is not a weakness. People are happy to get an instant answer from an assistant; what erodes trust is finding out later. Our earlier piece on [what an AI agent can genuinely do](/blog/what-ai-agents-can-do-for-a-small-business) covers where to draw the line.",
+      },
+      { type: "h2", id: "start", text: "How to start this afternoon" },
+      {
+        type: "ol",
+        items: [
+          "**Create a free account** at [convoai.cloud](https://convoai.cloud/). No credit card is needed.",
+          "**Tell your agent about your business.** Hours, services, prices you are happy to state, the questions you are asked most, and when it should hand over to you.",
+          "**Add the messenger to your website** with one line of code. If your site is hosted with Serverlys, it goes in the same place you would add any other snippet, on WordPress or a hand-built site alike.",
+          "**Try to break it.** Ask the awkward questions your customers ask. Wherever the answer is not right, fix the information rather than the wording.",
+          "**Read the first week of conversations.** They will show you what visitors actually want to know, which is often not what the website says first.",
+        ],
+      },
+      {
+        type: "table",
+        head: ["", "Free", "Pro"],
+        rows: [
+          ["Price", "$0, free forever", "$49/month, or $39/month billed yearly"],
+          ["AI agent", "1", "1"],
+          ["AI replies", "65 every 2 weeks", "Unlimited"],
+          ["Channels", "Website messenger, WhatsApp and email", "Website messenger, WhatsApp and email"],
+          ["Answers from your own documents", "Not included", "Included"],
+          ["Appointment booking", "Not included", "Included"],
+          ["Team seats", "1", "10"],
+        ],
+      },
+      {
+        type: "p",
+        text: "The Free plan is enough to find out whether visitors use it, and they usually ask more than you expect. If the free replies run out, the AI pauses until they reset two weeks later, while new messages keep arriving in your inbox for you to answer and you get a notification, so no lead is lost. Prices and plan details are as published on [ConvoAI's pricing page](https://convoai.cloud/pricing) on the day this was written.",
+      },
+      { type: "h2", id: "small-claim", text: "A small promise you can check" },
+      {
+        type: "p",
+        text: "We are not going to tell you an AI agent will transform your business. The promise is smaller, and you can check it within a week: the questions people ask your website at night, at the weekend and during your busiest hour will get answered, and the ones that matter will reach you with everything you need to close them.",
+      },
+      {
+        type: "p",
+        text: "Your website is already open around the clock. [Start free with ConvoAI](https://convoai.cloud/) and let it answer, too.",
+      },
+    ],
+  },
+  {
     slug: "how-to-read-hosting-renewal-pricing",
     title: "How to read hosting renewal pricing before you buy",
     description:
