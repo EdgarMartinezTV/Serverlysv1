@@ -15,8 +15,8 @@ import { useLoop } from "./use-loop";
  * welcome line, the 400px white panel with its avatar header, the welcome
  * intro (avatar, name, tagline, three marks, "AI assistant" fact), grey bot
  * bubbles with "Name • AI Agent • Just now", brand-coloured visitor bubbles,
- * the black typing bubble, the composer with its paperclip and round send
- * button, and the privacy/"Powered by ConvoAI" footer. The dots fold into an
+ * the typing bubble with the mark's three coloured dots, the composer with
+ * its paperclip and round send button, and the privacy/"Powered by ConvoAI" footer. The dots fold into an
  * x while open. Accent is convoai.cloud's own, #2292A4, and the dot colours
  * are the ones the widget derives from it. With no logo set, the widget shows
  * the ConvoAI mark as the avatar, as here. Change that file, change this.
@@ -35,7 +35,7 @@ const BRAND = "#2292A4";
 const INK = "#14161a";
 const MUTED = "#6c6f74";
 const LINE = "rgba(9,14,21,0.08)";
-/** The launcher's dots and the intro marks, as the widget derives them from BRAND. */
+/** The launcher's dots, and the intro marks and typing dots, as the widget derives them from BRAND. */
 const DOTS = ["#c9cc12", "#2bb3c9", "#f0841a"] as const;
 const MARKS = ["#bfc20f", "#2292a4", "#e07a12"] as const;
 const AGENT = "Crumb & Co.";
@@ -340,7 +340,9 @@ export function GrowChatShowcase() {
                 ))}
 
                 {/* .cw-typing — a .cw-msg, so it enters like one; `.cw-msg + .cw-msg`
-                    beats `.cw-typing`'s 16px, leaving it 4px under the visitor's turn */}
+                    beats `.cw-typing`'s 16px, leaving it 4px under the visitor's turn.
+                    Grey bot bubble with the mark's lime / teal / orange dots, as in
+                    convoai.cloud's own messenger mockups (checked 2026-10-11). */}
                 {typing && (
                   <span
                     className="flex shrink-0 animate-[cwIn_260ms_cubic-bezier(0.16,1,0.3,1)_both] self-start"
@@ -353,17 +355,18 @@ export function GrowChatShowcase() {
                         height: u(44),
                         padding: `0 ${u(18)}`,
                         borderRadius: u(20),
-                        background: "#111111",
+                        background: "#f5f5f5",
                       }}
                     >
-                      {[0, 150, 300].map((d) => (
+                      {MARKS.map((c, i) => (
                         <span
-                          key={d}
-                          className="animate-[cwBlink_1.2s_ease-in-out_infinite_both] rounded-full bg-white"
+                          key={c}
+                          className="animate-[cwBlink_1.2s_ease-in-out_infinite_both] rounded-full"
                           style={{
                             width: u(7),
                             height: u(7),
-                            animationDelay: `${d}ms`,
+                            background: c,
+                            animationDelay: `${i * 150}ms`,
                           }}
                         />
                       ))}
