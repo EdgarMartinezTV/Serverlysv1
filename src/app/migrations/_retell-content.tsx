@@ -10,29 +10,10 @@ import { CutoverMock, MoveProgressMock, StagingCheckMock } from "./_components/m
  * FAQs stay in ./_content.ts.
  */
 
-export const STEPS = [
-  {
-    title: "Choose a cloud plan",
-    body: "Pick the cloud hosting plan with the resources your site needs. Migration is free with every plan, for one site or a hundred.",
-  },
-  {
-    title: "Send us the details",
-    body: "Your site’s address, the logins for your current host and anything we should know. That is the only part you do.",
-  },
-  {
-    title: "We copy it to a staged site",
-    body: "Files, database and email are moved onto Serverlys while your live site keeps running and taking orders on the old host.",
-  },
-  {
-    title: "Check it, then we switch",
-    body: "You look over the staged copy. When you say go, we switch DNS at a time you pick, so there is no gap in service.",
-  },
-] as const;
-
 export const USES = [
   {
     title: "Moved for you, not by you",
-    body: "No exporting databases, no FTP, no guessing which files matter. Send us your logins and our team moves the site, the database and the email onto Serverlys.",
+    body: "No exporting databases, no FTP, no guessing which files matter. Send us your logins and our team moves the site and its database onto Serverlys, and your email too if you want it moved.",
     src: "/mock/move-boxes.jpg",
     alt: "A business owner unpacking boxes in her new space",
     position: "center 40%",
@@ -74,11 +55,11 @@ export const PROMISES = [
   },
   {
     title: "Staged before it switches",
-    body: "Your site is copied and checked on Serverlys before anything changes for your visitors.",
+    body: "Your site is copied and tested in private on Serverlys before anything changes for your visitors.",
   },
   {
-    title: "Switched when you say",
-    body: "DNS changes at a time you pick, so there is no gap in service and no surprise.",
+    title: "Zero downtime",
+    body: "Your old host keeps serving until the new site is proven, and both answer while the switch spreads. No gap, no error pages.",
   },
 ] as const;
 
@@ -89,8 +70,8 @@ export const GROUPS: FeatureGroup[] = [
     backdrop: "/mock/move-room.jpg",
     features: [
       [
-        "Files, database and email",
-        "Everything that makes up the site, moved by our team, not by a plugin you have to babysit.",
+        "Files, database and settings",
+        "Everything that makes up the site, moved by our team, not by a plugin you have to babysit. Email too, when you ask.",
       ],
       [
         "WordPress and more",
@@ -127,16 +108,16 @@ export const GROUPS: FeatureGroup[] = [
     backdrop: "/mock/move-open.jpg",
     features: [
       [
-        "DNS switched at a time you pick",
-        "We change where your domain points when it suits you, so there is no gap in service.",
+        "A final sync, then the switch",
+        "Orders and changes made during the move are copied across, then your domain is pointed at Serverlys at a quiet time you pick.",
       ],
       [
-        "SSL and backups from day one",
-        "A free SSL certificate and daily backups are in place on the new plan.",
+        "Both servers answer while it spreads",
+        "Your old host still has the full site while the DNS change reaches every visitor, so nobody hits an error.",
       ],
       [
-        "Faster hosting underneath",
-        "LiteSpeed, NVMe storage and caching built in, on every cloud plan.",
+        "SSL issued, then we sign off",
+        "Your certificate is issued on the new server and we tell you when it’s safe to cancel your old hosting.",
       ],
     ],
   },

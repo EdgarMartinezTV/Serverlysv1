@@ -7,7 +7,6 @@ import {
   Faqs,
   Features,
   Hero,
-  HowItWorks,
   INK,
   MUTED,
   NavyBand,
@@ -20,7 +19,8 @@ import {
   UseCases,
 } from "@/components/retell/kit";
 import { FAQS } from "./_content";
-import { GROUPS, PROMISES, RELATED, STEPS, TOOLS, USES } from "./_retell-content";
+import { GROUPS, PROMISES, RELATED, TOOLS, USES } from "./_retell-content";
+import { ZeroDowntime } from "./_components/zero-downtime";
 
 /**
  * /migrations — rebuilt 2026-10-13 on the shared Retell-style kit, the same
@@ -104,8 +104,8 @@ export default function MigrationsPage() {
           "Free with every cloud plan",
           ...(from ? [`Plans from ${from}/mo`] : []),
         ]}
-        lede="We move your website, database and email to Serverlys cloud hosting, check it on a staged copy, and switch when you say. Your site stays open the whole time."
-        cta={{ label: "See cloud plans", href: "#plans" }}
+        lede="Our team copies your website to Serverlys, tests it in private, syncs the last changes and switches your domain at a quiet time you pick. Your old host keeps serving customers until the new site is proven, so it never goes offline."
+        cta={{ label: "See how it works", href: "#how-it-works" }}
         badgeCaption="Every move"
         badges={[
           { label: "Done for you", icon: "team" },
@@ -114,11 +114,7 @@ export default function MigrationsPage() {
           { label: "Unlimited sites", icon: "server" },
         ]}
       />
-      <HowItWorks
-        id="move-how-heading"
-        title="Four steps, and only the first two are yours."
-        steps={STEPS}
-      />
+      <ZeroDowntime />
       <UseCases
         id="move-uses-heading"
         label="What we handle"

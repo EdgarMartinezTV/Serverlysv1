@@ -198,7 +198,7 @@ export const FAQS: FaqItem[] = [
         type: "p",
         runs: [
           {
-            text: "After the website migration completes. We email you as soon as the transfer is successful — repointing before that is what causes avoidable downtime.",
+            text: "Only after the new copy is built and tested — repointing before that is what causes avoidable downtime. When it is ready we agree a quiet time with you, lower your DNS TTL beforehand so the change spreads in minutes, and switch it. If your domain is managed somewhere else, we tell you exactly which records to change and when, or make the change for you with your login.",
           },
         ],
       },
@@ -265,13 +265,26 @@ export const FAQS: FaqItem[] = [
     ],
   },
   {
+    q: "What happens to orders or messages that arrive during the move?",
+    a: [
+      {
+        type: "p",
+        runs: [
+          {
+            text: "They are kept. Your site keeps taking orders, sign-ups and form entries on your old host while we work. Right before the switch we run a final sync that copies across anything that changed since the first copy, so nothing placed during the move is lost.",
+          },
+        ],
+      },
+    ],
+  },
+  {
     q: "Will my website be reachable during the migration process?",
     a: [
       {
         type: "p",
         runs: [
           {
-            text: "Yes. Your site keeps serving from its current host throughout, so you will not lose visitors or sales. You may see brief inconsistency after the migration while DNS propagates.",
+            text: "Yes, the whole time. Your site keeps serving from its current host while we copy and test the new one. At the switch we sync anything that changed during the move, such as new orders, and while the DNS change spreads both servers have your full site, so every visitor lands on a working page. That is why you must keep your old hosting until we tell you the move is finished.",
           },
         ],
       },

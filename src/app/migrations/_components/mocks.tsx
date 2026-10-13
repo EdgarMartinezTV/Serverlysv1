@@ -238,7 +238,7 @@ export function CutoverMock({ className }: { className?: string }) {
           <span className="font-semibold text-primary">203.0.113.40</span>
         </p>
         <p>
-          <span className="text-[#80868b]">MX</span> unchanged · email kept flowing
+          <span className="text-[#80868b]">MX</span> → Serverlys mail · no messages lost
         </p>
         <p>
           <span className="text-[#80868b]">SSL</span> issued · valid 90 days ✓
