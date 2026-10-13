@@ -1,4 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
+import { Instrument_Serif } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { billing } from "@/data/company";
 import { Check, CtaButton, Grid, Headline } from "@/components/ref/kit";
@@ -16,7 +18,6 @@ import {
   AuditMock,
   BusinessProfileMock,
   LocalPackMock,
-  PerformanceMock,
   RankTicker,
   RankTrackerMock,
   ReportPaperMock,
@@ -48,6 +49,9 @@ import {
  */
 
 const SECTION = "py-16 lg:py-24";
+
+/* The hero headline's display serif — scoped to this page, not the site. */
+const serif = Instrument_Serif({ weight: "400", subsets: ["latin"], display: "swap" });
 
 /* ── Icons (24px line set) ───────────────────────────────────────────────── */
 
@@ -135,62 +139,123 @@ function Eyebrow({
 
 /* ── 1. Hero ─────────────────────────────────────────────────────────────── */
 
+/*
+ * Built to the Retell AI receptionists hero, element for element: a
+ * full-bleed, dimmed photograph of a real person at work; a very large,
+ * tightly set serif headline top left; and a block bottom right with a small
+ * caps line, one paragraph, a white pill button and a row of badges.
+ *
+ * What the reference fills with proof Serverlys does not have is filled with
+ * fact instead: the "5.0 on G2" line is the real starting price, and the G2
+ * award badges are what every plan includes — labelled "Every plan" so they
+ * never read as awards. Never put a rating or an award here until one exists.
+ *
+ * LCP: the photo is the largest element, so it loads eagerly at high
+ * priority. Nothing in this section animates in — see the reveal/LCP note.
+ */
+const BADGES = [
+  { label: "Local SEO", icon: "pin" },
+  { label: "Technical SEO", icon: "scan" },
+  { label: "Link building", icon: "link" },
+  { label: "Reporting", icon: "report" },
+] as const satisfies readonly { label: string; icon: IconName }[];
+
+function PlanBadge({ label, icon }: { label: string; icon: IconName }) {
+  return (
+    <li className="relative w-[86px] shrink-0">
+      <svg
+        viewBox="0 0 64 72"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+        className="absolute inset-0 size-full drop-shadow-[0_6px_14px_rgb(0_0_0/0.35)]"
+      >
+        <path d="M4 4h56v44L32 68 4 48Z" fill="#fff" />
+        <path d="M4 44 32 60l28-16v6L32 66 4 50Z" fill="var(--color-brand-600)" />
+        <path d="M4 50l28 16 28-16v-2L32 64 4 48Z" fill="#34d399" />
+      </svg>
+      <span className="relative flex h-[96px] flex-col items-center pt-2.5 text-center">
+        <span className="text-[6.5px] font-bold tracking-[0.08em] text-fg-muted uppercase">
+          Every plan
+        </span>
+        <Icon name={icon} className="mt-0.5 size-4 text-primary" />
+        <span className="mt-1 px-1 text-[9.5px] leading-[1.1] font-bold whitespace-nowrap text-fg">
+          {label}
+        </span>
+      </span>
+    </li>
+  );
+}
+
 export function Hero() {
   return (
     <section
       aria-labelledby="seo-hero-heading"
-      className="relative overflow-hidden bg-canvas pt-12 pb-20 lg:pt-16 lg:pb-28"
+      className="relative isolate flex min-h-[680px] overflow-hidden bg-[#0b0d10] text-white sm:min-h-[760px] lg:min-h-[calc(100svh-72px)]"
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-40 right-[-10%] h-[620px] w-[760px] rounded-full bg-[radial-gradient(closest-side,var(--color-brand-100),transparent)] opacity-70"
-      />
+        className="absolute inset-y-0 right-0 left-0 -z-20 lg:left-[24%]"
+      >
+        <Image
+          src="/mock/seo-hero.jpg"
+          alt="A small business owner in an apron smiling at his phone behind his shop counter"
+          fill
+          sizes="100vw"
+          loading="eager"
+          fetchPriority="high"
+          quality={80}
+          className="object-cover object-[58%_30%] lg:object-[40%_30%]"
+        />
+      </div>
+      {/* Desktop: the photo sits in the right three quarters and fades into the
+          ground on its left edge, so the headline sets on shadow, not a face. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgb(15_23_42/0.07)_1px,transparent_0)] [background-size:22px_22px] [mask-image:radial-gradient(70%_60%_at_75%_40%,#000,transparent)]"
+        className="absolute inset-y-0 left-[24%] -z-10 hidden w-[26%] bg-[linear-gradient(90deg,#0b0d10,transparent)] lg:block"
       />
-      <Grid className="relative">
-        <div className="grid items-center gap-16 [&>*]:min-w-0 lg:grid-cols-[1fr_1.1fr] lg:gap-14">
-          <div>
-            <Eyebrow>SEO services for small businesses</Eyebrow>
-            <h1 id="seo-hero-heading" className="display-xl mt-5 text-fg">
-              SEO services that bring in customers, not just traffic
-            </h1>
-            <p className="mt-6 max-w-[560px] text-body-lg text-fg-secondary">
-              Keyword research, on-page and local SEO, technical fixes and link
-              building, done for you and reported every month. Rank for the searches
-              that end in a call or an order.
-            </p>
-            <ul className="mt-6 flex flex-col gap-2.5">
-              {[
-                "Google Business Profile and local SEO on every plan",
-                "A monthly SEO report you can actually read",
-                "White-hat only. No rank guarantees, no link schemes",
-              ].map((b) => (
-                <li key={b} className="flex items-center gap-2.5 text-body text-fg">
-                  <Check className="size-4 shrink-0 text-success-fill" />
-                  {b}
-                </li>
+      {/* Dim the whole frame, then deepen where the type sits. */}
+      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/45" />
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(0_0_0/0.35)_0%,transparent_32%,transparent_55%,rgb(0_0_0/0.55)_100%),linear-gradient(90deg,rgb(0_0_0/0.35)_0%,transparent_55%)]"
+      />
+
+      <Grid className="flex flex-col justify-between gap-16 pt-16 pb-14 sm:pt-20 lg:pt-24 lg:pb-20">
+        <h1
+          id="seo-hero-heading"
+          className={cn(
+            serif.className,
+            "max-w-[11ch] text-[56px] leading-[0.98] font-normal tracking-[-0.035em] text-white sm:text-[80px] lg:max-w-[980px] lg:text-[96px] xl:text-[110px]",
+          )}
+        >
+          SEO Services That Get You Found on Google
+        </h1>
+
+        <div className="max-w-[560px] lg:ml-[50%] lg:max-w-[600px]">
+          <p className="flex items-center gap-2 text-small font-medium tracking-[0.02em] text-white/90 uppercase">
+            From {formatSeoPrice(seoFromPrice)}/mo
+            <span aria-hidden="true" className="text-white/50">
+              ·
+            </span>
+            Billed monthly
+          </p>
+          <p className="mt-4 text-[19px] leading-[1.45] text-white/95 lg:text-[21px]">
+            Rank for the searches your customers already make. We fix your site,
+            optimize your Google Business Profile, publish content and build links, then
+            report what it earned every month.
+          </p>
+          <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-5">
+            <a
+              href="#plans"
+              className="inline-flex h-[54px] items-center justify-center rounded-full bg-white px-8 text-body font-semibold text-[#0b0d10] transition-colors duration-fast hover:bg-white/85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            >
+              See SEO plans
+            </a>
+            <ul className="flex flex-wrap gap-2" aria-label="Included in every plan">
+              {BADGES.map((b) => (
+                <PlanBadge key={b.label} label={b.label} icon={b.icon} />
               ))}
             </ul>
-            <p className="mt-8 text-body text-fg">
-              Plans from{" "}
-              <span className="tabular text-[28px] font-semibold tracking-[-0.03em]">
-                {formatSeoPrice(seoFromPrice)}
-              </span>
-              <span className="text-fg-secondary">/mo</span>
-            </p>
-            <div className="mt-5 flex flex-wrap items-center gap-3">
-              <CtaButton href="#plans">See SEO plans</CtaButton>
-              <ChatButton tone="ghost">Ask Sera</ChatButton>
-            </div>
-          </div>
-
-          <div className="relative px-2 pb-6 sm:px-8 sm:pb-20 lg:px-4">
-            <PerformanceMock />
-            <p className="mt-24 hidden text-right text-micro text-fg-muted sm:block">
-              Example: a demo client’s dashboard, for illustration.
-            </p>
           </div>
         </div>
       </Grid>

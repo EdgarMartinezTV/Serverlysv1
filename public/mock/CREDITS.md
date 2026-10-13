@@ -27,3 +27,9 @@ site-furniture  1555041469-a586c61ea9bc   (sofa)
 site-studio     1600585154340-be6161a56a0c (house)
 site-cafe       1509042239860-f550ce710b93 (coffee)
 site-bakery     1549931319-a545dcf3bc73   (bread-sliced, homepage Grow showcase)
+
+Full-bleed hero photography (people at work, used as a backdrop, never
+inside a fake interface):
+
+seo-hero  uk3ey_vhDKA  Ali Mkumbwa — "a man in an apron looking at a cell
+          phone" (/seo hero, 2400×1600)
