@@ -1,13 +1,11 @@
 import Link from "next/link";
 import { footerNav, legalNav, socialLinks } from "@/data/navigation";
-import { company, billing, emailDisplay } from "@/data/company";
+import { company, emailDisplay } from "@/data/company";
 import { resolveNavTarget } from "@/data/routes";
 import { Wordmark } from "./wordmark";
 import { CurrentYear } from "./current-year";
 import { SocialIcon } from "./social-icon";
-import { NavIcon } from "@/components/navigation/nav-icons";
 import { CookieSettingsLink } from "@/components/consent/cookie-settings-link";
-import { SeraOpenButton } from "@/components/sera/sera-open-button";
 
 /**
  * Site footer.
@@ -38,7 +36,12 @@ import { SeraOpenButton } from "@/components/sera/sera-open-button";
  * WHAT THE REFERENCE HAS THAT THIS DOES NOT: a row of accepted payment-card
  * icons. Which cards Serverlys accepts is a fact held by WHMCS, not by this
  * repo, and drawing six card logos on a guess is a claim about the business.
- * The contact block occupies that slot until someone confirms the real list.
+ * Trust tiles occupy that slot until someone confirms the real list.
+ *
+ * 2026-10-13, Edgar: stripped back to the reference's restraint — no help
+ * strip (Sera lives in the header), plain social glyphs instead of circles,
+ * no tagline, no Client login pill (the header's account icon covers it),
+ * tighter ~30px link rhythm. Phone and email moved to the bottom line.
  *
  * NO mobile accordion: the columns stay open. Collapsing a footer hides the
  * site's own index behind taps for no real gain.
@@ -49,7 +52,7 @@ import { SeraOpenButton } from "@/components/sera/sera-open-button";
    growing underline (2026-10-03 footer, after the reference's type: DM Sans,
    16/600 uppercase titles, 14/400 links, #f5f5f6 ground). */
 const LINK =
-  "group/fl relative inline-flex min-h-11 items-center rounded-sm py-1.5 text-small leading-5 text-fg transition-colors duration-fast hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:min-h-0";
+  "group/fl relative inline-flex min-h-11 items-center rounded-sm py-[5px] text-small leading-5 text-fg transition-colors duration-fast hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:min-h-0";
 const UNDERLINE =
   "pointer-events-none absolute inset-x-0 bottom-1 h-px origin-left scale-x-0 bg-primary transition-transform duration-200 group-hover/fl:scale-x-100";
 
@@ -87,61 +90,31 @@ export function SiteFooter() {
   return (
     <footer className="bg-[#f5f5f6] font-display text-fg">
       <div className="mx-auto w-full max-w-mega px-5 sm:px-8 lg:px-20">
-        {/* ── Help strip ──────────────────────────────────────────────── */}
-        <div className="flex flex-col gap-5 border-b border-line py-10 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <p className="text-[22px] leading-7 font-semibold tracking-[-0.02em] text-fg">
-              Not sure what you need?
-            </p>
-            <p className="mt-1 text-small text-fg-secondary">
-              Ask Sera for a recommendation, or talk to the team. A person reads every
-              message.
-            </p>
-          </div>
-          <div className="flex flex-wrap items-center gap-2">
-            <SeraOpenButton />
-            <a
-              href={company.phoneHref}
-              className="inline-flex h-10 items-center gap-2 rounded-full bg-white px-4 text-body font-semibold text-fg ring-1 ring-line transition-colors hover:ring-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-            >
-              <NavIcon name="phone" className="size-4 text-primary" />
-              <span className="tabular">{company.phone}</span>
-            </a>
-            <a
-              href={`mailto:${company.email}`}
-              className="inline-flex h-10 items-center gap-2 rounded-full bg-white px-4 text-body font-semibold text-fg ring-1 ring-line transition-colors hover:ring-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-            >
-              <NavIcon name="mail" className="size-4 text-primary" />
-              {emailDisplay}
-            </a>
-          </div>
-        </div>
-
         {/* ── Index ───────────────────────────────────────────────────── */}
         <nav
           aria-label="Footer"
-          className="grid grid-cols-2 gap-x-6 gap-y-10 pt-12 sm:grid-cols-3 lg:flex lg:justify-between lg:gap-x-11 lg:pt-14"
+          className="grid grid-cols-2 gap-x-6 gap-y-10 pt-12 sm:grid-cols-3 lg:flex lg:justify-between lg:gap-x-11 lg:pt-16"
         >
           {footerNav.map((col) => (
             <div key={col.heading} className="min-w-0">
               <h2 className="text-body font-semibold uppercase leading-6 text-fg">
                 {col.heading}
               </h2>
-              <ul className="mt-3 flex flex-col">
+              <ul className="mt-2 flex flex-col">
                 {col.links.map((link) => {
                   const target = resolveNavTarget(link.href);
                   const label = (
-                    <>
+                    <span>
                       <span className="relative">
                         {link.label}
                         <span aria-hidden="true" className={UNDERLINE} />
                       </span>
                       {link.status === "soon" && (
-                        <span className="ml-2 inline-block whitespace-nowrap rounded-md bg-white px-1.5 py-0.5 text-micro font-medium text-fg-secondary ring-1 ring-line">
-                          By request
+                        <span className="ml-1.5 whitespace-nowrap text-micro text-fg-muted">
+                          · by request
                         </span>
                       )}
-                    </>
+                    </span>
                   );
                   return (
                     <li key={link.label}>
@@ -150,7 +123,7 @@ export function SiteFooter() {
                           {label}
                         </Link>
                       ) : (
-                        <span className="inline-block py-1.5 text-small leading-5 text-fg-muted">
+                        <span className="inline-block py-[5px] text-small leading-5 text-fg-muted">
                           {label}
                         </span>
                       )}
@@ -162,24 +135,18 @@ export function SiteFooter() {
           ))}
         </nav>
 
-        {/* ── Brand row: logo + line + social, then trust + legal ─────── */}
-        <div className="mt-14 flex flex-col gap-8">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-              <Wordmark tone="dark" className="h-9" />
-              <p className="max-w-[360px] text-small text-fg-secondary">
-                Hosting, domains and AI for small businesses, with the renewal price
-                shown before you buy.
-              </p>
-            </div>
-            <ul className="flex items-center gap-2 lg:justify-end">
+        {/* ── Brand row: logo + social, then trust + legal ───────────── */}
+        <div className="mt-16 flex flex-col gap-6">
+          <div className="flex items-center justify-between gap-6">
+            <Wordmark tone="dark" className="h-9" />
+            <ul className="flex items-center gap-1">
               {socialLinks.map((social) => (
                 <li key={social.label}>
                   <a
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer me"
-                    className="inline-flex size-11 items-center justify-center rounded-full bg-white text-fg ring-1 ring-line transition-colors duration-fast hover:bg-primary hover:text-white hover:ring-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:size-10"
+                    className="inline-flex size-11 items-center justify-center rounded-md text-fg transition-colors duration-fast hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:size-10 [&_svg]:size-6"
                   >
                     <SocialIcon name={social.label} />
                     <span className="sr-only">
@@ -192,23 +159,18 @@ export function SiteFooter() {
           </div>
 
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-            {/* Trust badges in the reference's payment-logo slot: claims the
+            {/* Trust tiles in the reference's payment-logo slot: claims the
               site makes elsewhere, not card brands we have not confirmed. */}
-            <ul className="flex flex-wrap gap-2 lg:flex-nowrap">
+            <ul className="flex flex-wrap gap-2">
               {TRUST.map((t) => (
                 <li
                   key={t.label}
-                  className="flex shrink-0 items-center gap-2.5 rounded-xl bg-white px-3 py-2 ring-1 ring-line"
+                  className="flex h-12 shrink-0 items-center gap-2 rounded-md bg-white px-3 text-small font-semibold text-fg ring-1 ring-line"
                 >
-                  <span className="inline-flex size-7 items-center justify-center rounded-lg bg-brand-50 text-primary">
+                  <span className="text-primary">
                     <TrustIcon name={t.icon} />
                   </span>
-                  <span className="leading-tight">
-                    <span className="block text-small font-semibold text-fg">
-                      {t.label}
-                    </span>
-                    <span className="block text-micro text-fg-secondary">{t.sub}</span>
-                  </span>
+                  {t.label}
                 </li>
               ))}
             </ul>
@@ -226,7 +188,7 @@ export function SiteFooter() {
                         </span>
                       </Link>
                     ) : (
-                      <span className="inline-block py-1.5 text-small leading-5 text-fg-muted">
+                      <span className="inline-block py-[5px] text-small leading-5 text-fg-muted">
                         {link.label}
                       </span>
                     )}
@@ -237,36 +199,24 @@ export function SiteFooter() {
               <li>
                 <CookieSettingsLink />
               </li>
-              <li>
-                <Link
-                  href="/legal-information"
-                  className="inline-flex min-h-11 items-center gap-1 rounded-sm py-1.5 text-small font-semibold text-primary transition-colors hover:text-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:min-h-0"
-                >
-                  All legal documents
-                  <span aria-hidden="true">→</span>
-                </Link>
-              </li>
             </ul>
           </div>
         </div>
 
         {/* ── Bottom line ─────────────────────────────────────────────── */}
-        <div className="mt-8 flex flex-col justify-between gap-3 border-t border-line py-6 lg:flex-row lg:items-center">
-          <p className="text-small text-fg-secondary">
+        <div className="flex flex-col justify-between gap-3 py-8 text-small text-fg-secondary lg:flex-row lg:items-center">
+          <p>
             © <CurrentYear buildYear={year} /> {company.legalName}. All rights reserved. Domain registrations are
             subject to the policies of ICANN and the relevant registry.
           </p>
-          <div className="flex items-center justify-between gap-4 text-small lg:shrink-0 lg:justify-end">
-            <span className="text-fg-secondary">
-              Renewal prices shown on every plan.
-            </span>
-            <a
-              href={billing.login}
-              className="inline-flex min-h-10 shrink-0 items-center whitespace-nowrap rounded-full bg-fg px-4 font-semibold text-white transition-colors hover:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-            >
-              Client login
+          <p className="flex flex-wrap items-center gap-x-4 lg:shrink-0">
+            <a href={company.phoneHref} className="tabular transition-colors hover:text-primary">
+              {company.phone}
             </a>
-          </div>
+            <a href={`mailto:${company.email}`} className="transition-colors hover:text-primary">
+              {emailDisplay}
+            </a>
+          </p>
         </div>
       </div>
     </footer>
