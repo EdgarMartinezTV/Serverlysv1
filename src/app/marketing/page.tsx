@@ -1,82 +1,151 @@
-import { ProductHero } from "@/components/sections/product-hero";
-import { ShowcaseSplit } from "@/components/sections/showcase-split";
-import { FeatureGrid } from "@/components/sections/feature-grid";
-import { FaqSection } from "@/components/sections/faq";
-import { FinalCta } from "@/components/sections/final-cta";
 import { JsonLd } from "@/components/ui/json-ld";
-import { ChatMock } from "@/components/product-ui/mocks";
-import { billing } from "@/data/company";
-import { faqsFor } from "@/data/faqs";
-import { pageMetadata, faqGraph, serviceGraph } from "@/lib/seo";
-import { CampaignBoard } from "../website-design/_components/shots";
-import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { canonical, pageMetadata, faqGraph, serviceGraph } from "@/lib/seo";
+import { formatSeoPrice, seoFromPrice, seoOrderUrl, seoPlans } from "@/data/seo-plans";
+import {
+  Faqs,
+  Features,
+  Hero,
+  HowItWorks,
+  NavyBand,
+  PhotoCta,
+  Promises,
+  Related,
+  ToolsMarquee,
+  UseCases,
+} from "@/components/retell/kit";
+import { SeoPlansPanel } from "@/components/retell/seo-plans-panel";
+import { FAQS, GROUPS, PROMISES, RELATED, STEPS, TOOLS, USES } from "./_content";
+
+/**
+ * /marketing — rebuilt 2026-10-13 on the shared Retell-style kit, the same
+ * layout as /seo, /website-design and /website-development. Marketing is
+ * sold as the SEO plans: the pricing panel is the shared SeoPlansPanel, so
+ * prices and "Get" links are the WHMCS SEO products. Copy: ./_content.tsx.
+ */
 
 const PATH = "/marketing";
-const DESCRIPTION =
-  "Marketing judged on enquiries and orders rather than impressions — search, email and the channels that actually work for small businesses.";
+const DESCRIPTION = `Digital marketing for small businesses, judged on customers: local SEO, Google Business Profile, content, links and monthly reports. From ${formatSeoPrice(seoFromPrice)}/mo.`;
 
 export const metadata = pageMetadata({
-  title: "Marketing — measured in enquiries, not clicks | Serverlys",
+  title: `Small Business Marketing | From ${formatSeoPrice(seoFromPrice)}/mo | Serverlys`,
   description: DESCRIPTION,
   path: PATH,
 });
 
+function marketingServiceGraph() {
+  return {
+    ...serviceGraph({
+      name: "Digital marketing for small businesses",
+      serviceType: "Digital marketing",
+      description: DESCRIPTION,
+      path: PATH,
+    }),
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Marketing plans",
+      itemListElement: seoPlans.map((p) => ({
+        "@type": "Offer",
+        name: p.name,
+        description: p.summary,
+        url: seoOrderUrl(p),
+        price: p.price.toFixed(2),
+        priceCurrency: "USD",
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          price: p.price.toFixed(2),
+          priceCurrency: "USD",
+          unitCode: "MON",
+        },
+        itemOffered: { "@type": "Service", name: p.name, url: canonical("/seo") },
+      })),
+    },
+  };
+}
+
 export default function MarketingPage() {
-  const faqs = faqsFor("/");
+  const from = formatSeoPrice(seoFromPrice);
   return (
     <>
+      <JsonLd data={marketingServiceGraph()} />
       <JsonLd
-        data={serviceGraph({
-          name: "Digital marketing",
-          serviceType: "Digital marketing",
-          description: DESCRIPTION,
-          path: PATH,
-        })}
+        data={faqGraph(
+          FAQS.map((f) => ({ ...f, scopes: [PATH] })),
+          PATH,
+        )}
       />
-      <JsonLd data={faqGraph(faqs, "/marketing")} />
-      <ProductHero
-        eyebrow="Marketing"
-        title="Judged on enquiries, not impressions"
-        lede="Reach is easy to buy and easy to report. We measure the things that change the business: enquiries received, orders placed, and what each one cost."
-        breadcrumb={[{ name: "Home", href: "/" }, { name: "Marketing" }]}
-        specs={[
-          { label: "Measured on", value: "Enquiries" },
-          { label: "Channels", value: "Search + email" },
-          { label: "Reporting", value: "Monthly" },
-          { label: "Contract", value: "Rolling" },
-        ]}
-        primary={{ label: "Talk about your goals", href: billing.sales }}
-        secondary={{ label: "See SEO", href: "/seo" }}
-        visual={<CampaignBoard />}
-      />
-      <FeatureGrid
-        eyebrow="What we run"
-        title="Fewer channels, done properly"
-        lede="Most small businesses do better with two channels run well than six run thinly."
-        surface="light"
-        columns={3}
-        items={[
-          { label: "Search", detail: "Earned rankings for terms with buying intent.", icon: "compass" },
-          { label: "Email", detail: "To people who already know you — the cheapest channel you own.", icon: "mail" },
-          { label: "Landing pages", detail: "Built for one action, not a general brochure.", icon: "layout" },
-          { label: "Tracking that works", detail: "So you can tell which channel produced the order.", icon: "chart" },
-          { label: "Content", detail: "Pages that answer real questions and rank on them.", icon: "book" },
-          { label: "Honest reporting", detail: "Including the months that did not work.", icon: "shield" },
+
+      <Hero
+        id="mkt-hero-heading"
+        title="Marketing Judged on Customers, Not Clicks"
+        photo={{
+          src: "/mock/mkt-hero.jpg",
+          alt: "A smiling café owner in a mustard beanie behind her counter",
+        }}
+        photoClassName="object-[60%_35%] lg:object-[45%_35%]"
+        kicker={[`From ${from}/mo`, "Billed monthly"]}
+        lede="Get found by the people already searching for what you sell. Local SEO, content and links that bring in calls and orders, with a monthly report that shows what it earned."
+        cta={{ label: "See marketing plans", href: "#plans" }}
+        badgeCaption="Every plan"
+        badges={[
+          { label: "Local SEO", icon: "pin" },
+          { label: "Google Profile", icon: "building" },
+          { label: "Link building", icon: "link" },
+          { label: "Reporting", icon: "report" },
         ]}
       />
-      <ShowcaseSplit
-        id="capture"
-        eyebrow="After the click"
-        title="Traffic you do not answer is wasted spend"
-        body="Getting someone to the site is the expensive part. An agent that answers immediately is often the cheapest improvement available to a campaign."
-        cta={{ label: "See ConvoAI", href: "https://convoai.cloud/" }}
-        visual={<ChatMock />}
-        side="left"
-        surface="dark"
+      <HowItWorks
+        id="mkt-how-heading"
+        title="Marketing that starts with the customers you want more of."
+        steps={STEPS}
       />
-      <FaqSection items={faqs} />
-      <FinalCta />
-      <PageBreadcrumbs trail={[{ name: "Home", path: "/" }, { name: "Marketing", path: PATH }]} />
+      <UseCases
+        id="mkt-uses-heading"
+        label="What it does for you"
+        title="What your marketing plan does from month one"
+        items={USES}
+      />
+      <NavyBand
+        id="mkt-navy-heading"
+        kicker="Fewer channels, done properly"
+        title="Search first, because that is where buyers are"
+        body="Most small businesses do better with one channel run well than six run thinly. Someone searching for what you sell is already looking to buy, so that is where your plan starts."
+        aside={`[White-hat only] and [billed monthly]. Plans start at [${from}/mo].`}
+        cta={{ label: "Compare on the SEO page", href: "/seo#plans" }}
+      />
+      <Promises
+        id="mkt-promise-heading"
+        intro="Marketing is full of numbers that look good and mean nothing. These are the things you can hold us to."
+        items={PROMISES}
+      />
+      <Features
+        id="mkt-features-heading"
+        title="How your marketing works, month to month"
+        groups={GROUPS}
+      />
+      <ToolsMarquee
+        id="mkt-tools-heading"
+        title="Where your customers find you, and the tools we measure it in"
+        cta={{ label: "See marketing plans", href: "#plans" }}
+        rows={TOOLS}
+      />
+      <SeoPlansPanel
+        id="mkt-plans-heading"
+        title="Marketing plans, powered by our SEO plans"
+      />
+      <Faqs id="mkt-faq-heading" items={FAQS} />
+      <Related id="mkt-related-heading" items={RELATED} />
+      <PhotoCta
+        id="mkt-cta-heading"
+        photo={{
+          src: "/mock/mkt-cta.jpg",
+          alt: "A customer paying at the counter of a plant-filled shop",
+          position: "50% 40%",
+        }}
+        thumb="/mock/mkt-bakery.jpg"
+        title="Ready to be the business they find first?"
+        body={`Pick a plan and we start with an audit of where you stand. Plans from ${from}/mo.`}
+        primary={{ label: "See marketing plans", href: "#plans" }}
+      />
     </>
   );
 }

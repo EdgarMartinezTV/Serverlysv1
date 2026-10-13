@@ -56,3 +56,10 @@ design-wireframe tZc3vjPCk-Q  Hal Gatewood — watercolour website wireframes
 design-cta       WEWTGkPUVT0  Annie Gray — carpenter at a miter saw
 design-tablet    CGpifH3FjOA  Theme Photos — designer with a drawing tablet
 design-studio    h7v_38e3iGE  Tran Mau Tri Tam — designer's two-monitor desk
+mkt-hero       8jp-6SjVibM  Brooke Cagle — café owner in a mustard beanie (/marketing hero)
+mkt-bakery     b5kN9ClBRNU  Ekaterina Tyapkina — baker at her bread counter
+mkt-bikes      M0cwc4Z62no  Patrick McGregor — bike shop owner
+mkt-garden     rbYR6wRqnTw  Vitaly Gariev — garden centre worker helping a customer
+mkt-foodtruck  Gwv-t9VQiPM  Joana Godinho — customer at a food truck
+mkt-salon      ZsUbK9zSgMo  Adam Winger — salon owner
+mkt-cta        dQyS2pMYtok  Christiann Koepke — customer paying in a plant shop

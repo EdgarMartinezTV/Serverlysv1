@@ -235,8 +235,7 @@ export const LLMS_SUMMARIES: Record<string, string> = {
     .join(
       ", ",
     )}. Every plan includes keyword research, on-page and local SEO, Google Business Profile optimization, a technical audit with fixes and a monthly report; Growth adds blog content, schema, Core Web Vitals and backlink outreach; Elite adds a dedicated SEO manager, CRO and high-authority link building. No ranking guarantees.`,
-  "/marketing":
-    "Marketing judged on enquiries and orders rather than impressions — search, email and the channels that actually work for small businesses.",
+  "/marketing": `Small-business marketing sold as the SEO plans (see /seo): local SEO, Google Business Profile, content, link building and monthly reports, billed monthly from ${formatSeoPrice(Math.min(...seoPlans.map((p) => p.price)))}/mo. Email campaigns and paid ads are not part of any plan.`,
   "/social-media":
     "Social media planning, content and scheduling handled for you — in a voice that sounds like your business rather than a marketing department.",
   "/business-solutions":
