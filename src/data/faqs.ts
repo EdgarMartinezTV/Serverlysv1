@@ -225,6 +225,42 @@ export const faqs: readonly Faq[] = [
       "Yes, and it is free. Our team moves the site, the database and the email onto a staging URL first, usually within a business day. You check it there, we fix anything that looks wrong, then we switch DNS at a time you pick — so there is no gap in service.",
     scopes: ["/", "/cloud-hosting"],
   },
+  {
+    question: "What is SEO?",
+    answer:
+      "Search engine optimization is the work of making a site easy for search engines to read, understand and trust, so it shows up when people search for what you sell. It covers the technical side (speed, crawlability, structured data), the pages themselves, and the reputation other sites give you.",
+    scopes: ["/seo"],
+  },
+  {
+    question: "Why does SEO matter for a small business?",
+    answer:
+      "Someone searching for what you sell is already looking to buy. Ads stop the day the budget does; a page that ranks keeps bringing those people in. For most small businesses, search is the cheapest steady source of new customers they have.",
+    scopes: ["/seo"],
+  },
+  {
+    question: "How does the process work?",
+    answer:
+      "It starts with an audit of your site and your market. We fix the technical problems first, because content cannot rank on a site search engines struggle to read. Then the work moves to the pages and searches that bring buyers, with a report every month on what changed.",
+    scopes: ["/seo"],
+  },
+  {
+    question: "Do you guarantee rankings?",
+    answer:
+      "No, and be wary of anyone who does. Nobody outside Google controls where a page ranks. What we commit to is the work itself, done white hat, and an honest report on what moved and what did not.",
+    scopes: ["/seo"],
+  },
+  {
+    question: "How long until I see results?",
+    answer:
+      "Technical fixes can show up within weeks of a search engine re-crawling the site. New content and authority usually take months to build. Your monthly report shows where things stand along the way, so you are never guessing.",
+    scopes: ["/seo"],
+  },
+  {
+    question: "Do you buy links?",
+    answer:
+      "No. Bought links and link networks break Google's spam policies and can get a site penalized. Authority is earned: pages worth citing, listings that are accurate, and real mentions from real sites.",
+    scopes: ["/seo"],
+  },
 ];
 
 export function faqsFor(scope: string): readonly Faq[] {
