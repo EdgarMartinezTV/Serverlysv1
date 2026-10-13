@@ -82,3 +82,12 @@ care-dental    4SUyx4KQ5Ik  Jose Vazquez — dentist in a modern office
 care-vet       ybZ5hRxaWS4  Karlo Tottoc — veterinarian with a dog
 care-typing    npxXWgQ33ZQ  Glenn Carstens-Peters — hands typing on a laptop
 care-cta       fYyYz38bUkQ  Alev Takil — workshop owner among his tools
+move-hero       HXVO2CE4duA  Vitaly Gariev — shop owner holding an open sign (/migrations hero)
+move-boxes      wS40ELZROLE  Vitaly Gariev — owner unpacking boxes
+move-phone      K-f_gTvdwTM  Ali Mkumbwa — craftsman smiling at his phone
+move-celebrate  eMywyVm6hmw  Rifki Kurniawan — owner celebrating at her laptop
+move-open       x5TjBin5nXc  Vitaly Gariev — owner with an open sign in his window
+move-carry      mYxzG5NwDNs  HiveBoxx — man carrying a crate into an office
+move-cta        oZDtj3UGI88  Vitaly Gariev — couple holding an open sign
+move-desk       MGaFENpDCsw  Bench Accounting — cardboard box on a desk
+move-room       j7vbBmTHmjY  Dina Badamshina — room of boxes and plants

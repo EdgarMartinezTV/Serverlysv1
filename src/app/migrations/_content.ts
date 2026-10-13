@@ -105,7 +105,11 @@ export const WHY: SwitchCopy = {
 export const SAVINGS = {
   title: "With Serverlys, save every year",
   description: "Compare what others charge for features included with our hosting.",
-  columns: { feature: "Feature", serverlys: "With Serverlys", market: "Typically charged elsewhere" },
+  columns: {
+    feature: "Feature",
+    serverlys: "With Serverlys",
+    market: "Typically charged elsewhere",
+  },
   included: "Included",
   rows: [
     { feature: "Website migration", market: "$30–$100 per site" },
@@ -156,7 +160,8 @@ export const BANNER = {
 
 export const FAQ_HEAD = {
   title: "Website migration FAQs",
-  description: "Find answers to frequently asked questions about moving a site to Serverlys.",
+  description:
+    "Find answers to frequently asked questions about moving a site to Serverlys.",
 };
 
 export const FAQS: FaqItem[] = [

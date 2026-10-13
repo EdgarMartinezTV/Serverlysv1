@@ -1,55 +1,54 @@
 import { JsonLd } from "@/components/ui/json-ld";
-import { Faqs } from "@/components/ref/faqs";
-import { ContentSwitch } from "@/components/ref/content-switch";
-import { PlanCard } from "@/components/ref/plan-card";
-import { groupById } from "@/data/pricing";
-import { Grid, Headline } from "@/components/ref/kit";
-import { faqGraph, pageMetadata, serviceGraph } from "@/lib/seo";
-import { FAQS, FAQ_HEAD, PRICING_HEAD, WHY } from "./_content";
-import { AiTools, Banner, Hero, How, Savings, Steps } from "./_components/sections";
-import { WhyPanel } from "./_components/visuals";
-import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { canonical, faqGraph, pageMetadata, serviceGraph } from "@/lib/seo";
+import { cn } from "@/lib/utils";
+import { billing } from "@/data/company";
+import { formatPrice, formatSavings, groupById, orderUrl } from "@/data/pricing";
+import {
+  Faqs,
+  Features,
+  Hero,
+  HowItWorks,
+  INK,
+  MUTED,
+  NavyBand,
+  PanelCard,
+  PhotoCta,
+  PricingPanel,
+  Promises,
+  Related,
+  ToolsMarquee,
+  UseCases,
+} from "@/components/retell/kit";
+import { FAQS } from "./_content";
+import { GROUPS, PROMISES, RELATED, STEPS, TOOLS, USES } from "./_retell-content";
 
 /**
- * Website migration.
+ * /migrations — rebuilt 2026-10-13 on the shared Retell-style kit, the same
+ * layout as the other service pages. The previous Hostinger-style version is
+ * in git history.
  *
- * A 1:1 rebuild of hostinger.com/website-migration, on the same terms as the
- * other reference pages. This one was measured FIRST — the reference was
- * screenshotted and its computed styles dumped before a line was written,
- * which is the step that was skipped on the domain pages and cost a rebuild.
- *
- * Section order is the reference's:
- *   header → h-content-cards → h-video-section (dark) → h-content-switch
- *   → h-market-compare-table → hw-section-wrapper (dark) → h-pricing-table
- *   → h-text-button-section (dark) → hw-faq-section
- *
- * Pricing uses the site's existing <PricingTable>, which reads data/pricing.ts
- * — the reference's plan cards are its own products at its own prices, and we
- * already have a component that renders ours correctly with the renewal rate
- * beside the monthly rate.
- *
- * Removed from the reference, matching the standing calls on the other clones:
- * the hero's Trustpilot + WordPress.org row, the customer review carousel, and
- * the Google/HostAdvice/WPBeginner ratings strip.
+ * Migration is free with a cloud hosting plan, so the pricing panel is the
+ * cloud group from data/pricing.ts: the same plans, prices, renewal rates
+ * and order links as /cloud-hosting. The renewal rate stays beside the
+ * monthly rate, as on every plan card on the site.
  */
 
 const PATH = "/migrations";
-
-const TITLE = "Free website migration | Transfer a site to Serverlys";
 const DESCRIPTION =
-  "Serverlys offers free website migration whether you have one website or a hundred. Your site stays online throughout, and the move is handled for you.";
+  "Free website migration with every Serverlys cloud hosting plan: we move your site, database and email, stage it, and switch when you say, with no downtime.";
 
-export const metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH });
-
-const BREADCRUMB = [
-  { name: "Home", path: "/" },
-  { name: "Migrations", path: PATH },
-];
+export const metadata = pageMetadata({
+  title: "Free Website Migration to Cloud Hosting | Serverlys",
+  description: DESCRIPTION,
+  path: PATH,
+});
 
 const FAQ_TEXT = FAQS.map((f) => ({
   question: f.q,
   answer: f.a
-    .map((b) => (b.type === "ul" ? b.items.join(" ") : b.runs.map((r) => r.text).join("")))
+    .map((b) =>
+      b.type === "ul" ? b.items.join(" ") : b.runs.map((r) => r.text).join(""),
+    )
     .join(" ")
     .replace(/\s+/g, " ")
     .trim(),
@@ -57,67 +56,204 @@ const FAQ_TEXT = FAQS.map((f) => ({
 }));
 
 const CLOUD = groupById("cloud");
+const PLAN_ICON = {
+  starter: "pin",
+  plus: "growth",
+  turbo: "rocket",
+  business: "building",
+} as const;
 
-export default function WpMigrationsPage() {
+function migrationServiceGraph() {
+  const base = serviceGraph({
+    name: "Free website migration",
+    serviceType: "Website migration",
+    description: DESCRIPTION,
+    path: PATH,
+  });
+  if (!CLOUD) return base;
+  return {
+    ...base,
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+      description: "Free with any Serverlys cloud hosting plan",
+      url: canonical(PATH),
+    },
+  };
+}
+
+export default function MigrationsPage() {
+  const from = CLOUD
+    ? formatPrice(Math.min(...CLOUD.plans.map((p) => p.monthly)))
+    : null;
   return (
-    /** globals.css balances headings; the reference wraps normally. */
-    <div className="[&_h1]:text-wrap [&_h2]:text-wrap [&_h3]:text-wrap [&_p]:text-wrap">
-      <JsonLd
-        data={serviceGraph({
-          name: "Free website migration",
-          serviceType: "Website migration",
-          description: DESCRIPTION,
-          path: PATH,
-        })}
+    <>
+      <JsonLd data={migrationServiceGraph()} />
+      <JsonLd data={faqGraph(FAQ_TEXT, PATH)} />
+
+      <Hero
+        id="move-hero-heading"
+        title="Free Website Migration, Without Closing for a Minute"
+        photo={{
+          src: "/mock/move-hero.jpg",
+          alt: "A smiling shop owner holding an open sign in her shop",
+        }}
+        photoClassName="object-[50%_35%] lg:object-[40%_35%]"
+        kicker={[
+          "Free with every cloud plan",
+          ...(from ? [`Plans from ${from}/mo`] : []),
+        ]}
+        lede="We move your website, database and email to Serverlys cloud hosting, check it on a staged copy, and switch when you say. Your site stays open the whole time."
+        cta={{ label: "See cloud plans", href: "#plans" }}
+        badgeCaption="Every move"
+        badges={[
+          { label: "Done for you", icon: "team" },
+          { label: "Staged first", icon: "eye" },
+          { label: "No downtime", icon: "clock" },
+          { label: "Unlimited sites", icon: "server" },
+        ]}
       />
-      <JsonLd data={faqGraph(FAQ_TEXT, "/migrations")} />
-
-      <Hero />
-      <Steps />
-      <How />
-
-      <ContentSwitch
-        id="wm-why"
-        copy={WHY}
-        media={<WhyPanel className="aspect-[600/560] w-full" />}
+      <HowItWorks
+        id="move-how-heading"
+        title="Four steps, and only the first two are yours."
+        steps={STEPS}
       />
-
-      <Savings />
-      <AiTools />
-
-      <section
-        id="pricing"
-        aria-labelledby="wm-pricing-heading"
-        className="scroll-mt-24 bg-canvas-secondary py-16 lg:py-24"
-      >
-        <Grid>
-          <Headline
-            id="wm-pricing-heading"
-            title={PRICING_HEAD.title}
-            description={PRICING_HEAD.description}
-            className="mb-8 xl:mb-12"
-          />
-          {/* Shared PlanCard grid (2026-10-03), same card as /pricing and the
-              product pages: both prices on every card, no rate toggle. */}
-          <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {CLOUD?.plans.map((plan) => (
-              <li key={plan.tier}>
-                <PlanCard plan={plan} group={CLOUD} cta="Choose plan" />
-              </li>
-            ))}
-          </ul>
-        </Grid>
-      </section>
-
-      <Banner />
-
-      <Faqs
-        idPrefix="wm"
-        title={FAQ_HEAD.title}
-        description={FAQ_HEAD.description}
-        items={FAQS}
+      <UseCases
+        id="move-uses-heading"
+        label="What we handle"
+        title="A move you barely have to think about"
+        items={USES}
       />
-      <PageBreadcrumbs trail={BREADCRUMB} />
-    </div>
+      <NavyBand
+        id="move-navy-heading"
+        kicker="Free with every cloud hosting plan"
+        title="We move it. You keep running your business."
+        body="Most people put off changing hosts because moving a site sounds like a weekend lost. With Serverlys it is a form and a yes: our team does the rest, and your site never goes dark."
+        aside={`[Free migration] with every cloud plan${from ? `, from [${from}/mo]` : ""}. [One site or a hundred.]`}
+        cta={{ label: "See cloud plans", href: "#plans" }}
+      />
+      <Promises
+        id="move-promise-heading"
+        intro="Moving a website should not be a gamble. These are the things you can hold us to."
+        items={PROMISES}
+      />
+      <Features
+        id="move-features-heading"
+        title="How your website moves to Serverlys"
+        groups={GROUPS}
+      />
+      <ToolsMarquee
+        id="move-tools-heading"
+        title="The platforms we move every day"
+        cta={{ label: "See cloud plans", href: "#plans" }}
+        rows={TOOLS}
+      />
+      {CLOUD && (
+        <PricingPanel
+          id="move-plans-heading"
+          title="Cloud hosting plans, with free migration"
+          columns={4}
+          footnote={
+            <>
+              Every plan includes free website migration and a 30-day money-back
+              guarantee.{" "}
+              <a
+                href="/cloud-hosting#pricing"
+                className="font-semibold text-primary hover:text-primary-hover"
+              >
+                Compare cloud hosting in full
+              </a>{" "}
+              or{" "}
+              <a
+                href={billing.sales}
+                className="font-semibold text-primary hover:text-primary-hover"
+              >
+                ask the team
+              </a>
+              .
+            </>
+          }
+        >
+          {CLOUD.plans.map((p, i) => {
+            const blue = Boolean(p.popular);
+            return (
+              <PanelCard
+                key={p.tier}
+                delay={i * 80}
+                blue={blue}
+                icon={PLAN_ICON[p.tier]}
+                name={p.name}
+                badge={blue ? "Most popular" : undefined}
+                summary={p.summary}
+                price={
+                  <div>
+                    <p className={cn("text-[13px]", blue ? "text-white/70" : MUTED)}>
+                      <span className="line-through">{formatPrice(p.standard)}</span>{" "}
+                      <span
+                        className={cn(
+                          "ml-1 rounded-full px-1.5 py-0.5 text-[11px] font-semibold",
+                          blue ? "bg-white/20 text-white" : "bg-brand-50 text-primary",
+                        )}
+                      >
+                        Save {formatSavings(p)}
+                      </span>
+                    </p>
+                    <p className="mt-1 flex items-baseline gap-1">
+                      <span
+                        className={cn(
+                          "tabular text-[36px] leading-none font-semibold tracking-[-0.03em]",
+                          blue ? "text-white" : INK,
+                        )}
+                      >
+                        {formatPrice(p.monthly)}
+                      </span>
+                      <span className={blue ? "text-white/80" : MUTED}>/mo</span>
+                    </p>
+                    <p
+                      className={cn("mt-2 text-[12px]", blue ? "text-white/75" : MUTED)}
+                    >
+                      Renews at {formatPrice(p.standard)}/mo
+                      {p.setupFee
+                        ? `, plus a one-off ${formatPrice(p.setupFee)} setup fee`
+                        : ". No setup fee"}
+                      .
+                    </p>
+                  </div>
+                }
+                cta={{ label: "Choose plan", href: orderUrl(CLOUD, p) }}
+                listTitle="What’s included"
+                list={[
+                  ...new Map(
+                    [
+                      p.specs.sites,
+                      p.specs.visits,
+                      `${p.specs.memory} RAM`,
+                      `${p.specs.storage} storage`,
+                      `${p.specs.transfer} bandwidth`,
+                      ...p.includes,
+                    ].map((f) => [f.toLowerCase(), f] as const),
+                  ).values(),
+                ]}
+              />
+            );
+          })}
+        </PricingPanel>
+      )}
+      <Faqs id="move-faq-heading" items={FAQ_TEXT} />
+      <Related id="move-related-heading" items={RELATED} />
+      <PhotoCta
+        id="move-cta-heading"
+        photo={{
+          src: "/mock/move-cta.jpg",
+          alt: "A smiling couple holding an open sign in their café",
+          position: "50% 35%",
+        }}
+        thumb="/mock/move-boxes.jpg"
+        title="Ready to move? We’ll do the heavy lifting."
+        body={`Pick a cloud plan and send us your site’s details. Migration is free${from ? `, and plans start at ${from}/mo` : ""}.`}
+        primary={{ label: "See cloud plans", href: "#plans" }}
+      />
+    </>
   );
 }
