@@ -1,3 +1,4 @@
+import { formatSeoPrice, seoPlans } from "./seo-plans";
 /**
  * The AI-facing index of this site — the content of `/llms.txt`.
  *
@@ -219,8 +220,9 @@ export const LLMS_SUMMARIES: Record<string, string> = {
     "Custom web development for applications, integrations and the things an off-the-shelf plugin cannot do.",
   "/site-management":
     "Updates applied and tested, backups verified, uptime watched, small changes made. The ongoing work a website needs after it launches.",
-  "/seo":
-    "Technical and content SEO for small businesses: fix what is broken, earn the terms that bring buyers, and report honestly on what changed.",
+  "/seo": `SEO services for small businesses, billed monthly: ${seoPlans
+    .map((p) => `${p.name} ${formatSeoPrice(p.price)}/mo`)
+    .join(", ")}. Every plan includes keyword research, on-page and local SEO, Google Business Profile optimization, a technical audit with fixes and a monthly report; Growth adds blog content, schema, Core Web Vitals and backlink outreach; Elite adds a dedicated SEO manager, CRO and high-authority link building. No ranking guarantees.`,
   "/marketing":
     "Marketing judged on enquiries and orders rather than impressions — search, email and the channels that actually work for small businesses.",
   "/social-media":

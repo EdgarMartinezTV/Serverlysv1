@@ -12,14 +12,20 @@ export function ChatButton({
   children = "Chat with us",
   className,
   icon = false,
+  tone = "primary",
 }: {
   children?: React.ReactNode;
   className?: string;
   icon?: boolean;
+  /** primary: filled blue. ghost: outlined, on light. on-dark: white outline. */
+  tone?: "primary" | "ghost" | "on-dark";
 }) {
   const sera = useSeraOptional();
   const classes = cn(
-    "inline-flex h-14 items-center justify-center gap-2.5 rounded-xl bg-primary px-8 text-body-lg font-semibold text-white transition-colors duration-fast hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
+    "inline-flex h-12 items-center justify-center gap-2 rounded-md px-8 text-body font-semibold transition-colors duration-fast focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
+    tone === "primary" && "bg-primary text-white hover:bg-primary-hover",
+    tone === "ghost" && "text-fg ring-1 ring-inset ring-line-strong hover:bg-canvas-secondary",
+    tone === "on-dark" && "text-white ring-1 ring-inset ring-white/30 hover:bg-white/10 focus-visible:outline-white",
     className,
   );
   const body = (

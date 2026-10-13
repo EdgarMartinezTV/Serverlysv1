@@ -1,3 +1,4 @@
+import { formatSeoPrice, seoPlans } from "./seo-plans";
 /**
  * FAQ content, taken verbatim in substance from the live pricing page.
  *
@@ -226,6 +227,31 @@ export const faqs: readonly Faq[] = [
     scopes: ["/", "/cloud-hosting"],
   },
   {
+    question: "How much do SEO services cost?",
+    answer: `Serverlys SEO plans are billed monthly: ${seoPlans
+      .map((p) => `${p.name} is ${formatSeoPrice(p.price)}/mo`)
+      .join(", ")}. Each plan includes everything in the one before it, so you can start small and move up as you grow.`,
+    scopes: ["/seo"],
+  },
+  {
+    question: "What is local SEO?",
+    answer:
+      "Local SEO helps a business show up when people nearby search for what it sells, in the map pack, on Google Maps and in local results. It covers your Google Business Profile, location pages, local directory listings and consistent business details. Every Serverlys SEO plan includes it: one location on Starter, up to three on Growth, and multi-location on Elite.",
+    scopes: ["/seo"],
+  },
+  {
+    question: "Which SEO plan is right for my business?",
+    answer:
+      "SEO Starter suits a single-location business getting found locally for the first time. SEO Growth suits a business ready to compete, with up to 25 keywords, three locations, monthly blog content and backlink outreach. SEO Elite suits national, e-commerce or multi-location businesses that want a dedicated SEO manager. Ask Sera if you are unsure.",
+    scopes: ["/seo"],
+  },
+  {
+    question: "Do you do SEO for e-commerce stores?",
+    answer:
+      "Yes. E-commerce and multi-location SEO are part of SEO Elite, along with landing page optimization, conversion rate optimization and A/B testing of titles and calls to action.",
+    scopes: ["/seo"],
+  },
+  {
     question: "What is SEO?",
     answer:
       "Search engine optimization is the work of making a site easy for search engines to read, understand and trust, so it shows up when people search for what you sell. It covers the technical side (speed, crawlability, structured data), the pages themselves, and the reputation other sites give you.",
@@ -256,9 +282,9 @@ export const faqs: readonly Faq[] = [
     scopes: ["/seo"],
   },
   {
-    question: "Do you buy links?",
+    question: "How do you build backlinks?",
     answer:
-      "No. Bought links and link networks break Google's spam policies and can get a site penalized. Authority is earned: pages worth citing, listings that are accurate, and real mentions from real sites.",
+      "White-hat only: no paid link schemes or private blog networks, which break Google's spam policies. SEO Starter builds links from trusted local directories, SEO Growth adds manual outreach for high-quality niche links, and SEO Elite adds guest posts and PR backlinks.",
     scopes: ["/seo"],
   },
 ];

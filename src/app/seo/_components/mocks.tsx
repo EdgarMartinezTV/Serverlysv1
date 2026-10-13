@@ -33,7 +33,7 @@ function Window({
       aria-hidden="true"
       className={cn(
         "overflow-hidden rounded-2xl shadow-[0_24px_60px_-12px_rgb(0_0_0/0.28)]",
-        dark ? "bg-[#16171b] ring-1 ring-white/10" : "bg-white ring-1 ring-black/[0.07]",
+        dark ? "bg-surface-dark-elevated ring-1 ring-white/10" : "bg-white ring-1 ring-black/[0.07]",
         className,
       )}
     >
