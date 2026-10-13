@@ -320,12 +320,12 @@ export default function OurProcessPage() {
                 className="absolute top-0 bottom-0 left-4 w-px bg-[#d8dae3]"
               />
               {STAGES.map((s, i) => (
-                <li key={s.n} className="relative pb-14 pl-14">
+                <li key={s.n} className="relative min-w-0 pb-14 pl-10 sm:pl-14">
                   <span
                     aria-hidden="true"
                     className="absolute top-3 left-4 size-3.5 -translate-x-1/2 rounded-full bg-[#3b5bdb] ring-4 ring-[#dbe2ff]"
                   />
-                  <Reveal className="grid gap-8 rounded-md bg-white p-6 sm:p-8 lg:grid-cols-[1fr_1fr] lg:gap-12">
+                  <Reveal className="grid gap-8 rounded-md bg-white p-5 sm:p-8 lg:grid-cols-[1fr_1fr] lg:gap-12 [&>*]:min-w-0">
                     <div>
                       <p className="flex items-baseline gap-4">
                         <span className={cn("text-[30px] tracking-[-0.02em]", BLUE)}>
@@ -387,7 +387,7 @@ export default function OurProcessPage() {
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center rounded-md bg-[linear-gradient(135deg,#e8ecff,#f6f7fb)] p-5">
+                    <div className="flex min-w-0 items-center overflow-hidden rounded-md bg-[linear-gradient(135deg,#e8ecff,#f6f7fb)] p-3 sm:p-5">
                       {VISUALS[i] ?? <PageMap />}
                     </div>
                   </Reveal>
