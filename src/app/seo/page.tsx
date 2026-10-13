@@ -13,7 +13,6 @@ import {
   Promises,
   Related,
   Tools,
-  TrustBar,
   UseCases,
 } from "./_components/retell";
 
@@ -76,7 +75,6 @@ export default function SeoPage() {
       <JsonLd data={seoServiceGraph()} />
       <JsonLd data={faqGraph(faqs, PATH)} />
       <Hero />
-      <TrustBar />
       <HowItWorks />
       <UseCases />
       <NavyBand />

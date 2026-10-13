@@ -14,7 +14,7 @@ import { ArticleMock, AuditMock, RankTrackerMock } from "./mocks";
  * /seo below the hero — 2026-10-13, rebuilt to the Retell AI receptionists
  * page section for section:
  *
- *   trust bar → How it works (four tall cards) → Use cases (alternating
+ *   How it works (four tall cards) → Use cases (alternating
  *   photo rows) → navy band → three statement cards → Features (sticky
  *   tabs, visual, stacked features) → tools marquee → pricing panel → FAQ
  *   → related solutions → full-bleed photo CTA.
@@ -108,42 +108,6 @@ function Photo({
         style={{ objectPosition: position }}
       />
     </div>
-  );
-}
-
-/* ── 2. Trust bar ────────────────────────────────────────────────────────── */
-
-const TOOLS: BrandSlug[] = [
-  "googlesearchconsole",
-  "google",
-  "googleanalytics",
-  "pagespeedinsights",
-  "googlemaps",
-];
-
-export function TrustBar() {
-  return (
-    <section
-      aria-label="Tools we work in"
-      className="border-b border-black/[0.06] bg-white py-10 lg:py-12"
-    >
-      <Wrap className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-        <p className={cn("max-w-[360px] text-[18px] leading-snug lg:text-[19px]", INK)}>
-          Done in the tools Google itself uses to judge your site.
-        </p>
-        <ul className="flex flex-wrap items-center gap-x-10 gap-y-4">
-          {TOOLS.map((t) => (
-            <li
-              key={t}
-              className="group flex items-center gap-2.5 text-[16px] font-semibold tracking-[-0.01em] text-[#1f2937]"
-            >
-              <BrandIcon slug={t} className="size-6 shrink-0" />
-              {BRANDS[t].label}
-            </li>
-          ))}
-        </ul>
-      </Wrap>
-    </section>
   );
 }
 
