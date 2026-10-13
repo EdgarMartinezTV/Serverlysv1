@@ -2,7 +2,7 @@ import { billing } from "./company";
 
 /**
  * Social media management plans — copied from the live WHMCS store
- * (pids 29–32, "Social Media Management", verified 2026-10-13 through
+ * (pids 29, 36, 37, 38, "Social Media Management", verified 2026-10-13 through
  * feeds/productsinfo.php). WHMCS is the authority on price and contents; if
  * the store changes, change this file and every surface follows: the
  * /social-media cards, its Offer schema, /llms.txt and Sera.
@@ -49,7 +49,7 @@ export const socialPlans: readonly SocialPlan[] = [
   },
   {
     id: "growth",
-    pid: 30,
+    pid: 36,
     name: "Growth",
     price: 599.95,
     platforms: 2,
@@ -72,7 +72,7 @@ export const socialPlans: readonly SocialPlan[] = [
   },
   {
     id: "pro",
-    pid: 31,
+    pid: 37,
     name: "Pro",
     price: 999.95,
     platforms: 3,
@@ -98,7 +98,7 @@ export const socialPlans: readonly SocialPlan[] = [
   },
   {
     id: "enterprise",
-    pid: 32,
+    pid: 38,
     name: "Enterprise",
     price: 1799.95,
     platforms: 5,
