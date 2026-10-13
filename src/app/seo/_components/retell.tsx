@@ -5,7 +5,9 @@ import { billing } from "@/data/company";
 import type { Faq } from "@/data/faqs";
 import { formatSeoPrice, seoFromPrice, seoOrderUrl, seoPlans } from "@/data/seo-plans";
 import { Reveal } from "@/components/animations/reveal";
+import { BRANDS, BrandIcon, type BrandSlug } from "./brands";
 import { ChatButton } from "./chat-button";
+import { FeaturesScroller, type FeatureGroup } from "./features-scroller";
 import { ArticleMock, AuditMock, RankTrackerMock } from "./mocks";
 
 /**
@@ -111,12 +113,12 @@ function Photo({
 
 /* ── 2. Trust bar ────────────────────────────────────────────────────────── */
 
-const TOOLS = [
-  "Search Console",
-  "Business Profile",
-  "Analytics",
-  "PageSpeed",
-  "Schema.org",
+const TOOLS: BrandSlug[] = [
+  "googlesearchconsole",
+  "google",
+  "googleanalytics",
+  "pagespeedinsights",
+  "googlemaps",
 ];
 
 export function TrustBar() {
@@ -133,15 +135,10 @@ export function TrustBar() {
           {TOOLS.map((t) => (
             <li
               key={t}
-              className="flex items-center gap-2 text-[17px] font-semibold tracking-[-0.01em] text-[#1f2937] opacity-80"
+              className="group flex items-center gap-2.5 text-[16px] font-semibold tracking-[-0.01em] text-[#1f2937]"
             >
-              <span aria-hidden="true" className="grid size-5 grid-cols-2 gap-[2px]">
-                <span className="rounded-[2px] bg-[#4285f4]" />
-                <span className="rounded-[2px] bg-[#ea4335]" />
-                <span className="rounded-[2px] bg-[#fbbc04]" />
-                <span className="rounded-[2px] bg-[#34a853]" />
-              </span>
-              {t}
+              <BrandIcon slug={t} className="size-6 shrink-0" />
+              {BRANDS[t].label}
             </li>
           ))}
         </ul>
@@ -407,7 +404,7 @@ export function Promises() {
 
 /* ── 7. Features: sticky tabs, visual, stacked features ─────────────────── */
 
-const GROUPS = [
+const GROUPS: FeatureGroup[] = [
   {
     tab: "Starter",
     visual: <AuditMock />,
@@ -469,72 +466,14 @@ const GROUPS = [
 
 export function Features() {
   return (
-    <section aria-labelledby="seo-features-heading" className="bg-white pb-20 lg:pb-28">
+    <section aria-labelledby="seo-features-heading" className="bg-white pb-20 lg:pb-16">
       <Wrap>
         <Label className="text-center">Features</Label>
         <Heading id="seo-features-heading">
           Why small businesses choose Serverlys for SEO
         </Heading>
-        <div className="mt-14 flex flex-col gap-20 lg:mt-20 lg:gap-28">
-          {GROUPS.map((g) => (
-            <div
-              key={g.tab}
-              className="grid gap-8 lg:grid-cols-[120px_1fr_1fr] lg:gap-10"
-            >
-              <ul
-                className="hidden lg:sticky lg:top-28 lg:block lg:self-start"
-                aria-hidden="true"
-              >
-                {GROUPS.map((t) => (
-                  <li
-                    key={t.tab}
-                    className={cn(
-                      "mb-6 inline-flex rounded-full px-3 py-1.5 text-[13px] font-medium",
-                      t.tab === g.tab ? "bg-brand-50 text-primary" : "text-brand-300",
-                    )}
-                  >
-                    {t.tab}
-                  </li>
-                ))}
-              </ul>
-              <Reveal className="relative overflow-hidden rounded-xl lg:sticky lg:top-28 lg:self-start">
-                <Photo
-                  src={g.backdrop}
-                  alt=""
-                  className="absolute inset-0"
-                  sizes="(min-width: 1024px) 460px, 100vw"
-                />
-                <div
-                  aria-hidden="true"
-                  className="absolute inset-0 bg-[#0b1530]/55 backdrop-blur-[2px]"
-                />
-                <div className="relative p-5 sm:p-8">{g.visual}</div>
-              </Reveal>
-              <div>
-                <p className="mb-4 inline-flex rounded-full bg-brand-50 px-3 py-1 text-[13px] font-medium text-primary lg:hidden">
-                  SEO {g.tab}
-                </p>
-                {g.features.map(([title, body], i) => (
-                  <div
-                    key={title}
-                    className={cn(i > 0 && "mt-8 border-t border-black/[0.08] pt-8")}
-                  >
-                    <h3
-                      className={cn(
-                        "text-[20px] leading-snug font-normal tracking-[-0.01em]",
-                        INK,
-                      )}
-                    >
-                      {title}
-                    </h3>
-                    <p className={cn("mt-4 text-[14px] leading-[1.65]", MUTED)}>
-                      {body}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
+        <div className="mt-14 lg:mt-12">
+          <FeaturesScroller groups={GROUPS} />
         </div>
       </Wrap>
     </section>
@@ -543,30 +482,28 @@ export function Features() {
 
 /* ── 8. Tools marquee (the reference's integrations) ─────────────────────── */
 
-const ROW_A = [
-  "WordPress",
-  "WooCommerce",
-  "Google Search Console",
-  "Google Analytics",
-  "Google Business Profile",
-  "Bing Webmaster Tools",
-  "Google Maps",
+const ROW_A: BrandSlug[] = [
+  "wordpress",
+  "woocommerce",
+  "googlesearchconsole",
+  "googleanalytics",
+  "google",
+  "googlemaps",
 ];
-const ROW_B = [
-  "Schema.org",
-  "PageSpeed Insights",
-  "Core Web Vitals",
-  "XML sitemaps",
-  "robots.txt",
-  "Local directories",
-  "Internal linking",
+const ROW_B: BrandSlug[] = [
+  "pagespeedinsights",
+  "lighthouse",
+  "googletagmanager",
+  "xml",
+  "yelp",
+  "tripadvisor",
 ];
 
 function MarqueeRow({
   items,
   reverse = false,
 }: {
-  items: string[];
+  items: BrandSlug[];
   reverse?: boolean;
 }) {
   return (
@@ -581,10 +518,10 @@ function MarqueeRow({
           items.map((t) => (
             <li
               key={`${copy}-${t}`}
-              className="flex shrink-0 items-center gap-2.5 px-6 py-2 text-[16px] font-medium whitespace-nowrap text-[#374151]"
+              className="flex shrink-0 items-center gap-3 px-7 py-2 text-[16px] font-medium whitespace-nowrap text-[#374151]"
             >
-              <span aria-hidden="true" className="size-2 rounded-full bg-primary/70" />
-              {t}
+              <BrandIcon slug={t} className="size-7 shrink-0" />
+              {BRANDS[t].label}
             </li>
           )),
         )}
@@ -597,7 +534,7 @@ export function Tools() {
   return (
     <section aria-labelledby="seo-tools-heading" className="bg-white pb-20 lg:pb-28">
       <Wrap>
-        <Label className="text-center">Tools</Label>
+        <Label className="text-center">Platforms</Label>
         <Heading id="seo-tools-heading" className="max-w-[520px]">
           The tools and platforms we work in
         </Heading>
