@@ -102,7 +102,7 @@ export function StageRow({
         {links && links.length > 0 && (
           <ul className={cn("mt-7 border-t", dark ? "border-line-on-dark" : "border-line")}>
             {links.map((link) => (
-              <li key={link.href} className={cn("border-b", dark ? "border-line-on-dark" : "border-line")}>
+              <li key={link.label} className={cn("border-b", dark ? "border-line-on-dark" : "border-line")}>
                 <Link
                   href={link.href}
                   {...(link.external ? { target: "_blank", rel: "noopener" } : {})}

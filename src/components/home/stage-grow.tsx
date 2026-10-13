@@ -57,7 +57,6 @@ export function StageGrow() {
             links={[
               { label: "How the chat agent works", href: "https://convoai.cloud/", external: true },
               { label: "Automations that follow up", href: "/automations" },
-              ...(convo ? [{ label: "Open ConvoAI", href: convo.href, external: true }] : []),
             ]}
             media={<GrowChatShowcase />}
             bareMedia
