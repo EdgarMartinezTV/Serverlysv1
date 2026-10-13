@@ -181,7 +181,7 @@ export default function WebsiteDesignPage() {
                   </p>
                 </div>
               }
-              cta={{ label: `Start with ${p.name}`, href: designOrderUrl }}
+              cta={{ label: `Start with ${p.name}`, href: designOrderUrl(p) }}
               listTitle="What’s included"
               list={designFeatures(p)}
             />

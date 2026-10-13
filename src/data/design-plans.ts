@@ -5,16 +5,17 @@ import { billing } from "./company";
  * 2026-10-13 ("our price plans, just $100 less" than DreamHost's custom web
  * design tiers). Starting prices: every project is scoped in writing first.
  *
- * These are NOT WHMCS products (the store's monthly "Contractor Website
- * Plans", pids 23/24, are a different offer), so the call to action goes to
- * the sales ticket rather than a cart link. If they are ever added to the
- * store, swap `orderUrl` for the cart URL and every surface follows: the
- * /website-design cards, its Offer schema, /llms.txt and Sera.
+ * Each plan is a WHMCS product in the "website-design" group (pids 33/34/35,
+ * added 2026-10-13), so the call to action is a direct cart link. They are a
+ * different offer from the store's monthly "Contractor Website Plans" (pids
+ * 23/24).
  */
 
 export type DesignPlan = {
   id: "starter" | "plus" | "pro";
   name: string;
+  /** WHMCS product id in the "website-design" group. */
+  pid: number;
   /** One-time starting price in USD. */
   price: number;
   subpages: number;
@@ -25,6 +26,7 @@ export const designPlans: readonly DesignPlan[] = [
   {
     id: "starter",
     name: "Starter",
+    pid: 33,
     price: 1399,
     subpages: 5,
     summary:
@@ -33,6 +35,7 @@ export const designPlans: readonly DesignPlan[] = [
   {
     id: "plus",
     name: "Plus",
+    pid: 34,
     price: 1899,
     subpages: 10,
     summary:
@@ -41,6 +44,7 @@ export const designPlans: readonly DesignPlan[] = [
   {
     id: "pro",
     name: "Pro",
+    pid: 35,
     price: 2699,
     subpages: 15,
     summary:
@@ -63,7 +67,8 @@ export const designFeatures = (plan: DesignPlan) => [
   ...designIncludes.slice(1),
 ];
 
-export const designOrderUrl = billing.sales;
+export const designOrderUrl = (plan: DesignPlan) =>
+  `${billing.root}/cart.php?a=add&pid=${plan.pid}&carttpl=Serverlys`;
 
 export const formatDesignPrice = (n: number) => `$${n.toLocaleString("en-US")}`;
 
