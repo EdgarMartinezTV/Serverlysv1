@@ -2,7 +2,6 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { faqsFor } from "@/data/faqs";
 import { formatSeoPrice, seoFromPrice, seoOrderUrl, seoPlans } from "@/data/seo-plans";
 import { canonical, pageMetadata, faqGraph, serviceGraph } from "@/lib/seo";
-import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { Hero } from "./_components/hero";
 import {
   Faqs,
@@ -88,12 +87,6 @@ export default function SeoPage() {
       <Faqs items={faqs} />
       <Related />
       <PhotoCta />
-      <PageBreadcrumbs
-        trail={[
-          { name: "Home", path: "/" },
-          { name: "SEO services", path: PATH },
-        ]}
-      />
     </>
   );
 }
