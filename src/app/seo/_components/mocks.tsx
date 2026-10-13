@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { SeraMark } from "@/components/sera/sera-mark";
+import { MockPhoto } from "@/components/ui/mock-photo";
 
 /**
  * SEO page mockups — coded product screens in the slots where the reference
@@ -188,8 +189,8 @@ export function PerformanceMock({ className }: { className?: string }) {
                   </linearGradient>
                 </defs>
                 <path d={`${clicks} L${W},${H} L0,${H} Z`} fill="url(#seo-clicks-fill)" />
-                <path d={impr} fill="none" stroke="#5e35b1" strokeWidth="2" strokeLinejoin="round" />
-                <path d={clicks} fill="none" stroke="#0000ff" strokeWidth="2.25" strokeLinejoin="round" />
+                <path d={impr} pathLength={1} className="seo-draw seo-draw-late" fill="none" stroke="#5e35b1" strokeWidth="2" strokeLinejoin="round" />
+                <path d={clicks} pathLength={1} className="seo-draw" fill="none" stroke="#0000ff" strokeWidth="2.25" strokeLinejoin="round" />
                 <circle cx={W * (12 / 15)} cy={H - (386 / 500) * H} r="4" fill="#fff" stroke="#0000ff" strokeWidth="2" />
                 {["Jul", "Aug", "Sep", "Oct"].map((m, i) => (
                   <text key={m} x={8 + i * (W / 4)} y={H + 13} fontSize="10" fill="#80868b">
@@ -234,40 +235,12 @@ export function PerformanceMock({ className }: { className?: string }) {
         </div>
       </Window>
 
-      {/* Floating: Core Web Vitals */}
-      <div className="absolute -bottom-8 -left-3 hidden w-[170px] rounded-xl bg-white p-3 shadow-[0_18px_40px_-8px_rgb(0_0_0/0.3)] ring-1 ring-black/[0.06] sm:block lg:-left-12">
-        <div className="flex items-center justify-between">
-          <p className="text-[11px] font-semibold text-[#202124]">Core Web Vitals</p>
-          <span className="rounded-full bg-emerald-50 px-1.5 py-0.5 text-[9.5px] font-semibold text-emerald-700">
-            Passed
-          </span>
-        </div>
-        {[
-          ["LCP", "1.8 s", 82],
-          ["INP", "94 ms", 90],
-          ["CLS", "0.02", 96],
-        ].map(([k, v, w]) => (
-          <div key={k as string} className="mt-2">
-            <div className="flex justify-between text-[10px]">
-              <span className="text-[#5f6368]">{k}</span>
-              <span className="tabular font-semibold text-[#202124]">{v}</span>
-            </div>
-            <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-[#eceef1]">
-              <div className="h-full rounded-full bg-emerald-500" style={{ width: `${w}%` }} />
-            </div>
-          </div>
-        ))}
+      {/* Floating: Business Profile + a new review */}
+      <div className="animate-float-slow absolute -bottom-20 -left-6 hidden w-[214px] sm:block lg:-left-24">
+        <BusinessProfileMock />
       </div>
-
-      {/* Floating: new #1 */}
-      <div className="absolute -top-5 -right-2 hidden items-center gap-2.5 rounded-xl bg-white py-2 pr-3.5 pl-2 shadow-[0_18px_40px_-8px_rgb(0_0_0/0.3)] ring-1 ring-black/[0.06] sm:flex lg:-right-6">
-        <span className="flex size-8 items-center justify-center rounded-lg bg-emerald-500 text-[13px] font-bold text-white">
-          #1
-        </span>
-        <span className="leading-tight">
-          <span className="block text-[11px] font-semibold text-[#202124]">“sourdough starter class”</span>
-          <span className="block text-[10px] text-[#5f6368]">New top position · today</span>
-        </span>
+      <div className="animate-float absolute -top-20 -right-3 hidden sm:block lg:-right-6">
+        <ReviewToast />
       </div>
     </div>
   );
@@ -638,6 +611,346 @@ export function SeraChatMock({ className }: { className?: string }) {
           </span>
         </div>
       </div>
+    </div>
+  );
+}
+
+/* ══ Photo-backed mockups ═════════════════════════════════════════════════
+   Real photography (public/mock, Unsplash — see CREDITS.md) inside UI drawn
+   in code: products and places only, never a photo of a fake interface. */
+
+function Stars({ className }: { className?: string }) {
+  return (
+    <span className={cn("inline-flex text-[#fbbc04]", className)} aria-hidden="true">
+      {"★★★★★"}
+    </span>
+  );
+}
+
+/** Google-style initials avatar — reviewers without a profile photo. */
+function Initial({ letter, color }: { letter: string; color: string }) {
+  return (
+    <span
+      className="flex size-7 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold text-white"
+      style={{ background: color }}
+    >
+      {letter}
+    </span>
+  );
+}
+
+/* ── Business Profile card (hero float, local section) ──────────────────── */
+
+export function BusinessProfileMock({ className }: { className?: string }) {
+  return (
+    <div
+      aria-hidden="true"
+      className={cn(
+        "overflow-hidden rounded-2xl bg-white shadow-[0_24px_60px_-12px_rgb(0_0_0/0.35)] ring-1 ring-black/[0.06]",
+        className,
+      )}
+    >
+      <div className="grid h-[118px] grid-cols-[1.6fr_1fr] gap-0.5">
+        <MockPhoto src="bread" className="h-full" sizes="200px" position="center 40%" />
+        <div className="grid grid-rows-2 gap-0.5">
+          <MockPhoto src="coffee" className="h-full" sizes="120px" />
+          <div className="relative h-full">
+            <MockPhoto src="bread-sliced" className="h-full" sizes="120px" />
+            <span className="absolute inset-0 flex items-center justify-center bg-black/45 text-[11px] font-semibold text-white">
+              +86
+            </span>
+          </div>
+        </div>
+      </div>
+      <div className="p-3.5">
+        <p className="text-[15px] font-semibold leading-tight text-[#202124]">Hearth Bakery</p>
+        <p className="mt-1 flex items-center gap-1 text-[11.5px] text-[#70757a]">
+          <span className="font-semibold text-[#202124]">4.9</span>
+          <Stars className="text-[11px]" />
+          <span>(212)</span>
+          <span>· Bakery</span>
+        </p>
+        <p className="mt-0.5 text-[11.5px]">
+          <span className="font-semibold text-[#188038]">Open</span>
+          <span className="text-[#70757a]"> · Closes 6 PM</span>
+        </p>
+        <div className="mt-3 grid grid-cols-3 gap-1.5">
+          {[
+            ["Website", "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm-9-9h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3Z"],
+            ["Directions", "m12 3 9 9-9 9-9-9 9-9Zm-2 11v-3h4l-1.5-1.5M14 11l-1.5 1.5"],
+            ["Call", "M6 4h3l1.5 4-2 1.5a11 11 0 0 0 6 6l1.5-2 4 1.5v3a2 2 0 0 1-2 2A16 16 0 0 1 4 6a2 2 0 0 1 2-2Z"],
+          ].map(([label, d]) => (
+            <span key={label} className="flex flex-col items-center gap-1 rounded-lg py-1.5 text-[10px] font-medium text-[#1a73e8] ring-1 ring-[#dadce0]">
+              <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                <path d={d} />
+              </svg>
+              {label}
+            </span>
+          ))}
+        </div>
+        <div className="mt-3 flex gap-2 border-t border-black/[0.06] pt-3">
+          <Initial letter="M" color="#7b1fa2" />
+          <p className="text-[11px] leading-snug text-[#3c4043]">
+            <Stars className="mr-1 text-[10px]" />
+            “Found them searching for a birthday cake, and now it’s our Saturday ritual.”
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** “New review” toast — floats over the hero dashboard. */
+export function ReviewToast({ className }: { className?: string }) {
+  return (
+    <div
+      aria-hidden="true"
+      className={cn(
+        "flex w-[248px] items-start gap-2.5 rounded-xl bg-white p-3 shadow-[0_18px_40px_-8px_rgb(0_0_0/0.3)] ring-1 ring-black/[0.06]",
+        className,
+      )}
+    >
+      <Initial letter="D" color="#0b8043" />
+      <div className="min-w-0">
+        <p className="flex items-center justify-between gap-2 text-[11px] font-semibold text-[#202124]">
+          New 5-star review
+          <span className="font-normal text-[#80868b]">2m</span>
+        </p>
+        <Stars className="text-[10px]" />
+        <p className="mt-0.5 text-[11px] leading-snug text-[#3c4043]">
+          “Best sourdough in Austin. Came in after seeing them at the top of Google.”
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* ── Local pack on a drawn map ──────────────────────────────────────────── */
+
+function MapCanvas() {
+  return (
+    <svg viewBox="0 0 600 260" className="block h-full w-full" preserveAspectRatio="xMidYMid slice">
+      <rect width="600" height="260" fill="#eef0eb" />
+      {/* park + water */}
+      <path d="M380 0h220v95c-40 10-90 4-130-14-36-16-64-44-90-81Z" fill="#c9e7c4" />
+      <path d="M0 196c70-16 140 6 210 2s120-34 190-28 150 40 200 36v54H0Z" fill="#aadaff" />
+      {/* blocks */}
+      {[
+        [30, 30, 90, 50], [140, 26, 80, 56], [240, 34, 100, 46], [40, 104, 70, 48],
+        [130, 100, 110, 52], [270, 104, 80, 44], [410, 120, 70, 40], [500, 112, 80, 50],
+      ].map(([x, y, w, h], i) => (
+        <rect key={i} x={x} y={y} width={w} height={h} rx="4" fill="#e3e5df" />
+      ))}
+      {/* roads */}
+      <path d="M0 88h600M0 166h600M120 0v200M250 0v200M370 60v140M480 0v200" stroke="#fff" strokeWidth="9" />
+      <path d="M0 88h600M120 0v200" stroke="#fde293" strokeWidth="5" />
+      <path d="M0 18 600 240" stroke="#fff" strokeWidth="6" opacity="0.8" />
+      <text x="134" y="84" fontSize="9" fill="#7a7f75">Congress Ave</text>
+      <text x="400" y="40" fontSize="9" fill="#4f8a4a">Pease Park</text>
+      <text x="40" y="236" fontSize="9" fill="#3b7fc4">Lady Bird Lake</text>
+    </svg>
+  );
+}
+
+function Pin({ n, active, className }: { n: string; active?: boolean; className?: string }) {
+  return (
+    <span className={cn("absolute -translate-x-1/2 -translate-y-full", className)}>
+      <svg viewBox="0 0 28 36" className={cn("drop-shadow-md", active ? "size-10" : "size-8")}>
+        <path d="M14 35s11-11.6 11-21A11 11 0 0 0 3 14c0 9.4 11 21 11 21Z" fill={active ? "#ea4335" : "#d93025"} stroke="#fff" strokeWidth="1.5" />
+        <text x="14" y="18" textAnchor="middle" fontSize="11" fontWeight="700" fill="#fff">{n}</text>
+      </svg>
+    </span>
+  );
+}
+
+export function LocalPackMock({ className }: { className?: string }) {
+  const results = [
+    { n: "1", name: "Hearth Bakery", rating: "4.9", count: "212", meta: "Bakery · 0.4 mi · Open · Closes 6 PM", photo: "bread" as const, ours: true },
+    { n: "2", name: "Crumb & Co. Bakehouse", rating: "4.6", count: "98", meta: "Bakery · 1.1 mi · Open · Closes 3 PM", photo: "bread-sliced" as const },
+    { n: "3", name: "Sunrise Café", rating: "4.4", count: "341", meta: "Café · 1.6 mi · Open · Closes 4 PM", photo: "coffee" as const },
+  ];
+  return (
+    <Window url="search · bakery near me" className={className}>
+      <div className="bg-white">
+        <div className="px-4 pt-4 sm:px-5">
+          <div className="flex items-center gap-2.5 rounded-full px-4 py-2.5 shadow-[0_1px_6px_rgb(32_33_36/0.18)]">
+            <svg viewBox="0 0 24 24" className="size-4 text-[#9aa0a6]" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5" />
+            </svg>
+            <span className="text-[13px] text-[#202124]">bakery near me</span>
+          </div>
+          <p className="mt-3 text-[13px] font-semibold text-[#202124]">Places</p>
+        </div>
+        <div className="relative mx-4 mt-2 h-[150px] overflow-hidden rounded-xl ring-1 ring-black/[0.06] sm:mx-5">
+          <MapCanvas />
+          <Pin n="1" active className="top-[58%] left-[30%]" />
+          <Pin n="2" className="top-[42%] left-[58%]" />
+          <Pin n="3" className="top-[70%] left-[78%]" />
+          <span className="absolute top-[28%] left-[30%] -translate-x-1/2 rounded-md bg-white px-1.5 py-0.5 text-[10px] font-semibold text-[#202124] shadow">
+            Hearth Bakery
+          </span>
+        </div>
+        <ul className="divide-y divide-black/[0.06] px-4 pb-2 sm:px-5">
+          {results.map((r) => (
+            <li key={r.n} className={cn("flex items-center gap-3 py-3", r.ours && "-mx-2 rounded-xl bg-brand-50/70 px-2")}>
+              <div className="min-w-0 flex-1">
+                <p className="flex items-center gap-2 text-[13.5px] font-medium text-[#1a0dab]">
+                  {r.name}
+                  {r.ours && (
+                    <span className="rounded-full bg-primary px-1.5 py-0.5 text-[9px] font-semibold text-white">#1 in Maps</span>
+                  )}
+                </p>
+                <p className="mt-0.5 flex items-center gap-1 text-[11px] text-[#70757a]">
+                  <span className="text-[#202124]">{r.rating}</span>
+                  <Stars className="text-[10px]" />({r.count})
+                </p>
+                <p className="mt-0.5 truncate text-[11px] text-[#70757a]">{r.meta}</p>
+              </div>
+              <MockPhoto src={r.photo} className="size-[58px] shrink-0 rounded-lg" sizes="60px" />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </Window>
+  );
+}
+
+/* ── Published article (content) ────────────────────────────────────────── */
+
+export function ArticleMock({ className }: { className?: string }) {
+  return (
+    <Window url="hearthbakery.com/journal/sourdough-starter-guide" dark className={className}>
+      <div className="bg-[#fbf8f3]">
+        <div className="flex items-center justify-between px-4 py-2.5">
+          <span className="font-display text-[12px] font-bold uppercase tracking-[0.18em] text-[#3b2a1a]">Hearth</span>
+          <span className="flex gap-3 text-[10px] text-[#6d5d4b]">
+            <span>Breads</span>
+            <span>Cakes</span>
+            <span className="font-semibold text-[#3b2a1a]">Journal</span>
+          </span>
+        </div>
+        <div className="relative h-[150px]">
+          <MockPhoto src="bread-sliced" className="h-full" sizes="560px" position="center 55%" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+          <div className="absolute inset-x-4 bottom-3 text-white">
+            <p className="text-[9.5px] font-semibold uppercase tracking-[0.14em] opacity-80">Guide · 8 min read</p>
+            <p className="mt-0.5 text-[17px] leading-tight font-semibold">How to keep a sourdough starter alive (and happy)</p>
+          </div>
+        </div>
+        <div className="grid gap-3 p-4 sm:grid-cols-[1fr_150px]">
+          <div className="text-[10.5px] leading-[1.55] text-[#4a3f33]">
+            <p>
+              A starter is just flour, water and time, but it is alive, and it gets hungry. Ours is
+              eleven years old and still bakes every loaf on the counter.
+            </p>
+            <p className="mt-1.5 text-[11px] font-semibold text-[#3b2a1a]">1. Feed it on a schedule</p>
+            <p className="mt-0.5">
+              Equal weights of flour and water, every 12 hours at room temperature, or once a week
+              from the fridge.
+            </p>
+          </div>
+          <div className="rounded-lg bg-white p-2.5 ring-1 ring-black/[0.06]">
+            <p className="text-[9.5px] font-semibold uppercase tracking-[0.1em] text-[#80868b]">Since publishing</p>
+            <p className="tabular mt-1 text-[18px] font-semibold text-[#202124]">1,940</p>
+            <p className="text-[10px] text-[#5f6368]">visits from Google</p>
+            <span className="mt-1.5 inline-flex rounded bg-emerald-50 px-1.5 py-0.5 text-[9.5px] font-semibold text-emerald-700">
+              Featured snippet
+            </span>
+          </div>
+        </div>
+      </div>
+    </Window>
+  );
+}
+
+/* ── Monthly report as a paper page ─────────────────────────────────────── */
+
+export function ReportPaperMock({ className }: { className?: string }) {
+  const bars = [38, 44, 41, 52, 58, 66, 71, 83];
+  return (
+    <div aria-hidden="true" className={cn("relative", className)}>
+      <div className="absolute inset-x-6 -bottom-3 h-full rotate-[2deg] rounded-xl bg-white/10" />
+      <div className="relative rounded-xl bg-white p-5 shadow-[0_24px_60px_-12px_rgb(0_0_0/0.5)]">
+        <div className="flex items-start justify-between border-b border-black/[0.07] pb-3">
+          <div>
+            <p className="text-[9.5px] font-semibold uppercase tracking-[0.14em] text-primary">Monthly SEO report</p>
+            <p className="mt-0.5 text-[15px] font-semibold text-[#202124]">Hearth Bakery · September</p>
+          </div>
+          <span className="rounded-md bg-[#f1f3f4] px-2 py-1 text-[10px] font-semibold text-[#3c4043]">Page 1 of 6</span>
+        </div>
+        <div className="mt-3 grid grid-cols-3 gap-2">
+          {[
+            ["Organic visits", "2,184", "+18%"],
+            ["Calls from Google", "63", "+11"],
+            ["Online orders", "41", "+9"],
+          ].map(([k, v, d]) => (
+            <div key={k} className="rounded-lg bg-[#f8f9fa] p-2">
+              <p className="text-[9.5px] text-[#5f6368]">{k}</p>
+              <p className="tabular text-[17px] font-semibold text-[#202124]">{v}</p>
+              <Delta v={d} />
+            </div>
+          ))}
+        </div>
+        <div className="mt-3 flex h-16 items-end gap-1.5">
+          {bars.map((b, i) => (
+            <span
+              key={i}
+              className={cn("flex-1 rounded-t", i === bars.length - 1 ? "bg-primary" : "bg-brand-100")}
+              style={{ height: `${b}%` }}
+            />
+          ))}
+        </div>
+        <div className="mt-3 grid grid-cols-2 gap-3 text-[10.5px] leading-snug text-[#3c4043]">
+          <div>
+            <p className="font-semibold text-[#202124]">What moved</p>
+            <p className="mt-0.5">“custom birthday cake austin” reached #1; gluten-free page up 27 places.</p>
+          </div>
+          <div>
+            <p className="font-semibold text-[#202124]">What didn’t</p>
+            <p className="mt-0.5">“wedding cakes” held at #12. Next: a tasting page and two supplier mentions.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Live ranking ticker ────────────────────────────────────────────────── */
+
+const TICKER = [
+  ["custom birthday cake austin", "1", "+23"],
+  ["sourdough bread near me", "2", "+16"],
+  ["gluten free bakery austin", "4", "+27"],
+  ["bakery catering austin", "11", "+29"],
+  ["best croissant austin", "6", "+3"],
+  ["wedding cake tasting", "7", "+8"],
+  ["sourdough starter class", "1", "+19"],
+  ["vegan cupcakes austin", "5", "+14"],
+] as const;
+
+export function RankTicker({ className }: { className?: string }) {
+  const row = (copy: number) =>
+    TICKER.map(([kw, pos, d]) => (
+      <li key={`${copy}-${kw}`} className="flex shrink-0 items-center gap-3 rounded-full bg-white/[0.05] py-2 pr-4 pl-2 ring-1 ring-white/10">
+        <span
+          className={cn(
+            "tabular flex size-7 items-center justify-center rounded-full text-[12px] font-bold",
+            Number(pos) <= 3 ? "bg-emerald-500 text-white" : "bg-primary text-white",
+          )}
+        >
+          {pos}
+        </span>
+        <span className="text-[14px] whitespace-nowrap text-white/90">{kw}</span>
+        <span className="tabular text-[12px] font-semibold text-emerald-300">▲ {d.slice(1)}</span>
+      </li>
+    ));
+  return (
+    <div aria-hidden="true" className={cn("relative overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]", className)}>
+      <ul className="seo-ticker flex w-max gap-4">
+        {row(0)}
+        {row(1)}
+      </ul>
     </div>
   );
 }

@@ -1273,3 +1273,32 @@
 @keyframes promoRow { 0%, 6% { opacity: 0; transform: translateY(6px); } 18%, 94% { opacity: 1; transform: none; } 100% { opacity: 0; } }
 @keyframes promoType { 0% { max-width: 0; } 40%, 100% { max-width: 10ch; } }
 @keyframes promoFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+/* /seo — the hero chart draws itself in, and the ranking ticker loops.
+   CSS only: the hero is above the fold, and nothing there may wait on JS
+   (see the LCP note on [data-reveal]). The chart is decoration, never the LCP
+   element. Reduced motion gets the finished chart and a still ticker. */
+@keyframes seoDraw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .seo-draw {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: seoDraw 1.8s var(--ease-entrance) 0.3s forwards;
+  }
+  .seo-draw-late {
+    animation-delay: 0.6s;
+  }
+  .seo-ticker {
+    animation: marqueeX 45s linear infinite;
+  }
+  .seo-ticker:hover {
+    animation-play-state: paused;
+  }
+}
