@@ -63,3 +63,14 @@ mkt-garden     rbYR6wRqnTw  Vitaly Gariev — garden centre worker helping a cus
 mkt-foodtruck  Gwv-t9VQiPM  Joana Godinho — customer at a food truck
 mkt-salon      ZsUbK9zSgMo  Adam Winger — salon owner
 mkt-cta        dQyS2pMYtok  Christiann Koepke — customer paying in a plant shop
+social-hero       JEeb_GY-p9g  Vitaly Gariev — designer photographing her work (/social-media hero)
+social-food       PWlf4B38YJ8  Steve Daniel — photographing food with a phone
+social-engage     edOdOEi751c  Samsung UK — woman smiling at her phone
+social-report     eL4xIEuHzzk  Brooke Cagle — woman looking at her phone
+social-latte      X4RJG4aNi8o  Brooke Cagle — barista pouring latte art
+social-video      jvErkw2Y3KI  FitNish Media — phone on a tripod by a window
+social-cta        nBiJoRbVHmA  Akinyemi Gbadamosi — woman in headphones with her phone
+social-post1      1tEkissU8dY  Lex Sirikiat — latte in a white mug (post thumbnails)
+social-post2      3hRl61WieaE  charlesdeluvio — photographing vegetables
+social-post3      D1wRH3bvemQ  Maddi Bazzocco — photographing two teacups
+social-post4      QfTpbOey94s  Pete Willis — latte art being made

@@ -515,9 +515,9 @@ function MarqueeRow({
         )}
       >
         {[0, 1].flatMap((copy) =>
-          items.map((t) => (
+          items.map((t, i) => (
             <li
-              key={`${copy}-${t}`}
+              key={`${copy}-${i}-${t}`}
               className="flex shrink-0 items-center gap-3 px-7 py-2 text-[16px] font-medium whitespace-nowrap text-[#374151]"
             >
               <BrandIcon slug={t} className="size-7 shrink-0" />
@@ -703,7 +703,7 @@ export function PricingPanel({
   id: string;
   label?: string;
   title: string;
-  columns?: 2 | 3;
+  columns?: 2 | 3 | 4;
   footnote?: React.ReactNode;
   children: React.ReactNode;
 }) {
@@ -719,7 +719,9 @@ export function PricingPanel({
         <div
           className={cn(
             "mt-14 grid gap-3 rounded-[24px] bg-[#ececef] p-3",
-            columns === 3 ? "lg:grid-cols-3" : "mx-auto max-w-[900px] md:grid-cols-2",
+            columns === 3 && "lg:grid-cols-3",
+            columns === 2 && "mx-auto max-w-[900px] md:grid-cols-2",
+            columns === 4 && "md:grid-cols-2 xl:-mx-24 xl:grid-cols-4",
           )}
         >
           {children}

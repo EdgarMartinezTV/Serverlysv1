@@ -1,3 +1,4 @@
+import { formatSocialPrice, socialPlans } from "./social-plans";
 import { designPlans, formatDesignPrice } from "./design-plans";
 import { formatSeoPrice, seoPlans } from "./seo-plans";
 /**
@@ -236,8 +237,14 @@ export const LLMS_SUMMARIES: Record<string, string> = {
       ", ",
     )}. Every plan includes keyword research, on-page and local SEO, Google Business Profile optimization, a technical audit with fixes and a monthly report; Growth adds blog content, schema, Core Web Vitals and backlink outreach; Elite adds a dedicated SEO manager, CRO and high-authority link building. No ranking guarantees.`,
   "/marketing": `Small-business marketing sold as the SEO plans (see /seo): local SEO, Google Business Profile, content, link building and monthly reports, billed monthly from ${formatSeoPrice(Math.min(...seoPlans.map((p) => p.price)))}/mo. Email campaigns and paid ads are not part of any plan.`,
-  "/social-media":
-    "Social media planning, content and scheduling handled for you — in a voice that sounds like your business rather than a marketing department.",
+  "/social-media": `Social media management for small businesses, billed monthly: ${socialPlans
+    .map(
+      (p) =>
+        `${p.name} ${formatSocialPrice(p.price)}/mo (${p.platforms} platform${p.platforms > 1 ? "s" : ""}, ${p.posts} posts)`,
+    )
+    .join(
+      ", ",
+    )}. Posts planned, designed, written and published; comment management from Growth; short-form video from Pro; dedicated account manager on Enterprise.`,
   "/business-solutions":
     "The whole online side of a small business from one supplier: hosting, domains, the website, the AI that answers and the automations behind it — on one bill.",
   "/our-process":
