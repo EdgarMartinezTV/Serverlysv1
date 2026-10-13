@@ -33,3 +33,9 @@ inside a fake interface):
 
 seo-hero  uk3ey_vhDKA  Ali Mkumbwa — "a man in an apron looking at a cell
           phone" (/seo hero, 2400×1600)
+seo-local      Q82AM6BWBPM  Michael DeMoya — barber cutting hair (/seo use cases)
+seo-technical  ICTKcvnXx_8  Brooke Cagle — man at a laptop in a restaurant
+seo-content    X_7Qb2Tg_6g  Oxana Melis — florist arranging flowers
+seo-links      K_iummt0Oeo  Iyan Ryan — woman at a laptop in a bakery café
+seo-reports    WHWYBmtn3_0  Brooke Cagle — woman smiling at her laptop in a café
+seo-cta        X_bbCAYzlTs  Nathan Dumlao — barista using a tablet at the counter

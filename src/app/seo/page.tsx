@@ -1,19 +1,22 @@
 import { JsonLd } from "@/components/ui/json-ld";
-import { FaqSection } from "@/components/sections/faq";
 import { faqsFor } from "@/data/faqs";
 import { formatSeoPrice, seoFromPrice, seoOrderUrl, seoPlans } from "@/data/seo-plans";
 import { canonical, pageMetadata, faqGraph, serviceGraph } from "@/lib/seo";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { Hero } from "./_components/hero";
 import {
-  ChatSplit,
-  Commitments,
-  CtaCard,
-  Hero,
-  Included,
-  MadeEasy,
-  Ongoing,
-  Plans,
-} from "./_components/sections";
+  Faqs,
+  Features,
+  HowItWorks,
+  NavyBand,
+  PhotoCta,
+  Pricing,
+  Promises,
+  Related,
+  Tools,
+  TrustBar,
+  UseCases,
+} from "./_components/retell";
 
 const PATH = "/seo";
 const DESCRIPTION = `SEO services for small businesses: keyword research, local SEO, Google Business Profile, technical fixes, link building and monthly reports. From ${formatSeoPrice(seoFromPrice)}/mo.`;
@@ -54,7 +57,11 @@ function seoServiceGraph() {
           price: plan.price.toFixed(2),
           priceCurrency: "USD",
           unitCode: "MON",
-          referenceQuantity: { "@type": "QuantitativeValue", value: 1, unitCode: "MON" },
+          referenceQuantity: {
+            "@type": "QuantitativeValue",
+            value: 1,
+            unitCode: "MON",
+          },
         },
         itemOffered: { "@type": "Service", name: plan.name, url: canonical(PATH) },
       })),
@@ -62,7 +69,7 @@ function seoServiceGraph() {
   };
 }
 
-/** Section order and rationale: see ./_components/sections.tsx. */
+/** Section order and rationale: see ./_components/retell.tsx and ./_components/hero.tsx. */
 export default function SeoPage() {
   const faqs = faqsFor(PATH);
   return (
@@ -70,15 +77,23 @@ export default function SeoPage() {
       <JsonLd data={seoServiceGraph()} />
       <JsonLd data={faqGraph(faqs, PATH)} />
       <Hero />
-      <MadeEasy />
-      <Plans />
-      <ChatSplit />
-      <Commitments />
-      <Included />
-      <Ongoing />
-      <FaqSection items={faqs} surface="subtle" />
-      <CtaCard />
-      <PageBreadcrumbs trail={[{ name: "Home", path: "/" }, { name: "SEO services", path: PATH }]} />
+      <TrustBar />
+      <HowItWorks />
+      <UseCases />
+      <NavyBand />
+      <Promises />
+      <Features />
+      <Tools />
+      <Pricing />
+      <Faqs items={faqs} />
+      <Related />
+      <PhotoCta />
+      <PageBreadcrumbs
+        trail={[
+          { name: "Home", path: "/" },
+          { name: "SEO services", path: PATH },
+        ]}
+      />
     </>
   );
 }

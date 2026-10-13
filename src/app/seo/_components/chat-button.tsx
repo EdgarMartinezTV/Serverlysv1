@@ -13,25 +13,42 @@ export function ChatButton({
   className,
   icon = false,
   tone = "primary",
+  size = "md",
 }: {
   children?: React.ReactNode;
   className?: string;
   icon?: boolean;
   /** primary: filled blue. ghost: outlined, on light. on-dark: white outline. */
   tone?: "primary" | "ghost" | "on-dark";
+  /** md: the site's 48px button. sm: 36px, for compact cards. */
+  size?: "md" | "sm";
 }) {
   const sera = useSeraOptional();
   const classes = cn(
-    "inline-flex h-12 items-center justify-center gap-2 rounded-md px-8 text-body font-semibold transition-colors duration-fast focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
+    "inline-flex items-center justify-center gap-2 font-semibold transition-colors duration-fast focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
+    size === "md"
+      ? "h-12 rounded-md px-8 text-body"
+      : "h-9 rounded-[4px] px-3.5 text-[13px]",
     tone === "primary" && "bg-primary text-white hover:bg-primary-hover",
-    tone === "ghost" && "text-fg ring-1 ring-inset ring-line-strong hover:bg-canvas-secondary",
-    tone === "on-dark" && "text-white ring-1 ring-inset ring-white/30 hover:bg-white/10 focus-visible:outline-white",
+    tone === "ghost" &&
+      "text-fg ring-1 ring-inset ring-line-strong hover:bg-canvas-secondary",
+    tone === "on-dark" &&
+      "text-white ring-1 ring-inset ring-white/30 hover:bg-white/10 focus-visible:outline-white",
     className,
   );
   const body = (
     <>
       {icon && (
-        <svg viewBox="0 0 24 24" aria-hidden="true" className="size-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          className="size-5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
           <path d="M4 5h16v11H9l-5 4V5Z" />
           <path d="M8 9h8M8 12.5h5" />
         </svg>
