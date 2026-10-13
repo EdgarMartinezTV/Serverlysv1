@@ -1,3 +1,4 @@
+import { carePlans, formatCarePrice } from "./care-plans";
 import { formatSocialPrice, socialPlans } from "./social-plans";
 import { designPlans, formatDesignPrice } from "./design-plans";
 import { formatSeoPrice, seoPlans } from "./seo-plans";
@@ -229,8 +230,14 @@ export const LLMS_SUMMARIES: Record<string, string> = {
     )}. Every plan includes a 100% custom homepage, WordPress implementation, a web style guide, an SEO-friendly blog and analytics setup. Scoped in writing before work starts. This is the page for a new website; feature work on an existing site is /website-development.`,
   "/website-development":
     "Custom web development for features, integrations, bookings, payments and fixes an off-the-shelf plugin cannot do: $129/hr, or a monthly retainer at $119/hr (1 hour), $109/hr (3 hours) or $99/hr (5 hours). Not website design — new websites are on /website-design.",
-  "/site-management":
-    "Updates applied and tested, backups verified, uptime watched, small changes made. The ongoing work a website needs after it launches.",
+  "/site-management": `Website maintenance (ServerCare), billed monthly: ${carePlans
+    .map(
+      (p) =>
+        `${p.name} ${formatCarePrice(p.price)}/mo (${p.cadence.toLowerCase()} updates, ${p.hours} content hour${p.hours > 1 ? "s" : ""})`,
+    )
+    .join(
+      ", ",
+    )}. Every plan: daily backups, updates, 24/7 uptime monitoring, malware scans, broken-link checks, SEO audits and performance reports. Distinct from managed hosting, which covers the server.`,
   "/seo": `SEO services for small businesses, billed monthly: ${seoPlans
     .map((p) => `${p.name} ${formatSeoPrice(p.price)}/mo`)
     .join(

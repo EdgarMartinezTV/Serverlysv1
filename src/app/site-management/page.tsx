@@ -1,305 +1,204 @@
-import Link from "next/link";
-import { ProductHero } from "@/components/sections/product-hero";
-import { Section } from "@/components/ui/section";
-import { Button } from "@/components/ui/button";
-import { FaqSection } from "@/components/sections/faq";
-import { FinalCta } from "@/components/sections/final-cta";
-import { ShowcaseSplit } from "@/components/sections/showcase-split";
-import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { JsonLd } from "@/components/ui/json-ld";
-import { DashboardMock } from "@/components/product-ui/dashboard";
-import { UptimePanel } from "@/components/product-ui/panels";
-import { pageMetadata, faqGraph, serviceGraph } from "@/lib/seo";
-import type { Faq } from "@/data/faqs";
+import { canonical, pageMetadata, faqGraph, serviceGraph } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 import { billing } from "@/data/company";
+import {
+  careFromPrice,
+  careOrderUrl,
+  carePlans,
+  formatCarePrice,
+} from "@/data/care-plans";
+import {
+  Faqs,
+  Features,
+  Hero,
+  HowItWorks,
+  INK,
+  MUTED,
+  NavyBand,
+  PanelCard,
+  PhotoCta,
+  PricingPanel,
+  Promises,
+  Related,
+  ToolsMarquee,
+  UseCases,
+} from "@/components/retell/kit";
+import { FAQS, GROUPS, PROMISES, RELATED, STEPS, TOOLS, USES } from "./_content";
+
+/**
+ * /site-management — rebuilt 2026-10-13 on the shared Retell-style kit, the
+ * same layout as the other service pages. Plans: data/care-plans.ts (WHMCS
+ * ServerCare, pids 17–19). Copy: ./_content.tsx.
+ *
+ * Still distinct from /managed-hosting: that page is the SERVER, this one is
+ * the SITE. The navy band says so in one line.
+ */
 
 const PATH = "/site-management";
-const DESCRIPTION =
-  "Updates applied and tested, backups verified, uptime watched, small changes made. The ongoing work a website needs after it launches.";
+const DESCRIPTION = `Website maintenance for small businesses: daily backups, updates, security scans, uptime monitoring, content changes and reports. ServerCare from ${formatCarePrice(careFromPrice)}/mo.`;
 
 export const metadata = pageMetadata({
-  title: "Site Management — someone whose job is your website",
+  title: `Website Maintenance Plans | From ${formatCarePrice(careFromPrice)}/mo | Serverlys`,
   description: DESCRIPTION,
   path: PATH,
 });
 
-/**
- * Site management.
- *
- * Distinct from managed hosting, and the page has to make that clear in the
- * first screen or it is just a second version of /managed-hosting. Managed
- * hosting is the SERVER. Site management is the SITE — the plugin updates, the
- * broken link, the page of copy that needs changing, the thing nobody has
- * looked at in eight months.
- *
- * Architecture is a CALENDAR: what happens weekly, monthly, quarterly. That
- * shape is honest about the product being a retainer rather than a purchase.
- */
-const FAQS: readonly Faq[] = [
-  {
-    question: "How is this different from managed hosting?",
-    answer:
-      "Managed hosting is the server: patching, firewall, backups, the operating system. Site management is what you built on top of it: plugin and theme updates, content changes, broken links, forms that stopped sending. You can have either without the other, though most people who want one eventually want both.",
-    scopes: [PATH],
-  },
-  {
-    question: "Do you make content changes?",
-    answer:
-      "Yes, within an agreed monthly allowance. Swapping a phone number, adding a team member, updating opening hours, publishing a page you have written — that is the work. A redesign or a new feature is a project, and we will quote it rather than absorb it and rush.",
-    scopes: [PATH],
-  },
-  {
-    question: "What happens when an update breaks the site?",
-    answer:
-      "It gets caught before you see it, because updates are applied on a staging copy and checked first. If something does break in production, restoring a backup is free and immediate, and then we work out which update caused it.",
-    scopes: [PATH],
-  },
-  {
-    question: "Is there a contract?",
-    answer:
-      "It is a monthly service and you can stop it. What you should not do is stop it and assume the site will look after itself — an unmaintained WordPress site is a security incident with a date on it.",
-    scopes: [PATH],
-  },
-];
+const PLAN_ICON = { essential: "shield", plus: "growth", premium: "building" } as const;
+
+function careServiceGraph() {
+  return {
+    ...serviceGraph({
+      name: "Website maintenance and management",
+      serviceType: "Website maintenance",
+      description: DESCRIPTION,
+      path: PATH,
+    }),
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "ServerCare website maintenance plans",
+      itemListElement: carePlans.map((p) => ({
+        "@type": "Offer",
+        name: p.name,
+        description: p.summary,
+        url: careOrderUrl(p),
+        price: p.price.toFixed(2),
+        priceCurrency: "USD",
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          price: p.price.toFixed(2),
+          priceCurrency: "USD",
+          unitCode: "MON",
+        },
+        itemOffered: { "@type": "Service", name: p.name, url: canonical(PATH) },
+      })),
+    },
+  };
+}
 
 export default function SiteManagementPage() {
+  const from = formatCarePrice(careFromPrice);
   return (
     <>
-      <JsonLd
-        data={serviceGraph({
-          name: "Website maintenance and management",
-          serviceType: "Website maintenance",
-          description: DESCRIPTION,
-          path: PATH,
-        })}
-      />
-      <JsonLd data={faqGraph(FAQS, "/site-management")} />
+      <JsonLd data={careServiceGraph()} />
+      <JsonLd data={faqGraph(FAQS, PATH)} />
 
-      <ProductHero
-        eyebrow="Site management"
+      <Hero
+        id="care-hero-heading"
+        title="Website Maintenance, So You Never Have to Think About It"
+        photo={{
+          src: "/mock/care-hero.jpg",
+          alt: "A relaxed business owner leaning back at her desk with her hands behind her head",
+        }}
+        photoClassName="object-[55%_35%] lg:object-[45%_35%]"
+        kicker={[`ServerCare from ${from}/mo`, "Billed monthly"]}
+        lede="Plugins go out of date, forms quietly stop sending, and a year passes. ServerCare is someone whose job is noticing: backups, updates, security, speed and changes, handled."
+        cta={{ label: "See ServerCare plans", href: "#plans" }}
+        badgeCaption="Every plan"
+        badges={[
+          { label: "Daily backups", icon: "server" },
+          { label: "Updates", icon: "loop" },
+          { label: "24/7 monitoring", icon: "eye" },
+          { label: "Content hours", icon: "pen" },
+        ]}
+      />
+      <HowItWorks
+        id="care-how-heading"
+        title="Your website, looked after from the day you sign up."
+        steps={STEPS}
+      />
+      <UseCases
+        id="care-uses-heading"
+        label="What we handle"
+        title="What ServerCare handles, so you don’t have to"
+        items={USES}
+      />
+      <NavyBand
+        id="care-navy-heading"
+        kicker="Hosting runs the server. ServerCare runs the site."
         title="A website is not finished when it launches"
-        lede="Plugins go out of date, forms quietly stop sending, and a year passes. Site management is having someone whose job is noticing — before your customers do."
-        breadcrumb={[{ name: "Home", href: "/" }, { name: "Site management" }]}
-        specs={[
-          { label: "Updates", value: "Staged first" },
-          { label: "Backups", value: "Verified" },
-          { label: "Uptime", value: "Watched" },
-          { label: "Changes", value: "Included" },
-        ]}
-        primary={{ label: "Talk about your site", href: billing.sales }}
-        secondary={{ label: "Managed hosting instead", href: "/managed-hosting" }}
-        visual={<DashboardMock />}
+        body="Managed hosting keeps the machine underneath patched and secure. ServerCare looks after what you built on top of it: the plugins, the content, the links, the speed, the things nobody has looked at in eight months."
+        aside={`From [${from}/mo], [billed monthly]. [1 to 4 hours] of content changes every month.`}
+        cta={{ label: "See ServerCare plans", href: "#plans" }}
       />
-
-      {/* The distinction, stated immediately. */}
-      <Section spacing="tight">
-        <div className="grid gap-8 rounded-3xl bg-canvas-secondary p-8 sm:grid-cols-2 sm:p-12">
-          <div>
-            <span className="inline-flex rounded-md bg-canvas px-2.5 py-1 text-small font-medium text-fg-secondary ring-1 ring-line">
-              Managed hosting covers
-            </span>
-            <h2 className="mt-4 text-h3 font-medium tracking-[-0.02em] text-fg">
-              The server
-            </h2>
-            <p className="mt-2 text-small text-fg-secondary">
-              Operating system, web server, patching, firewall, SSL, backups of the
-              machine. Everything underneath your site.
-            </p>
-            <Link
-              href="/managed-hosting"
-              className="mt-4 inline-flex min-h-6 items-center text-small font-semibold text-primary hover:text-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+      <Promises
+        id="care-promise-heading"
+        intro="Three things you can hold us to on every ServerCare plan."
+        items={PROMISES}
+      />
+      <Features
+        id="care-features-heading"
+        title="How ServerCare looks after your site"
+        groups={GROUPS}
+      />
+      <ToolsMarquee
+        id="care-tools-heading"
+        title="The platforms and tools we maintain and measure"
+        cta={{ label: "See ServerCare plans", href: "#plans" }}
+        rows={TOOLS}
+      />
+      <PricingPanel
+        id="care-plans-heading"
+        title="Website maintenance plans and pricing"
+        footnote={
+          <>
+            Billed monthly, plus tax. Not sure which plan fits?{" "}
+            <a
+              href={billing.sales}
+              className="font-semibold text-primary hover:text-primary-hover"
             >
-              Managed hosting
-            </Link>
-          </div>
-          <div className="border-t border-line pt-8 sm:border-l sm:border-t-0 sm:pl-10 sm:pt-0">
-            <span className="inline-flex rounded-md bg-brand-50 px-2.5 py-1 text-small font-medium text-primary">
-              Site management covers
-            </span>
-            <h2 className="mt-4 text-h3 font-medium tracking-[-0.02em] text-fg">
-              The website
-            </h2>
-            <p className="mt-2 text-small text-fg-secondary">
-              Plugin and theme updates, content edits, broken links, forms, performance,
-              and the small changes you keep meaning to make.
-            </p>
-            <span className="mt-4 inline-flex min-h-6 items-center text-small font-semibold text-fg-muted">
-              You are on this page
-            </span>
-          </div>
-        </div>
-      </Section>
-
-      {/* The calendar — the product's real shape. */}
-      <section
-        aria-labelledby="sm-calendar"
-        className="relative isolate overflow-hidden bg-canvas-abyss py-20 lg:py-28"
+              Ask the team
+            </a>
+            .
+          </>
+        }
       >
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 -z-10 bg-[radial-gradient(60%_50%_at_50%_0%,rgb(0_0_255/0.35),transparent_70%)]"
-        />
-        <div className="mx-auto w-full max-w-[1280px] px-5 sm:px-8 lg:px-10">
-          <div className="mx-auto max-w-[760px] text-center">
-            <h2 id="sm-calendar" className="display-md text-white">
-              Recurring work, on a schedule
-            </h2>
-            <p className="mt-4 text-body-lg text-fg-on-dark-secondary">
-              Not &lsquo;proactive monitoring&rsquo;. Actual jobs, at actual intervals,
-              that you can hold us to.
-            </p>
-          </div>
-          <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {[
-              {
-                when: "Weekly",
-                items: [
-                  "Core, plugin and theme updates on staging",
-                  "Checked, then applied to production",
-                  "Backup taken before anything changes",
-                  "Uptime and error log reviewed",
-                ],
-              },
-              {
-                when: "Monthly",
-                items: [
-                  "A restore actually tested, not assumed",
-                  "Broken links and 404s swept",
-                  "Form submissions confirmed arriving",
-                  "Your content changes made",
-                ],
-              },
-              {
-                when: "Quarterly",
-                items: [
-                  "Page speed measured and reported",
-                  "Unused plugins removed",
-                  "PHP version reviewed",
-                  "Search Console errors triaged",
-                ],
-              },
-              {
-                when: "When needed",
-                items: [
-                  "Something breaks — we fix it",
-                  "A security advisory lands",
-                  "A plugin is abandoned upstream",
-                  "You need a change this week",
-                ],
-              },
-            ].map((col) => (
-              <div
-                key={col.when}
-                className="rounded-2xl bg-white/[0.06] p-6 ring-1 ring-white/10"
-              >
-                <h3 className="inline-flex rounded-md bg-primary px-2.5 py-1 text-small font-semibold text-white">
-                  {col.when}
-                </h3>
-                <ul className="mt-4 flex flex-col gap-3">
-                  {col.items.map((i) => (
-                    <li
-                      key={i}
-                      className="flex gap-2.5 text-small text-fg-on-dark-secondary"
-                    >
-                      <span
-                        aria-hidden="true"
-                        className="mt-1.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full bg-success-fill/20 text-[9px] text-success-fill"
-                      >
-                        ✓
-                      </span>
-                      {i}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <ShowcaseSplit
-        id="reporting"
-        eyebrow="You see the work"
-        title="A report you can actually read"
-        body="Every month you get what was updated, what broke, what was fixed, and what we think needs attention next. Written in English, not a dashboard export with a logo on it. If a month was quiet, the report says the month was quiet."
-        points={[
-          {
-            label: "What changed",
-            detail: "Every update applied, and what it touched.",
-            icon: "wrench",
-          },
-          {
-            label: "What we caught",
-            detail: "Problems found before they reached your visitors.",
-            icon: "shield",
-          },
-          {
-            label: "What is next",
-            detail: "The thing we would fix if you gave us the go-ahead.",
-            icon: "compass",
-          },
-        ]}
-        cta={{ label: "See what we would find", href: billing.sales }}
-        visual={<UptimePanel />}
-        side="right"
-        surface="subtle"
-      />
-
-      {/* Honest cost framing — no invented prices. */}
-      <Section>
-        <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
-          <div>
-            <h2 className="display-md text-fg">What it costs</h2>
-            <p className="mt-4 max-w-[60ch] text-body text-fg-secondary">
-              Site management is quoted, not listed, because the honest price depends on
-              how many sites, how complex they are and how much change you want each
-              month. A five-page brochure site and a WooCommerce store with forty
-              plugins are not the same job, and pretending otherwise means one of you is
-              subsidising the other.
-            </p>
-            <p className="mt-4 max-w-[60ch] text-body text-fg-secondary">
-              Tell us the site and we will give you a monthly figure and what it
-              includes, in writing, before you commit to anything.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button href={billing.sales}>Get a figure</Button>
-              <Button href="/pricing" variant="secondary">
-                Hosting prices
-              </Button>
-            </div>
-          </div>
-          <ul className="grid gap-3 sm:grid-cols-2">
-            {[
-              ["Number of sites", "One, or a portfolio you manage for clients."],
-              [
-                "What it runs",
-                "A brochure site, a store, a membership, a custom application.",
-              ],
-              [
-                "Change allowance",
-                "How much content and small-change work you expect each month.",
-              ],
-              [
-                "Response expectation",
-                "Whether an outage needs someone at the weekend.",
-              ],
-            ].map(([t, d]) => (
-              <li key={t} className="rounded-2xl bg-canvas-secondary p-6">
-                <h3 className="text-body font-semibold text-fg">{t}</h3>
-                <p className="mt-1 text-small text-fg-secondary">{d}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </Section>
-
-      <FaqSection items={FAQS} />
-      <FinalCta />
-      <PageBreadcrumbs
-        trail={[
-          { name: "Home", path: "/" },
-          { name: "Site management", path: PATH },
-        ]}
+        {carePlans.map((p, i) => {
+          const blue = p.id === "plus";
+          return (
+            <PanelCard
+              key={p.id}
+              delay={i * 80}
+              blue={blue}
+              icon={PLAN_ICON[p.id]}
+              name={p.name}
+              summary={p.summary}
+              price={
+                <p className="flex items-baseline gap-1">
+                  <span
+                    className={cn(
+                      "tabular text-[40px] leading-none font-semibold tracking-[-0.03em]",
+                      blue ? "text-white" : INK,
+                    )}
+                  >
+                    {formatCarePrice(p.price)}
+                  </span>
+                  <span className={blue ? "text-white/80" : MUTED}>/mo</span>
+                </p>
+              }
+              cta={{
+                label: `Get ${p.name.replace("ServerCare ", "")}`,
+                href: careOrderUrl(p),
+              }}
+              listTitle="What’s included"
+              list={p.features}
+            />
+          );
+        })}
+      </PricingPanel>
+      <Faqs id="care-faq-heading" items={FAQS} />
+      <Related id="care-related-heading" items={RELATED} />
+      <PhotoCta
+        id="care-cta-heading"
+        photo={{
+          src: "/mock/care-cta.jpg",
+          alt: "A workshop owner standing among the tools and parts in his shop",
+          position: "55% 35%",
+        }}
+        thumb="/mock/care-mechanic.jpg"
+        title="Hand the website over and get back to work"
+        body={`Pick a ServerCare plan and we take a backup and start on day one. From ${from}/mo.`}
+        primary={{ label: "See ServerCare plans", href: "#plans" }}
       />
     </>
   );

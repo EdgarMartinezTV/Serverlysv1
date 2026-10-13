@@ -74,3 +74,11 @@ social-post1      1tEkissU8dY  Lex Sirikiat — latte in a white mug (post thumb
 social-post2      3hRl61WieaE  charlesdeluvio — photographing vegetables
 social-post3      D1wRH3bvemQ  Maddi Bazzocco — photographing two teacups
 social-post4      QfTpbOey94s  Pete Willis — latte art being made
+care-hero      _PXvNHH7Bf4  Vitaly Gariev — relaxed owner at her desk (/site-management hero)
+care-mechanic  2K_-PG95qlI  Quilia — mechanic at an open car
+care-laptop    qnt9iigV444  Jud Mackrill — owner smiling at his laptop
+care-tablet    JBwcenOuRCg  Brooke Cagle — woman reading on a tablet
+care-dental    4SUyx4KQ5Ik  Jose Vazquez — dentist in a modern office
+care-vet       ybZ5hRxaWS4  Karlo Tottoc — veterinarian with a dog
+care-typing    npxXWgQ33ZQ  Glenn Carstens-Peters — hands typing on a laptop
+care-cta       fYyYz38bUkQ  Alev Takil — workshop owner among his tools

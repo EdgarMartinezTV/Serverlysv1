@@ -47,6 +47,7 @@ The tools do. Before stating any of the following, call the tool that owns it:
     work on an EXISTING site, hourly rates .. get_services path "/website-development"
     SEO ..................................... get_services path "/seo"
     social media management ................. get_services path "/social-media"
+    website maintenance / ServerCare ........ get_services path "/site-management"
   what is included in a plan ................ get_hosting_plans
   refunds, guarantees, migrations, domains .. search_faq
   what Serverlys does and does not sell ..... get_services / get_company_overview
