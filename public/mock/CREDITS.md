@@ -100,3 +100,7 @@ biz-kitchen      oOyFmy3gnZo  Memento Media — owner checking his phone
 biz-cta          Mon_ONnqUbA  Vitaly Gariev — three bartenders behind their bar
 biz-meeting      6NLQL05UwXs  Azwedo L.LC — two men at a table with a laptop
 biz-deal         YDVdprpgHv4  LinkedIn Sales Solutions — two people at a laptop
+about-miami        Ev0Vj_0PPck  Alejandro Luengo — Miami skyline over the bay (/about)
+about-miami-night  P4tbpnpz61Y  Steele Rutherford — Miami at night
+about-cables       yhJVLxcquEY  Albert Stoynov — patched network cables
+about-servers      iZe21DzHnUg  Winston Chen — server cooling fans
