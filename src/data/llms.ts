@@ -1,3 +1,4 @@
+import { designPlans, formatDesignPrice } from "./design-plans";
 import { formatSeoPrice, seoPlans } from "./seo-plans";
 /**
  * The AI-facing index of this site — the content of `/llms.txt`.
@@ -106,7 +107,13 @@ export const LLMS_SECTIONS = [
     note:
       "ConvoAI and CallFlow are Serverlys products. Automations are built on " +
       "n8n and run on Serverlys infrastructure, owned by the customer.",
-    paths: ["/ai-agents", "https://convoai.cloud/", "https://callflow.serverlys.com/", "/automations", "/ai-tools"],
+    paths: [
+      "/ai-agents",
+      "https://convoai.cloud/",
+      "https://callflow.serverlys.com/",
+      "/automations",
+      "/ai-tools",
+    ],
   },
   {
     title: "Websites and growth",
@@ -214,15 +221,20 @@ export const LLMS_SUMMARIES: Record<string, string> = {
   "/ai-tools":
     "ConvoAI, CallFlow and Automations compared by the problem each one fixes, with an honest note on where AI is the wrong answer.",
 
-  "/website-design":
-    "Custom website design built to convert, hosted on Serverlys infrastructure, with the AI agent and analytics wired in from day one.",
+  "/website-design": `Custom website design for small businesses, one-time project prices: ${designPlans
+    .map((p) => `${p.name} from ${formatDesignPrice(p.price)} (${p.subpages} subpages)`)
+    .join(
+      ", ",
+    )}. Every plan includes a 100% custom homepage, WordPress implementation, a web style guide, an SEO-friendly blog and analytics setup. Scoped in writing before work starts. This is the page for a new website; feature work on an existing site is /website-development.`,
   "/website-development":
-    "Custom web development for applications, integrations and the things an off-the-shelf plugin cannot do.",
+    "Custom web development for features, integrations, bookings, payments and fixes an off-the-shelf plugin cannot do: $129/hr, or a monthly retainer at $119/hr (1 hour), $109/hr (3 hours) or $99/hr (5 hours). Not website design — new websites are on /website-design.",
   "/site-management":
     "Updates applied and tested, backups verified, uptime watched, small changes made. The ongoing work a website needs after it launches.",
   "/seo": `SEO services for small businesses, billed monthly: ${seoPlans
     .map((p) => `${p.name} ${formatSeoPrice(p.price)}/mo`)
-    .join(", ")}. Every plan includes keyword research, on-page and local SEO, Google Business Profile optimization, a technical audit with fixes and a monthly report; Growth adds blog content, schema, Core Web Vitals and backlink outreach; Elite adds a dedicated SEO manager, CRO and high-authority link building. No ranking guarantees.`,
+    .join(
+      ", ",
+    )}. Every plan includes keyword research, on-page and local SEO, Google Business Profile optimization, a technical audit with fixes and a monthly report; Growth adds blog content, schema, Core Web Vitals and backlink outreach; Elite adds a dedicated SEO manager, CRO and high-authority link building. No ranking guarantees.`,
   "/marketing":
     "Marketing judged on enquiries and orders rather than impressions — search, email and the channels that actually work for small businesses.",
   "/social-media":

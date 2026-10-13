@@ -14,6 +14,13 @@ const ICONS = {
   server: "M4 4h16v6H4zM4 14h16v6H4zM8 7h.01M8 17h.01",
   clock: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0-13v4l3 2",
   calendar: "M4 6h16v14H4zM4 10h16M8 3v4m8-4v4M8 14h2m4 0h2m-8 3h2",
+  layout: "M4 4h16v16H4zM4 9h16M9 9v11",
+  pen: "M14.5 4.5l5 5L9 20H4v-5L14.5 4.5ZM12 7l5 5",
+  doc: "M7 3h7l4 4v14H7zM10 11h5m-5 4h5",
+  phone:
+    "M8 3h8a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm3 15h2",
+  rocket:
+    "M5 15c-1.5 1.5-2 5-2 5s3.5-.5 5-2m-.5-6.5L12 7c3-3 6.5-4 9-4 0 2.5-1 6-4 9l-4.5 4.5M7.5 11.5l5 5M15 9.01V9",
   shield: "M12 3 5 6v5c0 4.4 3 7.9 7 10 4-2.1 7-5.6 7-10V6l-7-3Zm-3 9 2 2 4-4.5",
 } as const;
 

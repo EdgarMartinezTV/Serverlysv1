@@ -47,3 +47,12 @@ webdev-team    ZT5v0puBjZI  Mapbox — team meeting around laptops
 webdev-fix     YK0HPwWDJ1I  Kelly Sikkema — developer thinking through a problem
 webdev-cta     KcWLDrDgzms  Vitaly Gariev — boutique owner on the phone at her laptop
 webdev-code    m_HRfLhgABo  Christopher Gower — laptop showing code
+design-hero      AgCDyvWmJmY  Jon Tyson — contractor in a hard hat on the phone (/website-design hero)
+design-call      tcuLaHhxNSM  Vitaly Gariev — business owner taking a call
+design-mobile    _2AlIm-F6pw  Emmanuel Ikwuegbu — electrician installing wiring
+design-local     EkhWxU_pgLo  Jared Muller — landscaper edging a lawn
+design-leads     Scaj0T40nFI  Raze Solar — roofer working with a power drill
+design-wireframe tZc3vjPCk-Q  Hal Gatewood — watercolour website wireframes
+design-cta       WEWTGkPUVT0  Annie Gray — carpenter at a miter saw
+design-tablet    CGpifH3FjOA  Theme Photos — designer with a drawing tablet
+design-studio    h7v_38e3iGE  Tran Mau Tri Tam — designer's two-monitor desk
