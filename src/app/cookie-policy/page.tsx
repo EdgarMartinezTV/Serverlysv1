@@ -60,6 +60,7 @@ const SECTIONS: readonly LegalSection[] = [
           "Your cookie choice itself. Remembering that you accepted or rejected is the only way to stop asking you on every page.",
           "Notice and banner state — so a notice you dismissed stays dismissed.",
           "Your domain shortlist, which is held in your own browser so that names you saved survive a page reload. It is not sent to us as a profile.",
+          "Chat session, set only when you open the Sera chat: a sera_sid cookie that keeps your conversation together across messages and expires after 6 hours, plus the conversation id in this tab's session storage, cleared when the tab closes. The conversation itself is never stored in your browser.",
           "Billing and account session cookies, set when you sign in to the billing area. These identify your session so that you stay signed in, and are required for checkout to function.",
           "Security and abuse-prevention cookies used to protect forms and logins from automated attack.",
         ],

@@ -45,6 +45,7 @@ export const TRACKERS: Record<ConsentCategory, readonly string[]> = {
   necessary: [
     "Announcement bar dismissal (localStorage)",
     "Domain search shortlist (localStorage)",
+    "Sera chat session (sera_sid cookie, 6 hours; conversation id in sessionStorage) — only when you use the chat",
     "Your choice on this panel (localStorage)",
     "Billing sign-in session (cookie, set by WHMCS on the billing area)",
   ],
@@ -129,7 +130,9 @@ export function writeConsent(state: ConsentState): void {
     /* private mode — the choice still applies for this page view */
   }
   document.documentElement.dataset.consent = "set";
-  window.dispatchEvent(new CustomEvent<ConsentState>("consentchange", { detail: state }));
+  window.dispatchEvent(
+    new CustomEvent<ConsentState>("consentchange", { detail: state }),
+  );
 }
 
 /**

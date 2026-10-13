@@ -128,7 +128,7 @@ export const legalDocuments: readonly LegalDocument[] = [
     title: "Cookie policy",
     category: "policy",
     summary: "Every cookie this site sets, what it does, and how to refuse the optional ones.",
-    effective: "2026-09-14",
+    effective: "2026-10-13",
     related: ["/privacy-policy"],
   },
   {
