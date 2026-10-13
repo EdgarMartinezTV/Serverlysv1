@@ -43,6 +43,703 @@ import type { Article } from "./types";
 
 export const originalArticles: readonly Article[] = [
   {
+    slug: "how-much-hosting-do-you-need",
+    title: "How much hosting does your website actually need?",
+    description:
+      "A plain way to size a hosting plan from your sites, your visitors and what your pages do, so you neither overpay nor outgrow it in a month.",
+    category: "Hosting",
+    published: "2026-10-12",
+    body: [
+      {
+        type: "p",
+        text: "Most people pick a hosting plan the way they pick a phone contract: they look at the middle option, assume it is the sensible one, and hope. Sometimes that works. Often it means paying for headroom a five-page brochure site will never use, or squeezing a busy online store onto a plan built for one small blog.",
+      },
+      {
+        type: "p",
+        text: "You do not need to understand servers to size a plan properly. You need answers to four questions, and you can answer all of them in about ten minutes.",
+      },
+      { type: "h2", id: "four-questions", text: "The four questions that decide it" },
+      { type: "h3", text: "1. How many websites will live on it?" },
+      {
+        type: "p",
+        text: "This is the easiest limit to hit by accident. A business site, a separate landing page for a campaign and a staging copy for testing are three sites, not one. Count every domain or subdomain that will have its own install, and add one for whatever you will launch next year.",
+      },
+      { type: "h3", text: "2. How many people visit each month?" },
+      {
+        type: "p",
+        text: "If the site already exists, your analytics will tell you: look at monthly users over the last three months and take the highest month, not the average. If the site is new, be honest. A new local business site rarely has thousands of visitors in its first months, and that is fine; you can move up a plan when it does.",
+      },
+      { type: "h3", text: "3. What do your pages do?" },
+      {
+        type: "p",
+        text: "A page that is the same for every visitor (an about page, a blog post, a service page) can be cached and served almost for free. A page that is built fresh for each person (a basket, a checkout, a member area, a search) has to run code and query the database every time. Ten thousand visits to a brochure site and ten thousand visits to a busy store are very different workloads, which is why the store needs more memory for the same traffic.",
+      },
+      { type: "h3", text: "4. Does your traffic arrive in spikes?" },
+      {
+        type: "p",
+        text: "A newsletter send, a TV mention or a seasonal sale can put a month's worth of visitors on the site in an afternoon. If that describes your business, size for the spike rather than the average, or choose infrastructure that can absorb one. That is the main reason to prefer [cloud hosting](/cloud-hosting) over a fixed shared server.",
+      },
+      { type: "h2", id: "matching", text: "Matching the answers to a plan" },
+      {
+        type: "p",
+        text: "Here is how those answers map onto our own plans. The visit figures are guides for a typical, cached site rather than hard caps, and every plan includes unlimited NVMe storage and unmetered bandwidth, so storage and transfer are rarely what decides it.",
+      },
+      {
+        type: "table",
+        head: ["Plan", "Websites", "Guide monthly visits", "Memory", "Price / renewal"],
+        rows: [
+          [
+            "Starter",
+            "1",
+            "~10,000",
+            "2 GB",
+            "$7.95/mo, renews at $12.62/mo (+$2.95 setup)",
+          ],
+          ["Plus", "7", "~25,000", "4 GB", "$11.95/mo, renews at $15.93/mo"],
+          ["Turbo", "Unlimited", "~50,000", "6 GB", "$17.95/mo, renews at $21.37/mo"],
+          [
+            "Business",
+            "Unlimited",
+            "~100,000",
+            "8 GB",
+            "$23.95/mo, renews at $27.22/mo",
+          ],
+        ],
+      },
+      {
+        type: "ul",
+        items: [
+          "**One brochure site or blog, modest traffic:** Starter is enough. Do not let anyone talk you out of it.",
+          "**A few sites, or one site that is growing:** Plus gives you room for a second project and twice the memory.",
+          "**A store, a membership site, or traffic that spikes:** start at Turbo. Dynamic pages are where extra memory earns its keep.",
+          "**Several busy sites, or one store that is your whole business:** Business, and consider [managed hosting](/managed-hosting) so someone else watches it.",
+        ],
+      },
+      {
+        type: "callout",
+        title: "Pick the type before the size",
+        text: "If the site runs on WordPress, a [WordPress plan](/wordpress-hosting) comes tuned for it. If it sells through WooCommerce, an [ecommerce plan](/ecommerce-hosting) caches the store safely around the basket and checkout. The tiers and prices are the same; the tuning is what differs. Our guide to [shared, cloud, VPS or dedicated](/blog/shared-cloud-vps-or-dedicated) covers the bigger choice.",
+      },
+      { type: "h2", id: "signs", text: "Signs you have outgrown your plan" },
+      {
+        type: "p",
+        text: "Plans are not a lifetime decision. Watch for these, and move up when you see two of them together:",
+      },
+      {
+        type: "ul",
+        items: [
+          "Pages that are fast at night and slow in the middle of the day.",
+          "The admin area becoming sluggish while the public pages still feel fine.",
+          "Resource or memory warnings in your control panel.",
+          "Errors or timeouts during a sale, a launch or a newsletter send.",
+          "Your monthly visits sitting at or above the guide figure for your plan for several months in a row.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Before upgrading, rule out the cheap fixes: oversized images, a plugin doing far more than it should, and caching that is switched off. Our guides to [website caching](/blog/website-caching-guide) and [reducing server response time](/blog/reduce-ttfb) are the place to start. If the site is still struggling after that, it genuinely needs more room.",
+      },
+      { type: "h2", id: "dont-overbuy", text: "Do not overbuy on day one" },
+      {
+        type: "p",
+        text: "The most common mistake is not buying too little. It is buying the top plan for a site that has not launched yet, then paying for unused capacity for a year. Start where your honest answers put you. Moving up a tier does not mean rebuilding anything, and every plan has a 30-day money-back guarantee if it turns out to be the wrong fit.",
+      },
+      {
+        type: "p",
+        text: "If you are still unsure, [compare every plan side by side](/pricing) with the renewal price next to each one, or [ask our team](/support) with your answers to the four questions above. We would rather sell you the smaller plan that fits than the bigger one you resent.",
+      },
+    ],
+  },
+  {
+    slug: "wordpress-maintenance-routine",
+    title: "A WordPress maintenance routine you can actually keep",
+    description:
+      "What to check on a WordPress site every week, every month and every year, in the order that prevents the most problems for the least time.",
+    category: "WordPress",
+    published: "2026-10-12",
+    body: [
+      {
+        type: "p",
+        text: "WordPress sites rarely break all at once. They drift. A plugin nobody uses stays installed, an update gets postponed, a backup quietly stops running, and one day a routine change takes the site down at the worst possible time. Nearly every WordPress emergency is a maintenance task that was skipped months earlier.",
+      },
+      {
+        type: "p",
+        text: "The fix is a routine small enough that you will actually do it. Here is one, split into weekly, monthly and yearly jobs, with the reasoning behind each so you can adapt it to your own site.",
+      },
+      { type: "h2", id: "weekly", text: "Every week: ten minutes" },
+      {
+        type: "ol",
+        items: [
+          "**Open the site as a visitor.** Load the home page, a key service or product page and the contact page on your phone. You are looking for anything obviously wrong: broken layout, missing images, error messages.",
+          "**Send yourself a test message through your contact form.** Forms fail silently. If the email does not arrive, you are losing enquiries and nobody will tell you. Our [contact form guide](/blog/contact-form-guide) covers the usual causes.",
+          "**Check the updates screen.** Note what is waiting. Security releases for WordPress core and for any plugin you rely on should not wait for the monthly session.",
+          "**Glance at comments and form submissions for spam.** A sudden flood is often the first sign a form or comment section needs protecting.",
+        ],
+      },
+      { type: "h2", id: "monthly", text: "Every month: half an hour" },
+      {
+        type: "ol",
+        items: [
+          "**Confirm a recent backup exists, then restore one somewhere safe.** A backup you have never restored is a hope rather than a plan. Restoring to a staging copy proves it works without touching the live site. See our [backup strategy guide](/blog/website-backup-strategy) for what a good set of restore points looks like.",
+          "**Apply plugin and theme updates, on staging first if you can.** Update, click through the important pages, then repeat on the live site. Our guide to [setting up a WordPress staging site](/blog/wordpress-staging-site) shows how.",
+          "**Remove what you do not use.** A deactivated plugin still sits on the server and can still carry a vulnerability. If you have not used it in three months, delete it. The same goes for themes other than your active theme and one default fallback.",
+          "**Review user accounts.** Every administrator account is a way in. Remove people who have left, downgrade anyone who does not need admin rights, and make sure every remaining admin has [two-factor authentication](/blog/two-factor-authentication) switched on.",
+          "**Check speed on a phone.** Run your home page through PageSpeed Insights and compare with last month. A sudden drop usually points at a new plugin, a new embed or an image someone uploaded at full camera size.",
+        ],
+      },
+      { type: "h2", id: "yearly", text: "Every year: an afternoon" },
+      {
+        type: "ul",
+        items: [
+          "**Check your PHP version** in the control panel. Older PHP versions stop receiving security fixes, and newer ones are generally faster. Test the upgrade on staging first.",
+          "**Audit your plugins as a whole.** For each one, ask whether it is still maintained, whether you still need it, and whether two plugins overlap. Fewer, well-maintained plugins is the single biggest reliability improvement most sites can make. Our list of [must-have WordPress plugins](/blog/must-have-wordpress-plugins) is a useful baseline.",
+          "**Renew and check your domain and SSL.** Make sure the domain is on auto-renew with a payment card that has not expired, and that the certificate covers every address the site uses.",
+          "**Read your own site.** Opening hours, prices, team members and policies change. Out-of-date information costs more trust than a slow page.",
+        ],
+      },
+      {
+        type: "callout",
+        title: "Keep a one-line log",
+        text: "Write down the date and what you did each time, even if it was 'nothing to update'. When something breaks, the first question is always 'what changed?', and a log answers it in seconds instead of hours.",
+      },
+      {
+        type: "h2",
+        id: "what-hosting-handles",
+        text: "What your hosting should be doing for you",
+      },
+      {
+        type: "p",
+        text: "Some of this list should not be your job at all. On our [WordPress hosting](/wordpress-hosting), daily backups, automatic WordPress updates, free SSL renewal and LiteSpeed caching are included on every plan, so the weekly and monthly sessions shrink to checking that they ran and testing what matters to you.",
+      },
+      {
+        type: "p",
+        text: "If you would rather hand the whole server side over, [managed hosting](/managed-hosting) adds patching, hardening and monitoring by our team, with restores done for you. Your content and your plugin choices stay yours; keeping the platform underneath them healthy becomes ours.",
+      },
+      {
+        type: "p",
+        text: "And if something has already gone wrong, start with our guide to the [WordPress white screen of death](/blog/wordpress-white-screen-death), then come back here so it does not happen twice.",
+      },
+    ],
+  },
+  {
+    slug: "fonts-scripts-and-embeds-slowing-your-site",
+    title: "The hidden weight on your pages: fonts, scripts and embeds",
+    description:
+      "Chat widgets, video embeds, tracking tags and web fonts are often what really slows a small site. How to find them, and what to keep, delay or remove.",
+    category: "Performance",
+    published: "2026-10-12",
+    body: [
+      {
+        type: "p",
+        text: "When a site feels slow, the usual suspects are the server and the images. Both matter, and both are well covered elsewhere on this blog. But on a lot of small business sites, the biggest cost is something else: the things that were added one at a time over the years. A video embed on the home page. A booking widget. Three analytics tags. A map. A font family loaded in six weights when the design uses two.",
+      },
+      {
+        type: "p",
+        text: "Each one seemed harmless when it was added. Together, they often outweigh everything else on the page, and because they load from other companies' servers, no amount of hosting can make them faster. The good news is that they are usually the cheapest thing to fix.",
+      },
+      {
+        type: "h2",
+        id: "find-them",
+        text: "Step one: see what your page is actually loading",
+      },
+      {
+        type: "ol",
+        items: [
+          "Open your home page in Chrome, right-click and choose **Inspect**, then open the **Network** tab.",
+          "Tick **Disable cache** and reload the page.",
+          "Sort by the **Domain** column (right-click a column header to add it). Everything that is not your own domain is a third party.",
+          "Look at the totals at the bottom: the number of requests and the amount transferred. Then add up roughly how much of that came from other domains.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Write the list down. For each third party, you should be able to say what it does and who asked for it. If nobody can, that is your first candidate for removal.",
+      },
+      {
+        type: "h2",
+        id: "usual-suspects",
+        text: "The usual suspects, and what to do with each",
+      },
+      { type: "h3", text: "Video embeds" },
+      {
+        type: "p",
+        text: "A standard video embed loads the full player and its scripts before anyone presses play, which most visitors never do. Replace it with a 'facade': a still image with a play button that only loads the real player when clicked. Many page builders and plugins offer this as a setting called lazy-loading or click-to-load.",
+      },
+      { type: "h3", text: "Maps" },
+      {
+        type: "p",
+        text: "An embedded map is heavy and often sits on every page through the footer. Keep it on the contact page only, or replace it with a static map image that links to directions.",
+      },
+      { type: "h3", text: "Web fonts" },
+      {
+        type: "p",
+        text: "Check how many font files load. Two families in two or three weights each is plenty for most designs. Host the fonts on your own domain rather than fetching them from another service, use the WOFF2 format, and set `font-display: swap` so text appears immediately in a fallback font instead of staying invisible while the font downloads.",
+      },
+      { type: "h3", text: "Tracking and marketing tags" },
+      {
+        type: "p",
+        text: "Sites collect tags: an analytics tag, an old analytics tag nobody removed, an ad pixel from a campaign that ended, a heatmap tool from a trial. Remove anything you are no longer actively using. Put the rest in a single tag manager so they can be reviewed in one place, and load them after the page content rather than before it.",
+      },
+      { type: "h3", text: "Chat, booking and review widgets" },
+      {
+        type: "p",
+        text: "These earn their place, because they turn visitors into customers. The question is how they load. A well-built widget loads a small launcher first and the rest only when someone opens it. If a widget is pulling in a large amount of script before anyone interacts with it, ask the vendor whether it has a lighter or deferred loading option.",
+      },
+      {
+        type: "callout",
+        title: "A good test for any script",
+        text: "Ask: does this need to run before the visitor can see and use the page? If the answer is no, it should load after the page, on interaction, or not at all. Almost nothing on a small business site needs to run first.",
+      },
+      { type: "h2", id: "measure", text: "Measure before and after" },
+      {
+        type: "p",
+        text: "Run your page through PageSpeed Insights before you change anything and save the result. Make one change at a time, then test again. The scores to watch are the Core Web Vitals: Largest Contentful Paint should be under 2.5 seconds, Interaction to Next Paint under 200 milliseconds, and Cumulative Layout Shift under 0.1. Third-party scripts tend to hurt the second one most, because they keep the browser busy when the visitor tries to tap something. Our guide to [Core Web Vitals for small sites](/blog/core-web-vitals-for-small-sites) explains each one in plain language.",
+      },
+      { type: "h2", id: "your-share", text: "Then make sure your own share is fast" },
+      {
+        type: "p",
+        text: "Once the third parties are under control, what is left is your own server, your own images and your own code. That part is what hosting decides. Every Serverlys plan, from [cloud hosting](/cloud-hosting) to [WordPress hosting](/wordpress-hosting), runs on NVMe storage with LiteSpeed caching included, so the pages you control are served quickly and the time you saved on scripts is not lost waiting for the server.",
+      },
+      {
+        type: "p",
+        text: "For the rest of the job, see our guides to [image optimisation](/blog/image-optimization-web) and [mobile speed](/blog/mobile-speed-optimization).",
+      },
+    ],
+  },
+  {
+    slug: "who-has-access-to-your-website",
+    title: "Who still has the keys to your website?",
+    description:
+      "A practical access audit for small businesses: every login that controls your website, domain and email, and what to do when someone leaves.",
+    category: "Security",
+    published: "2026-10-12",
+    body: [
+      {
+        type: "p",
+        text: "Ask a small business owner who can log in to their website and the answer is usually 'me, and maybe the designer'. Ask them to list every account and the list grows: the old web designer, a marketing freelancer from two years ago, a former employee who updated the blog, the agency that set up the ads, a shared password on a sticky note.",
+      },
+      {
+        type: "p",
+        text: "Every one of those is a way in. Plenty of break-ins on small sites involve no clever hacking at all, just a valid login that should have been removed, or a password that was reused somewhere else and leaked. An access audit closes that door, takes an afternoon, and costs nothing.",
+      },
+      { type: "h2", id: "map", text: "Step one: map every account that matters" },
+      {
+        type: "p",
+        text: "Write a list with one line per system. For each, note the login email, who has access, and whether two-factor authentication is on. These are the systems that matter most, in order:",
+      },
+      {
+        type: "ol",
+        items: [
+          "**Your domain registrar.** Whoever controls the domain controls your website and your email. This is the most important account you own. Our guide to [keeping control of your domain](/blog/keep-control-of-your-domain) covers it in detail.",
+          "**Your email accounts**, especially the address that password resets go to. Access to that inbox is access to everything else.",
+          "**Your hosting account and control panel**, including FTP and database users created over the years.",
+          "**Your website's admin area**, such as WordPress administrators, editors and shop managers.",
+          "**Everything connected:** analytics, ad accounts, payment providers, the booking system, social profiles linked to the site.",
+        ],
+      },
+      { type: "h2", id: "clean-up", text: "Step two: clean up what you find" },
+      {
+        type: "ul",
+        items: [
+          "**One person, one account.** Shared logins make it impossible to remove one person without changing the password for everyone, so nobody ever does it. Give each person their own account.",
+          "**Least privilege.** Someone who writes blog posts needs an editor role, not an administrator one. Downgrade anyone who has more access than their job needs.",
+          "**Remove the departed.** Delete or disable accounts for anyone who no longer works with you, including agencies and freelancers. In WordPress, reassign their content to another user when you delete them.",
+          "**Delete stale technical users.** Old FTP accounts and database users from a past project are easy to forget and easy to abuse.",
+          "**Turn on two-factor everywhere it is offered**, starting with the registrar, email and hosting. See our [two-factor authentication guide](/blog/two-factor-authentication).",
+          "**Use a password manager.** Unique, long passwords for every account, stored somewhere better than a spreadsheet, and shareable with a teammate without being visible to them.",
+        ],
+      },
+      {
+        type: "callout",
+        title: "Make sure the business owns the accounts",
+        text: "If a designer registered your domain or hosting in their own name, with their own email, you do not own it in any practical sense. Have it moved into an account that uses a business email address you control, before you need it.",
+      },
+      {
+        type: "h2",
+        id: "offboarding",
+        text: "Step three: an offboarding checklist for next time",
+      },
+      {
+        type: "p",
+        text: "The audit fixes today. A checklist keeps it fixed. When an employee, freelancer or agency stops working with you, go through this the same day:",
+      },
+      {
+        type: "ol",
+        items: [
+          "Remove or disable their website admin account and reassign their content.",
+          "Remove them from the hosting account, control panel, FTP and any database users they created.",
+          "Remove them from the registrar, analytics, ad accounts and social profiles.",
+          "Change any shared password they knew. If you followed step two, there should be none.",
+          "Forward or convert their business mailbox so customer messages are not lost, then close it.",
+          "Check that payment details and recovery emails on every account point to you, not to them.",
+        ],
+      },
+      { type: "h2", id: "after", text: "Keep it short, keep it current" },
+      {
+        type: "p",
+        text: "Repeat the audit once a year, or whenever you change web designer or agency. It is also worth working through our wider [website security checklist](/blog/website-security-checklist) once the access is clean, because a tidy set of accounts is the foundation everything else rests on.",
+      },
+      {
+        type: "p",
+        text: "Two things make this easier on our side. [Business email](/business-email) at your own domain means accounts and password resets use addresses the business owns, rather than personal ones that walk out of the door. And with [managed hosting](/managed-hosting), our team handles server patching, firewall hardening and daily backups, so even if an account slips through, a clean restore point is there.",
+      },
+    ],
+  },
+  {
+    slug: "keep-control-of-your-domain",
+    title: "How to make sure your domain really belongs to you",
+    description:
+      "Who the registrant is, which email controls it, and how auto-renew and transfer locks work, so your domain never lapses or ends up in someone else's hands.",
+    category: "Domains",
+    published: "2026-10-12",
+    body: [
+      {
+        type: "p",
+        text: "Your domain name is the address of your website and the second half of every email address your business uses. If it expires, both stop working. If someone else controls it, they control both. And yet it is the asset small businesses check least, often registered years ago by whoever happened to set up the website.",
+      },
+      {
+        type: "p",
+        text: "Making sure it is genuinely yours takes about twenty minutes. Here is what to check, and what to fix.",
+      },
+      { type: "h2", id: "find-it", text: "Step one: find out where it is registered" },
+      {
+        type: "p",
+        text: "Run your domain through a [WHOIS lookup](/whois-lookup). Even with privacy protection on, it will show which registrar the domain is with, when it was registered and when it expires. If the registrar is not one you recognise, someone else probably set it up, and that is the first thing to resolve.",
+      },
+      {
+        type: "h2",
+        id: "three-things",
+        text: "Step two: check the three things that define ownership",
+      },
+      { type: "h3", text: "The account it sits in" },
+      {
+        type: "p",
+        text: "The domain lives inside an account at the registrar. Whoever can log in to that account can change where the domain points, transfer it away or let it lapse. Make sure that account belongs to the business, uses a strong unique password and has two-factor authentication on.",
+      },
+      { type: "h3", text: "The registrant" },
+      {
+        type: "p",
+        text: "The registrant is the legal holder of the domain. It should be your business (or you, as its owner), not a designer, an agency or a former employee. If it is someone else, ask them to update it now, while you are on good terms. Note that changing the registrant can trigger a 60-day transfer lock at many registrars; that is a standard safety measure, and a good reason to fix it before you need to move the domain.",
+      },
+      { type: "h3", text: "The contact email" },
+      {
+        type: "p",
+        text: "Renewal reminders, transfer approvals and security notices go to the email on the account. If that address is a former employee's, a free mailbox nobody reads, or an address at the domain itself, you can miss the very message that would have saved it. Use an address you check, ideally one that does not depend on the domain it is protecting.",
+      },
+      {
+        type: "callout",
+        title: "The quiet trap: email at the same domain",
+        text: "If the only contact address is you@yourbusiness.com and the domain expires, your email stops with it, and so do the reminder emails telling you how to renew. Add a second, independent recovery address to the registrar account.",
+      },
+      { type: "h2", id: "expiry", text: "Step three: make expiry impossible" },
+      {
+        type: "ul",
+        items: [
+          "**Turn on auto-renew**, and check that the card on file has not expired. Most lapses are not decisions; they are declined payments nobody noticed.",
+          "**Consider renewing for several years.** It removes a yearly point of failure, and the cost is the same per year.",
+          "**Put the expiry date in your calendar** a month ahead, as a backstop to the registrar's own reminders.",
+          "**Know the safety net, but do not rely on it.** After expiry, most domains enter a grace and redemption period during which the old owner can still recover them, often at extra cost. Once that ends, the name is released and anyone can register it. Our guide to [expired domains](/blog/expired-domains-guide) explains the stages.",
+        ],
+      },
+      { type: "h2", id: "locks", text: "Step four: lock it and protect it" },
+      {
+        type: "ul",
+        items: [
+          "**Registrar lock (transfer lock) on.** It blocks transfers to another registrar until you deliberately switch it off. Leave it on unless you are moving the domain yourself.",
+          "**WHOIS privacy on, where the extension allows it.** It keeps your personal details out of public lookups and cuts down the spam and scam letters that follow a new registration. See our [WHOIS privacy guide](/blog/whois-privacy-protection).",
+          "**Write down your nameservers.** If the website or email ever stops working, knowing where the domain is meant to point is half the diagnosis. Our [nameservers explainer](/blog/nameservers-explained) shows where to find them.",
+        ],
+      },
+      { type: "h2", id: "consolidate", text: "Bringing it all under one roof" },
+      {
+        type: "p",
+        text: "Many businesses end up with domains scattered across several registrars, each with its own login and renewal date. Consolidating them makes all of the above easier to keep up. You can [transfer a domain to Serverlys](/transfer-domain) and manage it alongside your hosting and email, or [register a new one](/register-domain) with WHOIS privacy included where the registry allows and the renewal price shown before you pay. Our [domain transfer guide](/blog/domain-transfer-guide) walks through the steps, including the authorisation code and the timing.",
+      },
+      {
+        type: "p",
+        text: "Whichever registrar you use, the rule is the same: the business owns the domain, the business controls the account, and nothing about renewal depends on someone remembering.",
+      },
+    ],
+  },
+  {
+    slug: "online-store-pre-launch-checklist",
+    title: "Before you open your online store: a pre-launch checklist",
+    description:
+      "Payments, shipping, tax, emails, policies, speed and backups: what to test before your store takes its first real order, and how to test it.",
+    category: "Ecommerce",
+    published: "2026-10-12",
+    body: [
+      {
+        type: "p",
+        text: "The first real order is the worst time to discover that the confirmation email goes to spam, shipping is free to the whole world by accident, or the checkout breaks on a phone. Yet that is how a lot of stores find out, because launch day arrives and the testing was 'add something to the basket, looks fine'.",
+      },
+      {
+        type: "p",
+        text: "This checklist is the test a customer would run without meaning to. Work through it on a staging copy or before you announce the store, and you will launch knowing the whole journey works, not just the home page.",
+      },
+      { type: "h2", id: "orders", text: "Place real test orders" },
+      {
+        type: "ol",
+        items: [
+          "**Switch your payment provider to test mode** and place an order with each payment method you offer, on a desktop and on a phone.",
+          "**Place one real order** with a real card for a low-priced item, then refund it. Test mode does not catch everything; a real transaction does.",
+          "**Try to fail.** Use a declined test card, abandon the checkout halfway, enter an address in a country you do not ship to. The store should handle each one clearly.",
+          "**Check the order in your admin**: correct items, correct totals, correct customer details, correct status.",
+        ],
+      },
+      { type: "h2", id: "money", text: "Check the numbers" },
+      {
+        type: "ul",
+        items: [
+          "**Shipping:** test an order to each shipping zone, including a heavy and a light basket. Make sure there is no zone that ships everywhere for free unless you meant it.",
+          "**Tax:** confirm tax is calculated the way your accountant expects for the places you sell to, and shown the way your customers expect to see it.",
+          "**Discounts:** test a coupon, an expired coupon and a coupon combined with a sale price.",
+          "**Stock:** buy the last unit of something and check that it shows as out of stock afterwards.",
+        ],
+      },
+      { type: "h2", id: "emails", text: "Make sure your emails arrive" },
+      {
+        type: "p",
+        text: "Order confirmations are the emails customers care about most, and the ones most likely to land in spam if the domain is not set up properly. Place a test order to a Gmail address and an Outlook address and check both inboxes, including spam.",
+      },
+      {
+        type: "ul",
+        items: [
+          "Send from an address at your own domain, not a free mailbox. A [business email](/business-email) address tells the customer the message genuinely comes from your shop.",
+          "Set up SPF, DKIM and DMARC for the domain. Our guide to [email authentication](/blog/email-security-spf-dkim-dmarc) explains each record.",
+          "Read every automated email: order received, shipped, refunded, password reset. Replace the default wording with your own.",
+        ],
+      },
+      { type: "h2", id: "trust", text: "Publish the pages customers look for" },
+      {
+        type: "p",
+        text: "Shoppers check these before buying from a store they do not know, and payment providers often expect them too:",
+      },
+      {
+        type: "ul",
+        items: [
+          "Shipping information: costs, regions and realistic delivery times.",
+          "Returns and refunds: how long, who pays postage, how to start one.",
+          "A privacy policy that reflects what you actually collect. See our note on [GDPR and website compliance](/blog/gdpr-website-compliance).",
+          "Contact details that reach a person, and an answer to the questions you already know you will be asked.",
+        ],
+      },
+      {
+        type: "callout",
+        title: "Answer questions before they become abandoned baskets",
+        text: "Many lost sales are one unanswered question: does it fit, when will it arrive, can I return it? A chat assistant that answers from your own shipping and returns policies, such as [ConvoAI](https://convoai.cloud/), keeps those shoppers in the checkout instead of on a competitor's site.",
+      },
+      { type: "h2", id: "speed", text: "Test speed where it matters: the checkout" },
+      {
+        type: "p",
+        text: "Most speed tests measure the home page. Measure the product page, the basket and the checkout on a phone, because that is where a slow page costs money. Basket and checkout pages cannot be cached the way product pages can, so they depend on the server itself. That is why our [ecommerce hosting](/ecommerce-hosting) is tuned for WooCommerce, with LiteSpeed store caching that speeds up the catalogue while keeping baskets and checkout correct for each shopper.",
+      },
+      { type: "h2", id: "safety", text: "Set up your safety net" },
+      {
+        type: "ul",
+        items: [
+          "**Daily backups that include the database**, because that is where orders live. Restore one to staging before launch to prove it works.",
+          "**SSL on every page**, not just the checkout. Every Serverlys plan includes a free, auto-renewing certificate.",
+          "**Two-factor authentication** for every account that can see orders or refund money.",
+          "**A plan for launch-day traffic.** If you are announcing to a big list, size for the spike. Our guide to [how much hosting you need](/blog/how-much-hosting-do-you-need) helps.",
+        ],
+      },
+      { type: "h2", id: "launch", text: "Then launch, and watch the first week" },
+      {
+        type: "p",
+        text: "For the first week, check every order by hand: payment received, email sent, stock updated, shipped on time. Small problems show up in the first ten orders, not the first thousand.",
+      },
+      {
+        type: "p",
+        text: "If you have not chosen a platform yet, start with [WooCommerce vs Shopify](/blog/woocommerce-vs-shopify) and our [online store setup guide](/blog/online-store-setup-guide). If you already run a store elsewhere, our free store migration moves it to [ecommerce hosting](/ecommerce-hosting) for you, so you can run this checklist on the new platform before switching over.",
+      },
+    ],
+  },
+  {
+    slug: "write-the-answers-your-ai-assistant-gives",
+    title: "How to write the answers your AI chat assistant gives",
+    description:
+      "An AI assistant is only as good as the information you give it. What to write, how to structure it, and how to test it so customers get answers you would stand behind.",
+    category: "AI",
+    published: "2026-10-12",
+    body: [
+      {
+        type: "p",
+        text: "When an AI chat assistant gives a customer a vague or wrong answer, the instinct is to blame the AI. Most of the time the real cause is simpler: it was never told the answer. It was given a home page, an about page and a few lines of description, then asked about parking, deposits and whether you can do Saturdays.",
+      },
+      {
+        type: "p",
+        text: "The assistant cannot know what you have not written down. The good news is that writing it down well is not a technical job. It is the same knowledge you would give a new employee on their first day, organised so it can be found.",
+      },
+      {
+        type: "h2",
+        id: "gather",
+        text: "Start with the questions you are actually asked",
+      },
+      {
+        type: "p",
+        text: "Before writing anything, collect real questions. Go through your inbox, your messages and your phone notes from the last few months, and ask anyone who answers customers what comes up every week. You will usually find the same twenty or thirty questions account for most of what people ask. Those are what your assistant must answer perfectly.",
+      },
+      { type: "h2", id: "what-to-write", text: "What to write down" },
+      {
+        type: "p",
+        text: "Organise your information under clear headings. For most small businesses, these cover nearly everything:",
+      },
+      {
+        type: "ul",
+        items: [
+          "**The basics:** what you do, who you serve, where you are, opening hours including holidays, and how to reach a person.",
+          "**Services or products:** what each one is, who it suits, what is included, and what it is not.",
+          "**Prices:** the prices you are happy to state publicly, starting prices where a quote is needed, and what changes the price.",
+          "**Booking and process:** how to book, how far ahead, what happens next, deposits, cancellations.",
+          "**Policies:** refunds, returns, guarantees, payment methods, areas you cover.",
+          "**The awkward ones:** what you do not do, and where you would send someone instead.",
+        ],
+      },
+      {
+        type: "h2",
+        id: "how-to-write",
+        text: "How to write it so the assistant answers well",
+      },
+      { type: "h3", text: "Be specific" },
+      {
+        type: "p",
+        text: "'We offer flexible scheduling' gives the assistant nothing to say. 'We take bookings Monday to Saturday, 8am to 6pm, and Sunday by arrangement for jobs over $500' gives it a precise answer it can repeat with confidence.",
+      },
+      { type: "h3", text: "One fact, one place" },
+      {
+        type: "p",
+        text: "If your opening hours appear in three documents and one is out of date, the assistant may quote the wrong one. Keep each fact in a single place, and when it changes, change it there.",
+      },
+      { type: "h3", text: "Write the question as well as the answer" },
+      {
+        type: "p",
+        text: "A simple question-and-answer format works well. 'Do you deliver outside the city? Yes, within 30 miles for a $15 fee; further than that, call us for a quote.' Write the question the way customers phrase it, not the way your brochure does.",
+      },
+      { type: "h3", text: "Say what it should not answer" },
+      {
+        type: "p",
+        text: "Tell the assistant where its job ends: medical, legal or financial advice, complaints, refunds above a certain amount, anything that needs a judgement call. A good assistant hands those to a person with the context written up, rather than guessing.",
+      },
+      {
+        type: "callout",
+        title: "Fix the information, not the wording",
+        text: "When an answer comes out wrong, resist the urge to add a rule like 'always say X'. Find the missing or contradictory fact and correct it at the source. One fix to the information improves every future answer that depends on it.",
+      },
+      { type: "h2", id: "test", text: "Test it like a difficult customer" },
+      {
+        type: "ol",
+        items: [
+          "Ask your top twenty questions in your own words, then again in the clumsiest phrasing you can imagine.",
+          "Ask things you do not do, and check it says so plainly instead of improvising.",
+          "Ask for a person, and check the handover actually reaches you.",
+          "Read the real conversations every week for the first month. They will show you the questions you forgot to write down.",
+        ],
+      },
+      { type: "h2", id: "where", text: "Putting it to work" },
+      {
+        type: "p",
+        text: "[ConvoAI](https://convoai.cloud/) is built around exactly this process. You describe your business when you create the agent, and on the Pro plan you can upload your own documents (price lists, policies, FAQs) for it to answer from. When it does not know something, it brings in your team instead of guessing, and every conversation lands in one inbox where you can see what customers really ask. You can start on the free plan with no credit card.",
+      },
+      {
+        type: "p",
+        text: "If you would rather have it set up for you, including a phone agent as well as chat, our [AI agents service](/ai-agents) can set it up for you, on chat and on the phone. And for a broader view of where AI fits a small business, see [what an AI agent can genuinely do](/blog/what-ai-agents-can-do-for-a-small-business).",
+      },
+    ],
+  },
+  {
+    slug: "first-week-after-launching-a-website",
+    title: "Your website is live. Here is what to do in the first week.",
+    description:
+      "A day-by-day checklist for the week after launch: get found on Google, make sure forms and email work, set up measurement and protect what you built.",
+    category: "Getting started",
+    published: "2026-10-12",
+    body: [
+      {
+        type: "p",
+        text: "Launching a website feels like the finish line. It is closer to the start. The site exists, but Google may not know about it yet, the contact form has never received a real message, and nobody has checked whether the backups work. The first week is when those gaps are cheapest to close.",
+      },
+      {
+        type: "p",
+        text: "Here is a simple plan, one focus a day. None of it needs a developer, and each step takes less than an hour.",
+      },
+      { type: "h2", id: "day-1", text: "Day 1: check it like a stranger" },
+      {
+        type: "ul",
+        items: [
+          "Open every page on your phone and on a computer. Look for broken links, placeholder text and images that do not load.",
+          "Make sure the address bar shows the padlock on every page, and that both `www` and the plain domain go to the same place.",
+          "Ask someone who has never seen the site to find your phone number and send you a message. Watch where they get stuck.",
+        ],
+      },
+      { type: "h2", id: "day-2", text: "Day 2: make sure messages reach you" },
+      {
+        type: "ul",
+        items: [
+          "Submit every form on the site and confirm each message arrives, including in your spam folder. Our [contact form guide](/blog/contact-form-guide) covers the usual fixes.",
+          "Use an email address at your own domain for the site and for replies. [Business email](/business-email) from Serverlys starts at $5.95/mo for two mailboxes, plus a one-time $2.95 setup.",
+          "Set up SPF, DKIM and DMARC so your messages are trusted. See our guide to [email authentication](/blog/email-security-spf-dkim-dmarc).",
+        ],
+      },
+      { type: "h2", id: "day-3", text: "Day 3: tell Google you exist" },
+      {
+        type: "ul",
+        items: [
+          "Add your site to **Google Search Console** and verify it. This is free and shows you how Google sees your site.",
+          "Submit your sitemap (often at `/sitemap.xml`) in Search Console, and request indexing for your home page.",
+          "If you serve customers locally, create or update your **Google Business Profile** with the same name, phone number and website address as the site. Our [local SEO guide](/blog/local-seo-guide) explains why consistency matters.",
+        ],
+      },
+      { type: "h2", id: "day-4", text: "Day 4: start measuring" },
+      {
+        type: "ul",
+        items: [
+          "Install analytics so you can see how many people visit and where they come from. Our [Google Analytics 4 guide](/blog/google-analytics-4-guide) walks through it.",
+          "Decide what a successful visit looks like for you (a form sent, a call, a booking) and track that, not just page views.",
+          "If you collect data from visitors in regions with privacy laws, add a cookie notice that matches what you actually use. See our note on [GDPR compliance](/blog/gdpr-website-compliance).",
+        ],
+      },
+      { type: "h2", id: "day-5", text: "Day 5: check your speed" },
+      {
+        type: "p",
+        text: "Run your home page and your most important service page through PageSpeed Insights on mobile. If a page is slow, the usual causes on a new site are oversized images and embeds added at the last minute. Our guides to [image optimisation](/blog/image-optimization-web) and the [hidden weight of scripts and embeds](/blog/fonts-scripts-and-embeds-slowing-your-site) cover the fixes.",
+      },
+      { type: "h2", id: "day-6", text: "Day 6: protect what you built" },
+      {
+        type: "ul",
+        items: [
+          "Confirm backups are running, and find out how to restore one. Every Serverlys hosting plan includes free daily backups.",
+          "Turn on two-factor authentication for your hosting, your domain registrar and your website admin.",
+          "Write down where everything lives: registrar, hosting, email, analytics, and which email address each account uses. Our article on [who has access to your website](/blog/who-has-access-to-your-website) has a template for this.",
+          "Check your domain is on auto-renew with a valid card. See [how to make sure your domain belongs to you](/blog/keep-control-of-your-domain).",
+        ],
+      },
+      {
+        type: "h2",
+        id: "day-7",
+        text: "Day 7: tell people, and make it easy to reply",
+      },
+      {
+        type: "ul",
+        items: [
+          "Add the website to your email signature, social profiles, invoices and printed materials.",
+          "Tell existing customers. They are the people most likely to visit, share and leave a review.",
+          "Think about what happens when someone visits at 10pm with a question. A chat assistant like [ConvoAI](https://convoai.cloud/) can answer from your own information and pass the conversation to you in the morning, and it has a free plan to try it.",
+        ],
+      },
+      {
+        type: "callout",
+        title: "Then set a monthly reminder",
+        text: "Most of this week is a one-off. Three things are not: check that forms still deliver, check that backups still run, and read your analytics. Fifteen minutes once a month keeps a new site from quietly decaying.",
+      },
+      { type: "h2", id: "next", text: "If you have not launched yet" },
+      {
+        type: "p",
+        text: "Start with [how much a website costs](/blog/website-cost-guide) and [how much hosting you actually need](/blog/how-much-hosting-do-you-need). Our plans start at $7.95/mo, renewing at $12.62/mo, with SSL, daily backups and free migration included; [compare them here](/pricing). And if you would rather have the site built for you, our [website design](/website-design) team builds it, hosts it and wires in analytics from day one.",
+      },
+    ],
+  },
+  {
     slug: "answer-every-website-visitor-with-convoai",
     title: "Your website never closes. Now it can answer, too.",
     description:
@@ -134,7 +831,11 @@ export const originalArticles: readonly Article[] = [
           ["Price", "$0, free forever", "$49/month, or $39/month billed yearly"],
           ["AI agent", "1", "1"],
           ["AI replies", "65 every 2 weeks", "Unlimited"],
-          ["Channels", "Website messenger, WhatsApp and email", "Website messenger, WhatsApp and email"],
+          [
+            "Channels",
+            "Website messenger, WhatsApp and email",
+            "Website messenger, WhatsApp and email",
+          ],
           ["Answers from your own documents", "Not included", "Included"],
           ["Appointment booking", "Not included", "Included"],
           ["Team seats", "1", "10"],
@@ -180,7 +881,11 @@ export const originalArticles: readonly Article[] = [
         type: "p",
         text: "Do that for each provider on your shortlist and the ranking often reverses. The cheapest first year is frequently the most expensive third year, because a deep introductory discount has to be paid for somewhere.",
       },
-      { type: "h2", id: "term-length", text: "If a provider sells you a term, price the whole term" },
+      {
+        type: "h2",
+        id: "term-length",
+        text: "If a provider sells you a term, price the whole term",
+      },
       {
         type: "p",
         text: "Many hosts quote their lowest number against a multi-year commitment, billed upfront. That is a genuine discount, and it has a genuine cost: you have prepaid, so leaving early means asking for a refund rather than simply not renewing. If you go that route, buy the longest term you are confident about rather than the longest term offered — and check what the rate becomes when it ends, because that is when the discount stops.",
@@ -237,7 +942,11 @@ export const originalArticles: readonly Article[] = [
         type: "p",
         text: "Site migrations go wrong in a predictable way: someone points the domain at the new server before the new server is ready, and the site is broken in public while they fix it. The whole job is a sequencing problem, and the sequence is not complicated.",
       },
-      { type: "h2", id: "stage-first", text: "Build it on the new host before you point anything at it" },
+      {
+        type: "h2",
+        id: "stage-first",
+        text: "Build it on the new host before you point anything at it",
+      },
       {
         type: "p",
         text: "Copy the files, import the database, and get the site running on the new server under a temporary hostname while the old one is still serving your visitors. Nothing you do at this stage is visible to anyone. Work through the site properly: log in to the admin, load a page that hits the database, submit a form, complete a test checkout if you sell anything.",
@@ -328,7 +1037,11 @@ export const originalArticles: readonly Article[] = [
         type: "p",
         text: "The whole physical machine. You take it for sustained heavy load, for compliance requirements that forbid shared tenancy, or for workloads that need consistent I/O. It is the most expensive option and the least elastic — scaling means provisioning another box.",
       },
-      { type: "h2", id: "signals", text: "The signals that you have outgrown your plan" },
+      {
+        type: "h2",
+        id: "signals",
+        text: "The signals that you have outgrown your plan",
+      },
       {
         type: "ul",
         items: [
