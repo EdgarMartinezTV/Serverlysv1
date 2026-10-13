@@ -39,3 +39,11 @@ seo-content    X_7Qb2Tg_6g  Oxana Melis — florist arranging flowers
 seo-links      K_iummt0Oeo  Iyan Ryan — woman at a laptop in a bakery café
 seo-reports    WHWYBmtn3_0  Brooke Cagle — woman smiling at her laptop in a café
 seo-cta        X_bbCAYzlTs  Nathan Dumlao — barista using a tablet at the counter
+webdev-hero    _Fx34KeqIEw  Mohammad Rahmani — developer at two monitors (/website-development hero)
+webdev-build   64YrPKiguAE  ThisisEngineering — developer at her workstation
+webdev-store   k63Or81F8-M  Rifki Kurniawan — online-store owner with orders, phone and laptop
+webdev-review  bPVM4nOy0Rg  Christina @ wocintechchat.com — two people reviewing code
+webdev-team    ZT5v0puBjZI  Mapbox — team meeting around laptops
+webdev-fix     YK0HPwWDJ1I  Kelly Sikkema — developer thinking through a problem
+webdev-cta     KcWLDrDgzms  Vitaly Gariev — boutique owner on the phone at her laptop
+webdev-code    m_HRfLhgABo  Christopher Gower — laptop showing code

@@ -47,7 +47,13 @@ function Visual({ group, className }: { group: FeatureGroup; className?: string 
   );
 }
 
-export function FeaturesScroller({ groups }: { groups: readonly FeatureGroup[] }) {
+export function FeaturesScroller({
+  groups,
+  tabPrefix,
+}: {
+  groups: readonly FeatureGroup[];
+  tabPrefix?: string;
+}) {
   const [active, setActive] = useState(0);
   const refs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -74,7 +80,7 @@ export function FeaturesScroller({ groups }: { groups: readonly FeatureGroup[] }
   };
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[120px_1fr_1fr] lg:gap-10">
+    <div className="grid gap-8 [&>*]:min-w-0 lg:grid-cols-[120px_1fr_1fr] lg:gap-10">
       {/* Tab rail — pinned */}
       <div className="hidden lg:block">
         <ul className="sticky top-32 flex flex-col items-start gap-5">
@@ -127,7 +133,7 @@ export function FeaturesScroller({ groups }: { groups: readonly FeatureGroup[] }
             className="lg:flex lg:min-h-[78vh] lg:flex-col lg:justify-center lg:py-10"
           >
             <p className="mb-4 inline-flex self-start rounded-full bg-brand-50 px-3 py-1 text-[13px] font-medium text-primary">
-              SEO {g.tab}
+              {tabPrefix ? `${tabPrefix} ${g.tab}` : g.tab}
             </p>
             <Visual group={g} className="mb-8 lg:hidden" />
             {g.features.map(([title, body], j) => (

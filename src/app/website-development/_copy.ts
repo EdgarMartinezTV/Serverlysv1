@@ -98,7 +98,8 @@ export const WAYS = {
 export const PLANS = {
   title: "Two ways to work with us",
   lede: "Buy the hours you need for one piece of work, or keep a block of time on standby each month. The more you commit, the lower the rate.",
-  footnote: "Charged in full at checkout, plus tax. Every project is scoped in writing before any of it starts.",
+  footnote:
+    "Charged in full at checkout, plus tax. Every project is scoped in writing before any of it starts.",
   cards: [
     {
       name: "Serverlys Hours",
