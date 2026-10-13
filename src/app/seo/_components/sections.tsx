@@ -123,23 +123,13 @@ function Eyebrow({ children, dark = false }: { children: React.ReactNode; dark?:
 
 export function Hero() {
   return (
-    <section aria-labelledby="seo-hero-heading" className="relative overflow-hidden bg-canvas pt-8 pb-20 lg:pt-10 lg:pb-28">
+    <section aria-labelledby="seo-hero-heading" className="relative overflow-hidden bg-canvas pt-12 pb-20 lg:pt-16 lg:pb-28">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -top-40 right-[-10%] h-[620px] w-[760px] rounded-full bg-[radial-gradient(closest-side,var(--color-brand-100),transparent)] opacity-70"
       />
       <Grid className="relative">
-        <Link
-          href="/business-solutions"
-          className="inline-flex min-h-11 items-center gap-2 text-small font-medium text-fg-secondary transition-colors hover:text-primary"
-        >
-          <svg viewBox="0 0 24 24" aria-hidden="true" className="size-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M19 12H5m6-6-6 6 6 6" />
-          </svg>
-          All business services
-        </Link>
-
-        <div className="mt-6 grid items-center gap-16 [&>*]:min-w-0 lg:grid-cols-[1fr_1.1fr] lg:gap-14">
+        <div className="grid items-center gap-16 [&>*]:min-w-0 lg:grid-cols-[1fr_1.1fr] lg:gap-14">
           <div>
             <Eyebrow>SEO services for small businesses</Eyebrow>
             <h1 id="seo-hero-heading" className="display-xl mt-5 text-fg">
