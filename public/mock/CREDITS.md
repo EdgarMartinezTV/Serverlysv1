@@ -91,3 +91,12 @@ move-carry      mYxzG5NwDNs  HiveBoxx — man carrying a crate into an office
 move-cta        oZDtj3UGI88  Vitaly Gariev — couple holding an open sign
 move-desk       MGaFENpDCsw  Bench Accounting — cardboard box on a desk
 move-room       j7vbBmTHmjY  Dina Badamshina — room of boxes and plants
+biz-hero         1sv3PJYtn88  RONNAKORN TRIRAGANON — contractors shaking hands (/business-solutions hero)
+biz-salon        A5xiXjyxmAU  Land O'Lakes, Inc. — salon owner
+biz-restaurant   MWgi74Fn9J4  Kevy Michaels — two restaurant owners
+biz-contractors  IvEYfb-3B70  RONNAKORN TRIRAGANON — contractors reviewing plans
+biz-designer     kk4J92iaSBk  Vitaly Gariev — designer on the phone at her laptop
+biz-kitchen      oOyFmy3gnZo  Memento Media — owner checking his phone
+biz-cta          Mon_ONnqUbA  Vitaly Gariev — three bartenders behind their bar
+biz-meeting      6NLQL05UwXs  Azwedo L.LC — two men at a table with a laptop
+biz-deal         YDVdprpgHv4  LinkedIn Sales Solutions — two people at a laptop

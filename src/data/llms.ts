@@ -1,3 +1,4 @@
+import { businessPlans, formatBusinessPrice } from "./business-plans";
 import { carePlans, formatCarePrice } from "./care-plans";
 import { formatSocialPrice, socialPlans } from "./social-plans";
 import { designPlans, formatDesignPrice } from "./design-plans";
@@ -252,8 +253,11 @@ export const LLMS_SUMMARIES: Record<string, string> = {
     .join(
       ", ",
     )}. Posts planned, designed, written and published; comment management from Growth; short-form video from Pro; dedicated account manager on Enterprise.`,
-  "/business-solutions":
-    "The whole online side of a small business from one supplier: hosting, domains, the website, the AI that answers and the automations behind it — on one bill.",
+  "/business-solutions": `The whole online side of a small business from one supplier. All-in-one plans with the website built free: ${businessPlans
+    .map((p) => `${p.name} ${formatBusinessPrice(p.price)}/mo (up to ${p.pages} pages)`)
+    .join(
+      ", ",
+    )}. Individual services (hosting, design, SEO, social, maintenance, email, AI) can be added at their standard prices.`,
   "/our-process":
     "The five stages of a website or AI project with Serverlys: what happens, what you get at the end of each, and what we need from you.",
 
