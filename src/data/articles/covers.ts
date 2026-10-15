@@ -4,6 +4,8 @@
  * A new article without one falls back to the coded category thumbnail.
  */
 export const COVERS: ReadonlySet<string> = new Set([
+  "put-your-ai-built-website-online",
+  "get-recommended-by-chatgpt-and-ai-search",
   "ai-tools-small-business",
   "answer-every-website-visitor-with-convoai",
   "best-free-wordpress-themes",

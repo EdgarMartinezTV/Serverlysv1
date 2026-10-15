@@ -43,6 +43,315 @@ import type { Article } from "./types";
 
 export const originalArticles: readonly Article[] = [
   {
+    slug: "get-recommended-by-chatgpt-and-ai-search",
+    title: "How to get your business recommended by ChatGPT and Google's AI answers",
+    description:
+      "More customers now ask an AI assistant instead of scrolling search results. Here is what actually decides whether your business is the one it names, and what to fix first.",
+    category: "AI",
+    published: "2026-10-15",
+    body: [
+      {
+        type: "p",
+        text: 'A customer used to type "plumber near me" into Google and scroll ten blue links. More and more of them now ask a question instead: "who is a good plumber in my area that can come today?" They ask ChatGPT, Gemini, Perplexity, Copilot, or Google itself, which now answers many searches with an AI Overview before any links. The assistant names two or three businesses, and that is often where the decision gets made.',
+      },
+      {
+        type: "p",
+        text: "So the question every small business is asking this year is a fair one: how do you become one of the names? There is a whole industry forming around that question, with new acronyms (GEO, AEO, LLMO) and a lot of confident promises. This guide sticks to what the platforms themselves have said and what you can check, and it is shorter than you might expect.",
+      },
+      {
+        type: "h2",
+        id: "how-ai-picks",
+        text: "How an AI assistant decides who to mention",
+      },
+      {
+        type: "p",
+        text: "When an assistant answers a question about businesses, it usually **searches the web first**, reads a handful of pages, and writes its answer from what it found. That is why it can name a café that opened last month. It also means the assistant can only recommend you if three things are true:",
+      },
+      {
+        type: "ol",
+        items: [
+          "**It is allowed to read your website.** If your site blocks its crawler, you are invisible to it, however good the site is.",
+          "**It can find you when it searches.** The assistants lean on search indexes, so the basics of being findable in ordinary search still decide whether you are in the pile it reads.",
+          "**What it reads makes you an obvious answer.** Clear facts on your own site, backed up by what other sites, reviews and listings say about you.",
+        ],
+      },
+      {
+        type: "quote",
+        text: "AI search does not replace SEO. It rewards the businesses that already did the basics, and it punishes vagueness harder than Google ever did.",
+      },
+      {
+        type: "h2",
+        id: "what-google-says",
+        text: "What Google and OpenAI actually say",
+      },
+      {
+        type: "p",
+        text: "Google is unusually direct about its AI features. Its [guidance for site owners](https://developers.google.com/search/docs/appearance/ai-features) says there are no additional requirements to appear in AI Overviews or AI Mode, no special schema to add and no new AI text files to create. A page that is indexed and eligible to show a snippet in normal search is eligible to appear. In other words: the way into Google's AI answers is the way into Google.",
+      },
+      {
+        type: "p",
+        text: "OpenAI's [crawler documentation](https://developers.openai.com/api/docs/bots) is just as clear about ChatGPT search. Its search crawler is called `OAI-SearchBot`, and sites that block it are not shown in ChatGPT search answers. OpenAI recommends allowing it in your `robots.txt`. That crawler is separate from `GPTBot`, which collects training data, so you can say yes to appearing in answers and no to training if you prefer.",
+      },
+      {
+        type: "callout",
+        title: "Check your robots.txt today",
+        text: "Open yourdomain.com/robots.txt in a browser. If you see `Disallow: /` under `User-agent: *`, or under `OAI-SearchBot`, `PerplexityBot` or `Claude-SearchBot`, you are blocking AI search. Some security plugins and CDN settings add these rules without asking, so check even if you never touched the file.",
+      },
+      { type: "h2", id: "checklist", text: "The checklist, in the order that matters" },
+      { type: "h3", text: "1. Make your site readable by machines, not just people" },
+      {
+        type: "p",
+        text: "Assistants read text. If your opening hours are in an image, your prices are in a PDF and your services only appear inside a slider that loads with JavaScript, a crawler may see a page that says almost nothing. Put the important facts in plain text on the page: what you do, where you do it, who it is for, what it costs (if you are happy to say), and how to get in touch.",
+      },
+      {
+        type: "p",
+        text: "Speed and reliability count too. A crawler that times out or hits an error moves on to the next source. That is a hosting question as much as a content one, and our guide to [Core Web Vitals for small sites](/blog/core-web-vitals-for-small-sites) covers the parts worth fixing.",
+      },
+      { type: "h3", text: "2. Answer the questions people actually ask" },
+      {
+        type: "p",
+        text: 'People ask assistants complete questions: "do you do emergency call-outs on Sundays?", "how much does a deep clean of a three-bedroom house cost?" A page that answers those questions in its own words, near the top, is far easier to quote than a page of slogans. A short FAQ on each service page is one of the cheapest wins available. If you already run a chat assistant, its conversation log is a list of these questions written by your customers.',
+      },
+      { type: "h3", text: "3. Be the same business everywhere" },
+      {
+        type: "p",
+        text: "Assistants cross-check. If your website, Google Business Profile, Facebook page and directory listings disagree on your name, phone number, address or hours, you look less certain, and an assistant that is unsure tends to recommend someone else. Pick one exact version of each fact and make every listing match. Our [local SEO guide](/blog/local-seo-guide) walks through the listings that matter most.",
+      },
+      { type: "h3", text: "4. Earn mentions on other people's sites" },
+      {
+        type: "p",
+        text: 'When an assistant recommends a business, it is often summarising what other sources say: reviews, local news, "best of" lists, industry directories, a supplier\'s case studies. You cannot write those yourself, but you can make them likelier. Ask happy customers for reviews, join the associations in your trade, and say yes when a local publication asks for a quote.',
+      },
+      { type: "h3", text: "5. Use structured data, but for the right reason" },
+      {
+        type: "p",
+        text: "Structured data (schema.org markup such as `LocalBusiness`, `Product` and `FAQPage`) will not by itself get you into an AI answer, and Google says so. What it does is state your facts in a format machines cannot misread, and it powers the rich results in ordinary search that still drive clicks. It is worth having; it is not a shortcut.",
+      },
+      { type: "h3", text: "6. Consider an llms.txt file, without expecting miracles" },
+      {
+        type: "p",
+        text: "`llms.txt` is a proposed convention: a plain-text file at the root of your site that summarises what you do and links to your most important pages. Google has said it does not need one. Some AI tools do read it, it takes an hour to write, and it forces you to describe your business in a few honest paragraphs, which is a useful exercise anyway. We publish [our own](/llms.txt) for exactly that reason.",
+      },
+      { type: "h2", id: "measure", text: "How to tell if it is working" },
+      {
+        type: "ul",
+        items: [
+          "**Ask the assistants yourself.** Each month, ask ChatGPT, Gemini and Perplexity the three questions your best customers would ask. Note who gets named, and which pages they cite.",
+          "**Check Google Search Console.** Google counts AI Overview and AI Mode traffic inside the normal Performance report, under the Web search type.",
+          "**Look for AI referrals in analytics.** Visits from chatgpt.com, perplexity.ai and similar domains show up as referral traffic in Google Analytics 4. Our [GA4 guide](/blog/google-analytics-4-guide) shows where to look.",
+          '**Ask new customers how they found you.** "ChatGPT told me" is an answer more owners are hearing, and it rarely shows up in any dashboard.',
+        ],
+      },
+      { type: "h2", id: "what-to-avoid", text: "What to be wary of" },
+      {
+        type: "p",
+        text: 'Nobody can guarantee you a place in an AI answer, because nobody outside the AI companies controls what the assistant writes. Be careful with anyone selling a secret prompt, a special file or a network of AI-generated pages that will "train" ChatGPT to recommend you. Mass-produced pages written to game the system are exactly what search engines spend their time demoting, and the assistants rely on those same engines.',
+      },
+      { type: "h2", id: "how-we-help", text: "Where Serverlys can help" },
+      {
+        type: "p",
+        text: "Most of this checklist you can do yourself in a few afternoons. If you would rather hand it to someone, this is the work our teams do every day:",
+      },
+      {
+        type: "table",
+        head: ["If you need…", "Start with", "From"],
+        rows: [
+          [
+            "A fast, reliable site that crawlers never time out on",
+            "[Cloud hosting](/cloud-hosting) with free SSL and daily backups",
+            "$7.95/mo, renews at $12.62/mo",
+          ],
+          [
+            "Your Google Business Profile, local listings and on-page basics fixed",
+            "[SEO Starter](/seo)",
+            "$249/mo",
+          ],
+          [
+            "Schema markup, competitor analysis and a new optimised article every month",
+            "[SEO Growth](/seo)",
+            "$499/mo",
+          ],
+          [
+            "A website built from the start with clear, quotable answers",
+            "[Website design](/website-design)",
+            "$1,399",
+          ],
+        ],
+      },
+      {
+        type: "p",
+        text: "And once AI search starts sending people to your site, make sure someone answers them. [ConvoAI](https://convoai.cloud/) puts an AI agent on your website that answers visitors from your own information, day and night, and hands the real conversations to you. It has a free plan, and we wrote about [how it works here](/blog/answer-every-website-visitor-with-convoai).",
+      },
+      {
+        type: "callout",
+        title: "The short version",
+        text: "Let the AI crawlers in, write your facts in plain text, answer real questions, keep every listing consistent and earn genuine mentions elsewhere. It is not a new discipline. It is good SEO, held to a higher standard.",
+      },
+    ],
+  },
+  {
+    slug: "put-your-ai-built-website-online",
+    title: "You built a website with AI. Here is how to put it online properly.",
+    description:
+      "Lovable, Bolt, ChatGPT and Claude can build a working site in an afternoon. Getting it onto your own domain, secure, backed up and findable on Google is the part they skip.",
+    category: "Getting started",
+    published: "2026-10-15",
+    body: [
+      {
+        type: "p",
+        text: '"Vibe coding" went from a joke to a job description remarkably fast. You describe the website you want to Lovable, Bolt, v0, ChatGPT or Claude, it writes the code, and an hour later you have something that looks and works like a real site. For a small business, a portfolio or a side project, that is genuinely remarkable.',
+      },
+      {
+        type: "p",
+        text: 'Then comes the less exciting question: now what? The preview link on the builder\'s own domain is not where you want customers to find you. You want `yourbusiness.com`, a padlock in the address bar, a contact form that actually delivers, backups, and a site Google can read. This guide covers the steps between "it works on my screen" and "it is live and I can rely on it".',
+      },
+      {
+        type: "h2",
+        id: "what-you-built",
+        text: "Step 1: Work out what kind of site you actually have",
+      },
+      {
+        type: "p",
+        text: 'This decides everything else, and the AI tool will happily tell you if you ask it. Paste this into the builder\'s chat: "Is this project a static site, or does it need a server or a database to run?" You will get one of three answers.',
+      },
+      {
+        type: "table",
+        head: ["What you have", "What it means", "Where it can live"],
+        rows: [
+          [
+            "A static site (plain HTML, or React/Vite that builds to static files)",
+            "Every page is a file. No server code runs when someone visits.",
+            "Any ordinary web hosting plan, uploaded through the control panel",
+          ],
+          [
+            "An app with server code (Node.js, Next.js, TanStack Start)",
+            "Code runs on the server for each visit or form submission.",
+            "Hosting that runs Node.js, or a VPS for heavier apps",
+          ],
+          [
+            "An app with a database, logins and file uploads",
+            "Users sign in and save data, usually in Supabase or a similar backend.",
+            "Your front end on your hosting, the backend kept where it is or moved deliberately",
+          ],
+        ],
+      },
+      {
+        type: "p",
+        text: "Lovable's own [self-hosting guide](https://docs.lovable.dev/tips-tricks/self-hosting) is a good example of why this matters: its older projects are React and Vite, which build to static files any host can serve, while projects created since May 2026 use TanStack Start, which runs server code. Same tool, two different hosting needs.",
+      },
+      {
+        type: "h2",
+        id: "get-the-code",
+        text: "Step 2: Get your code out of the builder",
+      },
+      {
+        type: "p",
+        text: "Most builders let you sync the project to GitHub or download it as a zip. Do this even if you plan to keep using the builder: a copy you control is your backup if the tool changes its pricing, its plans or its terms. Lovable, for example, offers GitHub sync on every plan and the zip download on paid plans.",
+      },
+      {
+        type: "p",
+        text: "For a React or Vite project, the files you upload are not the project itself but its **build**. Running the build command produces a folder (usually `dist`) containing plain HTML, CSS, JavaScript and images. If you have never run a command in a terminal, ask the AI to walk you through it step by step, or ask it to produce the build for you.",
+      },
+      {
+        type: "code",
+        lang: "bash",
+        code: "npm install\nnpm run build\n# upload the contents of the dist folder, not the folder itself",
+      },
+      { type: "h2", id: "domain", text: "Step 3: Register the domain you want" },
+      {
+        type: "p",
+        text: "Your domain is the one part of your website you should never let anyone else own. Register it in your own name, with an email address you will still have in five years, and turn on auto-renew. You can [search and register a domain here](/register-domain), and our guide on [keeping control of your domain](/blog/keep-control-of-your-domain) explains the mistakes that cost people theirs.",
+      },
+      { type: "h2", id: "hosting", text: "Step 4: Put it on proper hosting" },
+      {
+        type: "p",
+        text: "For a static build, the steps on any cPanel hosting account are the same:",
+      },
+      {
+        type: "ol",
+        items: [
+          "Open **File Manager** in your control panel and go to `public_html` (the folder your domain points at).",
+          "Upload the **contents** of your `dist` folder, so `index.html` sits directly inside `public_html`.",
+          "Visit your domain. If the home page loads but other pages show a 404 when you refresh them, add the rule below.",
+          "Turn on the free SSL certificate and force HTTPS, so every visit gets the padlock. Our [free SSL guide](/blog/free-ssl-setup) shows how.",
+        ],
+      },
+      {
+        type: "p",
+        text: "AI builders usually create a **single-page app**, where one `index.html` handles every address. The browser knows how to move between pages, but when someone opens `/about` directly, the server goes looking for an `about` file that does not exist. This `.htaccess` file, placed in `public_html`, sends those requests back to `index.html`:",
+      },
+      {
+        type: "code",
+        lang: "apache",
+        code: "<IfModule mod_rewrite.c>\n  RewriteEngine On\n  RewriteBase /\n  RewriteRule ^index\\.html$ - [L]\n  RewriteCond %{REQUEST_FILENAME} !-f\n  RewriteCond %{REQUEST_FILENAME} !-d\n  RewriteRule . /index.html [L]\n</IfModule>",
+      },
+      {
+        type: "p",
+        text: "If your project runs server code, choose a plan that runs it. Our [Cloud hosting](/cloud-hosting) plans support Node.js applications from the same control panel, and a [VPS](/vps-hosting) gives you full server access when an app outgrows that.",
+      },
+      { type: "h2", id: "the-gaps", text: "Step 5: Fix what the AI quietly left out" },
+      {
+        type: "p",
+        text: "AI builders are optimised to show you something impressive quickly. The things that only matter after launch are the things they most often skip. Go through this list before you share the link:",
+      },
+      { type: "h3", text: "Secrets in the wrong place" },
+      {
+        type: "p",
+        text: 'Anything in a static site\'s JavaScript can be read by every visitor. If the AI put an API key for OpenAI, Stripe, an email service or a database admin account into the front-end code, assume it is public. Ask the builder: "Are there any secret keys in the code that runs in the browser?" Keys that must stay private belong in server code or environment variables, never in the build you upload.',
+      },
+      { type: "h3", text: "Forms that go nowhere" },
+      {
+        type: "p",
+        text: "A contact form that looks finished often has no working destination. Submit it yourself from the live site and confirm the message arrives. Our [contact form guide](/blog/contact-form-guide) covers the reliable ways to wire one up.",
+      },
+      { type: "h3", text: "Pages Google cannot read" },
+      {
+        type: "p",
+        text: "A single-page app can arrive at the browser as an almost empty page that JavaScript fills in. Google can usually render that, but many other crawlers, including several AI search crawlers, read only the raw HTML. Ask the AI to give every page its own title and meta description, add a sitemap, and if the site matters for search, ask whether it can pre-render pages to static HTML. Our piece on [getting recommended by ChatGPT and Google's AI answers](/blog/get-recommended-by-chatgpt-and-ai-search) explains why this matters more every month.",
+      },
+      { type: "h3", text: "Speed, privacy and the boring legal bits" },
+      {
+        type: "ul",
+        items: [
+          "Compress the images. AI tools love full-size stock photos, and they are usually the main reason a page is slow.",
+          "Add a privacy policy, and a cookie banner if you use analytics or ads. See our [GDPR checklist](/blog/gdpr-website-compliance).",
+          "Run the live site through PageSpeed Insights on mobile, not just desktop.",
+        ],
+      },
+      { type: "h2", id: "after-launch", text: "Step 6: Keep it alive after launch" },
+      {
+        type: "p",
+        text: "A site built in an afternoon still needs looking after for years. Keep the code in GitHub so every change is saved, make sure your host takes daily backups, and before you ask the AI for a big change, test it on a copy rather than the live site. Our guide to [staging sites](/blog/wordpress-staging-site) explains the habit, and it applies to any site, not just WordPress.",
+      },
+      {
+        type: "quote",
+        text: "The AI can write the website. It cannot renew your domain, notice that your form stopped sending, or restore last Tuesday's backup.",
+      },
+      { type: "h2", id: "how-we-help", text: "Where Serverlys fits in" },
+      {
+        type: "p",
+        text: "If you built the site yourself and want it somewhere dependable, our [hosting plans](/pricing) start at $7.95/mo, renewing at $12.62/mo, with free SSL, daily backups and the cPanel tools above. Domains are [registered here](/register-domain) in your own name.",
+      },
+      {
+        type: "p",
+        text: "If you would rather not do any of this, we can take it from where the AI stopped:",
+      },
+      {
+        type: "ul",
+        items: [
+          "**Moving it for you.** Our [migration team](/migrations) can move your project off the builder's preview link and onto your own domain and hosting.",
+          "**Finishing it properly.** [Website development](/website-development) takes an AI-built prototype and makes it production-ready: secrets moved out of the browser, forms wired up, pages that search engines can read.",
+          "**Looking after it.** [ServerCare Essential](/site-management) ($149.95/mo) covers daily backups, monthly updates, uptime monitoring with alerts, malware scans and an hour of content changes each month.",
+          "**Starting from a professional design.** If the AI version was a sketch of what you want, our [website design](/website-design) plans start at $1,399 and include the build, hosting and analytics setup.",
+        ],
+      },
+      {
+        type: "p",
+        text: "And when visitors start arriving, give them somewhere to ask questions. [ConvoAI](https://convoai.cloud/) adds an AI agent to your site with one line of code, on a free plan, so the site you built in an afternoon can also answer your customers at midnight.",
+      },
+    ],
+  },
+  {
     slug: "how-much-hosting-do-you-need",
     title: "How much hosting does your website actually need?",
     description:

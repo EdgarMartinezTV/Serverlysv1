@@ -13,3 +13,11 @@ ConvoAI homepage video (convoai.cloud): Pexels stock footage of a cafe (Ron Lach
 Pexels License, free to use) with the real ConvoAI messenger, captured from the
 product, layered on top. Edgar's rule from 2026-10-09: no AI-generated images;
 use real photos and real ConvoAI mockups.
+
+Real photos, NOT AI-generated (2026-10-15), both under the Unsplash License
+(free for commercial use, no attribution required; credited here anyway):
+get-recommended-by-chatgpt-and-ai-search.webp: Brooke Cagle,
+  https://unsplash.com/photos/WLHOkP40kkU
+put-your-ai-built-website-online.webp: Harshit Katiyar,
+  https://unsplash.com/photos/5sLNGV2EFRM
+Cropped to 3:2, 1200x800, WebP q78.
