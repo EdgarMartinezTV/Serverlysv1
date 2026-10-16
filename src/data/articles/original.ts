@@ -43,6 +43,281 @@ import type { Article } from "./types";
 
 export const originalArticles: readonly Article[] = [
   {
+    slug: "wordpress-7-1-3-update-and-wordpress-7-2",
+    title: "WordPress 7.1.3 is out: update now, then get ready for 7.2",
+    description:
+      "WordPress 7.1.3 fixes seven security issues and should be installed today. Here is how to check your site took it, and what to test before WordPress 7.2 lands on December 8.",
+    category: "WordPress",
+    published: "2026-10-15",
+    body: [
+      {
+        type: "p",
+        text: "On October 6, WordPress released version 7.1.3, a maintenance and security release with **seven security fixes and four bug fixes**. The WordPress team's advice in the [release announcement](https://wordpress.org/news/2026/10/wordpress-7-1-3-maintenance-and-security-release/) is short: update your sites immediately. It was the third security release in about a month, after 7.1.1 and 7.1.2.",
+      },
+      {
+        type: "p",
+        text: "At the same time, WordPress 7.2, the last major release planned for 2026, is about to enter beta. This guide covers both: how to make sure the security update actually reached your site, and what to check before 7.2 arrives so the upgrade is uneventful.",
+      },
+      { type: "h2", id: "whats-fixed", text: "What WordPress 7.1.3 fixes" },
+      {
+        type: "p",
+        text: "The release notes list seven security issues, reported by independent researchers, security firms and the WordPress security team itself:",
+      },
+      {
+        type: "ul",
+        items: [
+          "**Stored cross-site scripting (XSS) on the Comments admin screen**, which could be triggered through a pending comment.",
+          "**A second-order SQL injection** in the WordPress export (WXR) feature.",
+          "**Disclosure of comments on private and unpublished posts** to visitors who were not logged in.",
+          "**XSS in Imgur embeds.**",
+          "**A denial-of-service issue** in the function WordPress uses to turn relative links into full URLs.",
+          "**Users with the Author role could make posts sticky**, which should be an Editor's decision.",
+          "**Forgeable hook parameters** that could cause one action to be mistaken for another.",
+        ],
+      },
+      {
+        type: "p",
+        text: "None of these needs a dramatic response, but the first three are the kind attackers look for: a comment form is open to the whole internet, and private posts are private for a reason. The fix is to be on 7.1.3, nothing more.",
+      },
+      {
+        type: "callout",
+        title: "On an older major version?",
+        text: "WordPress is backporting these fixes to every older branch that still receives security updates, currently back to 4.7, and says those backports will ship as they are ready. Only the latest version is actively supported, though. If your site is stuck on an old major version because a plugin or theme breaks on newer ones, that is the problem to solve, not something to live with.",
+      },
+      { type: "h2", id: "check-your-site", text: "How to check your site is updated" },
+      {
+        type: "p",
+        text: "Most WordPress sites install minor security releases automatically in the background. Most is not all. Hosts, security plugins and a single line in `wp-config.php` can switch automatic updates off, so check rather than assume:",
+      },
+      {
+        type: "ol",
+        items: [
+          "Log in to your dashboard and open **Dashboard → Updates**. The top of the page tells you which version you are running. If it says anything below 7.1.3, click **Update Now**.",
+          "Look for `AUTOMATIC_UPDATER_DISABLED` or `WP_AUTO_UPDATE_CORE` set to `false` in `wp-config.php`. Either one stops security releases installing on their own.",
+          "If you look after several sites, the WP-CLI command `wp core version` answers the question in seconds, and `wp core update` applies the update.",
+          "**Take a backup first** if your site has not been backed up in the last day. A minor release rarely breaks anything, but a backup makes rarely a non-event. Our [backup tutorial](/blog/website-backup-tutorial) covers the options.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Updating WordPress itself is half the job. Most WordPress compromises start with an out-of-date **plugin**, not core. While you are on the Updates screen, update plugins and themes too, and delete any you no longer use. Our [WordPress security guide](/blog/wordpress-security-guide) covers the rest of the list.",
+      },
+      { type: "h2", id: "wordpress-7-2", text: "WordPress 7.2: the dates" },
+      {
+        type: "p",
+        text: "According to the [WordPress developer blog](https://developer.wordpress.org/news/2026/10/whats-new-for-developers-october-2026/), the 7.2 release runs to this schedule:",
+      },
+      {
+        type: "table",
+        head: ["Milestone", "Date", "What it means for you"],
+        rows: [
+          ["Beta 1", "October 20, 2026", "Test your plugins and theme on a copy of your site"],
+          ["Release candidate 1", "November 17, 2026", "Features are frozen; last chance to report breakage"],
+          ["Final release", "December 8, 2026", "Update your live site once your staging copy passes"],
+        ],
+      },
+      { type: "h2", id: "whats-coming", text: "What is coming in WordPress 7.2" },
+      {
+        type: "p",
+        text: "A roadmap is a plan, not a promise, and the WordPress team says plainly that not every item will make the final release. These are the changes that matter most to site owners:",
+      },
+      {
+        type: "ul",
+        items: [
+          "**A new default theme, Ipsum.** It is also the end of year-named default themes. Future defaults will be named, so they can change when the design needs it rather than every year.",
+          "**Safer Application Passwords** (planned): an email when a new one is added to your account and detection of non-HTTPS use. Application Passwords let apps and services log in to your site, so being told when one appears is a real security gain.",
+          "**Editor additions**, including text shadow as a block style, a grid variation of the Gallery block with columns per screen size, and redrawn icons.",
+          "**A Secrets API** (tentative), available only through WP-CLI in 7.2, with an interface planned later.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Two changes under the hood are worth knowing about if you have a developer, because they are the most likely to surprise an older site:",
+      },
+      {
+        type: "ul",
+        items: [
+          "**`NO_BACKSLASH_ESCAPES` is off by default.** This is a database setting. Sites that depend on it can turn it back on with a `db.php` drop-in, not a plugin.",
+          "**`wp_kses()` is being rebuilt on the HTML API** (targeting 7.2 or 7.3). This is the function that cleans HTML in posts and comments. The new version normalises output and rejects some malformed markup, and a `wp_kses_force_legacy_parser` filter restores the old behaviour while code is updated.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Themes that style the Gallery block or WordPress's built-in icons with custom CSS should be checked too, because both are changing shape.",
+      },
+      { type: "h2", id: "test-safely", text: "How to test 7.2 without risking your live site" },
+      {
+        type: "p",
+        text: "Never run a beta on the site that takes your bookings or orders. Make a copy and test there:",
+      },
+      {
+        type: "ol",
+        items: [
+          "**Create a staging site**, an exact private copy of your live one. Our guide to [setting up a WordPress staging site](/blog/wordpress-staging-site) walks through it.",
+          "Install the **WordPress Beta Tester** plugin on the staging copy and choose the beta or release candidate channel.",
+          "Click through the pages that earn you money: the home page, a service or product page, the contact form, the basket and checkout if you sell online.",
+          "Open the editor and change something. Editor changes are where 7.2 is busiest, so check the blocks you actually use.",
+          "If something breaks, tell the plugin or theme author with the version and steps. During the beta there is still time for them, or WordPress, to fix it.",
+        ],
+      },
+      {
+        type: "quote",
+        text: "The WordPress sites that break on update day are the ones nobody looked at during the beta.",
+      },
+      { type: "h2", id: "how-we-help", text: "Where Serverlys can help" },
+      {
+        type: "p",
+        text: "If you would rather not track release schedules at all, this is what our WordPress plans are built around:",
+      },
+      {
+        type: "table",
+        head: ["If you need…", "Start with", "From"],
+        rows: [
+          [
+            "Hosting where WordPress updates, daily backups and free SSL are handled for you",
+            "[WordPress hosting](/wordpress-hosting)",
+            "$7.95/mo, renews at $12.62/mo",
+          ],
+          [
+            "Someone to apply WordPress, plugin and theme updates for you every month, with daily backups and uptime alerts",
+            "[ServerCare Essential](/site-management)",
+            "$149.95/mo",
+          ],
+          [
+            "A site stuck on an old version moved to a current, supported setup",
+            "[Free migration](/migrations)",
+            "Free with hosting",
+          ],
+        ],
+      },
+      {
+        type: "callout",
+        title: "The short version",
+        text: "Check you are on WordPress 7.1.3 today. Update plugins while you are there. Then, between October 20 and November 17, try WordPress 7.2 on a staging copy so that December 8 is a non-event.",
+      },
+    ],
+  },
+  {
+    slug: "get-your-products-into-chatgpt-shopping",
+    title: "How to get your products into ChatGPT Shopping",
+    description:
+      "Shoppers now ask ChatGPT what to buy, and it answers with products and links to the stores that sell them. Here is how that works and what an online store needs to show up.",
+    category: "Ecommerce",
+    published: "2026-10-15",
+    body: [
+      {
+        type: "p",
+        text: 'Ask ChatGPT "what is a good waterproof hiking boot under $150?" and it no longer just describes boots. It shows products, with images, prices and the shops that sell them, and links you to buy. Google does the same in AI Mode, and Perplexity and Microsoft Copilot have their own versions. The industry has a name for it, **agentic commerce**, and a small store owner has a simpler question: how do my products get into those answers?',
+      },
+      {
+        type: "p",
+        text: "The good news is that the route in is mostly the work a well-run store should already be doing. This guide sticks to what OpenAI and the platforms have published, because this is a fast-moving area full of confident vendor claims.",
+      },
+      { type: "h2", id: "how-it-works", text: "How ChatGPT finds the products it shows" },
+      {
+        type: "p",
+        text: "ChatGPT gets product information in two ways, and a store can use either or both:",
+      },
+      {
+        type: "ol",
+        items: [
+          "**By reading your website.** ChatGPT search uses OpenAI's crawler, `OAI-SearchBot`, to read public pages. If your product pages are readable, they can be found and cited, like any other page.",
+          "**From a product feed.** OpenAI publishes a [commerce specification](https://developers.openai.com/commerce/guides/key-concepts) for merchants to send a structured, regularly refreshed feed (CSV or JSON) with identifiers, descriptions, prices, stock levels, images and delivery options. Its documentation says the required fields are what make price and availability display correctly, and that extras like reviews and rich media improve ranking and relevance.",
+        ],
+      },
+      {
+        type: "p",
+        text: "If you sell on **Shopify**, OpenAI's help centre says your product data already reaches ChatGPT through the Shopify Catalog, with no extra work for individual merchants. Everyone else, including stores on WooCommerce, relies on the crawler or applies to OpenAI for direct feed access.",
+      },
+      {
+        type: "callout",
+        title: "What happened to buying inside ChatGPT?",
+        text: "OpenAI launched Instant Checkout in 2025 so shoppers could pay without leaving the chat. In March 2026 it changed course, saying it would let merchants use their own checkout while it concentrates on product discovery. For most stores, that means a ChatGPT shopper now arrives on your own product page to pay, so your site, not the chat, closes the sale.",
+      },
+      { type: "h2", id: "checklist", text: "The checklist for a small online store" },
+      { type: "h3", text: "1. Let the AI crawlers in" },
+      {
+        type: "p",
+        text: "Open `yourstore.com/robots.txt`. If `OAI-SearchBot` is blocked, or everything is blocked under `User-agent: *`, ChatGPT search cannot read your shop. Security plugins and CDN \"bot protection\" settings sometimes block AI crawlers without asking. `GPTBot`, OpenAI's training crawler, is separate, so you can allow search and refuse training. Our post on [getting recommended by ChatGPT](/blog/get-recommended-by-chatgpt-and-ai-search) explains the difference.",
+      },
+      { type: "h3", text: "2. Make every product page answer the obvious questions" },
+      {
+        type: "p",
+        text: "An assistant matching a product to a question needs facts it can read as text: what it is, what it is made of, sizes, compatibility, price, delivery time and return policy. A product page that is a photo and a \"Buy now\" button gives it nothing to work with. Write the descriptions as if a careful shopper asked you the questions in person, because that is roughly what is happening.",
+      },
+      { type: "h3", text: "3. Add product structured data" },
+      {
+        type: "p",
+        text: "Schema.org `Product` markup states the name, price, currency, availability, brand and reviews in a format machines cannot misread. WooCommerce outputs basic product markup by default, and SEO plugins extend it. Check a product page with Google's Rich Results Test and fix anything it flags. It also powers rich results in ordinary Google search, so it pays twice.",
+      },
+      { type: "h3", text: "4. Keep price and stock accurate" },
+      {
+        type: "p",
+        text: "If ChatGPT quotes $49 and your page says $59, or shows a product you sold out of last week, the shopper leaves annoyed and the platform learns your data is unreliable. Whatever feeds you publish, to Google Merchant Center, Shopify or OpenAI, should update automatically from the store, not by hand.",
+      },
+      { type: "h3", text: "5. Be in Google Merchant Center too" },
+      {
+        type: "p",
+        text: "Google's AI Mode shopping results draw on its Shopping Graph, which is fed by Merchant Center. Free product listings cost nothing, and the product data you prepare there (identifiers, images, prices, shipping) is the same work an OpenAI feed needs. If you only do one feed this year, start with Google's.",
+      },
+      { type: "h3", text: "6. Make the landing fast and the checkout simple" },
+      {
+        type: "p",
+        text: "A shopper who arrives from ChatGPT has already decided they are interested. Lose them to a slow page or a nine-step checkout and you did all the work for nothing. Test the product page, basket and checkout on a phone. Our [pre-launch checklist for online stores](/blog/online-store-pre-launch-checklist) covers what to check.",
+      },
+      { type: "h2", id: "reviews", text: "Why reviews matter more than ever" },
+      {
+        type: "p",
+        text: "When an assistant chooses between two similar products, it leans on what others have said: reviews on your site, on marketplaces and on independent sites. OpenAI's own documentation lists reviews among the attributes that improve ranking. Ask every customer for one, reply to the critical ones, and display them as text on the product page, not only inside an image or a widget a crawler cannot read.",
+      },
+      { type: "h2", id: "measure", text: "How to tell if it is working" },
+      {
+        type: "ul",
+        items: [
+          "**Search for your own products.** Ask ChatGPT, Google AI Mode and Perplexity the questions your customers would ask, and note which stores appear.",
+          "**Look for AI referrals.** Visits from `chatgpt.com` and `perplexity.ai` show up as referral traffic in Google Analytics 4. Our [GA4 guide](/blog/google-analytics-4-guide) shows where to find them.",
+          "**Watch for UTM tags.** Links from ChatGPT often carry `utm_source=chatgpt.com`, so these sales can be attributed in your store's reports.",
+        ],
+      },
+      { type: "h2", id: "be-wary", text: "What to be wary of" },
+      {
+        type: "p",
+        text: "Nobody outside OpenAI or Google controls which products their assistants pick. Be careful with anyone promising guaranteed placement, selling a secret \"AI feed\" format, or generating hundreds of near-identical product pages to game the results. The real levers are the boring ones above, and they also make your store better for the shoppers who arrive from everywhere else.",
+      },
+      { type: "h2", id: "how-we-help", text: "Where Serverlys can help" },
+      {
+        type: "table",
+        head: ["If you need…", "Start with", "From"],
+        rows: [
+          [
+            "A WooCommerce store that stays fast when AI traffic sends shoppers your way",
+            "[Ecommerce hosting](/ecommerce-hosting)",
+            "$7.95/mo, renews at $12.62/mo",
+          ],
+          [
+            "Product schema, on-page fixes and a new optimised article every month",
+            "[SEO Growth](/seo)",
+            "$499/mo",
+          ],
+          [
+            "A store moved from another host without losing orders",
+            "[Free migration](/migrations)",
+            "Free with hosting",
+          ],
+        ],
+      },
+      {
+        type: "p",
+        text: "And when shoppers land with questions the product page does not answer, [ConvoAI](https://convoai.cloud/) puts an AI agent on your site that answers from your own catalogue and policies, day and night. We explain [how it works here](/blog/answer-every-website-visitor-with-convoai).",
+      },
+      {
+        type: "callout",
+        title: "The short version",
+        text: "Let OAI-SearchBot in, write product pages a careful shopper would trust, add Product schema, keep prices and stock in sync, list in Google Merchant Center, and make the checkout quick. Shopify stores are already connected; everyone else can apply for an OpenAI feed.",
+      },
+    ],
+  },
+  {
     slug: "get-recommended-by-chatgpt-and-ai-search",
     title: "How to get your business recommended by ChatGPT and Google's AI answers",
     description:

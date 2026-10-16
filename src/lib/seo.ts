@@ -374,8 +374,11 @@ export function articleGraph({
   published: string;
   /** Only when the article was genuinely revised; never build time. */
   modified?: string;
-  /** Absolute URL of the image shown for the article (its OG card). */
-  image?: string;
+  /**
+   * Absolute URLs of the article's images: its OG card, plus the cover photo
+   * when it has one. Google picks among several for article rich results.
+   */
+  image?: readonly string[];
   section: string;
 }) {
   const url = canonical(path);
@@ -388,7 +391,7 @@ export function articleGraph({
     articleSection: section,
     datePublished: published,
     dateModified: modified ?? published,
-    ...(image ? { image: [image] } : {}),
+    ...(image?.length ? { image: [...image] } : {}),
     inLanguage: "en",
     isPartOf: { "@id": SITE_ID },
     mainEntityOfPage: { "@type": "WebPage", "@id": url },

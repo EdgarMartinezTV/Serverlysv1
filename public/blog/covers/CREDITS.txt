@@ -21,3 +21,10 @@ get-recommended-by-chatgpt-and-ai-search.webp: Brooke Cagle,
 put-your-ai-built-website-online.webp: Harshit Katiyar,
   https://unsplash.com/photos/5sLNGV2EFRM
 Cropped to 3:2, 1200x800, WebP q78.
+
+Real photos, NOT AI-generated (2026-10-15), Unsplash License:
+wordpress-7-1-3-update-and-wordpress-7-2.webp: Christopher Gower,
+  https://unsplash.com/photos/m_HRfLhgABo
+get-your-products-into-chatgpt-shopping.webp: Vitaly Gariev,
+  https://unsplash.com/photos/KfJQ2mU_hYQ
+Resized/cropped to 3:2, 1200x800, WebP q78.

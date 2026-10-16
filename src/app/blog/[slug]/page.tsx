@@ -5,6 +5,7 @@ import { FinalCta } from "@/components/sections/final-cta";
 import { JsonLd } from "@/components/ui/json-ld";
 import { RichText } from "@/components/ui/rich-text";
 import { ArticleCover } from "../_components/article-cover";
+import { COVERS } from "@/data/articles/covers";
 import { AUTHOR, BlogNav, PostCard } from "../_components/blog-ui";
 import { ShareBar } from "../_components/share-bar";
 import {
@@ -206,7 +207,10 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
           description: article.description,
           path,
           published: article.published,
-          image: ogImageFor(path),
+          image: [
+            ogImageFor(path),
+            ...(COVERS.has(article.slug) ? [canonical(`/blog/covers/${article.slug}.webp`)] : []),
+          ],
           section: article.category,
         })}
       />
