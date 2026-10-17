@@ -83,6 +83,21 @@ const PAGES: Record<string, OgCard> = {
     title: "Sitios web que llenan mesas.",
     detail: "Menú digital, pedidos en línea, reservaciones y un asistente con IA bilingüe.",
   },
+  "/cleaning-company-websites": {
+    eyebrow: "Cleaning company websites",
+    title: "Websites that win more cleaning customers.",
+    detail: "Quote requests, booking integrations, English + Spanish and local SEO in Miami-Dade.",
+  },
+  "/es/cleaning-company-websites": {
+    eyebrow: "Sitios para empresas de limpieza",
+    title: "Sitios web que le traen más clientes.",
+    detail: "Cotizaciones, reservas, inglés + español y SEO local en Miami-Dade.",
+  },
+  "/cleaning-company-websites/demo": {
+    eyebrow: "Live demo",
+    title: "Try a cleaning company website.",
+    detail: "Instant estimate, appointment request and English/Spanish. Fictional company.",
+  },
   "/restaurant-websites/online-ordering": {
     eyebrow: "Restaurant websites",
     title: "Online ordering on your own website.",

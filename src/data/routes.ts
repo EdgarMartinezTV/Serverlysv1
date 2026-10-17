@@ -196,6 +196,41 @@ export const routes: readonly RouteMeta[] = [
     parents: ["/"],
     languages: { "en-US": "/restaurant-websites", "es-US": "/es/restaurant-websites" },
   },
+  {
+    path: "/cleaning-company-websites",
+    name: "Cleaning company websites",
+    group: "commercial",
+    built: true,
+    indexable: true,
+    priority: 0.8,
+    changeFrequency: "monthly",
+    parents: ["/"],
+    languages: { "en-US": "/cleaning-company-websites", "es-US": "/es/cleaning-company-websites" },
+  },
+  {
+    path: "/es/cleaning-company-websites",
+    name: "Sitios web para empresas de limpieza",
+    group: "commercial",
+    built: true,
+    indexable: true,
+    priority: 0.7,
+    changeFrequency: "monthly",
+    parents: ["/"],
+    languages: { "en-US": "/cleaning-company-websites", "es-US": "/es/cleaning-company-websites" },
+  },
+  // Brisa Clean Co. is fictional: built, never indexed, but crawlable so the
+  // noindex is seen (public pages link to it).
+  {
+    path: "/cleaning-company-websites/demo",
+    name: "Live demo",
+    group: "commercial",
+    built: true,
+    indexable: false,
+    crawlable: true,
+    priority: 0.3,
+    changeFrequency: "monthly",
+    parents: ["/", "/cleaning-company-websites"],
+  },
   // English-only guides under the restaurant page. No `languages`: there is no
   // Spanish twin, and hreflang must only point at pages that exist.
   {

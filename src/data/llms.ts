@@ -127,6 +127,7 @@ export const LLMS_SECTIONS = [
       "/restaurant-websites/online-ordering",
       "/restaurant-websites/reservations",
       "/restaurant-websites/cost",
+      "/cleaning-company-websites",
       "/website-development",
       "/site-management",
       "/seo",
@@ -239,6 +240,7 @@ export const LLMS_SUMMARIES: Record<string, string> = {
     .join(
       ", ",
     )}. Custom mobile-first site, HTML digital menu with QR code, hosting and updates on every plan; online ordering and reservation integrations (third-party accounts and fees) and English + Spanish from Growth; the ConvoAI assistant, catering requests and up to 3 locations on Restaurant Pro. Spanish version at /es/restaurant-websites. Free website review; in-person visits for restaurants in Downtown Doral, Florida.`,
+  "/cleaning-company-websites": `Website design for cleaning companies (residential, commercial/janitorial, maid, Airbnb turnover, move-out, post-construction, carpet), focused on Miami-Dade County and available US-wide. Built on the website design plans (${designPlans.map((p) => `${p.name} ${formatDesignPrice(p.price)}`).join(", ")}, one-time); cleaning-specific features (quote estimator, booking-software integration, full Spanish version, ConvoAI chatbot) are quoted per project. Free consultation; in-person meetings in Downtown Doral. Spanish version at /es/cleaning-company-websites. Live demo (fictional company "Brisa Clean Co.") at /cleaning-company-websites/demo. Serverlys builds websites; it does not provide cleaning services.`,
   "/restaurant-websites/online-ordering":
     "How Serverlys connects a restaurant's own online ordering (Toast, Square, Clover, ChowNow and others) to its website and Google listing. Included in Growth and Restaurant Pro; the ordering provider bills separately; Serverlys takes no cut of orders.",
   "/restaurant-websites/reservations":

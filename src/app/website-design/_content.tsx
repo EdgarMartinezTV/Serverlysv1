@@ -199,6 +199,7 @@ export const FAQS = [
 
 export const RELATED = [
   ["Restaurant websites", "/restaurant-websites"],
+  ["Cleaning company websites", "/cleaning-company-websites"],
   ["Web development", "/website-development"],
   ["SEO services", "/seo"],
   ["Site management", "/site-management"],

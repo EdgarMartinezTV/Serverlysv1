@@ -1544,3 +1544,148 @@ html:has([data-lumbre]) {
     will-change: transform;
   }
 }
+
+/* ── /cleaning-company-websites hero showcase ─────────────────────────────
+ * A 12-second loop: a visitor fills Brisa's quote form on the phone, gets an
+ * estimate, taps Request, sees a confirmation, and the laptop shows the
+ * owner's "new quote request". Pure CSS: the stage ships no animation JS
+ * beyond the pointer/scroll parallax in hero-showcase.tsx.
+ *
+ * LCP: the headline is the LCP element and is never animated from opacity 0.
+ * The devices only TRANSFORM into place. Under reduced motion every loop
+ * element shows its finished state, so the story still reads in one frame.
+ */
+@keyframes clRise {
+  from {
+    transform: perspective(1400px) rotateX(18deg) translateY(56px) scale(0.96);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes clPop {
+  0%,
+  30% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes clFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+@keyframes clV1 {
+  0%, 8% { opacity: 0; transform: translateY(3px); }
+  11%, 93% { opacity: 1; transform: none; }
+  97%, 100% { opacity: 0; }
+}
+@keyframes clV2 {
+  0%, 16% { opacity: 0; transform: translateY(3px); }
+  19%, 93% { opacity: 1; transform: none; }
+  97%, 100% { opacity: 0; }
+}
+@keyframes clV3 {
+  0%, 24% { opacity: 0; transform: translateY(3px); }
+  27%, 93% { opacity: 1; transform: none; }
+  97%, 100% { opacity: 0; }
+}
+@keyframes clV4 {
+  0%, 32% { opacity: 0; transform: translateY(3px); }
+  35%, 93% { opacity: 1; transform: none; }
+  97%, 100% { opacity: 0; }
+}
+@keyframes clEst {
+  0%, 40% { opacity: 0; transform: scale(0.94); }
+  44%, 93% { opacity: 1; transform: none; }
+  97%, 100% { opacity: 0; }
+}
+/* Transform and opacity only: compositor work, no repaint per frame. */
+@keyframes clPress {
+  0%, 47% { transform: none; opacity: 1; }
+  50% { transform: scale(0.94); opacity: 0.85; }
+  54%, 100% { transform: none; opacity: 1; }
+}
+@keyframes clTap {
+  0%, 46% { opacity: 0; transform: scale(0.4); }
+  49% { opacity: 0.55; transform: scale(1); }
+  56%, 100% { opacity: 0; transform: scale(1.8); }
+}
+@keyframes clToast {
+  0%, 53% { opacity: 0; transform: translateY(14px) scale(0.96); }
+  57%, 90% { opacity: 1; transform: none; }
+  95%, 100% { opacity: 0; transform: translateY(6px); }
+}
+@keyframes clNotif {
+  0%, 59% { opacity: 0; transform: translateX(18px); }
+  63%, 92% { opacity: 1; transform: none; }
+  96%, 100% { opacity: 0; transform: translateX(10px); }
+}
+/* The tapping finger travels field to field, then to the button. */
+@keyframes clFinger {
+  0%, 6% { opacity: 0; transform: translate(60%, 40%); }
+  9% { opacity: 1; transform: translate(0, 0); }
+  17% { transform: translate(0, 100%); }
+  25% { transform: translate(0, 200%); }
+  33% { transform: translate(0, 300%); }
+  47% { opacity: 1; transform: translate(0, 590%); }
+  52% { opacity: 1; transform: translate(0, 590%) scale(0.85); }
+  58%, 100% { opacity: 0; transform: translate(0, 590%); }
+}
+
+.cl-stage {
+  --px: 0;
+  --py: 0;
+  --sy: 0;
+}
+.cl-layer {
+  transform: translate3d(calc(var(--px) * var(--depth, 0) * 1px), calc(var(--py) * var(--depth, 0) * 1px + var(--sy) * var(--lift, 0) * 1px), 0);
+  transition: transform 500ms cubic-bezier(0.2, 0.7, 0.1, 1);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cl-rise {
+    animation: clRise 1300ms cubic-bezier(0.2, 0.7, 0.1, 1) both;
+    animation-delay: var(--d, 150ms);
+  }
+  .cl-pop {
+    animation: clPop 900ms cubic-bezier(0.2, 0.7, 0.1, 1) both;
+    animation-delay: var(--d, 900ms);
+  }
+  .cl-float {
+    animation: clFloat var(--t, 6s) ease-in-out infinite;
+  }
+  .cl-v1 { animation: clV1 12s linear infinite; }
+  .cl-v2 { animation: clV2 12s linear infinite; }
+  .cl-v3 { animation: clV3 12s linear infinite; }
+  .cl-v4 { animation: clV4 12s linear infinite; }
+  .cl-est { animation: clEst 12s cubic-bezier(0.2, 0.7, 0.1, 1) infinite; }
+  .cl-press { animation: clPress 12s linear infinite; }
+  .cl-tap { animation: clTap 12s ease-out infinite; }
+  .cl-toast { animation: clToast 12s cubic-bezier(0.2, 0.7, 0.1, 1) infinite; }
+  .cl-notif { animation: clNotif 12s cubic-bezier(0.2, 0.7, 0.1, 1) infinite; }
+  .cl-finger { animation: clFinger 12s cubic-bezier(0.5, 0, 0.3, 1) infinite; }
+  /* Hero copy: transform-only rise, so the LCP text paints on frame one. */
+  .cl-in {
+    animation: rwRise 900ms var(--ease-entrance) both;
+    animation-delay: var(--d, 0ms);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cl-finger,
+  .cl-tap {
+    display: none;
+  }
+  .cl-layer {
+    transform: none;
+    transition: none;
+  }
+}

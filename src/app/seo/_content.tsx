@@ -154,6 +154,7 @@ export const TOOLS: readonly [BrandSlug[], BrandSlug[]] = [
 export const RELATED = [
   ["Website design", "/website-design"],
   ["Restaurant websites", "/restaurant-websites"],
+  ["Cleaning company websites", "/cleaning-company-websites"],
   ["Free site migration", "/migrations"],
   ["WordPress hosting", "/wordpress-hosting"],
   ["Cloud hosting", "/cloud-hosting"],

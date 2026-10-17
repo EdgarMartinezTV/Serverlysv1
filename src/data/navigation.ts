@@ -328,6 +328,12 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
             description: "Menus, ordering and reservations.",
           },
           {
+            label: "Cleaning company websites",
+            href: "/cleaning-company-websites",
+            icon: "sparkles",
+            description: "Quote requests, booking and local SEO.",
+          },
+          {
             label: "Custom development",
             href: "/website-development",
             icon: "wrench",
@@ -644,6 +650,7 @@ export const footerNav: readonly NavColumn[] = [
     links: [
       { label: "Web design", href: "/website-design" },
       { label: "Restaurant websites", href: "/restaurant-websites" },
+      { label: "Cleaning company websites", href: "/cleaning-company-websites" },
       { label: "Custom development", href: "/website-development" },
       { label: "SEO", href: "/seo" },
       { label: "Marketing", href: "/marketing" },
