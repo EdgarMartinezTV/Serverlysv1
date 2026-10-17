@@ -36,8 +36,6 @@ export function ExplorerTabs({ copy, locale }: { copy: LandingCopy; locale: Loca
     tabs.current.get(ids[next])?.focus();
   };
 
-  const tab = e.tabs.find((t) => t.id === active)!;
-
   return (
     <>
         <div
@@ -81,42 +79,55 @@ export function ExplorerTabs({ copy, locale }: { copy: LandingCopy; locale: Loca
           tabIndex={0}
           className="mt-10 grid items-center gap-10 rounded-[28px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-14"
         >
-          <div key={active} className="rw-fade min-w-0">
-            <h3 className={cn("font-display text-[28px] leading-[1.15] font-normal tracking-[-0.02em] sm:text-[34px]", INK)}>
-              {tab.title}
-            </h3>
-            <p className={cn("mt-5 text-[16px] leading-[1.65]", MUTED)}>{tab.body}</p>
-            <ul className="mt-7 flex flex-col gap-3.5">
-              {tab.bullets.map((b) => (
-                <li key={b} className="flex gap-3 text-[15px] leading-[1.5] text-[#2b3442]">
-                  <Tick />
-                  {b}
-                </li>
-              ))}
-            </ul>
-            {tab.note && (
-              <p className="mt-7 flex gap-2.5 rounded-xl bg-[#fff7ed] px-4 py-3 text-[13px] leading-[1.5] text-[#7c2d12] ring-1 ring-[#fed7aa]">
-                <svg viewBox="0 0 20 20" aria-hidden="true" className="mt-0.5 size-4 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.7">
-                  <circle cx="10" cy="10" r="8" />
-                  <path d="M10 6v5m0 3h.01" strokeLinecap="round" />
+          {/* Every panel's text is server-rendered and the inactive ones are
+              `hidden`: rendering only the active tab left five of the six service
+              descriptions out of the HTML, where search engines never saw them. */}
+          {e.tabs.map((tab) => (
+            <div key={tab.id} hidden={tab.id !== active} className="rw-fade min-w-0">
+              <h3 className={cn("font-display text-[28px] leading-[1.15] font-normal tracking-[-0.02em] sm:text-[34px]", INK)}>
+                {tab.title}
+              </h3>
+              <p className={cn("mt-5 text-[16px] leading-[1.65]", MUTED)}>{tab.body}</p>
+              <ul className="mt-7 flex flex-col gap-3.5">
+                {tab.bullets.map((b) => (
+                  <li key={b} className="flex gap-3 text-[15px] leading-[1.5] text-[#2b3442]">
+                    <Tick />
+                    {b}
+                  </li>
+                ))}
+              </ul>
+              {tab.note && (
+                <p className="mt-7 flex gap-2.5 rounded-xl bg-[#fff7ed] px-4 py-3 text-[13px] leading-[1.5] text-[#7c2d12] ring-1 ring-[#fed7aa]">
+                  <svg viewBox="0 0 20 20" aria-hidden="true" className="mt-0.5 size-4 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.7">
+                    <circle cx="10" cy="10" r="8" />
+                    <path d="M10 6v5m0 3h.01" strokeLinecap="round" />
+                  </svg>
+                  <span>
+                    {(tab.id === "ordering" || tab.id === "reservations") && (
+                      <strong className="font-semibold">{e.external}. </strong>
+                    )}
+                    {tab.note}
+                    {tab.id === "ai" && (
+                      <>
+                        {" "}
+                        <a href="https://convoai.cloud/" className="font-semibold underline underline-offset-2" target="_blank" rel="noopener">
+                          convoai.cloud
+                        </a>
+                      </>
+                    )}
+                  </span>
+                </p>
+              )}
+              {tab.more && (
+                <Link href={tab.more.href} className="mt-6 inline-flex items-center gap-1.5 text-[15px] font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+                  {tab.more.label}
+                  <svg viewBox="0 0 20 20" aria-hidden="true" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M4 10h12m-5-5 5 5-5 5" />
                 </svg>
-                <span>
-                  {(active === "ordering" || active === "reservations") && (
-                    <strong className="font-semibold">{e.external}. </strong>
-                  )}
-                  {tab.note}
-                  {active === "ai" && (
-                    <>
-                      {" "}
-                      <a href="https://convoai.cloud/" className="font-semibold underline underline-offset-2" target="_blank" rel="noopener">
-                        convoai.cloud
-                      </a>
-                    </>
-                  )}
-                </span>
-              </p>
-            )}
-          </div>
+                </Link>
+              )}
+            </div>
+          ))}
 
           <div className="relative min-w-0 overflow-hidden rounded-[28px] bg-[linear-gradient(160deg,#f4f4f7,#eceef3)] p-5 sm:p-8">
             <Preview id={active} copy={copy} locale={locale} />

@@ -25,6 +25,13 @@ export type RouteMeta = {
   /** Excluded from the sitemap and marked noindex when false. */
   indexable: boolean;
   /**
+   * A non-indexable page is also disallowed in robots.txt, unless this is
+   * true. Set it on noindex pages that public pages link to: a crawler that
+   * is blocked never reads the noindex, and the bare URL can still be indexed
+   * from the links. Letting it crawl is how the noindex gets seen.
+   */
+  crawlable?: boolean;
+  /**
    * Relative importance within THIS site (0–1). Google largely ignores it, but
    * it costs nothing and helps other crawlers prioritise.
    */
@@ -189,6 +196,38 @@ export const routes: readonly RouteMeta[] = [
     parents: ["/"],
     languages: { "en-US": "/restaurant-websites", "es-US": "/es/restaurant-websites" },
   },
+  // English-only guides under the restaurant page. No `languages`: there is no
+  // Spanish twin, and hreflang must only point at pages that exist.
+  {
+    path: "/restaurant-websites/online-ordering",
+    name: "Online ordering",
+    group: "commercial",
+    built: true,
+    indexable: true,
+    priority: 0.6,
+    changeFrequency: "monthly",
+    parents: ["/", "/restaurant-websites"],
+  },
+  {
+    path: "/restaurant-websites/reservations",
+    name: "Reservations",
+    group: "commercial",
+    built: true,
+    indexable: true,
+    priority: 0.6,
+    changeFrequency: "monthly",
+    parents: ["/", "/restaurant-websites"],
+  },
+  {
+    path: "/restaurant-websites/cost",
+    name: "Cost guide",
+    group: "marketing",
+    built: true,
+    indexable: true,
+    priority: 0.6,
+    changeFrequency: "monthly",
+    parents: ["/", "/restaurant-websites"],
+  },
   // The Lumbre demo describes a fictional restaurant: built, never indexed.
   {
     path: "/restaurant-websites/demo",
@@ -196,6 +235,7 @@ export const routes: readonly RouteMeta[] = [
     group: "commercial",
     built: true,
     indexable: false,
+    crawlable: true,
     priority: 0.3,
     changeFrequency: "monthly",
     parents: ["/", "/restaurant-websites"],
@@ -206,6 +246,7 @@ export const routes: readonly RouteMeta[] = [
     group: "commercial",
     built: true,
     indexable: false,
+    crawlable: true,
     priority: 0.3,
     changeFrequency: "monthly",
     parents: ["/", "/es/restaurant-websites"],

@@ -33,7 +33,7 @@ export default function robots(): MetadataRoute.Robots {
   // Internal surfaces, sourced from the registry rather than hand-listed.
   const disallow = [
     "/api/",
-    ...routes.filter((r) => r.built && !r.indexable).map((r) => r.path),
+    ...routes.filter((r) => r.built && !r.indexable && !r.crawlable).map((r) => r.path),
   ];
 
   // Every named agent gets the SAME disallow list as everyone else. An AI

@@ -252,6 +252,38 @@ check(sitemap.includes("/restaurant-websites</loc>") && sitemap.includes("/es/re
 check(/hreflang="es-US"/.test(sitemap), "sitemap carries hreflang alternates");
 check(!sitemap.includes("/demo</loc>"), "sitemap excludes the noindex demo");
 check((await (await fetch(base + "/llms.txt")).text()).includes("/restaurant-websites"), "llms.txt lists the page");
+const robotsTxt = await (await fetch(base + "/robots.txt")).text();
+check(!/Disallow: \/(es\/)?restaurant-websites\/demo/.test(robotsTxt), "robots.txt lets crawlers reach the demo's noindex");
+
+// ── Guides and server-rendered content ─────────────────────────────────────
+console.log("\n── guides / server HTML ──");
+const htmlOnly = async (path) => (await (await fetch(base + path)).text()).replace(/<script[\s\S]*?<\/script>/g, "");
+const landingHtml = await htmlOnly("/restaurant-websites");
+check(
+  ["Take orders on your own website", "Book tables while you are closed", "Your menu as a proper web page"].every((t) => landingHtml.includes(t)),
+  "every explorer panel is in the server HTML",
+);
+for (const guide of ["/restaurant-websites/online-ordering", "/restaurant-websites/reservations", "/restaurant-websites/cost"]) {
+  const html = await htmlOnly(guide);
+  const ok =
+    (html.match(/<h1[\s>]/g) ?? []).length === 1 &&
+    html.includes(`<link rel="canonical" href="https://serverlys.com${guide}"`) &&
+    !/hrefLang=/i.test(html) &&
+    sitemap.includes(`${guide}</loc>`) &&
+    landingHtml.includes(`href="${guide}"`);
+  check(ok, `${guide}: one h1, self canonical, no hreflang, in sitemap, linked from the landing page`);
+}
+
+// ── Demo analytics ─────────────────────────────────────────────────────────
+await go("/restaurant-websites/demo");
+await js(`window.__events = []; addEventListener("serverlys:analytics", (e) => window.__events.push(e.detail))`);
+await js(`document.querySelector('button[aria-label="Add Asada tacos to order"]').click()`);
+await sleep(300);
+check(
+  /restaurant_demo/.test(await js(`JSON.stringify(window.__events)`)) && /add_to_cart/.test(await js(`JSON.stringify(window.__events)`)),
+  "demo add-to-cart fires restaurant_demo",
+  await js(`JSON.stringify(window.__events).slice(0, 160)`),
+);
 
 check(errors.length === 0, "no uncaught page errors", errors.slice(0, 3).join(" / "));
 

@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import type { Locale } from "../_i18n";
 import { reply, type AssistantAction } from "./assistant";
 import { MENU } from "./menu";
-import { fill, useLumbre, useNow } from "./state";
+import { fill, trackDemo, useLumbre, useNow } from "./state";
 import { CHAR, CREAM, EMBER, RUST, serif } from "./theme";
 
 /**
@@ -42,6 +42,7 @@ export function LumbreAssistant() {
     setLog((l) => [...l, { id: nextId.current++, from: "guest", text: q, lang: locale }]);
     setDraft("");
     setTyping(true);
+    trackDemo("assistant_question", locale);
     const answer = reply(q, locale, now ?? new Date());
     timer.current = window.setTimeout(() => {
       setLog((l) => [...l, { id: nextId.current++, from: "bot", text: answer.text, lang: answer.lang, actions: answer.actions }]);

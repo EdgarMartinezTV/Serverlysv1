@@ -9,14 +9,14 @@ import type { LandingCopy } from "../_i18n";
  */
 export const es: LandingCopy = {
   meta: {
-    title: "Sitios web para restaurantes con pedidos | Serverlys",
+    title: "Diseño de páginas web para restaurantes | Serverlys",
     description:
-      "Sitios web para restaurantes con menú digital, pedidos en línea, reservaciones, SEO local y asistente con IA bilingüe. Hechos por Serverlys. Revisión gratis.",
+      "Diseño y desarrollo de páginas web para restaurantes con menú digital, pedidos en línea, reservaciones, SEO local y asistente con IA bilingüe. Desde $699.",
   },
   breadcrumb: { home: "Inicio", page: "Sitios web para restaurantes" },
   switchTo: { label: "English", aria: "View this page in English" },
   hero: {
-    kicker: "Sitios web para restaurantes · Serverlys",
+    kicker: "Diseño web para restaurantes · Serverlys",
     title: "Sitios web que llenan mesas.",
     lede: "Un sitio web hermoso con menú digital de verdad, pedidos en línea, reservaciones y un asistente con IA que atiende a sus clientes en español e inglés. Diseñado, alojado y actualizado por un solo equipo.",
     ctaReview: "Revisión gratuita de su sitio web",
@@ -248,8 +248,8 @@ export const es: LandingCopy = {
       growth: [
         "Todo lo de Starter, hasta 10 páginas",
         "Sitio en español e inglés",
-        "Pedidos en línea conectados †",
-        "Reservaciones conectadas †",
+        "Pedidos en línea conectados *",
+        "Reservaciones conectadas *",
         "Optimización del perfil de Google y SEO local",
         "6 cambios al mes y reporte mensual",
       ],
@@ -263,7 +263,7 @@ export const es: LandingCopy = {
       ],
     },
     footnote:
-      "El pago de inicio es único; el plan mensual empieza con el lanzamiento. Precios en USD, más impuestos aplicables. † Requiere una cuenta con un proveedor externo, como Toast, Square, OpenTable o Resy. Sus tarifas, procesamiento de pagos y condiciones son aparte y se pagan directamente a ellos.",
+      "El pago de inicio es único; el plan mensual empieza con el lanzamiento. Precios en USD, más impuestos aplicables. * Requiere una cuenta con un proveedor externo, como Toast, Square, OpenTable o Resy. Sus tarifas, procesamiento de pagos y condiciones son aparte y se pagan directamente a ellos.",
   },
   compare: {
     title: "Compare todas las funciones",
@@ -271,7 +271,7 @@ export const es: LandingCopy = {
     feature: "Función",
     included: "Incluido",
     notIncluded: "No incluido",
-    externalLegend: "† Requiere una cuenta de terceros; sus tarifas son aparte.",
+    externalLegend: "* Requiere una cuenta de terceros; sus tarifas son aparte.",
     groups: [
       {
         title: "Sitio web",
@@ -420,6 +420,11 @@ export const es: LandingCopy = {
     title: "Lo que nos preguntan los dueños de restaurantes",
     items: [
       {
+        question: "¿Cuánto cuesta un sitio web para restaurante con Serverlys?",
+        answer:
+          "Starter cuesta $699 de inicio y luego $49.95 al mes. Growth cuesta $1,299 y luego $149.95 al mes. Restaurant Pro cuesta $1,999 y luego $299.95 al mes. El hosting, el SSL, las copias de seguridad y sus actualizaciones mensuales están incluidos. Si usa un proveedor de pedidos o reservaciones, ese proveedor le cobra aparte, y Serverlys no se queda con ninguna parte de sus pedidos.",
+      },
+      {
         question: "¿Pueden mejorar el sitio web que ya tengo, o necesito uno nuevo?",
         answer:
           "Cualquiera de las dos. La revisión gratuita le dice qué conviene. Si su sitio actual está bien hecho, podemos rediseñarlo y alojarlo en Serverlys; si es lento, difícil de actualizar o no está hecho para teléfonos, un sitio nuevo suele ser el camino más rápido.",
@@ -474,6 +479,9 @@ export const es: LandingCopy = {
   related: {
     label: "Más de Serverlys (en inglés)",
     items: [
+      ["Sitios con pedidos en línea", "/restaurant-websites/online-ordering"],
+      ["Integración de reservaciones", "/restaurant-websites/reservations"],
+      ["Guía de costos de un sitio web", "/restaurant-websites/cost"],
       ["Diseño web", "/website-design"],
       ["Servicios de SEO", "/seo"],
       ["Redes sociales", "/social-media"],

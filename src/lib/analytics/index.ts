@@ -38,6 +38,7 @@ export type AnalyticsEvent =
   | "web_development_lead"
   | "seo_service_lead"
   | "ai_agent_lead"
+  | "restaurant_demo"
   | "web_vitals";
 
 export type AnalyticsParams = Record<string, string | number | boolean | undefined | null>;

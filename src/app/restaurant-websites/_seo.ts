@@ -66,6 +66,9 @@ export function landingGraphs(copy: LandingCopy, locale: Locale) {
       path,
     }),
     inLanguage: locale,
+    // National, as the page says ("anywhere in the United States"). Doral is
+    // where we visit in person, not a service-area limit, so it is not here.
+    areaServed: { "@type": "Country", name: "United States" },
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: copy.pricing.title,

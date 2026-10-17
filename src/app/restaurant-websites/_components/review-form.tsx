@@ -28,11 +28,6 @@ type Status =
   | { kind: "success"; reference: string | null; notified: boolean }
   | { kind: "failure"; message: string };
 
-/** First interaction time, for the server's minimum-fill-time check. */
-function stamp(ref: { current: number }) {
-  if (!ref.current) ref.current = Date.now();
-}
-
 const ORDER: Field[] = ["restaurant", "contact", "website", "phone", "email", "location", "services", "message"];
 
 export function ReviewForm({
@@ -69,9 +64,17 @@ export function ReviewForm({
   const [language, setLanguage] = useState<Locale>(locale);
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<Status>({ kind: "idle" });
+  // When the form appeared, for the server's minimum-fill-time check. Not the
+  // first keystroke: browser autofill fills every field in one event, and a
+  // person who then ticks a box and submits can beat the threshold — the
+  // server drops that as a bot while the visitor is shown success.
   const startedAt = useRef<number>(0);
   const summaryRef = useRef<HTMLDivElement>(null);
   const resultRef = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    startedAt.current = Date.now();
+  }, []);
 
   // Plan preselection from a plan card (#review-growth etc.).
   useEffect(() => {
@@ -89,13 +92,11 @@ export function ReviewForm({
   }, [status.kind]);
 
   const set = (key: keyof typeof values) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    stamp(startedAt);
     setValues((v) => ({ ...v, [key]: e.target.value }));
     if (errors[key as Field]) setErrors((er) => ({ ...er, [key]: undefined }));
   };
 
   const toggleService = (s: ServiceId) => {
-    stamp(startedAt);
     setServices((cur) => (cur.includes(s) ? cur.filter((x) => x !== s) : [...cur, s]));
     if (errors.services) setErrors((er) => ({ ...er, services: undefined }));
   };
@@ -187,7 +188,7 @@ export function ReviewForm({
     setServices([]);
     setNoWebsite(false);
     setErrors({});
-    startedAt.current = 0;
+    startedAt.current = Date.now();
     setStatus({ kind: "idle" });
   };
 

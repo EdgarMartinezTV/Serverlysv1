@@ -84,6 +84,8 @@ export type LandingCopy = {
       body: string;
       bullets: readonly string[];
       note?: string;
+      /** A deeper page on this service, linked under the panel. */
+      more?: { label: string; href: string };
     }[];
     ui: {
       desktop: string;

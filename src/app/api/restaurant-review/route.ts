@@ -25,6 +25,13 @@ const GLOBAL: Window = { limit: 60, windowMs: 10 * 60_000 };
 const MIN_FILL_MS = 2_500;
 
 export async function POST(request: Request) {
+  // JSON only. A text/plain or form-encoded POST is a "simple" request any
+  // other site can make from a visitor's browser without a CORS preflight;
+  // requiring application/json forces the preflight, which this route never
+  // answers, so cross-site pages cannot file leads in a visitor's name.
+  if (!request.headers.get("content-type")?.toLowerCase().startsWith("application/json")) {
+    return NextResponse.json({ ok: false, reason: "malformed" }, { status: 415 });
+  }
   const parsed = await readJsonObject(request);
   if (!parsed.ok) {
     return NextResponse.json({ ok: false, reason: "malformed" }, { status: parsed.status });

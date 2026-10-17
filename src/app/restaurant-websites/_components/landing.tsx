@@ -261,7 +261,7 @@ function Compare({ copy }: { copy: LandingCopy }) {
         </h2>
         <div
           role="region"
-          aria-labelledby="rw-compare-heading"
+          aria-label={c.caption}
           tabIndex={0}
           className="relative mt-10 overflow-x-auto rounded-[20px] bg-white ring-1 ring-black/[0.06] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         >
@@ -294,7 +294,7 @@ function Compare({ copy }: { copy: LandingCopy }) {
                   <tr key={row.label} className="border-t border-black/[0.05]">
                     <th scope="row" className="sticky left-0 z-10 bg-white px-5 py-4 text-[14px] font-normal text-[#2b3442]">
                       {row.label}
-                      {row.external && <span className="ml-1 font-semibold text-[#c2410c]">†</span>}
+                      {row.external && <span className="ml-1 font-semibold text-[#c2410c]">*</span>}
                     </th>
                     {row.values.map((v, i) => (
                       <td key={i} className={cn("px-3 py-4 text-center", i === 1 && "bg-brand-50/60")}>

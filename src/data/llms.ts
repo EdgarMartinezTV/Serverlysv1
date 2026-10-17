@@ -124,6 +124,9 @@ export const LLMS_SECTIONS = [
     paths: [
       "/website-design",
       "/restaurant-websites",
+      "/restaurant-websites/online-ordering",
+      "/restaurant-websites/reservations",
+      "/restaurant-websites/cost",
       "/website-development",
       "/site-management",
       "/seo",
@@ -236,6 +239,12 @@ export const LLMS_SUMMARIES: Record<string, string> = {
     .join(
       ", ",
     )}. Custom mobile-first site, HTML digital menu with QR code, hosting and updates on every plan; online ordering and reservation integrations (third-party accounts and fees) and English + Spanish from Growth; the ConvoAI assistant, catering requests and up to 3 locations on Restaurant Pro. Spanish version at /es/restaurant-websites. Free website review; in-person visits for restaurants in Downtown Doral, Florida.`,
+  "/restaurant-websites/online-ordering":
+    "How Serverlys connects a restaurant's own online ordering (Toast, Square, Clover, ChowNow and others) to its website and Google listing. Included in Growth and Restaurant Pro; the ordering provider bills separately; Serverlys takes no cut of orders.",
+  "/restaurant-websites/reservations":
+    "How Serverlys connects a reservation system (OpenTable, Resy, Tock and others) or a request form that emails the restaurant's team. Included in Growth and Restaurant Pro; private-event and catering requests on Restaurant Pro; no per-booking fee from Serverlys.",
+  "/restaurant-websites/cost":
+    "Guide: what a restaurant website costs in 2026, with sourced price ranges for DIY builders, freelancers, agencies and restaurant platforms, the third-party fees that come on top, and Serverlys' restaurant plan prices.",
   "/website-development":
     "Custom web development for features, integrations, bookings, payments and fixes an off-the-shelf plugin cannot do: $129/hr, or a monthly retainer at $119/hr (1 hour), $109/hr (3 hours) or $99/hr (5 hours). Not website design — new websites are on /website-design.",
   "/site-management": `Website maintenance (ServerCare), billed monthly: ${carePlans

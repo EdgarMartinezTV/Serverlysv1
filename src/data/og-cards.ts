@@ -83,6 +83,21 @@ const PAGES: Record<string, OgCard> = {
     title: "Sitios web que llenan mesas.",
     detail: "Menú digital, pedidos en línea, reservaciones y un asistente con IA bilingüe.",
   },
+  "/restaurant-websites/online-ordering": {
+    eyebrow: "Restaurant websites",
+    title: "Online ordering on your own website.",
+    detail: "Toast, Square, Clover or ChowNow, connected. No cut of your orders.",
+  },
+  "/restaurant-websites/reservations": {
+    eyebrow: "Restaurant websites",
+    title: "Book tables while you are closed.",
+    detail: "OpenTable, Resy, Tock or a request form your team confirms.",
+  },
+  "/restaurant-websites/cost": {
+    eyebrow: "Cost guide",
+    title: "How much does a restaurant website cost?",
+    detail: "Sourced price ranges, the fees on top, and our published prices.",
+  },
   "/restaurant-websites/demo": {
     eyebrow: "Live demo",
     title: "Try a restaurant website before you buy one.",

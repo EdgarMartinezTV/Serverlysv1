@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { addDays, formatTime, slotsFor } from "./availability";
 import { HOURS } from "./menu";
-import { fill, useLumbre, useNow } from "./state";
+import { fill, trackDemo, useLumbre, useNow } from "./state";
 import { CHAR, CREAM, EMBER, serif } from "./theme";
 import { Stepper } from "./lumbre-menu";
 
@@ -67,6 +67,7 @@ export function LumbreReserve() {
     const alphabet = "23456789ABCDEFGHJKLMNPQRSTVWXYZ";
     setCode(`LMB-${Array.from({ length: 5 }, () => alphabet[Math.floor(Math.random() * alphabet.length)]).join("")}`);
     setStep(4);
+    trackDemo("reservation_confirmed", locale);
   };
 
   const reset = () => {

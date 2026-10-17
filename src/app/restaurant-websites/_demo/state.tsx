@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { track } from "@/lib/analytics";
 import type { Locale } from "../_i18n";
 import { DEMO_COPY, type DemoCopy } from "./copy";
 import { MENU, type MenuItem, type Tag } from "./menu";
@@ -43,6 +44,13 @@ export function useLumbre(): Ctx {
   return ctx;
 }
 
+/**
+ * Demo engagement for analytics: what a restaurant owner actually tried.
+ * One event name with an `action` so the funnel reads as a single report.
+ */
+export type DemoAction = "add_to_cart" | "order_placed" | "reservation_confirmed" | "assistant_question";
+export const trackDemo = (action: DemoAction, locale: Locale) => track("restaurant_demo", { action, locale });
+
 export function LumbreProvider({ locale, children }: { locale: Locale; children: React.ReactNode }) {
   const [lines, setLines] = useState<CartLine[]>([]);
   const [filter, setFilter] = useState<Tag | null>(null);
@@ -53,12 +61,13 @@ export function LumbreProvider({ locale, children }: { locale: Locale; children:
 
   const add = useCallback((item: MenuItem, option: number | null, qty = 1) => {
     const key = `${item.id}:${option ?? "-"}`;
+    trackDemo("add_to_cart", locale);
     setLines((cur) => {
       const found = cur.find((l) => l.key === key);
       if (found) return cur.map((l) => (l.key === key ? { ...l, qty: l.qty + qty } : l));
       return [...cur, { key, itemId: item.id, option, qty }];
     });
-  }, []);
+  }, [locale]);
 
   const setQty = useCallback((key: string, qty: number) => {
     setLines((cur) => (qty <= 0 ? cur.filter((l) => l.key !== key) : cur.map((l) => (l.key === key ? { ...l, qty } : l))));

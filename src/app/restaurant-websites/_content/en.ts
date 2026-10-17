@@ -10,14 +10,14 @@ import type { LandingCopy } from "../_i18n";
  */
 export const en: LandingCopy = {
   meta: {
-    title: "Restaurant Websites with Online Ordering | Serverlys",
+    title: "Restaurant Website Design & Development | Serverlys",
     description:
-      "Restaurant websites with a digital menu, online ordering, reservations, local SEO and a bilingual AI assistant. Built and hosted by Serverlys. Free review.",
+      "Restaurant website design and development with a digital menu, online ordering, reservations, local SEO and a bilingual AI assistant. From $699. Free review.",
   },
   breadcrumb: { home: "Home", page: "Restaurant websites" },
   switchTo: { label: "Español", aria: "Ver esta página en español" },
   hero: {
-    kicker: "Restaurant websites by Serverlys",
+    kicker: "Restaurant website design by Serverlys",
     title: "Restaurant websites that fill tables.",
     lede: "A beautiful website with a real digital menu, online ordering, reservations and an AI assistant that answers guests in English and Spanish. Designed, hosted and kept current by one team.",
     ctaReview: "Get a Free Restaurant Website Review",
@@ -95,6 +95,7 @@ export const en: LandingCopy = {
           "Links to your DoorDash or Uber Eats pages if you keep them",
         ],
         note: "Requires an account with your ordering provider. Their fees and payment processing are separate and paid to them.",
+        more: { label: "How online ordering integration works", href: "/restaurant-websites/online-ordering" },
       },
       {
         id: "reservations",
@@ -108,6 +109,7 @@ export const en: LandingCopy = {
           "Private-event and catering requests on Restaurant Pro",
         ],
         note: "Reservation systems such as OpenTable or Resy need their own account and subscription.",
+        more: { label: "How reservation integration works", href: "/restaurant-websites/reservations" },
       },
       {
         id: "seo",
@@ -249,8 +251,8 @@ export const en: LandingCopy = {
       growth: [
         "Everything in Starter, up to 10 pages",
         "English and Spanish website",
-        "Online ordering connected †",
-        "Reservations connected †",
+        "Online ordering connected *",
+        "Reservations connected *",
         "Google Business Profile optimization and local SEO",
         "6 updates a month and a monthly report",
       ],
@@ -264,7 +266,7 @@ export const en: LandingCopy = {
       ],
     },
     footnote:
-      "Setup is a one-time fee; the monthly plan starts at launch. Prices in USD, plus applicable tax. † Needs an account with a third-party provider, such as Toast, Square, OpenTable or Resy. Their fees, payment processing and terms are separate and paid to them directly.",
+      "Setup is a one-time fee; the monthly plan starts at launch. Prices in USD, plus applicable tax. * Needs an account with a third-party provider, such as Toast, Square, OpenTable or Resy. Their fees, payment processing and terms are separate and paid to them directly.",
   },
   compare: {
     title: "Compare every feature",
@@ -272,7 +274,7 @@ export const en: LandingCopy = {
     feature: "Feature",
     included: "Included",
     notIncluded: "Not included",
-    externalLegend: "† Needs a third-party account; its fees are separate.",
+    externalLegend: "* Needs a third-party account; its fees are separate.",
     groups: [
       {
         title: "Website",
@@ -420,6 +422,11 @@ export const en: LandingCopy = {
     title: "Questions restaurant owners ask us",
     items: [
       {
+        question: "How much does a restaurant website cost with Serverlys?",
+        answer:
+          "Starter is $699 to set up, then $49.95 a month. Growth is $1,299, then $149.95 a month. Restaurant Pro is $1,999, then $299.95 a month. Hosting, SSL, backups and your monthly updates are included. An ordering or reservation provider, if you use one, bills you separately, and Serverlys takes no cut of your orders.",
+      },
+      {
         question: "Can you improve the website I already have, or do I need a new one?",
         answer:
           "Either. The free review tells you which makes sense. If your current site is sound, we can redesign and rebuild on Serverlys; if it is slow, hard to update or not built for phones, a new site is usually the faster path.",
@@ -474,6 +481,9 @@ export const en: LandingCopy = {
   related: {
     label: "More from Serverlys",
     items: [
+      ["Online ordering websites", "/restaurant-websites/online-ordering"],
+      ["Reservation integrations", "/restaurant-websites/reservations"],
+      ["Restaurant website cost guide", "/restaurant-websites/cost"],
       ["Website design", "/website-design"],
       ["SEO services", "/seo"],
       ["Social media management", "/social-media"],

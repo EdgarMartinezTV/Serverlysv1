@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { formatTime } from "./availability";
 import { DELIVERY_FEE, MENU, TAX_RATE, money } from "./menu";
-import { fill, useLumbre, useNow } from "./state";
+import { fill, trackDemo, useLumbre, useNow } from "./state";
 import { CHAR, CREAM, EMBER, RUST } from "./theme";
 import { Stepper } from "./lumbre-menu";
 
@@ -85,6 +85,7 @@ export function CartDrawer() {
       total,
     });
     clear();
+    trackDemo("order_placed", locale);
   };
 
   const close = () => setCartOpen(false);
