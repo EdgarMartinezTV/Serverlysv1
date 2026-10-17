@@ -41,6 +41,11 @@ export type RouteMeta = {
    * interim destination get no link at all.
    */
   interim?: string;
+  /**
+   * hreflang alternates for a page published in more than one language, as
+   * { "en-US": path, "es-US": path }. Emitted in the sitemap.
+   */
+  languages?: Readonly<Record<string, string>>;
 };
 
 export const routes: readonly RouteMeta[] = [
@@ -161,6 +166,49 @@ export const routes: readonly RouteMeta[] = [
     priority: 0.8,
     changeFrequency: "monthly",
     parents: ["/"],
+  },
+  {
+    path: "/restaurant-websites",
+    name: "Restaurant websites",
+    group: "commercial",
+    built: true,
+    indexable: true,
+    priority: 0.8,
+    changeFrequency: "monthly",
+    parents: ["/"],
+    languages: { "en-US": "/restaurant-websites", "es-US": "/es/restaurant-websites" },
+  },
+  {
+    path: "/es/restaurant-websites",
+    name: "Sitios web para restaurantes",
+    group: "commercial",
+    built: true,
+    indexable: true,
+    priority: 0.7,
+    changeFrequency: "monthly",
+    parents: ["/"],
+    languages: { "en-US": "/restaurant-websites", "es-US": "/es/restaurant-websites" },
+  },
+  // The Lumbre demo describes a fictional restaurant: built, never indexed.
+  {
+    path: "/restaurant-websites/demo",
+    name: "Live demo",
+    group: "commercial",
+    built: true,
+    indexable: false,
+    priority: 0.3,
+    changeFrequency: "monthly",
+    parents: ["/", "/restaurant-websites"],
+  },
+  {
+    path: "/es/restaurant-websites/demo",
+    name: "Demo en vivo",
+    group: "commercial",
+    built: true,
+    indexable: false,
+    priority: 0.3,
+    changeFrequency: "monthly",
+    parents: ["/", "/es/restaurant-websites"],
   },
   {
     path: "/website-development",

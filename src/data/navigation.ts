@@ -322,6 +322,12 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
             description: "Sites built to convert.",
           },
           {
+            label: "Restaurant websites",
+            href: "/restaurant-websites",
+            icon: "cart",
+            description: "Menus, ordering and reservations.",
+          },
+          {
             label: "Custom development",
             href: "/website-development",
             icon: "wrench",
@@ -637,6 +643,7 @@ export const footerNav: readonly NavColumn[] = [
     heading: "Services",
     links: [
       { label: "Web design", href: "/website-design" },
+      { label: "Restaurant websites", href: "/restaurant-websites" },
       { label: "Custom development", href: "/website-development" },
       { label: "SEO", href: "/seo" },
       { label: "Marketing", href: "/marketing" },

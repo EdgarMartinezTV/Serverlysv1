@@ -739,15 +739,20 @@ export function PricingPanel({
 export function Faqs({
   id,
   items,
+  label = "FAQ",
+  title = "Frequently asked questions.",
 }: {
   id: string;
   items: readonly { question: string; answer: string }[];
+  /** Overridable for the Spanish restaurant pages; defaults unchanged. */
+  label?: string;
+  title?: string;
 }) {
   return (
     <section aria-labelledby={id} className="bg-[#f7f7f8] pb-20 lg:pb-28">
       <Wrap>
-        <Label className="text-center">FAQ</Label>
-        <Heading id={id}>Frequently asked questions.</Heading>
+        <Label className="text-center">{label}</Label>
+        <Heading id={id}>{title}</Heading>
         <div className="mt-14 border-t border-black/[0.08]">
           {items.map((f) => (
             <details key={f.question} className="group border-b border-black/[0.08]">
@@ -788,15 +793,17 @@ export function Faqs({
 export function Related({
   id,
   items,
+  label = "Related solutions",
 }: {
   id: string;
   items: readonly (readonly [string, string])[];
+  label?: string;
 }) {
   return (
     <section aria-labelledby={id} className="bg-white py-14">
       <Wrap>
         <Label className="text-center">
-          <span id={id}>Related solutions</span>
+          <span id={id}>{label}</span>
         </Label>
         <ul className="mt-5 flex flex-wrap justify-center gap-2">
           {items.map(([label, href]) => (

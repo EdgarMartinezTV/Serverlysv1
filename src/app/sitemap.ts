@@ -24,6 +24,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: canonical(route.path),
     changeFrequency: route.changeFrequency,
     priority: route.priority,
+    ...(route.languages
+      ? {
+          alternates: {
+            languages: Object.fromEntries(
+              Object.entries(route.languages).map(([lang, path]) => [lang, canonical(path)]),
+            ),
+          },
+        }
+      : {}),
   }));
 
   // Articles are not in the registry — they are content, enumerated from

@@ -1302,3 +1302,62 @@
     animation-play-state: paused;
   }
 }
+
+/* ── /restaurant-websites hero ────────────────────────────────────────────
+ * The device stage settles into place on load. TRANSFORM ONLY, never
+ * opacity: the stage holds images that are LCP candidates, and an
+ * opacity-from-0 entrance would hold their paint back (see the reveal note
+ * above). Base state is the finished state, so reduced motion simply shows it.
+ */
+@keyframes rwRise {
+  from {
+    transform: translateY(28px) scale(0.985);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes rwPop {
+  0%,
+  40% {
+    transform: translateY(10px) scale(0.92);
+  }
+  100% {
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rw-rise {
+    animation: rwRise 900ms var(--ease-entrance) both;
+  }
+  .rw-pop {
+    animation: rwPop 1100ms var(--ease-entrance) both;
+  }
+  .rw-delay-1 {
+    animation-delay: 120ms;
+  }
+  .rw-delay-2 {
+    animation-delay: 380ms;
+  }
+  .rw-delay-3 {
+    animation-delay: 560ms;
+  }
+  .rw-delay-4 {
+    animation-delay: 740ms;
+  }
+}
+@keyframes rwFade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rw-fade {
+    animation: rwFade 320ms var(--ease-entrance) both;
+  }
+}

@@ -3,6 +3,7 @@ import { carePlans, formatCarePrice } from "./care-plans";
 import { formatSocialPrice, socialPlans } from "./social-plans";
 import { designPlans, formatDesignPrice } from "./design-plans";
 import { formatSeoPrice, seoPlans } from "./seo-plans";
+import { formatMonthly, formatSetup, restaurantPlans } from "./restaurant-plans";
 /**
  * The AI-facing index of this site — the content of `/llms.txt`.
  *
@@ -122,6 +123,7 @@ export const LLMS_SECTIONS = [
     title: "Websites and growth",
     paths: [
       "/website-design",
+      "/restaurant-websites",
       "/website-development",
       "/site-management",
       "/seo",
@@ -229,6 +231,11 @@ export const LLMS_SUMMARIES: Record<string, string> = {
     .join(
       ", ",
     )}. Every plan includes a 100% custom homepage, WordPress implementation, a web style guide, an SEO-friendly blog and analytics setup. Scoped in writing before work starts. This is the page for a new website; feature work on an existing site is /website-development.`,
+  "/restaurant-websites": `Restaurant websites, a one-time setup fee plus a monthly plan: ${restaurantPlans
+    .map((p) => `${p.name} ${formatSetup(p.setup)} + ${formatMonthly(p.monthly)}/mo`)
+    .join(
+      ", ",
+    )}. Custom mobile-first site, HTML digital menu with QR code, hosting and updates on every plan; online ordering and reservation integrations (third-party accounts and fees) and English + Spanish from Growth; the ConvoAI assistant, catering requests and up to 3 locations on Restaurant Pro. Spanish version at /es/restaurant-websites. Free website review; in-person visits for restaurants in Downtown Doral, Florida.`,
   "/website-development":
     "Custom web development for features, integrations, bookings, payments and fixes an off-the-shelf plugin cannot do: $129/hr, or a monthly retainer at $119/hr (1 hour), $109/hr (3 hours) or $99/hr (5 hours). Not website design — new websites are on /website-design.",
   "/site-management": `Website maintenance (ServerCare), billed monthly: ${carePlans

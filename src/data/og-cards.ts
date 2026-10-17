@@ -73,6 +73,26 @@ const PAGES: Record<string, OgCard> = {
     title: "A site built to be found and to convert.",
     detail: "Designed around what your customers actually came to do.",
   },
+  "/restaurant-websites": {
+    eyebrow: "Restaurant websites",
+    title: "Restaurant websites that fill tables.",
+    detail: "Digital menus, online ordering, reservations and a bilingual AI assistant.",
+  },
+  "/es/restaurant-websites": {
+    eyebrow: "Sitios web para restaurantes",
+    title: "Sitios web que llenan mesas.",
+    detail: "Menú digital, pedidos en línea, reservaciones y un asistente con IA bilingüe.",
+  },
+  "/restaurant-websites/demo": {
+    eyebrow: "Live demo",
+    title: "Try a restaurant website before you buy one.",
+    detail: "Menu, ordering, reservations and an AI assistant. Fictional restaurant.",
+  },
+  "/es/restaurant-websites/demo": {
+    eyebrow: "Demo en vivo",
+    title: "Pruebe un sitio web de restaurante antes de comprar.",
+    detail: "Menú, pedidos, reservaciones y asistente con IA. Restaurante ficticio.",
+  },
   "/website-development": {
     eyebrow: "Development",
     title: "When a template will not do it.",
