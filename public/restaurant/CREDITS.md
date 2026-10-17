@@ -31,3 +31,30 @@ margaritas       1544145945-f90425340c7e
 
 Dish names on the demo menu are invented for the fictional restaurant; the
 photos are representative, not of those exact dishes.
+
+## Film and stills for the Lumbre demo (added 2026-10-17)
+
+`video/lumbre-hero*.{webm,mp4}`, `video/lumbre-fire*.{webm,mp4}`, their
+`-poster.jpg` frames and the `still-*.jpg` images are cut, colour-graded and
+re-encoded by Serverlys from **Coverr** clips (https://coverr.co/license —
+free for commercial use, no attribution required; no use of brands shown in
+a clip; no resale or redistribution as stock or as part of a website-builder
+or template service). Real footage only: Coverr's "premium" (paid) and
+AI-generated uploads were excluded. Mixkit was checked and NOT used — most
+fitting Mixkit clips carry its personal-use-only "Restricted" licence.
+
+Source clips (https://cdn.coverr.co/videos/coverr-<slug>/1080p.mp4):
+
+hero film   a-lit-fire-2170, chef-adding-parsley-to-a-dish-in-a-restaurant-2340,
+            grilled-steak-8580, pouring-wine-into-glasses-5331,
+            pouring-wine-421, steak-and-red-wine-4022
+fire film   smoke-coming-from-grilled-chicken-1035, cutting-steak-1062
+stills      still-chef-hands (2340 @ 2.9s), still-fireside-pour (421 @ 5.5s),
+            still-wine-glasses (5331 @ 5.2s), still-steak-wine (4022 @ 2.5s),
+            still-flames (2170 @ 5.5s)
+
+⚠ TEMPORARY DEMO FOOTAGE. Good enough to show the experience, not a
+commissioned shoot: stock footage of other restaurants' food. A client site
+needs the client's own footage, or footage licensed for that client. The
+edit script (cut, grade, 16:9 + 9:16 crops, AV1 WebM + H.264 MP4, posters) is
+reproducible from the list above.

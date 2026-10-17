@@ -4,7 +4,7 @@ import { createContext, useCallback, useContext, useMemo, useRef, useState, useS
 import { track } from "@/lib/analytics";
 import type { Locale } from "../_i18n";
 import { DEMO_COPY, type DemoCopy } from "./copy";
-import { MENU, type MenuItem, type Tag } from "./menu";
+import { MENU, type CategoryId, type MenuItem, type Tag } from "./menu";
 
 /**
  * Shared state for the Lumbre demo: the cart, the menu filter, and the
@@ -28,12 +28,15 @@ type Ctx = {
   subtotal: number;
   filter: Tag | null;
   setFilter: (t: Tag | null) => void;
+  /** Menu section, shared so the signature dishes can open the menu on one. */
+  category: CategoryId | "all";
+  setCategory: (c: CategoryId | "all") => void;
   cartOpen: boolean;
   setCartOpen: (open: boolean) => void;
   prefill: ReservePrefill | null;
   prefillReservation: (p: Omit<ReservePrefill, "nonce">) => void;
   announce: (msg: string) => void;
-  goTo: (id: "menu" | "reserve" | "assistant" | "visit") => void;
+  goTo: (id: SectionId) => void;
 };
 
 const LumbreContext = createContext<Ctx | null>(null);
@@ -48,12 +51,22 @@ export function useLumbre(): Ctx {
  * Demo engagement for analytics: what a restaurant owner actually tried.
  * One event name with an `action` so the funnel reads as a single report.
  */
-export type DemoAction = "add_to_cart" | "order_placed" | "reservation_confirmed" | "assistant_question";
+export type DemoAction =
+  | "add_to_cart"
+  | "order_placed"
+  | "reservation_confirmed"
+  | "assistant_question"
+  | "private_inquiry"
+  | "newsletter_signup"
+  | "gallery_open";
+
+export type SectionId = "menu" | "reserve" | "assistant" | "visit" | "story" | "fire" | "private" | "gallery";
 export const trackDemo = (action: DemoAction, locale: Locale) => track("restaurant_demo", { action, locale });
 
 export function LumbreProvider({ locale, children }: { locale: Locale; children: React.ReactNode }) {
   const [lines, setLines] = useState<CartLine[]>([]);
   const [filter, setFilter] = useState<Tag | null>(null);
+  const [category, setCategory] = useState<CategoryId | "all">("all");
   const [cartOpen, setCartOpen] = useState(false);
   const [prefill, setPrefill] = useState<ReservePrefill | null>(null);
   const [message, setMessage] = useState("");
@@ -73,7 +86,7 @@ export function LumbreProvider({ locale, children }: { locale: Locale; children:
     setLines((cur) => (qty <= 0 ? cur.filter((l) => l.key !== key) : cur.map((l) => (l.key === key ? { ...l, qty } : l))));
   }, []);
 
-  const goTo = useCallback((id: "menu" | "reserve" | "assistant" | "visit") => {
+  const goTo = useCallback((id: SectionId) => {
     const el = document.getElementById(id);
     if (!el) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -97,6 +110,8 @@ export function LumbreProvider({ locale, children }: { locale: Locale; children:
       subtotal: priced.reduce((s, { l, item }) => s + item.price * l.qty, 0),
       filter,
       setFilter,
+      category,
+      setCategory,
       cartOpen,
       setCartOpen,
       prefill,
@@ -111,7 +126,7 @@ export function LumbreProvider({ locale, children }: { locale: Locale; children:
       },
       goTo,
     };
-  }, [locale, lines, add, setQty, filter, cartOpen, prefill, goTo]);
+  }, [locale, lines, add, setQty, filter, category, cartOpen, prefill, goTo]);
 
   return (
     <LumbreContext.Provider value={value}>

@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { formatTime } from "./availability";
 import { DELIVERY_FEE, MENU, TAX_RATE, money } from "./menu";
 import { fill, trackDemo, useLumbre, useNow } from "./state";
-import { CHAR, CREAM, EMBER, RUST } from "./theme";
+import { CHAMPAGNE, CHAR, IVORY, OLIVE, display } from "./theme";
 import { Stepper } from "./lumbre-menu";
 
 /**
@@ -24,11 +24,11 @@ export function CartButton() {
     <button
       type="button"
       onClick={() => setCartOpen(true)}
-      className="fixed right-[88px] bottom-4 left-4 z-40 flex h-14 items-center justify-between gap-3 rounded-full px-5 text-[15px] font-semibold shadow-[0_18px_40px_-10px_rgb(0_0_0/0.55)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:right-8 sm:left-auto sm:min-w-[300px]"
-      style={{ background: EMBER, color: CHAR }}
+      className="fixed right-4 bottom-4 left-[76px] z-40 flex h-14 items-center justify-between gap-3 rounded-full px-5 font-display text-[14px] font-semibold shadow-[0_18px_40px_-10px_rgb(0_0_0/0.55)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111411] sm:right-6 sm:bottom-6 sm:left-auto sm:min-w-[300px]"
+      style={{ background: CHAMPAGNE, color: CHAR }}
     >
       <span className="flex items-center gap-2.5">
-        <span className="flex size-7 items-center justify-center rounded-full text-[13px] tabular-nums" style={{ background: CHAR, color: CREAM }}>
+        <span className="flex size-7 items-center justify-center rounded-full text-[13px] tabular-nums" style={{ background: CHAR, color: IVORY }}>
           {count}
         </span>
         {copy.cart.open}
@@ -90,7 +90,7 @@ export function CartDrawer() {
 
   const close = () => setCartOpen(false);
   const input =
-    "mt-1.5 block h-12 w-full rounded-xl bg-white px-4 text-[16px] text-[#14100d] ring-1 ring-inset ring-[#14100d]/15 focus:outline-none focus:ring-2 focus:ring-[#a4431a]";
+    "mt-1.5 block h-12 w-full rounded-none bg-white px-4 text-[16px] text-[#111411] ring-1 ring-inset ring-[#111411]/15 focus:outline-none focus:ring-2 focus:ring-[#696D55]";
 
   return (
     <dialog
@@ -103,18 +103,18 @@ export function CartDrawer() {
       onClick={(e) => {
         if (e.target === ref.current) close();
       }}
-      className="fixed inset-y-0 right-0 left-auto m-0 h-dvh max-h-dvh w-full max-w-[460px] bg-[#f6efe6] p-0 text-[#14100d] shadow-2xl backdrop:bg-[#14100d]/60 backdrop:backdrop-blur-sm"
+      className="fixed inset-y-0 right-0 left-auto m-0 h-dvh max-h-dvh w-full max-w-[460px] bg-[#FAF8F3] p-0 text-[#111411] shadow-2xl backdrop:bg-[#111411]/60 backdrop:backdrop-blur-sm"
     >
       <div className="flex h-full flex-col">
-        <div className="flex items-center justify-between border-b border-[#14100d]/10 px-5 py-4">
-          <h2 id="lumbre-cart-title" className="text-[20px] font-semibold">
+        <div className="flex items-center justify-between border-b border-[#111411]/10 px-5 py-4">
+          <h2 id="lumbre-cart-title" className={cn(display.className, "text-[32px] leading-none")}>
             {done ? c.confirmedTitle : c.title}
           </h2>
           <button
             type="button"
             onClick={close}
             aria-label={c.close}
-            className="flex size-10 items-center justify-center rounded-full hover:bg-[#14100d]/5 focus-visible:outline-2 focus-visible:outline-[#a4431a]"
+            className="flex size-10 items-center justify-center rounded-full hover:bg-[#111411]/5 focus-visible:outline-2 focus-visible:outline-[#696D55]"
           >
             <svg viewBox="0 0 20 20" aria-hidden="true" className="size-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
               <path d="m5 5 10 10M15 5 5 15" />
@@ -129,20 +129,20 @@ export function CartDrawer() {
                 <path d="m5 12.5 4.5 4.5L19 7.5" />
               </svg>
             </span>
-            <h3 ref={doneRef} tabIndex={-1} className="mt-5 text-[26px] font-semibold outline-none">
+            <h3 ref={doneRef} tabIndex={-1} className={cn(display.className, "mt-5 text-[36px] leading-none outline-none")}>
               {c.orderNumber} #{done.number}
             </h3>
             <dl className="mt-4 grid grid-cols-2 gap-3 text-[14px]">
-              <div className="rounded-xl bg-white p-4">
-                <dt className="text-[#5c5047]">{c.readyAt}</dt>
+              <div className="rounded-none bg-white p-4">
+                <dt className="text-[#55574C]">{c.readyAt}</dt>
                 <dd className="mt-1 text-[18px] font-semibold">{formatTime(done.ready % (24 * 60))}</dd>
               </div>
-              <div className="rounded-xl bg-white p-4">
-                <dt className="text-[#5c5047]">{c.total}</dt>
+              <div className="rounded-none bg-white p-4">
+                <dt className="text-[#55574C]">{c.total}</dt>
                 <dd className="mt-1 text-[18px] font-semibold tabular-nums">{money(done.total)}</dd>
               </div>
             </dl>
-            <p className="mt-6 rounded-xl bg-[#fff7ed] p-4 text-[14px] leading-[1.55] text-[#7c2d12] ring-1 ring-[#fed7aa]">
+            <p className="mt-6 rounded-none bg-[#F4EFE6] p-4 text-[14px] leading-[1.6] text-[#55574C] ring-1 ring-[#696D55]/30">
               {c.confirmedBody}
             </p>
             <button
@@ -152,15 +152,15 @@ export function CartDrawer() {
                 close();
                 goTo("menu");
               }}
-              className="mt-6 h-12 w-full rounded-full text-[15px] font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a4431a]"
-              style={{ background: CHAR, color: CREAM }}
+              className="mt-6 h-12 w-full rounded-full text-[15px] font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#696D55]"
+              style={{ background: CHAR, color: IVORY }}
             >
               {c.newOrder}
             </button>
           </div>
         ) : count === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center px-5 text-center">
-            <p className="text-[16px] text-[#5c5047]">{c.empty}</p>
+            <p className="text-[16px] text-[#55574C]">{c.empty}</p>
             <button
               type="button"
               onClick={() => {
@@ -168,7 +168,7 @@ export function CartDrawer() {
                 goTo("menu");
               }}
               className="mt-4 h-11 rounded-full px-5 text-[14px] font-semibold"
-              style={{ background: CHAR, color: CREAM }}
+              style={{ background: CHAR, color: IVORY }}
             >
               {c.emptyCta}
             </button>
@@ -181,8 +181,8 @@ export function CartDrawer() {
                   const item = MENU.find((m) => m.id === l.itemId)!;
                   const option = l.option !== null && item.options ? item.options.choices[l.option][locale] : null;
                   return (
-                    <li key={l.key} className="flex gap-3 rounded-2xl bg-white p-3">
-                      <span className="relative size-16 shrink-0 overflow-hidden rounded-xl">
+                    <li key={l.key} className="flex gap-3 bg-white p-3">
+                      <span className="relative size-16 shrink-0 overflow-hidden rounded-none">
                         <Image src={item.photo} alt="" fill sizes="64px" className="object-cover" />
                       </span>
                       <span className="flex min-w-0 flex-1 flex-col">
@@ -190,7 +190,7 @@ export function CartDrawer() {
                           <span className="truncate text-[15px] font-semibold">{item.name[locale]}</span>
                           <span className="text-[15px] font-semibold tabular-nums">{money(item.price * l.qty)}</span>
                         </span>
-                        {option && <span className="text-[13px] text-[#5c5047]">{option}</span>}
+                        {option && <span className="text-[13px] text-[#55574C]">{option}</span>}
                         <span className="mt-2 flex items-center justify-between">
                           <Stepper
                             value={l.qty}
@@ -199,7 +199,7 @@ export function CartDrawer() {
                             decreaseLabel={fill(c.decrease, { item: item.name[locale] })}
                             increaseLabel={fill(c.increase, { item: item.name[locale] })}
                           />
-                          <button type="button" onClick={() => setQty(l.key, 0)} className="text-[13px] font-semibold underline-offset-4 hover:underline" style={{ color: RUST }}>
+                          <button type="button" onClick={() => setQty(l.key, 0)} className="text-[13px] font-semibold underline-offset-4 hover:underline" style={{ color: OLIVE }}>
                             {c.remove}
                             <span className="sr-only"> {item.name[locale]}</span>
                           </button>
@@ -216,7 +216,7 @@ export function CartDrawer() {
                   {(["pickup", "delivery"] as const).map((m) => (
                     <label key={m} className="relative">
                       <input type="radio" name="method" checked={method === m} onChange={() => setMethod(m)} className="peer sr-only" />
-                      <span className="flex h-12 cursor-pointer items-center justify-center rounded-xl bg-white text-[14px] font-semibold ring-1 ring-[#14100d]/15 peer-checked:bg-[#14100d] peer-checked:text-[#f6efe6] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[#a4431a]">
+                      <span className="flex h-12 cursor-pointer items-center justify-center rounded-none bg-white text-[14px] font-semibold ring-1 ring-[#111411]/15 peer-checked:bg-[#111411] peer-checked:text-[#F4EFE6] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[#696D55]">
                         {m === "pickup" ? c.pickup : c.delivery}
                       </span>
                     </label>
@@ -260,7 +260,7 @@ export function CartDrawer() {
                   {[0, 0.15, 0.18, 0.2].map((t) => (
                     <label key={t} className="relative">
                       <input type="radio" name="tip" checked={tip === t} onChange={() => setTip(t)} className="peer sr-only" />
-                      <span className="flex h-11 cursor-pointer items-center justify-center rounded-xl bg-white text-[13px] font-semibold ring-1 ring-[#14100d]/15 peer-checked:bg-[#14100d] peer-checked:text-[#f6efe6] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[#a4431a]">
+                      <span className="flex h-11 cursor-pointer items-center justify-center rounded-none bg-white text-[13px] font-semibold ring-1 ring-[#111411]/15 peer-checked:bg-[#111411] peer-checked:text-[#F4EFE6] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[#696D55]">
                         {t === 0 ? c.noTip : `${Math.round(t * 100)}%`}
                       </span>
                     </label>
@@ -283,7 +283,7 @@ export function CartDrawer() {
                 </div>
               </div>
 
-              <div className="mt-5 rounded-xl bg-white p-4">
+              <div className="mt-5 rounded-none bg-white p-4">
                 <p className="flex items-center gap-2 text-[14px] font-semibold">
                   <svg viewBox="0 0 20 20" aria-hidden="true" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.7">
                     <rect x="4" y="9" width="12" height="8" rx="1.5" />
@@ -291,12 +291,12 @@ export function CartDrawer() {
                   </svg>
                   {c.payment}
                 </p>
-                <p className="mt-1.5 text-[13px] leading-[1.5] text-[#5c5047]">{c.paymentNote}</p>
+                <p className="mt-1.5 text-[13px] leading-[1.5] text-[#55574C]">{c.paymentNote}</p>
               </div>
             </div>
 
-            <div className="border-t border-[#14100d]/10 bg-white px-5 pt-4 pb-5">
-              <dl className="grid grid-cols-[1fr_auto] gap-y-1 text-[14px] text-[#4a3f36]">
+            <div className="border-t border-[#111411]/10 bg-white px-5 pt-4 pb-5">
+              <dl className="grid grid-cols-[1fr_auto] gap-y-1 text-[14px] text-[#55574C]">
                 <dt>{c.subtotal}</dt>
                 <dd className="tabular-nums">{money(subtotal)}</dd>
                 <dt>{c.tax}</dt>
@@ -309,8 +309,8 @@ export function CartDrawer() {
                 )}
                 <dt>{c.tipLine}</dt>
                 <dd className="tabular-nums">{money(tipAmount)}</dd>
-                <dt className="mt-1 text-[16px] font-semibold text-[#14100d]">{c.total}</dt>
-                <dd className="mt-1 text-[16px] font-semibold text-[#14100d] tabular-nums">{money(total)}</dd>
+                <dt className="mt-1 text-[16px] font-semibold text-[#111411]">{c.total}</dt>
+                <dd className="mt-1 text-[16px] font-semibold text-[#111411] tabular-nums">{money(total)}</dd>
               </dl>
               {error && (
                 <p role="alert" className="mt-3 text-[13px] font-medium text-[#b91c1c]">
@@ -319,12 +319,12 @@ export function CartDrawer() {
               )}
               <button
                 type="submit"
-                className={cn("mt-4 h-13 w-full rounded-full py-3.5 text-[15px] font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a4431a]")}
-                style={{ background: EMBER, color: CHAR }}
+                className={cn("mt-4 h-13 w-full rounded-full py-3.5 text-[15px] font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#696D55]")}
+                style={{ background: CHAR, color: IVORY }}
               >
                 {c.place} · {money(total)}
               </button>
-              <p className="mt-2 text-center text-[12px] text-[#5c5047]">{c.demoNote}</p>
+              <p className="mt-2 text-center text-[12px] text-[#55574C]">{c.demoNote}</p>
             </div>
           </form>
         )}

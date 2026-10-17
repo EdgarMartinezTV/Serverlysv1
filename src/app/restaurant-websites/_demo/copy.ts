@@ -8,10 +8,6 @@ import type { Locale } from "../_i18n";
 export type DemoCopy = {
   meta: { title: string; description: string };
   breadcrumb: { home: string; landing: string; page: string };
-  bar: { badge: string; text: string; back: string; cta: string; switchLabel: string; switchAria: string };
-  nav: { menu: string; reserve: string; assistant: string; visit: string; order: string; label: string };
-  hero: { eyebrow: string; title: string; body: string; order: string; reserve: string; ask: string };
-  info: { today: string; closedToday: string; address: string; addressValue: string; parking: string; parkingValue: string; phone: string };
   menu: {
     label: string;
     title: string;
@@ -112,17 +108,7 @@ export type DemoCopy = {
     disclaimer: string;
     you: string;
   };
-  visit: {
-    label: string;
-    title: string;
-    hours: string;
-    days: readonly string[];
-    closed: string;
-    find: string;
-    note: string;
-  };
   pitch: { label: string; title: string; body: string; review: string; plans: string };
-  footer: string;
 };
 
 export const DEMO_COPY: Record<Locale, DemoCopy> = {
@@ -133,32 +119,6 @@ export const DEMO_COPY: Record<Locale, DemoCopy> = {
         "Try a restaurant website built by Serverlys: an interactive digital menu, online ordering cart, reservation flow and sample AI assistant. Fictional restaurant, no real orders.",
     },
     breadcrumb: { home: "Home", landing: "Restaurant websites", page: "Live demo" },
-    bar: {
-      badge: "Live demo",
-      text: "Lumbre is a fictional restaurant. Nothing here places a real order, payment or booking.",
-      back: "Restaurant websites",
-      cta: "Get a free review",
-      switchLabel: "Español",
-      switchAria: "Ver la demo en español",
-    },
-    nav: { menu: "Menu", reserve: "Reserve", assistant: "Ask us", visit: "Visit", order: "Order", label: "Lumbre" },
-    hero: {
-      eyebrow: "Wood-fire Latin kitchen · Doral, FL",
-      title: "Cooked over fire. Served with soul.",
-      body: "Live-fire churrasco, Gulf seafood and garden plates from a wood-burning grill, with a bar built around Latin flavors.",
-      order: "Order pickup or delivery",
-      reserve: "Reserve a table",
-      ask: "Ask a question",
-    },
-    info: {
-      today: "Today",
-      closedToday: "Closed today",
-      address: "Where",
-      addressValue: "Downtown Doral, FL (fictional)",
-      parking: "Parking",
-      parkingValue: "Free garage next door",
-      phone: "Phone",
-    },
     menu: {
       label: "Menu",
       title: "The menu",
@@ -270,15 +230,6 @@ export const DEMO_COPY: Record<Locale, DemoCopy> = {
         "Demo: answers are scripted from this page’s menu. The real ConvoAI assistant is trained on your restaurant’s own information and hands anything it can’t answer to your team.",
       you: "You",
     },
-    visit: {
-      label: "Visit",
-      title: "Hours and location",
-      hours: "Opening hours",
-      days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-      closed: "Closed",
-      find: "Find us",
-      note: "Lumbre is fictional, so there is no address to visit. On your site, this is a live map with directions.",
-    },
     pitch: {
       label: "Built by Serverlys",
       title: "Want this for your restaurant?",
@@ -286,7 +237,6 @@ export const DEMO_COPY: Record<Locale, DemoCopy> = {
       review: "Get a Free Restaurant Website Review",
       plans: "See plans and pricing",
     },
-    footer: "Lumbre is a fictional restaurant created by Serverlys to demonstrate restaurant websites. Food photography from Unsplash.",
   },
   es: {
     meta: {
@@ -295,32 +245,6 @@ export const DEMO_COPY: Record<Locale, DemoCopy> = {
         "Pruebe un sitio web para restaurantes hecho por Serverlys: menú digital interactivo, carrito de pedidos, reservaciones y un asistente con IA de ejemplo. Restaurante ficticio, sin pedidos reales.",
     },
     breadcrumb: { home: "Inicio", landing: "Sitios web para restaurantes", page: "Demo en vivo" },
-    bar: {
-      badge: "Demo en vivo",
-      text: "Lumbre es un restaurante ficticio. Nada de lo que haga aquí genera pedidos, pagos ni reservaciones reales.",
-      back: "Sitios web para restaurantes",
-      cta: "Revisión gratuita",
-      switchLabel: "English",
-      switchAria: "View the demo in English",
-    },
-    nav: { menu: "Menú", reserve: "Reservar", assistant: "Pregúntenos", visit: "Visítenos", order: "Pedir", label: "Lumbre" },
-    hero: {
-      eyebrow: "Cocina latina a la leña · Doral, FL",
-      title: "Cocinado al fuego. Servido con alma.",
-      body: "Churrasco a la leña, mariscos del Golfo y platos de la huerta desde una parrilla de leña, con una barra inspirada en sabores latinos.",
-      order: "Pedir para recoger o a domicilio",
-      reserve: "Reservar una mesa",
-      ask: "Hacer una pregunta",
-    },
-    info: {
-      today: "Hoy",
-      closedToday: "Cerrado hoy",
-      address: "Dónde",
-      addressValue: "Downtown Doral, FL (ficticio)",
-      parking: "Estacionamiento",
-      parkingValue: "Garaje gratuito al lado",
-      phone: "Teléfono",
-    },
     menu: {
       label: "Menú",
       title: "El menú",
@@ -432,15 +356,6 @@ export const DEMO_COPY: Record<Locale, DemoCopy> = {
         "Demo: las respuestas están programadas a partir del menú de esta página. El asistente ConvoAI real se entrena con la información de su restaurante y le pasa a su equipo lo que no puede responder.",
       you: "Usted",
     },
-    visit: {
-      label: "Visítenos",
-      title: "Horario y ubicación",
-      hours: "Horario",
-      days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
-      closed: "Cerrado",
-      find: "Cómo llegar",
-      note: "Lumbre es ficticio, así que no hay dirección. En su sitio, aquí va un mapa real con indicaciones.",
-    },
     pitch: {
       label: "Hecho por Serverlys",
       title: "¿Quiere esto para su restaurante?",
@@ -448,6 +363,5 @@ export const DEMO_COPY: Record<Locale, DemoCopy> = {
       review: "Revisión gratuita de su sitio web",
       plans: "Ver planes y precios",
     },
-    footer: "Lumbre es un restaurante ficticio creado por Serverlys para demostrar sitios web para restaurantes. Fotografía de comida de Unsplash.",
   },
 };

@@ -1361,3 +1361,186 @@
     animation: rwFade 320ms var(--ease-entrance) both;
   }
 }
+
+/* ── /restaurant-websites/demo — Lumbre ──────────────────────────────────
+ * Everything here is scoped to [data-lumbre], which only the demo renders.
+ *
+ * IMMERSIVE ROUTE. The Serverlys header, announcement bar, footer and Sera
+ * launcher step aside while the demo is on screen, so the restaurant reads as
+ * its own site; the demo carries its own Serverlys frame (a strip in its nav,
+ * a floating "Demo by Serverlys" control and the pitch band at the end). Done
+ * with :has() on the demo's own marker, so no shared component changes and
+ * every other route is untouched. The cookie notice is NOT hidden.
+ */
+body:has([data-lumbre]) > [data-site-header],
+body:has([data-lumbre]) [data-announcement-bar],
+body:has([data-lumbre]) > footer,
+body:has([data-lumbre]) button[aria-controls="sera-panel"] {
+  display: none;
+}
+html:has([data-lumbre]) {
+  scroll-padding-top: 76px;
+}
+/* The site's base layer paints every heading --color-fg (near-black). Lumbre
+   sets colour per section, so its headings inherit instead. In the SAME base
+   layer, so a utility like text-[#C8A97E] on a heading still wins. */
+@layer base {
+  [data-lumbre] :where(h1, h2, h3, h4, h5, h6) {
+    color: inherit;
+  }
+}
+
+/* Masked lines: each line clips its own inner span, which rises into view. */
+.lb-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+}
+.lb-line > span {
+  display: inline-block;
+}
+/* Fine film grain over dark grounds — an SVG noise tile, 0 requests. */
+.lb-grain {
+  position: relative;
+  isolation: isolate;
+}
+.lb-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+/* The film fades up over its poster once frames are actually playing. */
+.lb-film {
+  opacity: 0;
+  transition: opacity 1400ms cubic-bezier(0.2, 0.7, 0.1, 1);
+}
+.lb-film[data-playing="true"] {
+  opacity: 1;
+}
+
+@keyframes lbLine {
+  from {
+    transform: translateY(108%);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes lbRise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* Transform only: for the hero's largest text block, which must paint on the
+   first frame. Chromium never counts a full-viewport image as LCP (it reads
+   as a background), so on this hero the LCP element is TEXT, and text that
+   starts at opacity 0 holds LCP back until its animation begins. */
+@keyframes lbSlide {
+  from {
+    transform: translateY(18px);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes lbScroll {
+  0% {
+    transform: translateY(-100%);
+  }
+  60%,
+  100% {
+    transform: translateY(220%);
+  }
+}
+@keyframes lbKen {
+  from {
+    transform: scale(1.06);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Hero entrance: CSS on load, never gated on script. The headline only
+     translates inside its mask; the sub-paragraph (the LCP element — see
+     lbSlide) never starts transparent. */
+  .lb-enter .lb-line > span {
+    animation: lbLine 1400ms cubic-bezier(0.2, 0.7, 0.1, 1) both;
+    animation-delay: calc(250ms + var(--i, 0) * 150ms);
+  }
+  .lb-enter .lb-rise {
+    animation: lbRise 1200ms cubic-bezier(0.2, 0.7, 0.1, 1) both;
+    animation-delay: var(--d, 700ms);
+  }
+  .lb-enter .lb-slide {
+    animation: lbSlide 1200ms cubic-bezier(0.2, 0.7, 0.1, 1) both;
+    animation-delay: var(--d, 700ms);
+  }
+  .lb-enter .lb-ken {
+    animation: lbKen 2600ms cubic-bezier(0.2, 0.7, 0.1, 1) both;
+  }
+  .lb-scroll-dot {
+    animation: lbScroll 2400ms cubic-bezier(0.6, 0, 0.3, 1) infinite;
+  }
+
+  /* Scroll reveals (the observer is lumbre-motion.tsx). Slower and longer
+     than the site default: this is a hospitality site, not a dashboard. */
+  html[data-js="true"] [data-lumbre] [data-reveal] {
+    transform: translateY(28px);
+    transition:
+      opacity 1000ms cubic-bezier(0.2, 0.7, 0.1, 1),
+      transform 1000ms cubic-bezier(0.2, 0.7, 0.1, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  html[data-js="true"] [data-lumbre] [data-reveal="mask"] {
+    opacity: 1;
+    transform: none;
+  }
+  html[data-js="true"] [data-lumbre] [data-reveal="mask"] .lb-line > span {
+    transform: translateY(108%);
+    transition: transform 1300ms cubic-bezier(0.2, 0.7, 0.1, 1);
+    transition-delay: calc(var(--i, 0) * 130ms);
+  }
+  html[data-js="true"] [data-lumbre] [data-reveal="mask"][data-revealed="true"] .lb-line > span {
+    transform: none;
+  }
+  html[data-js="true"] [data-lumbre] [data-reveal="image"] {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(14% 0 0 0);
+    transition: clip-path 1500ms cubic-bezier(0.2, 0.7, 0.1, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  html[data-js="true"] [data-lumbre] [data-reveal="image"] img {
+    transform: scale(1.14);
+    transition: transform 1900ms cubic-bezier(0.2, 0.7, 0.1, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  html[data-js="true"] [data-lumbre] [data-reveal="image"][data-revealed="true"] {
+    clip-path: inset(0);
+  }
+  html[data-js="true"] [data-lumbre] [data-reveal="image"][data-revealed="true"] img {
+    transform: none;
+  }
+  html[data-js="true"] [data-lumbre] [data-reveal][data-revealed="true"] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Parallax layers; the offset is written by lumbre-motion.tsx. */
+  [data-lumbre] [data-parallax] {
+    transform: translate3d(0, var(--py, 0px), 0);
+    will-change: transform;
+  }
+}

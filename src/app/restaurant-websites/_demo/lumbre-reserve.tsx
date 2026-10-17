@@ -5,7 +5,8 @@ import { cn } from "@/lib/utils";
 import { addDays, formatTime, slotsFor } from "./availability";
 import { HOURS } from "./menu";
 import { fill, trackDemo, useLumbre, useNow } from "./state";
-import { CHAR, CREAM, EMBER, serif } from "./theme";
+import { CHAMPAGNE, CHAR, IVORY, display } from "./theme";
+import { Eyebrow } from "./lumbre-ui";
 import { Stepper } from "./lumbre-menu";
 
 /**
@@ -29,7 +30,10 @@ export function LumbreReserve() {
   const [error, setError] = useState("");
   const [code, setCode] = useState("");
   const headingRef = useRef<HTMLHeadingElement>(null);
-  const moved = useRef(false);
+  // Focus follows the step only when the step actually CHANGES. A "first run"
+  // flag is not enough: Strict Mode runs effects twice in development, and the
+  // second run would focus the heading and scroll the page to it on load.
+  const shownStep = useRef(step);
 
   // Apply an assistant hand-off ("Book 7:30 PM") during render, keyed on its
   // nonce — the same prop-change pattern React documents, no effect needed.
@@ -45,8 +49,9 @@ export function LumbreReserve() {
   }
 
   useEffect(() => {
-    if (moved.current) headingRef.current?.focus();
-    moved.current = true;
+    if (shownStep.current === step) return;
+    shownStep.current = step;
+    headingRef.current?.focus();
   }, [step]);
 
   const days = now ? Array.from({ length: 14 }, (_, i) => addDays(now, i)) : [];
@@ -79,21 +84,19 @@ export function LumbreReserve() {
     setNotes("");
   };
 
-  const dark = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white";
+  const dark = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C8A97E]";
   const input =
-    "mt-1.5 block h-12 w-full rounded-xl bg-white/[0.06] px-4 text-[16px] text-white ring-1 ring-inset ring-white/20 placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-[#e2642b]";
+    "mt-1.5 block h-12 w-full rounded-none bg-white/[0.06] px-4 text-[16px] text-white ring-1 ring-inset ring-white/20 placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-[#C8A97E]";
 
   return (
-    <section id="reserve" aria-labelledby="lumbre-reserve-heading" className="scroll-mt-32 py-20 text-white lg:py-28" style={{ background: CHAR }}>
-      <div className="mx-auto grid w-full max-w-[1200px] gap-12 px-5 sm:px-8 lg:grid-cols-[0.8fr_1.2fr]">
+    <section id="reserve" aria-labelledby="lumbre-reserve-heading" className="lb-grain py-28 text-[#F4EFE6] lg:py-40" style={{ background: CHAR }}>
+      <div className="mx-auto grid w-full max-w-[1440px] gap-14 px-5 sm:px-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20 lg:px-12">
         <div>
-          <p className="text-[12px] font-semibold tracking-[0.18em] uppercase" style={{ color: EMBER }}>
-            {r.label}
-          </p>
-          <h2 id="lumbre-reserve-heading" className={cn(serif.className, "mt-3 text-[44px] leading-none text-current outline-none sm:text-[60px]")}>
+          <Eyebrow dark>{r.label}</Eyebrow>
+          <h2 id="lumbre-reserve-heading" className={cn(display.className, "mt-8 text-[clamp(48px,5.6vw,92px)] leading-[0.92] font-light tracking-[-0.02em] text-current outline-none")}>
             {r.title}
           </h2>
-          <p className="mt-4 max-w-[420px] text-[16px] leading-[1.6] text-white/70">{r.intro}</p>
+          <p className="mt-8 max-w-[420px] text-[16px] leading-[1.75] text-[#F4EFE6]/75">{r.intro}</p>
           <ol className="mt-8 flex flex-col gap-3" aria-label={r.title}>
             {r.steps.map((s, i) => {
               const n = i + 1;
@@ -105,7 +108,7 @@ export function LumbreReserve() {
                       "flex size-8 items-center justify-center rounded-full text-[13px] font-semibold",
                       state === "todo" && "text-white/50 ring-1 ring-white/20",
                     )}
-                    style={state === "current" ? { background: EMBER, color: CHAR } : state === "done" ? { background: CREAM, color: CHAR } : undefined}
+                    style={state === "current" ? { background: CHAMPAGNE, color: CHAR } : state === "done" ? { background: IVORY, color: CHAR } : undefined}
                   >
                     {state === "done" ? "✓" : n}
                   </span>
@@ -116,11 +119,11 @@ export function LumbreReserve() {
           </ol>
         </div>
 
-        <div className="min-w-0 rounded-[24px] bg-white/[0.04] p-5 ring-1 ring-white/10 sm:p-8">
+        <div className="min-w-0 bg-[#F4EFE6]/[0.035] p-6 ring-1 ring-[#F4EFE6]/12 sm:p-10">
           <p className="text-[13px] text-white/60" aria-live="polite">
             {step <= 3 ? fill(r.stepOf, { n: step }) : ""}
           </p>
-          <h3 ref={headingRef} tabIndex={-1} className="mt-1 text-[22px] font-semibold text-current outline-none">
+          <h3 ref={headingRef} tabIndex={-1} className={cn(display.className, "mt-2 text-[34px] leading-[1.1] text-current outline-none")}>
             {step <= 3 ? r.steps[step - 1] : r.confirmedTitle}
           </h3>
 
@@ -158,7 +161,7 @@ export function LumbreReserve() {
                           }}
                           className="peer sr-only"
                         />
-                        <span className="flex h-16 w-[88px] cursor-pointer flex-col items-center justify-center rounded-xl text-center ring-1 ring-white/15 peer-checked:bg-[#f6efe6] peer-checked:text-[#14100d] peer-disabled:cursor-not-allowed peer-disabled:opacity-35 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-white sm:w-auto">
+                        <span className="flex h-16 w-[88px] cursor-pointer flex-col items-center justify-center rounded-none text-center ring-1 ring-white/15 peer-checked:bg-[#F4EFE6] peer-checked:text-[#111411] peer-disabled:cursor-not-allowed peer-disabled:opacity-35 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[#C8A97E] sm:w-auto">
                           <span className="text-[13px] font-semibold">{dateLabel(d)}</span>
                           {(closed || full) && <span className="text-[11px]">{closed ? r.closed : r.unavailable}</span>}
                         </span>
@@ -170,8 +173,8 @@ export function LumbreReserve() {
               <button
                 type="button"
                 onClick={() => setStep(2)}
-                className={cn("mt-7 h-12 rounded-full px-7 text-[15px] font-semibold", dark)}
-                style={{ background: EMBER, color: CHAR }}
+                className={cn("mt-7 h-12 rounded-full px-8 font-display text-[12px] font-semibold tracking-[0.16em] uppercase", dark)}
+                style={{ background: CHAMPAGNE, color: CHAR }}
               >
                 {r.next}
               </button>
@@ -182,7 +185,7 @@ export function LumbreReserve() {
                 {party} {r.guests} · {date && dateLabel(date)}
               </p>
               {slots.length === 0 ? (
-                <p className="mt-5 rounded-xl bg-white/[0.06] p-4 text-[14px]">{r.noSlots}</p>
+                <p className="mt-5 rounded-none bg-white/[0.06] p-4 text-[14px]">{r.noSlots}</p>
               ) : (
                 <fieldset className="mt-5">
                   <legend className="text-[15px] font-semibold">{r.time}</legend>
@@ -197,7 +200,7 @@ export function LumbreReserve() {
                           onChange={() => setTime(s.minutes)}
                           className="peer sr-only"
                         />
-                        <span className="flex h-12 cursor-pointer flex-col items-center justify-center rounded-xl text-[14px] font-semibold ring-1 ring-white/15 peer-checked:bg-[#e2642b] peer-checked:text-[#14100d] peer-disabled:cursor-not-allowed peer-disabled:text-white/30 peer-disabled:line-through peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-white">
+                        <span className="flex h-12 cursor-pointer flex-col items-center justify-center rounded-none text-[14px] font-semibold ring-1 ring-white/15 peer-checked:bg-[#C8A97E] peer-checked:text-[#111411] peer-disabled:cursor-not-allowed peer-disabled:text-white/30 peer-disabled:line-through peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[#C8A97E]">
                           {formatTime(s.minutes)}
                           {!s.available && <span className="sr-only">, {r.unavailable}</span>}
                         </span>
@@ -207,15 +210,15 @@ export function LumbreReserve() {
                 </fieldset>
               )}
               <div className="mt-7 flex gap-3">
-                <button type="button" onClick={() => setStep(1)} className={cn("h-12 rounded-full px-6 text-[15px] font-semibold ring-1 ring-white/25 hover:bg-white/10", dark)}>
+                <button type="button" onClick={() => setStep(1)} className={cn("h-12 rounded-full px-7 font-display text-[12px] font-semibold tracking-[0.16em] uppercase ring-1 ring-white/25 hover:bg-white/10", dark)}>
                   {r.back}
                 </button>
                 <button
                   type="button"
                   disabled={time === null}
                   onClick={() => setStep(3)}
-                  className={cn("h-12 rounded-full px-7 text-[15px] font-semibold disabled:opacity-40", dark)}
-                  style={{ background: EMBER, color: CHAR }}
+                  className={cn("h-12 rounded-full px-8 font-display text-[12px] font-semibold tracking-[0.16em] uppercase disabled:opacity-40", dark)}
+                  style={{ background: CHAMPAGNE, color: CHAR }}
                 >
                   {r.next}
                 </button>
@@ -247,7 +250,7 @@ export function LumbreReserve() {
                     id="lumbre-r-occasion"
                     value={occasion}
                     onChange={(e) => setOccasion(Number(e.target.value))}
-                    className={cn(input, "[&>option]:text-[#14100d]")}
+                    className={cn(input, "[&>option]:text-[#111411]")}
                   >
                     {r.occasions.map((o, i) => (
                       <option key={o} value={i}>
@@ -276,10 +279,10 @@ export function LumbreReserve() {
                 </p>
               )}
               <div className="mt-7 flex flex-wrap gap-3">
-                <button type="button" onClick={() => setStep(2)} className={cn("h-12 rounded-full px-6 text-[15px] font-semibold ring-1 ring-white/25 hover:bg-white/10", dark)}>
+                <button type="button" onClick={() => setStep(2)} className={cn("h-12 rounded-full px-7 font-display text-[12px] font-semibold tracking-[0.16em] uppercase ring-1 ring-white/25 hover:bg-white/10", dark)}>
                   {r.back}
                 </button>
-                <button type="submit" className={cn("h-12 rounded-full px-7 text-[15px] font-semibold", dark)} style={{ background: EMBER, color: CHAR }}>
+                <button type="submit" className={cn("h-12 rounded-full px-8 font-display text-[12px] font-semibold tracking-[0.16em] uppercase", dark)} style={{ background: CHAMPAGNE, color: CHAR }}>
                   {r.confirm}
                 </button>
               </div>
@@ -292,16 +295,16 @@ export function LumbreReserve() {
                   [r.party, `${party} ${r.guests}`],
                   [r.date, `${date ? dateLabel(date) : ""}${time !== null ? ` · ${formatTime(time)}` : ""}`],
                 ].map(([k, v]) => (
-                  <div key={k} className="rounded-xl bg-white/[0.06] p-4">
+                  <div key={k} className="rounded-none bg-white/[0.06] p-4">
                     <dt className="text-[12px] text-white/60">{k}</dt>
                     <dd className="mt-1 text-[16px] font-semibold">{v}</dd>
                   </div>
                 ))}
               </dl>
-              <p className="mt-5 rounded-xl bg-[#e2642b]/15 p-4 text-[14px] leading-[1.55] text-[#ffd8c2] ring-1 ring-[#e2642b]/30">
+              <p className="mt-5 bg-[#C8A97E]/12 p-4 text-[14px] leading-[1.6] text-[#ecdcc4] ring-1 ring-[#C8A97E]/35">
                 {r.confirmedBody}
               </p>
-              <button type="button" onClick={reset} className={cn("mt-6 h-12 rounded-full px-6 text-[15px] font-semibold ring-1 ring-white/25 hover:bg-white/10", dark)}>
+              <button type="button" onClick={reset} className={cn("mt-6 h-12 rounded-full px-7 font-display text-[12px] font-semibold tracking-[0.16em] uppercase ring-1 ring-white/25 hover:bg-white/10", dark)}>
                 {r.another}
               </button>
             </div>

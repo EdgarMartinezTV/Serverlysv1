@@ -6,7 +6,8 @@ import type { Locale } from "../_i18n";
 import { reply, type AssistantAction } from "./assistant";
 import { MENU } from "./menu";
 import { fill, trackDemo, useLumbre, useNow } from "./state";
-import { CHAR, CREAM, EMBER, RUST, serif } from "./theme";
+import { CHAMPAGNE, CHAR, IVORY, OLIVE, display } from "./theme";
+import { Eyebrow } from "./lumbre-ui";
 
 /**
  * The sample assistant. Scripted (see assistant.ts) and labelled as such in
@@ -16,7 +17,7 @@ import { CHAR, CREAM, EMBER, RUST, serif } from "./theme";
 
 type Message = { id: number; from: "guest" | "bot"; text: string; lang: Locale; actions?: AssistantAction[] };
 
-export function LumbreAssistant() {
+export function LumbreAssistant({ lux }: { lux: { label: string; title: string } }) {
   const { copy, locale, setFilter, add, prefillReservation, goTo, announce } = useLumbre();
   const a = copy.assistant;
   const now = useNow();
@@ -74,24 +75,22 @@ export function LumbreAssistant() {
   };
 
   return (
-    <section id="assistant" aria-labelledby="lumbre-assistant-heading" className="scroll-mt-32 py-20 lg:py-28" style={{ background: CREAM, color: CHAR }}>
-      <div className="mx-auto grid w-full max-w-[1200px] items-start gap-12 px-5 sm:px-8 lg:grid-cols-[0.8fr_1.2fr]">
+    <section id="assistant" aria-labelledby="lumbre-assistant-heading" className="py-28 lg:py-40" style={{ background: IVORY, color: CHAR }}>
+      <div className="mx-auto grid w-full max-w-[1280px] items-start gap-14 px-5 sm:px-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20 lg:px-12">
         <div>
-          <p className="text-[12px] font-semibold tracking-[0.18em] uppercase" style={{ color: RUST }}>
-            {a.label}
-          </p>
-          <h2 id="lumbre-assistant-heading" className={cn(serif.className, "mt-3 text-[44px] leading-none text-current outline-none sm:text-[60px]")}>
-            {a.title}
+          <Eyebrow>{lux.label}</Eyebrow>
+          <h2 id="lumbre-assistant-heading" className={cn(display.className, "mt-8 text-[clamp(44px,4.8vw,76px)] leading-[0.95] font-light tracking-[-0.02em] text-current outline-none")}>
+            {lux.title}
           </h2>
-          <p className="mt-4 max-w-[420px] text-[16px] leading-[1.6] text-[#4a3f36]">{a.intro}</p>
-          <p className="mt-6 max-w-[420px] rounded-xl bg-white p-4 text-[13px] leading-[1.55] text-[#5c5047] ring-1 ring-[#14100d]/10">
+          <p className="mt-7 max-w-[420px] text-[16px] leading-[1.75] text-[#55574C]">{a.intro}</p>
+          <p className="mt-7 max-w-[420px] border-l border-[#696D55]/50 pl-4 text-[13px] leading-[1.6] text-[#55574C]">
             {a.disclaimer}
           </p>
         </div>
 
-        <div className="min-w-0 overflow-hidden rounded-[24px] bg-white shadow-[0_30px_70px_-30px_rgb(20_16_13/0.45)] ring-1 ring-[#14100d]/10">
-          <div className="flex items-center gap-3 px-5 py-4" style={{ background: CHAR, color: CREAM }}>
-            <span className={cn(serif.className, "flex size-10 items-center justify-center rounded-full text-[20px]")} style={{ background: EMBER, color: CHAR }}>
+        <div className="min-w-0 overflow-hidden bg-[#FAF8F3] shadow-[0_40px_90px_-40px_rgb(17_20_17/0.5)] ring-1 ring-[#111411]/10">
+          <div className="flex items-center gap-3 px-5 py-4" style={{ background: CHAR, color: IVORY }}>
+            <span className={cn(display.className, "flex size-10 items-center justify-center rounded-full text-[22px]")} style={{ background: CHAMPAGNE, color: CHAR }}>
               L
             </span>
             <span className="min-w-0 flex-1">
@@ -109,10 +108,10 @@ export function LumbreAssistant() {
             role="log"
             aria-label={a.logLabel}
             aria-live="polite"
-            className="flex h-[380px] flex-col gap-3 overflow-y-auto bg-[#faf7f2] p-5"
+            className="flex h-[380px] flex-col gap-3 overflow-y-auto bg-[#F4EFE6]/60 p-5"
           >
             {log.length === 0 && (
-              <div className="m-auto max-w-[300px] text-center text-[14px] text-[#5c5047]">
+              <div className="m-auto max-w-[300px] text-center text-[14px] text-[#55574C]">
                 <p className="sm:hidden">{a.badge}</p>
                 <p className="mt-1">{a.intro}</p>
               </div>
@@ -123,7 +122,7 @@ export function LumbreAssistant() {
                   lang={m.lang}
                   className={cn(
                     "rounded-2xl px-4 py-2.5 text-[15px] leading-[1.5]",
-                    m.from === "guest" ? "rounded-br-md text-[#f6efe6]" : "rounded-bl-md bg-white text-[#14100d] ring-1 ring-[#14100d]/10",
+                    m.from === "guest" ? "rounded-br-md text-[#F4EFE6]" : "rounded-bl-md bg-white text-[#111411] ring-1 ring-[#111411]/10",
                   )}
                   style={m.from === "guest" ? { background: CHAR } : undefined}
                 >
@@ -138,8 +137,8 @@ export function LumbreAssistant() {
                         type="button"
                         onClick={() => run(act)}
                         lang={m.lang}
-                        className="rounded-full bg-white px-3.5 py-2 text-[13px] font-semibold ring-1 ring-[#a4431a]/40 hover:bg-[#fff4ec] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a4431a]"
-                        style={{ color: RUST }}
+                        className="rounded-full bg-white px-3.5 py-2 text-[13px] font-semibold ring-1 ring-[#696D55]/40 hover:bg-[#F4EFE6] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#696D55]"
+                        style={{ color: OLIVE }}
                       >
                         {act.label}
                       </button>
@@ -149,22 +148,22 @@ export function LumbreAssistant() {
               </div>
             ))}
             {typing && (
-              <span role="status" aria-label={a.typing} className="flex gap-1 self-start rounded-2xl bg-white px-4 py-3.5 ring-1 ring-[#14100d]/10">
-                <i className="size-1.5 animate-pulse rounded-full bg-[#a39488]" />
-                <i className="size-1.5 animate-pulse rounded-full bg-[#a39488] [animation-delay:150ms]" />
-                <i className="size-1.5 animate-pulse rounded-full bg-[#a39488] [animation-delay:300ms]" />
+              <span role="status" aria-label={a.typing} className="flex gap-1 self-start rounded-2xl bg-white px-4 py-3.5 ring-1 ring-[#111411]/10">
+                <i className="size-1.5 animate-pulse rounded-full bg-[#9C9A90]" />
+                <i className="size-1.5 animate-pulse rounded-full bg-[#9C9A90] [animation-delay:150ms]" />
+                <i className="size-1.5 animate-pulse rounded-full bg-[#9C9A90] [animation-delay:300ms]" />
               </span>
             )}
           </div>
 
-          <div className="flex gap-2 overflow-x-auto border-t border-[#14100d]/10 px-4 py-3 [scrollbar-width:none]">
+          <div className="flex gap-2 overflow-x-auto border-t border-[#111411]/10 px-4 py-3 [scrollbar-width:none]">
             {a.suggestions.map((s) => (
               <button
                 key={s}
                 type="button"
                 onClick={() => send(s)}
                 disabled={typing}
-                className="shrink-0 rounded-full bg-[#f6efe6] px-3.5 py-2 text-[13px] font-medium whitespace-nowrap text-[#3b322b] hover:bg-[#efe4d6] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a4431a] disabled:opacity-60"
+                className="shrink-0 rounded-full bg-[#F4EFE6] px-3.5 py-2 text-[13px] font-medium whitespace-nowrap text-[#2b2e27] hover:bg-[#ebe4d6] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#696D55] disabled:opacity-60"
               >
                 {s}
               </button>
@@ -176,7 +175,7 @@ export function LumbreAssistant() {
               e.preventDefault();
               send(draft);
             }}
-            className="flex gap-2 border-t border-[#14100d]/10 p-3"
+            className="flex gap-2 border-t border-[#111411]/10 p-3"
           >
             <label htmlFor="lumbre-chat-input" className="sr-only">
               {a.placeholder}
@@ -188,13 +187,13 @@ export function LumbreAssistant() {
               placeholder={a.placeholder}
               autoComplete="off"
               maxLength={300}
-              className="h-12 min-w-0 flex-1 rounded-full bg-[#faf7f2] px-4 text-[16px] ring-1 ring-inset ring-[#14100d]/15 focus:outline-none focus:ring-2 focus:ring-[#a4431a]"
+              className="h-12 min-w-0 flex-1 rounded-full bg-[#F4EFE6]/60 px-4 text-[16px] ring-1 ring-inset ring-[#111411]/15 focus:outline-none focus:ring-2 focus:ring-[#696D55]"
             />
             <button
               type="submit"
               disabled={!draft.trim() || typing}
-              className="flex h-12 items-center gap-2 rounded-full px-5 text-[14px] font-semibold disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a4431a]"
-              style={{ background: CHAR, color: CREAM }}
+              className="flex h-12 items-center gap-2 rounded-full px-5 text-[14px] font-semibold disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#696D55]"
+              style={{ background: CHAR, color: IVORY }}
             >
               <span className="max-sm:sr-only">{a.send}</span>
               <svg viewBox="0 0 20 20" aria-hidden="true" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">

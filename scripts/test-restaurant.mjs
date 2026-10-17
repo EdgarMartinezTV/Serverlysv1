@@ -285,6 +285,72 @@ check(
   await js(`JSON.stringify(window.__events).slice(0, 160)`),
 );
 
+// ── Lumbre experience ──────────────────────────────────────────────────────
+console.log("\n── demo experience ──");
+// Films honour reduced motion, which go() emulates; this block needs motion on.
+await send("Emulation.setDeviceMetricsOverride", { width: 1280, height: 900, deviceScaleFactor: 1, mobile: false });
+await send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "no-preference" }] });
+await send("Page.navigate", { url: base + "/restaurant-websites/demo" });
+await sleep(5000);
+await js(`window.__set = (el, v) => { const proto = el.tagName === "TEXTAREA" ? HTMLTextAreaElement.prototype : el.tagName === "SELECT" ? HTMLSelectElement.prototype : HTMLInputElement.prototype; Object.getOwnPropertyDescriptor(proto, "value").set.call(el, v); el.dispatchEvent(new Event(el.tagName === "SELECT" ? "change" : "input", { bubbles: true })); }`);
+check(await js(`getComputedStyle(document.querySelector('[data-site-header]')).display === "none"`), "Serverlys header steps aside on the demo");
+check(await js(`/Demo by Serverlys/.test(document.querySelector('[data-lumbre]').textContent)`), "demo frame says Demo by Serverlys");
+const film = await js(`(() => { const v = document.querySelector('#lumbre-top video'); return v && { src: v.currentSrc, paused: v.paused } })()`);
+check(film && /lumbre-hero\.(webm|mp4)$/.test(film.src) && !film.paused, "hero film loads and plays", JSON.stringify(film));
+await js(`document.querySelector('[data-film-control="lumbre-hero"]').click()`);
+await sleep(400);
+check(await js(`document.querySelector('#lumbre-top video').paused`), "film pause control pauses it");
+check(await js(`!document.querySelector('#fire video').currentSrc`), "second film waits until it nears the viewport");
+
+await js(`[...document.querySelectorAll('[aria-labelledby=lumbre-signature-heading] nav button')].find((b) => b.textContent.trim() === "Desserts").click()`);
+await sleep(900);
+check(
+  await js(`document.querySelectorAll('#menu li.group').length === 2 && document.querySelector('#menu [aria-pressed=true]').textContent.includes("Desserts")`),
+  "signature index opens the menu on that section",
+);
+
+await js(`document.querySelector('#private form button[type=submit]').click()`);
+await sleep(300);
+check(
+  await js(`document.querySelectorAll('#private [aria-invalid=true]').length === 3 && document.activeElement?.getAttribute("role") === "alert"`),
+  "private inquiry validates and focuses the error summary",
+);
+await js(`(() => { const d = new Date(); d.setDate(d.getDate() + 10); const iso = d.toISOString().slice(0, 10);
+  __set(document.getElementById("lumbre-pd-name"), "Ana Pérez"); __set(document.getElementById("lumbre-pd-email"), "ana@example.com"); __set(document.getElementById("lumbre-pd-date"), iso); })()`);
+await js(`document.querySelector('#private form button[type=submit]').click()`);
+await sleep(300);
+check(await js(`/Demo inquiry received/.test(document.querySelector('#private').textContent)`), "private inquiry confirms as a demo");
+
+await js(`document.querySelectorAll('#gallery li button')[0].click()`);
+await sleep(400);
+const box = `document.querySelector('#gallery dialog')`;
+check(await js(`${box}.open && /1 of 8/.test(${box}.textContent)`), "gallery opens a lightbox at the photo");
+await js(`${box}.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }))`);
+await sleep(200);
+check(await js(`/2 of 8/.test(${box}.textContent)`), "arrow key moves to the next photo");
+await js(`${box}.querySelector('button[aria-label="Close gallery"]').click()`);
+await sleep(300);
+check(await js(`!${box}.open && document.activeElement === document.querySelectorAll('#gallery li button')[1]`), "closing returns focus to that photo");
+
+await js(`__set(document.getElementById("lumbre-newsletter"), "not-an-email")`);
+await js(`document.getElementById("lumbre-newsletter").form.requestSubmit()`);
+await sleep(200);
+check(await js(`document.getElementById("lumbre-newsletter").getAttribute("aria-invalid") === "true"`), "newsletter rejects an invalid email");
+await js(`__set(document.getElementById("lumbre-newsletter"), "ana@example.com")`);
+await js(`document.getElementById("lumbre-newsletter").form.requestSubmit()`);
+await sleep(200);
+check(await js(`/No email was saved/.test(document.getElementById("lumbre-newsletter-status").textContent)`), "newsletter confirms as a demo");
+
+await go("/restaurant-websites/demo", 390);
+check(await js(`!document.querySelector('#lumbre-top video').currentSrc`), "reduced motion: the film never loads, the poster stands in");
+await js(`document.querySelector('[data-lumbre] header button[aria-label="Open menu"]').click()`);
+await sleep(300);
+const navDialog = `document.querySelector('[data-lumbre] header dialog')`;
+check(await js(`${navDialog}.open`), "phone menu opens as a dialog");
+await js(`[...${navDialog}.querySelectorAll('a')].find((a) => a.getAttribute("href") === "#menu").click()`);
+await sleep(300);
+check(await js(`!${navDialog}.open`), "choosing a section closes the phone menu");
+
 check(errors.length === 0, "no uncaught page errors", errors.slice(0, 3).join(" / "));
 
 console.log(`\n${passed} passed, ${failed.length} failed`);

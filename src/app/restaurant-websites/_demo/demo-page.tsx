@@ -3,55 +3,63 @@ import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { PATHS, type Locale } from "../_i18n";
 import { HtmlLang } from "../_components/html-lang";
 import { DEMO_COPY } from "./copy";
-import { LumbreApp } from "./lumbre-app";
+import { LUX_COPY } from "./copy-lux";
+import { LumbreProvider } from "./state";
+import { LumbreMotion } from "./lumbre-motion";
+import { DemoBadge, LumbreHeader } from "./lumbre-header";
+import { LumbreChef, LumbreFinale, LumbreFire, LumbreHero, LumbreStory } from "./lumbre-sections";
+import { LumbreSignature } from "./lumbre-signature";
+import { LumbreMenu } from "./lumbre-menu";
+import { LumbrePrivate } from "./lumbre-private";
+import { LumbreGallery } from "./lumbre-gallery";
+import { LumbreReserve } from "./lumbre-reserve";
+import { LumbreAssistant } from "./lumbre-assistant";
+import { LumbreFooter } from "./lumbre-footer";
+import { CartButton, CartDrawer } from "./lumbre-cart";
+import { CHAR } from "./theme";
 
 /**
- * /restaurant-websites/demo and /es/restaurant-websites/demo.
+ * /restaurant-websites/demo and /es/restaurant-websites/demo — "Lumbre".
  *
- * Framed by Serverlys on both ends — a demo bar on top that says plainly the
- * restaurant is fictional, and a pitch band underneath — with the Lumbre site
- * between them in its own brand. The site header and footer stay Serverlys'.
+ * A cinematic restaurant site for a FICTIONAL restaurant, built to show
+ * restaurant owners what Serverlys delivers. The Serverlys header and footer
+ * step aside on this route (see the Lumbre block in globals.css); the demo
+ * carries its own frame instead — a strip in the restaurant's header, a
+ * floating "Demo by Serverlys" control, and the pitch band after the
+ * restaurant's footer.
+ *
+ * Editorial sections are server components; the interactive ones (menu,
+ * order, reservation, private-dining inquiry, gallery, concierge) are client
+ * islands sharing LumbreProvider. Nothing on the page sends data anywhere.
  */
 export function DemoPage({ locale }: { locale: Locale }) {
   const c = DEMO_COPY[locale];
+  const lux = LUX_COPY[locale];
   const paths = PATHS[locale];
-  const other: Locale = locale === "en" ? "es" : "en";
+
   return (
-    <div lang={locale}>
+    <div lang={locale} data-lumbre="" className="font-display" style={{ background: CHAR }}>
       {locale !== "en" && <HtmlLang lang={locale} />}
 
-      <aside aria-label={c.bar.badge} className="bg-primary text-white">
-        <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-3 px-5 py-3 text-[13px] sm:px-8 lg:flex-row lg:items-center lg:gap-6">
-          <p className="flex items-start gap-2.5 lg:items-center">
-            <span className="shrink-0 rounded-full bg-white px-2.5 py-0.5 text-[11px] font-bold tracking-[0.04em] text-primary uppercase">
-              {c.bar.badge}
-            </span>
-            <span className="text-white/90">{c.bar.text}</span>
-          </p>
-          <p className="flex flex-wrap items-center gap-x-5 gap-y-2 font-semibold lg:ml-auto lg:shrink-0">
-            <Link href={paths.landing} className="underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
-              ← {c.bar.back}
-            </Link>
-            <Link
-              href={PATHS[other].demo}
-              hrefLang={other}
-              lang={other}
-              aria-label={c.bar.switchAria}
-              className="underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-            >
-              {c.bar.switchLabel}
-            </Link>
-            <Link
-              href={`${paths.landing}#review`}
-              className="rounded-full bg-white px-3.5 py-1.5 text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-            >
-              {c.bar.cta}
-            </Link>
-          </p>
-        </div>
-      </aside>
-
-      <LumbreApp locale={locale} />
+      <LumbreProvider locale={locale}>
+        <LumbreMotion />
+        <LumbreHeader lux={lux} />
+        <LumbreHero lux={lux} />
+        <LumbreStory lux={lux} />
+        <LumbreSignature lux={lux} />
+        <LumbreMenu />
+        <LumbreFire lux={lux} />
+        <LumbreChef lux={lux} />
+        <LumbrePrivate lux={lux} />
+        <LumbreGallery lux={lux} />
+        <LumbreReserve />
+        <LumbreAssistant lux={lux.concierge} />
+        <LumbreFinale lux={lux} />
+        <LumbreFooter lux={lux} />
+        <CartButton />
+        <CartDrawer />
+        <DemoBadge lux={lux} />
+      </LumbreProvider>
 
       <section aria-labelledby="rw-pitch-heading" className="bg-white px-2 py-2">
         <div className="relative isolate overflow-hidden rounded-[20px] bg-[#0b1530] px-6 py-16 text-center text-white sm:py-20">
@@ -78,13 +86,15 @@ export function DemoPage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <PageBreadcrumbs
-        trail={[
-          { name: c.breadcrumb.home, path: "/" },
-          { name: c.breadcrumb.landing, path: paths.landing },
-          { name: c.breadcrumb.page, path: paths.demo },
-        ]}
-      />
+      <div className="bg-white">
+        <PageBreadcrumbs
+          trail={[
+            { name: c.breadcrumb.home, path: "/" },
+            { name: c.breadcrumb.landing, path: paths.landing },
+            { name: c.breadcrumb.page, path: paths.demo },
+          ]}
+        />
+      </div>
     </div>
   );
 }
