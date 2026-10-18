@@ -445,6 +445,8 @@ console.log("\nPOLICY — the authorisation table, no network, no model\n");
    */
   const ACCOUNT_TOOLS = [
     "get_my_account", "get_my_invoices", "get_my_domains", "get_my_services",
+    "get_my_profile", "get_my_billing", "get_my_quotes", "get_my_orders", "get_my_tickets",
+    "get_my_contacts", "get_my_emails", "get_my_affiliate",
     "offer_invoice_payment", "offer_domain_renewal",
   ];
   const misfiled = ACCOUNT_TOOLS.filter(

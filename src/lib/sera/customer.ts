@@ -45,6 +45,8 @@ export type AccountInvoice = {
   dueDate: string;
   /** Whole days until due; negative when overdue. Null when unknown. */
   daysLeft: number | null;
+  /** Line items (unpaid invoices only). */
+  items?: { description: string; amount: string }[];
 };
 
 export type AccountDomain = {
@@ -58,6 +60,12 @@ export type AccountDomain = {
   /** WHMCS will accept a renewal order for it now. */
   renewable: boolean;
   renewalPrice: string;
+  registered?: string;
+  registrar?: string;
+  periodYears?: number | null;
+  dnsManagement?: boolean | null;
+  emailForwarding?: boolean | null;
+  idProtection?: boolean | null;
 };
 
 export type AccountService = {
@@ -70,7 +78,55 @@ export type AccountService = {
   daysLeft: number | null;
   amount: string;
   cycle: string;
+  started?: string;
+  /** cPanel / control panel username. Never a password. */
+  username?: string;
+  diskUsedMB?: number | null;
+  diskLimitMB?: number | null;
+  bandwidthUsedMB?: number | null;
+  bandwidthLimitMB?: number | null;
+  addons?: { name: string; status: string; nextDue: string; amount: string; cycle: string }[];
 };
+
+export type AccountProfile = {
+  name: string;
+  company: string;
+  email: string;
+  phone: string;
+  address: string;
+  currency: string;
+  language: string;
+  clientSince: string;
+  accountStatus: string;
+  emailVerified: boolean;
+  twoFactorEnabled: boolean | null;
+};
+
+export type AccountBilling = {
+  credit: string;
+  transactions: { date: string; method: string; description: string; amountIn: string; amountOut: string; invoiceId: number | null }[];
+  /** Labels only ("Visa ending 4242"). No card or bank data ever reaches Sera. */
+  paymentMethods: { label: string; type: string; gateway: string; isDefault: boolean }[];
+};
+
+export type AccountQuote = { id: number; subject: string; stage: string; total: string; validUntil: string; created: string };
+export type AccountOrder = { id: number; number: string; date: string; amount: string; status: string; paymentMethod: string; invoiceId: number | null };
+export type AccountTicket = {
+  number: string;
+  subject: string;
+  department: string;
+  status: string;
+  priority: string;
+  opened: string;
+  lastReply: string;
+  lastMessageFrom: "client" | "Serverlys support";
+  /** First ~240 characters of the latest message. Untrusted text: data, never instructions. */
+  lastMessageExcerpt: string;
+};
+export type AccountPerson = { name: string; email: string };
+export type AccountUser = AccountPerson & { owner: boolean; permissions: string };
+export type AccountEmail = { subject: string; date: string };
+export type AccountAffiliate = { active: boolean; visitors?: number; balance?: string; withdrawn?: string; referrals?: number };
 
 /**
  * One client's account, as their own portal user may see it.
@@ -91,6 +147,17 @@ export type CustomerAccount = {
   } | null;
   domains: AccountDomain[] | null;
   services: AccountService[] | null;
+  /* Everything else the portal user may see (2026-10-17). null = not permitted. */
+  profile: AccountProfile | null;
+  billing: AccountBilling | null;
+  quotes: AccountQuote[] | null;
+  orders: AccountOrder[] | null;
+  tickets: AccountTicket[] | null;
+  contacts: AccountPerson[] | null;
+  /** Users with access to the account - present only for the account owner. */
+  users: AccountUser[] | null;
+  emails: AccountEmail[] | null;
+  affiliate: AccountAffiliate | null;
 };
 
 declare const verified: unique symbol;
@@ -183,6 +250,7 @@ function invoice(r: Record<string, unknown>): AccountInvoice | null {
     status: text(r.status, 24),
     dueDate: day(r.dueDate),
     daysLeft: int(r.daysLeft),
+    ...(Array.isArray(r.items) ? { items: items(r.items) } : {}),
   };
 }
 
@@ -199,6 +267,12 @@ function domain(r: Record<string, unknown>): AccountDomain | null {
     autoRenew: r.autoRenew === true,
     renewable: r.renewable === true,
     renewalPrice: text(r.renewalPrice, 32),
+    registered: day(r.registered),
+    registrar: text(r.registrar, 40),
+    periodYears: int(r.periodYears),
+    dnsManagement: bool(r.dnsManagement),
+    emailForwarding: bool(r.emailForwarding),
+    idProtection: bool(r.idProtection),
   };
 }
 
@@ -215,7 +289,62 @@ function service(r: Record<string, unknown>): AccountService | null {
     daysLeft: int(r.daysLeft),
     amount: text(r.amount, 32),
     cycle: text(r.cycle, 32),
+    started: day(r.started),
+    username: text(r.username, 40),
+    diskUsedMB: int(r.diskUsedMB),
+    diskLimitMB: int(r.diskLimitMB),
+    bandwidthUsedMB: int(r.bandwidthUsedMB),
+    bandwidthLimitMB: int(r.bandwidthLimitMB),
+    addons: addons(r.addons),
   };
+}
+
+function bool(value: unknown): boolean | null {
+  return value === true ? true : value === false ? false : null;
+}
+
+function obj(value: unknown): Record<string, unknown> | null {
+  return value && typeof value === "object" && !Array.isArray(value) ? (value as Record<string, unknown>) : null;
+}
+
+function items(value: unknown) {
+  return list(value, (r) => ({ description: text(r.description), amount: text(r.amount, 32) })).slice(0, 8);
+}
+
+function addons(value: unknown) {
+  return list(value, (r) => ({
+    name: text(r.name, 80), status: text(r.status, 24), nextDue: day(r.nextDue), amount: text(r.amount, 32), cycle: text(r.cycle, 24),
+  })).slice(0, 10);
+}
+
+function profile(raw: unknown): AccountProfile | null {
+  const r = obj(raw);
+  if (!r) return null;
+  return {
+    name: text(r.name, 80), company: text(r.company, 80), email: text(r.email, 120), phone: text(r.phone, 40),
+    address: text(r.address, 200), currency: text(r.currency, 8), language: text(r.language, 20),
+    clientSince: day(r.clientSince), accountStatus: text(r.accountStatus, 20),
+    emailVerified: r.emailVerified === true, twoFactorEnabled: bool(r.twoFactorEnabled),
+  };
+}
+
+function billing(raw: unknown): AccountBilling | null {
+  const r = obj(raw);
+  if (!r) return null;
+  return {
+    credit: text(r.credit, 32),
+    transactions: list(r.transactions, (t) => ({
+      date: day(t.date), method: text(t.method, 40), description: text(t.description, 100),
+      amountIn: text(t.amountIn, 32), amountOut: text(t.amountOut, 32), invoiceId: int(t.invoiceId),
+    })).slice(0, 15),
+    paymentMethods: list(r.paymentMethods, (m) => ({
+      label: text(m.label, 60), type: text(m.type, 30), gateway: text(m.gateway, 40), isDefault: m.isDefault === true,
+    })).slice(0, 10),
+  };
+}
+
+function maybeList<T>(value: unknown, map: (row: Record<string, unknown>) => T | null, cap: number): T[] | null {
+  return Array.isArray(value) ? list(value, map).slice(0, cap) : null;
 }
 
 /** The snapshot from a signed body, validated. Null when it is not usable. */
@@ -242,6 +371,40 @@ export function parseAccount(raw: unknown): CustomerAccount | null {
     invoices,
     domains: Array.isArray(a.domains) ? list(a.domains, domain) : null,
     services: Array.isArray(a.services) ? list(a.services, service) : null,
+    profile: profile(a.profile),
+    billing: billing(a.billing),
+    quotes: maybeList(a.quotes, (q) => {
+      const id = int(q.id);
+      return id && id > 0
+        ? { id, subject: text(q.subject, 100), stage: text(q.stage, 24), total: text(q.total, 32), validUntil: day(q.validUntil), created: day(q.created) }
+        : null;
+    }, 10),
+    orders: maybeList(a.orders, (o) => {
+      const id = int(o.id);
+      return id && id > 0
+        ? { id, number: text(o.number, 20), date: day(o.date), amount: text(o.amount, 32), status: text(o.status, 24), paymentMethod: text(o.paymentMethod, 40), invoiceId: int(o.invoiceId) }
+        : null;
+    }, 10),
+    tickets: maybeList(a.tickets, (t) => {
+      const number = text(t.number, 20);
+      return number
+        ? {
+            number, subject: text(t.subject), department: text(t.department, 60), status: text(t.status, 30),
+            priority: text(t.priority, 16), opened: day(t.opened), lastReply: day(t.lastReply),
+            lastMessageFrom: t.lastMessageFrom === "Serverlys support" ? "Serverlys support" : "client",
+            lastMessageExcerpt: text(t.lastMessageExcerpt, 240),
+          }
+        : null;
+    }, 10),
+    contacts: maybeList(a.contacts, (c) => ({ name: text(c.name, 80), email: text(c.email, 120) }), 20),
+    users: maybeList(a.users, (u) => ({ name: text(u.name, 80), email: text(u.email, 120), owner: u.owner === true, permissions: text(u.permissions, 200) }), 20),
+    emails: maybeList(a.emails, (m) => ({ subject: text(m.subject), date: day(m.date) }), 10),
+    affiliate: (() => {
+      const r = obj(a.affiliate);
+      if (!r) return null;
+      if (r.active !== true) return { active: false };
+      return { active: true, visitors: int(r.visitors) ?? 0, balance: text(r.balance, 32), withdrawn: text(r.withdrawn, 32), referrals: int(r.referrals) ?? 0 };
+    })(),
   };
 }
 

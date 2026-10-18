@@ -32,7 +32,9 @@ import type { SeraStreamEvent } from "@/lib/sera/types";
  * Header: X-Sera-Portal: t=<unix seconds>,s=<hex HMAC-SHA256 of "<t>.<raw body>">
  * Body:   { message, conversationId?, account: { clientId, firstName, asOf,
  *           invoices: { unpaid, recent, unpaidTotal } | null,
- *           domains: [...] | null, services: [...] | null } }
+ *           domains: [...] | null, services: [...] | null, profile, billing,
+ *           quotes, orders, tickets, contacts, users, emails, affiliate } }
+ *         (each section null when the portal user is not permitted to see it)
  * Returns: the same NDJSON stream as /api/sera/chat, plus `portal-action`
  * events (an id the portal turns into its own Pay / Renew button).
  *
@@ -42,8 +44,8 @@ import type { SeraStreamEvent } from "@/lib/sera/types";
  */
 export const dynamic = "force-dynamic";
 
-/** Room for a snapshot of 50 invoices, domains and services each. */
-const MAX_PORTAL_BODY_BYTES = 128 * 1024;
+/** Room for the full client-area snapshot (50 invoices, domains and services, plus billing, tickets, quotes...). */
+const MAX_PORTAL_BODY_BYTES = 256 * 1024;
 
 function fail(message: string, status: number, headers?: HeadersInit) {
   return new Response(
