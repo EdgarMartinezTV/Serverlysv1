@@ -28,9 +28,14 @@ export const publicEnv = {
    * WHMCS — a TRANSACTIONAL origin, deliberately independent of `siteUrl`.
    * Staging still checks out on the live store; rewriting this to the staging
    * hostname would 404 every cart and login.
+   *
+   * Since 2026-10-17 WHMCS is served at the site root (serverlys.com/login,
+   * /clientarea.php, /cart.php...) by the Easypanel front-door nginx, which
+   * proxies WHMCS paths to the cPanel install in /billing and rewrites
+   * /billing out of its responses. /billing/* 301s to the root path.
    */
   billingOrigin: normalizeOrigin(
-    process.env.NEXT_PUBLIC_BILLING_ORIGIN ?? `${PRODUCTION_ORIGIN}/billing`,
+    process.env.NEXT_PUBLIC_BILLING_ORIGIN ?? PRODUCTION_ORIGIN,
   ),
   /**
    * Whether search engines may index this deployment.

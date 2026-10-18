@@ -101,7 +101,7 @@ export function SplitCards() {
 
       <p className="sr-only">
         Prices shown are introductory rates. Renewal rates are published on the pricing
-        section below and at <a href={billing.root}>the Serverlys billing area</a>.
+        section below and at <a href={billing.clientArea}>the Serverlys client area</a>.
       </p>
     </Container>
   );

@@ -5,7 +5,7 @@ import { createHmac, timingSafeEqual } from "node:crypto";
  * The signed-in client, as vouched for by the client area.
  *
  * ⚠ THIS IS THE ONLY PLACE A CUSTOMER IDENTITY COMES FROM. Sera has no login of
- * its own. The WHMCS client area (serverlys.com/billing) already knows who is
+ * its own. The WHMCS client area (serverlys.com/clientarea.php) already knows who is
  * signed in, so its hook (`serverlys_portal.php`) relays each question
  * server-side, attaches a snapshot of THAT client's own account — unpaid
  * invoices, domains, services — and signs the whole request with a secret the

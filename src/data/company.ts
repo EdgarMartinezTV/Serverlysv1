@@ -42,13 +42,17 @@ export const emailDisplay =
 
 /**
  * WHMCS. Load-bearing: this is the entire checkout path, and it is NOT served
- * by this Next.js app. It runs on the existing cPanel host under the same
- * origin. Easypanel must reverse-proxy /billing/* there. See DEPLOY.md.
+ * by this Next.js app. It runs on the existing cPanel host and is served at
+ * the site root by the Easypanel front-door nginx (WHMCS paths only; see
+ * WHMCS_PATH in lib/analytics/attribution.ts and DEPLOY.md).
  */
 const BILLING = publicEnv.billingOrigin;
 
 export const billing = {
+  /** Origin WHMCS paths hang off. Not a page on its own (it is the homepage). */
   root: BILLING,
+  /** The signed-in client area (logged-out visitors land on the login page). */
+  clientArea: `${BILLING}/clientarea.php`,
   login: `${BILLING}/login`,
   /** Sales department ticket — used by every "talk to an expert" CTA. */
   sales: `${BILLING}/submitticket.php?step=2&deptid=1`,

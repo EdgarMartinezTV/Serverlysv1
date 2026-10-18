@@ -170,7 +170,7 @@ export function CtaButton({
     className,
   );
   /*
-   * Absolute URLs — in practice the WHMCS store at /billing — get a plain <a>.
+   * Absolute URLs — in practice the WHMCS store (served at the site root by nginx) — get a plain <a>.
    * Once the site and WHMCS share an origin, next/link would treat a store URL
    * as an app route and prefetch it on sight, sending GETs to the cart nobody
    * clicked. Same rule as `Button`.

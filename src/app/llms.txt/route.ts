@@ -91,7 +91,7 @@ export function GET() {
   lines.push("");
   lines.push(`- Email: ${company.email}`);
   lines.push(`- Telephone: ${company.phone}`);
-  lines.push(`- Billing and account login: ${billing.root}`);
+  lines.push(`- Billing and account login: ${billing.clientArea}`);
   lines.push(`- Full XML sitemap: ${canonical("/sitemap.xml")}`);
   lines.push("");
 

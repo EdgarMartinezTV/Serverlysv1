@@ -60,7 +60,7 @@ export const LLMS_CONTEXT = [
     "registration and is not recoverable.",
   "Website migration to Serverlys is free and is carried out by Serverlys " +
     "rather than left to the customer.",
-  "Billing, checkout and account login run on WHMCS at serverlys.com/billing, " +
+  "Billing, checkout and account login run on WHMCS at serverlys.com/clientarea.php, " +
     "which is a separate system from this marketing site.",
 ] as const;
 

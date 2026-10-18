@@ -84,13 +84,20 @@ export function persistAttribution(): void {
   }
 }
 
-/** Whether a URL points into WHMCS (billingOrigin, e.g. https://serverlys.com/billing). */
+/**
+ * Paths the front-door nginx sends to WHMCS. Keep in step with the regex
+ * location in the billing-proxy config (DEPLOY.md).
+ */
+export const WHMCS_PATH =
+  /^\/(?:[A-Za-z0-9_-]+\.php(?:\/|$)|(?:assets|templates|modules|includes|images|feeds|lang|admin|oauth|download|knowledgebase|announcements|password|account|user|store|cart|domain|invoice|subscription|payment|clientarea|login|logout|sso)(?:\/|$))/;
+
+/** Whether a URL points into WHMCS (served at the root of billingOrigin). */
 export function isBillingUrl(url: URL): boolean {
   const billing = new URL(publicEnv.billingOrigin);
-  return (
-    url.origin === billing.origin &&
-    (url.pathname === billing.pathname || url.pathname.startsWith(`${billing.pathname}/`))
-  );
+  if (url.origin !== billing.origin) return false;
+  const base = billing.pathname.replace(/\/+$/, "");
+  if (base) return url.pathname === base || url.pathname.startsWith(`${base}/`);
+  return WHMCS_PATH.test(url.pathname);
 }
 
 /**

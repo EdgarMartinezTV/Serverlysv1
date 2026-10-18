@@ -313,7 +313,7 @@ check(
 check(
   "account control links to the real client area",
   await ev(`const a=[...document.querySelectorAll('header a')].find(x=>/Client login/.test(x.textContent));
-    return !!a && a.getAttribute('href').includes('/billing/login')`),
+    return !!a && a.getAttribute('href').includes('/login')`),
 );
 check(
   "no dead links anywhere in the header",

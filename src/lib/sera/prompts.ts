@@ -703,7 +703,7 @@ export function contextBlock(
 export function customerBlock(customer: CustomerAccount, isFirstTurn: boolean): string {
   const lines = [
     "— CURRENT CONTEXT: THE SERVERLYS CLIENT AREA —",
-    `You are inside the signed-in client area (serverlys.com/billing). The person writing is a Serverlys customer${customer.firstName ? `, ${customer.firstName}` : ""}, signed in and verified by the client area itself.`,
+    `You are inside the signed-in client area (serverlys.com/clientarea.php). The person writing is a Serverlys customer${customer.firstName ? `, ${customer.firstName}` : ""}, signed in and verified by the client area itself.`,
     "",
     "THEIR ACCOUNT. You can read THEIR OWN account and nobody else's: get_my_account, get_my_invoices, get_my_domains, get_my_services. Call the tool before answering anything about their bills, domains or services — never guess an amount, a date, a status or a domain. If a tool says a section is not available, this portal user is not permitted to see it: say that plainly.",
     "Bills: unpaid invoices are what they owe now. Give the invoice number, total and due date, and say how overdue it is when it is. If there are none, say so.",

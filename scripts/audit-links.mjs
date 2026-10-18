@@ -23,6 +23,9 @@
 import { spawn } from "node:child_process";
 import { setTimeout as sleep } from "node:timers/promises";
 
+// Mirror of WHMCS_PATH in src/lib/analytics/attribution.ts (front-door nginx).
+const WHMCS_PATH =
+  /^\/(?:[A-Za-z0-9_-]+\.php(?:\/|$)|(?:assets|templates|modules|includes|images|feeds|lang|admin|oauth|download|knowledgebase|announcements|password|account|user|store|cart|domain|invoice|subscription|payment|clientarea|login|logout|sso)(?:\/|$))/;
 const CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 const BASE = (process.argv[2] ?? "http://localhost:3000").replace(/\/$/, "");
 const VERBOSE = process.argv.includes("--verbose");
@@ -220,9 +223,9 @@ for (const l of links) {
     continue;
   }
   if (url.host === origin.host) {
-    // /billing is the WHMCS install, same origin in production but NOT served
-    // by this app. Treat it as external for reachability purposes.
-    if (url.pathname.startsWith("/billing")) {
+    // WHMCS paths are served at the site root by the front-door nginx, NOT by
+    // this app. Treat them as external for reachability purposes.
+    if (WHMCS_PATH.test(url.pathname)) {
       if (!external.has(url.href)) external.set(url.href, l);
       continue;
     }
@@ -250,16 +253,21 @@ await Promise.all(
 
 // ── Off-origin: pattern check, no fetch ────────────────────────────────────
 const BILLING_SHAPES = [
-  /^https:\/\/serverlys\.com\/billing\/?$/,
-  /^https:\/\/serverlys\.com\/billing\/login$/,
-  /^https:\/\/serverlys\.com\/billing\/submitticket\.php\?/,
-  /^https:\/\/serverlys\.com\/billing\/cart\.php\?/,
-  /^https:\/\/serverlys\.com\/billing\/store\/[a-z0-9-]+(\/[a-z0-9-]+)?$/,
+  /^https:\/\/serverlys\.com\/clientarea\.php$/,
+  /^https:\/\/serverlys\.com\/login$/,
+  /^https:\/\/serverlys\.com\/submitticket\.php\?/,
+  /^https:\/\/serverlys\.com\/submitticket\.php$/,
+  /^https:\/\/serverlys\.com\/cart\.php\?/,
+  /^https:\/\/serverlys\.com\/store\/[a-z0-9-]+(\/[a-z0-9-]+)?$/,
 ];
 const oddBilling = [];
 const externalNoRel = [];
 for (const [href, sample] of external) {
   if (href.includes("/billing")) {
+    oddBilling.push({ href, sample, why: "old /billing path" });
+    continue;
+  }
+  if (WHMCS_PATH.test(new URL(href).pathname) && new URL(href).host === "serverlys.com") {
     if (!BILLING_SHAPES.some((re) => re.test(href))) oddBilling.push({ href, sample });
     continue;
   }

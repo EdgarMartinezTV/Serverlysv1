@@ -112,7 +112,7 @@ export async function POST(request: Request) {
   if (conversation && conversation.customerId !== customer.clientId)
     conversation = null;
   if (!conversation) {
-    conversation = createConversation(sessionId, "/billing/clientarea.php");
+    conversation = createConversation(sessionId, "/clientarea.php");
     conversation.customerId = customer.clientId;
   }
 
@@ -132,7 +132,7 @@ export async function POST(request: Request) {
   // ── Stream ──────────────────────────────────────────────────────────────
   const encoder = new TextEncoder();
   const active = conversation;
-  const page = { pathname: "/billing/clientarea.php", title: "Serverlys client area" };
+  const page = { pathname: "/clientarea.php", title: "Serverlys client area" };
 
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {

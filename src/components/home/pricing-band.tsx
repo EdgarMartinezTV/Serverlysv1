@@ -245,7 +245,7 @@ export function PricingBand() {
         <p className="mt-10 text-center text-small text-fg-muted">
           All four cloud tiers, at the monthly rate.{" "}
           <a
-            href={billing.root}
+            href={billing.store("cloud-hosting")}
             className="inline-block rounded-sm py-1 font-medium text-primary underline underline-offset-4 hover:text-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             See every tier

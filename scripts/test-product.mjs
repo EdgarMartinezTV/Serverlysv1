@@ -167,7 +167,7 @@ const dead = await ev(`return JSON.stringify([...document.querySelectorAll('a')]
 check("no dead links (empty href or bare #)", JSON.parse(dead).length === 0, dead);
 
 const ctas = await ev(`return JSON.stringify([...document.querySelectorAll('a')]
-  .map(a=>a.getAttribute('href')).filter(h=>h && h.includes('/billing/'))
+  .map(a=>a.getAttribute('href')).filter(h=>h && /\/(cart|clientarea|submitticket)\.php|\/store\/|\/login$/.test(h))
   .filter((v,i,s)=>s.indexOf(v)===i).slice(0,8))`);
 check(
   "checkout CTAs point at real WHMCS paths",

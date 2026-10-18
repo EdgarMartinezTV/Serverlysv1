@@ -21,7 +21,7 @@ import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
  * never client-side invention) and returns an honest `unknown` instead of
  * rounding uncertainty up to "available". Every result and every TLD card
  * hands off to the real WHMCS cart at
- * `serverlys.com/billing/cart.php?a=add&domain=register&query=…`, so a name
+ * `serverlys.com/cart.php?a=add&domain=register&query=…`, so a name
  * the visitor picks arrives in checkout prefilled.
  *
  * Every price on this page comes from `data/tlds.ts`. Nothing is hardcoded.
