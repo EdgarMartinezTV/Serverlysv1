@@ -343,7 +343,17 @@ export type SeraStreamEvent =
    * id up in the snapshot it signed, builds WHMCS's own link, writes the label,
    * and drops the event if the id is not the client's or not actionable.
    */
-  | { t: "portal-action"; kind: "pay_invoice" | "pay_all" | "renew_domain"; ref: string }
+  | {
+      t: "portal-action";
+      kind: "pay_invoice" | "pay_all" | "renew_domain" | "open_ticket";
+      ref: string;
+      /**
+       * open_ticket only: Sera's draft. The portal re-validates every field
+       * against its own snapshot, keeps it in the client's session and shows a
+       * card - the ticket is opened only when the client presses its button.
+       */
+      draft?: TicketDraft;
+    }
   /** Workflow state changed. The client replaces its view wholesale. */
   | { t: "workflow"; view: WorkflowView | null }
   /** Detected intent, for analytics and the panel's context line. */
@@ -463,3 +473,13 @@ export type Conversation = {
 
 /** What a tool handler hands back to the model. Always JSON-serialisable. */
 export type ToolResult = Record<string, unknown>;
+
+/** A support ticket Sera prepared for the signed-in client. Never opened by Sera. */
+export type TicketDraft = {
+  departmentId: number;
+  subject: string;
+  message: string;
+  priority: "Low" | "Medium" | "High";
+  serviceId?: number;
+  domainId?: number;
+};

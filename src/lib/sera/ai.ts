@@ -752,10 +752,10 @@ async function executeCall(
       mark: (target) => emit({ t: "highlight", target: target.name, label: target.label }),
       customer: meta.customer,
       portalAction: meta.customer
-        ? (kind, ref) => {
+        ? (kind, ref, draft) => {
             if (budget.portalActions.count >= MAX_PORTAL_ACTIONS) return false;
             budget.portalActions.count += 1;
-            emit({ t: "portal-action", kind, ref });
+            emit(draft ? { t: "portal-action", kind, ref, draft } : { t: "portal-action", kind, ref });
             return true;
           }
         : undefined,

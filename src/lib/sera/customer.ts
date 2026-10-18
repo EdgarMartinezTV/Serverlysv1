@@ -158,6 +158,8 @@ export type CustomerAccount = {
   users: AccountUser[] | null;
   emails: AccountEmail[] | null;
   affiliate: AccountAffiliate | null;
+  /** Departments this client may open a ticket in (only with the tickets permission). */
+  ticketDepartments: { id: number; name: string }[] | null;
 };
 
 declare const verified: unique symbol;
@@ -399,6 +401,11 @@ export function parseAccount(raw: unknown): CustomerAccount | null {
     contacts: maybeList(a.contacts, (c) => ({ name: text(c.name, 80), email: text(c.email, 120) }), 20),
     users: maybeList(a.users, (u) => ({ name: text(u.name, 80), email: text(u.email, 120), owner: u.owner === true, permissions: text(u.permissions, 200) }), 20),
     emails: maybeList(a.emails, (m) => ({ subject: text(m.subject), date: day(m.date) }), 10),
+    ticketDepartments: maybeList(a.ticketDepartments, (d) => {
+      const id = int(d.id);
+      const name = text(d.name, 60);
+      return id && id > 0 && name ? { id, name } : null;
+    }, 20),
     affiliate: (() => {
       const r = obj(a.affiliate);
       if (!r) return null;
