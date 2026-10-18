@@ -469,6 +469,8 @@ export type Conversation = {
    * another client, nor on the public route.
    */
   customerId?: number;
+  /** Tickets Sera opened in this conversation (client area), to never open the same issue twice. */
+  ticketsOpened?: { subject: string; serviceId?: number; domainId?: number; at: number }[];
 };
 
 /** What a tool handler hands back to the model. Always JSON-serialisable. */

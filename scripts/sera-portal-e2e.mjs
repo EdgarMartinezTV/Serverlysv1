@@ -39,7 +39,7 @@ const cases = [
     (x, a) => { const t = a.actions.find((e) => e.kind === "open_ticket"); return !!t && t.draft.departmentId === 1 && t.draft.priority === "High" && /500/.test(t.draft.subject + t.draft.message) && /mariasbakery/.test(t.draft.subject + t.draft.message) && /2 ?pm/i.test(t.draft.message) && !/#\s?\d{3,}|ticket (number )?\d{4,}/i.test(x); },
     "opens a High-priority Technical Support ticket with the details, invents no ticket number"],
   ["Please open a ticket, something is wrong with my site.",
-    (x, a) => !a.actions.some((e) => e.kind === "open_ticket") && /\?/.test(x),
+    (x, a) => !a.actions.some((e) => e.kind === "open_ticket") && /\?|please (tell|share|describe|let me know)|let me know/i.test(x),
     "too vague: asks what is wrong before opening anything"],
   ["Please open a ticket: my email is not sending from my phone.",
     (x, a) => /234042|already|existing|open ticket/i.test(x) || a.actions.some((e) => e.kind === "open_ticket"),

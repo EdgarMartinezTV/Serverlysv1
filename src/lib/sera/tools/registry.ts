@@ -547,18 +547,26 @@ export const TOOL_DEFINITIONS: readonly ToolDefinition[] = [
       "(2) make sure the ticket has what the team needs - what is wrong, which service or domain (take it from " +
       "their account, do not ask), when it started, any error message, what they already tried; for billing, the " +
       "invoice number and what looks wrong. Ask only for what is missing, briefly, at most two questions. " +
-      "Then call it. Write a clear subject and a message the team can act on without asking again.",
+      "Then call it ONCE, with every field filled (errors verbatim, what they tried, impact), so the team can act " +
+      "without asking again. Write no text before calling it; after it, one or two sentences. The client's own " +
+      "chat messages and their account details are attached automatically - do not paste them.",
     parameters: {
       type: "object",
       properties: {
         department: { type: "string", description: "Department name, exactly as listed by get_my_tickets (ticketDepartments)." },
-        subject: { type: "string", description: "Short subject, max 120 characters." },
-        message: { type: "string", description: "The ticket body, written for the support team, max 4000 characters." },
+        subject: { type: "string", description: "Specific subject the team can triage from, max 120 characters, e.g. '500 error on example.com since 2pm'." },
+        summary: { type: "string", description: "One or two sentences: the problem and what is affected." },
+        details: { type: "string", description: "What is happening, in detail: symptoms, which pages/emails/devices, how often, exactly what the client sees." },
+        started: { type: "string", description: "When it started, in plain words as the client said it (e.g. 'Today around 2pm, client's time', 'After the plugin install yesterday'). 'Not reported' if unknown. Never an ISO timestamp." },
+        errors: { type: "string", description: "Every error message or code the client reported, quoted exactly. 'None reported' if none." },
+        tried: { type: "string", description: "What the client already tried and what happened (e.g. cleared cache, other device). 'Nothing reported' if none." },
+        impact: { type: "string", description: "Who or what is affected and how badly (e.g. site down for all visitors, customers cannot order). 'Not reported' if unknown." },
+        wants: { type: "string", description: "What the client is asking the team to do." },
         priority: { type: "string", enum: ["Low", "Medium", "High"], description: "High when a website, email or service is down or broken for customers; Low for questions; otherwise Medium." },
         service_id: { type: "number", description: "Optional: id of the related service from get_my_services." },
         domain: { type: "string", description: "Optional: the related domain, if it is one of theirs." },
       },
-      required: ["department", "subject", "message"],
+      required: ["department", "subject", "summary", "details", "started", "errors", "tried", "impact", "wants"],
       additionalProperties: false,
     },
     strict: false,
@@ -1495,9 +1503,29 @@ function runCustomerTool(
         return { opening: false, note: "Pick one of these departments and call open_ticket again.", departments: deps.map((d) => d.name) };
       }
       const subject = (str(args, "subject") ?? "").replace(/\s+/g, " ").trim().slice(0, 120);
-      const message = (str(args, "message") ?? "").replace(/\r\n?/g, "\n").trim().slice(0, 4000);
-      if (subject.length < 3 || message.length < 10) {
-        return { opening: false, note: "Not opened: the subject or message is too short. Ask what is wrong, then call open_ticket again." };
+      const field = (k: string, max = 1500) => (str(args, k) ?? "").replace(/\r\n?/g, "\n").trim().slice(0, max);
+      const sections: [string, string][] = [
+        ["Summary", field("summary", 600)],
+        ["What is happening", field("details", 2500)],
+        ["When it started", field("started", 300)],
+        ["Error messages", field("errors", 1200)],
+        ["What the client already tried", field("tried", 1200)],
+        ["Impact", field("impact", 600)],
+        ["What the client is asking for", field("wants", 600)],
+      ];
+      /* The client's own words, verbatim, from this conversation (the last few messages). */
+      const said = (context.conversation?.history ?? [])
+        .filter((h): h is { role: string; content: string } =>
+          !!h && typeof h === "object" && (h as { role?: unknown }).role === "user" && typeof (h as { content?: unknown }).content === "string")
+        .slice(-6)
+        .map((h) => h.content.replace(/\s+/g, " ").trim().slice(0, 600))
+        .filter(Boolean);
+      const message = [
+        ...sections.filter(([, v]) => v).map(([k, v]) => `## ${k}\n${v}`),
+        ...(said.length ? [`## The client's own words (Sera chat)\n${said.map((m) => `> ${m}`).join("\n>\n")}`] : []),
+      ].join("\n\n").slice(0, 7000);
+      if (subject.length < 3 || field("summary").length + field("details").length < 20) {
+        return { opening: false, note: "Not opened: describe the problem first (summary + details). Ask what is wrong, then call open_ticket again." };
       }
       const pr = str(args, "priority");
       const priority: TicketDraft["priority"] = pr === "High" || pr === "Low" ? pr : "Medium";
@@ -1509,9 +1537,27 @@ function runCustomerTool(
         const dm = customer.domains?.find((d) => d.domain === normaliseDomain(wantDomain));
         if (dm) draft.domainId = dm.id;
       }
+      /* One ticket per issue per conversation: same service/domain or a similar subject within an hour. */
+      const words = (t: string) => new Set(t.toLowerCase().match(/[a-z0-9]{3,}/g) ?? []);
+      const similar = (x: string, y: string) => {
+        const a1 = words(x), b1 = words(y);
+        const both = [...a1].filter((w) => b1.has(w)).length;
+        return both / Math.max(1, Math.min(a1.size, b1.size)) >= 0.5;
+      };
+      const opened = (context.conversation.ticketsOpened ?? []).filter((t) => Date.now() - t.at < 3_600_000);
+      const twin = opened.find((t) =>
+        (draft.serviceId && t.serviceId === draft.serviceId) || (draft.domainId && t.domainId === draft.domainId) || similar(t.subject, subject));
+      if (twin) {
+        return {
+          opening: false,
+          alreadyOpened: true,
+          note: `A ticket for this ("${twin.subject}") was already opened earlier in this conversation. Do NOT open another. Tell them it is open and the team has the details; add new information by replying to that ticket.`,
+        };
+      }
       if (!context.portalAction?.("open_ticket", "ticket", draft)) {
         return { opening: false, note: "A ticket was already opened in this reply. Do not open another." };
       }
+      context.conversation.ticketsOpened = [...opened, { subject, serviceId: draft.serviceId, domainId: draft.domainId, at: Date.now() }];
       return {
         opening: true,
         department: dep.name,

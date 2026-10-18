@@ -189,7 +189,7 @@ export async function runTurn({
        * the page context it is sent, never stored.
        */
       content: customer
-        ? customerBlock(customer, isFirstTurn, asksAboutOtherAccount(message, customer.clientId))
+        ? customerBlock(customer, isFirstTurn, asksAboutOtherAccount(message, customer.clientId), conversation.ticketsOpened ?? [])
         : contextBlock(page, conversation.workflow, isFirstTurn),
     },
   ];
@@ -300,6 +300,14 @@ export async function runTurn({
       for await (const event of stream) {
         if (event.type === "response.output_text.delta") {
           text += event.delta;
+          /*
+           * CLIENT AREA: hold the round's text until we know it is the answer.
+           * A round that ends in a tool call (a lookup, opening a ticket) wrote
+           * "I'll open a ticket now…" before acting, and the next round says it
+           * again in the past tense - both reached the client. Only a round with
+           * no tool call is the answer; it is emitted whole below.
+           */
+          if (customer) continue;
           if (echoing) {
             held += event.delta;
             const trimmed = held.trimStart();
@@ -332,7 +340,17 @@ export async function runTurn({
         }
       }
 
-      if (text) spokenThisTurn.push(text);
+      if (customer && text) {
+        const actsNext = output.some(
+          (item) => !!item && typeof item === "object" && (item as { type?: unknown }).type === "function_call",
+        );
+        if (!actsNext) {
+          if (!sawAnyText) phases.to("RESPONDING");
+          emit({ t: "delta", v: sawAnyText ? `\n\n${text.trim()}` : text });
+          sawAnyText = true;
+        }
+      }
+      if (text && (!customer || sawAnyText)) spokenThisTurn.push(text);
 
       /*
        * Output items go back verbatim — assistant messages, reasoning items and
