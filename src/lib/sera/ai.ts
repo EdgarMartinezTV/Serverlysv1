@@ -1,7 +1,7 @@
 import "server-only";
 import OpenAI from "openai";
 import { LIMITS, openAiConfig } from "./config";
-import { SYSTEM_PROMPT, contextBlock, customerBlock } from "./prompts";
+import { SYSTEM_PROMPT, asksAboutOtherAccount, contextBlock, customerBlock } from "./prompts";
 import { definitionsFor, isKnownTool, permissionOf, runTool } from "./tools/registry";
 import { decide, type Surface } from "./policy";
 import { PhaseTracker } from "./phases";
@@ -189,7 +189,7 @@ export async function runTurn({
        * the page context it is sent, never stored.
        */
       content: customer
-        ? customerBlock(customer, isFirstTurn)
+        ? customerBlock(customer, isFirstTurn, asksAboutOtherAccount(message, customer.clientId))
         : contextBlock(page, conversation.workflow, isFirstTurn),
     },
   ];

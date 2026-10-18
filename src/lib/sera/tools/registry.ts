@@ -539,20 +539,22 @@ export const TOOL_DEFINITIONS: readonly ToolDefinition[] = [
   },
   {
     type: "function",
-    name: "prepare_ticket",
+    name: "open_ticket",
     description:
-      "Draft a support ticket for the signed-in client. It opens NOTHING: a card with the draft and an " +
-      "'Open ticket' button appears in the chat, and only the client pressing it opens the ticket. Check " +
-      "get_my_tickets first - if an open ticket already covers the issue, suggest replying there instead. " +
-      "Write the subject and message in the client's own words plus the facts you know (domain, service, " +
-      "what they tried, any error text). Ask for missing details before drafting.",
+      "Open a support ticket for the signed-in client. It is opened immediately by the client area. " +
+      "Use it when the client asks for a ticket or for the team to look into something. BEFORE calling it: " +
+      "(1) call get_my_tickets - if an open ticket already covers this issue, tell them and do not open another; " +
+      "(2) make sure the ticket has what the team needs - what is wrong, which service or domain (take it from " +
+      "their account, do not ask), when it started, any error message, what they already tried; for billing, the " +
+      "invoice number and what looks wrong. Ask only for what is missing, briefly, at most two questions. " +
+      "Then call it. Write a clear subject and a message the team can act on without asking again.",
     parameters: {
       type: "object",
       properties: {
         department: { type: "string", description: "Department name, exactly as listed by get_my_tickets (ticketDepartments)." },
         subject: { type: "string", description: "Short subject, max 120 characters." },
         message: { type: "string", description: "The ticket body, written for the support team, max 4000 characters." },
-        priority: { type: "string", enum: ["Low", "Medium", "High"], description: "High only if a site or email is down." },
+        priority: { type: "string", enum: ["Low", "Medium", "High"], description: "High when a website, email or service is down or broken for customers; Low for questions; otherwise Medium." },
         service_id: { type: "number", description: "Optional: id of the related service from get_my_services." },
         domain: { type: "string", description: "Optional: the related domain, if it is one of theirs." },
       },
@@ -663,7 +665,7 @@ const LABELS: Record<string, string> = {
   prepare_request: "Putting your request together…",
   get_my_account: "Checking your account…",
   get_my_invoices: "Checking your invoices…",
-  prepare_ticket: "Preparing your ticket…",
+  open_ticket: "Opening your ticket…",
   get_my_domains: "Checking your domains…",
   get_my_services: "Checking your services…",
   offer_invoice_payment: "Getting that ready…",
@@ -1278,7 +1280,7 @@ export async function runTool(
     case "get_my_contacts":
     case "get_my_emails":
     case "get_my_affiliate":
-    case "prepare_ticket":
+    case "open_ticket":
     case "offer_invoice_payment":
     case "offer_domain_renewal":
       return runCustomerTool(name, args, context);
@@ -1478,7 +1480,7 @@ function runCustomerTool(
       if (!customer.affiliate) return NOT_PERMITTED;
       return result({ affiliate: customer.affiliate });
 
-    case "prepare_ticket": {
+    case "open_ticket": {
       if (!customer.tickets || !customer.ticketDepartments) return NOT_PERMITTED;
       const deps = customer.ticketDepartments;
       const wantDep = (str(args, "department") ?? "").trim().toLowerCase();
@@ -1490,12 +1492,12 @@ function runCustomerTool(
         (near.length === 1 ? near[0] : undefined) ??
         (deps.length === 1 ? deps[0] : undefined);
       if (!dep) {
-        return { offered: false, noCardShown: true, note: "Pick one of these departments and try again.", departments: deps.map((d) => d.name) };
+        return { opening: false, note: "Pick one of these departments and call open_ticket again.", departments: deps.map((d) => d.name) };
       }
       const subject = (str(args, "subject") ?? "").replace(/\s+/g, " ").trim().slice(0, 120);
       const message = (str(args, "message") ?? "").replace(/\r\n?/g, "\n").trim().slice(0, 4000);
       if (subject.length < 3 || message.length < 10) {
-        return { offered: false, noCardShown: true, note: "The subject or message is too short. Ask what is wrong, then draft again." };
+        return { opening: false, note: "Not opened: the subject or message is too short. Ask what is wrong, then call open_ticket again." };
       }
       const pr = str(args, "priority");
       const priority: TicketDraft["priority"] = pr === "High" || pr === "Low" ? pr : "Medium";
@@ -1507,15 +1509,17 @@ function runCustomerTool(
         const dm = customer.domains?.find((d) => d.domain === normaliseDomain(wantDomain));
         if (dm) draft.domainId = dm.id;
       }
-      if (!context.portalAction?.("open_ticket", "draft", draft)) {
-        return { offered: false, note: "Enough cards are on screen already." };
+      if (!context.portalAction?.("open_ticket", "ticket", draft)) {
+        return { opening: false, note: "A ticket was already opened in this reply. Do not open another." };
       }
       return {
-        offered: true,
+        opening: true,
         department: dep.name,
+        subject,
         note:
-          "A card with this draft and an 'Open ticket' button is on screen. Tell them to check it and press " +
-          "the button to send it, or tell you what to change. The ticket is NOT open yet - never say it is.",
+          "The client area is opening this ticket now and will show its number and a link right below your " +
+          "message (or say why it could not). Tell them in one or two sentences that you are opening it with " +
+          `${dep.name} and what you included. NEVER state a ticket number yourself - you do not have it.`,
       };
     }
 

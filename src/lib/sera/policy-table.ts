@@ -313,13 +313,16 @@ export const POLICY: Record<string, ToolPolicy> = {
     surface: "CUSTOMER",
     because: "The signed-in client's own affiliate account, as their portal user may see them.",
   },
-  prepare_ticket: {
-    permission: "READ_ONLY",
+  open_ticket: {
+    permission: "WRITE",
     gate: "AUTHENTICATION_REQUIRED",
     surface: "CUSTOMER",
     because:
-      "Drafts a ticket and opens nothing. The portal re-validates the draft, shows it as a card, and " +
-      "opens it with WHMCS's own OpenTicket only when the client presses 'Open ticket'. The person is the confirmation.",
+      "Opens a support ticket for the signed-in client, at their request (Edgar, 2026-10-17). It creates a " +
+      "ticket and nothing else: no money, no services. The portal re-validates the draft against its own " +
+      "snapshot (client-visible department, their own service/domain) and opens it with WHMCS's OpenTicket for " +
+      "the session's client, limited to 3 an hour and one per subject per 30 minutes; the number shown comes " +
+      "from WHMCS, not the model.",
   },
   offer_invoice_payment: {
     permission: "READ_ONLY",

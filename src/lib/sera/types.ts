@@ -348,9 +348,9 @@ export type SeraStreamEvent =
       kind: "pay_invoice" | "pay_all" | "renew_domain" | "open_ticket";
       ref: string;
       /**
-       * open_ticket only: Sera's draft. The portal re-validates every field
-       * against its own snapshot, keeps it in the client's session and shows a
-       * card - the ticket is opened only when the client presses its button.
+       * open_ticket only: the ticket Sera is opening. The portal re-validates
+       * every field against its own snapshot and opens it with WHMCS's
+       * OpenTicket for the session's client; the page shows WHMCS's outcome.
        */
       draft?: TicketDraft;
     }
@@ -474,7 +474,7 @@ export type Conversation = {
 /** What a tool handler hands back to the model. Always JSON-serialisable. */
 export type ToolResult = Record<string, unknown>;
 
-/** A support ticket Sera prepared for the signed-in client. Never opened by Sera. */
+/** A support ticket Sera opens for the signed-in client, at their request (via the portal). */
 export type TicketDraft = {
   departmentId: number;
   subject: string;

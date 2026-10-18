@@ -446,7 +446,7 @@ console.log("\nPOLICY — the authorisation table, no network, no model\n");
   const ACCOUNT_TOOLS = [
     "get_my_account", "get_my_invoices", "get_my_domains", "get_my_services",
     "get_my_profile", "get_my_billing", "get_my_quotes", "get_my_orders", "get_my_tickets",
-    "get_my_contacts", "get_my_emails", "get_my_affiliate", "prepare_ticket",
+    "get_my_contacts", "get_my_emails", "get_my_affiliate", "open_ticket",
     "offer_invoice_payment", "offer_domain_renewal",
   ];
   const misfiled = ACCOUNT_TOOLS.filter(
@@ -458,8 +458,12 @@ console.log("\nPOLICY — the authorisation table, no network, no model\n");
     misfiled.length ? misfiled.join(", ") : `${ACCOUNT_TOOLS.length} tools`,
   );
   assert(
-    ACCOUNT_TOOLS.every((n) => POLICY[n]?.permission === "READ_ONLY"),
-    "no account tool spends money or changes anything",
+    ACCOUNT_TOOLS.filter((n) => n !== "open_ticket").every((n) => POLICY[n]?.permission === "READ_ONLY"),
+    "no account tool spends money or changes anything (except open_ticket, below)",
+  );
+  assert(
+    POLICY.open_ticket?.permission === "WRITE" && POLICY.open_ticket?.surface === "CUSTOMER",
+    "open_ticket creates a ticket and nothing else: WRITE, never FINANCIAL, client area only",
   );
   const sharedDown = Object.entries(POLICY).filter(
     ([, p]) => p.alsoForCustomers && (p.surface !== "PUBLIC" || p.permission !== "READ_ONLY"),
