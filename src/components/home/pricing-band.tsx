@@ -64,20 +64,7 @@ export function PricingBand() {
                 key={b}
                 className="flex items-center gap-2 text-small text-fg-secondary"
               >
-                <svg
-                  viewBox="0 0 16 16"
-                  aria-hidden="true"
-                  className="h-4 w-4 text-success-fill"
-                >
-                  <path
-                    d="m3.5 8.5 3 3 6-7"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.75"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                <span aria-hidden="true" className="icon-check h-4 w-4 text-success-fill" />
                 {b}
               </li>
             ))}
@@ -183,13 +170,7 @@ export function PricingBand() {
                     <ul className="flex flex-col gap-3">
                       {[plan.specs.sites, plan.specs.visits, `${plan.specs.memory} memory`, "Unlimited NVMe storage", "Free SSL and daily backups"].map((spec) => (
                         <li key={spec} className="flex items-center gap-2.5 text-small">
-                          <svg
-                            viewBox="0 0 16 16"
-                            aria-hidden="true"
-                            className={cn("h-4 w-4 shrink-0", featured ? "text-primary-on-dark" : "text-success-fill")}
-                          >
-                            <path d="m3.5 8.5 3 3 6-7" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
+                          <span aria-hidden="true" className={cn("icon-check", "h-4 w-4 shrink-0", featured ? "text-primary-on-dark" : "text-success-fill")} />
                           <span className={featured ? "text-white" : "text-fg"}>{spec}</span>
                         </li>
                       ))}
@@ -209,20 +190,7 @@ export function PricingBand() {
           <ul className="mt-5 grid gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {shown[0].includes.map((inc) => (
               <li key={inc} className="flex items-center gap-2 text-small text-fg-secondary">
-                <svg
-                  viewBox="0 0 16 16"
-                  aria-hidden="true"
-                  className="h-4 w-4 shrink-0 text-success-fill"
-                >
-                  <path
-                    d="m3.5 8.5 3 3 6-7"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.75"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                <span aria-hidden="true" className="icon-check h-4 w-4 shrink-0 text-success-fill" />
                 {inc}
               </li>
             ))}

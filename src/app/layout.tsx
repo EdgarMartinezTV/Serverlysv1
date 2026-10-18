@@ -11,6 +11,7 @@ import { Analytics } from "@/components/analytics/analytics";
 import { analyticsDisclosures, vendorNames } from "@/lib/analytics/config";
 import { SeraRoot } from "@/components/sera/sera-root";
 import { SiteFooter } from "@/components/layout/site-footer";
+import { WebMcp } from "@/components/agent/web-mcp";
 import { announcement } from "@/data/navigation";
 import { CONSENT_KEY } from "@/lib/consent";
 import "./globals.css";
@@ -153,6 +154,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </a>
 
         <JsonLd data={organizationGraph()} />
+        {/* In-browser agent tools (WebMCP); renders nothing. */}
+        <WebMcp />
 
         {/*
           Sera, the site-wide AI assistant. SeraRoot renders NO element of its

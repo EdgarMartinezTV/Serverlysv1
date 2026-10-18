@@ -49,7 +49,7 @@ export function FaqSection({
                   but only the 27px text itself was tappable, which is how a
                   thumb misses an accordion that visually fills the row. */}
               <details className="group">
-                <summary className="flex cursor-pointer list-none items-start justify-between gap-6 rounded-sm py-5 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&::-webkit-details-marker]:hidden">
+                <summary className="faq-summary">
                   <span className="text-body-lg text-fg">
                     {faq.question}
                   </span>

@@ -47,6 +47,15 @@ export function MegaMenu({
   onNavigate: () => void;
 }) {
   const [activeId, setActiveId] = useState(categories[0].id);
+  /* The panel body is mounted on first open and kept mounted after. Rendering
+     all four closed panels into every page's HTML cost ~45KB, which is most of
+     what pushed the homepage past AI agents' token budget. The links are still
+     in the footer and the sitemap; the trigger and this container never move. */
+  const [everOpen, setEverOpen] = useState(open);
+  // Remember the first open during render (React's "adjust state on prop
+  // change" pattern) so the body stays mounted after the panel closes.
+  if (open && !everOpen) setEverOpen(true);
+  const mounted = open || everOpen;
   const railRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const baseId = useId();
 
@@ -98,6 +107,7 @@ export function MegaMenu({
          of items need real width or every description wraps to four lines. */
       className="absolute left-1/2 top-full z-10 w-[calc(100vw-2rem)] max-w-mega -translate-x-1/2 pt-2"
     >
+      {mounted && (
       <div
         className={cn(
           "max-h-[calc(100vh-6rem)] overflow-auto rounded-2xl bg-canvas shadow-[0_24px_60px_-12px_rgb(0_0_0/0.35)]",
@@ -209,6 +219,7 @@ export function MegaMenu({
           </div>
         </div>
       </div>
+      )}
     </div>
   );
 }

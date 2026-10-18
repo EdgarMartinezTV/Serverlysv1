@@ -144,6 +144,25 @@ const nextConfig: NextConfig = {
       value: "public, max-age=86400, stale-while-revalidate=604800",
     };
     return [
+      /*
+       * Agent discovery (RFC 8288 Link header) on the homepage: where the
+       * machine-readable versions of this site live — the llms.txt index, the
+       * Markdown rendering of the page (served on Accept: text/markdown, see
+       * src/proxy.ts) and the MCP server card. Registered relation types only.
+       */
+      {
+        source: "/",
+        headers: [
+          {
+            key: "Link",
+            value: [
+              '</llms.txt>; rel="describedby"; type="text/markdown"',
+              '</>; rel="alternate"; type="text/markdown"',
+              '</.well-known/mcp/server-card.json>; rel="service-desc"; type="application/json"',
+            ].join(", "),
+          },
+        ],
+      },
       { source: "/brand/:path*", headers: [publicAssetCache] },
       { source: "/mock/:path*", headers: [publicAssetCache] },
       { source: "/Hosting-images/:path*", headers: [publicAssetCache] },

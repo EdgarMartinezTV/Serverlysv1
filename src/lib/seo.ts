@@ -127,6 +127,14 @@ export function organizationGraph() {
         image: { "@id": LOGO_ID },
         email: company.email,
         telephone: company.phone,
+        /*
+         * Country only, on purpose. Serverlys is a US company with a US support
+         * line, so this is a verified fact; a street address is NOT published
+         * (global brand, no storefront, no local targeting — see the SEO entity
+         * decision). Agents and AI-readiness checks read a missing `address` as
+         * an incomplete business node.
+         */
+        address: { "@type": "PostalAddress", addressCountry: "US" },
         contactPoint: [
           {
             "@type": "ContactPoint",

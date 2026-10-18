@@ -107,7 +107,7 @@ export function StageRow({
                   href={link.href}
                   {...(link.external ? { target: "_blank", rel: "noopener" } : {})}
                   className={cn(
-                    "group/row flex items-center justify-between gap-4 py-4 text-body-lg transition-colors duration-fast ease-hover focus-visible:outline-2 focus-visible:outline-offset-2",
+                    "group/row stage-link",
                     dark
                       ? "text-white hover:text-primary-on-dark focus-visible:outline-white"
                       : "text-fg hover:text-primary focus-visible:outline-primary",
@@ -144,16 +144,7 @@ export function StageRow({
                   dark ? "text-fg-on-dark-secondary" : "text-fg-secondary",
                 )}
               >
-                <svg viewBox="0 0 16 16" aria-hidden="true" className="h-4 w-4 shrink-0 text-success-fill">
-                  <path
-                    d="m3.5 8.5 3 3 6-7"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.75"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                <span aria-hidden="true" className="icon-check h-4 w-4 shrink-0 text-success-fill" />
                 {item}
               </li>
             ))}

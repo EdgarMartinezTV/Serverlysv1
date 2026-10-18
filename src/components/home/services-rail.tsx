@@ -148,7 +148,7 @@ export function ServicesRail() {
                   no nested interactive element to reason about. */}
               <Link
                 href={service.href}
-                className="group/card flex h-full min-h-64 flex-col gap-2 rounded-2xl bg-[linear-gradient(180deg,rgb(255_255_255/0.05)_0%,rgb(31_85_255/0.22)_100%)] p-6 ring-1 ring-inset ring-white/10 backdrop-blur-sm transition-colors duration-fast hover:bg-white/10 hover:ring-white/25 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                className="group/card service-card"
               >
                 <span className="flex items-start justify-between gap-4">
                   {/* WHITE, not brand-400. brand-400 (#7d7dff) is hue 240 and

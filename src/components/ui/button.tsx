@@ -30,12 +30,10 @@ export type ButtonSize = "sm" | "md" | "lg" | "nav";
 /* Weight lives in SIZES, not here. `nav` is the only size that is semibold, and
    `cn` is a plain join — two font-weight utilities on one element would be
    resolved by stylesheet order rather than by the one you wrote last. */
-const BASE =
-  "inline-flex items-center justify-center gap-2 rounded-md font-sans " +
-  "whitespace-nowrap transition-colors duration-fast ease-hover " +
-  "focus-visible:outline-2 focus-visible:outline-offset-2 " +
-  "disabled:pointer-events-none disabled:opacity-50 " +
-  "aria-disabled:pointer-events-none aria-disabled:opacity-50";
+/* Defined in globals.css as the `btn` utility (display, alignment, radius,
+   transition, focus ring, disabled states) — named so every button ships one
+   word instead of ~260 characters, twice per page. */
+const BASE = "btn";
 
 const VARIANTS: Record<ButtonVariant, string> = {
   /** The single highest-intent action in a view. Aim for one.

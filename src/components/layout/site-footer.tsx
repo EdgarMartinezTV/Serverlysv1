@@ -51,10 +51,11 @@ import { CookieSettingsLink } from "@/components/consent/cookie-settings-link";
 /* Link styling shared by every footer link: near-black, blue on hover with a
    growing underline (2026-10-03 footer, after the reference's type: DM Sans,
    16/600 uppercase titles, 14/400 links, #f5f5f6 ground). */
-const LINK =
-  "group/fl relative inline-flex min-h-11 items-center rounded-sm py-[5px] text-small leading-5 text-fg transition-colors duration-fast hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:min-h-0";
-const UNDERLINE =
-  "pointer-events-none absolute inset-x-0 bottom-1 h-px origin-left scale-x-0 bg-primary transition-transform duration-200 group-hover/fl:scale-x-100";
+/* The footer renders ~41 links, and every class string ships twice (HTML plus
+   the RSC payload). The full Tailwind lists cost ~32KB per page, so they live in
+   globals.css as the `footer-link` / `footer-link-line` utilities instead. */
+const LINK = "footer-link";
+const UNDERLINE = "footer-link-line";
 
 const TRUST = [
   { label: "Secure checkout", sub: "SSL on every page", icon: "lock" },
