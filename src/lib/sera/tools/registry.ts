@@ -1482,7 +1482,13 @@ function runCustomerTool(
       if (!customer.tickets || !customer.ticketDepartments) return NOT_PERMITTED;
       const deps = customer.ticketDepartments;
       const wantDep = (str(args, "department") ?? "").trim().toLowerCase();
-      const dep = deps.find((d) => d.name.toLowerCase() === wantDep) ?? (deps.length === 1 ? deps[0] : undefined);
+      /* Exact name, else the one department whose name contains (or is contained in) what was asked. */
+      const loose = wantDep.replace(/\b(department|support|team)\b/g, "").trim();
+      const near = loose ? deps.filter((d) => d.name.toLowerCase().includes(loose) || loose.includes(d.name.toLowerCase().replace(/\s*support\s*/g, "").trim())) : [];
+      const dep =
+        deps.find((d) => d.name.toLowerCase() === wantDep) ??
+        (near.length === 1 ? near[0] : undefined) ??
+        (deps.length === 1 ? deps[0] : undefined);
       if (!dep) {
         return { offered: false, noCardShown: true, note: "Pick one of these departments and try again.", departments: deps.map((d) => d.name) };
       }
