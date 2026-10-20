@@ -5,3 +5,4 @@ shots
 scripts
 *.md
 !DEPLOY.md
+bio

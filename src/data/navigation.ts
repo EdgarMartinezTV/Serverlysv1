@@ -676,6 +676,9 @@ export const footerNav: readonly NavColumn[] = [
     heading: "Resources",
     links: [
       { label: "Pricing", href: "/pricing" },
+      /* A free product, not a hosting or domain service — Resources is where
+         a visitor scanning for "free things Serverlys gives me" looks. */
+      { label: "Link in bio (free)", href: "/bio" },
       { label: "All resources", href: "/resources" },
       { label: "Tutorials", href: "/tutorials" },
       { label: "Hosting comparison", href: "/hosting-alternatives" },

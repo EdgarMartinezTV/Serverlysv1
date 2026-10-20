@@ -1,0 +1,160 @@
+@import "tailwindcss";
+@import "./tokens.css";
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-fg-secondary);
+    font-family: var(--font-sans);
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    color: var(--color-fg);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-primary-ring);
+    outline-offset: 2px;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@utility btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 120ms, color 120ms, box-shadow 120ms;
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+@utility field {
+  width: 100%;
+  min-height: 2.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-line-input);
+  background: var(--color-surface);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9375rem;
+  color: var(--color-fg);
+  &:focus-visible {
+    outline: 2px solid var(--color-primary-ring);
+    outline-offset: 0;
+    border-color: transparent;
+  }
+  &[aria-invalid="true"] {
+    border-color: var(--color-error);
+  }
+}
+
+@utility card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 0 0 1px var(--color-line);
+}
+
+/* ── Editor preview chrome (selection, inline editing, device frames) ───── */
+
+.sbio-device {
+  background: #fff;
+  border-radius: 28px;
+  box-shadow: 0 0 0 10px #18181a, 0 30px 60px -20px rgb(0 0 0 / 0.45);
+  overflow: hidden;
+}
+.sbio-device-tablet {
+  border-radius: 22px;
+}
+.sbio-device-desktop {
+  border-radius: 12px;
+  box-shadow: 0 0 0 1px var(--color-line), 0 30px 60px -30px rgb(0 0 0 / 0.35);
+}
+.sbio-screen {
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  overscroll-behavior: contain;
+}
+.sbio-sel {
+  position: relative;
+  border-radius: 10px;
+  outline: 2px solid transparent;
+  outline-offset: 4px;
+  cursor: pointer;
+}
+.sbio-sel:hover {
+  outline-color: rgb(0 0 255 / 0.35);
+}
+.sbio-sel:focus-visible {
+  outline-color: var(--color-primary);
+}
+.sbio-sel.is-selected {
+  outline-color: var(--color-primary);
+}
+.sbio-sel.is-hidden {
+  opacity: 0.4;
+}
+.sbio-toolbar {
+  position: absolute;
+  z-index: 5;
+  top: -38px;
+  right: -4px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 8px;
+  background: var(--color-primary);
+  color: #fff;
+  font: 600 12px/1 var(--font-sans);
+  box-shadow: var(--shadow-e3);
+}
+.sbio-toolbar-label {
+  padding: 0 6px;
+}
+.sbio-toolbar button {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  color: #fff;
+}
+.sbio-toolbar button:hover {
+  background: rgb(255 255 255 / 0.18);
+}
+.sbio-toolbar button:disabled {
+  opacity: 0.35;
+}
+.sbio-editable {
+  outline: none;
+  cursor: text;
+  border-radius: 4px;
+  min-width: 1ch;
+  display: inline-block;
+}
+.sbio-editable:hover {
+  box-shadow: 0 0 0 1px rgb(0 0 255 / 0.3);
+}
+.sbio-editable:focus {
+  box-shadow: 0 0 0 2px var(--color-primary);
+}
+.sbio-editable:empty::before {
+  content: attr(data-placeholder);
+  opacity: 0.45;
+}

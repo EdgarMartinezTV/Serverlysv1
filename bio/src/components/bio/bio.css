@@ -1,0 +1,1249 @@
+/* ==========================================================================
+   Serverlys Bio — public page renderer styles.
+   --------------------------------------------------------------------------
+   Plain CSS on purpose: public pages load THIS file and nothing from the
+   app's Tailwind bundle, which keeps the most-visited surface small.
+
+   Layout responds to its CONTAINER, not the viewport (`container: bio`), so
+   the editor's phone / tablet / desktop previews render exactly what a
+   visitor on that device sees — a media query would read the editor window.
+   ========================================================================== */
+
+.bio-root {
+  container: bio / inline-size;
+  flex: 1;
+  position: relative;
+  isolation: isolate;
+  min-height: 100%;
+  color: var(--bio-text);
+  font-family: var(--bio-font-body);
+  font-size: calc(16px * var(--bio-scale, 1));
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+.bio-root *,
+.bio-root *::before,
+.bio-root *::after {
+  box-sizing: border-box;
+}
+.bio-root :where(h1, h2, h3, p, figure, ul, blockquote) {
+  margin: 0;
+}
+.bio-root :where(a) {
+  color: inherit;
+}
+.bio-root :where(img) {
+  display: block;
+  max-width: 100%;
+}
+.bio-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--bio-bg);
+  background-size: cover;
+  background-position: var(--bio-bg-pos, center);
+}
+.bio-bg[data-fixed] {
+  position: fixed;
+}
+.bio-bg[data-kind="avatar"] {
+  overflow: hidden;
+}
+.bio-bg[data-kind="avatar"]::before {
+  content: "";
+  position: absolute;
+  inset: -80px;
+  background: var(--bio-bg-img) center / cover no-repeat;
+  filter: blur(60px) saturate(1.35);
+  transform: scale(1.1);
+}
+.bio-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgb(0 0 0 / var(--bio-overlay, 0));
+}
+
+.bio-main {
+  width: 100%;
+  max-width: var(--bio-width, 600px);
+  margin: 0 auto;
+  padding: 76px 20px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--bio-gap, 14px);
+  text-align: var(--bio-align, center);
+}
+@container bio (min-width: 720px) {
+  .bio-root[data-desktop="card"] .bio-main {
+    margin: 48px auto;
+    padding: 76px 36px 32px;
+    background: var(--bio-card);
+    border-radius: 28px;
+    box-shadow: 0 30px 80px -30px rgb(0 0 0 / 0.35);
+  }
+}
+@container bio (max-width: 520px) {
+  .bio-root {
+    font-size: calc(16px * var(--bio-mobile-scale, 1));
+  }
+  .bio-root[data-compact] .bio-main {
+    gap: 10px;
+    padding-top: 28px;
+  }
+}
+
+/* ── header ─────────────────────────────────────────────────────────────── */
+
+.bio-header {
+  display: flex;
+  flex-direction: column;
+  align-items: var(--bio-items, center);
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.bio-cover {
+  width: calc(100% + 40px);
+  /* Bleeds to the top edge, under the round top-bar buttons. */
+  margin: -76px -20px 0;
+  aspect-ratio: 3 / 1.25;
+  object-fit: cover;
+}
+@container bio (min-width: 720px) {
+  /* Card mode: the round buttons sit inside the card's top corners. */
+  .bio-root[data-desktop="card"] .bio-topbar {
+    top: 62px;
+    width: var(--bio-width, 600px);
+    padding: 0 16px;
+  }
+  .bio-root[data-desktop="card"] .bio-cover {
+    width: calc(100% + 72px);
+    margin: -76px -36px 0;
+    border-radius: 28px 28px 0 0;
+  }
+}
+.bio-header[data-layout="cover"] .bio-avatar {
+  margin-top: -56px;
+  border: 4px solid var(--bio-card);
+}
+/* Hero: a taller cover with a larger avatar overlapping it. */
+.bio-header[data-layout="hero"] .bio-cover {
+  aspect-ratio: 4 / 3;
+}
+.bio-header[data-layout="hero"] .bio-avatar {
+  margin-top: -72px;
+  border: 4px solid var(--bio-card);
+}
+.bio-header[data-layout="hero"] .bio-avatar {
+  width: 128px;
+  height: 128px;
+}
+.bio-avatar {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 999px;
+  background: var(--bio-card);
+}
+.bio-avatar[data-shape="rounded"] {
+  border-radius: 24px;
+}
+.bio-avatar[data-shape="square"] {
+  border-radius: 4px;
+}
+.bio-avatar-fallback {
+  display: grid;
+  place-items: center;
+  font: 600 36px/1 var(--bio-font-heading);
+  color: var(--bio-btn-text);
+  background: var(--bio-btn);
+}
+.bio-name {
+  font-family: var(--bio-font-heading);
+  font-size: 1.45em;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+}
+.bio-bio {
+  color: var(--bio-muted);
+  max-width: 34em;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+.bio-loc {
+  color: var(--bio-muted);
+  font-size: 0.875em;
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+}
+
+/* ── socials ────────────────────────────────────────────────────────────── */
+
+.bio-socials {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: var(--bio-items, center);
+  gap: 6px;
+}
+.bio-social {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  color: var(--b-color, var(--bio-text));
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+.bio-social:hover {
+  transform: translateY(-2px);
+  background: color-mix(in srgb, var(--bio-text) 8%, transparent);
+}
+.bio-social svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+}
+.bio-socials[data-variant="pills"] .bio-social {
+  width: auto;
+  padding: 0 14px 0 12px;
+  gap: 8px;
+  display: inline-flex;
+  font-size: 0.875em;
+  font-weight: 600;
+  background: var(--bio-card);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+}
+.bio-socials[data-variant="pills"] .bio-social svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ── block wrapper (per-block style from the properties panel) ─────────── */
+
+.bio-block {
+  width: 100%;
+  margin-inline: auto;
+  text-align: var(--b-align, inherit);
+}
+.bio-block[data-spacing="none"] {
+  margin-top: calc(var(--bio-gap, 14px) * -1);
+}
+.bio-block[data-spacing="sm"] {
+  margin-top: calc(var(--bio-gap, 14px) * -0.5);
+}
+.bio-block[data-spacing="lg"] {
+  margin-top: 12px;
+}
+.bio-block[data-width="wide"] {
+  max-width: 88%;
+}
+.bio-block[data-width="narrow"] {
+  max-width: 70%;
+}
+.bio-block[data-size="sm"] {
+  font-size: 0.875em;
+}
+.bio-block[data-size="lg"] {
+  font-size: 1.15em;
+}
+.bio-block[data-weight="regular"] {
+  --b-weight: 400;
+}
+.bio-block[data-weight="bold"] {
+  --b-weight: 700;
+}
+@container bio (min-width: 640px) {
+  .bio-block[data-vis="mobile"] {
+    display: none;
+  }
+}
+@container bio (max-width: 639px) {
+  .bio-block[data-vis="desktop"] {
+    display: none;
+  }
+}
+
+/* ── buttons (link, booking, contact actions…) ─────────────────────────── */
+
+.bio-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 60px;
+  padding: 10px 56px;
+  justify-content: center;
+  border-radius: var(--b-radius, var(--bio-btn-radius));
+  font: inherit;
+  font-weight: var(--b-weight, 600);
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  background: var(--b-bg, var(--bio-btn));
+  color: var(--b-color, var(--bio-btn-text));
+  border: 2px solid transparent;
+  box-shadow: var(--bio-btn-shadow, none);
+}
+.bio-btn:focus-visible {
+  outline: 3px solid var(--bio-accent);
+  outline-offset: 3px;
+}
+.bio-root[data-btn="outline"] .bio-btn {
+  background: var(--b-bg, transparent);
+  color: var(--b-color, var(--bio-btn));
+  border-color: var(--bio-btn);
+}
+.bio-root[data-btn="soft"] .bio-btn {
+  background: var(--b-bg, color-mix(in srgb, var(--bio-btn) 14%, transparent));
+  color: var(--b-color, var(--bio-text));
+}
+.bio-root[data-btn="hard-shadow"] .bio-btn {
+  border-color: var(--bio-text);
+  box-shadow: 4px 4px 0 var(--bio-text);
+}
+.bio-root[data-btn="hard-shadow"] .bio-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--bio-text);
+}
+.bio-root[data-btn="glass"] .bio-btn {
+  background: var(--b-bg, rgb(255 255 255 / 0.16));
+  color: var(--b-color, var(--bio-text));
+  border: 1px solid rgb(255 255 255 / 0.35);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+.bio-btn-label {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-wrap: anywhere;
+}
+.bio-btn-sub {
+  font-size: 0.8em;
+  font-weight: 400;
+  opacity: 0.8;
+}
+.bio-btn-thumb {
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  translate: 0 -50%;
+  width: 48px;
+  height: 48px;
+  border-radius: max(4px, calc(var(--bio-btn-radius) - 6px));
+  object-fit: cover;
+}
+.bio-btn-icon {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  translate: 0 -50%;
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+}
+.bio-btn-spacer {
+  display: none;
+}
+.bio-linkwrap {
+  position: relative;
+}
+.bio-btn-more {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  translate: 0 -50%;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--bio-more, var(--bio-btn-text));
+  opacity: 0.75;
+  cursor: pointer;
+}
+.bio-btn-more:hover,
+.bio-btn-more:focus-visible {
+  opacity: 1;
+  background: color-mix(in srgb, currentColor 14%, transparent);
+}
+.bio-root[data-btn="outline"],
+.bio-root[data-btn="soft"],
+.bio-root[data-btn="glass"] {
+  --bio-more: var(--bio-text);
+}
+/* Scalloped top and bottom edges (semicircles cut from each edge). */
+.bio-root[data-btn="wavy"] .bio-btn {
+  border-radius: 0;
+  -webkit-mask:
+    radial-gradient(5px at 50% 0, #0000 97%, #000) 50% 0 / 13px 51% repeat-x,
+    radial-gradient(5px at 50% 100%, #0000 97%, #000) 50% 100% / 13px 51% repeat-x;
+  mask:
+    radial-gradient(5px at 50% 0, #0000 97%, #000) 50% 0 / 13px 51% repeat-x,
+    radial-gradient(5px at 50% 100%, #0000 97%, #000) 50% 100% / 13px 51% repeat-x;
+}
+.bio-root[data-btn="torn"] .bio-btn {
+  border-radius: 0;
+  clip-path: polygon(0.0% 2.3%, 4.17% 1.1%, 8.33% 4.6%, 12.5% 0.5%, 16.67% 3.8%, 20.83% 2.6%, 25.0% 0.4%, 29.17% 3.6%, 33.33% 0.3%, 37.5% 3.0%, 41.67% 0.5%, 45.83% 0.6%, 50.0% 3.0%, 54.17% 5.8%, 58.33% 0.9%, 62.5% 1.6%, 66.67% 4.4%, 70.83% 6.6%, 75.0% 4.0%, 79.17% 2.8%, 83.33% 6.8%, 87.5% 0.3%, 91.67% 6.0%, 95.83% 2.0%, 100.0% 1.0%, 100.0% 99.2%, 95.83% 97.8%, 91.67% 94.3%, 87.5% 98.7%, 83.33% 95.9%, 79.17% 95.5%, 75.0% 97.4%, 70.83% 96.2%, 66.67% 99.6%, 62.5% 99.6%, 58.33% 98.6%, 54.17% 95.2%, 50.0% 97.0%, 45.83% 97.8%, 41.67% 95.9%, 37.5% 96.8%, 33.33% 97.9%, 29.17% 94.4%, 25.0% 95.1%, 20.83% 98.3%, 16.67% 96.0%, 12.5% 96.3%, 8.33% 93.9%, 4.17% 94.9%, 0.0% 98.0%);
+}
+.bio-btn[data-highlight] {
+  background: var(--b-bg, var(--bio-accent));
+  color: var(--b-color, var(--bio-accent-text));
+  border-color: transparent;
+}
+
+/* ── animations ─────────────────────────────────────────────────────────── */
+
+/* Theme-level animation: "lift" applies to every button; the continuous ones
+   (pulse / wobble / shine) only to HIGHLIGHTED links, because a page where
+   every button pulses is noise. A block's own animation applies to it alone. */
+@media (prefers-reduced-motion: no-preference) {
+  .bio-root[data-btn-anim="lift"] .bio-btn:hover,
+  .bio-block[data-anim="lift"] .bio-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px -12px rgb(0 0 0 / 0.45);
+  }
+  .bio-root[data-btn-anim="pulse"] .bio-btn[data-highlight],
+  .bio-block[data-anim="pulse"] .bio-btn {
+    animation: bio-pulse 2.2s ease-in-out infinite;
+  }
+  .bio-root[data-btn-anim="wobble"] .bio-btn[data-highlight],
+  .bio-block[data-anim="wobble"] .bio-btn {
+    animation: bio-wobble 4s ease-in-out infinite;
+  }
+  .bio-root[data-btn-anim="shine"] .bio-btn[data-highlight]::after,
+  .bio-block[data-anim="shine"] .bio-btn::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 0.45) 50%, transparent 70%);
+    transform: translateX(-100%);
+    animation: bio-shine 3.2s ease-in-out infinite;
+  }
+  .bio-root[data-btn-anim="fade"] .bio-block,
+  .bio-block[data-anim="fade"] {
+    animation: bio-fade 0.6s ease both;
+  }
+}
+@keyframes bio-pulse {
+  50% {
+    transform: scale(1.025);
+  }
+}
+@keyframes bio-wobble {
+  0%,
+  86%,
+  100% {
+    transform: rotate(0);
+  }
+  89% {
+    transform: rotate(-1.6deg);
+  }
+  93% {
+    transform: rotate(1.6deg);
+  }
+  96% {
+    transform: rotate(-0.8deg);
+  }
+}
+@keyframes bio-shine {
+  60%,
+  100% {
+    transform: translateX(100%);
+  }
+}
+@keyframes bio-fade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* ── content blocks ─────────────────────────────────────────────────────── */
+
+.bio-heading {
+  font-family: var(--bio-font-heading);
+  font-weight: var(--b-weight, 700);
+  font-size: 1.3em;
+  line-height: 1.2;
+  color: var(--b-color, var(--bio-text));
+  overflow-wrap: anywhere;
+  padding-top: 6px;
+}
+.bio-heading[data-level="3"] {
+  font-size: 1.08em;
+}
+.bio-text {
+  white-space: pre-line;
+  color: var(--b-color, var(--bio-muted));
+  font-weight: var(--b-weight, 400);
+  overflow-wrap: anywhere;
+}
+.bio-card {
+  background: var(--b-bg, var(--bio-card));
+  color: var(--b-color, var(--bio-card-text));
+  /* Follows the button roundness, but capped: pill buttons must not turn cards into blobs. */
+  border-radius: var(--b-radius, min(calc(var(--bio-btn-radius) + 4px), 24px));
+  overflow: hidden;
+  text-align: left;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 8px 24px -16px rgb(0 0 0 / 0.25);
+}
+.bio-card-body {
+  padding: 16px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.bio-card-title {
+  font-family: var(--bio-font-heading);
+  font-weight: 700;
+  font-size: 1.05em;
+  line-height: 1.25;
+}
+.bio-card-text {
+  font-size: 0.92em;
+  opacity: 0.82;
+  white-space: pre-line;
+}
+.bio-card-img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+/* Inside a card every button style becomes a solid fill in a colour that
+   contrasts with the card (see --bio-card-btn in renderer.tsx). */
+.bio-root .bio-card .bio-btn {
+  background: var(--b-bg, var(--bio-card-btn));
+  color: var(--b-color, var(--bio-card-btn-text));
+  border-color: transparent;
+  box-shadow: none;
+  clip-path: none;
+  -webkit-mask: none;
+  mask: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  border-radius: min(var(--bio-btn-radius), 16px);
+}
+.bio-card .bio-btn {
+  min-height: 46px;
+  margin-top: 8px;
+  justify-content: center;
+}
+.bio-card-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.bio-price {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.bio-compare {
+  text-decoration: line-through;
+  opacity: 0.6;
+  font-weight: 400;
+  margin-left: 6px;
+}
+.bio-badge {
+  display: inline-block;
+  font-size: 0.72em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--bio-accent);
+  color: var(--bio-accent-text);
+  align-self: flex-start;
+}
+.bio-meta {
+  font-size: 0.85em;
+  opacity: 0.7;
+}
+
+.bio-featured {
+  display: block;
+  text-decoration: none;
+}
+.bio-featured .bio-card-img {
+  aspect-ratio: 16 / 9;
+}
+
+.bio-figure img {
+  width: 100%;
+  border-radius: var(--b-radius, min(calc(var(--bio-btn-radius) + 4px), 24px));
+  object-fit: cover;
+}
+.bio-figure figcaption {
+  font-size: 0.85em;
+  color: var(--bio-muted);
+  margin-top: 6px;
+}
+.bio-gallery {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 2), 1fr);
+  gap: 8px;
+}
+.bio-gallery img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: calc(var(--bio-btn-radius) * 0.6);
+}
+.bio-gallery[data-layout="carousel"] {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  margin-inline: -20px;
+  padding-inline: 20px;
+}
+.bio-gallery[data-layout="carousel"] img {
+  flex: 0 0 78%;
+  scroll-snap-align: center;
+  aspect-ratio: 4 / 5;
+}
+
+.bio-embed {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: min(calc(var(--bio-btn-radius) + 4px), 24px);
+  overflow: hidden;
+  background: #000;
+}
+.bio-embed[data-ratio="9:16"] {
+  aspect-ratio: 9 / 16;
+  max-width: 340px;
+  margin-inline: auto;
+}
+.bio-embed iframe,
+.bio-embed video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.bio-embed-free {
+  width: 100%;
+  border: 0;
+  border-radius: 12px;
+  display: block;
+}
+.bio-yt-poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  background: #000;
+}
+.bio-yt-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.9;
+}
+.bio-yt-poster span {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 68px;
+  height: 48px;
+  border-radius: 14px;
+  background: #f00;
+  display: grid;
+  place-items: center;
+}
+.bio-yt-poster span::after {
+  content: "";
+  border-left: 18px solid #fff;
+  border-top: 11px solid transparent;
+  border-bottom: 11px solid transparent;
+  margin-left: 4px;
+}
+
+.bio-map {
+  width: 100%;
+  height: 220px;
+  border: 0;
+  display: block;
+}
+
+.bio-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.bio-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85em;
+  font-weight: 600;
+}
+.bio-form input,
+.bio-form textarea {
+  font: inherit;
+  font-weight: 400;
+  font-size: 16px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--bio-card-text) 25%, transparent);
+  background: color-mix(in srgb, var(--bio-card-text) 4%, var(--bio-card));
+  color: var(--bio-card-text);
+  width: 100%;
+}
+.bio-form input:focus-visible,
+.bio-form textarea:focus-visible {
+  outline: 2px solid var(--bio-accent);
+  outline-offset: 1px;
+}
+.bio-form .bio-consent {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px;
+  font-weight: 400;
+  opacity: 0.85;
+}
+.bio-form .bio-consent input {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  flex: none;
+}
+.bio-form-note {
+  font-size: 0.9em;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--bio-accent) 12%, transparent);
+}
+.bio-form-note[data-error] {
+  background: #fde8e8;
+  color: #8a1020;
+}
+.bio-hp {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.bio-faq details {
+  border-top: 1px solid color-mix(in srgb, var(--bio-card-text) 14%, transparent);
+}
+.bio-faq details:first-of-type {
+  border-top: 0;
+}
+.bio-faq summary {
+  cursor: pointer;
+  padding: 12px 0;
+  font-weight: 600;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.bio-faq summary::-webkit-details-marker {
+  display: none;
+}
+.bio-faq summary::after {
+  content: "+";
+  font-weight: 400;
+  font-size: 1.2em;
+  line-height: 1;
+}
+.bio-faq details[open] summary::after {
+  content: "–";
+}
+.bio-faq details p {
+  padding-bottom: 12px;
+  opacity: 0.82;
+  white-space: pre-line;
+}
+
+.bio-quote {
+  font-size: 1.02em;
+  line-height: 1.55;
+  font-style: italic;
+}
+.bio-stars {
+  color: #f5a524;
+  letter-spacing: 2px;
+}
+.bio-person {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+.bio-person img {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  object-fit: cover;
+}
+
+.bio-divider {
+  border: 0;
+  height: 1px;
+  background: color-mix(in srgb, var(--b-color, var(--bio-text)) 22%, transparent);
+  margin: 8px 0;
+}
+.bio-divider[data-variant="dots"] {
+  height: 6px;
+  background: radial-gradient(circle, color-mix(in srgb, var(--b-color, var(--bio-text)) 45%, transparent) 2px, transparent 2.5px) center / 16px 6px repeat-x;
+}
+.bio-divider[data-variant="wave"] {
+  height: 10px;
+  background: none;
+  --w: color-mix(in srgb, var(--b-color, var(--bio-text)) 40%, transparent);
+  background-image: radial-gradient(circle at 10px -4px, transparent 8px, var(--w) 9px, transparent 10px);
+  background-size: 20px 10px;
+}
+
+.bio-qr {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  border-radius: 20px;
+  background: #fff;
+  color: #101011;
+}
+.bio-qr svg {
+  width: 168px;
+  height: 168px;
+}
+
+.bio-section {
+  text-align: var(--bio-align, center);
+  padding-top: 10px;
+}
+.bio-section-title {
+  font-family: var(--bio-font-heading);
+  font-weight: 700;
+  font-size: 1.05em;
+  line-height: 1.3;
+  color: var(--b-color, var(--bio-text));
+}
+details.bio-group > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 2px;
+}
+details.bio-group > summary::-webkit-details-marker {
+  display: none;
+}
+details.bio-group > summary::after {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+}
+details.bio-group[open] > summary::after {
+  transform: rotate(-135deg);
+}
+.bio-group-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bio-gap, 14px);
+  padding-top: 4px;
+}
+
+.bio-marquee {
+  overflow: hidden;
+  white-space: nowrap;
+  font-family: var(--bio-font-heading);
+  font-weight: 700;
+  font-size: 1.1em;
+  padding: 10px 0;
+  color: var(--b-color, var(--bio-text));
+  background: var(--b-bg, transparent);
+  border-radius: var(--b-radius, 0);
+  margin-inline: -20px;
+}
+.bio-marquee-track {
+  display: inline-flex;
+  gap: 2.5em;
+  padding-left: 2.5em;
+  animation: bio-marquee var(--speed, 18s) linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .bio-marquee-track {
+    animation: none;
+  }
+}
+@keyframes bio-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.bio-custom {
+  display: grid;
+  gap: 0;
+}
+@container bio (min-width: 480px) {
+  .bio-custom[data-layout="side"] {
+    grid-template-columns: 40% 1fr;
+  }
+  .bio-custom[data-layout="side"] .bio-card-img {
+    height: 100%;
+    aspect-ratio: auto;
+  }
+}
+
+/* ── footer ─────────────────────────────────────────────────────────────── */
+
+.bio-footer {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78em;
+  color: var(--bio-muted);
+}
+.bio-join {
+  display: inline-block;
+  margin-top: 40px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.88);
+  color: #101011 !important;
+  font-size: 0.95em;
+  font-weight: 600;
+  text-decoration: none;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  transition: transform 0.18s ease;
+}
+.bio-join:hover {
+  transform: scale(1.03);
+}
+.bio-footlinks {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 10px;
+}
+.bio-footlinks a {
+  color: var(--bio-text);
+  opacity: 0.8;
+  text-decoration: none;
+}
+.bio-footlinks a + a::before {
+  content: "·";
+  margin-right: 6px;
+}
+.bio-footlinks a:hover {
+  text-decoration: underline;
+}
+.bio-topbar {
+  position: absolute;
+  z-index: 3;
+  top: 14px;
+  left: 50%;
+  translate: -50% 0;
+  width: min(100%, calc(var(--bio-width, 600px) + 40px));
+  padding: 0 14px;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+.bio-round {
+  pointer-events: auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 0;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--bio-card) 72%, transparent);
+  color: var(--bio-card-text);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.12);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+.bio-round:hover {
+  transform: scale(1.06);
+}
+.bio-empty {
+  padding: 28px 16px;
+  border: 2px dashed color-mix(in srgb, var(--bio-text) 25%, transparent);
+  border-radius: 16px;
+  color: var(--bio-muted);
+  font-size: 0.9em;
+}
+
+/* Sensitive-content gate */
+.bio-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgb(10 10 12 / 0.92);
+  color: #fff;
+  text-align: center;
+}
+.bio-gate > div {
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.bio-gate button {
+  font: inherit;
+  font-weight: 600;
+  padding: 12px 18px;
+  border-radius: 999px;
+  border: 0;
+  cursor: pointer;
+}
+
+/* ── section layouts (carousel / grid) ──────────────────────────────────── */
+
+.bio-group-body[data-layout="carousel"] {
+  flex-direction: row;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  gap: 12px;
+  margin-inline: -20px;
+  padding: 2px 20px 10px;
+}
+.bio-group-body[data-layout="carousel"]::-webkit-scrollbar {
+  display: none;
+}
+.bio-group-body[data-layout="carousel"] > * {
+  flex: 0 0 44%;
+  scroll-snap-align: start;
+  margin-top: 0 !important;
+}
+@container bio (min-width: 560px) {
+  .bio-group-body[data-layout="carousel"] > * {
+    flex-basis: 30%;
+  }
+}
+.bio-group-body[data-layout="grid"] {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.bio-group-body[data-layout="grid"] > * {
+  margin-top: 0 !important;
+}
+.bio-group-body:is([data-layout="carousel"], [data-layout="grid"]) .bio-card-img {
+  aspect-ratio: 1;
+}
+.bio-group-body:is([data-layout="carousel"], [data-layout="grid"]) .bio-card-body {
+  padding: 10px 12px 12px;
+}
+.bio-group-body:is([data-layout="carousel"], [data-layout="grid"]) .bio-card-row {
+  flex-direction: column;
+  gap: 2px;
+}
+.bio-group-body:is([data-layout="carousel"], [data-layout="grid"]) .bio-card-text {
+  display: none;
+}
+.bio-group-body:is([data-layout="carousel"], [data-layout="grid"]) .bio-btn {
+  min-height: 40px;
+  padding: 6px 12px;
+  font-size: 0.9em;
+}
+
+/* ── hover + entrance motion ────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: no-preference) {
+  .bio-btn:hover {
+    scale: 1.02;
+  }
+  .bio-root[data-enter] .bio-main > * {
+    animation: bio-fade 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .bio-root[data-enter] .bio-main > :nth-child(2) { animation-delay: 40ms; }
+  .bio-root[data-enter] .bio-main > :nth-child(3) { animation-delay: 80ms; }
+  .bio-root[data-enter] .bio-main > :nth-child(4) { animation-delay: 120ms; }
+  .bio-root[data-enter] .bio-main > :nth-child(5) { animation-delay: 160ms; }
+  .bio-root[data-enter] .bio-main > :nth-child(6) { animation-delay: 200ms; }
+  .bio-root[data-enter] .bio-main > :nth-child(7) { animation-delay: 240ms; }
+  .bio-root[data-enter] .bio-main > :nth-child(n + 8) { animation-delay: 280ms; }
+}
+
+/* ── share sheet ────────────────────────────────────────────────────────── */
+
+.bio-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  align-items: end;
+  justify-items: center;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: #101011;
+}
+@media (min-width: 640px) {
+  .bio-sheet {
+    align-items: center;
+  }
+}
+.bio-sheet-scrim {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgb(0 0 0 / 0.5);
+}
+.bio-sheet-panel {
+  position: relative;
+  width: min(100%, 420px);
+  max-height: 92dvh;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 24px 24px 0 0;
+  padding: 18px 18px 22px;
+  box-shadow: 0 -10px 40px rgb(0 0 0 / 0.25);
+}
+@media (min-width: 640px) {
+  .bio-sheet-panel {
+    border-radius: 24px;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .bio-sheet-panel {
+    animation: bio-fade 0.25s ease both;
+  }
+}
+.bio-sheet-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 17px;
+}
+.bio-sheet-x {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 0;
+  background: #f1f1f3;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+.bio-sheet-card {
+  margin-top: 14px;
+  border-radius: 20px;
+  padding: 20px;
+  background: var(--bio-btn);
+  color: var(--bio-btn-text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+.bio-sheet-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  object-fit: cover;
+}
+.bio-sheet-name {
+  font-weight: 700;
+  font-size: 18px;
+}
+.bio-sheet-qr {
+  width: 156px;
+  height: 156px;
+  border-radius: 12px;
+  background: #fff;
+  padding: 6px;
+}
+.bio-sheet-url {
+  font-size: 13px;
+  opacity: 0.85;
+  word-break: break-all;
+}
+.bio-sheet-targets {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  margin-top: 16px;
+}
+.bio-sheet-target {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #36363b;
+  text-decoration: none;
+}
+.bio-sheet-target span {
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: #f1f1f3;
+  color: #101011;
+}
+.bio-sheet-target:hover span {
+  background: #e0e0e6;
+}
+.bio-sheet-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+.bio-sheet-actions button {
+  flex: 1;
+  height: 48px;
+  border-radius: 999px;
+  border: 1px solid #dedee2;
+  background: #fff;
+  font: 600 15px/1 system-ui, sans-serif;
+  cursor: pointer;
+}
+.bio-sheet-actions button:first-child {
+  background: #101011;
+  color: #fff;
+  border-color: #101011;
+}
+
+/* Gallery thumbnails: no round top-bar buttons (Linktree's cards show none). */
+.sbio-mini .bio-topbar {
+  display: none;
+}
+.sbio-mini .bio-main {
+  padding-top: 52px;
+}

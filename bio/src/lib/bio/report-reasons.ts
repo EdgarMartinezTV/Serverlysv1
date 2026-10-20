@@ -1,0 +1,1 @@
+export const REPORT_REASONS = ["Spam or scam", "Phishing or malware", "Impersonation", "Hate or harassment", "Illegal content", "Adult content not marked sensitive", "Intellectual property", "Other"] as const;

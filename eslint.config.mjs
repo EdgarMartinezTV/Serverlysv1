@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Serverlys Bio is a separate app with its own lint config.
+    "bio/**",
   ]),
 ]);
 

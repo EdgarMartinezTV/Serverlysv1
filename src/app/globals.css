@@ -1735,3 +1735,36 @@ html:has([data-lumbre]) {
     transition: none;
   }
 }
+
+/* ── /bio (Linktree-style landing) ───────────────────────────────────────
+   Continuous motion is decoration only and stops under reduced motion. */
+@keyframes bio-tower-up {
+  to {
+    transform: translateY(-50%);
+  }
+}
+@keyframes bio-strip-left {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes bio-float {
+  50% {
+    transform: translateY(-10px) rotate(var(--r, 0deg));
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .bio-tower {
+    animation: bio-tower-up 46s linear infinite;
+  }
+  .bio-strip {
+    animation: bio-strip-left 60s linear infinite;
+  }
+  .bio-tower-wrap:hover .bio-tower,
+  .bio-strip-wrap:hover .bio-strip {
+    animation-play-state: paused;
+  }
+  .bio-float {
+    animation: bio-float 6s ease-in-out infinite;
+  }
+}

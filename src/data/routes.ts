@@ -465,6 +465,17 @@ export const routes: readonly RouteMeta[] = [
     parents: ["/", "/domain-name"],
   },
   {
+    // Serverlys Bio's marketing page; the product runs at bio.serverlys.com.
+    path: "/bio",
+    name: "Link in bio",
+    group: "tool",
+    built: true,
+    indexable: true,
+    priority: 0.6,
+    changeFrequency: "monthly",
+    parents: ["/"],
+  },
+  {
     path: "/whois-lookup",
     name: "WHOIS lookup",
     group: "tool",

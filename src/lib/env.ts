@@ -38,6 +38,14 @@ export const publicEnv = {
     process.env.NEXT_PUBLIC_BILLING_ORIGIN ?? PRODUCTION_ORIGIN,
   ),
   /**
+   * Serverlys Bio — the free link-in-bio APP (separate Next app in bio/,
+   * deployed at bio.serverlys.com). /bio here is its marketing page: CTAs
+   * link into the app and the template showcase frames its /t/<id> previews,
+   * which is why next.config.ts allows this origin in frame-src. Local dev
+   * sets http://localhost:3200.
+   */
+  bioAppUrl: (process.env.NEXT_PUBLIC_BIO_APP_URL?.trim() || "https://bio.serverlys.com").replace(/\/+$/, ""),
+  /**
    * Whether search engines may index this deployment.
    *
    * Default: only when `siteUrl` IS the production origin. A staging copy that

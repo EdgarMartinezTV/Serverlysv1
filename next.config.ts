@@ -133,6 +133,7 @@ const nextConfig: NextConfig = {
      */
     const ext = analyticsCspSources(resolveAnalytics(process.env));
     const more = (list: string[]) => (list.length ? ` ${list.join(" ")}` : "");
+    const bioOrigin = new URL(process.env.NEXT_PUBLIC_BIO_APP_URL?.trim() || "https://bio.serverlys.com").origin;
     /*
      * /public files are NOT content-hashed, so they cannot be `immutable` like
      * /_next/static. They were served `max-age=0` — revalidated on every page
@@ -262,7 +263,9 @@ const nextConfig: NextConfig = {
               "base-uri 'self'",
               "form-action 'self'",
               "frame-ancestors 'self'",
-              "frame-src 'none'",
+              /* Only the Serverlys Bio app, whose live template previews
+                 /bio frames. Everything else stays unframable. */
+              `frame-src ${bioOrigin}`,
               /*
                * upgrade-insecure-requests — PRODUCTION ONLY.
                *
