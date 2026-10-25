@@ -12,9 +12,9 @@ import { formatPrice, groupById, lowestRate } from "@/data/pricing";
  */
 const SIDE = [
   {
-    pill: "Live",
+    pill: "New",
     title: "ConvoAI",
-    body: "A chat agent trained on your own site, answering before you wake up.",
+    body: "One platform for every conversation: AI agents and your team, together on your website, WhatsApp, email and phone.",
     href: "https://convoai.cloud/",
   },
   {
@@ -101,11 +101,15 @@ export function PromoBento() {
                 <span className="mt-1 block pr-20 text-small text-fg-secondary">{s.body}</span>
                 <span
                   aria-hidden="true"
-                  className="absolute right-5 bottom-5 inline-flex size-14 items-center justify-center rounded-2xl bg-primary text-white shadow-e3 ring-8 ring-white/70"
+                  className={`absolute right-5 bottom-5 inline-flex size-14 items-center justify-center rounded-2xl text-white shadow-e3 ring-8 ring-white/70 ${
+                    // ConvoAI wears its own Ocean Blue mark: #2F6BFF with the #FF8A3D accent.
+                    i === 0 ? "bg-[#2F6BFF]" : "bg-primary"
+                  }`}
                 >
                   {i === 0 ? (
                     <svg viewBox="0 0 24 24" fill="none" className="size-6">
                       <path d="M5 6h14v9H9l-4 3V6Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+                      <circle cx="18.5" cy="5.5" r="3" fill="#FF8A3D" />
                     </svg>
                   ) : (
                     <svg viewBox="0 0 24 24" fill="none" className="size-6">
