@@ -10,14 +10,14 @@ import { useLoop } from "./use-loop";
  *
  * The chat window is the REAL ConvoAI messenger, rebuilt from its source
  * (ConvoAI repo, src/server/widget/convoai-widget.js v6.0.0, byte-identical
- * to what convoai.cloud serves, checked 2026-10-11): the dark speech-bubble
+ * to what convoai.cloud serves, checked 2026-10-25): the dark speech-bubble
  * launcher with its three hopping dots and unread badge, the white pop-out
  * welcome line, the 400px white panel with its avatar header, the welcome
  * intro (avatar, name, tagline, three marks, "AI assistant" fact), grey bot
  * bubbles with "Name • AI Agent • Just now", brand-coloured visitor bubbles,
  * the typing bubble with the mark's three coloured dots, the composer with
  * its paperclip and round send button, and the privacy/"Powered by ConvoAI" footer. The dots fold into an
- * x while open. Accent is convoai.cloud's own, #2292A4, and the dot colours
+ * x while open. Accent is convoai.cloud's own Ocean Blue, #2F6BFF, and the dot colours
  * are the ones the widget derives from it. With no logo set, the widget shows
  * the ConvoAI mark as the avatar, as here. Change that file, change this.
  *
@@ -31,13 +31,13 @@ import { useLoop } from "./use-loop";
  * prefers-reduced-motion it shows the finished conversation, no cursor.
  */
 
-const BRAND = "#2292A4";
+const BRAND = "#2F6BFF";
 const INK = "#14161a";
 const MUTED = "#6c6f74";
 const LINE = "rgba(9,14,21,0.08)";
 /** The launcher's dots, and the intro marks and typing dots, as the widget derives them from BRAND. */
-const DOTS = ["#c9cc12", "#2bb3c9", "#f0841a"] as const;
-const MARKS = ["#bfc20f", "#2292a4", "#e07a12"] as const;
+const DOTS = ["#14c3c3", "#4f86ff", "#ff8a3d"] as const;
+const MARKS = ["#bfc20f", "#2f6bff", "#e07a12"] as const;
 const AGENT = "Crumb & Co.";
 const TAGLINE = "Breads, cakes & pastries";
 const WELCOME = "Hi! Looking for something sweet? Ask me anything.";
