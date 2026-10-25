@@ -97,7 +97,7 @@ export const sisterProducts = [
   {
     name: "ConvoAI",
     href: "https://convoai.cloud/",
-    description: "Answers your customers, day and night.",
+    description: "AI agents and your team, answering customers together, day and night.",
   },
   {
     name: "CallFlow",

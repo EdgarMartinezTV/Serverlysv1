@@ -53,7 +53,7 @@ export function StageGrow() {
             mediaSide="right"
             brandSlot={<ConvoAiLogo tone="light" className="h-7 w-auto" />}
             title="The 2am enquiry gets an answer at 2am"
-            body={`${convo?.description ?? "Answers your customers, day and night."} Trained on your own pages, so it answers about your prices and your hours.`}
+            body={`${convo?.description ?? "Answers your customers, day and night."} Trained on your own pages, it answers about your prices and your hours, and hands the conversation to your team when a person should step in.`}
             links={[
               { label: "How the chat agent works", href: "https://convoai.cloud/", external: true },
               { label: "Automations that follow up", href: "/automations" },

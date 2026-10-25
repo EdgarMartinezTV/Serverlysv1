@@ -10,7 +10,7 @@ import Image from "next/image";
  *   white-version-logo.webp   for white/light surfaces — "Convo" in black
  *   dark-version-logo.webp    for dark surfaces        — "Convo" in white
  *
- * The teal mark and the teal "AI" are identical in both; only the wordmark's
+ * The Ocean Blue mark and the blue "AI" are identical in both; only the wordmark's
  * lightness differs. Picking the wrong one makes "Convo" vanish into the
  * background and leaves a floating "AI", which is why the choice is made here
  * from a `tone` prop rather than at each call site.
