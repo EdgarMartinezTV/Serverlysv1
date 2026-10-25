@@ -30,6 +30,9 @@ export function MegaMenuItem({
 }) {
   const target = resolveNavTarget(item.href);
   const interactive = item.external || target.mode === "link";
+  // An unlinked entry keeps the live look; only the hover and click go.
+  const linked = interactive && item.linkable !== false;
+  const hover = linked ? "group-hover/item:text-primary" : "";
 
   const body = (
     <>
@@ -37,9 +40,7 @@ export function MegaMenuItem({
         aria-hidden="true"
         className={cn(
           "mt-0.5 shrink-0 transition-colors duration-fast",
-          interactive
-            ? "text-fg group-hover/item:text-primary"
-            : "text-fg-muted",
+          interactive ? cn("text-fg", hover) : "text-fg-muted",
         )}
       >
         <NavIcon name={item.icon} className="h-5 w-5" />
@@ -50,7 +51,7 @@ export function MegaMenuItem({
           <span
             className={cn(
               "text-small font-semibold leading-5 transition-colors duration-fast",
-              interactive ? "text-fg group-hover/item:text-primary" : "text-fg-muted",
+              interactive ? cn("text-fg", hover) : "text-fg-muted",
             )}
           >
             {item.label}
@@ -98,7 +99,7 @@ export function MegaMenuItem({
     "group/item -m-2.5 flex min-w-0 flex-1 gap-3.5 rounded-xl p-2.5 transition-colors duration-fast " +
     "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
 
-  if (!interactive) {
+  if (!linked) {
     return <span className={cn(classes, "cursor-default")}>{body}</span>;
   }
 

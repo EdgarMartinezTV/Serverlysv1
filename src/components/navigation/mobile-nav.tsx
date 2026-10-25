@@ -404,7 +404,7 @@ function MobileItem({ item, pathname }: { item: MegaItem; pathname: string }) {
     </span>
   );
 
-  if (!interactive) return <span>{inner}</span>;
+  if (!interactive || item.linkable === false) return <span>{inner}</span>;
   if (item.external) {
     return (
       <a href={item.href} target="_blank" rel="noopener noreferrer">
