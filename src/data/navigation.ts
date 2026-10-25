@@ -52,6 +52,8 @@ export type MegaItem = {
   badge?: NavBadge;
   external?: boolean;
   status?: NavStatus;
+  /** false = shown exactly as a live entry, but as plain text with no link. */
+  linkable?: boolean;
 };
 
 export type MegaGroup = {
@@ -217,6 +219,7 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
             href: "/shared-hosting",
             icon: "server",
             status: "soon",
+            linkable: false,
             badge: { text: "By request", tone: "neutral" },
             description: "Brochure sites and blogs.",
           },
@@ -225,6 +228,7 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
             href: "/vps-hosting",
             icon: "server",
             status: "soon",
+            linkable: false,
             badge: { text: "By request", tone: "neutral" },
             description: "Root access, dedicated resources.",
           },
@@ -233,6 +237,7 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
             href: "/dedicated-servers",
             icon: "server",
             status: "soon",
+            linkable: false,
             badge: { text: "By request", tone: "neutral" },
             description: "Single-tenant hardware.",
           },
