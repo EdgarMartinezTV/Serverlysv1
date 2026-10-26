@@ -688,6 +688,7 @@ export const footerNav: readonly NavColumn[] = [
       { label: "FAQ", href: "/faq" },
       { label: "Support", href: "/support" },
       { label: "Report abuse", href: "/report-abuse" },
+      { label: "Sitemap", href: "/sitemap" },
     ],
   },
 ];

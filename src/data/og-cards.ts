@@ -241,6 +241,11 @@ const PAGES: Record<string, OgCard> = {
     title: "A plain monthly price, renewal printed beside it.",
     detail: "Free migration, done for you. No prepayment needed.",
   },
+  "/sitemap": {
+    eyebrow: "Sitemap",
+    title: "Every Serverlys page in one place.",
+    detail: "Hosting, domains, websites, AI, guides and legal.",
+  },
   "/ai-tools": {
     eyebrow: "AI tools",
     title: "Start with the symptom, not the technology.",

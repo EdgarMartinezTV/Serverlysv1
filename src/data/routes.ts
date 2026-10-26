@@ -548,6 +548,16 @@ export const routes: readonly RouteMeta[] = [
     parents: ["/", "/hosting"],
   },
   {
+    path: "/sitemap",
+    name: "Sitemap",
+    group: "marketing",
+    built: true,
+    indexable: true,
+    priority: 0.3,
+    changeFrequency: "weekly",
+    parents: ["/"],
+  },
+  {
     path: "/ai-tools",
     name: "AI tools",
     group: "marketing",
