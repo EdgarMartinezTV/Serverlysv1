@@ -26,6 +26,7 @@ export function StageRow({
   body,
   links,
   proof,
+  extra,
   media,
   mediaSide = "left",
   tone = "light",
@@ -39,6 +40,8 @@ export function StageRow({
   body: string;
   links?: readonly StageRowLink[];
   proof?: readonly string[];
+  /** Sits between the paragraph and the links (the CallFlow sample-call player). */
+  extra?: React.ReactNode;
   media: React.ReactNode;
   mediaSide?: "left" | "right";
   tone?: "light" | "dark";
@@ -98,6 +101,8 @@ export function StageRow({
         <p className={cn("mt-4 text-body", dark ? "text-fg-on-dark-secondary" : "text-fg-secondary")}>
           {body}
         </p>
+
+        {extra}
 
         {links && links.length > 0 && (
           <ul className={cn("mt-7 border-t", dark ? "border-line-on-dark" : "border-line")}>
