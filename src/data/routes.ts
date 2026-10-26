@@ -538,6 +538,16 @@ export const routes: readonly RouteMeta[] = [
     parents: ["/"],
   },
   {
+    path: "/hostinger-alternative",
+    name: "Hostinger alternative",
+    group: "commercial",
+    built: true,
+    indexable: true,
+    priority: 0.5,
+    changeFrequency: "monthly",
+    parents: ["/", "/hosting"],
+  },
+  {
     path: "/ai-tools",
     name: "AI tools",
     group: "marketing",

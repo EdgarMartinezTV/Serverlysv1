@@ -99,6 +99,7 @@ export const LLMS_SECTIONS = [
       "/dedicated-servers",
       "/managed-hosting",
       "/hosting-alternatives",
+      "/hostinger-alternative",
       "/migrations",
     ],
   },
@@ -207,6 +208,8 @@ export const LLMS_SUMMARIES: Record<string, string> = {
     "Patching, hardening, monitoring, backups and restores handled for you on any Serverlys tier. What managed covers, what it does not, and who it is for.",
   "/hosting-alternatives":
     "Shared, cloud, VPS and dedicated compared on the things that decide the choice, plus the questions to ask any hosting company before you pay.",
+  "/hostinger-alternative":
+    "Serverlys compared with Hostinger on advertised price, renewal price, billing required, migration, backups and support, with dated Hostinger figures and when Hostinger is the better choice.",
   "/migrations":
     "Free website migration whether you have one website or a hundred. The site stays online throughout, and the move is handled for you.",
 

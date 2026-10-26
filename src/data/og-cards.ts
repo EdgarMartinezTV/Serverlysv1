@@ -236,6 +236,11 @@ const PAGES: Record<string, OgCard> = {
     title: "How the tiers differ, and how to judge a host.",
     detail: "No scores out of ten. Six questions that work on anyone.",
   },
+  "/hostinger-alternative": {
+    eyebrow: "Hostinger alternative",
+    title: "A plain monthly price, renewal printed beside it.",
+    detail: "Free migration, done for you. No prepayment needed.",
+  },
   "/ai-tools": {
     eyebrow: "AI tools",
     title: "Start with the symptom, not the technology.",
