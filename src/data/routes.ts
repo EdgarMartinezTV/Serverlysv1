@@ -495,9 +495,9 @@ export const routes: readonly RouteMeta[] = [
     parents: ["/"],
   },
   {
-    /* Built 2026-10-25 with PROPOSED rates (app/affiliates/_content.ts) and the
-       WHMCS affiliate module not yet on. Kept out of the index until both are
-       confirmed; flip with `index` in the page's metadata. */
+    /* Built 2026-10-25; rates confirmed and live in WHMCS the same day. Kept
+       out of the index until the affiliate agreement is published; flip with
+       `index` in the page's metadata. */
     path: "/affiliates",
     name: "Affiliate program",
     group: "marketing",

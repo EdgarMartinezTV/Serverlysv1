@@ -32,10 +32,9 @@ import {
  * /affiliates — the affiliate program, built 2026-10-25 on the shared
  * Retell-style kit.
  *
- * ⚠ NOINDEX until the terms in _content.ts are confirmed and the WHMCS
- * affiliate module is switched on: the page states rates, and a rate we do
- * not pay is worse than no page. Flip `index` here and `indexable` in
- * data/routes.ts together.
+ * ⚠ NOINDEX until the affiliate agreement is published: the page states
+ * terms that need a contract behind them. Flip `index` here and `indexable`
+ * in data/routes.ts together.
  *
  * The worked example is labelled as an example on purpose — it is arithmetic
  * on our own prices, never a claim about what affiliates typically earn.

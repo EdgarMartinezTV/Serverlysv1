@@ -5,11 +5,14 @@ import { lowestRate, planGroups } from "@/data/pricing";
  * /affiliates — the program's terms in ONE place, so the page, the FAQ and the
  * worked example can never disagree.
  *
- * ⚠ PROPOSED, NOT CONFIRMED (2026-10-25). These are the rates suggested in the
- * affiliate plan; Edgar has not signed them off and the WHMCS affiliate module
- * is not switched on yet. Until both are true the route stays noindex and out
- * of the nav (see data/routes.ts). When the real numbers are set in WHMCS,
- * change them HERE and nowhere else, then flip `indexable`.
+ * CONFIRMED by Edgar and LIVE in WHMCS 2026-10-25: module on, payout $50,
+ * 30-day delay, hosting products 1,2,4,5,9-16 at 100% one-time, ConvoAI Pro
+ * (#39) at 20% recurring. WHMCS cannot cap a recurring commission, so the
+ * 12-payment limit (and the self-referral block) is the hook
+ * billing/includes/hooks/serverlys_affiliates.php. The 90-day cookie is
+ * WHMCS's own (WHMCSAffiliateID, Max-Age 7776000, path=/). Change a rate in
+ * WHMCS and HERE together. The route stays noindex until the affiliate
+ * agreement is published (see data/routes.ts).
  *
  * The rule for this file: every number must be one WHMCS actually enforces.
  * A rate printed here that WHMCS does not pay is a promise we break by default.
