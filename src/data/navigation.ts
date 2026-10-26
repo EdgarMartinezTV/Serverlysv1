@@ -686,6 +686,7 @@ export const footerNav: readonly NavColumn[] = [
       { label: "Hosting comparison", href: "/hosting-alternatives" },
       { label: "Hostinger alternative", href: "/hostinger-alternative" },
       { label: "Bluehost alternative", href: "/bluehost-alternative" },
+      { label: "GoDaddy alternative", href: "/godaddy-alternative" },
       { label: "FAQ", href: "/faq" },
       { label: "Support", href: "/support" },
       { label: "Report abuse", href: "/report-abuse" },

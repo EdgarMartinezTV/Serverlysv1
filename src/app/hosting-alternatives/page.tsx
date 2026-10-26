@@ -113,7 +113,7 @@ const FAQS: readonly Faq[] = [
   {
     question: "Why does this page not compare Serverlys to named competitors?",
     answer:
-      "Because we would be choosing the criteria and grading ourselves, which is advertising rather than comparison. The questions further down this page let you compare anyone, including us, on facts you can check yourself. The one named comparison we publish is our Hostinger alternative page, where every Hostinger figure is dated and linked to its source, and Hostinger wins the rows it wins.",
+      "Because we would be choosing the criteria and grading ourselves, which is advertising rather than comparison. The questions further down this page let you compare anyone, including us, on facts you can check yourself. The named comparisons we do publish, such as our Hostinger, GoDaddy and Bluehost alternative pages, follow fixed rules: every competitor figure is dated and linked to its source, and the competitor wins the rows it wins.",
     scopes: [PATH],
   },
   {

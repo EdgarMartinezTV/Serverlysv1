@@ -101,6 +101,7 @@ export const LLMS_SECTIONS = [
       "/hosting-alternatives",
       "/hostinger-alternative",
       "/bluehost-alternative",
+      "/godaddy-alternative",
       "/migrations",
     ],
   },
@@ -213,6 +214,8 @@ export const LLMS_SUMMARIES: Record<string, string> = {
     "Serverlys compared with Hostinger on advertised price, renewal price, billing required, migration, backups and support, with dated Hostinger figures and when Hostinger is the better choice.",
   "/bluehost-alternative":
     "Serverlys compared with Bluehost on advertised price, renewal price, term shown, domain, migration, backups and support, with dated Bluehost figures and when Bluehost is the better choice.",
+  "/godaddy-alternative":
+    "Serverlys compared with GoDaddy on hosting price, renewal, term required, .com price, migration, backups and support, with dated GoDaddy figures and when GoDaddy is the better choice.",
   "/migrations":
     "Free website migration whether you have one website or a hundred. The site stays online throughout, and the move is handled for you.",
 

@@ -248,6 +248,11 @@ const PAGES: Record<string, OgCard> = {
     title: "Month to month, renewal printed beside it.",
     detail: "Free migration, staged and done for you. No term needed.",
   },
+  "/godaddy-alternative": {
+    eyebrow: "GoDaddy alternative",
+    title: "Hosting billed monthly, a .com at one yearly price.",
+    detail: "Free migration, done for you. Dated, sourced figures.",
+  },
   "/sitemap": {
     eyebrow: "Sitemap",
     title: "Every Serverlys page in one place.",
