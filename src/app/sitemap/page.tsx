@@ -4,6 +4,7 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { breadcrumbGraph, pageMetadata } from "@/lib/seo";
 import { breadcrumbTrail, routeFor, sitemapRoutes } from "@/data/routes";
+import { tldCatalog } from "@/data/tld-catalog";
 import { articleCategories, articlesByCategory, categorySlug } from "@/data/articles";
 
 const PATH = "/sitemap";
@@ -68,6 +69,7 @@ const SECTIONS: ReadonlyArray<{ heading: string; paths: readonly string[] }> = [
       "/business-solutions",
     ],
   },
+  { heading: "Domain extensions", paths: ["/tld", ...tldCatalog.map((t) => `/tld/${t.slug}`)] },
   { heading: "AI and automation", paths: ["/ai-agents", "/automations", "/ai-tools"] },
   { heading: "Compare", paths: ["/hosting-alternatives", "/hostinger-alternative"] },
   { heading: "En español", paths: ["/es/restaurant-websites", "/es/cleaning-company-websites"] },

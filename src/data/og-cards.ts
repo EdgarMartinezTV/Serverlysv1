@@ -1,4 +1,5 @@
 import { articles } from "@/data/articles";
+import { tldCatalog } from "./tld-catalog";
 
 /**
  * OpenGraph card copy, keyed by route path.
@@ -330,7 +331,26 @@ const ARTICLE_CARDS: Record<string, OgCard> = Object.fromEntries(
   ]),
 );
 
-export const ogCards: Readonly<Record<string, OgCard>> = { ...PAGES, ...ARTICLE_CARDS };
+/** Domain-extension pages get a card from their own price and audience. */
+const TLD_CARDS: Record<string, OgCard> = {
+  "/tld": {
+    eyebrow: "Domain extensions",
+    title: "Every extension we sell, renewal price beside it.",
+    detail: ".com, .io, .shop, .store and more.",
+  },
+  ...Object.fromEntries(
+    tldCatalog.map((t) => [
+      `/tld/${t.slug}`,
+      {
+        eyebrow: `.${t.slug} domains`,
+        title: `Register a .${t.slug} domain for $${t.register.toFixed(2)}/yr.`,
+        detail: t.forWhom,
+      },
+    ]),
+  ),
+};
+
+export const ogCards: Readonly<Record<string, OgCard>> = { ...PAGES, ...ARTICLE_CARDS, ...TLD_CARDS };
 
 /**
  * Route path → image route key, and back.

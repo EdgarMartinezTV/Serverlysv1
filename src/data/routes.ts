@@ -1,3 +1,4 @@
+import { tldCatalog } from "./tld-catalog";
 /**
  * Route registry — the single source of truth for what exists on this site.
  *
@@ -757,6 +758,30 @@ export const routes: readonly RouteMeta[] = [
     changeFrequency: "yearly",
     parents: ["/"],
   },
+  // Domain extensions: the index plus one page per extension the store sells,
+  // generated from data/tld-catalog.ts (hostinger.com does the same at /tld/<ext>).
+  {
+    path: "/tld",
+    name: "Domain extensions",
+    group: "commercial",
+    built: true,
+    indexable: true,
+    priority: 0.6,
+    changeFrequency: "monthly",
+    parents: ["/", "/domain-name"],
+  },
+  ...tldCatalog.map(
+    (t): RouteMeta => ({
+      path: `/tld/${t.slug}`,
+      name: `.${t.slug} domains`,
+      group: "commercial",
+      built: true,
+      indexable: true,
+      priority: 0.5,
+      changeFrequency: "monthly",
+      parents: ["/", "/domain-name", "/tld"],
+    }),
+  ),
 ];
 
 const byPath = new Map(routes.map((r) => [r.path, r]));
