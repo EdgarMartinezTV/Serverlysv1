@@ -9,14 +9,15 @@ import { cn } from "@/lib/utils";
  * animates, ringback included.
  *
  * The audio is a voiced sample, not a recorded customer call (generated
- * 2026-10-25 with OpenAI TTS, phone-band filtered, -16 LUFS), and the line
- * under the button says so. To swap in a real recorded call later, replace
+ * 2026-10-25 with OpenAI gpt-4o-mini-tts, then run through a real phone
+ * chain: ringback, pickup/hang-up clicks, 8 kHz G.711 mu-law, line hiss,
+ * -17 LUFS), and the line under the button says so. To swap in a real recorded call later, replace
  * public/audio/callflow-sample-call.mp3 and update DURATION.
  *
  * preload="none": nothing downloads until the visitor presses play.
  */
 const SRC = "/audio/callflow-sample-call.mp3";
-const DURATION = 27;
+const DURATION = 44;
 
 function clock(s: number) {
   const t = Math.max(0, Math.round(s));
