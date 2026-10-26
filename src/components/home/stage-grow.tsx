@@ -2,6 +2,7 @@ import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/animations/reveal";
 import { GrowChatShowcase } from "./showcase/grow-chat-showcase";
 import { GrowCallShowcase } from "./showcase/grow-call-showcase";
+import { SampleCallPlayer } from "./showcase/sample-call-player";
 import { sisterProducts } from "@/data/company";
 import { ConvoAiLogo } from "@/components/layout/convoai-logo";
 import { StageRow } from "./stage-row";
@@ -74,6 +75,7 @@ export function StageGrow() {
               { label: "Marketing that feeds it", href: "/marketing" },
               ...(callflow ? [{ label: "Open CallFlow", href: callflow.href, external: true }] : []),
             ]}
+            extra={<SampleCallPlayer />}
             media={<GrowCallShowcase />}
             bareMedia
           />
