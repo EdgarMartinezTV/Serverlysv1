@@ -150,7 +150,7 @@ export default function AffiliatesPage() {
           listTitle="Good to know"
           list={[
             "Paid on every monthly payment, not just the first",
-            "Upgrades from ConvoAI Essentials count",
+            `Up to ${TERMS.convoMonths} payments per customer`,
             "The best fit for consultants and agencies",
           ]}
         />
@@ -203,6 +203,7 @@ export default function AffiliatesPage() {
           ["Free migration", "/migrations"],
           ["AI agents", "/ai-agents"],
           ["Pricing", "/pricing"],
+          ["Affiliate agreement", "/affiliate-agreement"],
         ]}
       />
 

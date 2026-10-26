@@ -1,5 +1,5 @@
 import type { Faq } from "@/data/faqs";
-import { lowestRate, planGroups } from "@/data/pricing";
+import { planGroups } from "@/data/pricing";
 
 /**
  * /affiliates — the program's terms in ONE place, so the page, the FAQ and the
@@ -38,9 +38,13 @@ export const TERMS = {
 
 const usd = (n: number) => `$${n % 1 === 0 ? n : n.toFixed(2)}`;
 
-const allRates = planGroups.flatMap((g) => g.plans.map((p) => p.monthly));
-export const HOSTING_MIN = usd(lowestRate * TERMS.hostingFirstPayment);
-export const HOSTING_MAX = usd(Math.max(...allRates) * TERMS.hostingFirstPayment);
+/* WHMCS pays the percentage on the whole first invoice, setup fee included
+   (verified by a live test order 2026-10-25: Starter Cloud paid $10.90). */
+const firstPayments = planGroups.flatMap((g) =>
+  g.plans.map((p) => p.monthly + (p.setupFee ?? 0)),
+);
+export const HOSTING_MIN = usd(Math.min(...firstPayments) * TERMS.hostingFirstPayment);
+export const HOSTING_MAX = usd(Math.max(...firstPayments) * TERMS.hostingFirstPayment);
 export const CONVO_MONTHLY = usd(TERMS.convoPrice * TERMS.convoShare);
 export const CONVO_TOTAL = usd(TERMS.convoPrice * TERMS.convoShare * TERMS.convoMonths);
 export const PCT = (f: number) => `${Math.round(f * 100)}%`;

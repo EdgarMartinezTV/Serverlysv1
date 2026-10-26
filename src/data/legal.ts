@@ -111,6 +111,15 @@ export const legalDocuments: readonly LegalDocument[] = [
     effective: "2026-09-19",
     related: ["/terms-of-service", "/privacy-policy", "/data-processing-agreement"],
   },
+  {
+    path: "/affiliate-agreement",
+    title: "Affiliate agreement",
+    category: "agreement",
+    summary:
+      "For affiliates: how a referral is credited, what each product pays, when a commission is reversed, and how you may promote us.",
+    effective: "2026-10-25",
+    related: ["/terms-of-service", "/refund-policy", "/acceptable-use-policy"],
+  },
 
   /* ------------------------------------------------------------------ policies
      How we operate. These bind us. */

@@ -671,8 +671,9 @@ export const routes: readonly RouteMeta[] = [
   },
 
   /* Added 2026-09-19. Coverage gap closed against a registrar-grade document
-     set, limited to documents that are TRUE OF THIS BUSINESS — no affiliate,
-     referral or reseller agreement, because those programmes do not exist, and
+     set, limited to documents that are TRUE OF THIS BUSINESS — no referral or
+     reseller agreement, because those programmes do not exist (the affiliate
+     agreement was added 2026-10-25 when that program went live), and
      none of the registrar-only policies (NPRD, expired-registration recovery,
      change of registrant), because that obligation sits with the registrar of
      record. See the note on /domain-registration-agreement. */
@@ -709,6 +710,16 @@ export const routes: readonly RouteMeta[] = [
   {
     path: "/ai-services-terms",
     name: "AI services terms",
+    group: "legal",
+    built: true,
+    indexable: true,
+    priority: 0.3,
+    changeFrequency: "yearly",
+    parents: ["/"],
+  },
+  {
+    path: "/affiliate-agreement",
+    name: "Affiliate agreement",
     group: "legal",
     built: true,
     indexable: true,
