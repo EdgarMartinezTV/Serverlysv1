@@ -26,6 +26,7 @@ const GROUPS = [
       ["Unmetered transfer", "No per-gigabyte overage on a traffic spike."],
       ["cPanel", "The control panel you already know."],
       ["One-click WordPress", "Installed and ready, not a manual upload."],
+      ["ConvoAI website chat", "An AI assistant answers your visitors, on ConvoAI Essentials."],
     ],
   },
   {

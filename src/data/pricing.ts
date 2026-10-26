@@ -211,7 +211,11 @@ const SLUGS: Record<string, Record<PlanTier, string>> = {
  * would be inaccurate. The two lists therefore disagree on purpose: this one
  * mirrors what the WHMCS store sells, and the store is the thing that has to
  * change first. Fix it there, then here. ("CloudFlare" is also the pre-2016
- * spelling of the company.)
+ * spelling of the company.) *
+ * "ConvoAI Essentials AI Website Chat" (added 2026-10-26, Edgar): every hosting
+ * order is given a ConvoAI Essentials account by the WHMCS hook
+ * convoai_hosting_bundle.php, which also adds this line to the store. Never
+ * write "Free" for the Essentials plan — that is Edgar's rule for its name.
  */
 const INCLUDES = [
   "Unlimited NVMe Storage",
@@ -224,6 +228,7 @@ const INCLUDES = [
   "FREE LiteSpeed Caching",
   "FREE Website Migration",
   "FREE Daily Backups",
+  "ConvoAI Essentials AI Website Chat",
   "LiteSpeed Website Cache",
   "Auto Website Updates",
   "30-Day Money-Back Guarantee",

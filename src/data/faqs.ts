@@ -53,6 +53,12 @@ export const faqs: readonly Faq[] = [
     scopes: ["/", "/pricing"],
   },
   {
+    question: "Is ConvoAI included with hosting?",
+    answer:
+      "Yes. Every hosting plan comes with ConvoAI Essentials at no extra cost: an AI assistant that answers visitors in a chat window on your website, with 65 AI replies every 14 days. Your ConvoAI account is set up when your hosting goes live, and the sign-in email arrives with your hosting welcome email. ConvoAI Pro adds WhatsApp, email and higher limits if you need them.",
+    scopes: ["/", "/pricing", "/cloud-hosting", "/wordpress-hosting", "/ecommerce-hosting"],
+  },
+  {
     question: "Is managed WordPress hosting different from normal hosting?",
     answer:
       "The hardware is the same. What differs is tuning and maintenance: LiteSpeed caching is configured for WordPress before you arrive, core updates are applied for you, and the stack is watched for the failure modes WordPress actually has.",
