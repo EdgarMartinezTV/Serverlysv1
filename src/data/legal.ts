@@ -129,7 +129,7 @@ export const legalDocuments: readonly LegalDocument[] = [
     category: "policy",
     summary:
       "What personal data we hold, why we hold it, and what you can ask us to do about it.",
-    effective: "2026-09-09",
+    effective: "2026-10-25",
     related: ["/cookie-policy", "/data-processing-agreement", "/law-enforcement-requests"],
   },
   {
@@ -137,7 +137,7 @@ export const legalDocuments: readonly LegalDocument[] = [
     title: "Cookie policy",
     category: "policy",
     summary: "Every cookie this site sets, what it does, and how to refuse the optional ones.",
-    effective: "2026-10-13",
+    effective: "2026-10-25",
     related: ["/privacy-policy"],
   },
   {

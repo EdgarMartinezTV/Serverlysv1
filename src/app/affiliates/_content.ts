@@ -43,9 +43,11 @@ const usd = (n: number) => `$${n % 1 === 0 ? n : n.toFixed(2)}`;
 const firstPayments = planGroups.flatMap((g) =>
   g.plans.map((p) => p.monthly + (p.setupFee ?? 0)),
 );
-export const HOSTING_MIN = usd(Math.min(...firstPayments) * TERMS.hostingFirstPayment);
+export const HOSTING_MIN_VALUE = Math.min(...firstPayments) * TERMS.hostingFirstPayment;
+export const HOSTING_MIN = usd(HOSTING_MIN_VALUE);
 export const HOSTING_MAX = usd(Math.max(...firstPayments) * TERMS.hostingFirstPayment);
-export const CONVO_MONTHLY = usd(TERMS.convoPrice * TERMS.convoShare);
+export const CONVO_MONTHLY_VALUE = TERMS.convoPrice * TERMS.convoShare;
+export const CONVO_MONTHLY = usd(CONVO_MONTHLY_VALUE);
 export const CONVO_TOTAL = usd(TERMS.convoPrice * TERMS.convoShare * TERMS.convoMonths);
 export const PCT = (f: number) => `${Math.round(f * 100)}%`;
 
