@@ -35,10 +35,10 @@ import { ZeroDowntime } from "./_components/zero-downtime";
 
 const PATH = "/migrations";
 const DESCRIPTION =
-  "Free website migration with every Serverlys cloud hosting plan: we move your site, database and email, stage it, and switch when you say, with no downtime.";
+  "Free website migration service with every cloud plan: we move WordPress or any site, its database and email, stage it and switch with no downtime.";
 
 export const metadata = pageMetadata({
-  title: "Free Website Migration to Cloud Hosting | Serverlys",
+  title: "Website Migration Service, Free with Hosting | Serverlys",
   description: DESCRIPTION,
   path: PATH,
 });
@@ -94,7 +94,7 @@ export default function MigrationsPage() {
 
       <Hero
         id="move-hero-heading"
-        title="Free Website Migration, Without Closing for a Minute"
+        title="Free website migration service, without closing for a minute"
         photo={{
           src: "/mock/move-hero.jpg",
           alt: "A smiling shop owner holding an open sign in her shop",
@@ -141,7 +141,7 @@ export default function MigrationsPage() {
       />
       <ToolsMarquee
         id="move-tools-heading"
-        title="The platforms we move every day"
+        title="WordPress migration and the other platforms we move every day"
         cta={{ label: "See cloud plans", href: "#plans" }}
         rows={TOOLS}
       />

@@ -52,7 +52,7 @@ export const article: Article = {
     {
       type: "callout",
       title: "Serverlys Tip",
-      text: "Our [managed cloud hosting](/managed-hosting) includes automatic backups, security monitoring, performance optimization, and priority support — all starting at $5.99/month. You get the benefits of cloud infrastructure with zero server management required.",
+      text: "Our [managed cloud hosting](/managed-hosting) includes daily backups, security patching, monitoring, free restores and free migration — all starting at $7.95/month (standard rate $12.62). You get the benefits of cloud infrastructure with zero server management required.",
     },
     { type: "h3", text: "Managed VPS Hosting" },
     { type: "p", text: "A Virtual Private Server with dedicated resources, managed by the hosting provider. You get root-level performance without needing root-level knowledge. The provider handles OS configuration, security, updates, and monitoring while you get dedicated CPU, RAM, and storage." },
@@ -141,7 +141,7 @@ export const article: Article = {
     {
       type: "callout",
       title: "Serverlys Tip",
-      text: "Not sure if managed hosting is right for you? Start with our [managed cloud hosting](/cloud-hosting) for $5.99/month. If you decide you want more control, you can adjust your management level anytime. There is no lock-in.",
+      text: "Not sure if managed hosting is right for you? Start with our [managed hosting plans](/managed-hosting) from $7.95/month (standard rate $12.62). If you decide you want more control, you can adjust your management level anytime. There is no lock-in.",
     },
     { type: "h2", id: "what-to-look-for-in-a-managed-hosting-provider", text: "What to Look for in a Managed Hosting Provider" },
     { type: "p", text: "Not all managed hosting is created equal. When evaluating providers, check for these specific services:" },

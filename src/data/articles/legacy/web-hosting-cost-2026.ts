@@ -39,7 +39,7 @@ export const article: Article = {
     {
       type: "callout",
       title: "Serverlys Tip",
-      text: "Our [cloud hosting pricing](/pricing) is transparent — the renewal price is shown right on the pricing page, not hidden in terms of service. Plans start at $2.91/month with NVMe storage, free backups, free CDN, and free migration included.",
+      text: "Our [cloud hosting pricing](/pricing) is transparent — the renewal price is shown right on the pricing page, not hidden in terms of service. Plans start at $7.95/month (standard rate $12.62) with NVMe storage, daily backups, Cloudflare, free SSL and free migration included.",
     },
     { type: "h3", text: "VPS Hosting: $10–$100/month" },
     {
@@ -118,7 +118,7 @@ export const article: Article = {
     {
       type: "callout",
       title: "Serverlys Tip",
-      text: "We believe in transparent pricing. Our [pricing page](/pricing) shows both introductory and renewal rates upfront. Cloud hosting starts at $2.91/mo with backups, CDN, SSL, and a free domain included — no surprise add-ons.",
+      text: "We believe in transparent pricing. Our [pricing page](/pricing) shows both introductory and renewal rates upfront. Cloud hosting starts at $7.95/month (standard rate $12.62) with daily backups, Cloudflare, SSL and free migration included — no surprise add-ons.",
     },
     { type: "h2", id: "how-to-save-money-on-hosting", text: "How to Save Money on Hosting" },
     { type: "h3", text: "1. Pay Annually Instead of Monthly" },

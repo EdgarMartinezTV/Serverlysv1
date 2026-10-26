@@ -96,7 +96,7 @@ export const article: Article = {
     {
       type: "callout",
       title: "Serverlys Tip",
-      text: "Our [cloud hosting plans](/cloud-hosting) start at $2.91/month and include NVMe storage, daily backups, a free CDN, and a staging environment at no extra cost. The renewal price is clearly shown before you sign up — no surprises.",
+      text: "Our [cloud hosting plans](/cloud-hosting) start at $7.95/month (standard rate $12.62) and include NVMe storage, daily backups, Cloudflare and LiteSpeed caching at no extra cost. The renewal price is clearly shown before you sign up — no surprises.",
     },
     { type: "h2", id: "scalability-the-defining-difference", text: "Scalability: The Defining Difference" },
     { type: "p", text: "Scalability is where cloud hosting and shared hosting diverge most dramatically, and it's the factor that matters most as your website grows." },

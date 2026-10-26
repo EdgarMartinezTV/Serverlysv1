@@ -206,7 +206,7 @@ export const article: Article = {
     {
       type: "callout",
       title: "Ready to get started?",
-      text: "Serverlys makes the cost equation simple. Cloud hosting from $2.91/month with a free domain, free SSL, and free migration. [See our pricing](/pricing) or [explore our web design services](/website-design) for a professional site at an honest price.",
+      text: "Serverlys makes the cost equation simple. Cloud hosting from $7.95/month (standard rate $12.62) with free SSL, daily backups and free migration. [See our pricing](/pricing) or [explore our web design services](/website-design) for a professional site at an honest price.",
     },
     { type: "h2", id: "frequently-asked-questions", text: "Frequently Asked Questions" },
     { type: "h3", text: "Can I build a good website for free?" },

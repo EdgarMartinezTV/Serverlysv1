@@ -33,7 +33,7 @@ export const article: Article = {
     {
       type: "callout",
       title: "Serverlys Tip",
-      text: "Cloud hosting has become the sweet spot for most small businesses in 2026. The price gap between shared and cloud has shrunk to $3–$5/month, but the performance and reliability improvements are dramatic. Our [cloud hosting plans](/cloud-hosting) start at $2.91/month with auto-scaling included.",
+      text: "Cloud hosting has become the sweet spot for most small businesses in 2026. The price gap between shared and cloud has shrunk to $3–$5/month, but the performance and reliability improvements are dramatic. Our [cloud hosting plans](/cloud-hosting) start at $7.95/month (standard rate $12.62) with auto-scaling included.",
     },
     { type: "h3", text: "VPS Hosting ($20–$80/mo)" },
     { type: "p", text: "A Virtual Private Server gives you dedicated resources on a shared physical machine. You get root access, custom configurations, and guaranteed CPU/RAM. But you also need some technical knowledge to manage it — or pay for managed VPS hosting." },
@@ -135,7 +135,7 @@ export const article: Article = {
     {
       type: "callout",
       title: "Ready to get started?",
-      text: "Serverlys cloud hosting starts at $2.91/mo with NVMe storage, free SSL, free domain, and free migration. [See our cloud hosting plans](/cloud-hosting) or [compare all hosting options](/pricing).",
+      text: "Serverlys cloud hosting starts at $7.95/month (standard rate $12.62) with NVMe storage, free SSL, daily backups and free migration. [See our cloud hosting plans](/cloud-hosting) or [compare all hosting options](/pricing).",
     },
     { type: "h2", id: "frequently-asked-questions", text: "Frequently Asked Questions" },
     { type: "h3", text: "How much should a small business spend on web hosting?" },
