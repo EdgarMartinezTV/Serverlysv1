@@ -113,7 +113,7 @@ export function PlanCard({ plan, group, why, cta }: { plan: Plan; group: PlanGro
 
       <p className={cn("relative mt-6 text-small font-semibold", dark ? "text-white" : "text-fg")}>Included</p>
       <p className={cn("relative mt-2 text-small", dark ? "text-fg-on-dark-secondary" : "text-fg-secondary")}>
-        Free SSL, daily backups and free migration, the same on every plan.
+        Free SSL, daily backups, free migration and ConvoAI Essentials AI website chat, the same on every plan.
       </p>
 
       {why && (

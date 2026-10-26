@@ -279,6 +279,19 @@ export const FAQS: FaqItem[] = [
     ],
   },
   {
+    q: "Is ConvoAI included with my hosting plan?",
+    a: [
+      {
+        type: "p",
+        runs: [
+          {
+            text: "Yes. Every hosting plan comes with ConvoAI Essentials at no extra cost: an AI assistant that answers visitors in a chat window on your website, with 65 AI replies every 14 days. Your ConvoAI account is set up when your hosting goes live, and the sign-in email arrives with your hosting welcome email. ConvoAI Pro adds WhatsApp, email and higher limits if you need them.",
+          },
+        ],
+      },
+    ],
+  },
+  {
     q: "What is the difference between cloud and traditional hosting?",
     a: [
       {
