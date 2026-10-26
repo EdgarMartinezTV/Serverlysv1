@@ -71,7 +71,7 @@ const SECTIONS: ReadonlyArray<{ heading: string; paths: readonly string[] }> = [
   },
   { heading: "Domain extensions", paths: ["/tld", ...tldCatalog.map((t) => `/tld/${t.slug}`)] },
   { heading: "AI and automation", paths: ["/ai-agents", "/automations", "/ai-tools"] },
-  { heading: "Compare", paths: ["/hosting-alternatives", "/hostinger-alternative"] },
+  { heading: "Compare", paths: ["/hosting-alternatives", "/hostinger-alternative", "/bluehost-alternative"] },
   { heading: "En español", paths: ["/es/restaurant-websites", "/es/cleaning-company-websites"] },
   {
     heading: "Help and resources",
