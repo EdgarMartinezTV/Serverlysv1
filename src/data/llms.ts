@@ -100,6 +100,7 @@ export const LLMS_SECTIONS = [
       "/managed-hosting",
       "/hosting-alternatives",
       "/hostinger-alternative",
+      "/godaddy-alternative",
       "/migrations",
     ],
   },
@@ -210,6 +211,8 @@ export const LLMS_SUMMARIES: Record<string, string> = {
     "Shared, cloud, VPS and dedicated compared on the things that decide the choice, plus the questions to ask any hosting company before you pay.",
   "/hostinger-alternative":
     "Serverlys compared with Hostinger on advertised price, renewal price, billing required, migration, backups and support, with dated Hostinger figures and when Hostinger is the better choice.",
+  "/godaddy-alternative":
+    "Serverlys compared with GoDaddy on hosting price, renewal, term required, .com price, migration, backups and support, with dated GoDaddy figures and when GoDaddy is the better choice.",
   "/migrations":
     "Free website migration whether you have one website or a hundred. The site stays online throughout, and the move is handled for you.",
 

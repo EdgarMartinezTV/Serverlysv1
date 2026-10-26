@@ -549,6 +549,16 @@ export const routes: readonly RouteMeta[] = [
     parents: ["/", "/hosting"],
   },
   {
+    path: "/godaddy-alternative",
+    name: "GoDaddy alternative",
+    group: "commercial",
+    built: true,
+    indexable: true,
+    priority: 0.5,
+    changeFrequency: "monthly",
+    parents: ["/", "/hosting"],
+  },
+  {
     path: "/sitemap",
     name: "Sitemap",
     group: "marketing",
