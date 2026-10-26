@@ -1,6 +1,7 @@
 import type { Article, ArticleCategory, Block } from "./types";
 import { originalArticles } from "./original";
 import { legacyArticles } from "./legacy";
+import { batch20261025 } from "./batch-2026-10-25";
 
 export type { Article, ArticleCategory, Block };
 
@@ -9,7 +10,8 @@ export type { Article, ArticleCategory, Block };
  *
  * Two sources, deliberately kept apart on disk:
  *
- *   · `original` — written for this rebuild, by hand.
+ *   · `original` — written for this rebuild, by hand (plus the dated
+ *                  `batch-*` files, same rules, split out to keep files reviewable).
  *   · `legacy`   — the 71 posts that were live and indexed on the previous
  *                  serverlys.com. They were ported rather than dropped because
  *                  they are the archive Google already ranks; deleting them at
@@ -24,7 +26,7 @@ export type { Article, ArticleCategory, Block };
  * head of this list as its lead article, and "whatever happened to be first in
  * the file" is not an editorial decision.
  */
-export const articles: readonly Article[] = [...originalArticles, ...legacyArticles].sort(
+export const articles: readonly Article[] = [...originalArticles, ...batch20261025, ...legacyArticles].sort(
   (a, b) => b.published.localeCompare(a.published),
 );
 
