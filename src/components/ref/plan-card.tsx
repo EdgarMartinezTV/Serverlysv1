@@ -54,7 +54,16 @@ export function PlanCard({ plan, group, why, cta }: { plan: Plan; group: PlanGro
         />
       )}
 
-      <div className="relative flex justify-end">
+      <div className="relative flex flex-wrap items-center justify-between gap-2">
+        {/* Every hosting order gets ConvoAI Essentials (WHMCS hook convoai_hosting_bundle.php). */}
+        <span
+          className={cn(
+            "inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-micro font-semibold",
+            dark ? "bg-success-fill text-white" : "bg-success-soft text-success",
+          )}
+        >
+          <span aria-hidden="true">✦</span> New: ConvoAI AI chat included
+        </span>
         <span
           className={cn(
             "rounded-md px-2 py-0.5 text-micro font-semibold",
