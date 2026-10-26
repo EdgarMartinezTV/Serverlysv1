@@ -11,7 +11,7 @@ export const en = {
   meta: {
     title: "Cleaning Company Website Design in Miami | Serverlys",
     description:
-      "Professional cleaning company website design in Miami. Custom websites with quote requests, booking integrations, mobile-friendly design and SEO. Get a free consultation.",
+      "Cleaning company website design in Miami. Custom sites with quote requests, booking integrations, mobile-friendly design and SEO. Get a free consultation.",
   },
   breadcrumb: { home: "Home", page: "Cleaning company websites" },
   switchTo: { label: "Español", aria: "Ver esta página en español" },

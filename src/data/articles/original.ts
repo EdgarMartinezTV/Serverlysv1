@@ -46,7 +46,7 @@ export const originalArticles: readonly Article[] = [
     slug: "wordpress-7-1-3-update-and-wordpress-7-2",
     title: "WordPress 7.1.3 is out: update now, then get ready for 7.2",
     description:
-      "WordPress 7.1.3 fixes seven security issues and should be installed today. Here is how to check your site took it, and what to test before WordPress 7.2 lands on December 8.",
+      "WordPress 7.1.3 fixes seven security issues. How to check your site took it, and what to test before WordPress 7.2 lands on December 8.",
     category: "WordPress",
     published: "2026-10-15",
     body: [
@@ -201,7 +201,7 @@ export const originalArticles: readonly Article[] = [
     slug: "get-your-products-into-chatgpt-shopping",
     title: "How to get your products into ChatGPT Shopping",
     description:
-      "Shoppers now ask ChatGPT what to buy, and it answers with products and links to the stores that sell them. Here is how that works and what an online store needs to show up.",
+      "Shoppers now ask ChatGPT what to buy, and it links to the stores that sell it. How ChatGPT Shopping works and what your store needs to show up.",
     category: "Ecommerce",
     published: "2026-10-15",
     body: [
@@ -319,9 +319,9 @@ export const originalArticles: readonly Article[] = [
   },
   {
     slug: "get-recommended-by-chatgpt-and-ai-search",
-    title: "How to get your business recommended by ChatGPT and Google's AI answers",
+    title: "How to get recommended by ChatGPT and Google's AI answers",
     description:
-      "More customers now ask an AI assistant instead of scrolling search results. Here is what actually decides whether your business is the one it names, and what to fix first.",
+      "Customers now ask AI assistants instead of scrolling results. What decides whether your business is the one they name, and what to fix first.",
     category: "AI",
     published: "2026-10-15",
     body: [
@@ -466,9 +466,9 @@ export const originalArticles: readonly Article[] = [
   },
   {
     slug: "put-your-ai-built-website-online",
-    title: "You built a website with AI. Here is how to put it online properly.",
+    title: "Built a website with AI? How to put it online properly",
     description:
-      "Lovable, Bolt, ChatGPT and Claude can build a working site in an afternoon. Getting it onto your own domain, secure, backed up and findable on Google is the part they skip.",
+      "Lovable, Bolt, ChatGPT and Claude build a site in an afternoon. Putting it on your own domain, secure, backed up and on Google is the part they skip.",
     category: "Getting started",
     published: "2026-10-15",
     body: [
@@ -1143,7 +1143,7 @@ export const originalArticles: readonly Article[] = [
     slug: "write-the-answers-your-ai-assistant-gives",
     title: "How to write the answers your AI chat assistant gives",
     description:
-      "An AI assistant is only as good as the information you give it. What to write, how to structure it, and how to test it so customers get answers you would stand behind.",
+      "An AI assistant is only as good as what you give it. What to write, how to structure it, and how to test it so customers get answers you stand behind.",
     category: "AI",
     published: "2026-10-12",
     body: [
@@ -1327,7 +1327,7 @@ export const originalArticles: readonly Article[] = [
     slug: "answer-every-website-visitor-with-convoai",
     title: "Your website never closes. Now it can answer, too.",
     description:
-      "How ConvoAI puts an AI agent on your website that answers questions, books appointments and hands real conversations to your team, and how to start for free this afternoon.",
+      "ConvoAI puts an AI agent on your website that answers questions, books appointments and hands real conversations to your team. Start free today.",
     category: "AI",
     published: "2026-10-11",
     body: [

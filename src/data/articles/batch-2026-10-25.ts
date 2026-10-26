@@ -275,7 +275,7 @@ export const batch20261025: readonly Article[] = [
     slug: "website-not-showing-on-google",
     title: "Website not showing up on Google? 9 causes and fixes",
     description:
-      "If your website doesn't appear on Google, it is usually one of nine causes, from a leftover noindex setting to a new site Google hasn't found. How to check each.",
+      "Not on Google? It is usually one of nine causes, from a leftover noindex tag to a new site Google hasn't found yet. How to check and fix each one.",
     category: "Getting started",
     published: "2026-10-25",
     body: [

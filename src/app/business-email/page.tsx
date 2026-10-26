@@ -65,7 +65,7 @@ const PLANS = [
 const SETUP_FEE = 2.95;
 
 const DESCRIPTION =
-  "Professional email at your own domain from $5.95/mo. Webmail, IMAP, POP3 and secure SMTP, so it works in your browser, on your phone and in Outlook or Apple Mail.";
+  "Professional email at your own domain from $5.95/mo. Webmail, IMAP and secure SMTP, so it works in your browser, on your phone and in Outlook or Apple Mail.";
 
 export const metadata = pageMetadata({
   title: "Business Email at Your Own Domain, from $5.95/mo | Serverlys",

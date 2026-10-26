@@ -25,6 +25,38 @@ export const dynamic = "force-static";
 
 const SIGNAL = "search=yes, ai-input=yes, ai-train=yes";
 
+/**
+ * WHMCS shares this origin (the edge proxy sends these paths to the client
+ * area), and its transactional pages are thin, near-identical and endless:
+ * every cart query string is a new "Shopping Cart" URL. Search Console showed
+ * them crowding out the marketing pages, so crawlers stay out of them. The
+ * knowledgebase and announcements stay crawlable on purpose.
+ * Prefixes only: "/affiliates.php" must not become "/affiliates" (a Next page).
+ */
+const WHMCS_DISALLOW = [
+  "/cart.php",
+  "/store/",
+  "/store$",
+  "/*carttpl=",
+  "/index.php?rp=",
+  "/clientarea.php",
+  "/login",
+  "/logout.php",
+  "/register.php",
+  "/password/",
+  "/pwreset.php",
+  "/submitticket.php",
+  "/supporttickets.php",
+  "/viewticket.php",
+  "/viewinvoice.php",
+  "/viewquote.php",
+  "/dl.php",
+  "/affiliates.php",
+  "/serverstatus.php",
+  "/domainchecker.php",
+  "/billinguseradmin/",
+];
+
 export function GET() {
   const lines: string[] = [];
   if (!publicEnv.allowIndexing) {
@@ -33,6 +65,7 @@ export function GET() {
     const disallow = [
       "/api/",
       ...routes.filter((r) => r.built && !r.indexable && !r.crawlable).map((r) => r.path),
+      ...WHMCS_DISALLOW,
     ];
     const group = (agents: readonly string[]) => {
       for (const a of agents) lines.push(`User-Agent: ${a}`);

@@ -81,6 +81,8 @@ export function DomainHero({ copy, tool }: { copy: HeroCopy; tool: React.ReactNo
             <li key={t.tld}>
               <a
                 href={billing.searchDomain(`${DOMAIN}${t.tld}`)}
+                // Example-name cart URLs: useful to a visitor, worthless to a crawler.
+                rel="nofollow"
                 className="inline-flex min-h-11 items-center gap-2 rounded-full bg-white/10 px-4 text-small ring-1 ring-white/15 transition-colors duration-fast hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               >
                 <span className="font-semibold text-white">{t.tld}</span>
