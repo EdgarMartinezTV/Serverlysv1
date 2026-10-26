@@ -243,6 +243,11 @@ const PAGES: Record<string, OgCard> = {
     title: "A plain monthly price, renewal printed beside it.",
     detail: "Free migration, done for you. No prepayment needed.",
   },
+  "/bluehost-alternative": {
+    eyebrow: "Bluehost alternative",
+    title: "Month to month, renewal printed beside it.",
+    detail: "Free migration, staged and done for you. No term needed.",
+  },
   "/sitemap": {
     eyebrow: "Sitemap",
     title: "Every Serverlys page in one place.",

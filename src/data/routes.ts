@@ -550,6 +550,16 @@ export const routes: readonly RouteMeta[] = [
     parents: ["/", "/hosting"],
   },
   {
+    path: "/bluehost-alternative",
+    name: "Bluehost alternative",
+    group: "commercial",
+    built: true,
+    indexable: true,
+    priority: 0.5,
+    changeFrequency: "monthly",
+    parents: ["/", "/hosting"],
+  },
+  {
     path: "/sitemap",
     name: "Sitemap",
     group: "marketing",
