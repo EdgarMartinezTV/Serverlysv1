@@ -32,6 +32,10 @@ export const metadata = pageMetadata({
  * What is useful and honest is comparing the TYPES of hosting on the axes that
  * actually decide the purchase, and then handing over the questions that let
  * someone evaluate any provider — including us — for themselves.
+ *
+ * The single exception is /hostinger-alternative (2026-10-26): one named
+ * comparison, built to the rules in its own header — dated, sourced figures
+ * only, and the rival wins the rows it wins. The FAQ below points to it.
  */
 const AXES = [
   {
@@ -109,7 +113,7 @@ const FAQS: readonly Faq[] = [
   {
     question: "Why does this page not compare Serverlys to named competitors?",
     answer:
-      "Because we would be choosing the criteria and grading ourselves, which is advertising rather than comparison. It would also mean publishing claims about other companies' current pricing and features that we cannot verify and that go out of date quickly. The questions further down this page let you compare anyone, including us, on facts you can check yourself.",
+      "Because we would be choosing the criteria and grading ourselves, which is advertising rather than comparison. The questions further down this page let you compare anyone, including us, on facts you can check yourself. The one named comparison we publish is our Hostinger alternative page, where every Hostinger figure is dated and linked to its source, and Hostinger wins the rows it wins.",
     scopes: [PATH],
   },
   {
