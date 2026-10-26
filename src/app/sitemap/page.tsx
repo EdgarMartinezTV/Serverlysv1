@@ -5,6 +5,7 @@ import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { breadcrumbGraph, pageMetadata } from "@/lib/seo";
 import { breadcrumbTrail, routeFor, sitemapRoutes } from "@/data/routes";
 import { tldCatalog } from "@/data/tld-catalog";
+import { industries, industryPath } from "@/data/industries";
 import { articleCategories, articlesByCategory, categorySlug } from "@/data/articles";
 
 const PATH = "/sitemap";
@@ -70,9 +71,21 @@ const SECTIONS: ReadonlyArray<{ heading: string; paths: readonly string[] }> = [
     ],
   },
   { heading: "Domain extensions", paths: ["/tld", ...tldCatalog.map((t) => `/tld/${t.slug}`)] },
+  {
+    heading: "Websites by industry",
+    paths: ["/website-design/industries", ...industries.map((i) => industryPath(i.slug, "en"))],
+  },
   { heading: "AI and automation", paths: ["/ai-agents", "/automations", "/ai-tools"] },
   { heading: "Compare", paths: ["/hosting-alternatives", "/hostinger-alternative"] },
-  { heading: "En español", paths: ["/es/restaurant-websites", "/es/cleaning-company-websites"] },
+  {
+    heading: "En español",
+    paths: [
+      "/es/restaurant-websites",
+      "/es/cleaning-company-websites",
+      "/es/website-design/industries",
+      ...industries.map((i) => industryPath(i.slug, "es")),
+    ],
+  },
   {
     heading: "Help and resources",
     paths: ["/support", "/faq", "/resources", "/tutorials", "/blog", "/report-abuse"],

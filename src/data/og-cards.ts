@@ -1,5 +1,6 @@
 import { articles } from "@/data/articles";
 import { tldCatalog } from "./tld-catalog";
+import { industries, industryPath } from "./industries";
 
 /**
  * OpenGraph card copy, keyed by route path.
@@ -350,7 +351,29 @@ const TLD_CARDS: Record<string, OgCard> = {
   ),
 };
 
-export const ogCards: Readonly<Record<string, OgCard>> = { ...PAGES, ...ARTICLE_CARDS, ...TLD_CARDS };
+/** Industry website pages, both languages, from their own copy. */
+const INDUSTRY_CARDS: Record<string, OgCard> = {
+  "/website-design/industries": {
+    eyebrow: "Website design",
+    title: "A website built for your trade.",
+    detail: "Salons, law firms, contractors, clinics and more.",
+  },
+  "/es/website-design/industries": {
+    eyebrow: "Diseño web",
+    title: "Un sitio web hecho para su sector.",
+    detail: "Salones, bufetes, contratistas, clínicas y más.",
+  },
+  ...Object.fromEntries(
+    industries.flatMap((i) =>
+      (["en", "es"] as const).map((l) => [
+        industryPath(i.slug, l),
+        { eyebrow: i[l].name, title: i[l].h1, detail: i[l].metaDescription },
+      ]),
+    ),
+  ),
+};
+
+export const ogCards: Readonly<Record<string, OgCard>> = { ...PAGES, ...ARTICLE_CARDS, ...TLD_CARDS, ...INDUSTRY_CARDS };
 
 /**
  * Route path → image route key, and back.

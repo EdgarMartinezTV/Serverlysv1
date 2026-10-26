@@ -1,4 +1,5 @@
 import { tldCatalog } from "./tld-catalog";
+import { industries, industryPath } from "./industries";
 /**
  * Route registry — the single source of truth for what exists on this site.
  *
@@ -782,6 +783,57 @@ export const routes: readonly RouteMeta[] = [
       parents: ["/", "/domain-name", "/tld"],
     }),
   ),
+  // Industry website pages, English and Spanish, generated from data/industries
+  // (hostinger.com's /website-builder/<niche> set, built as done-for-you design).
+  {
+    path: "/website-design/industries",
+    name: "Industries",
+    group: "commercial",
+    built: true,
+    indexable: true,
+    priority: 0.6,
+    changeFrequency: "monthly",
+    parents: ["/", "/website-design"],
+    languages: { "en-US": "/website-design/industries", "es-US": "/es/website-design/industries" },
+  },
+  {
+    path: "/es/website-design/industries",
+    name: "Sectores",
+    group: "commercial",
+    built: true,
+    indexable: true,
+    priority: 0.5,
+    changeFrequency: "monthly",
+    parents: ["/"],
+    languages: { "en-US": "/website-design/industries", "es-US": "/es/website-design/industries" },
+  },
+  ...industries.flatMap((i): RouteMeta[] => {
+    const languages = { "en-US": industryPath(i.slug, "en"), "es-US": industryPath(i.slug, "es") };
+    return [
+      {
+        path: industryPath(i.slug, "en"),
+        name: i.en.name,
+        group: "commercial",
+        built: true,
+        indexable: true,
+        priority: 0.6,
+        changeFrequency: "monthly",
+        parents: ["/", "/website-design", "/website-design/industries"],
+        languages,
+      },
+      {
+        path: industryPath(i.slug, "es"),
+        name: i.es.name,
+        group: "commercial",
+        built: true,
+        indexable: true,
+        priority: 0.5,
+        changeFrequency: "monthly",
+        parents: ["/", "/es/website-design/industries"],
+        languages,
+      },
+    ];
+  }),
 ];
 
 const byPath = new Map(routes.map((r) => [r.path, r]));
