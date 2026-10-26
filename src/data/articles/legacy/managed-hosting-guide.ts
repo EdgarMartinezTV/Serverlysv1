@@ -3,7 +3,7 @@ import type { Article } from "../types";
 export const article: Article = {
   slug: "managed-hosting-guide",
   title: "What Is Managed Hosting? Cost, Benefits and Who Needs It",
-  description: "Managed hosting explained: what it includes, how much it costs, and whether your website actually needs it.",
+  description: "Managed hosting explained: what it includes, what managed hosting costs, how it differs from unmanaged, and whether your website actually needs it.",
   category: "Hosting",
   published: "2026-07-18",
   body: [
