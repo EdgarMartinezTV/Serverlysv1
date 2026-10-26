@@ -13,6 +13,12 @@ import { roofing } from "./roofing";
 import { electrician } from "./electrician";
 import { handyman } from "./handyman";
 import { landscaping } from "./landscaping";
+import { dental } from "./dental";
+import { medical } from "./medical";
+import { chiropractic } from "./chiropractic";
+import { therapist } from "./therapist";
+import { artist } from "./artist";
+import { serviceBusiness } from "./service-business";
 
 /**
  * Industry website pages, in display order. Each lives in its own file so the
@@ -34,6 +40,12 @@ export const industries: readonly Industry[] = [
   electrician,
   handyman,
   landscaping,
+  dental,
+  medical,
+  chiropractic,
+  therapist,
+  artist,
+  serviceBusiness,
 ];
 
 const bySlug = new Map(industries.map((i) => [i.slug, i]));

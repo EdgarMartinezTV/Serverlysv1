@@ -13,7 +13,7 @@ export const salon: Industry = {
       "We design and build websites for salons and barbershops: online booking connected to the system you already use, a clear service menu with prices, stylist profiles and a gallery of your work. Custom design starts at $1,399, and hosting, updates and changes can be handled by us after launch.",
     needs: [
       { title: "Book from the first screen", text: "A Book now button in the header and on every service, linked to your booking system, so a client on their phone can pick a stylist and a time in under a minute." },
-      { title: "A service menu people can read", text: "Cuts, colour, treatments and add-ons with prices or 'from' prices and durations, grouped the way your clients think about them, not the way your POS lists them." },
+      { title: "A service menu people can read", text: "Cuts, color, treatments and add-ons with prices or 'from' prices and durations, grouped the way your clients think about them, not the way your POS lists them." },
       { title: "Stylist and barber profiles", text: "Each person's photo, specialties and booking link, because clients book people, not chairs." },
       { title: "Your work, not stock photos", text: "A before-and-after gallery you can add to yourself, or pulled from your Instagram, so the site looks like your chairs this month." },
       { title: "Policies that prevent no-shows", text: "Cancellation, late-arrival and deposit policies on the page clients see before they book, written in plain language." },
