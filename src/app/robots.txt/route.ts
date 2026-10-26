@@ -26,36 +26,14 @@ export const dynamic = "force-static";
 const SIGNAL = "search=yes, ai-input=yes, ai-train=yes";
 
 /**
- * WHMCS shares this origin (the edge proxy sends these paths to the client
- * area), and its transactional pages are thin, near-identical and endless:
- * every cart query string is a new "Shopping Cart" URL. Search Console showed
- * them crowding out the marketing pages, so crawlers stay out of them. The
- * knowledgebase and announcements stay crawlable on purpose.
- * Prefixes only: "/affiliates.php" must not become "/affiliates" (a Next page).
+ * WHMCS shares this origin. Its cart, store, login and ticket pages are kept
+ * out of the index by an `X-Robots-Tag: noindex, follow` header the edge proxy
+ * adds (everything WHMCS except /knowledgebase and /announcements — see
+ * ~/Desktop/whmcs/hide-billing-2026-10-17/edge.prod.conf). They must stay
+ * CRAWLABLE: the site links to them, and a blocked URL never shows Google its
+ * noindex. Only the admin area is disallowed.
  */
-const WHMCS_DISALLOW = [
-  "/cart.php",
-  "/store/",
-  "/store$",
-  "/*carttpl=",
-  "/index.php?rp=",
-  "/clientarea.php",
-  "/login",
-  "/logout.php",
-  "/register.php",
-  "/password/",
-  "/pwreset.php",
-  "/submitticket.php",
-  "/supporttickets.php",
-  "/viewticket.php",
-  "/viewinvoice.php",
-  "/viewquote.php",
-  "/dl.php",
-  "/affiliates.php",
-  "/serverstatus.php",
-  "/domainchecker.php",
-  "/billinguseradmin/",
-];
+const WHMCS_DISALLOW = ["/billinguseradmin/"];
 
 export function GET() {
   const lines: string[] = [];
