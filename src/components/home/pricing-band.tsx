@@ -97,6 +97,15 @@ export function PricingBand() {
                     />
                   )}
 
+                  {/* Every hosting order gets ConvoAI Essentials (WHMCS hook convoai_hosting_bundle.php). */}
+                  <span
+                    className={cn(
+                      "relative mb-3 inline-flex w-fit items-center gap-1 rounded-md px-2 py-0.5 text-micro font-semibold",
+                      featured ? "bg-success-fill text-white" : "bg-success-soft text-success",
+                    )}
+                  >
+                    <span aria-hidden="true">✦</span> New: ConvoAI AI chat included
+                  </span>
                   <div className="relative flex items-start justify-between gap-3">
                     <h3 className={cn("text-body-lg font-semibold", featured ? "text-white" : "text-fg")}>
                       {plan.name}
