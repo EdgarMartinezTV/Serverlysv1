@@ -151,10 +151,6 @@ const SECTIONS: readonly LegalSection[] = [
       },
       {
         type: "p",
-        text: "If you arrive through an affiliate's link, the billing area also sets a 90-day cookie holding that affiliate's number, so we know whom to pay a commission if you buy. It identifies the affiliate, not you, and the cookie policy describes it in full.",
-      },
-      {
-        type: "p",
         text: VENDORS.length
           ? `If you accept analytics, this site loads ${VENDORS.join(" and ")} so we can see which pages people use and where they get stuck. None of it is loaded unless you accept, and advertising features are switched off. We set no advertising cookies and never send your name, email, phone number or billing details to these services. The cookie panel lists every category with exactly what it covers, and you can reopen it any time from Cookie settings in the footer.`
           : "This site sets no advertising or analytics cookies and loads no third-party trackers. The cookie panel lists every category with exactly what it covers, and two of the three are empty — we would rather show you that than pad the list. You can reopen it any time from Cookie settings in the footer.",

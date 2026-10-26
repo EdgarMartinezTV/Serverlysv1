@@ -105,7 +105,6 @@ const SECTIONS: ReadonlyArray<{ heading: string; paths: readonly string[] }> = [
       "/domain-registration-agreement",
       "/data-processing-agreement",
       "/ai-services-terms",
-      "/affiliate-agreement",
       "/abuse-handling-policy",
       "/dmca-policy",
       "/law-enforcement-requests",

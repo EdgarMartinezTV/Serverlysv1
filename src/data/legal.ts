@@ -111,15 +111,6 @@ export const legalDocuments: readonly LegalDocument[] = [
     effective: "2026-09-19",
     related: ["/terms-of-service", "/privacy-policy", "/data-processing-agreement"],
   },
-  {
-    path: "/affiliate-agreement",
-    title: "Affiliate agreement",
-    category: "agreement",
-    summary:
-      "For affiliates: how a referral is credited, what each product pays, when a commission is reversed, and how you may promote us.",
-    effective: "2026-10-25",
-    related: ["/terms-of-service", "/refund-policy", "/acceptable-use-policy"],
-  },
 
   /* ------------------------------------------------------------------ policies
      How we operate. These bind us. */
@@ -129,7 +120,7 @@ export const legalDocuments: readonly LegalDocument[] = [
     category: "policy",
     summary:
       "What personal data we hold, why we hold it, and what you can ask us to do about it.",
-    effective: "2026-10-25",
+    effective: "2026-09-09",
     related: ["/cookie-policy", "/data-processing-agreement", "/law-enforcement-requests"],
   },
   {
@@ -137,7 +128,7 @@ export const legalDocuments: readonly LegalDocument[] = [
     title: "Cookie policy",
     category: "policy",
     summary: "Every cookie this site sets, what it does, and how to refuse the optional ones.",
-    effective: "2026-10-25",
+    effective: "2026-10-13",
     related: ["/privacy-policy"],
   },
   {

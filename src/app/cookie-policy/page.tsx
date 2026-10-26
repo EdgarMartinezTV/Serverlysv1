@@ -20,10 +20,6 @@ const ANALYTICS_ITEMS = analyticsDisclosures(publicEnv.analytics);
  * resolves (lib/analytics/config.ts — off unless the build sets its IDs). Do not add
  * a vendor to this page speculatively, and do not ship a tracker without
  * adding it here.
- *
- * 2026-10-25: the affiliate cookie (WHMCSAffiliateID, set by WHMCS's aff.php,
- * 90 days) is disclosed in its own section on Edgar's decision to disclose
- * rather than gate it behind consent. Keep the privacy policy in step.
  */
 
 const PATH = "/cookie-policy";
@@ -71,30 +67,7 @@ const SECTIONS: readonly LegalSection[] = [
       },
       {
         type: "note",
-        text: "Strictly necessary cookies do not require consent under the ePrivacy rules, which is why they are set before you answer the banner. The only other cookie that can be set before you answer is the affiliate cookie below, and only if you arrived through an affiliate's link.",
-      },
-    ],
-  },
-  {
-    id: "affiliate",
-    heading: "Affiliate referrals",
-    blocks: [
-      {
-        type: "p",
-        text: "If you arrive by clicking a link shared by a member of our affiliate program, the billing area sets a cookie called WHMCSAffiliateID. It holds that affiliate's number and nothing about you, and it lasts 90 days. If you buy during that time, it tells us which affiliate to pay a commission to.",
-      },
-      {
-        type: "ul",
-        items: [
-          "It is set by us, on serverlys.com, when the link is clicked. It is not an advertising cookie, it is not shared with ad networks, and it does not follow you to other sites.",
-          "It is set only when you follow an affiliate link. Visiting serverlys.com any other way never sets it.",
-          "It does not change what you pay. Prices are the same with or without it.",
-          "You can delete it at any time in your browser settings. The only effect is that the affiliate who sent you is not credited.",
-        ],
-      },
-      {
-        type: "note",
-        text: "This cookie is not strictly necessary, and we say so plainly rather than file it under that heading. It is set at the moment of the click, before the cookie banner has had a chance to ask, because the click is the only moment the referral can be recorded.",
+        text: "Strictly necessary cookies do not require consent under the ePrivacy rules, which is why they are set before you answer the banner. They are also the only ones set before you answer it.",
       },
     ],
   },

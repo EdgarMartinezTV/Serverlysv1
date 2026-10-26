@@ -54,8 +54,6 @@ export const billing = {
   /** The signed-in client area (logged-out visitors land on the login page). */
   clientArea: `${BILLING}/clientarea.php`,
   login: `${BILLING}/login`,
-  /** WHMCS affiliate dashboard; logged-out visitors are sent to log in first. */
-  affiliates: `${BILLING}/affiliates.php`,
   /** Sales department ticket — used by every "talk to an expert" CTA. */
   sales: `${BILLING}/submitticket.php?step=2&deptid=1`,
   registerDomain: `${BILLING}/cart.php?a=add&domain=register`,
