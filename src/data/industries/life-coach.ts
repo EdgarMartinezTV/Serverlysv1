@@ -23,7 +23,7 @@ export const lifeCoach: Industry = {
     integrations: ["Calendly", "Paperbell", "Practice", "Dubsado", "Stripe", "Zoom", "Kit (ConvertKit) or Mailchimp", "Instagram feed"],
     rules: {
       title: "Not therapy, and honest testimonials",
-      text: "In most states titles such as therapist, counselor and psychologist are reserved for licensed professionals, so a life coaching site should not describe its services as therapy or treatment. Under the FTC's Endorsement Guides, testimonials must be genuine and must not imply results most clients do not get. We build to the rules you tell us apply, and you approve every claim before launch.",
+      text: "Titles such as psychologist and licensed professional counselor are restricted to licensed professionals, and states regulate the practice of therapy, so a life coaching site should not describe its services as therapy or treatment. Under the FTC's Endorsement Guides, testimonials must be genuine and must not imply results most clients do not get. We build to the rules you tell us apply, and you approve every claim before launch.",
     },
     faq: [
       { question: "Should I show my prices?", answer: "Many life coaches do, at least as a starting price, because it saves both of you a call that was only about cost. If you prefer to discuss pricing on the free call, we design the packages page to explain the format without figures." },
@@ -53,7 +53,7 @@ export const lifeCoach: Industry = {
     integrations: ["Calendly", "Paperbell", "Practice", "Dubsado", "Stripe", "Zoom", "Kit (ConvertKit) o Mailchimp", "Feed de Instagram"],
     rules: {
       title: "No es terapia, y testimonios honestos",
-      text: "En la mayoría de los estados, títulos como terapeuta, consejero y psicólogo están reservados para profesionales con licencia, así que un sitio de coaching de vida no debe describir sus servicios como terapia o tratamiento. Según las Guías de Respaldos de la FTC, los testimonios deben ser reales y no pueden dar a entender resultados que la mayoría no obtiene. Construimos según las reglas que usted nos indique, y usted aprueba cada afirmación antes del lanzamiento.",
+      text: "Títulos como psicólogo y consejero profesional con licencia están reservados para profesionales con licencia, y los estados regulan la práctica de la terapia, así que un sitio de coaching de vida no debe describir sus servicios como terapia o tratamiento. Según las Guías de Respaldos de la FTC, los testimonios deben ser reales y no pueden dar a entender resultados que la mayoría no obtiene. Construimos según las reglas que usted nos indique, y usted aprueba cada afirmación antes del lanzamiento.",
     },
     faq: [
       { question: "¿Debo mostrar mis precios?", answer: "Muchos coaches de vida lo hacen, al menos con un precio desde, porque les ahorra a los dos una llamada que solo era para hablar de costo. Si prefiere hablar de precios en la llamada gratuita, diseñamos la página de paquetes para explicar el formato sin cifras." },

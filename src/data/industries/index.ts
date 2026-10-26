@@ -1,13 +1,28 @@
 import type { Industry, Locale } from "./types";
 import { salon } from "./salon";
 import { lawyer } from "./lawyer";
+import { accounting } from "./accounting";
+import { mortgage } from "./mortgage";
+import { consulting } from "./consulting";
+import { coaching } from "./coaching";
+import { lifeCoach } from "./life-coach";
+import { architect } from "./architect";
 
 /**
  * Industry website pages, in display order. Each lives in its own file so the
  * copy for one trade can be reviewed (and corrected) without touching another.
  * Adding a file here is enough: routes, sitemaps, hubs and OG cards read this.
  */
-export const industries: readonly Industry[] = [salon, lawyer];
+export const industries: readonly Industry[] = [
+  salon,
+  lawyer,
+  accounting,
+  mortgage,
+  consulting,
+  coaching,
+  lifeCoach,
+  architect,
+];
 
 const bySlug = new Map(industries.map((i) => [i.slug, i]));
 
