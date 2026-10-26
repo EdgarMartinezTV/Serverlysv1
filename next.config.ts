@@ -59,6 +59,8 @@ const nextConfig: NextConfig = {
       // Search Console showed clicks on /mailer (not a page on this or the old
       // site, likely left by the 2026 compromise); nearest real intent is email.
       { source: "/mailer", destination: "/business-email", permanent: true },
+      // Search Console still reports /email as a 404 from the previous site.
+      { source: "/email", destination: "/business-email", permanent: true },
       { source: "/web-design", destination: "/website-design", permanent: true },
       {
         source: "/custom-development",
