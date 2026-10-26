@@ -1,11 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Field } from "@/components/ui/field";
 import { Input, Textarea, Select } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { billing } from "@/data/company";
 import { ABUSE_TYPES, FORM, IP_TYPE } from "../_content";
+
+type Status =
+  | { kind: "idle" | "sending" }
+  | { kind: "sent"; reference: string | null }
+  | { kind: "failed"; message: string };
 
 /**
  * The reference's two-step abuse wizard, rebuilt.
@@ -17,72 +21,75 @@ import { ABUSE_TYPES, FORM, IP_TYPE } from "../_content";
  * signature) that a phishing report does not. Asking everyone for those would
  * be wrong, and asking nobody would make DMCA notices unactionable.
  *
- * It still POSTs to WHMCS `submitticket.php` with `deptid=3`, so reports land
- * in the abuse queue rather than sales — the part of the old page that had to
- * keep working. WHMCS wants one `subject` and one `message`, so `onSubmit`
- * composes the body from the fields just before the native POST goes out.
- * Everything the reporter typed is preserved in that body, labelled.
- *
- * ⚠ The file input is named `attachments[]` and the form is multipart, which
- * is what WHMCS expects — but whether attachments are accepted depends on the
- * install's ticket settings. Verify against the real queue before relying on
- * evidence upload; the text fields work regardless.
+ * It POSTs to /api/report-abuse, which emails the report (and the evidence
+ * files as attachments) to the abuse inbox with Reply-To set to the reporter.
+ * It used to post to WHMCS submitticket.php, which rejects anyone not logged
+ * in because WHMCS requires login for tickets; reporters are rarely clients.
  */
 export function AbuseForm() {
   const [step, setStep] = useState<1 | 2>(1);
   const [type, setType] = useState("");
   const isIp = type === IP_TYPE;
 
-  /** WHMCS takes one message body, so build it from the fields on submit. */
-  function compose(e: React.FormEvent<HTMLFormElement>) {
-    const f = e.currentTarget;
-    const get = (n: string) =>
-      (f.elements.namedItem(n) as HTMLInputElement | HTMLTextAreaElement | null)?.value?.trim() ?? "";
-    const lines = [
-      `Abuse type: ${type}`,
-      `Reporter: ${get("reporterName")}`,
-      get("org") ? `Organisation or role: ${get("org")}` : "",
-      `Email: ${get("reporterEmail")}`,
-      get("country") ? `Country of residence: ${get("country")}` : "",
-      "",
-      "Abuser website or service:",
-      get("target"),
-      "",
-      "Description of the issue:",
-      get("description"),
-    ];
-    if (isIp) {
-      lines.push(
-        "",
-        "— Intellectual property notice —",
-        `Capacity: ${get("capacity") || "(not stated)"}`,
-        "Copyrighted work:",
-        get("work"),
-        "Infringing material:",
-        get("infringing"),
-        `Electronic signature: ${get("signature")}`,
-      );
+  const [status, setStatus] = useState<Status>({ kind: "idle" });
+  /* Measured from when the form appeared, for the server's minimum fill time. */
+  const startedAt = useRef(0);
+  useEffect(() => {
+    startedAt.current = Date.now();
+  }, []);
+
+  async function send(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (status.kind === "sending") return;
+    setStatus({ kind: "sending" });
+    const data = new FormData(e.currentTarget);
+    data.set("abuseType", type);
+    data.set("elapsed", String(Date.now() - startedAt.current));
+    try {
+      const res = await fetch("/api/report-abuse", { method: "POST", body: data });
+      const json = (await res.json().catch(() => ({}))) as { ok?: boolean; reference?: string | null; reason?: string };
+      if (res.ok && json.ok) return setStatus({ kind: "sent", reference: json.reference ?? null });
+      const reason = json.reason ?? "";
+      setStatus({
+        kind: "failed",
+        message:
+          reason === "rate_limited" ? FORM.errors.rateLimited
+          : reason === "too_large" || reason === "bad_file" || reason === "too_many_files" ? FORM.errors.files
+          : reason === "invalid" ? FORM.errors.invalid
+          : FORM.errors.failed,
+      });
+    } catch {
+      setStatus({ kind: "failed", message: FORM.errors.failed });
     }
-    lines.push("", "Declaration accepted: yes");
-    const body = f.elements.namedItem("message") as HTMLTextAreaElement;
-    /* Drop the empty optionals so the body has no blank label lines. */
-    if (body) body.value = lines.filter((l, i) => l !== "" || lines[i - 1] !== "").join("\n");
+  }
+
+  if (status.kind === "sent") {
+    return (
+      <div role="status" className="mx-auto mt-10 w-full max-w-[700px] rounded-2xl bg-canvas-secondary p-8 text-center">
+        <h2 className="text-[20px] leading-7 font-semibold text-fg">{FORM.success.title}</h2>
+        <p className="mt-2 text-body text-fg-secondary">{FORM.success.body}</p>
+        {status.reference && (
+          <p className="mt-4 text-small text-fg-muted">
+            {FORM.success.reference}: <strong className="font-mono text-fg">{status.reference}</strong>
+          </p>
+        )}
+      </div>
+    );
   }
 
   return (
     <form
-      action={`${billing.root}/submitticket.php`}
-      method="POST"
-      encType="multipart/form-data"
-      onSubmit={compose}
+      onSubmit={send}
+      noValidate={false}
       className="mx-auto mt-10 flex w-full max-w-[700px] flex-col gap-6"
     >
-      {/* Abuse department, not sales. Do not change these. */}
-      <input type="hidden" name="step" value="3" />
-      <input type="hidden" name="deptid" value="3" />
-      {/* WHMCS reads these two; `message` is filled by compose() on submit. */}
-      <input type="hidden" name="subject" value={`Abuse report: ${type}`} />
-      <textarea name="message" defaultValue="" hidden readOnly />
+      {/* Honeypot: invisible to people and assistive tech. */}
+      <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
+        <label>
+          Fax number
+          <input name="fax_number" tabIndex={-1} autoComplete="off" defaultValue="" />
+        </label>
+      </div>
 
       {step === 1 ? (
         <>
@@ -211,10 +218,16 @@ export function AbuseForm() {
             <Button type="button" variant="secondary" size="lg" onClick={() => setStep(1)}>
               {FORM.back}
             </Button>
-            <Button type="submit" size="lg">
-              {FORM.send}
+            <Button type="submit" size="lg" disabled={status.kind === "sending"}>
+              {status.kind === "sending" ? FORM.sending : FORM.send}
             </Button>
           </div>
+
+          {status.kind === "failed" && (
+            <p role="alert" className="rounded-xl bg-error-soft p-4 text-small text-error">
+              {status.message}
+            </p>
+          )}
         </>
       )}
     </form>

@@ -19,7 +19,7 @@ import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
  * marketing bands, no FAQ — which is right for a page someone reaches while
  * reporting a crime.
  *
- * The form still POSTs to the WHMCS abuse queue. See _components/abuse-form.
+ * The form emails the abuse inbox via /api/report-abuse. See _components/abuse-form.
  */
 
 const PATH = "/report-abuse";

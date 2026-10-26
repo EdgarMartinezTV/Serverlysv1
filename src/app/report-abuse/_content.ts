@@ -76,4 +76,16 @@ export const FORM = {
     "I declare that I have a good faith belief that the information provided in this notice is accurate and complete, and that the reported content or activity is illegal or violates Serverlys’ Terms of Service.",
   back: "Back",
   send: "Send",
+  sending: "Sending…",
+  success: {
+    title: "Thank you, your report was sent",
+    body: "Our abuse team reviews every report and will reply by email if we need more information.",
+    reference: "Your reference",
+  },
+  errors: {
+    failed: "We could not send your report. Please try again, or email it to support@serverlys.com.",
+    rateLimited: "Too many reports from this connection. Please wait a few minutes and try again.",
+    files: "Evidence must be up to 5 files of 2 MB each (PDF, JPG, PNG, WEBP, TXT or EML).",
+    invalid: "Some required fields are missing or invalid. Please check the form and try again.",
+  },
 };
