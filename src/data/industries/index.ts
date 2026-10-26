@@ -7,6 +7,12 @@ import { consulting } from "./consulting";
 import { coaching } from "./coaching";
 import { lifeCoach } from "./life-coach";
 import { architect } from "./architect";
+import { contractor } from "./contractor";
+import { construction } from "./construction";
+import { roofing } from "./roofing";
+import { electrician } from "./electrician";
+import { handyman } from "./handyman";
+import { landscaping } from "./landscaping";
 
 /**
  * Industry website pages, in display order. Each lives in its own file so the
@@ -22,6 +28,12 @@ export const industries: readonly Industry[] = [
   coaching,
   lifeCoach,
   architect,
+  contractor,
+  construction,
+  roofing,
+  electrician,
+  handyman,
+  landscaping,
 ];
 
 const bySlug = new Map(industries.map((i) => [i.slug, i]));
