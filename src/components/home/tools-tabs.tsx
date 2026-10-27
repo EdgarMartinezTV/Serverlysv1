@@ -301,7 +301,7 @@ function HostShowcase() {
 function DomainsShowcase() {
   const rows = [
     [".com", "$14.95", "available"],
-    [".io", "—", "not sold"],
+    [".io", "$69.95", "available"],
     [".net", "$16.95", "available"],
     [".org", "$16.95", "taken"],
     [".eu", "$9.95", "available"],
