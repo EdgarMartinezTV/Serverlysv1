@@ -12,7 +12,7 @@ import { PRICES_AS_OF, tldCatalog } from "@/data/tld-catalog";
 const PATH = "/tld";
 
 export const metadata = pageMetadata({
-  title: "Domain Extensions & Prices (.com, .io, .shop) | Serverlys",
+  title: "Domain Extensions and Prices: .com, .io, .shop | Serverlys",
   description: `Every domain extension Serverlys sells, from .com to .io, with first-year and renewal prices side by side. ${tldCatalog.length} extensions.`,
   path: PATH,
 });

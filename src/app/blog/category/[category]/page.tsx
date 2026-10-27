@@ -65,6 +65,8 @@ export default async function BlogCategoryPage({ params }: Props) {
             {category}
           </h1>
           <p className="mt-3 max-w-[70ch] text-body text-fg-secondary">{categoryDescriptions[category]}</p>
+          {/* The cards below are h3s; this keeps the outline h1 → h2 → h3. */}
+          <h2 className="sr-only">Latest {category} stories</h2>
           <ul className="mt-12 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
             {posts.slice(0, 3).map((a) => (
               <li key={a.slug}>

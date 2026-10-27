@@ -26,6 +26,8 @@ import {
 } from "@/components/retell/kit";
 import { Services } from "./_components/services";
 import { FAQS, GROUPS, PROMISES, RELATED, STEPS, TOOLS, USES } from "./_content";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { breadcrumbTrail } from "@/data/routes";
 
 /**
  * /business-solutions — rebuilt 2026-10-13 on the shared Retell-style kit,
@@ -202,6 +204,7 @@ export default function BusinessSolutionsPage() {
         body={`Pick an all-in-one plan and we start building your website. Plans from ${from}/mo.`}
         primary={{ label: "See all-in-one plans", href: "#plans" }}
       />
+      <PageBreadcrumbs trail={breadcrumbTrail(PATH)} />
     </>
   );
 }

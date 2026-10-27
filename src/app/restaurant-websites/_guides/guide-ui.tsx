@@ -30,7 +30,12 @@ export function planPrice(id: RestaurantPlanId): string {
 /** Schema props shared by the guide Service nodes: national, and part of the parent service. */
 export const guideServiceProps = {
   areaServed: { "@type": "Country", name: "United States" },
-  isRelatedTo: { "@id": `${canonical(PATHS.en.landing)}#service` },
+  isRelatedTo: {
+    "@type": "Service",
+    "@id": `${canonical(PATHS.en.landing)}#service`,
+    name: "Restaurant websites",
+    url: canonical(PATHS.en.landing),
+  },
 };
 
 export function guideMetadata({ title, description, path }: { title: string; description: string; path: string }): Metadata {

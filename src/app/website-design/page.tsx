@@ -26,6 +26,8 @@ import {
   UseCases,
 } from "@/components/retell/kit";
 import { FAQS, GROUPS, PROMISES, RELATED, STEPS, TOOLS, USES } from "./_content";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { breadcrumbTrail } from "@/data/routes";
 
 /**
  * /website-design — rebuilt 2026-10-13 on the shared Retell-style kit
@@ -202,6 +204,7 @@ export default function WebsiteDesignPage() {
         body={`Tell us about your business and we will come back with a written scope and price. Plans from ${from}.`}
         primary={{ label: "Start a project", href: billing.sales }}
       />
+      <PageBreadcrumbs trail={breadcrumbTrail(PATH)} />
     </>
   );
 }

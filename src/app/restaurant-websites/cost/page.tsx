@@ -141,7 +141,12 @@ export default function RestaurantWebsiteCostPage() {
             section: "Restaurant websites",
             image: [canonical("/restaurant/diners.jpg")],
           }),
-          about: { "@id": `${canonical("/restaurant-websites")}#service` },
+          about: {
+            "@type": "Service",
+            "@id": `${canonical("/restaurant-websites")}#service`,
+            name: "Restaurant websites",
+            url: canonical("/restaurant-websites"),
+          },
         }}
       />
 

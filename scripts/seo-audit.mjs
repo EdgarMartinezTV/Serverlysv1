@@ -210,10 +210,19 @@ for (const path of [...paths, ...extraPaths]) {
       switch (n["@type"]) {
         case "Organization":
           need(n, ["name", "url"], "Organization");
-          if (n.address || n.geo || n.priceRange)
+          // Country-only PostalAddress is allowed (see the note in lib/seo.ts);
+          // a street, city, region, postcode, geo or priceRange is not.
+          if (
+            n.geo ||
+            n.priceRange ||
+            (n.address &&
+              ["streetAddress", "addressLocality", "addressRegion", "postalCode"].some(
+                (k) => n.address[k],
+              ))
+          )
             fail(
               label,
-              "Organization has address/geo/priceRange — prohibited by the entity rules",
+              "Organization has a street address/geo/priceRange — prohibited by the entity rules",
             );
           break;
         case "WebSite":
@@ -324,7 +333,11 @@ if (/Disallow: \/$/m.test(robotsTxt))
  * skipped — there is no single URL to follow for a pattern.
  */
 {
-  const config = readFileSync(new URL("../next.config.ts", import.meta.url), "utf8");
+  const fullConfig = readFileSync(new URL("../next.config.ts", import.meta.url), "utf8");
+  // Only the redirects() block: headers() rules also use `source:` ("/" etc.).
+  const start = fullConfig.indexOf("async redirects()");
+  const end = fullConfig.indexOf("async ", start + 1);
+  const config = start === -1 ? fullConfig : fullConfig.slice(start, end === -1 ? undefined : end);
   const sources = [...config.matchAll(/source:\s*"([^"]+)"/g)]
     .map((m) => m[1])
     .filter((src) => !src.includes(":") && !src.includes("*"));

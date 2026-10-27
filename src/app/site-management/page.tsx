@@ -25,6 +25,8 @@ import {
   UseCases,
 } from "@/components/retell/kit";
 import { FAQS, GROUPS, PROMISES, RELATED, STEPS, TOOLS, USES } from "./_content";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { breadcrumbTrail } from "@/data/routes";
 
 /**
  * /site-management — rebuilt 2026-10-13 on the shared Retell-style kit, the
@@ -200,6 +202,7 @@ export default function SiteManagementPage() {
         body={`Pick a ServerCare plan and we take a backup and start on day one. From ${from}/mo.`}
         primary={{ label: "See ServerCare plans", href: "#plans" }}
       />
+      <PageBreadcrumbs trail={breadcrumbTrail(PATH)} />
     </>
   );
 }

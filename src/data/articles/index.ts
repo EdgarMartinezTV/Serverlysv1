@@ -185,6 +185,6 @@ export const categoryDescriptions: Record<ArticleCategory, string> = {
   Security: "Keeping a small business site safe without becoming a security engineer.",
   Domains: "Choosing, registering, transferring and protecting the name your business lives at.",
   Ecommerce: "Selling online: stores, checkout and the hosting that keeps them up on a busy day.",
-  AI: "Where AI genuinely helps a small business, and where it does not.",
-  "Getting started": "First steps for a new website, explained without the jargon.",
+  AI: "Where AI genuinely helps a small business, and where it does not: chat agents, AI search visibility and the tools worth paying for.",
+  "Getting started": "First steps for a new website, explained without the jargon: domains, hosting, email and getting your first pages live.",
 };

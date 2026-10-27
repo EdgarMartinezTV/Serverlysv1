@@ -15,6 +15,8 @@ import {
   DeployMock,
 } from "../website-development/_components/mocks";
 import { StyleGuideMock } from "../website-design/_components/mocks";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { breadcrumbTrail } from "@/data/routes";
 
 /**
  * Our Process — 2026-10-13, rebuilt in the retellai.com/about-us style used
@@ -490,6 +492,7 @@ export default function OurProcessPage() {
         body="Tell us what it has to do. You get a written scope, a fixed price or an honest range, and a date."
         primary={{ label: "Start a project", href: billing.sales }}
       />
+      <PageBreadcrumbs trail={breadcrumbTrail(PATH)} />
     </>
   );
 }

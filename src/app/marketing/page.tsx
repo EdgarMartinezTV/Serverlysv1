@@ -15,6 +15,8 @@ import {
 } from "@/components/retell/kit";
 import { SeoPlansPanel } from "@/components/retell/seo-plans-panel";
 import { FAQS, GROUPS, PROMISES, RELATED, STEPS, TOOLS, USES } from "./_content";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { breadcrumbTrail } from "@/data/routes";
 
 /**
  * /marketing — rebuilt 2026-10-13 on the shared Retell-style kit, the same
@@ -146,6 +148,7 @@ export default function MarketingPage() {
         body={`Pick a plan and we start with an audit of where you stand. Plans from ${from}/mo.`}
         primary={{ label: "See marketing plans", href: "#plans" }}
       />
+      <PageBreadcrumbs trail={breadcrumbTrail(PATH)} />
     </>
   );
 }

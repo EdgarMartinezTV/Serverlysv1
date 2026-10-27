@@ -13,6 +13,8 @@ import { formatCarePrice, careFromPrice } from "@/data/care-plans";
 import { Faqs, PhotoCta, Wrap } from "@/components/retell/kit";
 import { ChatButton } from "@/components/retell/chat-button";
 import { Reveal } from "@/components/animations/reveal";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { breadcrumbTrail } from "@/data/routes";
 
 /**
  * About — 2026-10-13, rebuilt to the retellai.com/about-us layout, section for
@@ -752,6 +754,7 @@ export default function AboutPage() {
         body={`Hosting from ${formatPrice(lowestRate)}/mo with free migration, or tell us what you need and we will scope it.`}
         primary={{ label: "See plans", href: "/pricing" }}
       />
+      <PageBreadcrumbs trail={breadcrumbTrail(PATH)} />
     </>
   );
 }

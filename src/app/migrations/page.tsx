@@ -21,6 +21,8 @@ import {
 import { FAQS } from "./_content";
 import { GROUPS, PROMISES, RELATED, TOOLS, USES } from "./_retell-content";
 import { ZeroDowntime } from "./_components/zero-downtime";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { breadcrumbTrail } from "@/data/routes";
 
 /**
  * /migrations — rebuilt 2026-10-13 on the shared Retell-style kit, the same
@@ -250,6 +252,7 @@ export default function MigrationsPage() {
         body={`Pick a cloud plan and send us your site’s details. Migration is free${from ? `, and plans start at ${from}/mo` : ""}.`}
         primary={{ label: "See cloud plans", href: "#plans" }}
       />
+      <PageBreadcrumbs trail={breadcrumbTrail(PATH)} />
     </>
   );
 }

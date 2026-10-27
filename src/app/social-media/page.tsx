@@ -25,6 +25,8 @@ import {
   UseCases,
 } from "@/components/retell/kit";
 import { FAQS, GROUPS, PROMISES, RELATED, STEPS, TOOLS, USES } from "./_content";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { breadcrumbTrail } from "@/data/routes";
 
 /**
  * /social-media — rebuilt 2026-10-13 on the shared Retell-style kit, the
@@ -210,6 +212,7 @@ export default function SocialMediaPage() {
         body={`Pick a plan and we start with your profiles and next month’s calendar. Plans from ${from}/mo.`}
         primary={{ label: "See social plans", href: "#plans" }}
       />
+      <PageBreadcrumbs trail={breadcrumbTrail(PATH)} />
     </>
   );
 }

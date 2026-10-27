@@ -16,6 +16,8 @@ import {
 } from "@/components/retell/kit";
 import { SeoPlansPanel } from "@/components/retell/seo-plans-panel";
 import { GROUPS, PROMISES, RELATED, STEPS, TOOLS, USES } from "./_content";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { breadcrumbTrail } from "@/data/routes";
 
 const PATH = "/seo";
 const DESCRIPTION = `SEO services for small businesses: keyword research, local SEO, Google Business Profile, technical fixes, link building and monthly reports. From ${formatSeoPrice(seoFromPrice)}/mo.`;
@@ -148,6 +150,7 @@ export default function SeoPage() {
         body={`Start with an audit of where you stand. Plans from ${formatSeoPrice(seoFromPrice)}/mo.`}
         primary={{ label: "See SEO plans", href: "#plans" }}
       />
+      <PageBreadcrumbs trail={breadcrumbTrail(PATH)} />
     </>
   );
 }

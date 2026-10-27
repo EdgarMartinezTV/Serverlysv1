@@ -20,6 +20,8 @@ import {
 } from "@/components/retell/kit";
 import { COMMITMENTS, FAQS, PLANS } from "./_copy";
 import { GROUPS, RELATED, STEPS, TOOLS, USES } from "./_content";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
+import { breadcrumbTrail } from "@/data/routes";
 
 /**
  * /website-development — rebuilt 2026-10-13 on the shared Retell-style kit
@@ -211,6 +213,7 @@ export default function WebsiteDevelopmentPage() {
         body="Describe the outcome rather than the feature list. We will come back with what it takes, what it costs and how long it runs."
         primary={{ label: "Get a scope and a price", href: billing.sales }}
       />
+      <PageBreadcrumbs trail={breadcrumbTrail(PATH)} />
     </>
   );
 }
