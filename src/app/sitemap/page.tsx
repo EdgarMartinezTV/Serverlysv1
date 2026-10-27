@@ -77,7 +77,7 @@ const SECTIONS: ReadonlyArray<{ heading: string; paths: readonly string[] }> = [
     paths: ["/website-design/industries", ...industries.map((i) => industryPath(i.slug, "en"))],
   },
   { heading: "AI and automation", paths: ["/ai-agents", "/automations", "/ai-tools"] },
-  { heading: "Compare", paths: ["/hosting-alternatives", "/hostinger-alternative", "/bluehost-alternative", "/godaddy-alternative"] },
+  { heading: "Compare", paths: ["/hosting-alternatives", "/hostinger-alternative", "/bluehost-alternative", "/godaddy-alternative", "/siteground-alternative", "/namecheap-alternative", "/wix-alternative", "/squarespace-alternative"] },
   {
     heading: "En español",
     paths: [

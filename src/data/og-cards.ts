@@ -254,6 +254,26 @@ const PAGES: Record<string, OgCard> = {
     title: "Hosting billed monthly, a .com at one yearly price.",
     detail: "Free migration, done for you. Dated, sourced figures.",
   },
+  "/siteground-alternative": {
+    eyebrow: "SiteGround alternative",
+    title: "No year to prepay, and a lower renewal.",
+    detail: "Free migration, done for you. Dated, sourced figures.",
+  },
+  "/namecheap-alternative": {
+    eyebrow: "Namecheap alternative",
+    title: "Daily backups, and a .com at one yearly price.",
+    detail: "Free migration, done for you. Dated, sourced figures.",
+  },
+  "/wix-alternative": {
+    eyebrow: "Wix alternative",
+    title: "A site designed for you, on WordPress you own.",
+    detail: "Done-for-you design and hosting. Dated, sourced figures.",
+  },
+  "/squarespace-alternative": {
+    eyebrow: "Squarespace alternative",
+    title: "A site designed for you, on WordPress you own.",
+    detail: "Done-for-you design and hosting. Dated, sourced figures.",
+  },
   "/sitemap": {
     eyebrow: "Sitemap",
     title: "Every Serverlys page in one place.",

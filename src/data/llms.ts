@@ -102,6 +102,10 @@ export const LLMS_SECTIONS = [
       "/hostinger-alternative",
       "/bluehost-alternative",
       "/godaddy-alternative",
+      "/siteground-alternative",
+      "/namecheap-alternative",
+      "/wix-alternative",
+      "/squarespace-alternative",
       "/migrations",
     ],
   },
@@ -216,6 +220,14 @@ export const LLMS_SUMMARIES: Record<string, string> = {
     "Serverlys compared with Bluehost on advertised price, renewal price, term shown, domain, migration, backups and support, with dated Bluehost figures and when Bluehost is the better choice.",
   "/godaddy-alternative":
     "Serverlys compared with GoDaddy on hosting price, renewal, term required, .com price, migration, backups and support, with dated GoDaddy figures and when GoDaddy is the better choice.",
+  "/siteground-alternative":
+    "Serverlys compared with SiteGround on hosting price, renewal, prepaid term, .com price, migration, backups, email and support, with dated SiteGround figures and when SiteGround is the better choice.",
+  "/namecheap-alternative":
+    "Serverlys compared with Namecheap on hosting price, renewal, free trial, backups, .com price, privacy, migration and support, with dated Namecheap figures and when Namecheap is the better choice.",
+  "/wix-alternative":
+    "A website builder against a designed site: Serverlys website design on WordPress hosting compared with Wix plans, domain, storage and moving hosts, with dated Wix figures and when Wix is the better choice.",
+  "/squarespace-alternative":
+    "A website builder against a designed site: Serverlys website design on WordPress hosting compared with Squarespace plans, domain, selling online and exporting, with dated Squarespace figures and when Squarespace is the better choice.",
   "/migrations":
     "Free website migration whether you have one website or a hundred. The site stays online throughout, and the move is handled for you.",
 

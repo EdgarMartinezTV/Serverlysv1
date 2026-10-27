@@ -33,10 +33,24 @@ export const metadata = pageMetadata({
  * actually decide the purchase, and then handing over the questions that let
  * someone evaluate any provider — including us — for themselves.
  *
- * The single exception is /hostinger-alternative (2026-10-26): one named
- * comparison, built to the rules in its own header — dated, sourced figures
- * only, and the rival wins the rows it wins. The FAQ below points to it.
+ * The exceptions are the named comparison pages in COMPARISONS below
+ * (Hostinger, Bluehost and GoDaddy, then SiteGround, Namecheap, Wix and
+ * Squarespace, all 2026-10-26). Each is built to the rules in its own header:
+ * dated, sourced figures only, and the rival wins the rows it wins. Wix and
+ * Squarespace are website builders, so those two compare a builder with a
+ * designed site on our hosting rather than host with host.
  */
+
+/** Named comparison pages, listed in the "Comparing a specific company?" band. */
+const COMPARISONS = [
+  { href: "/hostinger-alternative", name: "Hostinger", kind: "Host" },
+  { href: "/bluehost-alternative", name: "Bluehost", kind: "Host" },
+  { href: "/godaddy-alternative", name: "GoDaddy", kind: "Host and registrar" },
+  { href: "/siteground-alternative", name: "SiteGround", kind: "Host" },
+  { href: "/namecheap-alternative", name: "Namecheap", kind: "Host and registrar" },
+  { href: "/wix-alternative", name: "Wix", kind: "Website builder" },
+  { href: "/squarespace-alternative", name: "Squarespace", kind: "Website builder" },
+] as const;
 const AXES = [
   {
     axis: "What you share",
@@ -113,7 +127,7 @@ const FAQS: readonly Faq[] = [
   {
     question: "Why does this page not compare Serverlys to named competitors?",
     answer:
-      "Because we would be choosing the criteria and grading ourselves, which is advertising rather than comparison. The questions further down this page let you compare anyone, including us, on facts you can check yourself. The named comparisons we do publish, such as our Hostinger, GoDaddy and Bluehost alternative pages, follow fixed rules: every competitor figure is dated and linked to its source, and the competitor wins the rows it wins.",
+      "Because we would be choosing the criteria and grading ourselves, which is advertising rather than comparison. The questions further down this page let you compare anyone, including us, on facts you can check yourself. The named comparisons we do publish, such as our Hostinger, Bluehost, GoDaddy, SiteGround, Namecheap, Wix and Squarespace alternative pages, follow fixed rules: every competitor figure is dated and linked to its source, and the competitor wins the rows it wins.",
     scopes: [PATH],
   },
   {
@@ -152,8 +166,8 @@ export default function HostingAlternativesPage() {
               <Pill>Hosting comparison</Pill>
               <h1 className="display-lg mt-5 text-fg">How the tiers differ, and how to judge a host</h1>
               <p className="mt-5 max-w-xl text-body-lg text-fg-secondary">
-                No scores out of ten and no rivals named. Just the axes that decide which kind of
-                hosting you need, and the six questions that tell you what any provider is selling.
+                No scores out of ten. Just the axes that decide which kind of hosting you need, the six
+                questions that tell you what any provider is selling, and dated comparisons with named rivals.
               </p>
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
                 <Button href="#ha-matrix-heading" size="lg">Compare the four types</Button>
@@ -306,6 +320,28 @@ export default function HostingAlternativesPage() {
             Ask us anything on that list
           </Button>
         </div>
+      </Band>
+
+      {/* Named comparisons, each written to the rules in its own header. */}
+      <Band tone="subtle" labelledBy="ha-named-heading">
+        <Heading
+          id="ha-named-heading"
+          title="Comparing a specific company?"
+          lede="Each page uses figures read off the company's own site on a stated date, and says where they are the better choice."
+        />
+        <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {COMPARISONS.map((c) => (
+            <li key={c.href}>
+              <Link
+                href={c.href}
+                className="flex h-full flex-col rounded-2xl bg-canvas p-6 ring-1 ring-line transition-colors hover:ring-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              >
+                <span className="text-micro text-fg-muted">{c.kind}</span>
+                <span className="mt-2 text-body-lg font-semibold text-fg">{c.name} alternative</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </Band>
 
       <FaqSection items={FAQS} />
