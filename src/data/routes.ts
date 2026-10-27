@@ -584,7 +584,7 @@ export const routes: readonly RouteMeta[] = [
     indexable: true,
     priority: 0.5,
     changeFrequency: "monthly",
-    parents: ["/", "/hosting"],
+    parents: ["/", "/website-design"],
   },
   {
     path: "/squarespace-alternative",
@@ -594,7 +594,7 @@ export const routes: readonly RouteMeta[] = [
     indexable: true,
     priority: 0.5,
     changeFrequency: "monthly",
-    parents: ["/", "/hosting"],
+    parents: ["/", "/website-design"],
   },
   {
     path: "/sitemap",
