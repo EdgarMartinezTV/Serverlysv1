@@ -2,11 +2,12 @@ import Link from "next/link";
 import { formatPrice, groupById } from "@/data/pricing";
 import { Grid, Headline } from "@/components/ref/kit";
 import { PLAN_CARD_ITEM, PlanCard } from "@/components/ref/plan-card";
+import { TermProvider, TermSelect } from "@/components/ref/term";
 
 const GROUP = groupById("wordpress");
 
 const WHY: Record<string, string> = {
-  starter: "One WordPress site on unlimited NVMe, domain and SSL included.",
+  starter: "One WordPress site on unlimited NVMe with free SSL, plus a free domain on 12 months or longer.",
   plus: "Seven sites and ~25,000 monthly visits, room for a blog and a shop.",
   turbo: "Unlimited sites and 6 GB RAM. The tier most WordPress projects settle on.",
   business: "8 GB RAM and ~100,000 monthly visits, for busy WooCommerce stores.",
@@ -22,16 +23,21 @@ export function Plans() {
         <Headline
           id="wp-plans-heading"
           title="Explore managed WordPress plans"
-          description="Premium performance, free migration and support, with the renewal rate printed on every card."
+          description="Premium performance, free migration and support, priced for the term you pick, with what you pay today on every card."
           className="mb-10 xl:mb-12"
         />
-        <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {GROUP.plans.map((plan) => (
-            <li key={plan.tier} className={PLAN_CARD_ITEM}>
-              <PlanCard plan={plan} group={GROUP} why={WHY[plan.tier]} cta="Choose plan" />
-            </li>
-          ))}
-        </ul>
+        <TermProvider>
+          <div className="mb-6 flex justify-end">
+            <TermSelect />
+          </div>
+          <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {GROUP.plans.map((plan) => (
+              <li key={plan.tier} className={PLAN_CARD_ITEM}>
+                <PlanCard plan={plan} group={GROUP} why={WHY[plan.tier]} cta="Choose plan" />
+              </li>
+            ))}
+          </ul>
+        </TermProvider>
         <div className="mt-8 flex flex-col items-center gap-3 text-center">
           <Link href="/pricing#compare-heading" className="inline-flex min-h-11 items-center gap-1.5 text-small font-semibold text-primary hover:text-primary-hover">
             View all features
@@ -41,8 +47,9 @@ export function Plans() {
           </Link>
           <p className="max-w-[720px] text-micro text-fg-muted">
             Unlimited storage and bandwidth are subject to fair use: sized for websites, not
-            file distribution or backup archives.
-            {starter?.setupFee ? ` Starter carries a one-off ${formatPrice(starter.setupFee)} setup fee.` : ""}
+            file distribution or backup archives. Prices are per month for the term you pick, paid upfront;
+            every term renews at the same price.
+            {starter?.setupFee ? ` Starter carries a one-off ${formatPrice(starter.setupFee)} setup fee on the monthly term.` : ""}
           </p>
         </div>
       </Grid>

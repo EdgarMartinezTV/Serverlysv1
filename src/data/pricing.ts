@@ -38,6 +38,20 @@ import { billing } from "./company";
  * earlier finding that all three groups share one price list is carried
  * forward; re-shoot the WordPress and WooCommerce stores before launch.
  *
+ * ✅ TERMS REINSTATED 2026-10-26, on Edgar's instruction (copy Hostinger's
+ * /pricing: a term picker that re-prices every card). The terms and prices in
+ * TERM_PRICES were read from the live WHMCS database (tblpricing, currency 1)
+ * that day and are identical across the Cloud, WordPress and WooCommerce
+ * groups. WHMCS sells 1 / 12 / 24 / 36 months; the setup fee applies only to
+ * the monthly term of the entry tier.
+ *
+ * ⚠ RENEWALS: WHMCS renews every service at the SAME price as its term
+ * (verified on live services the same day: monthly renews at 7.95, annual at
+ * 83.40; no auto-applied promotion). The `standard` figure below is NOT what a
+ * plan renews at — the old "37% savings" strapline was the 36-month price
+ * against the monthly one (4.95 vs 7.95). Term-aware surfaces use `quote()`;
+ * pages still printing `standard` as a renewal rate need the same fix.
+ *
  * The WHMCS slugs are legacy and do NOT match the display names — the mapping
  * below was verified from the live pages, not inferred. Changing a `slug`
  * breaks checkout for that plan.
@@ -315,9 +329,98 @@ export function groupById(id: string): PlanGroup | undefined {
   return planGroups.find((g) => g.id === id);
 }
 
-/** Checkout URL for a plan. Always route through this — never hand-build one. */
-export function orderUrl(group: PlanGroup, plan: Plan): string {
-  return billing.order(group.group, plan.slug);
+/** Checkout URL for a plan. Always route through this — never hand-build one.
+ *  With a term, the cart opens on that billing period (the WHMCS hook reads it). */
+export function orderUrl(group: PlanGroup, plan: Plan, term?: TermKey): string {
+  const url = billing.order(group.group, plan.slug);
+  return term ? `${url}?billingcycle=${term}` : url;
+}
+
+/* ── Billing terms ─────────────────────────────────────────────────────── */
+
+/** WHMCS billing-cycle keys, as the store and cart use them. */
+export type TermKey = "monthly" | "annually" | "biennially" | "triennially";
+
+export const TERMS: readonly { key: TermKey; months: number; label: string }[] = [
+  { key: "monthly", months: 1, label: "1 month" },
+  { key: "annually", months: 12, label: "12 months" },
+  { key: "biennially", months: 24, label: "24 months" },
+  { key: "triennially", months: 36, label: "36 months" },
+];
+
+/** The term the cards open on, and the one marked "Best value". */
+export const DEFAULT_TERM: TermKey = "annually";
+export const BEST_TERM: TermKey = "triennially";
+
+/**
+ * WHMCS tblpricing, read 2026-10-26. `total` is the price of the whole term,
+ * `setup` the one-off fee charged with it. Same figures in every hosting group.
+ */
+const TERM_PRICES: Record<PlanTier, Record<TermKey, { total: number; setup: number }>> = {
+  starter: {
+    monthly: { total: 7.95, setup: 2.95 },
+    annually: { total: 83.4, setup: 0 },
+    biennially: { total: 142.8, setup: 0 },
+    triennially: { total: 178.2, setup: 0 },
+  },
+  plus: {
+    monthly: { total: 11.95, setup: 0 },
+    annually: { total: 131.4, setup: 0 },
+    biennially: { total: 238.8, setup: 0 },
+    triennially: { total: 322.2, setup: 0 },
+  },
+  turbo: {
+    monthly: { total: 17.95, setup: 0 },
+    annually: { total: 203.4, setup: 0 },
+    biennially: { total: 382.8, setup: 0 },
+    triennially: { total: 538.2, setup: 0 },
+  },
+  business: {
+    monthly: { total: 23.95, setup: 0 },
+    annually: { total: 275.4, setup: 0 },
+    biennially: { total: 526.8, setup: 0 },
+    triennially: { total: 754.2, setup: 0 },
+  },
+};
+
+/** Terms that come with a free first-year domain (WHMCS freedomainpaymentterms). */
+const FREE_DOMAIN_TERMS: readonly TermKey[] = ["annually", "biennially", "triennially"];
+
+export type TermQuote = {
+  key: TermKey;
+  months: number;
+  label: string;
+  /** Whole-term price, without the setup fee. Also what the term renews at. */
+  total: number;
+  setup: number;
+  /** Charged at checkout: total + setup. */
+  today: number;
+  perMonth: number;
+  /** The no-commitment monthly price the saving is measured against. */
+  monthlyRate: number;
+  /** Whole-percent saving against paying monthly for the same months; 0 for monthly. */
+  savePct: number;
+  freeDomain: boolean;
+};
+
+/** Everything a card needs to price `plan` on term `key`. */
+export function quote(plan: Plan, key: TermKey): TermQuote {
+  const term = TERMS.find((t) => t.key === key) ?? TERMS[0];
+  const p = TERM_PRICES[plan.tier][term.key];
+  const monthlyRate = TERM_PRICES[plan.tier].monthly.total;
+  const full = monthlyRate * term.months;
+  return {
+    key: term.key,
+    months: term.months,
+    label: term.label,
+    total: p.total,
+    setup: p.setup,
+    today: p.total + p.setup,
+    perMonth: p.total / term.months,
+    monthlyRate,
+    savePct: term.months > 1 && p.total < full ? Math.round((1 - p.total / full) * 100) : 0,
+    freeDomain: FREE_DOMAIN_TERMS.includes(term.key),
+  };
 }
 
 /**

@@ -2,13 +2,14 @@ import Link from "next/link";
 import { groupById } from "@/data/pricing";
 import { Grid, Headline } from "@/components/ref/kit";
 import { PLAN_CARD_ITEM, PlanCard } from "@/components/ref/plan-card";
+import { TermProvider, TermSelect } from "@/components/ref/term";
 import { PRICING_HEAD } from "../_content";
 import { MatchBanner } from "./match-banner";
 
 const GROUP = groupById("cloud");
 
 const WHY: Record<string, string> = {
-  starter: "One site on unlimited NVMe, with the domain and SSL already in the price.",
+  starter: "One site on unlimited NVMe with free SSL, plus a free domain on 12 months or longer.",
   plus: "Seven sites and ~25,000 monthly visits, with room to grow into.",
   turbo: "Unlimited sites and 6 GB RAM. The tier most projects settle on.",
   business: "8 GB RAM and ~100,000 monthly visits, for peak-season traffic.",
@@ -50,18 +51,23 @@ export function Pricing() {
           className="mb-10 xl:mb-12"
         />
 
-        <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {GROUP.plans.map((plan) => (
-            <li key={plan.tier} className={PLAN_CARD_ITEM}>
-              <PlanCard
-                plan={plan}
-                group={GROUP}
-                why={WHY[plan.tier]}
-                cta={PRICING_HEAD.cta}
-              />
-            </li>
-          ))}
-        </ul>
+        <TermProvider>
+          <div className="mb-6 flex justify-end">
+            <TermSelect />
+          </div>
+          <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {GROUP.plans.map((plan) => (
+              <li key={plan.tier} className={PLAN_CARD_ITEM}>
+                <PlanCard
+                  plan={plan}
+                  group={GROUP}
+                  why={WHY[plan.tier]}
+                  cta={PRICING_HEAD.cta}
+                />
+              </li>
+            ))}
+          </ul>
+        </TermProvider>
 
         <div className="mt-8 flex flex-col items-center gap-3 text-center">
           <Link

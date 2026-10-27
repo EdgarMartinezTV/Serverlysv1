@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { formatPrice, groupById, orderUrl, type Plan } from "@/data/pricing";
+import { formatPrice, groupById, orderUrl, quote, type Plan } from "@/data/pricing";
 import { Check, Grid, Headline } from "@/components/ref/kit";
 import { COMPARE } from "../_content";
 
@@ -8,9 +8,9 @@ import { COMPARE } from "../_content";
  * centred 48/56 heading.
  *
  * Built from `data/pricing.ts`, so it cannot disagree with the cards above it.
- * The rows deliberately lead with BOTH rates: the monthly rate people pay now and
- * the standard rate it renews at. A compare table that shows only the promo
- * figure is the thing this site sells against.
+ * The rows lead with BOTH rates: the no-commitment monthly price and the
+ * 36-month rate (the lowest per-month price). Every term renews at its own
+ * price — WHMCS has no separate renewal rate (see data/pricing.ts).
  *
  * Stacked per plan below `md` — an 8-row × 4-column matrix at 343px would need
  * horizontal scrolling, which the repo's mobile check rejects.
@@ -33,7 +33,8 @@ export function Compare() {
       case "monthly":
         return `${formatPrice(p.monthly)}/mo`;
       case "standard":
-        return `${formatPrice(p.standard)}/mo`;
+        /* Row relabelled 2026-10-26: the old "standard rate" was not a renewal price. */
+        return `${formatPrice(quote(p, "triennially").perMonth)}/mo`;
       case "setupFee":
         return p.setupFee ? formatPrice(p.setupFee) : "None";
       default:

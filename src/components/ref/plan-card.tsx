@@ -1,18 +1,21 @@
+"use client";
+
 import { cn } from "@/lib/utils";
-import { formatPrice, formatSavings, orderUrl, type Plan, type PlanGroup } from "@/data/pricing";
+import { formatPrice, orderUrl, quote, type Plan, type PlanGroup } from "@/data/pricing";
 import { Check } from "./kit";
+import { useTerm } from "./term";
 
 /**
  * The reference's plan card, shared by /ecommerce-hosting and /pricing.
  *
  * Measured shape: max 360px wide, 16px radius, a discount pill top-right, the
- * name, one line of description, the struck standard rate, the monthly rate at
- * 32/40 semibold beside "/mo", a full-width CTA, the renewal line, a rule,
- * then the feature list. The featured tier is inverted to the dark surface.
+ * name, one line of description, the struck monthly price, the term's rate at
+ * 32/40 semibold beside "/mo", a full-width CTA, the "today you pay" line, a
+ * rule, then the feature list. The featured tier is inverted to the dark surface.
  *
- * Two rules from data/pricing.ts's header are enforced here rather than left
- * to callers: `monthly` never renders without the standard rate beside it, and
- * a plan's setup fee is printed because it is a real charge at checkout.
+ * Two rules are enforced here rather than left to callers: a discounted rate
+ * never renders without the monthly price it discounts, and a setup fee is
+ * printed because it is a real charge at checkout.
  */
 
 /** The featured tier is inverted, as the reference inverts its first card. */
@@ -34,8 +37,19 @@ import { Check } from "./kit";
  */
 export const PLAN_CARD_ITEM = "row-span-13 grid grid-rows-subgrid gap-y-0";
 
+/**
+ * 2026-10-26: priced for the term picked in the nearest <TermSelect> (Hostinger's
+ * /pricing). The saving is against paying monthly for the same months, the struck
+ * figure is the monthly price, and the line under the button says what is charged
+ * today and that the term renews at the same price — which is what WHMCS does.
+ */
 export function PlanCard({ plan, group, why, cta }: { plan: Plan; group: PlanGroup; why?: string; cta: string }) {
   const dark = Boolean(plan.popular);
+  const { term } = useTerm();
+  const q = quote(plan, term);
+  const pill = dark
+    ? q.savePct ? `Most popular · ${q.savePct}% off` : "Most popular"
+    : q.savePct ? `${q.savePct}% off` : "No commitment";
 
   const resources = [
     plan.specs.sites,
@@ -78,7 +92,7 @@ export function PlanCard({ plan, group, why, cta }: { plan: Plan; group: PlanGro
             dark ? "bg-white/15 text-white" : "bg-brand-50 text-primary",
           )}
         >
-          {dark ? `Most popular · ${formatSavings(plan)} off` : `${formatSavings(plan)} off`}
+          {pill}
         </span>
       </div>
       <h3 className={cn("relative mt-2 text-[20px] leading-7 font-semibold tracking-[-0.01em]", dark ? "text-white" : "text-fg")}>
@@ -88,19 +102,23 @@ export function PlanCard({ plan, group, why, cta }: { plan: Plan; group: PlanGro
         {plan.summary}
       </p>
 
-      <p className={cn("relative mt-5 text-small line-through", dark ? "text-fg-on-dark-muted" : "text-fg-muted")}>
-        <span className="sr-only">Standard rate </span>
-        {formatPrice(plan.standard)}
+      {/* Struck monthly price; kept (invisible) on the monthly term so rows stay aligned. */}
+      <p
+        className={cn("relative mt-5 text-small line-through", dark ? "text-fg-on-dark-muted" : "text-fg-muted", !q.savePct && "invisible")}
+        aria-hidden={!q.savePct}
+      >
+        <span className="sr-only">Monthly price </span>
+        {formatPrice(q.monthlyRate)}
       </p>
       <p className="relative flex items-baseline gap-1">
         <span className={cn("tabular text-[40px] leading-none font-semibold tracking-[-0.03em]", dark ? "text-white" : "text-fg")}>
-          {formatPrice(plan.monthly)}
+          {formatPrice(q.perMonth)}
         </span>
         <span className={cn("text-body", dark ? "text-fg-on-dark-secondary" : "text-fg-secondary")}>/mo</span>
       </p>
 
       <a
-        href={orderUrl(group, plan)}
+        href={orderUrl(group, plan, q.key)}
         className={cn(
           "relative mt-6 flex h-12 w-full items-center justify-center rounded-md text-body font-semibold transition-colors duration-fast focus-visible:outline-2 focus-visible:outline-offset-2",
           dark
@@ -112,8 +130,19 @@ export function PlanCard({ plan, group, why, cta }: { plan: Plan; group: PlanGro
       </a>
 
       <p className={cn("relative mt-3 text-micro", dark ? "text-fg-on-dark-muted" : "text-fg-muted")}>
-        Renews at {formatPrice(plan.standard)}/mo
-        {plan.setupFee ? `, plus a one-off ${formatPrice(plan.setupFee)} setup fee` : ". No setup fee"}.
+        {q.months === 1
+          ? `Today you pay ${formatPrice(q.today)}${q.setup ? `, including a one-off ${formatPrice(q.setup)} setup fee` : ""}. Renews at ${formatPrice(q.total)}/mo. Cancel anytime.`
+          : `Today you pay ${formatPrice(q.today)} for ${q.months} months. Renews at the same price. Cancel anytime.`}
+        <span className={cn("mt-1.5 flex items-center gap-1.5 font-medium", dark ? "text-white" : "text-fg")}>
+          {q.freeDomain ? (
+            <>
+              <Check className={cn("size-3.5 shrink-0", dark ? "text-primary-on-dark" : "text-success-fill")} />
+              Free domain for the first year
+            </>
+          ) : (
+            <span className={dark ? "text-fg-on-dark-muted" : "text-fg-muted"}>Free domain on 12 months or longer</span>
+          )}
+        </span>
       </p>
 
       <span aria-hidden className={cn("relative my-6 block h-px", dark ? "bg-white/12" : "bg-line")} />

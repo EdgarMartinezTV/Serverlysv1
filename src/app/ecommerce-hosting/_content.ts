@@ -49,9 +49,8 @@ export const PRICING_HEAD = {
   /** The reference's two footnotes, kept in its order. */
   fairUsage: { lead: "Unlimited features are subject to our ", link: "Fair Usage Policy", href: "/terms-of-service" },
   upfront:
-    /* Was the reference's "paid upfront … divided by the number of months"
-       line: term framing, which this site may not use (see data/pricing.ts). */
-    "Every price is a monthly rate. Applicable taxes, and any setup fee shown on the plan, are added at checkout.",
+    /* Term framing reinstated 2026-10-26 with the term picker (see data/pricing.ts). */
+    "Prices are shown per month for the term you pick and are paid upfront for that term; every term renews at the same price. Taxes, and any setup fee shown on the plan, are added at checkout.",
   why: "Why this plan?",
 };
 
@@ -63,7 +62,7 @@ export const PRICING_HEAD = {
  * already shows two lines above.
  */
 export const WHY: Record<string, string> = {
-  starter: "One store on unlimited NVMe, with the domain and SSL already in the price.",
+  starter: "One store on unlimited NVMe with free SSL, plus a free domain on 12 months or longer.",
   plus: "Seven sites and ~25,000 monthly visits — room for the catalogue to grow.",
   turbo: "Unlimited sites and 6 GB RAM. The tier most stores settle on.",
   business: "8 GB RAM and ~100,000 monthly visits, for peak-season traffic.",

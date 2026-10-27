@@ -59,12 +59,12 @@ export const BANDS: Record<string, { title: string; includes: string[] }> = {
 
 export const INCLUDES_LABEL = "All plans include:";
 export const TERM_NOTE =
-  "All prices are a monthly rate, shown beside the standard rate they discount.";
+  "Pick a term. Longer terms cost less per month, and every term renews at the same price.";
 export const CTA = "Choose plan";
 
 /** Per-tier rationale. Ours — the store publishes no equivalent line. */
 export const WHY: Record<string, string> = {
-  starter: "One site on unlimited NVMe, with the domain and SSL already in the price.",
+  starter: "One site on unlimited NVMe with free SSL, plus a free domain on 12 months or longer.",
   plus: "Seven sites and ~25,000 monthly visits — room to grow into.",
   turbo: "Unlimited sites and 6 GB RAM. The tier most projects settle on.",
   business: "8 GB RAM and ~100,000 monthly visits, for peak-season traffic.",
@@ -75,7 +75,7 @@ export const COMPARE = {
   description: "See at a glance what each plan costs and what it includes.",
   rows: [
     { label: "Monthly rate", key: "monthly" as const },
-    { label: "Standard rate", key: "standard" as const },
+    { label: "On a 36-month term", key: "standard" as const },
     { label: "Websites", key: "sites" as const },
     { label: "Monthly visits", key: "visits" as const },
     { label: "RAM", key: "memory" as const },

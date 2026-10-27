@@ -7,6 +7,7 @@ import { groupById } from "@/data/pricing";
 import { tlds } from "@/data/tlds";
 import { Check, Grid } from "@/components/ref/kit";
 import { PLAN_CARD_ITEM, PlanCard } from "@/components/ref/plan-card";
+import { TermProvider, TermSelect } from "@/components/ref/term";
 import { NavIcon } from "@/components/navigation/nav-icons";
 import { BANDS, CTA, INCLUDES_LABEL, TABS, TERM_NOTE, WHY } from "../_content";
 
@@ -23,8 +24,8 @@ import { BANDS, CTA, INCLUDES_LABEL, TABS, TERM_NOTE, WHY } from "../_content";
  * rather than styled buttons, because they switch the panel beneath them and
  * a screen reader needs to know that.
  *
- * The rate note is a STATEMENT, not a select: we advertise one monthly rate
- * with no term attached. See the note in _content.ts.
+ * The term select (2026-10-26, Hostinger's /pricing) re-prices every card in
+ * the panel; the terms are the ones WHMCS sells. See data/pricing.ts.
  */
 export function Plans() {
   const [active, setActive] = useState<string>(TABS[0].id);
@@ -126,14 +127,16 @@ export function Plans() {
               ))}
             </ul>
           ) : (
-            <>
-              {/* The reference puts a term select here; we sell no terms. */}
-              <p className="mt-8 text-[14px] leading-5 text-fg-muted">{TERM_NOTE}</p>
+            <TermProvider>
+              <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
+                <p className="text-[14px] leading-5 text-fg-muted">{TERM_NOTE}</p>
+                <TermSelect />
+              </div>
               <PlanGrid group={active} />
               <IncludedEverywhere group={active} />
               <div className="mt-10 flex flex-col items-center gap-4 text-center">
                 <p className="text-micro text-fg-muted">
-                  Every price is a monthly rate. Renewal rates are printed on each card before you buy.
+                  Prices are per month for the term you pick, paid upfront. Every term renews at the same price.
                 </p>
                 <a
                   href="#compare-heading"
@@ -142,7 +145,7 @@ export function Plans() {
                   Compare plans
                 </a>
               </div>
-            </>
+            </TermProvider>
           )}
         </Grid>
       </section>

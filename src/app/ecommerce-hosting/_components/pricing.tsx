@@ -2,6 +2,7 @@ import Link from "next/link";
 import { groupById } from "@/data/pricing";
 import { ArrowUpRight, Grid, Headline } from "@/components/ref/kit";
 import { PLAN_CARD_ITEM, PlanCard } from "@/components/ref/plan-card";
+import { TermProvider, TermSelect } from "@/components/ref/term";
 import { PRICING_HEAD, WHY } from "../_content";
 
 /**
@@ -43,13 +44,18 @@ export function Pricing() {
           className="mb-10 xl:mb-12"
         />
 
-        <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {GROUP.plans.map((plan) => (
-            <li key={plan.tier} className={PLAN_CARD_ITEM}>
-              <PlanCard plan={plan} group={GROUP} why={WHY[plan.tier]} cta={PRICING_HEAD.cta} />
-            </li>
-          ))}
-        </ul>
+        <TermProvider>
+          <div className="mb-6 flex justify-end">
+            <TermSelect />
+          </div>
+          <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {GROUP.plans.map((plan) => (
+              <li key={plan.tier} className={PLAN_CARD_ITEM}>
+                <PlanCard plan={plan} group={GROUP} why={WHY[plan.tier]} cta={PRICING_HEAD.cta} />
+              </li>
+            ))}
+          </ul>
+        </TermProvider>
 
         <div className="mt-8 flex flex-col items-center gap-4">
           <Link

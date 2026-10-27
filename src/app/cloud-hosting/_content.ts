@@ -49,9 +49,8 @@ export const PRICING_HEAD = {
   cta: "Choose plan",
   compare: "View all features",
   disclaimer:
-    "The price displayed is the monthly rate excluding applicable taxes. Applicable taxes, and any setup fee shown on the plan, are added at checkout.",
-  /* The reference's wording described a term billed upfront and was dropped
-     on 2026-09-16 along with the rest of the term framing. */
+    "Prices are shown per month for the term you pick and are paid upfront for that term; every term renews at the same price. Taxes, and any setup fee shown on the plan, are added at checkout.",
+  /* Term framing reinstated 2026-10-26 with the term picker (see data/pricing.ts). */
 };
 
 export const WHAT_IS = {
