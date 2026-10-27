@@ -6,7 +6,7 @@ import { billing } from "@/data/company";
 import { groupById } from "@/data/pricing";
 import { tlds } from "@/data/tlds";
 import { Check, Grid } from "@/components/ref/kit";
-import { PlanCard } from "@/components/ref/plan-card";
+import { PLAN_CARD_ITEM, PlanCard } from "@/components/ref/plan-card";
 import { NavIcon } from "@/components/navigation/nav-icons";
 import { BANDS, CTA, INCLUDES_LABEL, TABS, TERM_NOTE, WHY } from "../_content";
 
@@ -156,7 +156,7 @@ function PlanGrid({ group }: { group: string }) {
   return (
     <ul className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
       {g.plans.map((plan) => (
-        <li key={plan.tier}>
+        <li key={plan.tier} className={PLAN_CARD_ITEM}>
           <PlanCard plan={plan} group={g} why={WHY[plan.tier]} cta={CTA} />
         </li>
       ))}

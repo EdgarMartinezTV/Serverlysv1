@@ -26,6 +26,14 @@ import { Check } from "./kit";
  * (see `IncludedEverywhere`). Both numbers stay on every card, per the rule
  * in data/pricing.ts.
  */
+/**
+ * Cards in one row share their rows (CSS subgrid): the badge row, name, summary,
+ * prices, CTA and everything after line up across the grid even when the
+ * featured card's pills wrap to a second line. Callers put this on the <li>
+ * wrapping each card; the card itself spans the same 13 rows.
+ */
+export const PLAN_CARD_ITEM = "row-span-13 grid grid-rows-subgrid gap-y-0";
+
 export function PlanCard({ plan, group, why, cta }: { plan: Plan; group: PlanGroup; why?: string; cta: string }) {
   const dark = Boolean(plan.popular);
 
@@ -41,7 +49,7 @@ export function PlanCard({ plan, group, why, cta }: { plan: Plan; group: PlanGro
     <div
       data-sera-target={`${group.id}-${plan.tier}`}
       className={cn(
-        "relative flex h-full flex-col overflow-hidden rounded-2xl p-6",
+        "relative row-span-13 grid grid-rows-subgrid gap-y-0 overflow-hidden rounded-2xl p-6",
         dark
           ? "bg-[linear-gradient(180deg,var(--color-brand-950)_0%,#040a1c_100%)] shadow-e5"
           : "bg-canvas ring-1 ring-line",
@@ -126,7 +134,7 @@ export function PlanCard({ plan, group, why, cta }: { plan: Plan; group: PlanGro
       </p>
 
       {why && (
-        <div className={cn("relative mt-auto pt-6")}>
+        <div className="relative self-end pt-6">
           <div className={cn("rounded-xl p-4", dark ? "bg-white/[0.07]" : "bg-canvas-secondary")}>
             <p className={cn("text-small font-semibold", dark ? "text-primary-on-dark" : "text-primary")}>
               Why this plan?

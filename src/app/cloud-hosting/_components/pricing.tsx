@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { groupById } from "@/data/pricing";
 import { Grid, Headline } from "@/components/ref/kit";
-import { PlanCard } from "@/components/ref/plan-card";
+import { PLAN_CARD_ITEM, PlanCard } from "@/components/ref/plan-card";
 import { PRICING_HEAD } from "../_content";
 import { MatchBanner } from "./match-banner";
 
@@ -52,7 +52,7 @@ export function Pricing() {
 
         <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {GROUP.plans.map((plan) => (
-            <li key={plan.tier}>
+            <li key={plan.tier} className={PLAN_CARD_ITEM}>
               <PlanCard
                 plan={plan}
                 group={GROUP}
