@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { sitemapRoutes } from "@/data/routes";
 import { articles, articleCategories, categorySlug } from "@/data/articles";
 import { canonical } from "@/lib/seo";
+import { tutorials, tutorialPath } from "@/data/tutorials";
 
 /**
  * XML sitemap, generated from the route registry.
@@ -52,5 +53,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
-  return [...pages, ...categories, ...posts];
+  // Tutorials, likewise content rather than registry entries. They carry no
+  // date, so no lastModified — see the note on pages above.
+  const guides = tutorials.map((t) => ({
+    url: canonical(tutorialPath(t)),
+    changeFrequency: "yearly" as const,
+    priority: 0.5,
+  }));
+
+  return [...pages, ...categories, ...posts, ...guides];
 }

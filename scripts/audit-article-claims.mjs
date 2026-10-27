@@ -118,7 +118,10 @@ function collect(dir) {
   return out;
 }
 
-const files = DIRS.flatMap(collect);
+// Tutorials follow the same editorial rules (see the header of tutorials.ts).
+const EXTRA_FILES = ["src/data/tutorials.ts"];
+
+const files = [...DIRS.flatMap(collect), ...EXTRA_FILES];
 const showAll = process.argv.includes("--all");
 
 const hits = [];

@@ -293,7 +293,7 @@ export const LLMS_SUMMARIES: Record<string, string> = {
   "/blog":
     "Practical guides on hosting costs, migrations, Core Web Vitals and AI agents, written for people running a small business website.",
   "/tutorials":
-    "Point a domain, fix email deliverability, force HTTPS, restore a backup. Complete procedures with the exact records and settings.",
+    "Step-by-step procedures, each on its own page: point a domain, change nameservers, set up SPF, DKIM and DMARC, move WordPress, fix database errors, transfer a domain. Complete with the exact records, settings and commands.",
 
   "/terms-of-service":
     "The agreement between customer and Serverlys: what is provided, billing and renewals, acceptable use, suspension and termination.",

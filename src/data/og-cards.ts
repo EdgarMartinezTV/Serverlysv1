@@ -1,4 +1,5 @@
 import { articles } from "@/data/articles";
+import { tutorials, tutorialPath } from "@/data/tutorials";
 import { tldCatalog } from "./tld-catalog";
 import { industries, industryPath } from "./industries";
 
@@ -342,6 +343,14 @@ const ARTICLE_CARDS: Record<string, OgCard> = Object.fromEntries(
   ]),
 );
 
+/** Tutorials, likewise, from their own title, category and summary. */
+const TUTORIAL_CARDS: Record<string, OgCard> = Object.fromEntries(
+  tutorials.map((t) => [
+    tutorialPath(t),
+    { eyebrow: `Tutorial · ${t.category}`, title: t.title, detail: t.summary },
+  ]),
+);
+
 /** Domain-extension pages get a card from their own price and audience. */
 const TLD_CARDS: Record<string, OgCard> = {
   "/tld": {
@@ -383,7 +392,7 @@ const INDUSTRY_CARDS: Record<string, OgCard> = {
   ),
 };
 
-export const ogCards: Readonly<Record<string, OgCard>> = { ...PAGES, ...ARTICLE_CARDS, ...TLD_CARDS, ...INDUSTRY_CARDS };
+export const ogCards: Readonly<Record<string, OgCard>> = { ...PAGES, ...ARTICLE_CARDS, ...TUTORIAL_CARDS, ...TLD_CARDS, ...INDUSTRY_CARDS };
 
 /**
  * Route path → image route key, and back.
