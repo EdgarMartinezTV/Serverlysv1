@@ -19,7 +19,9 @@ import { cn } from "@/lib/utils";
 
 const SESSION: ReadonlyArray<[kind: "cmd" | "out" | "ok", text: string]> = [
   ["cmd", "ssh root@vps-31.serverlys.net"],
-  ["out", "Ubuntu 24.04.1 LTS · 4 vCPU · 8 GB · 160 GB NVMe"],
+  /* No CPU/RAM/disk figures: VPS is not on sale, and a spec in the hero
+     shell reads as a published plan. */
+  ["out", "Welcome to Ubuntu 24.04 LTS"],
   ["cmd", "systemctl status nginx"],
   ["ok", "● nginx.service — active (running)"],
   ["cmd", "node -v && psql --version"],
@@ -269,6 +271,122 @@ export function SharedLimitsMock({ className }: { className?: string }) {
         Approaching a limit tells you it is time to move up — before visitors
         notice, not after.
       </p>
+    </AppFrame>
+  );
+}
+
+/* ── VPS: what actually runs on one ──────────────────────────────────────── */
+
+const PROCESSES: ReadonlyArray<[name: string, kind: string, note: string]> = [
+  ["web", "nginx", "reverse proxy · :443"],
+  ["app", "node", "3 workers · :3000"],
+  ["api", "gunicorn", "python · :8000"],
+  ["queue", "worker", "jobs from redis"],
+  ["redis", "container", "127.0.0.1 only"],
+  ["db", "postgres", "local socket"],
+  ["backup", "systemd timer", "nightly pg_dump"],
+];
+
+/**
+ * A process list for one server. Illustrative of SHAPE — a typical
+ * application box with a proxy, an app, a worker and its data stores — and
+ * deliberately free of resource figures, because none are a published spec.
+ */
+export function WorkloadsMock({ className }: { className?: string }) {
+  return (
+    <div
+      aria-hidden="true"
+      className={cn(
+        "overflow-hidden rounded-xl bg-canvas-abyss shadow-e4 ring-1 ring-inset ring-white/10",
+        className,
+      )}
+    >
+      <div className="flex items-center gap-2 border-b border-white/10 px-3.5 py-2.5">
+        <span className="flex gap-1.5">
+          {["bg-error-fill", "bg-warning-fill", "bg-success-fill"].map((c) => (
+            <span key={c} className={cn("h-2 w-2 rounded-full opacity-70", c)} />
+          ))}
+        </span>
+        <p className="ml-1 font-mono text-ui text-fg-on-dark-muted">services — one server</p>
+      </div>
+      <div className="p-3.5 font-mono text-ui leading-relaxed">
+        <p className="flex gap-2">
+          <span className="shrink-0 text-accent-on-dark">$</span>
+          <span className="truncate text-white">systemctl list-units --state=running</span>
+        </p>
+        <div className="mt-3 grid grid-cols-[auto_auto_1fr] gap-x-4 gap-y-1.5">
+          {PROCESSES.map(([name, kind, note]) => (
+            <div key={name} className="contents">
+              <span className="flex items-center gap-1.5 text-white">
+                <span className="h-1.5 w-1.5 rounded-full bg-success-fill" />
+                {name}
+              </span>
+              <span className="text-fg-on-dark-muted">{kind}</span>
+              <span className="truncate text-fg-on-dark-muted">{note}</span>
+            </div>
+          ))}
+        </div>
+        <p className="mt-3 border-t border-white/10 pt-2.5 text-success-fill">
+          7 units · all active
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* ── Shared: what one account holds ──────────────────────────────────────── */
+
+/**
+ * The contents of a single shared account: sites, mail, certificates,
+ * backups. The tier is a bundle you use rather than a machine you run, so the
+ * picture is a panel, not a shell.
+ */
+export function SharedAccountMock({ className }: { className?: string }) {
+  return (
+    <AppFrame
+      nav={[
+        { label: "Sites", icon: <NavIcon name="globe" /> },
+        { label: "Email", icon: <NavIcon name="mail" /> },
+        { label: "Backups", icon: <NavIcon name="shield" /> },
+        { label: "Usage", icon: <NavIcon name="gauge" /> },
+      ]}
+      active="Sites"
+      title="Your account"
+      action="Add site"
+      className={className}
+    >
+      <div className="flex flex-col gap-2">
+        {[
+          ["yourbusiness.com", "WordPress"],
+          ["portfolio.yourbusiness.com", "Static HTML"],
+          ["offer.yourbusiness.com", "Landing page"],
+        ].map(([domain, kind]) => (
+          <div
+            key={domain}
+            className="flex items-center justify-between gap-3 rounded-lg border border-line-subtle px-3 py-2"
+          >
+            <div className="min-w-0">
+              <p className="truncate text-ui font-medium text-fg">{domain}</p>
+              <p className="text-ui text-fg-muted">{kind}</p>
+            </div>
+            <span className="inline-flex shrink-0 items-center rounded-full bg-success-fill/15 px-1.5 py-0.5 text-ui font-semibold text-success">
+              SSL active
+            </span>
+          </div>
+        ))}
+      </div>
+      <dl className="mt-3 grid grid-cols-3 gap-2 border-t border-line-subtle pt-3">
+        {[
+          ["Mailboxes", "hello@, sales@"],
+          ["Last backup", "Last night"],
+          ["WordPress", "Up to date"],
+        ].map(([k, v]) => (
+          <div key={k}>
+            <dt className="text-ui text-fg-muted">{k}</dt>
+            <dd className="mt-0.5 text-ui font-semibold text-fg">{v}</dd>
+          </div>
+        ))}
+      </dl>
     </AppFrame>
   );
 }
