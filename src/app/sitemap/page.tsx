@@ -7,6 +7,7 @@ import { breadcrumbTrail, routeFor, sitemapRoutes } from "@/data/routes";
 import { tldCatalog } from "@/data/tld-catalog";
 import { industries, industryPath } from "@/data/industries";
 import { articleCategories, articlesByCategory, categorySlug } from "@/data/articles";
+import { tutorialCategories, tutorialPath, tutorials } from "@/data/tutorials";
 
 const PATH = "/sitemap";
 
@@ -144,6 +145,13 @@ const GUIDES = articleCategories.map((category) => ({
   posts: articlesByCategory(category).map((a) => ({ href: `/blog/${a.slug}`, label: a.title })),
 }));
 
+const TUTORIALS = tutorialCategories.map((category) => ({
+  category,
+  links: tutorials
+    .filter((t) => t.category === category)
+    .map((t) => ({ href: tutorialPath(t), label: t.title })),
+}));
+
 /** Heading ids for aria-labelledby. */
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 
@@ -206,6 +214,24 @@ export default function SitemapPage() {
                 </Link>
               </h3>
               <LinkList links={g.posts} />
+            </section>
+          ))}
+        </div>
+      </Band>
+
+      <Band labelledBy="sitemap-tutorials-heading">
+        <h2 id="sitemap-tutorials-heading" className="display-md text-fg">
+          <Link href="/tutorials" className="hover:underline">
+            Tutorials
+          </Link>
+        </h2>
+        <div className="mt-10 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+          {TUTORIALS.map((g) => (
+            <section key={g.category} aria-labelledby={`sm-tutorials-${slug(g.category)}`}>
+              <h3 id={`sm-tutorials-${slug(g.category)}`} className="text-body-lg font-semibold text-fg">
+                {g.category}
+              </h3>
+              <LinkList links={g.links} />
             </section>
           ))}
         </div>

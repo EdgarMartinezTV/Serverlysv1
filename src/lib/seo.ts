@@ -409,6 +409,55 @@ export function articleGraph({
 }
 
 /**
+ * HowTo graph for one tutorial page.
+ *
+ * Every string here must be text the page renders visibly: `name` is the h1,
+ * `description` the lede, each step's `name`/`text` its heading and paragraph.
+ * Each step's `url` is the in-page anchor the page gives that step, so the two
+ * cannot point at different things.
+ *
+ * Google stopped showing HowTo rich results in 2023; the type is still the
+ * accurate schema.org description of a procedure page and other consumers
+ * (answer engines included) read it. `totalTime` is the page's stated
+ * estimate, never a measured value.
+ */
+export function howToGraph({
+  name,
+  description,
+  path,
+  minutes,
+  steps,
+}: {
+  name: string;
+  description: string;
+  path: string;
+  minutes: number;
+  steps: ReadonlyArray<{ name: string; text: string; anchor: string }>;
+}) {
+  const url = canonical(path);
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "@id": `${url}#howto`,
+    name,
+    description,
+    url,
+    totalTime: `PT${minutes}M`,
+    inLanguage: "en",
+    isPartOf: { "@id": SITE_ID },
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    publisher: { "@id": ORG_ID },
+    step: steps.map((s, i) => ({
+      "@type": "HowToStep",
+      position: i + 1,
+      name: s.name,
+      text: s.text,
+      url: `${url}#${s.anchor}`,
+    })),
+  };
+}
+
+/**
  * Service graph for a page that sells a service rather than a plan.
  *
  * WHY THIS EXISTS SEPARATELY FROM `productGraph`. `productGraph` describes a
