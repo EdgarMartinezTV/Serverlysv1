@@ -32,7 +32,7 @@ import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 const PATH = "/ai-agents";
 const PRO = formatAgentPrice(convoPro.monthly ?? 0);
-const DESCRIPTION = `Serverlys AI agents answer your customers in website chat, WhatsApp, email and on the phone, capture the lead and hand the rest to a person. ConvoAI Essentials comes with hosting; Pro is ${PRO}/month.`;
+const DESCRIPTION = `AI agents that answer customers in chat, WhatsApp, email and by phone, capture the lead and hand off to a person. Included with hosting; Pro is ${PRO}/month.`;
 
 export const metadata = pageMetadata({
   title: "AI Agents for Small Business — Chat & Phone | Serverlys",

@@ -20,7 +20,7 @@ const PATH = "/vps-hosting";
 export const metadata = pageMetadata({
   /* "Coming soon" in the title and description: the tier is not orderable,
      so neither the SERP snippet nor a share card may read as if it were. */
-  title: "VPS Hosting, coming soon — root access, reserved resources | Serverlys",
+  title: "VPS Hosting (coming soon) — root access | Serverlys",
   description:
     "Serverlys VPS hosting is coming soon. What it is for, what the plan will include, managed versus unmanaged responsibilities, and what to use today instead.",
   path: PATH,
