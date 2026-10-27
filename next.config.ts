@@ -171,6 +171,7 @@ const nextConfig: NextConfig = {
       { source: "/brand/:path*", headers: [publicAssetCache] },
       { source: "/mock/:path*", headers: [publicAssetCache] },
       { source: "/Hosting-images/:path*", headers: [publicAssetCache] },
+      { source: "/industries/:path*", headers: [publicAssetCache] },
       {
         source:
           "/:file(favicon\\.ico|favicon\\.svg|favicon-96x96\\.png|icon\\.png|apple-icon\\.png|apple-touch-icon\\.png)",

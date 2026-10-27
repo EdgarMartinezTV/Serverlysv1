@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Band } from "../../hosting/_components/band";
@@ -7,6 +8,7 @@ import { HtmlLang } from "@/app/restaurant-websites/_components/html-lang";
 import { breadcrumbGraph, canonical, pageMetadata } from "@/lib/seo";
 import { breadcrumbTrail } from "@/data/routes";
 import { INDUSTRY_HUB, industries, industryPath } from "@/data/industries";
+import { photosFor } from "@/data/industries/photos";
 import type { Locale } from "@/data/industries/types";
 
 /**
@@ -21,8 +23,8 @@ const COPY = {
     h1: "Website design for your industry",
     lede: "Every trade needs different things from a website. Pick yours to see what we build for it and what it costs.",
     extra: [
-      { href: "/restaurant-websites", name: "Restaurants" },
-      { href: "/cleaning-company-websites", name: "Cleaning companies" },
+      { href: "/restaurant-websites", name: "Restaurants", image: "/restaurant/diners.jpg" },
+      { href: "/cleaning-company-websites", name: "Cleaning companies", image: "/cleaning/window-cleaner.jpg" },
     ],
   },
   es: {
@@ -31,8 +33,8 @@ const COPY = {
     h1: "Diseño web para su sector",
     lede: "Cada sector necesita cosas distintas de un sitio web. Elija el suyo para ver qué construimos y cuánto cuesta.",
     extra: [
-      { href: "/es/restaurant-websites", name: "Restaurantes" },
-      { href: "/es/cleaning-company-websites", name: "Empresas de limpieza" },
+      { href: "/es/restaurant-websites", name: "Restaurantes", image: "/restaurant/diners.jpg" },
+      { href: "/es/cleaning-company-websites", name: "Empresas de limpieza", image: "/cleaning/window-cleaner.jpg" },
     ],
   },
 } as const;
@@ -56,7 +58,11 @@ export function hubMetadata(locale: Locale): Metadata {
 export function IndustryHub({ locale }: { locale: Locale }) {
   const c = COPY[locale];
   const items = [
-    ...industries.map((i) => ({ href: industryPath(i.slug, locale), name: i[locale].name })),
+    ...industries.map((i) => ({
+      href: industryPath(i.slug, locale),
+      name: i[locale].name,
+      image: photosFor(i.slug)[0]?.src,
+    })),
     ...c.extra,
   ].sort((a, b) => a.name.localeCompare(b.name, locale));
   return (
@@ -72,13 +78,27 @@ export function IndustryHub({ locale }: { locale: Locale }) {
       <Band labelledBy="hub-list">
         <h2 id="hub-list" className="sr-only">{c.h1}</h2>
         <ul className="mx-auto grid max-w-[1080px] gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((i) => (
+          {items.map((i, n) => (
             <li key={i.href}>
               <Link
                 href={i.href}
-                className="flex h-full rounded-2xl bg-canvas-secondary p-5 text-body font-semibold text-fg transition-colors duration-fast hover:bg-brand-50"
+                className="flex h-full flex-col overflow-hidden rounded-2xl bg-canvas-secondary text-body font-semibold text-fg transition-colors duration-fast hover:bg-brand-50"
               >
-                {i.name}
+                {i.image && (
+                  /* Decorative (the card text names the trade). The first row
+                     can sit in the first viewport, so it is not lazy. */
+                  <span className="relative block aspect-[16/9] w-full">
+                    <Image
+                      src={i.image}
+                      alt=""
+                      fill
+                      sizes="(min-width: 1080px) 350px, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, calc(100vw - 32px)"
+                      loading={n < 3 ? "eager" : "lazy"}
+                      className="object-cover"
+                    />
+                  </span>
+                )}
+                <span className="p-5">{i.name}</span>
               </Link>
             </li>
           ))}
