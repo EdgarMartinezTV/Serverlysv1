@@ -1,4 +1,5 @@
 import { formatSeoPrice, seoPlans } from "./seo-plans";
+import { convoEssentials, convoPro, formatAgentPrice } from "./ai-agent-plans";
 /**
  * FAQ content, taken verbatim in substance from the live pricing page.
  *
@@ -143,15 +144,38 @@ export const faqs: readonly Faq[] = [
     scopes: ["/hosting"],
   },
   {
+    question: "How much do Serverlys AI agents cost?",
+    answer: `ConvoAI Essentials is ${formatAgentPrice(convoEssentials.monthly ?? 0)} and comes with every Serverlys hosting plan: one AI agent in the chat window on your website, with 65 AI replies every 2 weeks. ConvoAI Pro is ${formatAgentPrice(convoPro.monthly ?? 0)}/month, or ${formatAgentPrice(convoPro.yearly ?? 0)}/year, with unlimited AI replies and the same agent on WhatsApp and email. ConvoAI Enterprise is priced to your setup. CallFlow, the voice agent, is usage-based and quoted for your setup.`,
+    scopes: ["/ai-agents"],
+  },
+  {
     question: "What can an AI agent actually answer?",
     answer:
-      "The routine questions that make up most of the volume: hours, location, delivery, pricing, availability, booking. It is trained on your own site and the details you give it, so it answers about your business rather than in general.",
+      "The routine questions that make up most of the volume: hours, location, delivery, pricing, availability, booking. It answers from the content you give it — quick answers on every plan, and your own documents through the knowledge base on Pro — so it talks about your business rather than in general.",
     scopes: ["/ai-agents"],
   },
   {
     question: "What happens when it does not know?",
     answer:
-      "It hands over rather than guesses. A refund dispute or an unusual request is passed to a person with the conversation attached, so nobody starts from scratch.",
+      "It hands over rather than guesses. It tells the customer it does not have the answer and offers to connect them with a person on your team, and that person picks up in the same inbox with the conversation attached, so nobody starts from scratch.",
+    scopes: ["/ai-agents"],
+  },
+  {
+    question: "How is it set up?",
+    answer:
+      "For website chat, you paste one script tag from the ConvoAI dashboard into your site — no coding — and give the agent your content. For CallFlow, you enter your business details, choose a voice, routing rules and calendar, then forward your existing business line to it or take a new number.",
+    scopes: ["/ai-agents"],
+  },
+  {
+    question: "Does it work on WhatsApp?",
+    answer:
+      "Yes, from ConvoAI Pro. Website chat is included on every plan and works on its own. WhatsApp needs a verified Meta Business account and a WhatsApp Business number connected through Meta's official Cloud API; a number on the regular WhatsApp Business app has to be migrated first.",
+    scopes: ["/ai-agents"],
+  },
+  {
+    question: "Which languages does it speak?",
+    answer:
+      "ConvoAI detects the customer's language and replies in it, across more than 30 languages, with nothing to configure. CallFlow supports multiple languages with automatic language detection on the call.",
     scopes: ["/ai-agents"],
   },
   {
@@ -164,6 +188,18 @@ export const faqs: readonly Faq[] = [
     question: "What happens outside opening hours?",
     answer:
       "The call is answered, the caller gets the information they asked for, and anything needing a person is captured as a message with a callback number.",
+    scopes: ["/ai-agents"],
+  },
+  {
+    question: "What happens to my customers' data?",
+    answer:
+      "Your knowledge base and conversation data are kept separate and used only to power your own agent. Customer data is encrypted in transit and at rest, and it is not sold or shared. You can delete a contact's data on request and export your data in standard formats; a Data Processing Agreement is available on Enterprise.",
+    scopes: ["/ai-agents"],
+  },
+  {
+    question: "Is there a contract?",
+    answer:
+      "No. ConvoAI has no contracts or commitments, and you can request cancellation from your Serverlys client area at any time. ConvoAI Essentials has no expiry date.",
     scopes: ["/ai-agents"],
   },
   {

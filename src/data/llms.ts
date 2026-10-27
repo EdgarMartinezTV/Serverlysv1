@@ -229,9 +229,9 @@ export const LLMS_SUMMARIES: Record<string, string> = {
     "Free tool. Look up any domain's registrar, registration and expiry dates, nameservers and transfer lock, live from the registry over RDAP. No account needed.",
 
   "/ai-agents":
-    "Serverlys AI agents answer your customers in chat and on the phone, capture the lead, book the appointment and hand the rest to a person.",
+    "Serverlys AI agents answer your customers in website chat, WhatsApp, email and on the phone, capture the lead and hand the rest to a person. ConvoAI Essentials ($0) comes with every hosting plan, ConvoAI Pro is $49/month, Enterprise and CallFlow voice are quoted.",
   "https://convoai.cloud/":
-    "ConvoAI is the Serverlys chat agent: trained on your own site, it answers customers around the clock, captures the lead and hands the rest to a person.",
+    "ConvoAI is the Serverlys chat agent: trained on your own content, it answers customers around the clock, captures the lead and hands the rest to a person.",
   "https://callflow.serverlys.com/":
     "CallFlow is the Serverlys voice agent: it answers the phone when nobody can, handles routine calls, books appointments and takes a proper message otherwise.",
   "/automations":
