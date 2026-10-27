@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Band, Heading, Tick } from "../../hosting/_components/band";
@@ -11,6 +12,7 @@ import { breadcrumbTrail } from "@/data/routes";
 import { billing } from "@/data/company";
 import { designFeatures, designOrderUrl, designPlans, formatDesignPrice } from "@/data/design-plans";
 import { industryBySlug, industryPath } from "@/data/industries";
+import { photosFor } from "@/data/industries/photos";
 import type { Industry, Locale } from "@/data/industries/types";
 
 /**
@@ -80,6 +82,7 @@ export function IndustryPage({ industry, locale }: { industry: Industry; locale:
   const path = industryPath(industry.slug, locale);
   const other: Locale = locale === "en" ? "es" : "en";
   const faqs = copy.faq.map((f) => ({ ...f, scopes: [path] }));
+  const [hero, ...gallery] = photosFor(industry.slug);
   const related = industry.related
     .map((s) => industryBySlug(s))
     .filter((r): r is Industry => Boolean(r));
@@ -132,6 +135,22 @@ export function IndustryPage({ industry, locale }: { industry: Industry; locale:
             </Link>
           </p>
         </div>
+        {hero && (
+          /* Static and eagerly fetched: on desktop this sits in the first
+             viewport, so it must never wait on a scroll reveal (LCP). */
+          <div className="mx-auto mt-12 max-w-[1080px] overflow-hidden rounded-2xl bg-white/5 ring-1 ring-white/10">
+            <Image
+              src={hero.src}
+              alt={hero.alt[locale]}
+              width={hero.width}
+              height={hero.height}
+              sizes="(min-width: 1180px) 1080px, calc(100vw - 32px)"
+              loading="eager"
+              fetchPriority="high"
+              className="aspect-[16/9] h-auto w-full object-cover md:aspect-[21/9]"
+            />
+          </div>
+        )}
       </Band>
 
       <Band labelledBy="ind-needs">
@@ -144,6 +163,22 @@ export function IndustryPage({ industry, locale }: { industry: Industry; locale:
             </li>
           ))}
         </ul>
+        {gallery.length > 0 && (
+          <ul className="mt-12 grid gap-4 sm:grid-cols-3">
+            {gallery.map((p) => (
+              <li key={p.src} className="overflow-hidden rounded-2xl bg-canvas-secondary">
+                <Image
+                  src={p.src}
+                  alt={p.alt[locale]}
+                  width={p.width}
+                  height={p.height}
+                  sizes="(min-width: 640px) 33vw, calc(100vw - 32px)"
+                  className="aspect-[4/3] h-auto w-full object-cover"
+                />
+              </li>
+            ))}
+          </ul>
+        )}
       </Band>
 
       <Band tone="subtle" labelledBy="ind-pages">
