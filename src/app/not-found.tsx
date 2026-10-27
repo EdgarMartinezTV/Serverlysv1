@@ -1,66 +1,45 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
-import { Container } from "@/components/ui/container";
-import { Button } from "@/components/ui/button";
 import { billing } from "@/data/company";
-import { formatPrice, groupById } from "@/data/pricing";
 
 /**
- * 404.
+ * 404 — 2026-10-26 redesign, on Edgar's instruction: the page IS his artwork
+ * (public/404/robot-404.png, the robot with the pixel "404" screen), "exactly
+ * like that, no reference or inspiration". So the art is used as supplied, not
+ * redrawn, and the page around it is built to disappear into it:
  *
- * A recovery surface, not a dead end. 404s are guaranteed at cutover — the
- * legacy site has 108 indexed URLs — so this page's job is to get someone back
- * into the funnel rather than to apologise.
+ *  · The scene behind the art is the art's own background, measured off the
+ *    image's edge pixels: an eased vertical gradient from #f2d466 to #8db7c3.
+ *    GRADIENT below reproduces it with the measured stops. From `lg` it is
+ *    painted at the bottom of the scene at exactly the art's rendered height
+ *    (min(752px, 50vw)), with the art's top yellow above it; on phones it
+ *    belongs to the art's own strip. Either way the seam is invisible.
+ *  · The art is cut off at its bottom edge and its orange shelf runs off its
+ *    right edge, so the image sits flush with the bottom of the scene and, from
+ *    `lg`, flush with the right edge of the window — the shelf runs off-screen
+ *    the way it runs off the artwork.
+ *  · Ink and buttons take the art's colours: near-black outlines (#1b1408) and
+ *    the screen's dark glass with its yellow pixels (#e9e35a).
+ *
+ * The plans panel that used to sit here is gone: it printed the derived
+ * "standard" rate as a renewal price, which WHMCS does not charge.
  *
  * `noindex` so soft-404s never enter the index.
- *
- * ── SHAPE ────────────────────────────────────────────────────────────────────
- *
- * Centred, one column, one primary action, then a single offer band. Edgar
- * asked for the shape Hostinger's 404 uses, and the reason it works is worth
- * naming rather than just copying: a 404 is the one page where the visitor has
- * NO intent the page can read. Giving them a menu makes them choose again
- * having just failed to find something. Giving them one obvious way back, and
- * one reason to stay, is the whole job.
- *
- * ⚠ NONE OF HOSTINGER'S ACTUAL PAGE IS HERE. Not their markup, not their
- * copy — "Oops! This page can't be found." and "Page lost. Deal found." are
- * theirs — and not their photography. What is borrowed is the ARRANGEMENT,
- * which is not ownable: centred type, generous air, single CTA, one offer band.
- * Everything inside it is Serverlys': its type scale, its tokens, its voice,
- * and its actual prices read from `data/pricing.ts`.
- *
- * ⚠ THE OFFER BAND CARRIES A PRICE, NOT A PICTURE. Theirs has a stock
- * photograph in that slot. This project has no photography at all — one logo
- * file, stated as a known gap in DESIGN_SYSTEM.md §12 — so filling the slot
- * with a decorative graphic would mean commissioning an asset to say nothing.
- * The real entry price with its renewal rate beside it is both the thing a lost
- * visitor most wants and the company's actual argument. It is a better use of
- * the space than an image would be.
- *
- * ⚠ `text-h1`, NOT `text-display`. The scale in DESIGN_SYSTEM.md §1 reserves
- * display for "Hero only. One per site." A 404 headline is not the site's hero,
- * however tempting 80px is here. The page reads large because of the air around
- * it and the narrow measure, which is what actually produces that effect.
  */
 export const metadata: Metadata = {
   title: "Page not found",
   robots: { index: false, follow: true },
 };
 
-/**
- * The quiet recovery row.
- *
- * ⚠ TEXT LINKS, NOT CARDS, AND THAT IS A REVERSAL. This used to be a stacked
- * list of three bordered rows with descriptions, directly under the headline —
- * which put a second decision immediately after the primary one and pulled the
- * eye away from it. Demoted to one line at the bottom: still there for the
- * visitor who arrived from a specific dead link and knows what they wanted,
- * invisible to the one who just needs the way out.
- *
- * Four, because at cutover the legacy paths that changed are overwhelmingly
- * hosting, domains, migrations and support.
- */
+/** The artwork's background, measured at 0, 25, 38, 50, 63, 75, 88 and 100% of its height. */
+const GRADIENT =
+  "linear-gradient(180deg, #f2d466 0%, #ead26d 25%, #e2cf75 38%, #d5cc80 50%, #c8c88d 63%, #b7c39b 75%, #a3bdad 88%, #8db7c3 100%)";
+
+const INK = "#1b1408";
+const SCREEN = "#e9e35a";
+
+/** For the visitor who followed a specific dead link and knows what they wanted. */
 const ELSEWHERE = [
   { name: "Hosting", href: "/hosting" },
   { name: "Domains", href: "/domain-name" },
@@ -69,163 +48,82 @@ const ELSEWHERE = [
 ] as const;
 
 export default function NotFound() {
-  /*
-   * Read from the same source the pricing pages render. A hand-typed "$7.95"
-   * here would be a fifth copy of a number that changes, on the one page
-   * nobody thinks to check after a price change.
-   */
-  const cloud = groupById("cloud");
-  const starter = cloud?.plans.find((plan) => plan.tier === "starter");
-
   return (
-    <>
-      {/* ── The way out ──────────────────────────────────────────────────── */}
-      {/*
-        ⚠ THE BOTTOM PADDING IS SMALLER THAN THE TOP, DELIBERATELY. Symmetrical
-        py-36 left roughly 200px of empty canvas between the primary button and
-        the offer band — enough that the band read as a separate page rather
-        than as the second half of this one. The air above the headline is what
-        produces the spacious feeling; the air below it was just distance.
-      */}
-      <section className="bg-canvas pt-20 pb-14 sm:pt-28 sm:pb-16 lg:pt-32 lg:pb-20">
-        <Container>
-          <div className="mx-auto max-w-[680px] text-center">
-            <p className="inline-flex rounded-md bg-brand-50 px-2.5 py-1 text-small font-medium text-primary">Error 404</p>
-
-            <h1 className="display-lg mt-5 text-fg">This page does not exist</h1>
-
-            <p className="mx-auto mt-6 max-w-[52ch] text-body-lg text-fg-secondary">
-              The link may be out of date, or the address may have a typo. Nothing is
-              wrong with your site or your account.
+    <section
+      aria-labelledby="notfound-heading"
+      className="relative isolate overflow-hidden"
+      style={{ backgroundColor: "#f2d466", color: INK }}
+    >
+      <style>{`
+        .nf-art { background: ${GRADIENT}; }
+        @media (min-width: 1024px) {
+          .nf-row { background: ${GRADIENT} bottom / 100% min(752px, 50vw) no-repeat, #f2d466; }
+          .nf-art { background: none; }
+        }
+      `}</style>
+      <div className="nf-row relative">
+        <div className="mx-auto grid w-full max-w-[1280px] grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+          <div className="relative z-10 px-4 pt-14 pb-8 sm:px-8 lg:self-center lg:px-10 lg:py-16">
+            <p
+              className="inline-flex items-center gap-2 rounded-md px-2.5 py-1 font-mono text-small font-semibold tracking-[0.08em] uppercase"
+              style={{ backgroundColor: INK, color: SCREEN }}
+            >
+              Error 404
             </p>
 
-            {/*
-              ⚠ ONE PRIMARY, ONE QUIET SECOND. "Client login" earns its place
-              specifically on this page: a 404 on a hosting site is very often
-              an existing customer following a stale bookmark to their account,
-              and the client area is on a different origin (WHMCS) so no amount
-              of site navigation gets them there.
-            */}
-            <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-              <Button href="/" size="lg">
+            <h1 id="notfound-heading" className="display-lg mt-5 max-w-[14ch]" style={{ color: INK }}>
+              This page does not exist
+            </h1>
+
+            <p className="mt-5 max-w-[46ch] text-body-lg" style={{ color: "rgb(27 20 8 / 0.78)" }}>
+              The link may be out of date, or the address may have a typo. Nothing is wrong with
+              your site or your account.
+            </p>
+
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <Link
+                href="/"
+                className="inline-flex h-12 items-center rounded-xl px-6 text-body font-semibold shadow-[0_6px_0_0_rgb(27_20_8_/_0.25)] transition-transform duration-fast hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2"
+                style={{ backgroundColor: INK, color: SCREEN, outlineColor: INK }}
+              >
                 Back to home
-              </Button>
-              <Button href={billing.login} variant="ghost" size="lg">
+              </Link>
+              <a
+                href={billing.login}
+                className="inline-flex h-12 items-center rounded-xl border-2 px-6 text-body font-semibold transition-colors duration-fast hover:bg-[rgb(27_20_8_/_0.08)] focus-visible:outline-2 focus-visible:outline-offset-2"
+                style={{ borderColor: INK, color: INK, outlineColor: INK }}
+              >
                 Client login
-              </Button>
+              </a>
             </div>
-          </div>
-        </Container>
-      </section>
 
-      {/* ── One reason to stay ───────────────────────────────────────────── */}
-      <section
-        aria-labelledby="notfound-offer-heading"
-        className="bg-canvas pb-20 sm:pb-28 lg:pb-36"
-      >
-        <Container width="wide">
-          <div className="overflow-hidden rounded-3xl bg-brand-50">
-            <div className="flex flex-col gap-8 p-8 sm:p-10 lg:flex-row lg:items-center lg:gap-14 lg:p-14">
-              <div className="lg:max-w-[34rem]">
-                <p className="inline-flex rounded-md bg-white px-2.5 py-1 text-small font-medium text-primary">Plans</p>
-                {/*
-                  ⚠ NO EM DASH, AND THE MEASURE IS IN rem NOT ch. The first
-                  draft read "While you are here — the renewal rate, up front"
-                  inside `max-w-[46ch]`, which at 40px display type wrapped to
-                  three lines and put the em dash alone at the start of the
-                  second one. `ch` is measured on the BODY font, so it sizes a
-                  display-type block wrongly by design.
-                */}
-                <h2 id="notfound-offer-heading" className="display-md mt-4 text-fg">
-                  The renewal rate, shown up front
-                </h2>
-                {/*
-                  ⚠ EVERY CLAIM HERE WAS CHECKED AGAINST `data/pricing.ts`, and
-                  the first draft got two of them wrong — which is exactly why
-                  the check matters on a page nobody revisits after a price
-                  change:
-                    · "on a 3-year term" — the term was REMOVED from the model.
-                      `monthly` carries no term; the file says so explicitly.
-                    · "no setup fee" — FALSE for Starter, which carries $2.95.
-                      That is the plan quoted in the block beside this sentence.
-                  Free migration and the 30-day guarantee are both real and both
-                  published, so those two stayed.
-                */}
-                <p className="mt-4 text-body text-fg-secondary">
-                  Every plan shows the monthly rate and the rate it renews at, side
-                  by side. Free migration, and thirty days to change your mind.
-                </p>
-                <p className="mt-6">
-                  <Button href="/pricing" size="md">
-                    See all plans
-                  </Button>
-                </p>
-              </div>
-
-              {/*
-                The price block stands in for their photograph. Both figures,
-                always — the term rate alone is the pattern this company sells
-                against, and printing it by itself here would contradict the
-                sentence directly above it.
-              */}
-              {starter && (
-                <dl className="shrink-0 rounded-lg bg-canvas p-6 shadow-e2 lg:ml-auto lg:min-w-[264px]">
-                  <dt className="text-small text-fg-muted">Hosting from</dt>
-                  <dd className="mt-1 flex items-baseline gap-1.5">
-                    <span className="tabular text-h2 text-fg">
-                      {formatPrice(starter.monthly)}
-                    </span>
-                    <span className="text-body text-fg-secondary">/mo</span>
-                  </dd>
-                  {/*
-                    Worded the way `pricing-table.tsx` words it, because that is
-                    the page this one sends people to and the two must not
-                    describe the same number differently. The setup fee is
-                    printed for the reason the data file gives: it is a real
-                    charge on the first invoice, so omitting it understates it.
-                  */}
-                  <dd className="mt-2 text-small text-fg-secondary">
-                    Standard rate{" "}
-                    <span className="tabular font-medium text-fg">
-                      {formatPrice(starter.standard)}/mo
-                    </span>
-                    {starter.setupFee
-                      ? ` · ${formatPrice(starter.setupFee)} setup fee`
-                      : null}
-                  </dd>
-                </dl>
-              )}
-            </div>
+            <nav aria-label="Popular pages" className="mt-8">
+              <ul className="flex flex-wrap gap-x-5 gap-y-2 text-small font-semibold">
+                {ELSEWHERE.map((l) => (
+                  <li key={l.href}>
+                    <Link href={l.href} className="underline decoration-2 underline-offset-4 hover:opacity-70" style={{ color: INK }}>
+                      {l.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
 
-          {/* ── For the visitor who knows what they wanted ─────────────── */}
-          <nav aria-label="Other pages" className="mt-10 text-center">
-            <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-              {ELSEWHERE.map((item) => (
-                <li key={item.name}>
-                  {/*
-                    ⚠ `inline-flex` + `min-h-11` IS THE TOUCH TARGET, NOT
-                    DECORATION. As bare inline text these links measured 18px
-                    tall and `scripts/a11y.mjs` flagged all four — WCAG 2.5.8
-                    wants 24px minimum, and this project's own audit enforces
-                    it. The version these replaced was a list of full-height
-                    rows, so demoting them to text links quietly dropped below
-                    the floor. 44px, which is the comfortable figure rather
-                    than the legal one, and the underline still sits where the
-                    text is.
-                  */}
-                  <Link
-                    href={item.href}
-                    className="inline-flex min-h-11 items-center px-1 text-small text-fg-secondary underline decoration-line underline-offset-4 transition-colors hover:text-primary hover:decoration-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                  >
-                    {item.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </Container>
-      </section>
-    </>
+          {/* Flush with the bottom of the scene; from lg, flush with the window's right edge. */}
+          <div className="nf-art relative flex items-end justify-center lg:justify-end lg:-mr-[max(0px,calc((100vw-1280px)/2))]">
+            <Image
+              src="/404/robot-404.png"
+              alt=""
+              width={752}
+              height={752}
+              priority
+              sizes="(min-width: 1024px) 752px, 100vw"
+              className="block h-auto w-full max-w-[752px] select-none"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
