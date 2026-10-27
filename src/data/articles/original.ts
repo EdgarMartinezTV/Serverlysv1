@@ -320,6 +320,7 @@ export const originalArticles: readonly Article[] = [
   {
     slug: "get-recommended-by-chatgpt-and-ai-search",
     title: "How to get recommended by ChatGPT and Google's AI answers",
+    seoTitle: "How to get recommended by ChatGPT and Google AI answers",
     description:
       "Customers now ask AI assistants instead of scrolling results. What decides whether your business is the one they name, and what to fix first.",
     category: "AI",

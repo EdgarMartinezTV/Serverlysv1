@@ -40,6 +40,8 @@ export type ArticleCategory =
 export type Article = {
   slug: string;
   title: string;
+  /** Shorter <title> for search results when the headline runs past ~60 characters. */
+  seoTitle?: string;
   /** Meta description and the card summary. One sentence. */
   description: string;
   category: ArticleCategory;

@@ -374,6 +374,7 @@ export const batch20261025: readonly Article[] = [
   {
     slug: "website-accessibility-checklist",
     title: "Website accessibility checklist for small businesses (WCAG 2.2)",
+    seoTitle: "Small business website accessibility checklist (WCAG 2.2)",
     description:
       "A plain-English website accessibility checklist based on WCAG 2.2 AA, with quick checks a small business can run itself and what the law says today.",
     category: "Getting started",

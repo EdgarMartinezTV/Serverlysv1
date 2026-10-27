@@ -41,7 +41,7 @@ export async function generateMetadata(props: PageProps<"/blog/[slug]">) {
   // truncating the part that earns the click. Google appends the site name to
   // article results anyway.
   const base = pageMetadata({
-    title: article.title,
+    title: article.seoTitle ?? article.title,
     description: article.description,
     path: `/blog/${article.slug}`,
   });

@@ -3,6 +3,7 @@ import type { Article } from "../types";
 export const article: Article = {
   slug: "web-hosting-cost-2026",
   title: "How Much Does Web Hosting Cost in 2026? Prices & Renewals",
+  seoTitle: "How Much Does Web Hosting Cost in 2026? Prices and Renewals",
   description: "Web hosting prices in 2026: shared, cloud, VPS, dedicated and managed hosting costs, with the renewal rates and fees to check before you buy.",
   category: "Hosting",
   published: "2026-06-20",
