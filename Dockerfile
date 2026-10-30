@@ -27,7 +27,11 @@ ARG NEXT_PUBLIC_ALLOW_INDEXING
 ARG NEXT_PUBLIC_GTM_ID
 ARG NEXT_PUBLIC_GA_MEASUREMENT_ID
 ARG NEXT_PUBLIC_CLARITY_PROJECT_ID
-ARG NEXT_PUBLIC_META_PIXEL_ID
+# The pixel ID is public (it is in every page's source), so production's is
+# the default here; an Easypanel env value still overrides it. It loads only
+# where analytics resolves on (the production origin) and only after a
+# marketing Accept — staging builds stay clean.
+ARG NEXT_PUBLIC_META_PIXEL_ID=923209260726529
 ARG NEXT_PUBLIC_ANALYTICS_ENABLED
 ARG NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
 ARG NEXT_PUBLIC_BING_SITE_VERIFICATION
