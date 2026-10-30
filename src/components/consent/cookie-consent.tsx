@@ -56,22 +56,35 @@ const CATEGORY_COPY: Record<
   },
   marketing: {
     label: "Marketing",
-    detail:
-      "Would measure which adverts lead to a sign-up. Nothing in this category is installed today.",
+    detail: "Measures which of our adverts lead to a visit, a sign-up or a checkout.",
   },
 };
 
 export function CookieConsent({
   analyticsVendors,
   analyticsItems,
+  marketingVendors,
+  marketingItems,
 }: {
   /** Vendor names this build loads, e.g. ["Google Analytics", "Microsoft Clarity"]. */
   analyticsVendors: readonly string[];
   /** Line items for the settings panel — lib/analytics/config.ts. */
   analyticsItems: readonly string[];
+  /** Marketing vendor names this build loads, e.g. ["the Meta Pixel"]. */
+  marketingVendors: readonly string[];
+  /** Marketing line items for the settings panel — lib/analytics/config.ts. */
+  marketingItems: readonly string[];
 }) {
   const analyticsEnabled = analyticsVendors.length > 0;
-  const trackers = trackersFor(analyticsItems);
+  const marketingEnabled = marketingVendors.length > 0;
+  const trackers = trackersFor(analyticsItems, marketingItems);
+  const uses = [
+    analyticsEnabled && `${analyticsVendors.join(" and ")} to see which pages help people`,
+    marketingEnabled && `${marketingVendors.join(" and ")} to measure which of our adverts work`,
+  ].filter(Boolean);
+  const emptyCategories = [!analyticsEnabled && "Analytics", !marketingEnabled && "Marketing"].filter(
+    Boolean,
+  );
   /**
    * Whether a choice exists is EXTERNAL state (localStorage), so it is read
    * through useSyncExternalStore rather than copied into state inside an
@@ -169,8 +182,8 @@ export function CookieConsent({
             <div className="min-w-0">
               <h2 className="text-body font-semibold text-fg">Your privacy</h2>
               <p className="mt-1.5 text-small text-fg-secondary">
-                {analyticsEnabled
-                  ? `We store what the site needs to work, like a notice you closed or your domain shortlist. With your OK we also use ${analyticsVendors.join(" and ")} to see which pages help people. No advertising cookies.`
+                {uses.length
+                  ? `We store what the site needs to work, like a notice you closed or your domain shortlist. With your OK we also use ${uses.join(", and ")}.${marketingEnabled ? "" : " No advertising cookies."}`
                   : "We store only what the site needs to work, like a notice you closed or your domain shortlist. No advertising or analytics cookies, and no third-party trackers."}{" "}
                 <Link
                   href="/privacy-policy#cookies"
@@ -216,9 +229,11 @@ export function CookieConsent({
             </h2>
             <p className="mt-2 text-small text-fg-secondary">
               Every category is listed with exactly what it currently covers.
-              {analyticsEnabled
-                ? " Marketing is empty, and we would rather show you that than pad the list."
-                : " Two of the three are empty, and we would rather show you that than pad the list."}
+              {emptyCategories.length === 1
+                ? ` ${emptyCategories[0]} is empty, and we would rather show you that than pad the list.`
+                : emptyCategories.length === 2
+                  ? " Two of the three are empty, and we would rather show you that than pad the list."
+                  : ""}
             </p>
 
             <ul className="mt-5 flex flex-col gap-3">

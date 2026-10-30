@@ -1,5 +1,6 @@
 import type { AnalyticsConfig } from "./config";
 import type { ConsentState } from "@/lib/consent";
+import { currentAttribution } from "./attribution";
 
 /**
  * Vendor loaders. Called ONLY by components/analytics after the visitor has
@@ -14,7 +15,7 @@ import type { ConsentState } from "@/lib/consent";
  * answer, which is exactly what the cookie policy promises does not happen.
  */
 
-const loaded = { gtm: false, gtag: false, clarity: false };
+const loaded = { gtm: false, gtag: false, clarity: false, meta: false };
 
 function inject(src: string): void {
   if (document.querySelector(`script[src="${src}"]`)) return;
@@ -115,6 +116,55 @@ export function loadVendors(config: AnalyticsConfig, consent: ConsentState): voi
     ad_Storage: consent.marketing ? "granted" : "denied",
     analytics_Storage: "granted",
   });
+}
+
+/**
+ * Meta Pixel. Called ONLY after the visitor accepts MARKETING — the analytics
+ * answer does not matter either way.
+ *
+ *  · autoConfig off: no automatic button-click or page-metadata collection.
+ *    Only the events track() maps (lib/analytics) are sent.
+ *  · PageView: sent ONCE here. After that the pixel's own history tracking
+ *    sends one per App Router navigation. Do not add a per-route PageView and
+ *    do not set fbq.disablePushState: with that flag on, fbevents drops every
+ *    later PageView, manual ones included (verified 2026-10-29).
+ *  · _fbc: the pixel only writes it from an fbclid in the CURRENT URL. Someone
+ *    who lands from an ad and accepts on a later page has lost that, so it is
+ *    rebuilt from the attribution already carried for WHMCS.
+ */
+export function loadMetaPixel(pixelId: string): void {
+  if (loaded.meta) {
+    window.fbq?.("consent", "grant");
+    return;
+  }
+  loaded.meta = true;
+  if (!window.fbq) {
+    const fbq: MetaPixel = Object.assign(
+      (...args: unknown[]) => {
+        if (fbq.callMethod) fbq.callMethod(...args);
+        else fbq.queue.push(args);
+      },
+      { queue: [] as unknown[], loaded: true, version: "2.0" },
+    ) as MetaPixel;
+    fbq.push = fbq;
+    window.fbq = fbq;
+    window._fbq = window._fbq || fbq;
+  }
+  const fbclid = currentAttribution()?.fbclid;
+  if (fbclid && !document.cookie.split(";").some((c) => c.trim().startsWith("_fbc="))) {
+    const maxAge = 90 * 24 * 60 * 60;
+    document.cookie = `_fbc=fb.1.${Date.now()}.${encodeURIComponent(fbclid)}; max-age=${maxAge}; path=/; SameSite=Lax; Secure`;
+  }
+  window.fbq!("set", "autoConfig", false, pixelId);
+  window.fbq!("init", pixelId);
+  window.fbq!("track", "PageView");
+  inject("https://connect.facebook.net/en_US/fbevents.js");
+}
+
+/** Marketing withdrawn (or never given): revoke, and delete Meta's cookies. */
+export function disableMetaPixel(): void {
+  if (loaded.meta) window.fbq?.("consent", "revoke");
+  deleteCookies((n) => n === "_fbp" || n === "_fbc");
 }
 
 const GOOGLE_COOKIES = (name: string) => name === "_ga" || name.startsWith("_ga_") || name === "_gid";

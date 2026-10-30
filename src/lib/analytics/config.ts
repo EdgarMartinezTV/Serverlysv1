@@ -37,12 +37,19 @@ export type AnalyticsConfig = {
    */
   gaId?: string;
   clarityId?: string;
+  /**
+   * Meta Pixel (dataset) ID. MARKETING, not analytics: it loads only after the
+   * visitor accepts the marketing category, independently of the analytics
+   * answer.
+   */
+  metaPixelId?: string;
 };
 
 const PATTERNS = {
   gtm: /^GTM-[A-Z0-9]{4,}$/,
   ga: /^G-[A-Z0-9]{4,}$/,
   clarity: /^[a-z0-9]{6,20}$/,
+  meta: /^\d{10,20}$/,
 };
 
 const PRODUCTION_ORIGIN = "https://serverlys.com";
@@ -67,12 +74,13 @@ export function resolveAnalytics(env: Env): AnalyticsConfig {
     gtmId: pick(env.NEXT_PUBLIC_GTM_ID, PATTERNS.gtm),
     gaId: pick(env.NEXT_PUBLIC_GA_MEASUREMENT_ID, PATTERNS.ga),
     clarityId: pick(env.NEXT_PUBLIC_CLARITY_PROJECT_ID, PATTERNS.clarity),
+    metaPixelId: pick(env.NEXT_PUBLIC_META_PIXEL_ID, PATTERNS.meta),
   };
 }
 
 /** True when any vendor will load — used to word the cookie banner honestly. */
 export function hasAnyVendor(config: AnalyticsConfig): boolean {
-  return Boolean(config.gtmId || config.gaId || config.clarityId);
+  return Boolean(config.gtmId || config.gaId || config.clarityId || config.metaPixelId);
 }
 
 /**
@@ -109,6 +117,11 @@ export function analyticsCspSources(config: AnalyticsConfig) {
     connect.push("https://*.clarity.ms");
     img.push("https://*.clarity.ms", "https://c.bing.com");
   }
+  if (config.metaPixelId) {
+    script.push("https://connect.facebook.net");
+    connect.push("https://www.facebook.com", "https://connect.facebook.net");
+    img.push("https://www.facebook.com");
+  }
   return { script, connect, img, style, font };
 }
 
@@ -119,6 +132,19 @@ export function vendorNames(config: AnalyticsConfig): string[] {
   if (config.gtmId || config.gaId) names.push("Google Analytics");
   if (config.clarityId) names.push("Microsoft Clarity");
   return names;
+}
+
+/** Marketing vendor names for the banner and policies, from what this build loads. */
+export function marketingVendorNames(config: AnalyticsConfig): string[] {
+  return config.metaPixelId ? ["the Meta Pixel"] : [];
+}
+
+/** What the cookie panel lists under Marketing. Never leave a vendor out. */
+export function marketingDisclosures(config: AnalyticsConfig): string[] {
+  if (!config.metaPixelId) return [];
+  return [
+    "Meta Pixel — tells Meta which of our Facebook and Instagram adverts led to a visit, a sign-up or a checkout (_fbp cookie for 90 days, and _fbc for 90 days when you arrive from one of our adverts)",
+  ];
 }
 
 /** What the cookie panel lists under Analytics. Never leave a vendor out. */

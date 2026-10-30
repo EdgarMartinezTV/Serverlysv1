@@ -2,9 +2,10 @@ import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { pageMetadata } from "@/lib/seo";
 import { publicEnv } from "@/lib/env";
-import { analyticsDisclosures } from "@/lib/analytics/config";
+import { analyticsDisclosures, marketingDisclosures } from "@/lib/analytics/config";
 
 const ANALYTICS_ITEMS = analyticsDisclosures(publicEnv.analytics);
+const MARKETING_ITEMS = marketingDisclosures(publicEnv.analytics);
 
 /**
  * Cookie policy.
@@ -15,9 +16,10 @@ const ANALYTICS_ITEMS = analyticsDisclosures(publicEnv.analytics);
  * page is the detail, and the two must not drift apart.
  *
  * ⚠ DESCRIBES WHAT THE SITE ACTUALLY SETS. The consent implementation in
- * components/consent/ stores a preference and nothing else by default, and the
- * site ships no advertising cookie, and an analytics cookie only when a GA4 ID
- * resolves (lib/analytics/config.ts — off unless the build sets its IDs). Do not add
+ * components/consent/ stores a preference and nothing else by default. The
+ * site sets an analytics cookie only when a GA4 ID resolves, and an advertising
+ * cookie only when a Meta Pixel ID does (lib/analytics/config.ts — off unless
+ * the build sets its IDs); each paragraph below switches with it. Do not add
  * a vendor to this page speculatively, and do not ship a tracker without
  * adding it here.
  */
@@ -88,10 +90,24 @@ const SECTIONS: readonly LegalSection[] = [
             { type: "ul" as const, items: ANALYTICS_ITEMS },
           ]
         : []),
-      {
-        type: "p",
-        text: "We do not set advertising cookies, we do not run cross-site tracking pixels, and we do not sell or share browsing data with advertising networks. If that ever changes, this page changes first and the banner will ask again.",
-      },
+      ...(MARKETING_ITEMS.length
+        ? [
+            {
+              type: "p" as const,
+              text: "If you accept marketing, this site loads the Meta Pixel so we can see which of our adverts on Facebook and Instagram lead to a visit, a sign-up or a checkout, and show those adverts to people more likely to want them. It records the pages you view on this site and those actions — never your name, email, phone number, password or billing details. It is never loaded unless you accept marketing, whatever you answer about analytics. Rejecting later stops it and deletes its cookies on this site.",
+            },
+            { type: "ul" as const, items: MARKETING_ITEMS },
+            {
+              type: "p" as const,
+              text: "We do not sell browsing data, and we use the Meta Pixel only to measure and target our own adverts.",
+            },
+          ]
+        : [
+            {
+              type: "p" as const,
+              text: "We do not set advertising cookies, we do not run cross-site tracking pixels, and we do not sell or share browsing data with advertising networks. If that ever changes, this page changes first and the banner will ask again.",
+            },
+          ]),
     ],
   },
   {

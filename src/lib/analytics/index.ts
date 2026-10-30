@@ -58,7 +58,42 @@ declare global {
     gtag?: (...args: unknown[]) => void;
     clarity?: ((...args: unknown[]) => void) & { q?: unknown[] };
     __serverlysAnalytics?: Transport;
+    fbq?: MetaPixel;
+    _fbq?: MetaPixel;
   }
+  /** Meta's fbq stub: a queue until fbevents.js arrives and sets callMethod. */
+  type MetaPixel = ((...args: unknown[]) => void) & {
+    callMethod?: (...args: unknown[]) => void;
+    queue: unknown[];
+    push: MetaPixel;
+    loaded: boolean;
+    version: string;
+  };
+}
+
+/**
+ * Site events forwarded to the Meta Pixel, as Meta standard events. Only
+ * these — one Meta event per user action, so nothing that fires alongside
+ * generate_lead (consultation_request, quote_request…) is mapped too.
+ */
+const META_EVENTS: Partial<Record<AnalyticsEvent, string>> = {
+  generate_lead: "Lead",
+  begin_checkout: "InitiateCheckout",
+  sign_up: "CompleteRegistration",
+  purchase: "Purchase",
+};
+
+function trackMeta(event: AnalyticsEvent, clean: Record<string, string | number | boolean>): void {
+  const name = META_EVENTS[event];
+  if (!name || !window.fbq || !hasConsent("marketing")) return;
+  const params: Record<string, string | number | boolean> = {};
+  const contentName = clean.plan_name ?? clean.form;
+  const contentCategory = clean.item_category ?? clean.plan_group;
+  if (contentName !== undefined) params.content_name = contentName;
+  if (contentCategory !== undefined) params.content_category = contentCategory;
+  if (typeof clean.value === "number") params.value = clean.value;
+  if (typeof clean.currency === "string") params.currency = clean.currency;
+  window.fbq("track", name, params);
 }
 
 /** Keys that are never sent, whatever their value. Matched case-insensitively. */
@@ -111,6 +146,14 @@ export function track(event: AnalyticsEvent, params?: AnalyticsParams): void {
   const clean = sanitize(params);
 
   window.dispatchEvent(new CustomEvent(ANALYTICS_DOM_EVENT, { detail: { event, params: clean } }));
+
+  // Marketing consent is its own answer: the pixel gets its events whether or
+  // not analytics was accepted.
+  try {
+    trackMeta(event, clean);
+  } catch {
+    // Same rule as below: never able to break the page.
+  }
 
   if (!hasConsent("analytics")) return;
   try {

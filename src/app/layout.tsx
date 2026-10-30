@@ -8,7 +8,12 @@ import { SiteHeader } from "@/components/navigation/site-header";
 import { AnnouncementBar } from "@/components/navigation/announcement-bar";
 import { CookieConsent } from "@/components/consent/cookie-consent";
 import { Analytics } from "@/components/analytics/analytics";
-import { analyticsDisclosures, vendorNames } from "@/lib/analytics/config";
+import {
+  analyticsDisclosures,
+  marketingDisclosures,
+  marketingVendorNames,
+  vendorNames,
+} from "@/lib/analytics/config";
 import { SeraRoot } from "@/components/sera/sera-root";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { WebMcp } from "@/components/agent/web-mcp";
@@ -177,9 +182,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <CookieConsent
             analyticsVendors={vendorNames(publicEnv.analytics)}
             analyticsItems={analyticsDisclosures(publicEnv.analytics)}
+            marketingVendors={marketingVendorNames(publicEnv.analytics)}
+            marketingItems={marketingDisclosures(publicEnv.analytics)}
           />
           {/* Renders nothing. GTM / GA4 / Clarity load only after an analytics
-              Accept; page views, events and WHMCS attribution start here. */}
+              Accept, the Meta Pixel only after a marketing Accept; page views,
+              events and WHMCS attribution start here. */}
           <Analytics config={publicEnv.analytics} />
         </SeraRoot>
       </body>

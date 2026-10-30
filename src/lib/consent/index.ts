@@ -3,6 +3,10 @@
  *
  * ⚠ READ THIS BEFORE CHANGING THE COPY.
  *
+ * Update 2026-10-29: the Meta Pixel can be installed in the MARKETING category
+ * (NEXT_PUBLIC_META_PIXEL_ID), behind hasConsent("marketing"), and the banner,
+ * panel and both policies describe it whenever the build loads it.
+ *
  * Update 2026-10-05: GTM / GA4 / Microsoft Clarity can be installed
  * (components/analytics, lib/analytics), each behind hasConsent("analytics")
  * — none loads before an Accept, and only the ones the build configures. Everything
@@ -55,8 +59,14 @@ export const TRACKERS: Record<ConsentCategory, readonly string[]> = {
 
 export function trackersFor(
   analytics: readonly string[],
+  marketing: readonly string[] = [],
 ): Record<ConsentCategory, readonly string[]> {
-  return analytics.length ? { ...TRACKERS, analytics } : TRACKERS;
+  if (!analytics.length && !marketing.length) return TRACKERS;
+  return {
+    ...TRACKERS,
+    ...(analytics.length ? { analytics } : {}),
+    ...(marketing.length ? { marketing } : {}),
+  };
 }
 
 /**
@@ -65,7 +75,9 @@ export function trackersFor(
  * must not silently carry over to a vendor added later.
  */
 // 2026-10-05: analytics vendors (GTM, GA4, Clarity) added to the analytics category.
-export const CONSENT_VERSION = "2026-10-05";
+// 2026-10-29: the Meta Pixel added to the marketing category — an earlier
+// "accept all" was given when marketing was empty, so everyone is asked again.
+export const CONSENT_VERSION = "2026-10-29";
 export const CONSENT_KEY = `serverlys.consent.${CONSENT_VERSION}`;
 
 /** Necessary is always on: without it the site cannot function, so it is not a choice. */

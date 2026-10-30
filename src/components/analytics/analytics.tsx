@@ -8,13 +8,22 @@ import { track } from "@/lib/analytics";
 import { captureAttribution, persistAttribution } from "@/lib/analytics/attribution";
 import { installClickTracking } from "@/lib/analytics/clicks";
 import { hasAnyVendor, type AnalyticsConfig } from "@/lib/analytics/config";
-import { cleanLocation, disableVendors, loadVendors } from "@/lib/analytics/vendors";
+import {
+  cleanLocation,
+  disableMetaPixel,
+  disableVendors,
+  loadMetaPixel,
+  loadVendors,
+} from "@/lib/analytics/vendors";
 
 /**
  * The single analytics mount point, in the root layout. Renders nothing.
  *
  *  · Loads GTM (or gtag.js when there is no GTM) and Clarity — only after the
  *    visitor accepts analytics, and stops them if that is withdrawn.
+ *  · Loads the Meta Pixel only after the visitor accepts MARKETING (it tracks
+ *    its own page views — lib/analytics/vendors), and revokes it if that is
+ *    withdrawn.
  *  · Sends one `page_view` per route, including App Router navigations that
  *    never reload the page.
  *  · Reports Core Web Vitals (LCP, INP, CLS, FCP, TTFB) as `web_vitals`, so
@@ -32,6 +41,7 @@ export function Analytics({ config }: { config: AnalyticsConfig }) {
   const raw = useSyncExternalStore(subscribeConsent, readConsentRaw, () => null);
   const lastPageView = useRef<string | null>(null);
   const enabled = hasAnyVendor(config);
+  const pixelId = config.metaPixelId;
 
   useEffect(() => installClickTracking(), []);
 
@@ -47,6 +57,18 @@ export function Analytics({ config }: { config: AnalyticsConfig }) {
       lastPageView.current = null;
     }
   }, [config, enabled, raw]);
+
+  // Meta Pixel: marketing consent only, independent of the analytics answer.
+  useEffect(() => {
+    if (!pixelId) return;
+    if (readConsent()?.marketing) {
+      // Before the load, so an fbclid from this landing URL can become _fbc.
+      captureAttribution();
+      loadMetaPixel(pixelId);
+    } else {
+      disableMetaPixel();
+    }
+  }, [pixelId, raw]);
 
   // One page_view per route, and one for the current page the moment consent
   // arrives. The key includes the query string so ?tab=… views stay distinct.

@@ -1,9 +1,10 @@
 import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
 import { pageMetadata } from "@/lib/seo";
 import { publicEnv } from "@/lib/env";
-import { vendorNames } from "@/lib/analytics/config";
+import { marketingVendorNames, vendorNames } from "@/lib/analytics/config";
 
 const VENDORS = vendorNames(publicEnv.analytics);
+const MARKETING = marketingVendorNames(publicEnv.analytics);
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 const PATH = "/privacy-policy";
@@ -151,9 +152,19 @@ const SECTIONS: readonly LegalSection[] = [
       },
       {
         type: "p",
-        text: VENDORS.length
-          ? `If you accept analytics, this site loads ${VENDORS.join(" and ")} so we can see which pages people use and where they get stuck. None of it is loaded unless you accept, and advertising features are switched off. We set no advertising cookies and never send your name, email, phone number or billing details to these services. The cookie panel lists every category with exactly what it covers, and you can reopen it any time from Cookie settings in the footer.`
-          : "This site sets no advertising or analytics cookies and loads no third-party trackers. The cookie panel lists every category with exactly what it covers, and two of the three are empty — we would rather show you that than pad the list. You can reopen it any time from Cookie settings in the footer.",
+        text:
+          VENDORS.length || MARKETING.length
+            ? [
+                VENDORS.length &&
+                  `If you accept analytics, this site loads ${VENDORS.join(" and ")} so we can see which pages people use and where they get stuck. None of it is loaded unless you accept, and its advertising features are switched off.`,
+                MARKETING.length
+                  ? `If you accept marketing, this site loads ${MARKETING.join(" and ")} so we can measure which of our adverts on Facebook and Instagram lead to a visit, a sign-up or a checkout. It is never loaded unless you accept marketing.`
+                  : "We set no advertising cookies.",
+                "We never send your name, email, phone number or billing details to these services. The cookie panel lists every category with exactly what it covers, and you can reopen it any time from Cookie settings in the footer.",
+              ]
+                .filter(Boolean)
+                .join(" ")
+            : "This site sets no advertising or analytics cookies and loads no third-party trackers. The cookie panel lists every category with exactly what it covers, and two of the three are empty — we would rather show you that than pad the list. You can reopen it any time from Cookie settings in the footer.",
       },
     ],
   },
