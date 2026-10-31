@@ -1775,3 +1775,10 @@ input[type="range"],
 .cursor-pointer {
   cursor: url("/cursors/skeleton-hand.svg") 11 1, pointer;
 }
+
+/* Pause button for hero motion (cloud-hosting/_components/motion-toggle.tsx). */
+[data-paused] *,
+[data-paused] *::before,
+[data-paused] *::after {
+  animation-play-state: paused !important;
+}

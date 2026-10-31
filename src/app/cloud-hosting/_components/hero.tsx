@@ -1,5 +1,6 @@
 import { Check, CtaButton, Grid, ShieldCheck } from "@/components/ref/kit";
 import { BLACK_FRIDAY, blackFridayActive, formatPrice, lowestRate, lowestSaleRate } from "@/data/pricing";
+import { BlackFridayProductHero } from "@/components/sections/black-friday-product-hero";
 import { HERO } from "../_content";
 import { MockPhoto } from "@/components/ui/mock-photo";
 
@@ -12,6 +13,21 @@ import { MockPhoto } from "@/components/ui/mock-photo";
  * to sit here (an AI image with fake UI) is gone, same rule as the homepage.
  */
 export function Hero() {
+  if (blackFridayActive())
+    return (
+      <BlackFridayProductHero
+        id="cloud-bf-hero"
+        groupId="cloud"
+        headline="Cloud hosting this Black Friday"
+        bullets={HERO.bullets}
+        guarantee={HERO.guarantee}
+        ctaHref="#pricing"
+      />
+    );
+  return <StandardHero />;
+}
+
+function StandardHero() {
   return (
     <section
       aria-labelledby="cloud-hero-heading"

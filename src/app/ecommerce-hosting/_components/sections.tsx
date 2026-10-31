@@ -1,4 +1,6 @@
 import { MockPhoto, type MockPhotoName } from "@/components/ui/mock-photo";
+import { blackFridayActive } from "@/data/pricing";
+import { BlackFridayProductHero } from "@/components/sections/black-friday-product-hero";
 import { Check, CtaButton, Grid, ShieldCheck } from "@/components/ref/kit";
 import { SeraMark } from "@/components/sera/sera-mark";
 import { ConvoAiLogo } from "@/components/layout/convoai-logo";
@@ -54,6 +56,21 @@ function Slabs({ dark = false }: { dark?: boolean }) {
 /* ── Hero ─────────────────────────────────────────────────────────────────── */
 
 export function Hero() {
+  /* Black Friday 2026: Hostinger's campaign intro, same as /cloud-hosting. */
+  if (blackFridayActive())
+    return (
+      <BlackFridayProductHero
+        id="ecom-bf-hero"
+        groupId="ecommerce"
+        headline="WooCommerce hosting this Black Friday"
+        bullets={["Free domain and store migration", "WooCommerce installed in one click", "Updates, backups and security handled"]}
+        ctaHref="#pricing"
+      />
+    );
+  return <StandardHero />;
+}
+
+function StandardHero() {
   return (
     <section aria-labelledby="ecom-hero-heading" className="overflow-hidden bg-canvas pt-12 pb-16 lg:pt-20 lg:pb-24">
       <Grid>

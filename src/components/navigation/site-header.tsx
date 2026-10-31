@@ -1,5 +1,6 @@
 "use client";
 
+import { blackFridayActive } from "@/data/pricing";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -78,7 +79,12 @@ import { cn } from "@/lib/utils";
  * invisible in a scrolled screenshot, because the bar is correct everywhere
  * except the top 8px of scroll.
  */
-const OVERLAY_ROUTES = new Set(["/"]);
+/* Pages whose hero is dark and runs under the bar. The hosting pages only while
+   their Black Friday heroes are up (2026-10-31): after the sale it is back to a white hero,
+   where a transparent white-text bar would disappear. */
+const OVERLAY_ROUTES = new Set(
+  blackFridayActive() ? ["/", "/cloud-hosting", "/wordpress-hosting", "/ecommerce-hosting"] : ["/"],
+);
 
 export function SiteHeader() {
   const [open, setOpen] = useState<string | null>(null);

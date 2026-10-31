@@ -1,4 +1,6 @@
 import { CtaButton, Grid, ShieldCheck } from "@/components/ref/kit";
+import { blackFridayActive } from "@/data/pricing";
+import { BlackFridayProductHero } from "@/components/sections/black-friday-product-hero";
 import { MockPhoto } from "@/components/ui/mock-photo";
 
 /**
@@ -7,6 +9,25 @@ import { MockPhoto } from "@/components/ui/mock-photo";
  * card) in place of the supplied PNG.
  */
 export function Hero() {
+  /* Black Friday 2026: Hostinger's campaign intro, same as /cloud-hosting. */
+  if (blackFridayActive())
+    return (
+      <BlackFridayProductHero
+        id="wp-bf-hero"
+        groupId="wordpress"
+        headline="Managed hosting for WordPress this Black Friday"
+        bullets={[
+          "WordPress installed and LiteSpeed-tuned, zero setup",
+          "Updates applied with a backup taken first",
+          "Free website migration",
+        ]}
+        ctaHref="#plans"
+      />
+    );
+  return <StandardHero />;
+}
+
+function StandardHero() {
   return (
     <section aria-labelledby="wp-hero-heading" className="overflow-hidden bg-canvas pt-12 pb-16 lg:pt-20 lg:pb-24">
       <Grid>
