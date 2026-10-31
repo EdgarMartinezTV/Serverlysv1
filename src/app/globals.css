@@ -960,79 +960,6 @@
   }
 }
 
-/* ── Sera's highlight ─────────────────────────────────────────────────────── */
-
-/*
-  What Sera draws around one element when it points at it.
-
-  ⚠ GLOBAL RATHER THAN A CSS MODULE, ON PURPOSE. It is applied to elements that
-  belong to other components — a plan card in `pricing/pricing-table.tsx`, not
-  anything inside `components/sera` — so a module-scoped class would not reach
-  them. `sera-marked` is the one global class the widget owns, and it is added
-  and removed by `sera-highlight.ts`; nothing in a stylesheet applies it.
-
-  ⚠ THE RING IS STATIC AND THE PULSE IS NOT, AND THAT SPLIT IS THE
-  ACCESSIBILITY REQUIREMENT. The reduced-motion block below strips every
-  animation in the system with `!important`, on the stated grounds that motion
-  here is decorative. That claim has to stay true — so the INFORMATION ("this
-  is the thing Sera means") lives in the ring and the offset, which are plain
-  box-shadow and therefore unaffected. The pulse underneath is added only under
-  `no-preference` and carries nothing.
-
-  Drawn with box-shadow rather than outline or border: both of those would
-  change layout or fight the `ring-1`/`ring-2` utilities the cards already
-  carry, and a card that visibly resizes when Sera points at it looks broken.
-*/
-.sera-marked {
-  position: relative;
-  /*
-    Above its neighbours so the halo is not clipped by the next card in the
-    grid, and above the "MOST POPULAR" badge that overlaps the Turbo card.
-  */
-  z-index: 2;
-  /*
-    ⚠ THE HALO IS WIDE ON PURPOSE, AND THE REASON IS A SCREENSHOT. The first
-    version used a 3px ring and a 9px glow, which on the WordPress plans page
-    was nearly indistinguishable from the `ring-2 ring-primary` that the Turbo
-    card already wears as "MOST POPULAR" — so Sera's answer looked like the
-    site's own merchandising, which is the one thing it must not look like.
-    A 20px soft halo is not a border any card carries by default, so the marked
-    card reads as singled out rather than as featured.
-  */
-  box-shadow:
-    0 0 0 3px var(--color-primary),
-    0 0 0 20px color-mix(in srgb, var(--color-primary) 14%, transparent),
-    0 18px 44px rgb(16 18 27 / 0.16);
-  border-radius: inherit;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .sera-marked {
-    /*
-      Two pulses and stop. An indefinite pulse becomes part of the page — the
-      eye stops reading it as "look here" within a few seconds and it is then
-      just a card that will not sit still. Two beats is enough to catch a
-      glance that arrives late from reading the chat panel.
-    */
-    animation: sera-mark-pulse 1100ms var(--ease-hover, cubic-bezier(0.4, 0, 0.2, 1)) 2;
-  }
-}
-
-@keyframes sera-mark-pulse {
-  0%,
-  100% {
-    box-shadow:
-      0 0 0 3px var(--color-primary),
-      0 0 0 20px color-mix(in srgb, var(--color-primary) 14%, transparent),
-      0 18px 44px rgb(16 18 27 / 0.16);
-  }
-  50% {
-    box-shadow:
-      0 0 0 3px var(--color-primary),
-      0 0 0 28px color-mix(in srgb, var(--color-primary) 5%, transparent),
-      0 18px 44px rgb(16 18 27 / 0.16);
-  }
-}
 
 /* Motion is decorative throughout this system — none of it carries
    information — so it is safe to remove entirely. */
@@ -1427,7 +1354,7 @@
 /* ── /restaurant-websites/demo — Lumbre ──────────────────────────────────
  * Everything here is scoped to [data-lumbre], which only the demo renders.
  *
- * IMMERSIVE ROUTE. The Serverlys header, announcement bar, footer and Sera
+ * IMMERSIVE ROUTE. The Serverlys header, announcement bar, footer and ConvoAI
  * launcher step aside while the demo is on screen, so the restaurant reads as
  * its own site; the demo carries its own Serverlys frame (a strip in its nav,
  * a floating "Demo by Serverlys" control and the pitch band at the end). Done
@@ -1437,7 +1364,7 @@
 body:has([data-lumbre]) > [data-site-header],
 body:has([data-lumbre]) [data-announcement-bar],
 body:has([data-lumbre]) > footer,
-body:has([data-lumbre]) button[aria-controls="sera-panel"] {
+body:has([data-lumbre]) .cw-root {
   display: none;
 }
 html:has([data-lumbre]) {

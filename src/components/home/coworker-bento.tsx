@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { SeraMark } from "@/components/sera/sera-mark";
+import { AssistantMark } from "@/components/assistant/assistant-mark";
 import { cn } from "@/lib/utils";
 
 /**
@@ -126,7 +126,7 @@ function Bubble({ children, from }: { children: React.ReactNode; from: "visitor"
   return (
     <div className="flex w-fit max-w-[92%] items-start gap-2.5 rounded-2xl rounded-bl-md bg-white px-4 py-3 shadow-e3">
       <span className="mt-0.5 inline-flex size-6 shrink-0 items-center justify-center rounded-md bg-primary text-white">
-        <SeraMark className="h-3.5 w-3.5" />
+        <AssistantMark className="h-3.5 w-3.5" />
       </span>
       <p className="text-small text-fg">{children}</p>
     </div>

@@ -312,8 +312,8 @@ const JOURNEY = [
   },
   {
     year: String(YEAR),
-    title: "Sera on serverlys.com",
-    body: "A new serverlys.com, with Sera, an AI assistant that answers questions about plans and services on every page.",
+    title: "An AI assistant on serverlys.com",
+    body: "A new serverlys.com, with an AI assistant that answers questions about plans and services on every page. Today that assistant is ConvoAI, our own AI Employee.",
   },
   {
     year: "Today",
@@ -679,11 +679,11 @@ function TalkToUs() {
           A person reads every message. Ask us anything.
         </h2>
         <p className="mx-auto mt-4 max-w-[520px] text-[15px] text-[#4a4f57]">
-          Call {company.phone}, email {emailDisplay}, or ask Sera now, and the team
+          Call {company.phone}, email {emailDisplay}, or ask ConvoAI now, and the team
           follows up on anything that needs a human.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-2">
-          <ChatButton size="sm">Ask Sera</ChatButton>
+          <ChatButton size="sm">Ask ConvoAI</ChatButton>
           <a
             href={company.phoneHref}
             className="inline-flex h-9 items-center rounded-[4px] bg-[#0b1530] px-3.5 text-[13px] font-semibold text-white hover:bg-[#1b2750]"
@@ -725,7 +725,7 @@ const FAQS = [
   },
   {
     question: "How do I contact Serverlys?",
-    answer: `Call ${company.phone}, email ${company.email}, open a ticket in the client area, or ask Sera in the chat on any page. A person reads every message.`,
+    answer: `Call ${company.phone}, email ${company.email}, open a ticket in the client area, or ask ConvoAI in the chat on any page. A person reads every message.`,
   },
 ];
 

@@ -35,7 +35,7 @@ export const metadata = pageMetadata({
 /**
  * WordPress hosting — rebuilt 2026-10-03 on the reference's section order:
  * hero · pill nav · plans · AI on the site · save hours · performance ·
- * protection (dark) · hands-off · migration (dark) · commitments + Sera ·
+ * protection (dark) · hands-off · migration (dark) · commitments + ConvoAI ·
  * FAQ · closing banner. All imagery is code; see sections.tsx for which
  * reference claims were swapped for ones Serverlys can make.
  */

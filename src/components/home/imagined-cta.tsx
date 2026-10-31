@@ -1,4 +1,4 @@
-import { SeraMark } from "@/components/sera/sera-mark";
+import { AssistantMark } from "@/components/assistant/assistant-mark";
 import { MockPhoto } from "@/components/ui/mock-photo";
 import { CtaButton } from "@/components/ref/kit";
 
@@ -58,7 +58,7 @@ export function ImaginedCta() {
   return (
     <section aria-labelledby="imagined-heading" className="relative isolate overflow-hidden bg-primary">
       {/* 2026-10-03: the AI "STAND OUT" photograph is gone. The art is now a
-          coded browser (a small bakery site), a domain pill and a Sera prompt,
+          coded browser (a small bakery site), a domain pill and a ConvoAI prompt,
           layered the way the reference layers its own, in the site's type. */}
       <div
         aria-hidden="true"
@@ -122,7 +122,7 @@ export function ImaginedCta() {
           </div>
 
           <div className="absolute right-0 bottom-0 flex w-[82%] items-center gap-3 rounded-xl bg-white py-2 pr-2 pl-4 shadow-e5 ring-2 ring-brand-200 sm:-right-6">
-            <SeraMark className="h-4 w-4 shrink-0 text-primary" />
+            <AssistantMark className="h-4 w-4 shrink-0 text-primary" />
             <span className="flex-1 truncate text-small text-fg">Create a website for my bakery</span>
             <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary text-white">
               <svg viewBox="0 0 16 16" fill="none" className="size-4">

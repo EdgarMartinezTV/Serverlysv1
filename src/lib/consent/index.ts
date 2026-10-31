@@ -49,7 +49,7 @@ export const TRACKERS: Record<ConsentCategory, readonly string[]> = {
   necessary: [
     "Announcement bar dismissal (localStorage)",
     "Domain search shortlist (localStorage)",
-    "Sera chat session (sera_sid cookie, 6 hours; conversation id in sessionStorage) — only when you use the chat",
+    "ConvoAI chat (visitor and conversation id in localStorage, convoai_* keys)",
     "Your choice on this panel (localStorage)",
     "Billing sign-in session (cookie, set by WHMCS on the billing area)",
   ],

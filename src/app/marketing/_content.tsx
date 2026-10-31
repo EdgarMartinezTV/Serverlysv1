@@ -184,7 +184,7 @@ export const FAQS = [
   {
     question: "Which plan is right for me?",
     answer:
-      "SEO Starter suits a single-location business getting found locally. SEO Growth suits a business ready to compete, with monthly content and link outreach. SEO Elite suits national, e-commerce or multi-location businesses that want a dedicated manager and conversion work. Ask Sera if you are unsure.",
+      "SEO Starter suits a single-location business getting found locally. SEO Growth suits a business ready to compete, with monthly content and link outreach. SEO Elite suits national, e-commerce or multi-location businesses that want a dedicated manager and conversion work. Ask ConvoAI if you are unsure.",
   },
 ] as const;
 

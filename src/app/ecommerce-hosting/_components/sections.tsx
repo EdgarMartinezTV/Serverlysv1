@@ -2,7 +2,7 @@ import { MockPhoto, type MockPhotoName } from "@/components/ui/mock-photo";
 import { blackFridayActive } from "@/data/pricing";
 import { BlackFridayProductHero } from "@/components/sections/black-friday-product-hero";
 import { Check, CtaButton, Grid, ShieldCheck } from "@/components/ref/kit";
-import { SeraMark } from "@/components/sera/sera-mark";
+import { AssistantMark } from "@/components/assistant/assistant-mark";
 import { ConvoAiLogo } from "@/components/layout/convoai-logo";
 import { HERO } from "../_content";
 
@@ -249,7 +249,7 @@ export function StoreAgent() {
             <div className="absolute inset-y-0 right-0 w-1/2 bg-white/10 [clip-path:polygon(40%_0,100%_0,100%_100%,0_100%)]" />
             <div className="relative ml-auto max-w-[340px] rounded-2xl bg-white p-4 shadow-e5">
               <div className="flex items-center gap-2 border-b border-line-subtle pb-3">
-                <span className="inline-flex size-7 items-center justify-center rounded-lg bg-primary text-white"><SeraMark className="size-4" /></span>
+                <span className="inline-flex size-7 items-center justify-center rounded-lg bg-primary text-white"><AssistantMark className="size-4" /></span>
                 <span className="text-small font-semibold text-fg">Store assistant</span>
                 <span className="ml-auto flex items-center gap-1 text-micro text-success"><span className="size-1.5 rounded-full bg-success-fill" />Online</span>
               </div>
@@ -280,7 +280,7 @@ export function StoreAgent() {
             ["Free with your plan", "Included with every ecommerce plan at no extra cost."],
           ].map(([t, b]) => (
             <li key={t}>
-              <span className="inline-flex size-9 items-center justify-center rounded-lg bg-white text-primary shadow-e1"><SeraMark className="size-4" /></span>
+              <span className="inline-flex size-9 items-center justify-center rounded-lg bg-white text-primary shadow-e1"><AssistantMark className="size-4" /></span>
               <h3 className="mt-4 text-body-lg font-medium text-fg">{t}</h3>
               <p className="mt-1.5 text-small text-fg-secondary">{b}</p>
             </li>

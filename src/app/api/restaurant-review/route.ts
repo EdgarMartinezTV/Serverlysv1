@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { clientKey } from "@/lib/domains/provider";
 import { readJsonObject } from "@/lib/request";
-import { check, type Window } from "@/lib/sera/rate-limit";
-import { log } from "@/lib/sera/observability";
+import { check, type Window } from "@/lib/leads/core/rate-limit";
+import { log } from "@/lib/leads/core/observability";
 import { fileLead, parseLead, WORKFLOW } from "@/lib/leads/restaurant-review";
 
 /**
@@ -10,7 +10,7 @@ import { fileLead, parseLead, WORKFLOW } from "@/lib/leads/restaurant-review";
  *
  * The free-review form on /restaurant-websites and /es/restaurant-websites.
  * Validates server-side, then files the lead through the same store and
- * notifier Sera uses (see lib/leads/restaurant-review.ts).
+ * notifier ConvoAI uses (see lib/leads/restaurant-review.ts).
  *
  * Abuse controls, cheapest first: a body-size cap (readJsonObject), a honeypot
  * field and a minimum fill time (answered with a quiet 200 so a bot learns

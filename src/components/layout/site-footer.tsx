@@ -39,7 +39,7 @@ import { CookieSettingsLink } from "@/components/consent/cookie-settings-link";
  * Trust tiles occupy that slot until someone confirms the real list.
  *
  * 2026-10-13, Edgar: stripped back to the reference's restraint — no help
- * strip (Sera lives in the header), plain social glyphs instead of circles,
+ * strip (ConvoAI lives in the header), plain social glyphs instead of circles,
  * no tagline, no Client login pill (the header's account icon covers it),
  * tighter ~30px link rhythm. Phone and email moved to the bottom line.
  *

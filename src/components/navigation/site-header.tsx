@@ -11,7 +11,7 @@ import { MegaMenu, panelLinks } from "./mega-menu";
 import { MobileNav } from "./mobile-nav";
 import { LanguageSelector } from "./language-selector";
 import { AccountButton } from "./account-button";
-import { SeraOpenButton } from "@/components/sera/sera-open-button";
+import { AssistantOpenButton } from "@/components/assistant/assistant-open-button";
 import { Chevron } from "./nav-icons";
 import { cn } from "@/lib/utils";
 
@@ -381,11 +381,11 @@ export function SiteHeader() {
             <span className="hidden sm:block">
               {/*
                 Was "Get started" linking straight to the cloud-hosting store.
-                Now opens Sera, which can answer the question behind the click
+                Now opens ConvoAI, which can answer the question behind the click
                 and route to the right product — or file a request. Checkout is
                 still one step away from every product page and from /pricing.
               */}
-              <SeraOpenButton onDark={dark} />
+              <AssistantOpenButton onDark={dark} />
             </span>
             <span className="hidden md:block">
               <LanguageSelector onDark={dark} />

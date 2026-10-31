@@ -1,0 +1,101 @@
+/* The header / inline "Ask ConvoAI" pill (moved from the Sera widget styles). */
+
+/*
+  The "Ask ConvoAI" pill that replaced the header's checkout CTA.
+
+  MEASURED FROM THE REFERENCE: 40px tall, 8px/16px padding, 8px gap, fully
+  rounded, TRANSPARENT fill, a 24px mark and a 14px/20px semibold label. The
+  only thing it paints is a 1px gradient ring.
+
+  ⚠ WHY THIS IS NOT THE DESIGN SYSTEM'S `Button`. That component's own header
+  warns against passing a className that overrides display or colour — the
+  winner is decided by stylesheet order rather than by the author, and it has
+  already caused one shipped bug there. A transparent pill with a gradient
+  border is not one of its nine variants, so this is its own control rather
+  than a `Button` fought into shape. It borrows the system's tokens for colour
+  and motion, so it still moves and reads like the rest of the header.
+
+  The reference's ring runs magenta (#ce31cf) to sky (#3aaefe) — their brand.
+  Serverlys' equivalent is the logo's own pair, blue (brand-600) to green (green-500), as
+  the accent pair used on dark bands, so the gradient is this company's rather
+  than a competitor's.
+*/
+.headerCta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: transparent;
+  font-family: var(--font-display);
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 120ms var(--ease-hover);
+}
+
+/*
+  The 1px gradient border. `border-image` cannot round its corners and a real
+  gradient border needs two boxes, so this masks a gradient-filled overlay down
+  to its own 1px padding ring — the standard technique, and the only one that
+  keeps the fill genuinely transparent so the hero shows through.
+*/
+.headerCta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    120deg,
+    var(--color-brand-600),
+    var(--color-green-500)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.headerCta:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.headerCta:focus-visible {
+  outline: 2px solid var(--color-primary-ring);
+  outline-offset: 2px;
+}
+
+/* Over the dark hero, as the reference has it. */
+.headerCtaOnDark {
+  color: #ffffff;
+}
+
+/*
+  On the light header the same ring works, but white text would vanish. The
+  label takes the site's own foreground instead, and the hover tint flips to a
+  dark wash for the same reason.
+*/
+.headerCtaOnLight {
+  color: var(--color-fg);
+}
+
+.headerCtaOnLight:hover {
+  background: rgba(24, 24, 26, 0.05);
+}
+
+/* Full-width inside the mobile drawer. */
+.headerCtaBlock {
+  display: flex;
+  width: 100%;
+  height: 48px;
+}

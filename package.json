@@ -24,7 +24,6 @@
     "test:product": "node scripts/test-product.mjs",
     "test:domains": "node scripts/test-domain-search.mjs",
     "test:console": "node scripts/test-console.mjs",
-    "test:sera": "node --experimental-strip-types --no-warnings scripts/test-sera.mjs",
     "audit:a11y": "node scripts/a11y.mjs",
     "audit:links": "node scripts/audit-links.mjs",
     "check:reviews": "node scripts/check-reviews.mjs",

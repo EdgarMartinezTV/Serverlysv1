@@ -21,7 +21,7 @@ const WHATSAPP_HOSTS = new Set(["wa.me", "api.whatsapp.com", "web.whatsapp.com",
 
 /** Where on the page the click happened — header, footer, a menu, or the body. */
 function locationOf(el: Element): string {
-  if (el.closest("[data-sera-root], #sera-panel")) return "assistant";
+  if (el.closest(".cw-root")) return "assistant";
   if (el.closest("header")) return "header";
   if (el.closest("footer")) return "footer";
   if (el.closest("nav")) return "nav";

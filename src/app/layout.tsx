@@ -15,7 +15,7 @@ import {
   marketingVendorNames,
   vendorNames,
 } from "@/lib/analytics/config";
-import { SeraRoot } from "@/components/sera/sera-root";
+import { ConvoAIEmbed } from "@/components/assistant/convoai-embed";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { WebMcp } from "@/components/agent/web-mcp";
 import { announcement } from "@/data/navigation";
@@ -163,18 +163,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {/* In-browser agent tools (WebMCP); renders nothing. */}
         <WebMcp />
 
-        {/*
-          Sera, the site-wide AI assistant. SeraRoot renders NO element of its
-          own — it is a context provider plus a fixed-position widget — so the
-          flex children of <body> below are exactly what they were before it
-          was added, and <main class="flex-1"> still pushes the footer down.
-          See components/sera/sera-root.tsx.
-
-          The chat panel itself is code-split and is not downloaded until
-          someone opens it; what ships on every page is the launcher.
-        */}
-        <SeraRoot>
-          <PromoTicker />
+        <PromoTicker />
           <AnnouncementBar />
           <SiteHeader />
           <main id="main" className="flex-1">
@@ -191,7 +180,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               Accept, the Meta Pixel only after a marketing Accept; page views,
               events and WHMCS attribution start here. */}
           <Analytics config={publicEnv.analytics} />
-        </SeraRoot>
+          {/* ConvoAI, the site-wide assistant (loads after the page; see components/assistant). */}
+          <ConvoAIEmbed />
       </body>
     </html>
   );

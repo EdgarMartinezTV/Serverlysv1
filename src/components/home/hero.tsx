@@ -1,6 +1,6 @@
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
-import { SeraMark } from "@/components/sera/sera-mark";
+import { AssistantMark } from "@/components/assistant/assistant-mark";
 import { MockPhoto } from "@/components/ui/mock-photo";
 
 /**
@@ -18,7 +18,7 @@ import { MockPhoto } from "@/components/ui/mock-photo";
  *
  * ⚠ THE CARDS ARE CODE. Same rule as the Launch row: no stock photography,
  * no fake screenshots with garbled text. Each card is one honest product
- * moment (a Sera prompt, a domain, a store, Sera's greeting) drawn in the
+ * moment (a ConvoAI prompt, a domain, a store, ConvoAI's greeting) drawn in the
  * site's own components and type, so it is sharp at every width.
  *
  * TrustBar used to overlap this band from below; it was removed from the
@@ -89,7 +89,7 @@ function HeroCollage() {
       aria-hidden="true"
       className="relative mx-auto mt-12 grid h-[230px] max-w-[1160px] grid-cols-[1fr] gap-4 overflow-hidden sm:mt-20 sm:h-[260px] sm:grid-cols-[1fr_2fr] lg:grid-cols-[1fr_2.1fr_1fr_1fr]"
     >
-      {/* 1 · A Sera prompt */}
+      {/* 1 · A ConvoAI prompt */}
       <div className="relative hidden overflow-hidden rounded-t-2xl bg-brand-100 lg:block">
         <div className="absolute inset-0">
           <MockPhoto src="bread" className="h-full" sizes="280px" />
@@ -103,7 +103,7 @@ function HeroCollage() {
       {/* 2 · A domain being chosen */}
       <div className="relative overflow-hidden rounded-t-2xl bg-[linear-gradient(160deg,var(--color-brand-300),var(--color-brand-100)_60%,white)] p-4 ring-4 ring-white/10 sm:col-start-2 lg:col-start-auto">
         <span className="inline-flex items-center gap-1.5 rounded-full bg-white/70 px-2.5 py-1 text-micro font-semibold text-fg backdrop-blur">
-          <SeraMark className="h-3.5 w-3.5" /> Launch
+          <AssistantMark className="h-3.5 w-3.5" /> Launch
         </span>
         <div className="mt-6 flex items-stretch gap-2 sm:mt-8">
           <div className="flex flex-1 items-center rounded-l-xl bg-white px-5 py-4 shadow-e3">
@@ -142,10 +142,10 @@ function HeroCollage() {
         </ul>
       </div>
 
-      {/* 4 · Sera, ready */}
+      {/* 4 · ConvoAI, ready */}
       <div className="relative hidden overflow-hidden rounded-t-2xl bg-[linear-gradient(180deg,var(--color-brand-100),white)] p-4 lg:block">
         <div className="flex flex-col items-center pt-3 text-center">
-          <SeraMark className="h-9 w-9 text-primary" />
+          <AssistantMark className="h-9 w-9 text-primary" />
           <p className="mt-3 text-h4 text-fg">Hello</p>
           <p className="text-small text-fg-secondary">How can I help today?</p>
         </div>

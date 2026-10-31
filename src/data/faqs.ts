@@ -301,7 +301,7 @@ export const faqs: readonly Faq[] = [
   {
     question: "Which SEO plan is right for my business?",
     answer:
-      "SEO Starter suits a single-location business getting found locally for the first time. SEO Growth suits a business ready to compete, with up to 25 keywords, three locations, monthly blog content and backlink outreach. SEO Elite suits national, e-commerce or multi-location businesses that want a dedicated SEO manager. Ask Sera if you are unsure.",
+      "SEO Starter suits a single-location business getting found locally for the first time. SEO Growth suits a business ready to compete, with up to 25 keywords, three locations, monthly blog content and backlink outreach. SEO Elite suits national, e-commerce or multi-location businesses that want a dedicated SEO manager. Ask ConvoAI if you are unsure.",
     scopes: ["/seo"],
   },
   {

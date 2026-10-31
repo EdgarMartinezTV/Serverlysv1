@@ -71,7 +71,7 @@ export function PlanCard({ plan, group, why, cta }: { plan: Plan; group: PlanGro
 
   return (
     <div
-      data-sera-target={`${group.id}-${plan.tier}`}
+      data-convoai-target={`${group.id}-${plan.tier}`}
       className={cn(
         "relative row-span-13 grid grid-rows-subgrid gap-y-0 overflow-hidden rounded-2xl p-6",
         dark

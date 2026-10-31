@@ -2,7 +2,7 @@ import { BLACK_FRIDAY, bfPrice, blackFridayActive } from "@/data/pricing";
 import Link from "next/link";
 import { JsonLd } from "@/components/ui/json-ld";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
-import { SeraOpenButton } from "@/components/sera/sera-open-button";
+import { AssistantOpenButton } from "@/components/assistant/assistant-open-button";
 import { billing, company } from "@/data/company";
 import { faqGraph, pageMetadata, productGraph } from "@/lib/seo";
 import { FeatureShowcase } from "./_components/feature-showcase";
@@ -28,7 +28,7 @@ import { IncludedPanel, PlansShowcase } from "./_components/plans-showcase";
  *    465/587, cPanel webmail on 2096, Let's Encrypt TLS.
  *  · The reference's in-inbox AI, ChatGPT/Claude connectors, email-marketing
  *    product, review score and testimonials have NO Serverlys equivalent, so
- *    those slots carry apps support, domains and Sera instead of being faked.
+ *    those slots carry apps support, domains and ConvoAI instead of being faked.
  *  · No spam-filter, backup-retention or uptime claims: none were verified.
  * If the store changes, change PLANS.
  */
@@ -404,25 +404,25 @@ export default function BusinessEmailPage() {
         </div>
       </section>
 
-      {/* ── Sera ───────────────────────────────────────────────────────── */}
+      {/* ── ConvoAI ───────────────────────────────────────────────────────── */}
       <section
-        aria-labelledby="sera-title"
+        aria-labelledby="assistant-title"
         className="relative isolate overflow-hidden bg-[linear-gradient(180deg,var(--color-brand-50),#ffffff)]"
       >
         <div className="mx-auto grid max-w-[1180px] items-center gap-14 px-5 py-20 sm:px-8 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16 lg:py-28">
           <div className="text-center lg:order-1 lg:text-left">
             <p className="mx-auto flex w-fit items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-caption font-semibold uppercase tracking-[0.16em] text-primary shadow-[0_1px_2px_rgb(15_23_42/0.06),0_0_0_1px_var(--color-brand-100)] lg:mx-0">
               <span className="size-1.5 rounded-full bg-primary" />
-              Sera · Serverlys assistant
+              ConvoAI · Serverlys assistant
             </p>
             <h2
-              id="sera-title"
+              id="assistant-title"
               className="mt-5 font-display text-[36px] font-normal leading-[1.08] tracking-[-0.03em] text-fg sm:text-[52px]"
             >
-              Questions? <span className="text-primary">Ask Sera</span>
+              Questions? <span className="text-primary">Ask ConvoAI</span>
             </h2>
             <p className="mx-auto mt-4 max-w-[480px] text-body-lg text-fg-secondary lg:mx-0">
-              Sera, the Serverlys assistant, knows the email plans and the setup, and
+              ConvoAI, the Serverlys assistant, knows the email plans and the setup, and
               brings in a person from the team when you need one.
             </p>
             <ul className="mt-8 grid gap-3 text-left sm:grid-cols-2">
@@ -447,7 +447,7 @@ export default function BusinessEmailPage() {
               ))}
             </ul>
             <div className="mt-8 flex justify-center lg:justify-start">
-              <SeraOpenButton label="Ask Sera" />
+              <AssistantOpenButton label="Ask ConvoAI" />
             </div>
           </div>
           <MotionIn variant="rise">

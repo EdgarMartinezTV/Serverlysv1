@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { MockPhoto } from "@/components/ui/mock-photo";
-import { SeraMark } from "@/components/sera/sera-mark";
+import { AssistantMark } from "@/components/assistant/assistant-mark";
 import { cn } from "@/lib/utils";
 
 /**
@@ -328,7 +328,7 @@ export function HeroCanvas() {
       <div className="absolute top-0 left-0 hidden w-64 rounded-2xl bg-white p-3.5 shadow-e5 sm:block">
         <p className="flex items-center gap-2 text-[11px] font-semibold text-fg">
           <span className="inline-flex size-6 items-center justify-center rounded-lg bg-primary text-white">
-            <SeraMark className="size-3.5" />
+            <AssistantMark className="size-3.5" />
           </span>
           New chat · fernandfold.com
           <span className="ml-auto text-[10px] font-normal text-fg-muted">09:03</span>

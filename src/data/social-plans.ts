@@ -5,7 +5,7 @@ import { billing } from "./company";
  * (pids 29, 36, 37, 38, "Social Media Management", verified 2026-10-13 through
  * feeds/productsinfo.php). WHMCS is the authority on price and contents; if
  * the store changes, change this file and every surface follows: the
- * /social-media cards, its Offer schema, /llms.txt and Sera.
+ * /social-media cards, its Offer schema, /llms.txt and ConvoAI.
  *
  * Each plan lists its OWN features in the store's words. The store does not
  * say a tier includes the one below it, so the page never claims

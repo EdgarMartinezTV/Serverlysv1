@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView } from "motion/react";
 import { cn } from "@/lib/utils";
-import { SeraMark } from "@/components/sera/sera-mark";
+import { AssistantMark } from "@/components/assistant/assistant-mark";
 import { useReducedAfterMount } from "./use-reduced";
 import { bfPrice, blackFridayActive } from "@/data/pricing";
 
@@ -16,7 +16,7 @@ const BUSINESS_PLUS = 7.95;
  * product UI instead of flat screenshots:
  *  · DomainStage — a domain search types the name, results land, the cursor
  *    adds it, and the mailbox on it is created.
- *  · SeraStage — Sera's widget answers "which plan fits my team?" with the
+ *  · SeraStage — ConvoAI's widget answers "which plan fits my team?" with the
  *    real Business Plus figures from the WHMCS catalogue.
  * Both run on one tick clock while on screen; reduced motion shows the final
  * frame. The business (brightleaf.co, Jordan) is the page's demo persona.
@@ -242,7 +242,7 @@ export function DomainStage() {
   );
 }
 
-/* ── Sera ──────────────────────────────────────────────────────────── */
+/* ── ConvoAI ──────────────────────────────────────────────────────────── */
 
 const CHIPS = ["I want to move my email", "Which email plan fits my team?", "Help me set up Outlook"];
 const QUESTION = CHIPS[1];
@@ -301,11 +301,11 @@ export function SeraStage() {
       <div className={cn(glass, "right-0 top-0 flex h-[90%] w-[54%] @max-[440px]:h-[82%] @max-[440px]:w-[80%] flex-col overflow-hidden rounded-[calc(var(--u)*3.4)]")}>
         <div className="flex items-center gap-[calc(var(--u)*2)] bg-[linear-gradient(120deg,#0f1f4d,#071230)] px-[calc(var(--u)*3)] py-[calc(var(--u)*2.6)] text-white">
           <span className="relative flex size-[calc(var(--u)*6.4)] items-center justify-center rounded-full bg-primary">
-            <SeraMark className="size-[calc(var(--u)*4.4)]" />
+            <AssistantMark className="size-[calc(var(--u)*4.4)]" />
             <span className="absolute -bottom-[calc(var(--u)*0.2)] -right-[calc(var(--u)*0.2)] size-[calc(var(--u)*1.9)] rounded-full bg-[#22c55e] ring-[calc(var(--u)*0.4)] ring-[#0b1838]" />
           </span>
           <span className="flex-1">
-            <span className="block text-[calc(var(--u)*3.1)] font-semibold leading-tight">Sera</span>
+            <span className="block text-[calc(var(--u)*3.1)] font-semibold leading-tight">ConvoAI</span>
             <span className="block text-[calc(var(--u)*2.2)] text-white/60">Serverlys assistant</span>
           </span>
           <span className="text-[calc(var(--u)*3.4)] text-white/50">×</span>
@@ -314,10 +314,10 @@ export function SeraStage() {
         <div className="flex flex-1 flex-col justify-end gap-[calc(var(--u)*1.8)] overflow-hidden bg-[#f8fafc] px-[calc(var(--u)*2.6)] pb-[calc(var(--u)*2)] [mask-image:linear-gradient(to_bottom,transparent,black_14%)]">
           <div className="flex items-end gap-[calc(var(--u)*1.4)]">
             <span className="flex size-[calc(var(--u)*4.6)] shrink-0 items-center justify-center rounded-full bg-primary text-white">
-              <SeraMark className="size-[calc(var(--u)*3.2)]" />
+              <AssistantMark className="size-[calc(var(--u)*3.2)]" />
             </span>
             <p className="rounded-[calc(var(--u)*2)] rounded-bl-[calc(var(--u)*0.6)] bg-white px-[calc(var(--u)*2.4)] py-[calc(var(--u)*1.8)] text-[calc(var(--u)*2.6)] leading-snug shadow-[0_calc(var(--u)*0.3)_calc(var(--u)*1)_rgb(15_23_42/0.06)]">
-              Hi, I&apos;m Sera. How can I help with your email today?
+              Hi, I&apos;m ConvoAI. How can I help with your email today?
             </p>
           </div>
 
@@ -363,7 +363,7 @@ export function SeraStage() {
           {thinking && (
             <motion.div layout className="flex items-end gap-[calc(var(--u)*1.4)]" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
               <span className="flex size-[calc(var(--u)*4.6)] shrink-0 items-center justify-center rounded-full bg-primary text-white">
-                <SeraMark className="size-[calc(var(--u)*3.2)]" />
+                <AssistantMark className="size-[calc(var(--u)*3.2)]" />
               </span>
               <span className="rounded-[calc(var(--u)*2)] bg-white px-[calc(var(--u)*2.4)] py-[calc(var(--u)*1.4)] shadow-[0_calc(var(--u)*0.3)_calc(var(--u)*1)_rgb(15_23_42/0.06)]">
                 <Dots />
@@ -380,7 +380,7 @@ export function SeraStage() {
               transition={{ duration: 0.45, ease: EASE }}
             >
               <span className="flex size-[calc(var(--u)*4.6)] shrink-0 items-center justify-center rounded-full bg-primary text-white">
-                <SeraMark className="size-[calc(var(--u)*3.2)]" />
+                <AssistantMark className="size-[calc(var(--u)*3.2)]" />
               </span>
               <div className="flex-1 rounded-[calc(var(--u)*2)] rounded-bl-[calc(var(--u)*0.6)] bg-white p-[calc(var(--u)*2.2)] text-[calc(var(--u)*2.6)] leading-snug shadow-[0_calc(var(--u)*0.3)_calc(var(--u)*1)_rgb(15_23_42/0.06)]">
                 Business Plus fits a team of 5: one mailbox each and 45 GB of storage.
@@ -417,7 +417,7 @@ export function SeraStage() {
         </div>
 
         <div className="flex items-center gap-[calc(var(--u)*1.6)] border-t border-[#e2e8f0] bg-white px-[calc(var(--u)*2.6)] py-[calc(var(--u)*2)]">
-          <span className="flex-1 text-[calc(var(--u)*2.4)] text-[#94a3b8]">Message Sera…</span>
+          <span className="flex-1 text-[calc(var(--u)*2.4)] text-[#94a3b8]">Message ConvoAI…</span>
           <span className="flex size-[calc(var(--u)*5)] items-center justify-center rounded-full bg-primary text-white">
             <svg viewBox="0 0 16 16" className="size-[calc(var(--u)*2.6)]" fill="currentColor" aria-hidden="true">
               <path d="M2 2.5 14 8 2 13.5l1.6-5.5L2 2.5Zm1.6 5.5H9" />
@@ -441,7 +441,7 @@ export function SeraStage() {
         </span>
         <span>
           <span className="block text-[calc(var(--u)*2.7)] font-semibold">A person is one tap away</span>
-          <span className="block text-[calc(var(--u)*2.3)] text-[#64748b]">Sera hands off to the team</span>
+          <span className="block text-[calc(var(--u)*2.3)] text-[#64748b]">ConvoAI hands off to the team</span>
         </span>
       </motion.div>
 

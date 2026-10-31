@@ -228,7 +228,7 @@ export default function OurProcessPage() {
                 >
                   Start with a scope
                 </a>
-                <ChatButton size="sm">Ask Sera</ChatButton>
+                <ChatButton size="sm">Ask ConvoAI</ChatButton>
               </div>
             </div>
             <div className="relative aspect-[4/3.1] overflow-hidden rounded-lg bg-[#f3f3f7]">

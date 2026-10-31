@@ -167,14 +167,14 @@ function PlanGrid({ group, term }: { group: PlanGroup; term: Term }) {
                * marketing copy cannot move, so "wordpress-starter" means the
                * same card today and after the store is re-shot.
                *
-               * This attribute is an API, not a styling hook: Sera resolves a
+               * This attribute is an API, not a styling hook: ConvoAI resolves a
                * plan to it and the widget marks whatever carries it — see
-               * `lib/sera/highlight.ts`. The alternative is a CSS selector,
-               * which means Sera knowing that the third card in a grid is Turbo
-               * — true until somebody reorders the grid, and then Sera
+               * ConvoAI's "show me". The alternative is a CSS selector,
+               * which means ConvoAI knowing that the third card in a grid is Turbo
+               * — true until somebody reorders the grid, and then ConvoAI
                * confidently points at the wrong price.
                */
-              data-sera-target={`${group.id}-${plan.tier}`}
+              data-convoai-target={`${group.id}-${plan.tier}`}
               className={cn(
                 "relative flex w-full flex-col rounded-xl bg-white p-6",
                 plan.popular

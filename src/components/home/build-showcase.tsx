@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
  *
  * Content rules:
  *  · The requests are things Serverlys actually does — free migration and
- *    building sites (Sera files both). Nothing here claims an AI builder.
+ *    building sites (ConvoAI files both). Nothing here claims an AI builder.
  *  · Photos are products and places only (public/mock/CREDITS.md); no people,
  *    no logos.
  *

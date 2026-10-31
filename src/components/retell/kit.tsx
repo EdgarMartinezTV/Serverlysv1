@@ -875,7 +875,7 @@ export function PhotoCta({
               >
                 {primary.label}
               </a>
-              <ChatButton size="sm">Ask Sera</ChatButton>
+              <ChatButton size="sm">Ask ConvoAI</ChatButton>
             </div>
           </div>
         </div>

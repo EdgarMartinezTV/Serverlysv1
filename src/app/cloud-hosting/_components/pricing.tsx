@@ -33,7 +33,7 @@ const EXTRAS = [
 /**
  * Plans — 2026-10-03. The shared PlanCard grid (same card as /pricing) in
  * place of the single-plan slider, then three included extras and the
- * "find the right plan" banner, which opens Sera.
+ * "find the right plan" banner, which opens ConvoAI.
  */
 export function Pricing() {
   if (!GROUP) return null;

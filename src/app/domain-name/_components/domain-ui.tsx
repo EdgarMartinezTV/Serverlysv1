@@ -16,7 +16,7 @@ import { MockPhoto } from "@/components/ui/mock-photo";
  *
  * Built in the page folders rather than by editing components/ref/domain/*,
  * which stay in place untouched. Same section ids as before (#search,
- * #tld-prices) because the tests, the in-page CTAs and Sera's navigation map
+ * #tld-prices) because the tests, the in-page CTAs and ConvoAI's navigation map
  * all point at them. Every price is read from data/tlds — nothing invented.
  */
 

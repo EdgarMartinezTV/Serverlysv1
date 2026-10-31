@@ -3,7 +3,7 @@
 import { useId, useState } from "react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
-import { SeraOpenButton } from "@/components/sera/sera-open-button";
+import { AssistantOpenButton } from "@/components/assistant/assistant-open-button";
 import { useReducedAfterMount } from "./use-reduced";
 
 /**
@@ -55,10 +55,10 @@ export function EmailFaq({
             />
             <p className="relative text-h4 font-semibold">Still have a question?</p>
             <p className="relative mt-2 text-small text-white/70">
-              Ask Sera now, or write to the team and a real person will answer.
+              Ask ConvoAI now, or write to the team and a real person will answer.
             </p>
             <div className="relative mt-6 flex flex-wrap items-center gap-4">
-              <SeraOpenButton onDark label="Ask Sera" />
+              <AssistantOpenButton onDark label="Ask ConvoAI" />
               <a
                 href={`mailto:${supportEmail}`}
                 className="inline-block py-2.5 text-small font-semibold text-[#bfd2ff] underline-offset-4 hover:text-white hover:underline"

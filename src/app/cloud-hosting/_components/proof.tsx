@@ -1,5 +1,5 @@
 import { Grid } from "@/components/ref/kit";
-import { SeraMark } from "@/components/sera/sera-mark";
+import { AssistantMark } from "@/components/assistant/assistant-mark";
 import { Check } from "@/components/ref/kit";
 
 /**
@@ -53,7 +53,7 @@ export function Proof() {
           ))}
         </ul>
 
-        {/* ── Sera spotlight ──────────────────────────────────────────── */}
+        {/* ── ConvoAI spotlight ──────────────────────────────────────────── */}
         <div
           id="ai-agent"
           className="mt-24 grid scroll-mt-14 items-center gap-14 lg:grid-cols-2"
@@ -64,7 +64,7 @@ export function Proof() {
           >
             <div className="absolute inset-y-0 right-0 w-1/2 bg-white/10 [clip-path:polygon(40%_0,100%_0,100%_100%,0_100%)]" />
             <div className="absolute top-8 left-8 w-[62%] rounded-2xl bg-white/95 p-5 text-center shadow-e5">
-              <SeraMark className="mx-auto h-9 w-9 text-primary" />
+              <AssistantMark className="mx-auto h-9 w-9 text-primary" />
               <p className="mt-3 text-h4 text-fg">Hello</p>
               <p className="text-small text-fg-secondary">How can I help today?</p>
             </div>
@@ -96,7 +96,7 @@ export function Proof() {
 
           <div className="max-w-[500px]">
             <h2 className="display-lg text-white">
-              Meet Sera, your assistant for hosting and websites
+              Meet ConvoAI, your assistant for hosting and websites
             </h2>
             <ul className="mt-7 flex flex-col gap-3">
               {[

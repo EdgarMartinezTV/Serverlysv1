@@ -1,10 +1,10 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useSeraOptional } from "@/components/sera/sera-provider";
+import { openAssistant } from "@/components/assistant/assistant";
 
 /**
- * "Chat with us" — opens Sera. Like the header's Ask Sera pill, it degrades
+ * "Chat with us" — opens ConvoAI. Like the header's Ask ConvoAI pill, it degrades
  * into a real link to the support page when the provider is not mounted, so
  * the page's primary action is never inert.
  */
@@ -23,7 +23,6 @@ export function ChatButton({
   /** md: the site's 48px button. sm: 36px, for compact cards. */
   size?: "md" | "sm";
 }) {
-  const sera = useSeraOptional();
   const classes = cn(
     "inline-flex items-center justify-center gap-2 font-semibold transition-colors duration-fast focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
     size === "md"
@@ -56,15 +55,8 @@ export function ChatButton({
       {children}
     </>
   );
-  if (!sera) {
-    return (
-      <a href="/support" className={classes}>
-        {body}
-      </a>
-    );
-  }
   return (
-    <button type="button" onClick={sera.open} className={classes}>
+    <button type="button" onClick={() => openAssistant()} className={classes}>
       {body}
     </button>
   );

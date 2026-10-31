@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Check, CtaButton, Grid, Headline } from "@/components/ref/kit";
-import { SeraMark } from "@/components/sera/sera-mark";
+import { AssistantMark } from "@/components/assistant/assistant-mark";
 import { ConvoAiLogo } from "@/components/layout/convoai-logo";
 import { MockPhoto } from "@/components/ui/mock-photo";
 
@@ -107,7 +107,7 @@ export function Answering() {
           ].map(([t, b]) => (
             <li key={t}>
               <span className="inline-flex size-9 items-center justify-center rounded-lg bg-brand-50 text-primary">
-                <SeraMark className="size-4" />
+                <AssistantMark className="size-4" />
               </span>
               <h3 className="mt-4 text-body-lg font-medium text-fg">{t}</h3>
               <p className="mt-1.5 text-small text-fg-secondary">{b}</p>

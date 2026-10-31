@@ -4,7 +4,7 @@ import { billing } from "./company";
  * SEO plans — copied from the live WHMCS store, `store/digital-services`
  * (verified 2026-10-13). WHMCS is the authority on price and contents; if the
  * store changes, change this file and every surface follows: the /seo plan
- * cards and comparison, its Service/Offer schema, /llms.txt and Sera.
+ * cards and comparison, its Service/Offer schema, /llms.txt and ConvoAI.
  *
  * Plans are cumulative: Growth is "everything in Starter, plus", Elite is
  * "everything in Growth, plus". `features` lists only what a tier ADDS, in the

@@ -5,7 +5,7 @@ import { billing } from "./company";
  * ("Web Maintance Plan" group, pids 17–19, verified 2026-10-13 through
  * feeds/productsinfo.php). WHMCS is the authority on price and contents; if
  * the store changes, change this file and every surface follows: the
- * /site-management cards, its Offer schema, /llms.txt and Sera.
+ * /site-management cards, its Offer schema, /llms.txt and ConvoAI.
  *
  * Each plan lists its own features in the store's words, condensed. The
  * store does not say a tier includes the one below it, so the page never

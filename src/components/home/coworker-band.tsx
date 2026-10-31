@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Grid } from "@/components/ref/kit";
-import { SeraMark } from "@/components/sera/sera-mark";
+import { AssistantMark } from "@/components/assistant/assistant-mark";
 import { CoworkerBento } from "./coworker-bento";
 
 /**
@@ -72,7 +72,7 @@ export function CoworkerBand() {
               href="https://convoai.cloud/"
               className="mt-5 inline-flex items-center gap-2 rounded-full px-4 py-2 text-small font-semibold text-white ring-1 ring-white/40 transition-colors duration-fast hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
-              <SeraMark className="h-4 w-4" />
+              <AssistantMark className="h-4 w-4" />
               Start a chat
             </Link>
           </div>
@@ -102,7 +102,7 @@ export function CoworkerBand() {
 
           <div aria-hidden="true" className="relative mx-auto h-[300px] w-full max-w-[500px]">
             <span className="absolute top-0 right-10 z-10 inline-flex size-20 items-center justify-center rounded-2xl bg-primary text-white shadow-e5 ring-1 ring-white/20">
-              <SeraMark className="h-10 w-10" />
+              <AssistantMark className="h-10 w-10" />
             </span>
             {PROMPTS.map((p, i) => (
               <div

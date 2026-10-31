@@ -2,14 +2,13 @@
 
 import { useState } from "react";
 import { Container } from "@/components/ui/container";
-import { SeraIcon, SeraMark } from "@/components/sera/sera-mark";
-import { useSeraOptional } from "@/components/sera/sera-provider";
-import { company } from "@/data/company";
+import { AssistantIcon, AssistantMark } from "@/components/assistant/assistant-mark";
+import { askAssistant, openAssistant } from "@/components/assistant/assistant";
 
 /**
  * Brief band — "tell us what you are building".
  *
- * ── WHY THIS NOW OPENS SERA ─────────────────────────────────────────────────
+ * ── WHY THIS NOW OPENS THE MESSENGER ─────────────────────────────────────────────────
  *
  * The header of this file used to read: "The reference layout puts an AI prompt
  * box here. We do not have an agent that can provision an account from a
@@ -17,7 +16,7 @@ import { company } from "@/data/company";
  * first screen and a half." That was correct when it was written, and it is why
  * the send was a `mailto:` — an honest handoff instead of a fake agent.
  *
- * ⚠ THAT CONSTRAINT NO LONGER HOLDS. Sera exists. It reads the sentence,
+ * ⚠ THAT CONSTRAINT NO LONGER HOLDS. ConvoAI exists. It reads the sentence,
  * classifies the intent, answers from the knowledge tools rather than from
  * memory, opens the right page, marks the plan it recommends, and collects a
  * migration or project request that only a human tap can file. The box that
@@ -36,7 +35,7 @@ import { company } from "@/data/company";
  *
  * ── WHY IT LOOKS LIKE THIS ──────────────────────────────────────────────────
  *
- * ⚠ SERA'S IDENTITY IS INSIDE THE PANEL, BEFORE THE CLICK. The old button said
+ * ⚠ CONVOAI'S IDENTITY IS INSIDE THE PANEL, BEFORE THE CLICK. The old button said
  * "Send brief", which told the visitor nothing about what would happen — and
  * what happens now is that a chat panel opens and starts talking. A control
  * that opens a conversation has to say so first; a surprise assistant is the
@@ -59,19 +58,8 @@ import { company } from "@/data/company";
  */
 export function BriefBand() {
   const [draft, setDraft] = useState("");
-  const sera = useSeraOptional();
   const trimmed = draft.trim();
 
-  /*
-   * The fallback target, computed regardless of whether Sera is available —
-   * it is what the button becomes when it is not, and keeping it unconditional
-   * means there is no branch where the control has nowhere to go.
-   */
-  const mailHref = trimmed
-    ? `mailto:${company.email}?subject=${encodeURIComponent(
-        "Project brief",
-      )}&body=${encodeURIComponent(trimmed)}`
-    : `mailto:${company.email}?subject=${encodeURIComponent("Project brief")}`;
 
   /*
    * ⚠ OPEN, THEN SEND, IN THAT ORDER AND IN ONE TICK. `send` appends the
@@ -82,14 +70,12 @@ export function BriefBand() {
    * No `startWorkflow`. It is tempting to map "Move my WordPress site over" to
    * WEBSITE_MIGRATION and skip a step, but the chips are STARTING POINTS the
    * visitor edits — forcing a workflow from text they may have rewritten would
-   * open a migration request for someone asking about a store. Sera classifies
+   * open a migration request for someone asking about a store. ConvoAI classifies
    * it; that is the job it is good at.
    */
-  const askSera = () => {
-    if (!sera) return;
-    sera.open();
+  const ask = () => {
     /*
-     * ⚠ AN EMPTY DRAFT STILL OPENS SERA, IT JUST SENDS NOTHING.
+     * ⚠ AN EMPTY DRAFT STILL OPENS THE MESSENGER, IT JUST SENDS NOTHING.
      *
      * The first version disabled the button until something was typed, which
      * is the right rule for a chat composer and the wrong one for this. On a
@@ -103,11 +89,13 @@ export function BriefBand() {
      * removed from the rest of the site.
      *
      * Opening with nothing typed is a perfectly good outcome — the panel's own
-     * quick actions take over from there, and "Ask Sera" is then simply true.
+     * quick actions take over from there, and "Ask ConvoAI" is then simply true.
      */
     if (trimmed) {
-      sera.send(trimmed, { label: "Homepage brief" });
+      askAssistant(trimmed);
       setDraft("");
+    } else {
+      openAssistant();
     }
   };
 
@@ -115,9 +103,9 @@ export function BriefBand() {
    * ── 2026-10-03 RE-COMPOSITION ─────────────────────────────────────────────
    * Edgar asked for this band to read as one calm prompt: a mark, a two-line
    * headline, ONE input with an arrow, one helper line. The chips, the
-   * "Sera · AI agent" header row, the mono eyebrow and the long lede all went;
+   * "ConvoAI · AI agent" header row, the mono eyebrow and the long lede all went;
    * together they made the band read as a form instead of an invitation. The
-   * mail fallback is unchanged — without Sera mounted, the arrow becomes the
+   * mail fallback is unchanged — without ConvoAI mounted, the arrow becomes the
    * mailto link it always was.
    *
    * The gradient line is BLUE ONLY (brand-900 → brand-600 → brand-500). Every
@@ -136,14 +124,14 @@ export function BriefBand() {
 
       <Container className="relative">
         <div className="mx-auto flex max-w-[880px] flex-col items-center text-center">
-          <SeraMark className="h-10 w-10 text-fg" />
+          <AssistantMark className="h-10 w-10 text-fg" />
           <h2
             id="brief-heading"
             className="display-lg mt-6 text-fg"
           >
             Tell us your idea.
             <span className="block bg-[linear-gradient(90deg,var(--color-brand-900),var(--color-brand-600)_45%,var(--color-brand-500))] bg-clip-text pb-1 text-transparent">
-              Sera tells you what it takes.
+              ConvoAI tells you what it takes.
             </span>
           </h2>
 
@@ -151,7 +139,7 @@ export function BriefBand() {
             className="mt-10 w-full max-w-[850px]"
             onSubmit={(event) => {
               event.preventDefault();
-              askSera();
+              ask();
             }}
           >
             <label htmlFor="brief" className="sr-only">
@@ -168,36 +156,18 @@ export function BriefBand() {
                 placeholder="What do you want to build?"
                 className="h-11 min-w-0 flex-1 bg-transparent text-body-lg text-fg placeholder:text-fg-secondary focus:outline-none"
               />
-              {/*
-                ⚠ TWO CONTROLS, ONE RENDERED. With Sera this is a submit button
-                that opens the conversation; without it, the original link to
-                mail. A `<button>` and an `<a>` are different things to a screen
-                reader and to a middle click, so the label matches which it is.
-              */}
-              {sera ? (
-                <button
-                  type="submit"
-                  className="inline-flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary text-white transition-colors duration-fast ease-hover hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                >
-                  <span className="sr-only">Ask Sera</span>
-                  <SeraIcon name="arrowRight" className="h-5 w-5" />
-                </button>
-              ) : (
-                <a
-                  href={mailHref}
-                  className="inline-flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary text-white transition-colors duration-fast ease-hover hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                >
-                  <span className="sr-only">Send brief by email</span>
-                  <SeraIcon name="arrowRight" className="h-5 w-5" />
-                </a>
-              )}
+              <button
+                type="submit"
+                className="inline-flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary text-white transition-colors duration-fast ease-hover hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              >
+                <span className="sr-only">Ask ConvoAI</span>
+                <AssistantIcon name="arrowRight" className="h-5 w-5" />
+              </button>
             </div>
           </form>
 
           <p className="mt-4 text-small text-fg-secondary">
-            {sera
-              ? "Get a plan and the real price in seconds. Free, no signup."
-              : `A person replies with the plan and the price. Or call ${company.phone}.`}
+            Get a plan and the real price in seconds. Free, no signup.
           </p>
         </div>
       </Container>

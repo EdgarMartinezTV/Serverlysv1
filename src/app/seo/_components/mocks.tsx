@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { SeraMark } from "@/components/sera/sera-mark";
+import { AssistantMark } from "@/components/assistant/assistant-mark";
 import { MockPhoto } from "@/components/ui/mock-photo";
 
 /**
@@ -789,7 +789,7 @@ export function ContentMock({ className }: { className?: string }) {
   );
 }
 
-/* ── 7. Sera conversation about SEO ─────────────────────────────────────── */
+/* ── 7. ConvoAI conversation about SEO ─────────────────────────────────────── */
 
 export function SeraChatMock({ className }: { className?: string }) {
   return (
@@ -804,10 +804,10 @@ export function SeraChatMock({ className }: { className?: string }) {
       <div className="relative mx-auto max-w-[420px] overflow-hidden rounded-2xl bg-white shadow-[0_30px_70px_-15px_rgb(0_0_0/0.5)]">
         <div className="flex items-center gap-2.5 border-b border-black/[0.06] px-4 py-3">
           <span className="flex size-8 items-center justify-center rounded-full bg-brand-50 text-primary">
-            <SeraMark className="size-5" />
+            <AssistantMark className="size-5" />
           </span>
           <span className="leading-tight">
-            <span className="block text-[13px] font-semibold text-[#202124]">Sera</span>
+            <span className="block text-[13px] font-semibold text-[#202124]">ConvoAI</span>
             <span className="flex items-center gap-1 text-[10.5px] text-[#5f6368]">
               <span className="size-1.5 rounded-full bg-emerald-500" />
               Serverlys assistant · a person reads every chat

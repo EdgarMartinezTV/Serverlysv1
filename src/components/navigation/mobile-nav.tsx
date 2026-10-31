@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { SeraOpenButton } from "@/components/sera/sera-open-button";
+import { AssistantOpenButton } from "@/components/assistant/assistant-open-button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -236,7 +236,7 @@ export function MobileNav({
                 opening the chat panel behind an open full-screen drawer would
                 put it somewhere the visitor cannot see it.
               */}
-              <SeraOpenButton block onOpen={() => onOpenChange(false)} />
+              <AssistantOpenButton block onOpen={() => onOpenChange(false)} />
               <Button href={billing.login} variant="secondary" size="lg" block>
                 Client login
               </Button>

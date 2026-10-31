@@ -1,24 +1,23 @@
 import "server-only";
-import { validateField } from "@/lib/sera/validation";
-import type { FieldSpec } from "@/lib/sera/types";
-import { newReference, recordRequest, type StoredRequest } from "@/lib/sera/notify/store";
-import { sendLeadNotification } from "@/lib/sera/notify/provider";
-import type { NotificationBody } from "@/lib/sera/notify/templates";
-import { log, newRequestId } from "@/lib/sera/observability";
+import { validateField, type FieldSpec } from "@/lib/leads/core/validation";
+import { newReference, recordRequest, type StoredRequest } from "@/lib/leads/core/store";
+import { sendLeadNotification } from "@/lib/leads/core/notify";
+import type { NotificationBody } from "@/lib/leads/core/notify";
+import { log, newRequestId } from "@/lib/leads/core/observability";
 import { restaurantPlans, restaurantPlanIds } from "@/data/restaurant-plans";
 
 /**
  * The "free restaurant website review" form on /restaurant-websites.
  *
- * IT USES THE SITE'S EXISTING LEAD PIPELINE, NOT A NEW ONE. Sera already
+ * IT USES THE SITE'S EXISTING LEAD PIPELINE, NOT A NEW ONE. ConvoAI already
  * owns the only two lead sinks this project has: the durable request log
- * (`notify/store.ts`, JSONL on the `sera` volume in production) and the team
- * notification (`notify/provider.ts`, SERA_WEBHOOK_URL → n8n, or Resend). A
+ * (`leads/core/store.ts`, JSONL on the `sera` volume in production) and the team
+ * notification (`leads/core/notify.ts`, SERA_WEBHOOK_URL → n8n, or Resend). A
  * form lead is filed through exactly those two calls, gets the same SER-
  * reference format, and lands in the same inbox and the same log, so the team
  * works one queue.
  *
- * Same honesty contract as `sera/submit.ts`: durable write first, then the
+ * Same honesty contract as `the old assistant submit`: durable write first, then the
  * notification, and the visitor is told "with the team" only when delivery
  * actually succeeded.
  */
