@@ -42,20 +42,22 @@ export function BlackFridayHero() {
       />
       <div aria-hidden="true" className="absolute inset-0 -z-10 bg-grid-dark opacity-40" />
 
-      {/* Floating 3D shapes. Positions are percentages of the band so they
-          hold their composition from tablet to wide desktop. */}
+      {/* Floating 3D shapes. Every one sits fully inside the band at every
+          width (Edgar, 2026-10-31): the bottom pair live in the corners, and the
+          content's bottom padding is taller than they are below lg, where the
+          corners are not clear of the centred text. */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute left-1/2 top-[17%] ml-[250px] hidden w-[110px] rotate-[14deg] md:block lg:ml-[330px] lg:w-[130px] xl:ml-[420px] xl:w-[160px]">
           <div className="animate-float">
             <GlossyPercent tone="dark" />
           </div>
         </div>
-        <div className="absolute -bottom-[60px] right-[8%] w-[200px] -rotate-[18deg] sm:w-[260px] lg:right-[14%] lg:w-[300px]">
+        <div className="absolute bottom-6 right-[5%] w-[130px] -rotate-[18deg] sm:bottom-8 sm:w-[170px] lg:right-[6%] lg:w-[200px] xl:right-[9%] xl:w-[240px]">
           <div className="animate-float-slow">
             <GlossyPercent tone="blue" />
           </div>
         </div>
-        <div className="absolute -bottom-[90px] left-[6%] hidden w-[220px] rotate-[24deg] opacity-80 sm:block lg:left-[12%]">
+        <div className="absolute bottom-8 left-[4%] hidden w-[140px] rotate-[24deg] opacity-80 sm:block lg:left-[6%] lg:w-[170px] xl:left-[10%] xl:w-[200px]">
           <div className="animate-float-slow [animation-delay:-4s]">
             <GlossyPercent tone="ghost" />
           </div>
@@ -67,7 +69,7 @@ export function BlackFridayHero() {
         </div>
       </div>
 
-      <Container width="wide" className="relative pb-36 pt-36 sm:pb-48 sm:pt-44">
+      <Container width="wide" className="relative pb-48 pt-36 sm:pb-60 sm:pt-44 lg:pb-52">
         <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
           <h1 className="font-display text-[clamp(3.5rem,1.6rem+7.4vw,8.25rem)] font-semibold leading-[0.95] tracking-[-0.05em] text-white">
             Black Friday
