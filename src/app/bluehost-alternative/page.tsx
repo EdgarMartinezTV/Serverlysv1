@@ -10,7 +10,7 @@ import { pageMetadata, faqGraph } from "@/lib/seo";
 import type { Faq } from "@/data/faqs";
 import { billing } from "@/data/company";
 import { breadcrumbTrail } from "@/data/routes";
-import { groupById, formatPrice } from "@/data/pricing";
+import { BLACK_FRIDAY, bfPrice, blackFridayActive, groupById, formatPrice, saleMonthly, type Plan } from "@/data/pricing";
 import { tldBySlug } from "@/data/tld-catalog";
 import { designFromPrice, formatDesignPrice } from "@/data/design-plans";
 
@@ -70,7 +70,23 @@ const dotCom = tldBySlug("com");
 
 const jump = (from: number, to: number) => `${Math.round(((to - from) / from) * 100)}%`;
 
-const firstInvoice = starter ? starter.monthly + (starter.setupFee ?? 0) : 0;
+/*
+ * Black Friday 2026 (WHMCS code BLACKFRIDAY, auto-applied in the cart): 37% off
+ * the first payment until Dec 7. WHMCS renews every plan at its own monthly
+ * price, so the renewal figure on this page is `monthly`, never `standard`.
+ */
+const BF_ON = blackFridayActive();
+const firstInvoice = starter
+  ? BF_ON
+    ? Math.round((bfPrice(starter.monthly) + (starter.setupFee ? bfPrice(starter.setupFee) : 0)) * 100) / 100
+    : starter.monthly + (starter.setupFee ?? 0)
+  : 0;
+const setupNow = starter?.setupFee ? (BF_ON ? bfPrice(starter.setupFee) : starter.setupFee) : 0;
+/** "$7.95/mo", or during the sale "$5.01 first month (Black Friday, until Dec 7), then $7.95/mo". */
+const priceText = (p: Plan) =>
+  BF_ON
+    ? `${formatPrice(bfPrice(p.monthly))} first month (Black Friday, until ${BLACK_FRIDAY.endsLabel}), then ${formatPrice(p.monthly)}/mo`
+    : `${formatPrice(p.monthly)}/mo`;
 
 const priceList = (values: readonly number[]) => values.map(formatPrice).join(" / ");
 
@@ -86,15 +102,17 @@ const ROWS: ReadonlyArray<{ label: string; serverlys: React.ReactNode; bluehost:
     label: "Advertised price",
     serverlys: (
       <>
-        {priceList(PLANS.map((p) => p.monthly))} per month
-        {starter?.setupFee ? ` (Starter adds a one-off ${formatPrice(starter.setupFee)} setup fee)` : ""}
+        {BF_ON
+          ? `${priceList(PLANS.map(saleMonthly))} for the first month (Black Friday, until ${BLACK_FRIDAY.endsLabel}), then ${priceList(PLANS.map((p) => p.monthly))} per month`
+          : `${priceList(PLANS.map((p) => p.monthly))} per month`}
+        {setupNow ? ` (Starter adds a one-off ${formatPrice(setupNow)} setup fee)` : ""}
       </>
     ),
     bluehost: <>{priceList(BLUEHOST.map((p) => p.intro))} per month (Starter / Business / eCommerce Essentials)</>,
   },
   {
     label: "Renewal price",
-    serverlys: <>{priceList(PLANS.map((p) => p.standard))} per month, printed beside the advertised rate</>,
+    serverlys: <>{priceList(PLANS.map((p) => p.monthly))} per month, the same as the regular monthly price</>,
     bluehost: <>{priceList(BLUEHOST.map((p) => p.renews))} per month, printed on each plan card</>,
   },
   {
@@ -164,10 +182,15 @@ const BLUEHOST_STRENGTHS = [
     title: "You will commit to a 36-month term",
     body: `On ${SOURCE_LABEL} Bluehost's Starter plan was ${formatPrice(BLUEHOST[0].intro)}/mo "for ${BLUEHOST_TERM}". That is less than any Serverlys plan costs per month, and we will not pretend otherwise.`,
   },
-  {
-    title: "You want the lowest renewal on an entry plan",
-    body: `Bluehost Starter renews at ${formatPrice(BLUEHOST[0].renews)}/mo. Our Starter renews at ${starter ? formatPrice(starter.standard) : ""}/mo. If the cheapest long-run rate is what matters most, theirs is lower.`,
-  },
+  /* Only a Bluehost strength while its entry renewal is below ours. */
+  ...(starter && BLUEHOST[0].renews < starter.monthly
+    ? [
+        {
+          title: "You want the lowest renewal on an entry plan",
+          body: `Bluehost Starter renews at ${formatPrice(BLUEHOST[0].renews)}/mo. Our Starter renews at ${formatPrice(starter.monthly)}/mo. If the cheapest long-run rate is what matters most, theirs is lower.`,
+        },
+      ]
+    : []),
   {
     title: "You want a free domain bundled in",
     body: "Bluehost includes one free domain for the first year with a 12- or 36-month hosting term. We charge for domains from day one, at the same price every year, so in year one theirs is cheaper.",
@@ -248,17 +271,17 @@ const STEPS = [
 const FAQS: readonly Faq[] = [
   {
     question: "What is the best Bluehost alternative?",
-    answer: `It depends on how you want to pay. If you will take a 36-month term, Bluehost's entry price is lower than ours. If you want to pay month to month, see the renewal rate before checkout and have the migration done for you, Serverlys starts at ${starter ? formatPrice(starter.monthly) : ""}/mo and renews at ${starter ? formatPrice(starter.standard) : ""}/mo.`,
+    answer: `It depends on how you want to pay. If you will take a 36-month term, Bluehost's entry price is lower than ours. If you want to pay month to month, see the renewal rate before checkout and have the migration done for you, Serverlys starts at ${starter ? priceText(starter) : ""}${BF_ON ? "" : ` and renews at ${starter ? formatPrice(starter.monthly) : ""}/mo`}.`,
     scopes: [PATH],
   },
   {
     question: "Is Bluehost's renewal price higher than its advertised price?",
-    answer: `Yes, and Bluehost prints both. On ${SOURCE_LABEL} its Starter plan was ${formatPrice(BLUEHOST[0].intro)}/mo for a 36-month term and renewed at ${formatPrice(BLUEHOST[0].renews)}/mo, a ${jump(BLUEHOST[0].intro, BLUEHOST[0].renews)} increase. Our Starter goes from ${starter ? formatPrice(starter.monthly) : ""} to ${starter ? formatPrice(starter.standard) : ""}/mo, a ${starter ? jump(starter.monthly, starter.standard) : ""} increase. Their renewal rate on that plan is still lower than ours.`,
+    answer: `Yes, and Bluehost prints both. On ${SOURCE_LABEL} its Starter plan was ${formatPrice(BLUEHOST[0].intro)}/mo for a 36-month term and renewed at ${formatPrice(BLUEHOST[0].renews)}/mo, a ${jump(BLUEHOST[0].intro, BLUEHOST[0].renews)} increase. Our Starter renews at the same ${starter ? formatPrice(starter.monthly) : ""}/mo it costs every month${BF_ON && starter ? ` (during Black Friday the first month is ${formatPrice(bfPrice(starter.monthly))})` : ""}.${starter && BLUEHOST[0].renews < starter.monthly ? " Their renewal rate on that plan is still lower than ours." : ""}`,
     scopes: [PATH],
   },
   {
     question: "Does Serverlys require a multi-year term?",
-    answer: `No. The advertised price is a plain monthly rate. Starter is ${starter ? formatPrice(starter.monthly) : ""}/mo with a one-off ${starter?.setupFee ? formatPrice(starter.setupFee) : ""} setup fee, so the first invoice is ${formatPrice(firstInvoice)}, and the renewal rate is shown beside it on every plan.`,
+    answer: `No. The advertised price is a plain monthly rate. Starter is ${starter ? priceText(starter) : ""} with a one-off ${setupNow ? formatPrice(setupNow) : ""} setup fee, so the first invoice is ${formatPrice(firstInvoice)}, and the renewal rate is shown beside it on every plan.`,
     scopes: [PATH],
   },
   {
@@ -297,8 +320,9 @@ export default function BluehostAlternativePage() {
                 The best Bluehost alternative depends on how you want to pay. If you will commit to a
                 36-month term, Bluehost&rsquo;s entry price is lower. If you would rather pay month to
                 month and see the renewal rate up front, Serverlys starts at{" "}
-                {starter ? formatPrice(starter.monthly) : ""}/mo, renews at{" "}
-                {starter ? formatPrice(starter.standard) : ""}/mo, and moves your site for free.
+                {starter ? priceText(starter) : ""}
+                {BF_ON ? "" : `, renews at ${starter ? formatPrice(starter.monthly) : ""}/mo`}, and moves your site
+                for free.
               </p>
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
                 <Button href="#bx-table-heading" size="lg">See the comparison</Button>
@@ -316,7 +340,9 @@ export default function BluehostAlternativePage() {
                     </dt>
                     <dd className="mt-2 text-micro text-fg-secondary">
                       <span className="block text-body-lg font-semibold text-fg">{formatPrice(firstInvoice)} first invoice</span>
-                      {starter ? `${formatPrice(starter.monthly)}/mo + ${formatPrice(starter.setupFee ?? 0)} setup. Renews at ${formatPrice(starter.standard)}/mo.` : ""}
+                      {starter
+                        ? `${formatPrice(saleMonthly(starter))}/mo + ${formatPrice(setupNow)} setup${BF_ON ? ` (Black Friday, until ${BLACK_FRIDAY.endsLabel})` : ""}. Renews at ${formatPrice(starter.monthly)}/mo.`
+                        : ""}
                     </dd>
                   </div>
                   <div className="rounded-xl bg-canvas-secondary p-4">
@@ -405,18 +431,18 @@ export default function BluehostAlternativePage() {
             <p className="mt-4 max-w-[60ch] text-body text-fg-secondary">
               Bluehost shows {formatPrice(BLUEHOST[0].intro)}/mo &ldquo;for {BLUEHOST_TERM}&rdquo;. Our{" "}
               {starter ? formatPrice(starter.monthly) : ""}/mo is what a single month costs, with no
-              term attached. That makes Bluehost cheaper if you stay the full term, and Serverlys easier
+              term attached{BF_ON && starter ? ` (${formatPrice(bfPrice(starter.monthly))} for the first month during Black Friday)` : ""}. That makes Bluehost cheaper if you stay the full term, and Serverlys easier
               to start, to test, and to leave.
             </p>
             <p className="mt-4 max-w-[60ch] text-body text-fg-secondary">
               The jump is the other half. Bluehost Starter moves{" "}
-              {jump(BLUEHOST[0].intro, BLUEHOST[0].renews)} at renewal; our Starter moves{" "}
-              {starter ? jump(starter.monthly, starter.standard) : ""}. A smaller jump is easier to
+              {jump(BLUEHOST[0].intro, BLUEHOST[0].renews)} at renewal; our Starter renews at the same{" "}
+              {starter ? formatPrice(starter.monthly) : ""}/mo. A smaller jump is easier to
               budget for, even when the end number is close. Our{" "}
               <Link href="/wordpress-hosting" className="font-semibold text-primary hover:text-primary-hover">
                 WordPress plans
               </Link>{" "}
-              {wpStarter ? `start at ${formatPrice(wpStarter.monthly)}/mo and renew at ${formatPrice(wpStarter.standard)}/mo, ` : ""}
+              {wpStarter ? `start at ${priceText(wpStarter)} and renew at ${formatPrice(wpStarter.monthly)}/mo, ` : ""}
               with LiteSpeed caching and NVMe storage.
             </p>
           </div>
@@ -425,8 +451,10 @@ export default function BluehostAlternativePage() {
               <li key={plan.tier} className="rounded-2xl bg-canvas-secondary p-6">
                 <span className="text-body-lg font-semibold text-fg">{plan.name}</span>
                 <p className="mt-3 text-small text-fg-secondary">
-                  <span className="block text-body-lg font-semibold text-fg">{formatPrice(plan.monthly)}/mo</span>
-                  Renews at {formatPrice(plan.standard)}/mo. {plan.specs.sites}, {plan.specs.memory} RAM.
+                  <span className="block text-body-lg font-semibold text-fg">
+                    {formatPrice(saleMonthly(plan))}/mo{BF_ON ? " first month" : ""}
+                  </span>
+                  {BF_ON ? `Black Friday, until ${BLACK_FRIDAY.endsLabel}. ` : ""}Renews at {formatPrice(plan.monthly)}/mo. {plan.specs.sites}, {plan.specs.memory} RAM.
                 </p>
               </li>
             ))}

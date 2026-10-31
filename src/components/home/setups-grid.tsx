@@ -1,6 +1,6 @@
 import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/animations/reveal";
-import { formatPrice, groupById } from "@/data/pricing";
+import { groupById, monthlyLine } from "@/data/pricing";
 
 /**
  * Typical setups.
@@ -30,7 +30,7 @@ export function SetupsGrid() {
       tag: "One site",
       title: "A business card that loads instantly",
       body: starter
-        ? `${starter.name} at ${formatPrice(starter.monthly)}/mo, against a ${formatPrice(starter.standard)}/mo standard rate. ${starter.specs.sites}, ${starter.specs.visits}, free SSL and daily backups.`
+        ? `${starter.name} at ${monthlyLine(starter)}. ${starter.specs.sites}, ${starter.specs.visits}, free SSL and daily backups.`
         : "A single site on the entry cloud tier, with free SSL and daily backups.",
     },
     {
@@ -42,7 +42,7 @@ export function SetupsGrid() {
       tag: "Agency",
       title: "Twenty client sites on one account",
       body: turbo
-        ? `${turbo.name} at ${formatPrice(turbo.monthly)}/mo, against a ${formatPrice(turbo.standard)}/mo standard rate. ${turbo.specs.sites}, one-click staging on each, and free migration for every site you bring across.`
+        ? `${turbo.name} at ${monthlyLine(turbo)}. ${turbo.specs.sites}, one-click staging on each, and free migration for every site you bring across.`
         : "Unlimited sites on one plan, with staging on each and free migration.",
     },
     {

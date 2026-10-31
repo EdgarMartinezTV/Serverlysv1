@@ -10,7 +10,7 @@ import { pageMetadata, faqGraph } from "@/lib/seo";
 import type { Faq } from "@/data/faqs";
 import { billing } from "@/data/company";
 import { breadcrumbTrail } from "@/data/routes";
-import { groupById, formatPrice } from "@/data/pricing";
+import { BLACK_FRIDAY, bfPrice, blackFridayActive, groupById, formatPrice } from "@/data/pricing";
 import { tldBySlug } from "@/data/tld-catalog";
 import { designPlans, designFromPrice, formatDesignPrice } from "@/data/design-plans";
 import { businessPlans, formatBusinessPrice } from "@/data/business-plans";
@@ -87,7 +87,25 @@ const growth = businessPlans.find((p) => p.id === "growth");
 
 const dollars = (values: readonly number[]) => values.map((n) => `$${n}`).join(" / ");
 const starterRate = starter ? formatPrice(starter.monthly) : "";
-const starterRenewal = starter ? formatPrice(starter.standard) : "";
+/*
+ * Black Friday 2026 (WHMCS code BLACKFRIDAY, auto-applied in the cart): 37% off
+ * the first payment until Dec 7. WHMCS renews every plan at its own monthly
+ * price, so the renewal figure on this page is `monthly`, never `standard`.
+ */
+const BF_ON = blackFridayActive();
+const starterRenewal = starter ? formatPrice(starter.monthly) : "";
+/** "$7.95/mo", or during the sale "$5.01 first month (Black Friday, until Dec 7), then $7.95/mo". */
+const starterFrom = starter
+  ? BF_ON
+    ? `${formatPrice(bfPrice(starter.monthly))} first month (Black Friday, until ${BLACK_FRIDAY.endsLabel}), then ${starterRate}/mo`
+    : `${starterRate}/mo`
+  : "";
+/** starterFrom without the "then $X/mo" tail, for sentences that state the renewal right after it. */
+const starterFromShort = starter
+  ? BF_ON
+    ? `${formatPrice(bfPrice(starter.monthly))} first month (Black Friday, until ${BLACK_FRIDAY.endsLabel})`
+    : `${formatPrice(starter.monthly)}/mo`
+  : "";
 const comRegister = com ? formatPrice(com.register) : "";
 const comRenew = com ? formatPrice(com.renew) : "";
 const designFrom = formatDesignPrice(designFromPrice);
@@ -105,7 +123,7 @@ const ROWS: ReadonlyArray<{ label: string; serverlys: React.ReactNode; squarespa
     serverlys: (
       <>
         Design from {designFrom}, one time ({designPlans.map((p) => `${p.name} ${formatDesignPrice(p.price)}`).join(" / ")}),
-        plus hosting from {starterRate}/mo, renewing at {starterRenewal}/mo.
+        plus hosting from {starterFrom}{BF_ON ? "." : `, renewing at ${starterRenewal}/mo.`}
         {growth ? ` Or ${growth.name}: ${growthPrice}/mo with a site of up to ${growth.pages} pages built for you.` : ""}
       </>
     ),
@@ -247,7 +265,7 @@ const STEPS = [
 const FAQS: readonly Faq[] = [
   {
     question: "What is the best Squarespace alternative?",
-    answer: `It depends on who you want to build the site. If you want to design it yourself, Squarespace, or another builder, is the right kind of tool. If you would rather have it designed for you and own a standard WordPress site, Serverlys designs sites from ${designFrom}, one time, and hosts them from ${starterRate}/mo, renewing at ${starterRenewal}/mo.`,
+    answer: `It depends on who you want to build the site. If you want to design it yourself, Squarespace, or another builder, is the right kind of tool. If you would rather have it designed for you and own a standard WordPress site, Serverlys designs sites from ${designFrom}, one time, and hosts them from ${starterFromShort}, renewing at ${starterRenewal}/mo.`,
     scopes: [PATH],
   },
   {
@@ -257,7 +275,7 @@ const FAQS: readonly Faq[] = [
   },
   {
     question: "Is Squarespace cheaper than Serverlys?",
-    answer: `To start, yes. On ${SOURCE_LABEL} Squarespace plans ran from $${sqBasic.monthly}/mo billed monthly, or $${sqBasic.annual}/mo on an annual plan, with hosting included. A Serverlys design starts at ${designFrom} once, plus hosting from ${starterRate}/mo.${growth ? ` Our ${growth.name} is ${growthPrice}/mo with the site built for you.` : ""} You are paying for the design work, not for the hosting.`,
+    answer: `To start, yes. On ${SOURCE_LABEL} Squarespace plans ran from $${sqBasic.monthly}/mo billed monthly, or $${sqBasic.annual}/mo on an annual plan, with hosting included. A Serverlys design starts at ${designFrom} once, plus hosting from ${starterFrom}.${growth ? ` Our ${growth.name} is ${growthPrice}/mo with the site built for you.` : ""} You are paying for the design work, not for the hosting.`,
     scopes: [PATH],
   },
   {
@@ -292,7 +310,7 @@ export default function SquarespaceAlternativePage() {
               <p className="mt-5 max-w-xl text-body-lg text-fg-secondary">
                 Squarespace is a builder: you design the site from its templates, and it runs on Squarespace.
                 Serverlys is the other route. We design your site on WordPress from {designFrom}, one time, host it
-                from {starterRate}/mo, and the whole site is yours.
+                from {starterFrom}, and the whole site is yours.
               </p>
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
                 <Button href="#sqx-table-heading" size="lg">See the comparison</Button>
@@ -310,7 +328,7 @@ export default function SquarespaceAlternativePage() {
                     </dt>
                     <dd className="mt-2 text-micro text-fg-secondary">
                       <span className="block text-body-lg font-semibold text-fg">From {designFrom} once</span>
-                      Hosting from {starterRate}/mo, renews at {starterRenewal}/mo.
+                      Hosting from {starterFrom}{BF_ON ? "." : `, renews at ${starterRenewal}/mo.`}
                       {growth ? ` Or ${growthPrice}/mo with the site built for you (${growth.name}).` : ""}
                     </dd>
                   </div>
@@ -392,7 +410,7 @@ export default function SquarespaceAlternativePage() {
             </p>
             <p className="mt-4 max-w-[60ch] text-body text-fg-secondary">
               A Serverlys design is a one-time fee for that work, done by designers and agreed in a written scope.
-              After that you pay for hosting, from {starterRate}/mo with the renewal rate of {starterRenewal}/mo
+              After that you pay for hosting, from {starterFrom}{BF_ON ? "" : ` with the renewal rate of ${starterRenewal}/mo`}
               printed beside it.
               {growth ? ` If you would rather spread it out, the ${growth.name} is ${growthPrice}/mo with a site of up to ${growth.pages} pages built for you.` : ""}
             </p>

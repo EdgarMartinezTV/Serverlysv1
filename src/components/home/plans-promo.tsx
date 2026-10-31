@@ -2,7 +2,7 @@ import { Section } from "@/components/ui/section";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/animations/reveal";
 import { Card, CardLink } from "@/components/ui/card";
-import { groupById, formatPrice, formatSavings } from "@/data/pricing";
+import { BLACK_FRIDAY, groupById, formatPrice, formatSavings, quote } from "@/data/pricing";
 import { billing, sisterProducts } from "@/data/company";
 import { tlds } from "@/data/tlds";
 import { ConvoAiLogo } from "@/components/layout/convoai-logo";
@@ -69,19 +69,27 @@ export function PlansPromo() {
 
           <div className="mt-7 flex flex-wrap items-end gap-x-3 gap-y-1">
             <span className="tabular text-display text-white">
-              {formatPrice(turbo.monthly)}
+              {formatPrice(quote(turbo, "monthly").bf?.perMonth ?? turbo.monthly)}
             </span>
             <span className="pb-2 text-body text-fg-on-dark-secondary">
               /mo
             </span>
           </div>
           <p className="mt-2 text-small text-fg-on-dark-muted">
-            Saves {formatSavings(turbo)} against the standard{" "}
-            <span className="tabular text-fg-on-dark-secondary">
-              {formatPrice(turbo.standard)}
-            </span>
-            /mo.
-            {turbo.setupFee ? ` ${formatPrice(turbo.setupFee)} setup fee.` : " No setup fee."}
+            {quote(turbo, "monthly").bf ? (
+              <>
+                Black Friday: first month{" "}
+                <span className="tabular text-fg-on-dark-secondary line-through">{formatPrice(turbo.monthly)}</span>{" "}
+                {formatPrice(quote(turbo, "monthly").bf!.today)}, {Math.round(BLACK_FRIDAY.pct * 100)}% off. Renews at {formatPrice(turbo.monthly)}/mo. Ends {BLACK_FRIDAY.endsLabel}.
+              </>
+            ) : (
+              <>
+                Saves {formatSavings(turbo)} against the standard{" "}
+                <span className="tabular text-fg-on-dark-secondary">{formatPrice(turbo.standard)}</span>
+                /mo.
+                {turbo.setupFee ? ` ${formatPrice(turbo.setupFee)} setup fee.` : " No setup fee."}
+              </>
+            )}
           </p>
 
           <ul className="mt-7 grid gap-2 sm:grid-cols-2">

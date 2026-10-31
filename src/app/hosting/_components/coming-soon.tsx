@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { billing } from "@/data/company";
-import { formatPrice, groupById } from "@/data/pricing";
+import { BLACK_FRIDAY, bfPrice, blackFridayActive, formatPrice, groupById, saleMonthly } from "@/data/pricing";
 import { Pill } from "./band";
 
 /**
@@ -54,12 +54,20 @@ export function CloudPlansToday() {
               <Pill tone="success">Available now</Pill>
             </span>
             <p className="mt-4 text-h4 font-semibold text-fg">
-              {formatPrice(plan.monthly)}
+              {blackFridayActive() && (
+                <span className="mr-2 text-small font-normal text-fg-muted line-through">
+                  <span className="sr-only">Regular price </span>
+                  {formatPrice(plan.monthly)}
+                </span>
+              )}
+              {formatPrice(saleMonthly(plan))}
               <span className="text-small font-normal text-fg-secondary">/mo</span>
             </p>
             <p className="mt-1 text-small text-fg-secondary">
-              Renews at {formatPrice(plan.standard)}/mo
-              {plan.setupFee ? ` · ${formatPrice(plan.setupFee)} setup fee` : ""}
+              {/* WHMCS renews at the monthly price itself, not `standard`. */}
+              {blackFridayActive() ? `Black Friday first month, until ${BLACK_FRIDAY.endsLabel}. ` : ""}
+              Renews at {formatPrice(plan.monthly)}/mo
+              {plan.setupFee ? ` · ${formatPrice(blackFridayActive() ? bfPrice(plan.setupFee) : plan.setupFee)} setup fee` : ""}
             </p>
             <dl className="mt-5 flex flex-1 flex-col gap-1.5 border-t border-line-subtle pt-4 text-small">
               {(
@@ -82,9 +90,11 @@ export function CloudPlansToday() {
       <div className="mt-8 flex flex-col items-center gap-3 text-center">
         <Button href="/cloud-hosting#pricing">See the cloud plans</Button>
         <p className="max-w-[720px] text-micro text-fg-muted">
-          Monthly rates excluding applicable taxes. The first figure is the advertised rate and the
-          plan renews at the second.
-          {setup?.setupFee ? ` ${setup.name} carries a one-off ${formatPrice(setup.setupFee)} setup fee.` : ""}{" "}
+          Monthly rates excluding applicable taxes.
+          {blackFridayActive()
+            ? ` Black Friday takes ${Math.round(BLACK_FRIDAY.pct * 100)}% off the first payment until ${BLACK_FRIDAY.endsLabel}; the plan then renews at its regular monthly rate.`
+            : " Each plan renews at the same monthly rate."}
+          {setup?.setupFee ? ` ${setup.name} carries a one-off ${formatPrice(setup.setupFee)} setup fee${blackFridayActive() ? ` (${formatPrice(bfPrice(setup.setupFee))} during Black Friday)` : ""}.` : ""}{" "}
           Unlimited storage and unmetered bandwidth are subject to fair use. Full feature list on{" "}
           <Link href="/cloud-hosting" className="font-semibold text-primary hover:text-primary-hover">
             the cloud hosting page

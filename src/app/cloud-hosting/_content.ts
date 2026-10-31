@@ -1,4 +1,7 @@
 import type { FaqItem } from "@/components/ref/faqs";
+import { BLACK_FRIDAY, blackFridayActive, formatPrice, groupById, saleMonthly } from "@/data/pricing";
+
+const CLOUD_PLANS = groupById("cloud")?.plans ?? [];
 
 /**
  * Cloud hosting page content.
@@ -248,16 +251,15 @@ export const FAQS: FaqItem[] = [
       },
       /* Re-pointed at our real plans, because these prices sit on the same
          page as the slider — leaving the reference's would have the page
-         quoting two different price lists. Kept in sync by hand; the slider
-         reads data/pricing.ts and this does not. */
+         quoting two different price lists. Read from data/pricing.ts (2026-10-31)
+         so the Black Friday price and the regular one both come from the store data. */
       {
         type: "ul",
-        items: [
-          "Starter Cloud – $7.95/month",
-          "Plus Cloud – $11.95/month",
-          "Turbo Cloud – $17.95/month",
-          "Business Cloud – $23.95/month",
-        ],
+        items: CLOUD_PLANS.map((p) =>
+          blackFridayActive()
+            ? `${p.name} – ${formatPrice(saleMonthly(p))} first month (Black Friday, until ${BLACK_FRIDAY.endsLabel}), then ${formatPrice(p.monthly)}/month`
+            : `${p.name} – ${formatPrice(p.monthly)}/month`,
+        ),
       },
       {
         type: "p",

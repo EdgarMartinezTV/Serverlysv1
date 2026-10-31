@@ -2,7 +2,7 @@ import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/animations/reveal";
 import { billing } from "@/data/company";
-import { lowestRate, formatPrice } from "@/data/pricing";
+import { BLACK_FRIDAY, blackFridayActive, lowestRate, lowestSaleRate, formatPrice } from "@/data/pricing";
 import { sisterProducts } from "@/data/company";
 
 /**
@@ -37,11 +37,14 @@ export function SplitCards() {
                 Every tier shows what it renews at
               </h2>
               <p className="mt-4 max-w-sm text-body-lg text-fg-on-dark-secondary">
-                Year one and year two, side by side, before checkout. From{" "}
+                Today and what it renews at, side by side, before checkout. From{" "}
                 <span className="tabular font-semibold text-white">
-                  {formatPrice(lowestRate)}
+                  {formatPrice(lowestSaleRate)}
                 </span>
-                /mo.
+                /mo
+                {blackFridayActive()
+                  ? ` for the first month during Black Friday (until ${BLACK_FRIDAY.endsLabel}), then ${formatPrice(lowestRate)}/mo.`
+                  : "."}
               </p>
             </div>
             <div className="relative mt-10">

@@ -1,4 +1,4 @@
-import { formatPrice, groupById, planGroups } from "@/data/pricing";
+import { BLACK_FRIDAY, formatPrice, groupById, planGroups, quote } from "@/data/pricing";
 import { products, startingPrice, upcomingProducts } from "@/data/products";
 import { billing } from "@/data/company";
 
@@ -28,6 +28,8 @@ export type PlanFact = {
   /** The rate it renews at. Never omit this when quoting `monthlyPrice`. */
   renewsAt: string;
   savings: string;
+  /** Black Friday first-payment prices while the sale runs (WHMCS code BLACKFRIDAY, auto-applied in the cart). */
+  blackFriday?: string;
   setupFee?: string;
   sites: string;
   visits: string;
@@ -52,8 +54,16 @@ function toPlanFact(groupSlug: string, plan: (typeof planGroups)[number]["plans"
     name: plan.name,
     summary: plan.summary,
     monthlyPrice: `${formatPrice(plan.monthly)}/mo`,
-    renewsAt: `${formatPrice(plan.standard)}/mo standard rate`,
+    /* WHMCS renews every term at that term's own price; `standard` is not a renewal rate (see pricing.ts). */
+    renewsAt: `${formatPrice(plan.monthly)}/mo on the monthly term; longer terms renew at the same term price`,
     savings: `${Math.round(plan.savings * 100)}% off the standard rate`,
+    blackFriday: (() => {
+      const m = quote(plan, "monthly");
+      const y = quote(plan, "annually");
+      const t = quote(plan, "triennially");
+      if (!m.bf || !y.bf || !t.bf) return undefined;
+      return `Black Friday until ${BLACK_FRIDAY.endsLabel}: ${Math.round(BLACK_FRIDAY.pct * 100)}% off the first payment, applied automatically at checkout. Monthly ${formatPrice(m.bf.today)} first month${m.bf.setup ? " incl. setup" : ""} (then ${formatPrice(m.total)}/mo); 12 months ${formatPrice(y.bf.today)} (regular ${formatPrice(y.total)}); 36 months ${formatPrice(t.bf.today)} (regular ${formatPrice(t.total)}). Renews at the regular price.`;
+    })(),
     setupFee: plan.setupFee ? `${formatPrice(plan.setupFee)} one-off setup fee` : undefined,
     sites: plan.specs.sites,
     visits: plan.specs.visits,

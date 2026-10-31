@@ -3,7 +3,12 @@ import { cn } from "@/lib/utils";
 import { INK, Label, MUTED, Wrap } from "@/components/retell/kit";
 import { Icon, type IconName } from "@/components/retell/icons";
 import { Reveal } from "@/components/animations/reveal";
-import { formatPrice, lowestRate } from "@/data/pricing";
+import { bfPrice, blackFridayActive, formatPrice, lowestSaleRate } from "@/data/pricing";
+
+/* Black Friday 2026: "from" prices are the first-month sale price, labelled as such. */
+const BF_TAG = blackFridayActive() ? " first month, Black Friday" : "";
+/** Email Essentials, the cheapest email plan (store pid 20). */
+const EMAIL_FROM = 5.95;
 import { formatDesignPrice, designFromPrice } from "@/data/design-plans";
 import { formatSeoPrice, seoFromPrice } from "@/data/seo-plans";
 import { formatSocialPrice, socialFromPrice } from "@/data/social-plans";
@@ -31,7 +36,7 @@ const SERVICES: Service[] = [
   {
     icon: "server",
     name: "Cloud hosting",
-    price: `From ${formatPrice(lowestRate)}/mo`,
+    price: `From ${formatPrice(lowestSaleRate)}/mo${BF_TAG}`,
     body: "Fast LiteSpeed hosting with free SSL, daily backups and free migration.",
     href: "/cloud-hosting",
   },
@@ -73,7 +78,7 @@ const SERVICES: Service[] = [
   {
     icon: "doc",
     name: "Business email",
-    price: "From $5.95/mo",
+    price: `From ${formatPrice(blackFridayActive() ? bfPrice(EMAIL_FROM) : EMAIL_FROM)}/mo${BF_TAG}`,
     body: "Professional mailboxes at your own domain.",
     href: "/business-email",
   },

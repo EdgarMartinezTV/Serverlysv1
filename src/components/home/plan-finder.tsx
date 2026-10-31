@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/animations/reveal";
-import { planGroups, formatPrice, orderUrl } from "@/data/pricing";
+import { BLACK_FRIDAY, blackFridayActive, planGroups, formatPrice, orderUrl, saleMonthly } from "@/data/pricing";
 import { billing } from "@/data/company";
 import { cn } from "@/lib/utils";
 
@@ -149,10 +149,19 @@ export function PlanFinder() {
                   <p className="mt-2 text-h3 text-fg">{plan.name}</p>
                   <p className="mt-1.5 text-small text-fg-secondary">
                     <span className="tabular font-semibold text-fg">
-                      {formatPrice(plan.monthly)}
+                      {formatPrice(saleMonthly(plan))}
                     </span>
-                    /mo · standard rate{" "}
-                    <span className="tabular">{formatPrice(plan.standard)}</span>/mo
+                    {/* WHMCS renews at the monthly price itself, not `standard`. */}
+                    {blackFridayActive() ? (
+                      <>
+                        /mo first month (Black Friday, until {BLACK_FRIDAY.endsLabel}) · then{" "}
+                        <span className="tabular">{formatPrice(plan.monthly)}</span>/mo
+                      </>
+                    ) : (
+                      <>
+                        /mo · renews at <span className="tabular">{formatPrice(plan.monthly)}</span>/mo
+                      </>
+                    )}
                   </p>
                 </div>
                 <div className="flex w-full shrink-0 flex-col gap-2.5 sm:w-auto sm:flex-row">

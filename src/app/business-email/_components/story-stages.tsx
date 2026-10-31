@@ -6,6 +6,10 @@ import { AnimatePresence, motion, useInView } from "motion/react";
 import { cn } from "@/lib/utils";
 import { SeraMark } from "@/components/sera/sera-mark";
 import { useReducedAfterMount } from "./use-reduced";
+import { bfPrice, blackFridayActive } from "@/data/pricing";
+
+/** Business Plus monthly price, as in the plan cards on the page. */
+const BUSINESS_PLUS = 7.95;
 
 /**
  * The two photo-led story sections near the end of /business-email, as live
@@ -391,7 +395,13 @@ export function SeraStage() {
                       <span className="flex items-baseline justify-between">
                         <span className="text-[calc(var(--u)*2.6)] font-semibold">Business Plus</span>
                         <span className="text-[calc(var(--u)*3.4)] font-semibold">
-                          $7.95<span className="text-[calc(var(--u)*2.2)] font-normal text-white/60">/mo</span>
+                          {/* Business Plus (store pid 21): Black Friday first month while the sale runs. */}
+                          {blackFridayActive() && (
+                            <span className="mr-[calc(var(--u)*1)] text-[calc(var(--u)*2.2)] font-normal text-white/50 line-through">
+                              ${BUSINESS_PLUS.toFixed(2)}
+                            </span>
+                          )}
+                          ${(blackFridayActive() ? bfPrice(BUSINESS_PLUS) : BUSINESS_PLUS).toFixed(2)}<span className="text-[calc(var(--u)*2.2)] font-normal text-white/60">/mo</span>
                         </span>
                       </span>
                       <span className="mt-[calc(var(--u)*1)] block text-[calc(var(--u)*2.2)] text-[#7dd3fc]">5 accounts · 45 GB</span>

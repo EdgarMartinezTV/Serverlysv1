@@ -11,7 +11,7 @@ import { UptimePanel } from "@/components/product-ui/panels";
 import { pageMetadata, faqGraph, productGraph, serviceGraph } from "@/lib/seo";
 import type { Faq } from "@/data/faqs";
 import { billing } from "@/data/company";
-import { formatPrice, groupById } from "@/data/pricing";
+import { formatPrice, groupById, BLACK_FRIDAY, blackFridayActive, saleMonthly } from "@/data/pricing";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { breadcrumbTrail } from "@/data/routes";
 
@@ -24,13 +24,18 @@ const PATH = "/managed-hosting";
  */
 const CLOUD = groupById("cloud")?.plans ?? [];
 const ENTRY = CLOUD[0];
-const FROM = ENTRY ? formatPrice(ENTRY.monthly) : "";
-const STANDARD = ENTRY ? formatPrice(ENTRY.standard) : "";
+/* Black Friday 2026: FROM is the first-month sale price while it runs. The
+   second figure is what the plan renews at, which in WHMCS is the monthly
+   price itself (the old `standard` figure was never charged). */
+const BF = blackFridayActive();
+const FROM = ENTRY ? formatPrice(saleMonthly(ENTRY)) : "";
+const REGULAR = ENTRY ? formatPrice(ENTRY.monthly) : "";
+const AFTER = BF ? `Black Friday first month until ${BLACK_FRIDAY.endsLabel}, then ${REGULAR}/mo` : `renews at ${REGULAR}/mo`;
 const TOP = CLOUD.at(-1);
 
 export const metadata = pageMetadata({
-  title: `Managed Hosting Services from ${FROM}/mo | Serverlys`,
-  description: `Fully managed hosting from ${FROM}/mo (standard rate ${STANDARD}): patching, security, daily backups, free restores and free migration, handled for you.`,
+  title: BF ? `Managed Hosting Services, Black Friday from ${FROM}/mo | Serverlys` : `Managed Hosting Services from ${FROM}/mo | Serverlys`,
+  description: `Fully managed hosting from ${FROM}/mo (${AFTER}): patching, security, daily backups, free restores and free migration, handled for you.`,
   path: PATH,
 });
 
@@ -57,7 +62,7 @@ const FAQS: readonly Faq[] = [
   },
   {
     question: "How much does managed hosting cost?",
-    answer: `Serverlys managed cloud hosting starts at ${FROM} a month, with a standard rate of ${STANDARD} shown beside it${TOP ? `, up to ${formatPrice(TOP.monthly)} a month for the largest plan` : ""}. Management, daily backups, restores and migration are included rather than sold as add-ons.`,
+    answer: `Serverlys managed cloud hosting starts at ${FROM} a month (${AFTER})${TOP ? `, up to ${formatPrice(TOP.monthly)} a month for the largest plan` : ""}. Management, daily backups, restores and migration are included rather than sold as add-ons.`,
     scopes: [PATH],
   },
   {
@@ -153,14 +158,14 @@ export default function ManagedHostingPage() {
       <ProductHero
         eyebrow="Managed hosting"
         title="Managed hosting: we run the server, you run the business"
-        lede={`Managed hosting means we patch, secure, monitor and back up the server your website runs on, and restore it for free when something goes wrong. Fully managed plans start at ${FROM}/mo, standard rate ${STANDARD}, with free migration.`}
+        lede={`Managed hosting means we patch, secure, monitor and back up the server your website runs on, and restore it for free when something goes wrong. Fully managed plans start at ${FROM}/mo (${AFTER}), with free migration.`}
         breadcrumb={[
           { name: "Home", href: "/" },
           { name: "Hosting", href: "/hosting" },
           { name: "Managed hosting" },
         ]}
         specs={[
-          { label: "Plans from", value: `${FROM}/mo` },
+          { label: BF ? "Black Friday from" : "Plans from", value: BF ? `${FROM}/mo first month` : `${FROM}/mo` },
           { label: "Patching", value: "Ours" },
           { label: "Restores", value: "Free" },
           { label: "Migration", value: "Free" },

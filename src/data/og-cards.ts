@@ -2,6 +2,10 @@ import { articles } from "@/data/articles";
 import { tutorials, tutorialPath } from "@/data/tutorials";
 import { tldCatalog } from "./tld-catalog";
 import { industries, industryPath } from "./industries";
+import { BLACK_FRIDAY, bfPrice, blackFridayActive, formatPrice, groupById } from "./pricing";
+
+/* Cloud entry price for the share card; the Black Friday first month while the sale runs. */
+const CLOUD_FROM = Math.min(...(groupById("cloud")?.plans ?? []).map((p) => p.monthly));
 
 /**
  * OpenGraph card copy, keyed by route path.
@@ -39,7 +43,9 @@ const PAGES: Record<string, OgCard> = {
   "/cloud-hosting": {
     eyebrow: "Cloud hosting",
     title: "Resources that flex when traffic does.",
-    detail: "From $7.95/mo. Free migration, free SSL, daily backups.",
+    detail: blackFridayActive()
+      ? `Black Friday: ${formatPrice(bfPrice(CLOUD_FROM))} first month, then ${formatPrice(CLOUD_FROM)}/mo. Ends ${BLACK_FRIDAY.endsLabel}.`
+      : `From ${formatPrice(CLOUD_FROM)}/mo. Free migration, free SSL, daily backups.`,
   },
   "/wordpress-hosting": {
     eyebrow: "WordPress hosting",

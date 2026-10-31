@@ -4,7 +4,7 @@ import { resolveNavTarget } from "@/data/routes";
 import { ArrowUpRight } from "./nav-icons";
 import { ConvoAiLogo } from "@/components/layout/convoai-logo";
 import Image from "next/image";
-import { planGroups } from "@/data/pricing";
+import { planGroups, quote } from "@/data/pricing";
 import { cn } from "@/lib/utils";
 
 /**
@@ -88,6 +88,10 @@ export function MegaMenuPromo({ promo }: { promo: MegaPromo }) {
  * CSS animation for free, so nine loops cost nothing until a menu is open.
  */
 const TURBO = planGroups[0].plans.find((p) => p.tier === "turbo")!;
+/* Today vs renewal for Turbo monthly. WHMCS renews at the monthly price itself
+   (not `standard`); "today" is the Black Friday price while the sale runs. */
+const TURBO_TODAY = quote(TURBO, "monthly").bf?.perMonth ?? TURBO.monthly;
+const TURBO_RENEW = TURBO.monthly;
 
 const screen =
   "rounded-xl bg-white text-fg shadow-[0_18px_40px_-12px_rgb(0_0_60/0.55)] ring-1 ring-black/5";
@@ -148,13 +152,13 @@ const VISUALS: Record<MegaPromo["visual"], () => React.ReactNode> = {
           <span className="rounded-full bg-brand-50 px-2 py-0.5 text-[10px] font-semibold text-primary">{TURBO.specs.sites}</span>
         </div>
         <p className="mt-2 flex items-baseline gap-1">
-          <span className="text-[26px] font-semibold leading-none tracking-[-0.02em]">${TURBO.monthly}</span>
+          <span className="text-[26px] font-semibold leading-none tracking-[-0.02em]">${TURBO_TODAY.toFixed(2)}</span>
           <span className="text-fg-muted">/mo</span>
         </p>
         <div className="mt-3 space-y-2">
           {[
-            ["Today", TURBO.monthly, "bg-primary"],
-            ["Renews at", TURBO.standard, "bg-[#22d3ee]"],
+            ["Today", TURBO_TODAY, "bg-primary"],
+            ["Renews at", TURBO_RENEW, "bg-[#22d3ee]"],
           ].map(([label, v, bar]) => (
             <div key={label as string}>
               <div className="flex justify-between text-fg-secondary">
@@ -164,7 +168,7 @@ const VISUALS: Record<MegaPromo["visual"], () => React.ReactNode> = {
               <span className="mt-1 block h-1.5 overflow-hidden rounded-full bg-ink-100">
                 <span
                   className={cn("block h-full origin-left rounded-full motion-safe:animate-[promoGrow_5s_ease-out_infinite]", bar as string)}
-                  style={{ width: `${((v as number) / TURBO.standard) * 100}%` }}
+                  style={{ width: `${((v as number) / TURBO_RENEW) * 100}%` }}
                 />
               </span>
             </div>
@@ -319,10 +323,10 @@ const VISUALS: Record<MegaPromo["visual"], () => React.ReactNode> = {
       <div className="mt-2.5 rounded-lg bg-[linear-gradient(150deg,#0f1f4d,#071230)] p-2.5 text-white motion-safe:animate-[promoPop_5s_ease-out_infinite]">
         <div className="flex items-baseline justify-between">
           <span className="font-semibold">{TURBO.name}</span>
-          <span className="text-[15px] font-semibold">${TURBO.monthly}<span className="text-[10px] font-normal text-white/60">/mo</span></span>
+          <span className="text-[15px] font-semibold">${TURBO_TODAY.toFixed(2)}<span className="text-[10px] font-normal text-white/60">/mo</span></span>
         </div>
         <p className="mt-0.5 text-[10px] text-[#7dd3fc]">{TURBO.specs.sites} · {TURBO.specs.visits}</p>
-        <p className="mt-1.5 border-t border-white/10 pt-1.5 text-[10px] text-white/70">Renews at ${TURBO.standard}/mo</p>
+        <p className="mt-1.5 border-t border-white/10 pt-1.5 text-[10px] text-white/70">Renews at ${TURBO_RENEW.toFixed(2)}/mo</p>
       </div>
     </div>
   ),
@@ -373,13 +377,13 @@ const VISUALS: Record<MegaPromo["visual"], () => React.ReactNode> = {
         <p className="font-semibold">How to read hosting renewal pricing</p>
         <div className="mt-2 flex items-end gap-3">
           {[
-            ["Year one", TURBO.monthly, "bg-primary"],
-            ["Year two", TURBO.standard, "bg-[#22d3ee]"],
+            ["First month", TURBO_TODAY, "bg-primary"],
+            ["After", TURBO_RENEW, "bg-[#22d3ee]"],
           ].map(([label, v, bar]) => (
             <div key={label as string} className="flex flex-1 items-end gap-1.5">
               <span
                 className={cn("w-3 origin-bottom rounded-sm motion-safe:animate-[promoRise_5s_ease-out_infinite]", bar as string)}
-                style={{ height: `${((v as number) / TURBO.standard) * 26}px` }}
+                style={{ height: `${((v as number) / TURBO_RENEW) * 26}px` }}
               />
               <span className="text-[10px] leading-tight text-fg-secondary">
                 {label}

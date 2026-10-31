@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight, CtaButton, Grid, PillLabel } from "@/components/ref/kit";
-import { formatPrice, groupById, lowestRate } from "@/data/pricing";
+import { BLACK_FRIDAY, formatPrice, groupById, lowestRate, quote } from "@/data/pricing";
 
 /**
  * The reference's `homepage-agents-hero` bento: one wide brand card spanning
@@ -64,9 +64,11 @@ export function PromoBento() {
             </div>
             <div className="flex gap-8 text-white md:flex-col md:gap-4 md:text-right">
               <p>
-                <span className="block text-small text-fg-on-brand-muted">Starts at</span>
+                <span className="block text-small text-fg-on-brand-muted">
+                  {starter && quote(starter, "monthly").bf ? `Black Friday, until ${BLACK_FRIDAY.endsLabel}` : "Starts at"}
+                </span>
                 <span className="tabular block text-[48px] leading-none font-medium tracking-[-0.03em]">
-                  {formatPrice(lowestRate)}
+                  {formatPrice((starter && quote(starter, "monthly").bf?.perMonth) || lowestRate)}
                   <span className="ml-1 text-body font-normal tracking-normal text-fg-on-brand-muted">
                     /mo
                   </span>
@@ -75,10 +77,11 @@ export function PromoBento() {
               {starter && (
                 <p>
                   <span className="block text-small text-fg-on-brand-muted">Renews at</span>
-                  <span className="tabular block text-h4">{formatPrice(starter.standard)}/mo</span>
+                  {/* WHMCS renews at the monthly price itself, not at `standard`. */}
+                  <span className="tabular block text-h4">{formatPrice(starter.monthly)}/mo</span>
                   {starter.setupFee ? (
                     <span className="block text-micro text-fg-on-brand-muted">
-                      plus {formatPrice(starter.setupFee)} one-off setup
+                      plus {formatPrice(quote(starter, "monthly").bf?.setup ?? starter.setupFee)} one-off setup
                     </span>
                   ) : null}
                 </p>

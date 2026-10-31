@@ -2,6 +2,13 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { BLACK_FRIDAY, bfPrice, blackFridayActive, formatPrice, lowestRate } from "@/data/pricing";
+
+/* The demo's price answer, from data/pricing.ts: the Black Friday first month
+   while the sale runs, and the regular price it renews at. */
+const PRICE_ANSWER = blackFridayActive()
+  ? `Black Friday is on until ${BLACK_FRIDAY.endsLabel}: plans start at ${formatPrice(bfPrice(lowestRate))} for the first month, then ${formatPrice(lowestRate)}/mo — we show both up front. That includes free SSL, free migration and daily backups.`
+  : `Plans start at ${formatPrice(lowestRate)}/mo and renew at the same price — we show both up front. That includes free SSL, free migration and daily backups.`;
 import { DemoBadge } from "./shell";
 import { ConvoAiLogo } from "@/components/layout/convoai-logo";
 
@@ -51,7 +58,7 @@ function respond(input: string): { text: string; askForLead?: boolean } {
 
   if (/(price|cost|how much|plan|cheap|\$)/.test(q)) {
     return {
-      text: "Plans start at $7.95/mo, against a standard rate of $12.62 — we show both up front. That includes free SSL, free migration and daily backups.",
+      text: PRICE_ANSWER,
     };
   }
   if (/(migrat|move|transfer|switch|import)/.test(q)) {

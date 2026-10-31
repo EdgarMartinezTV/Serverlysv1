@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { formatPrice, groupById, orderUrl, quote, type Plan } from "@/data/pricing";
+import { bfPrice, blackFridayActive, formatPrice, groupById, orderUrl, quote, saleMonthly, type Plan } from "@/data/pricing";
 import { Check, Grid, Headline } from "@/components/ref/kit";
 import { COMPARE } from "../_content";
 
@@ -30,13 +30,24 @@ export function Compare() {
 
   const cell = (p: Plan, key: (typeof COMPARE.rows)[number]["key"]) => {
     switch (key) {
+      /* Black Friday 2026: first-payment sale price, then the regular one. */
       case "monthly":
-        return `${formatPrice(p.monthly)}/mo`;
-      case "standard":
+        return blackFridayActive()
+          ? `${formatPrice(saleMonthly(p))}/mo first month, then ${formatPrice(p.monthly)}/mo`
+          : `${formatPrice(p.monthly)}/mo`;
+      case "standard": {
         /* Row relabelled 2026-10-26: the old "standard rate" was not a renewal price. */
-        return `${formatPrice(quote(p, "triennially").perMonth)}/mo`;
+        const t = quote(p, "triennially");
+        return t.bf
+          ? `${formatPrice(t.bf.perMonth)}/mo for the first 36 months, then ${formatPrice(t.perMonth)}/mo`
+          : `${formatPrice(t.perMonth)}/mo`;
+      }
       case "setupFee":
-        return p.setupFee ? formatPrice(p.setupFee) : "None";
+        return p.setupFee
+          ? blackFridayActive()
+            ? `${formatPrice(bfPrice(p.setupFee))} (Black Friday; regular ${formatPrice(p.setupFee)})`
+            : formatPrice(p.setupFee)
+          : "None";
       default:
         return p.specs[key];
     }
@@ -132,7 +143,13 @@ export function Compare() {
                     )}
                   </p>
                   <p className="mt-1 text-small text-fg-secondary">
-                    <span className="font-semibold text-fg">{formatPrice(p.monthly)}</span>/mo
+                    {blackFridayActive() && (
+                      <span className="mr-1.5 text-fg-muted line-through">
+                        <span className="sr-only">Regular price </span>
+                        {formatPrice(p.monthly)}
+                      </span>
+                    )}
+                    <span className="font-semibold text-fg">{formatPrice(saleMonthly(p))}</span>/mo
                   </p>
                   <a
                     href={orderUrl(g, p)}

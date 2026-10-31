@@ -1,4 +1,4 @@
-import { Hero } from "@/components/home/hero";
+import { BlackFridayHero } from "@/components/home/black-friday-hero";
 import { StageDeck } from "@/components/home/stage-deck";
 import { StageBuild } from "@/components/home/stage-build";
 import { StageLaunch } from "@/components/home/stage-launch";
@@ -113,7 +113,8 @@ export default function HomePage() {
         })}
       />
 
-      <Hero />
+      {/* Black Friday 2026 campaign. Swap back to <Hero /> (components/home/hero) afterwards. */}
+      <BlackFridayHero />
       {/* Reference order: hero → idea prompt → promo bento → tools tabs →
           essentials → AI co-worker → pricing → closing CTA.
           BriefBand IS the reference's prompt band — read its header: it was

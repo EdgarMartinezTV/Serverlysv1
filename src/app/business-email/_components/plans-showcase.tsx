@@ -24,6 +24,8 @@ export type PlanCard = {
   accounts: number;
   popular?: boolean;
   href: string;
+  /** Black Friday first-month price and setup fee (data/pricing.ts bfPrice); absent outside the sale. */
+  bf?: { price: number; setup: number; ends: string };
 };
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -129,7 +131,7 @@ function Card({
   reduced: boolean;
 }) {
   const dark = !!p.popular;
-  const perMailbox = p.price / p.accounts;
+  const perMailbox = (p.bf?.price ?? p.price) / p.accounts;
   const ref = useRef<HTMLLIElement>(null);
   const seen = useInView(ref, { once: true, amount: 0.3 });
   const play = reduced || seen;
@@ -163,10 +165,19 @@ function Card({
         </p>
       </div>
 
-      <div className="relative mt-8 flex items-end gap-1.5">
+      {p.bf && (
+        <p className="relative mt-6 flex items-center gap-2 text-small">
+          <span className="rounded-md bg-error-fill px-2 py-0.5 text-micro font-semibold text-white">Black Friday</span>
+          <span className={cn("line-through", dark ? "text-white/50" : "text-fg-muted")}>
+            <span className="sr-only">Regular price </span>
+            {money(p.price)}
+          </span>
+        </p>
+      )}
+      <div className={cn("relative flex items-end gap-1.5", p.bf ? "mt-2" : "mt-8")}>
         <span className="font-display text-[56px] font-semibold leading-[0.9] tracking-[-0.035em]">
           <span className="align-top text-[0.5em] leading-none">$</span>
-          {p.price.toFixed(2)}
+          {(p.bf?.price ?? p.price).toFixed(2)}
         </span>
         <span className={cn("pb-1 text-body", dark ? "text-white/60" : "text-fg-secondary")}>
           /mo
@@ -205,7 +216,9 @@ function Card({
         </svg>
       </a>
       <p className={cn("relative mt-3 text-center text-caption", dark ? "text-white/50" : "text-fg-muted")}>
-        Billed monthly · one-time {money(setupFee)} setup fee
+        {p.bf
+          ? `First month, then ${money(p.price)}/mo · ${money(p.bf.setup)} setup fee · ends ${p.bf.ends}`
+          : `Billed monthly · one-time ${money(setupFee)} setup fee`}
       </p>
 
       {/* Capacity readout */}

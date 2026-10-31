@@ -1,4 +1,5 @@
 import type { FaqItem } from "@/components/ref/faqs";
+import { BLACK_FRIDAY, blackFridayActive } from "@/data/pricing";
 
 /**
  * Pricing page content.
@@ -146,13 +147,15 @@ export const FAQS: FaqItem[] = [
     ],
   },
   {
-    q: "Why is the renewal price higher than the price I pay today?",
+    q: "Does the price go up when I renew?",
     a: [
       {
         type: "p",
         runs: [
           {
-            text: "Because the advertised rate is a promotional rate and the renewal is the standard rate. We show both on every card and in the compare table, because a promotional price on its own tells you very little about what hosting will actually cost you — and quoting only that figure is the practice we position against.",
+            text: blackFridayActive()
+              ? `Only after a Black Friday first payment. Until ${BLACK_FRIDAY.endsLabel} your first payment is ${Math.round(BLACK_FRIDAY.pct * 100)}% off; after that every plan renews at its regular price for the term you chose, and that regular price is printed beside the sale price on every card and in the compare table. Outside a sale, a plan renews at the same price you paid.`
+              : "No. Every plan renews at the same price for the term you chose — monthly at the monthly price, 12, 24 or 36 months at that term's price. Both figures are on every card and in the compare table, because quoting a price without what it renews at is the practice we position against.",
           },
         ],
       },

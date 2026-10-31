@@ -10,7 +10,7 @@ import { pageMetadata, faqGraph } from "@/lib/seo";
 import type { Faq } from "@/data/faqs";
 import { billing } from "@/data/company";
 import { breadcrumbTrail } from "@/data/routes";
-import { groupById, formatPrice } from "@/data/pricing";
+import { BLACK_FRIDAY, bfPrice, blackFridayActive, groupById, formatPrice, saleMonthly } from "@/data/pricing";
 import { designFromPrice, formatDesignPrice } from "@/data/design-plans";
 
 const PATH = "/hostinger-alternative";
@@ -69,7 +69,28 @@ const starter = PLANS[0];
 
 const jump = (from: number, to: number) => `${Math.round(((to - from) / from) * 100)}%`;
 
-const firstInvoice = starter ? starter.monthly + (starter.setupFee ?? 0) : 0;
+/*
+ * Black Friday 2026 (WHMCS code BLACKFRIDAY, auto-applied in the cart): 37% off
+ * the first payment until Dec 7. WHMCS renews every plan at its own monthly
+ * price, so the renewal figure on this page is `monthly`, never `standard`.
+ */
+const BF_ON = blackFridayActive();
+const setupNow = starter?.setupFee ? (BF_ON ? bfPrice(starter.setupFee) : starter.setupFee) : 0;
+const firstInvoice = starter
+  ? Math.round(((BF_ON ? bfPrice(starter.monthly) : starter.monthly) + setupNow) * 100) / 100
+  : 0;
+/** "$7.95/mo", or during the sale "$5.01 first month (Black Friday, until Dec 7), then $7.95/mo". */
+const starterFrom = starter
+  ? BF_ON
+    ? `${formatPrice(bfPrice(starter.monthly))} first month (Black Friday, until ${BLACK_FRIDAY.endsLabel}), then ${formatPrice(starter.monthly)}/mo`
+    : `${formatPrice(starter.monthly)}/mo`
+  : "";
+/** starterFrom without the "then $X/mo" tail, for sentences that state the renewal right after it. */
+const starterFromShort = starter
+  ? BF_ON
+    ? `${formatPrice(bfPrice(starter.monthly))} first month (Black Friday, until ${BLACK_FRIDAY.endsLabel})`
+    : `${formatPrice(starter.monthly)}/mo`
+  : "";
 
 const priceList = (values: readonly number[]) => values.map(formatPrice).join(" / ");
 
@@ -79,15 +100,17 @@ const ROWS: ReadonlyArray<{ label: string; serverlys: React.ReactNode; hostinger
     label: "Advertised price",
     serverlys: (
       <>
-        {priceList(PLANS.map((p) => p.monthly))} per month
-        {starter?.setupFee ? ` (Starter adds a one-off ${formatPrice(starter.setupFee)} setup fee)` : ""}
+        {BF_ON
+          ? `${priceList(PLANS.map(saleMonthly))} for the first month (Black Friday, until ${BLACK_FRIDAY.endsLabel}), then ${priceList(PLANS.map((p) => p.monthly))} per month`
+          : `${priceList(PLANS.map((p) => p.monthly))} per month`}
+        {setupNow ? ` (Starter adds a one-off ${formatPrice(setupNow)} setup fee)` : ""}
       </>
     ),
     hostinger: <>{priceList(HOSTINGER.map((p) => p.intro))} per month (Premium / Unlimited / Cloud Startup)</>,
   },
   {
     label: "Renewal price",
-    serverlys: <>{priceList(PLANS.map((p) => p.standard))} per month, printed beside the advertised rate</>,
+    serverlys: <>{priceList(PLANS.map((p) => p.monthly))} per month, the same as the regular monthly price</>,
     hostinger: <>{priceList(HOSTINGER.map((p) => p.renews))} per month, printed on each plan card</>,
   },
   {
@@ -131,10 +154,15 @@ const HOSTINGER_STRENGTHS = [
     title: "You are happy to prepay four years",
     body: `On ${SOURCE_LABEL} Hostinger's Premium plan was ${formatPrice(HOSTINGER[0].intro)}/mo on a ${HOSTINGER[0].months}-month plan, ${formatPrice(HOSTINGER[0].upfront)} at checkout. Spread over those months, that is less than any Serverlys plan costs, and we will not pretend otherwise.`,
   },
-  {
-    title: "You want the lowest renewal on an entry plan",
-    body: `Premium renews at ${formatPrice(HOSTINGER[0].renews)}/mo. Our Starter renews at ${starter ? formatPrice(starter.standard) : ""}/mo. If the cheapest long-run rate is the only thing that matters, theirs is lower.`,
-  },
+  /* Only a Hostinger strength while its entry renewal is below ours. */
+  ...(starter && HOSTINGER[0].renews < starter.monthly
+    ? [
+        {
+          title: "You want the lowest renewal on an entry plan",
+          body: `Premium renews at ${formatPrice(HOSTINGER[0].renews)}/mo. Our Starter renews at ${formatPrice(starter.monthly)}/mo. If the cheapest long-run rate is the only thing that matters, theirs is lower.`,
+        },
+      ]
+    : []),
   {
     title: "You prefer to learn and do it yourself",
     body: "Hostinger publishes a large public tutorials library and self-serve AI building tools. If you enjoy running your own site, that ecosystem is genuinely useful.",
@@ -195,17 +223,17 @@ const STEPS = [
 const FAQS: readonly Faq[] = [
   {
     question: "What is the best Hostinger alternative?",
-    answer: `It depends on how you want to pay. If you will prepay a ${HOSTINGER[0].months}-month plan, Hostinger's entry price is hard to beat. If you want to pay month to month, see the renewal rate before checkout and have the migration done for you, Serverlys starts at ${starter ? formatPrice(starter.monthly) : ""}/mo and renews at ${starter ? formatPrice(starter.standard) : ""}/mo.`,
+    answer: `It depends on how you want to pay. If you will prepay a ${HOSTINGER[0].months}-month plan, Hostinger's entry price is hard to beat. If you want to pay month to month, see the renewal rate before checkout and have the migration done for you, Serverlys starts at ${starterFromShort} and renews at ${starter ? formatPrice(starter.monthly) : ""}/mo.`,
     scopes: [PATH],
   },
   {
     question: "Is Hostinger's renewal price higher than its advertised price?",
-    answer: `Yes, and Hostinger prints both. On ${SOURCE_LABEL} its Premium plan was advertised at ${formatPrice(HOSTINGER[0].intro)}/mo and renewed at ${formatPrice(HOSTINGER[0].renews)}/mo, a ${jump(HOSTINGER[0].intro, HOSTINGER[0].renews)} increase. Our Starter plan goes from ${starter ? formatPrice(starter.monthly) : ""} to ${starter ? formatPrice(starter.standard) : ""}/mo, a ${starter ? jump(starter.monthly, starter.standard) : ""} increase. Their renewal rate on that plan is still lower than ours.`,
+    answer: `Yes, and Hostinger prints both. On ${SOURCE_LABEL} its Premium plan was advertised at ${formatPrice(HOSTINGER[0].intro)}/mo and renewed at ${formatPrice(HOSTINGER[0].renews)}/mo, a ${jump(HOSTINGER[0].intro, HOSTINGER[0].renews)} increase. Our Starter plan renews at the same ${starter ? formatPrice(starter.monthly) : ""}/mo it costs every month${BF_ON && starter ? ` (during Black Friday the first month is ${formatPrice(bfPrice(starter.monthly))})` : ""}.${starter && HOSTINGER[0].renews < starter.monthly ? " Their renewal rate on that plan is still lower than ours." : ""}`,
     scopes: [PATH],
   },
   {
     question: "Does Serverlys require a multi-year term?",
-    answer: `No. The advertised price is a plain monthly rate. Starter is ${starter ? formatPrice(starter.monthly) : ""}/mo with a one-off ${starter?.setupFee ? formatPrice(starter.setupFee) : ""} setup fee, so the first invoice is ${formatPrice(firstInvoice)}, and the renewal rate is shown beside it on every plan.`,
+    answer: `No. The advertised price is a plain monthly rate. Starter is ${starterFrom} with a one-off ${setupNow ? formatPrice(setupNow) : ""} setup fee, so the first invoice is ${formatPrice(firstInvoice)}, and the renewal rate is shown beside it on every plan.`,
     scopes: [PATH],
   },
   {
@@ -245,8 +273,8 @@ export default function HostingerAlternativePage() {
                 The best Hostinger alternative depends on how you want to pay. If you will prepay four
                 years, Hostinger&rsquo;s entry price is hard to beat. If you would rather pay month to
                 month and see the renewal rate up front, Serverlys starts at{" "}
-                {starter ? formatPrice(starter.monthly) : ""}/mo, renews at{" "}
-                {starter ? formatPrice(starter.standard) : ""}/mo, and moves your site for free.
+                {starterFromShort}, renews at{" "}
+                {starter ? formatPrice(starter.monthly) : ""}/mo, and moves your site for free.
               </p>
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
                 <Button href="#hx-table-heading" size="lg">See the comparison</Button>
@@ -264,7 +292,9 @@ export default function HostingerAlternativePage() {
                     </dt>
                     <dd className="mt-2 text-micro text-fg-secondary">
                       <span className="block text-body-lg font-semibold text-fg">{formatPrice(firstInvoice)} first invoice</span>
-                      {starter ? `${formatPrice(starter.monthly)}/mo + ${formatPrice(starter.setupFee ?? 0)} setup. Renews at ${formatPrice(starter.standard)}/mo.` : ""}
+                      {starter
+                        ? `${formatPrice(saleMonthly(starter))}/mo + ${formatPrice(setupNow)} setup${BF_ON ? ` (Black Friday, until ${BLACK_FRIDAY.endsLabel})` : ""}. Renews at ${formatPrice(starter.monthly)}/mo.`
+                        : ""}
                     </dd>
                   </div>
                   <div className="rounded-xl bg-canvas-secondary p-4">
@@ -356,13 +386,13 @@ export default function HostingerAlternativePage() {
               Hostinger&rsquo;s {formatPrice(HOSTINGER[0].intro)}/mo is the total of a{" "}
               {HOSTINGER[0].months}-month plan divided by {HOSTINGER[0].months}; its pages say all
               plans are paid upfront. Our {starter ? formatPrice(starter.monthly) : ""}/mo is what a
-              single month costs. That makes Hostinger cheaper over a long prepaid stretch, and
+              single month costs{BF_ON && starter ? ` (${formatPrice(bfPrice(starter.monthly))} for the first month during Black Friday)` : ""}. That makes Hostinger cheaper over a long prepaid stretch, and
               Serverlys cheaper to start, to test, and to leave.
             </p>
             <p className="mt-4 max-w-[60ch] text-body text-fg-secondary">
               The jump is the other half. Hostinger Premium moves{" "}
-              {jump(HOSTINGER[0].intro, HOSTINGER[0].renews)} at renewal; our Starter moves{" "}
-              {starter ? jump(starter.monthly, starter.standard) : ""}. A smaller jump is easier to
+              {jump(HOSTINGER[0].intro, HOSTINGER[0].renews)} at renewal; our Starter renews at the same{" "}
+              {starter ? formatPrice(starter.monthly) : ""}/mo. A smaller jump is easier to
               budget for, even when the end number is similar.
             </p>
           </div>
@@ -371,8 +401,10 @@ export default function HostingerAlternativePage() {
               <li key={plan.tier} className="rounded-2xl bg-canvas-secondary p-6">
                 <span className="text-body-lg font-semibold text-fg">{plan.name}</span>
                 <p className="mt-3 text-small text-fg-secondary">
-                  <span className="block text-body-lg font-semibold text-fg">{formatPrice(plan.monthly)}/mo</span>
-                  Renews at {formatPrice(plan.standard)}/mo. {plan.specs.sites}, {plan.specs.memory} RAM.
+                  <span className="block text-body-lg font-semibold text-fg">
+                    {formatPrice(saleMonthly(plan))}/mo{BF_ON ? " first month" : ""}
+                  </span>
+                  {BF_ON ? `Black Friday, until ${BLACK_FRIDAY.endsLabel}. ` : ""}Renews at {formatPrice(plan.monthly)}/mo. {plan.specs.sites}, {plan.specs.memory} RAM.
                 </p>
               </li>
             ))}

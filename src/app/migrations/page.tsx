@@ -2,7 +2,7 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { canonical, faqGraph, pageMetadata, serviceGraph } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 import { billing } from "@/data/company";
-import { formatPrice, formatSavings, groupById, orderUrl } from "@/data/pricing";
+import { BLACK_FRIDAY, bfPrice, blackFridayActive, formatPrice, formatSavings, groupById, orderUrl, saleMonthly } from "@/data/pricing";
 import {
   Faqs,
   Features,
@@ -87,8 +87,10 @@ function migrationServiceGraph() {
 
 export default function MigrationsPage() {
   const from = CLOUD
-    ? formatPrice(Math.min(...CLOUD.plans.map((p) => p.monthly)))
+    ? formatPrice(Math.min(...CLOUD.plans.map((p) => saleMonthly(p))))
     : null;
+  /* "From" prices are the Black Friday first month while the sale runs. */
+  const bfNote = blackFridayActive() ? ` (Black Friday first month, until ${BLACK_FRIDAY.endsLabel})` : "";
   return (
     <>
       <JsonLd data={migrationServiceGraph()} />
@@ -104,7 +106,7 @@ export default function MigrationsPage() {
         photoClassName="object-[50%_35%] lg:object-[40%_35%]"
         kicker={[
           "Free with every cloud plan",
-          ...(from ? [`Plans from ${from}/mo`] : []),
+          ...(from ? [`Plans from ${from}/mo${bfNote}`] : []),
         ]}
         lede="Our team copies your website to Serverlys, tests it in private, syncs the last changes and switches your domain at a quiet time you pick. Your old host keeps serving customers until the new site is proven, so it never goes offline."
         cta={{ label: "See how it works", href: "#how-it-works" }}
@@ -128,7 +130,7 @@ export default function MigrationsPage() {
         kicker="Free with every cloud hosting plan"
         title="We move it. You keep running your business."
         body="Most people put off changing hosts because moving a site sounds like a weekend lost. With Serverlys it is a form and a yes: our team does the rest, and your site never goes dark."
-        aside={`[Free migration] with every cloud plan${from ? `, from [${from}/mo]` : ""}. [One site or a hundred.]`}
+        aside={`[Free migration] with every cloud plan${from ? `, from [${from}/mo]${bfNote}` : ""}. [One site or a hundred.]`}
         cta={{ label: "See cloud plans", href: "#plans" }}
       />
       <Promises
@@ -187,14 +189,15 @@ export default function MigrationsPage() {
                 price={
                   <div>
                     <p className={cn("text-[13px]", blue ? "text-white/70" : MUTED)}>
-                      <span className="line-through">{formatPrice(p.standard)}</span>{" "}
+                      {/* During Black Friday the struck figure is the regular monthly price. */}
+                      <span className="line-through">{formatPrice(blackFridayActive() ? p.monthly : p.standard)}</span>{" "}
                       <span
                         className={cn(
                           "ml-1 rounded-full px-1.5 py-0.5 text-[11px] font-semibold",
                           blue ? "bg-white/20 text-white" : "bg-brand-50 text-primary",
                         )}
                       >
-                        Save {formatSavings(p)}
+                        {blackFridayActive() ? `Black Friday · ${Math.round(BLACK_FRIDAY.pct * 100)}% off` : `Save ${formatSavings(p)}`}
                       </span>
                     </p>
                     <p className="mt-1 flex items-baseline gap-1">
@@ -204,16 +207,17 @@ export default function MigrationsPage() {
                           blue ? "text-white" : INK,
                         )}
                       >
-                        {formatPrice(p.monthly)}
+                        {formatPrice(saleMonthly(p))}
                       </span>
                       <span className={blue ? "text-white/80" : MUTED}>/mo</span>
                     </p>
                     <p
                       className={cn("mt-2 text-[12px]", blue ? "text-white/75" : MUTED)}
                     >
-                      Renews at {formatPrice(p.standard)}/mo
+                      {blackFridayActive() ? `Black Friday first month, until ${BLACK_FRIDAY.endsLabel}. ` : ""}
+                      Renews at {formatPrice(p.monthly)}/mo
                       {p.setupFee
-                        ? `, plus a one-off ${formatPrice(p.setupFee)} setup fee`
+                        ? `, plus a one-off ${formatPrice(blackFridayActive() ? bfPrice(p.setupFee) : p.setupFee)} setup fee`
                         : ". No setup fee"}
                       .
                     </p>
@@ -249,7 +253,7 @@ export default function MigrationsPage() {
         }}
         thumb="/mock/move-boxes.jpg"
         title="Ready to move? We’ll do the heavy lifting."
-        body={`Pick a cloud plan and send us your site’s details. Migration is free${from ? `, and plans start at ${from}/mo` : ""}.`}
+        body={`Pick a cloud plan and send us your site’s details. Migration is free${from ? `, and plans start at ${from}/mo${bfNote}` : ""}.`}
         primary={{ label: "See cloud plans", href: "#plans" }}
       />
       <PageBreadcrumbs trail={breadcrumbTrail(PATH)} />

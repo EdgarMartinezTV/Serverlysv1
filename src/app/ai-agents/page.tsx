@@ -12,6 +12,12 @@ import { PanelCard, PricingPanel, INK, MUTED } from "@/components/retell/kit";
 import { billing } from "@/data/company";
 import { faqsFor } from "@/data/faqs";
 import { aiAgentPlans, convoPro, formatAgentPrice } from "@/data/ai-agent-plans";
+import { BLACK_FRIDAY, bfPrice, blackFridayActive } from "@/data/pricing";
+
+/* Black Friday 2026: ConvoAI Pro is in the BLACKFRIDAY promotion, which only
+   WHMCS applies, so during the sale Pro's button goes to the WHMCS product
+   (store/convoai/convoai-pro) instead of convoai.cloud/pricing. */
+const BF_ON = blackFridayActive();
 import { canonical, pageMetadata, faqGraph, serviceGraph } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
@@ -32,7 +38,10 @@ import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 const PATH = "/ai-agents";
 const PRO = formatAgentPrice(convoPro.monthly ?? 0);
-const DESCRIPTION = `AI agents that answer customers in chat, WhatsApp, email and by phone, capture the lead and hand off to a person. Included with hosting; Pro is ${PRO}/month.`;
+const PRO_LINE = BF_ON
+  ? `Pro is ${formatAgentPrice(bfPrice(convoPro.monthly ?? 0))} for the first month during Black Friday (until ${BLACK_FRIDAY.endsLabel}), then ${PRO}/month`
+  : `Pro is ${PRO}/month`;
+const DESCRIPTION = `AI agents that answer customers in chat, WhatsApp, email and by phone, capture the lead and hand off to a person. Included with hosting; ${PRO_LINE}.`;
 
 export const metadata = pageMetadata({
   title: "AI Agents for Small Business — Chat & Phone | Serverlys",
@@ -301,18 +310,26 @@ export default function AiAgentsPage() {
                         blue ? "text-white" : INK,
                       )}
                     >
-                      {p.monthly === null ? "Custom" : formatAgentPrice(p.monthly)}
+                      {p.monthly === null ? "Custom" : formatAgentPrice(p.id === "pro" && BF_ON ? bfPrice(p.monthly) : p.monthly)}
                     </span>
                     {p.monthly !== null && (
                       <span className={blue ? "text-white/80" : MUTED}>/mo</span>
                     )}
+                    {p.id === "pro" && BF_ON && p.monthly !== null && (
+                      <span className={cn("ml-2 text-body line-through", blue ? "text-white/60" : MUTED)}>
+                        <span className="sr-only">Regular price </span>
+                        {formatAgentPrice(p.monthly)}
+                      </span>
+                    )}
                   </p>
                   <p className={cn("mt-2 text-[13px]", blue ? "text-white/80" : MUTED)}>
-                    {p.priceNote}
+                    {p.id === "pro" && BF_ON && p.monthly !== null && p.yearly
+                      ? `Black Friday, ${Math.round(BLACK_FRIDAY.pct * 100)}% off your first payment: ${formatAgentPrice(bfPrice(p.monthly))} first month or ${formatAgentPrice(bfPrice(p.yearly))} first year (regular ${formatAgentPrice(p.yearly)}). Renews at the regular price. Ends ${BLACK_FRIDAY.endsLabel}.`
+                      : p.priceNote}
                   </p>
                 </div>
               }
-              cta={p.cta}
+              cta={p.id === "pro" && BF_ON ? { label: "Claim Black Friday price", href: billing.order("convoai", "convoai-pro") } : p.cta}
               listTitle={p.listTitle}
               list={p.features}
             />

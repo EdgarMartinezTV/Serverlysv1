@@ -1,3 +1,4 @@
+import { BLACK_FRIDAY, bfPrice, blackFridayActive } from "@/data/pricing";
 import Link from "next/link";
 import { JsonLd } from "@/components/ui/json-ld";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
@@ -64,11 +65,20 @@ const PLANS = [
 ] as const;
 const SETUP_FEE = 2.95;
 
-const DESCRIPTION =
-  "Professional email at your own domain from $5.95/mo. Webmail, IMAP and secure SMTP, so it works in your browser, on your phone and in Outlook or Apple Mail.";
+/* Black Friday 2026 (37% off the first payment, until Dec 7): the "from"
+   price is the first-month sale price while the sale runs. */
+const BF = blackFridayActive();
+const money = (n: number) => `$${n.toFixed(2)}`;
+const FROM = BF ? bfPrice(PLANS[0].price) : PLANS[0].price;
+
+const DESCRIPTION = BF
+  ? `Professional email at your own domain from ${money(FROM)} for the first month (Black Friday, until ${BLACK_FRIDAY.endsLabel}), then ${money(PLANS[0].price)}/mo. Webmail, IMAP and secure SMTP, so it works in your browser, on your phone and in Outlook or Apple Mail.`
+  : `Professional email at your own domain from ${money(PLANS[0].price)}/mo. Webmail, IMAP and secure SMTP, so it works in your browser, on your phone and in Outlook or Apple Mail.`;
 
 export const metadata = pageMetadata({
-  title: "Business Email at Your Own Domain, from $5.95/mo | Serverlys",
+  title: BF
+    ? `Business Email at Your Own Domain, Black Friday from ${money(FROM)}/mo | Serverlys`
+    : `Business Email at Your Own Domain, from ${money(PLANS[0].price)}/mo | Serverlys`,
   description: DESCRIPTION,
   path: PATH,
 });
@@ -87,7 +97,10 @@ const FAQS = [
   {
     question: "How much does business email cost?",
     answer:
-      "Email Essentials is $5.95/mo for 2 accounts and 35 GB, Business Plus is $7.95/mo for 5 accounts and 45 GB, and Enterprise Pro is $14.95/mo for 20 accounts and 60 GB. Each plan has a one-time $2.95 setup fee.",
+      `Email Essentials is ${money(PLANS[0].price)}/mo for 2 accounts and 35 GB, Business Plus is ${money(PLANS[1].price)}/mo for 5 accounts and 45 GB, and Enterprise Pro is ${money(PLANS[2].price)}/mo for 20 accounts and 60 GB. Each plan has a one-time ${money(SETUP_FEE)} setup fee.` +
+      (BF
+        ? ` Until ${BLACK_FRIDAY.endsLabel}, Black Friday takes ${Math.round(BLACK_FRIDAY.pct * 100)}% off your first payment, setup fee included: ${PLANS.map((p) => `${p.name} ${money(bfPrice(p.price))}`).join(", ")} for the first month, plus ${money(bfPrice(SETUP_FEE))} setup. After that each plan renews at its regular monthly price.`
+        : ""),
   },
   {
     question: "Will it work on my phone and with Outlook or Apple Mail?",
@@ -185,9 +198,11 @@ export default function BusinessEmailPage() {
             stats={[
               {
                 prefix: "$",
-                value: "5.95",
+                value: FROM.toFixed(2),
                 suffix: "/mo",
-                label: "Business email at your own domain, starting from",
+                label: BF
+                  ? `Business email, Black Friday first month (then ${money(PLANS[0].price)}/mo)`
+                  : "Business email at your own domain, starting from",
               },
               {
                 value: "60",
@@ -256,6 +271,9 @@ export default function BusinessEmailPage() {
               accounts: p.accounts,
               popular: "popular" in p && p.popular,
               href: billing.order(GROUP, p.slug),
+              bf: blackFridayActive()
+                ? { price: bfPrice(p.price), setup: bfPrice(SETUP_FEE), ends: BLACK_FRIDAY.endsLabel }
+                : undefined,
             }))}
           />
           <IncludedPanel />

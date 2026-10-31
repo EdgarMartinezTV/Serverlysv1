@@ -1,5 +1,5 @@
 import { company, billing } from "@/data/company";
-import { planGroups, formatPrice, orderUrl } from "@/data/pricing";
+import { BLACK_FRIDAY, blackFridayActive, planGroups, formatPrice, orderUrl, quote } from "@/data/pricing";
 import { routes } from "@/data/routes";
 import { LLMS_SUMMARIES } from "@/data/llms";
 import { canonical } from "@/lib/seo";
@@ -101,7 +101,9 @@ function plans(group?: string): ToolResult {
     ok: true,
     data: {
       currency: "USD",
-      note: "Prices are monthly. Each plan renews at its standard rate after the introductory period; both are listed.",
+      note: blackFridayActive()
+        ? `Prices are for the monthly term. Black Friday until ${BLACK_FRIDAY.endsLabel}: ${Math.round(BLACK_FRIDAY.pct * 100)}% off the first payment (plan and setup fee, any term), applied automatically at checkout (code ${BLACK_FRIDAY.code}). Each plan then renews at its regular price (renewsAt). Quote the sale price together with the regular price.`
+        : "Prices are for the monthly term. Each plan renews at the same regular price (renewsAt).",
       groups: groups.map((g) => ({
         id: g.id,
         name: g.label,
@@ -109,8 +111,15 @@ function plans(group?: string): ToolResult {
         plans: g.plans.map((p) => ({
           name: p.name,
           monthlyPrice: formatPrice(p.monthly),
-          renewsAt: formatPrice(p.standard),
+          /* WHMCS renews at the plan's own monthly price, not `standard`. */
+          renewsAt: formatPrice(p.monthly),
           setupFee: p.setupFee ? formatPrice(p.setupFee) : null,
+          blackFridayFirstPayment: (() => {
+            const bf = quote(p, "monthly").bf;
+            return bf
+              ? { firstMonth: formatPrice(bf.perMonth), setupFee: bf.setup ? formatPrice(bf.setup) : null, dueToday: formatPrice(bf.today), endsOn: BLACK_FRIDAY.ends }
+              : null;
+          })(),
           websites: p.specs.sites,
           monthlyVisits: p.specs.visits,
           memory: p.specs.memory,

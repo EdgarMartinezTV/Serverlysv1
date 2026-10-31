@@ -10,7 +10,7 @@ import { pageMetadata, faqGraph } from "@/lib/seo";
 import type { Faq } from "@/data/faqs";
 import { billing } from "@/data/company";
 import { breadcrumbTrail } from "@/data/routes";
-import { groupById, formatPrice } from "@/data/pricing";
+import { BLACK_FRIDAY, bfPrice, blackFridayActive, groupById, formatPrice, saleMonthly } from "@/data/pricing";
 import { tldBySlug } from "@/data/tld-catalog";
 import { designFromPrice, formatDesignPrice } from "@/data/design-plans";
 
@@ -82,10 +82,31 @@ const PLANS = cloud?.plans ?? [];
 const starter = PLANS[0];
 const com = tldBySlug("com");
 
-const firstInvoice = starter ? starter.monthly + (starter.setupFee ?? 0) : 0;
+/*
+ * Black Friday 2026 (WHMCS code BLACKFRIDAY, auto-applied in the cart): 37% off
+ * the first payment until Dec 7. WHMCS renews every plan at its own monthly
+ * price, so the renewal figure on this page is `monthly`, never `standard`.
+ */
+const BF_ON = blackFridayActive();
+const setupNow = starter?.setupFee ? (BF_ON ? bfPrice(starter.setupFee) : starter.setupFee) : 0;
+const firstInvoice = starter
+  ? Math.round(((BF_ON ? bfPrice(starter.monthly) : starter.monthly) + setupNow) * 100) / 100
+  : 0;
 const priceList = (values: readonly number[]) => values.map(formatPrice).join(" / ");
 const starterRate = starter ? formatPrice(starter.monthly) : "";
-const starterRenewal = starter ? formatPrice(starter.standard) : "";
+const starterRenewal = starter ? formatPrice(starter.monthly) : "";
+/** "$7.95/mo", or during the sale "$5.01 first month (Black Friday, until Dec 7), then $7.95/mo". */
+const starterFrom = starter
+  ? BF_ON
+    ? `${formatPrice(bfPrice(starter.monthly))} first month (Black Friday, until ${BLACK_FRIDAY.endsLabel}), then ${starterRate}/mo`
+    : `${starterRate}/mo`
+  : "";
+/** starterFrom without the "then $X/mo" tail, for sentences that state the renewal right after it. */
+const starterFromShort = starter
+  ? BF_ON
+    ? `${formatPrice(bfPrice(starter.monthly))} first month (Black Friday, until ${BLACK_FRIDAY.endsLabel})`
+    : `${formatPrice(starter.monthly)}/mo`
+  : "";
 const comRegister = com ? formatPrice(com.register) : "";
 const comRenew = com ? formatPrice(com.renew) : "";
 const comTransfer = com ? formatPrice(com.transfer) : "";
@@ -96,8 +117,10 @@ const ROWS: ReadonlyArray<{ label: string; serverlys: React.ReactNode; namecheap
     label: "Advertised hosting price",
     serverlys: (
       <>
-        {priceList(PLANS.map((p) => p.monthly))} per month
-        {starter?.setupFee ? ` (Starter adds a one-off ${formatPrice(starter.setupFee)} setup fee)` : ""}
+        {BF_ON
+          ? `${priceList(PLANS.map(saleMonthly))} for the first month (Black Friday, until ${BLACK_FRIDAY.endsLabel}), then ${priceList(PLANS.map((p) => p.monthly))} per month`
+          : `${priceList(PLANS.map((p) => p.monthly))} per month`}
+        {setupNow ? ` (Starter adds a one-off ${formatPrice(setupNow)} setup fee)` : ""}
       </>
     ),
     namecheap: (
@@ -109,7 +132,7 @@ const ROWS: ReadonlyArray<{ label: string; serverlys: React.ReactNode; namecheap
   },
   {
     label: "Renewal price",
-    serverlys: <>{priceList(PLANS.map((p) => p.standard))} per month, printed beside the advertised rate</>,
+    serverlys: <>{priceList(PLANS.map((p) => p.monthly))} per month, the same as the regular monthly price</>,
     namecheap: (
       <>
         No renewal figure on the plan cards. The disclaimer says: &ldquo;{NC_RENEWAL_NOTE}&rdquo;
@@ -277,12 +300,12 @@ const STEPS = [
 const FAQS: readonly Faq[] = [
   {
     question: "What is the best Namecheap alternative?",
-    answer: `It depends on what you are buying. For the cheapest hosting bill, a free trial and a cheap first-year domain, Namecheap is hard to beat. If you want daily backups on every plan, a .com that renews at ${comRenew}, and the migration and upkeep done for you, Serverlys starts at ${starterRate}/mo and renews at ${starterRenewal}/mo.`,
+    answer: `It depends on what you are buying. For the cheapest hosting bill, a free trial and a cheap first-year domain, Namecheap is hard to beat. If you want daily backups on every plan, a .com that renews at ${comRenew}, and the migration and upkeep done for you, Serverlys starts at ${starterFromShort} and renews at ${starterRenewal}/mo.`,
     scopes: [PATH],
   },
   {
     question: "Is Namecheap hosting cheaper than Serverlys?",
-    answer: `Yes. On ${SOURCE_LABEL} Namecheap's Stellar plan was ${formatPrice(stellar.yearly)}/mo billed yearly and ${formatPrice(stellar.monthly)}/mo billed monthly; our Starter is ${starterRate}/mo and renews at ${starterRenewal}/mo. Namecheap's page says its advertised discount does not apply to renewals, and printed no renewal figure, so we do not state one.`,
+    answer: `Yes. On ${SOURCE_LABEL} Namecheap's Stellar plan was ${formatPrice(stellar.yearly)}/mo billed yearly and ${formatPrice(stellar.monthly)}/mo billed monthly; our Starter is ${starterFromShort} and renews at ${starterRenewal}/mo. Namecheap's page says its advertised discount does not apply to renewals, and printed no renewal figure, so we do not state one.`,
     scopes: [PATH],
   },
   {
@@ -297,7 +320,7 @@ const FAQS: readonly Faq[] = [
   },
   {
     question: "Does Serverlys require a prepaid term?",
-    answer: `No. The advertised price is a plain monthly rate. Starter is ${starterRate}/mo with a one-off ${starter?.setupFee ? formatPrice(starter.setupFee) : ""} setup fee, so the first invoice is ${formatPrice(firstInvoice)}, and the renewal rate is shown beside it on every plan.`,
+    answer: `No. The advertised price is a plain monthly rate. Starter is ${starterFrom} with a one-off ${setupNow ? formatPrice(setupNow) : ""} setup fee, so the first invoice is ${formatPrice(firstInvoice)}, and the renewal rate is shown beside it on every plan.`,
     scopes: [PATH],
   },
   {
@@ -326,7 +349,7 @@ export default function NamecheapAlternativePage() {
               <p className="mt-5 max-w-xl text-body-lg text-fg-secondary">
                 The best Namecheap alternative depends on what you want from the bill. For the lowest price,
                 Namecheap fits. If you would rather have daily backups, a .com that renews at {comRenew} and the
-                migration done for you, Serverlys starts at {starterRate}/mo and renews at {starterRenewal}/mo.
+                migration done for you, Serverlys starts at {starterFromShort} and renews at {starterRenewal}/mo.
               </p>
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
                 <Button href="#ncx-table-heading" size="lg">See the comparison</Button>
@@ -344,7 +367,9 @@ export default function NamecheapAlternativePage() {
                     </dt>
                     <dd className="mt-2 text-micro text-fg-secondary">
                       <span className="block text-body-lg font-semibold text-fg">{formatPrice(firstInvoice)} first invoice</span>
-                      {starter ? `${starterRate}/mo + ${formatPrice(starter.setupFee ?? 0)} setup. Renews at ${starterRenewal}/mo.` : ""}{" "}
+                      {starter
+                        ? `${formatPrice(saleMonthly(starter))}/mo + ${formatPrice(setupNow)} setup${BF_ON ? ` (Black Friday, until ${BLACK_FRIDAY.endsLabel})` : ""}. Renews at ${starterRenewal}/mo.`
+                        : ""}{" "}
                       .com: {comRegister}, renews at {comRenew}/yr.
                     </dd>
                   </div>
@@ -439,8 +464,10 @@ export default function NamecheapAlternativePage() {
               <li key={plan.tier} className="rounded-2xl bg-canvas-secondary p-6">
                 <span className="text-body-lg font-semibold text-fg">{plan.name}</span>
                 <p className="mt-3 text-small text-fg-secondary">
-                  <span className="block text-body-lg font-semibold text-fg">{formatPrice(plan.monthly)}/mo</span>
-                  Renews at {formatPrice(plan.standard)}/mo. {plan.specs.sites}, {plan.specs.memory} RAM.
+                  <span className="block text-body-lg font-semibold text-fg">
+                    {formatPrice(saleMonthly(plan))}/mo{BF_ON ? " first month" : ""}
+                  </span>
+                  {BF_ON ? `Black Friday, until ${BLACK_FRIDAY.endsLabel}. ` : ""}Renews at {formatPrice(plan.monthly)}/mo. {plan.specs.sites}, {plan.specs.memory} RAM.
                 </p>
               </li>
             ))}

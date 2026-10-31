@@ -2,7 +2,7 @@ import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { JsonLd } from "@/components/ui/json-ld";
 import { Faqs } from "@/components/ref/faqs";
 import { Grid, ShieldCheck } from "@/components/ref/kit";
-import { lowestRate, planGroups } from "@/data/pricing";
+import { BLACK_FRIDAY, blackFridayActive, lowestRate, lowestSaleRate, planGroups } from "@/data/pricing";
 import { faqGraph, pageMetadata, productGraph } from "@/lib/seo";
 import { FAQS, FAQ_HEAD, HERO } from "./_content";
 import { Plans } from "./_components/plans";
@@ -27,9 +27,13 @@ import { Compare } from "./_components/compare";
 
 const PATH = "/pricing";
 
-const TITLE = `Serverlys pricing | Hosting and domains from $${lowestRate.toFixed(2)}/mo`;
-const DESCRIPTION =
-  "Cloud, WordPress and ecommerce hosting plus domains, with the renewal rate shown beside the monthly rate on every plan. 30-day money-back guarantee.";
+/* Black Friday 2026: the "from" figure is the first-month sale price while it runs. */
+const TITLE = blackFridayActive()
+  ? `Serverlys pricing | Black Friday: hosting from $${lowestSaleRate.toFixed(2)}/mo`
+  : `Serverlys pricing | Hosting and domains from $${lowestRate.toFixed(2)}/mo`;
+const DESCRIPTION = blackFridayActive()
+  ? `Black Friday until ${BLACK_FRIDAY.endsLabel}: ${Math.round(BLACK_FRIDAY.pct * 100)}% off the first payment on cloud, WordPress and ecommerce hosting, email and ConvoAI Pro, with the renewal rate shown beside every price. 30-day money-back guarantee.`
+  : "Cloud, WordPress and ecommerce hosting plus domains, with the renewal rate shown beside the monthly rate on every plan. 30-day money-back guarantee.";
 
 export const metadata = pageMetadata({
   title: TITLE,

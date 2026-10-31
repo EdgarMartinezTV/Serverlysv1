@@ -4,6 +4,13 @@ import { formatSocialPrice, socialPlans } from "./social-plans";
 import { designPlans, formatDesignPrice } from "./design-plans";
 import { formatSeoPrice, seoPlans } from "./seo-plans";
 import { formatMonthly, formatSetup, restaurantPlans } from "./restaurant-plans";
+import { BLACK_FRIDAY, bfPrice, blackFridayActive, formatPrice, lowestRate } from "./pricing";
+
+/* Black Friday 2026 (data/pricing.ts BLACK_FRIDAY): a sentence appended to the
+   pages whose plans are in the sale, only while it runs. */
+const BF_NOTE = blackFridayActive()
+  ? ` Black Friday until ${BLACK_FRIDAY.endsLabel}: ${Math.round(BLACK_FRIDAY.pct * 100)}% off the first payment on hosting, email and ConvoAI Pro (hosting from ${formatPrice(bfPrice(lowestRate))} for the first month, then ${formatPrice(lowestRate)}/mo), applied automatically at checkout; plans renew at their regular price.`
+  : "";
 /**
  * The AI-facing index of this site — the content of `/llms.txt`.
  *
@@ -188,7 +195,7 @@ export const LLMS_SECTIONS = [
 export const LLMS_SUMMARIES: Record<string, string> = {
   "/": "Serverlys homepage: hosting, domains, websites and AI agents, with the products demonstrated live.",
   "/pricing":
-    "Every plan with the renewal rate shown beside the monthly rate. 30-day money-back guarantee on hosting.",
+    `Every plan with the renewal rate shown beside the monthly rate. 30-day money-back guarantee on hosting.${BF_NOTE}`,
   "/about":
     "Serverlys provides managed hosting, domains, websites and AI agents for small businesses, with renewal pricing published up front.",
   "/faq":
@@ -197,7 +204,7 @@ export const LLMS_SUMMARIES: Record<string, string> = {
     "Open a ticket, request a free migration, or reach the Serverlys team by email or phone.",
 
   "/hosting":
-    "Cloud, WordPress and ecommerce hosting on one stack, with free migration, daily backups and the renewal price published beside the first-year price.",
+    `Cloud, WordPress and ecommerce hosting on one stack, with free migration, daily backups and the renewal price published beside the first-year price.${BF_NOTE}`,
   "/cloud-hosting":
     "The managed cloud hosting tiers and what each includes. Plans, resources and checkout.",
   "/wordpress-hosting":
@@ -241,7 +248,7 @@ export const LLMS_SUMMARIES: Record<string, string> = {
     "Free tool. Look up any domain's registrar, registration and expiry dates, nameservers and transfer lock, live from the registry over RDAP. No account needed.",
 
   "/ai-agents":
-    "Serverlys AI agents answer your customers in website chat, WhatsApp, email and on the phone, capture the lead and hand the rest to a person. ConvoAI Essentials ($0) comes with every hosting plan, ConvoAI Pro is $49/month, Enterprise and CallFlow voice are quoted.",
+    `Serverlys AI agents answer your customers in website chat, WhatsApp, email and on the phone, capture the lead and hand the rest to a person. ConvoAI Essentials ($0) comes with every hosting plan, ConvoAI Pro is $49/month, Enterprise and CallFlow voice are quoted.${blackFridayActive() ? ` Black Friday until ${BLACK_FRIDAY.endsLabel}: ConvoAI Pro is ${Math.round(BLACK_FRIDAY.pct * 100)}% off the first payment (${formatPrice(bfPrice(49))} first month), then $49/month.` : ""}`,
   "https://convoai.cloud/":
     "ConvoAI is the Serverlys chat agent: trained on your own content, it answers customers around the clock, captures the lead and hands the rest to a person.",
   "https://callflow.serverlys.com/":

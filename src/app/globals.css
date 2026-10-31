@@ -626,6 +626,22 @@
   }
 }
 
+/* Black Friday promo strip (components/navigation/promo-ticker.tsx): two
+   identical rows, so one row's width (-50%) is a seamless loop. */
+@keyframes tickerX {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .animate-ticker {
+    animation: tickerX 40s linear infinite;
+  }
+}
+
 /* Slow drift for floating decorative panels. */
 @keyframes floatY {
   0%,

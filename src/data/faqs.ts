@@ -1,5 +1,20 @@
 import { formatSeoPrice, seoPlans } from "./seo-plans";
 import { convoEssentials, convoPro, formatAgentPrice } from "./ai-agent-plans";
+import { BLACK_FRIDAY, bfPrice, blackFridayActive, formatPrice, groupById } from "./pricing";
+
+/* Price strings for the answers below, derived from data/pricing.ts. WHMCS
+   renews every plan at its own regular price; during Black Friday the first
+   payment (plan + setup fee) is 37% off. */
+const STARTER = groupById("cloud")?.plans.find((p) => p.tier === "starter");
+const BF_ON = blackFridayActive();
+const BF_PCT = `${Math.round(BLACK_FRIDAY.pct * 100)}%`;
+const START = STARTER ? formatPrice(STARTER.monthly) : "";
+const SETUP = STARTER?.setupFee ? formatPrice(STARTER.setupFee) : "";
+const START_LINE = !STARTER
+  ? ""
+  : BF_ON
+    ? `During Black Friday (until ${BLACK_FRIDAY.endsLabel}) Starter is ${formatPrice(bfPrice(STARTER.monthly))} for the first month, with its one-off setup fee cut to ${STARTER.setupFee ? formatPrice(bfPrice(STARTER.setupFee)) : "nothing"}, then ${START}/mo. The ${BF_PCT} discount applies to the first payment on every hosting, email and ConvoAI Pro plan and is added automatically at checkout.`
+    : `Starter is ${START}/mo${SETUP ? ` with a one-off ${SETUP} setup fee` : ""}, and it renews at the same ${START}/mo.`;
 /**
  * FAQ content, taken verbatim in substance from the live pricing page.
  *
@@ -20,19 +35,21 @@ export const faqs: readonly Faq[] = [
   {
     question: "How much does web hosting cost?",
     answer:
-      "Cloud, WordPress and ecommerce hosting all start at $7.95/mo, against a standard rate of $12.62/mo. Starter also carries a one-off $2.95 setup fee. The figure that decides real cost is the standard rate rather than the promotional rate, so compare that before you compare anything else — we show both.",
+      `Cloud, WordPress and ecommerce hosting all start at ${START}/mo on the monthly term. ${START_LINE} Longer terms cost less per month and renew at the same term price. We print what you pay today and what it renews at side by side, so compare the renewal before anything else.`,
     scopes: ["/", "/pricing"],
   },
   {
     question: "Do your prices go up when I renew?",
     answer:
-      "Yes. The advertised price is a promotional rate and the plan renews at the standard rate. As it does everywhere in this industry — the difference is that we print the renewal rate next to the promotional one rather than leaving it in the terms, so you can see what it costs from year two before you buy.",
+      BF_ON
+        ? `Only after a Black Friday first payment. A plan bought in the sale (until ${BLACK_FRIDAY.endsLabel}) gets ${BF_PCT} off its first payment, then renews at its regular price — the same price it renews at outside the sale. Otherwise no: every plan renews at the price you signed up at, and we print that renewal next to today's price.`
+        : "No. Every plan renews at the price of the term you chose, and we print that renewal next to what you pay today, so you can see the long-run cost before you buy.",
     scopes: ["/", "/pricing"],
   },
   {
     question: "Are there hidden fees or setup charges?",
     answer:
-      "No. Setup is free, migration is free, SSL is free, WHOIS privacy on domains is free, and restoring a backup is free. Domain registrations renew at published rates, and premium domains are labelled as premium before checkout.",
+      `No hidden ones. The only setup fee is a one-off ${SETUP || "fee"} on the monthly term of the entry plans (Starter hosting) and on email plans, and it is printed on the plan card${BF_ON ? ` (${BF_PCT} off during Black Friday)` : ""}. Migration is free, SSL is free, WHOIS privacy on domains is free, and restoring a backup is free. Domain registrations renew at published rates, and premium domains are labelled as premium before checkout.`,
     scopes: ["/", "/pricing"],
   },
   {
@@ -81,7 +98,7 @@ export const faqs: readonly Faq[] = [
   {
     question: "How much does WordPress hosting cost?",
     answer:
-      "From $7.95/mo, against a standard rate of $12.62/mo. Starter also carries a one-off $2.95 setup fee. Both figures are on every plan card, because the promotional rate on its own is not the price you end up paying.",
+      `From ${START}/mo on the monthly term. ${START_LINE} Today's price and the renewal price are both on every plan card.`,
     scopes: ["/wordpress-hosting"],
   },
   {
@@ -145,7 +162,7 @@ export const faqs: readonly Faq[] = [
   },
   {
     question: "How much do Serverlys AI agents cost?",
-    answer: `ConvoAI Essentials is ${formatAgentPrice(convoEssentials.monthly ?? 0)} and comes with every Serverlys hosting plan: one AI agent in the chat window on your website, with 65 AI replies every 2 weeks. ConvoAI Pro is ${formatAgentPrice(convoPro.monthly ?? 0)}/month, or ${formatAgentPrice(convoPro.yearly ?? 0)}/year, with unlimited AI replies and the same agent on WhatsApp and email. ConvoAI Enterprise is priced to your setup. CallFlow, the voice agent, is usage-based and quoted for your setup.`,
+    answer: `ConvoAI Essentials is ${formatAgentPrice(convoEssentials.monthly ?? 0)} and comes with every Serverlys hosting plan: one AI agent in the chat window on your website, with 65 AI replies every 2 weeks. ConvoAI Pro is ${formatAgentPrice(convoPro.monthly ?? 0)}/month, or ${formatAgentPrice(convoPro.yearly ?? 0)}/year${BF_ON ? ` (during Black Friday, until ${BLACK_FRIDAY.endsLabel}, your first payment is ${BF_PCT} off: ${formatAgentPrice(bfPrice(convoPro.monthly ?? 0))} for the first month or ${formatAgentPrice(bfPrice(convoPro.yearly ?? 0))} for the first year, then the regular price)` : ""}, with unlimited AI replies and the same agent on WhatsApp and email. ConvoAI Enterprise is priced to your setup. CallFlow, the voice agent, is usage-based and quoted for your setup.`,
     scopes: ["/ai-agents"],
   },
   {

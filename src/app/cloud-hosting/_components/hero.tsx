@@ -1,5 +1,5 @@
 import { Check, CtaButton, Grid, ShieldCheck } from "@/components/ref/kit";
-import { formatPrice, lowestRate } from "@/data/pricing";
+import { BLACK_FRIDAY, blackFridayActive, formatPrice, lowestRate, lowestSaleRate } from "@/data/pricing";
 import { HERO } from "../_content";
 import { MockPhoto } from "@/components/ui/mock-photo";
 
@@ -21,7 +21,7 @@ export function Hero() {
         <div className="grid items-center gap-14 lg:grid-cols-[1fr_1.05fr]">
           <div>
             <span className="inline-flex rounded-md bg-brand-50 px-2.5 py-1 text-small font-medium text-primary">
-              Up to 37% off managed cloud hosting
+              {blackFridayActive() ? `Black Friday: ${Math.round(BLACK_FRIDAY.pct * 100)}% off until ${BLACK_FRIDAY.endsLabel}` : "Up to 37% off managed cloud hosting"}
             </span>
             <h1 id="cloud-hero-heading" className="display-lg mt-5 text-fg">
               {HERO.title}
@@ -37,9 +37,14 @@ export function Hero() {
             <p className="mt-7 text-body text-fg">
               Starting at{" "}
               <span className="text-[22px] font-semibold tracking-[-0.02em]">
-                {formatPrice(lowestRate)}
+                {formatPrice(lowestSaleRate)}
               </span>
               /mo
+              {blackFridayActive() && (
+                <span className="block text-small text-fg-secondary">
+                  Black Friday first month, until {BLACK_FRIDAY.endsLabel}. Then {formatPrice(lowestRate)}/mo.
+                </span>
+              )}
             </p>
             <div className="mt-5">
               <CtaButton href="#pricing">View plans</CtaButton>

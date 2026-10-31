@@ -6,6 +6,7 @@ import { organizationGraph } from "@/lib/seo";
 import { JsonLd } from "@/components/ui/json-ld";
 import { SiteHeader } from "@/components/navigation/site-header";
 import { AnnouncementBar } from "@/components/navigation/announcement-bar";
+import { PromoTicker } from "@/components/navigation/promo-ticker";
 import { CookieConsent } from "@/components/consent/cookie-consent";
 import { Analytics } from "@/components/analytics/analytics";
 import {
@@ -173,6 +174,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           someone opens it; what ships on every page is the launcher.
         */}
         <SeraRoot>
+          <PromoTicker />
           <AnnouncementBar />
           <SiteHeader />
           <main id="main" className="flex-1">

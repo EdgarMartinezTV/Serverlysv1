@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { formatPrice, orderUrl, quote, type Plan, type PlanGroup } from "@/data/pricing";
+import { BLACK_FRIDAY, formatPrice, orderUrl, quote, type Plan, type PlanGroup } from "@/data/pricing";
 import { Check } from "./kit";
 import { useTerm } from "./term";
 
@@ -47,9 +47,19 @@ export function PlanCard({ plan, group, why, cta }: { plan: Plan; group: PlanGro
   const dark = Boolean(plan.popular);
   const { term } = useTerm();
   const q = quote(plan, term);
-  const pill = dark
-    ? q.savePct ? `Most popular · ${q.savePct}% off` : "Most popular"
-    : q.savePct ? `${q.savePct}% off` : "No commitment";
+  const bf = q.bf;
+  const bfPct = `${Math.round(BLACK_FRIDAY.pct * 100)}% off`;
+  const pill = bf
+    ? dark ? `Most popular · Black Friday ${bfPct}` : `Black Friday · ${bfPct}`
+    : dark
+      ? q.savePct ? `Most popular · ${q.savePct}% off` : "Most popular"
+      : q.savePct ? `${q.savePct}% off` : "No commitment";
+  /* During Black Friday the struck figure is this term's regular per-month
+     price and the big one is the sale price; otherwise the monthly rate vs the
+     term rate, as before. */
+  const struck = bf ? q.perMonth : q.monthlyRate;
+  const showStruck = Boolean(bf) || Boolean(q.savePct);
+  const big = bf ? bf.perMonth : q.perMonth;
 
   const resources = [
     plan.specs.sites,
@@ -104,15 +114,15 @@ export function PlanCard({ plan, group, why, cta }: { plan: Plan; group: PlanGro
 
       {/* Struck monthly price; kept (invisible) on the monthly term so rows stay aligned. */}
       <p
-        className={cn("relative mt-5 text-small line-through", dark ? "text-fg-on-dark-muted" : "text-fg-muted", !q.savePct && "invisible")}
-        aria-hidden={!q.savePct}
+        className={cn("relative mt-5 text-small line-through", dark ? "text-fg-on-dark-muted" : "text-fg-muted", !showStruck && "invisible")}
+        aria-hidden={!showStruck}
       >
-        <span className="sr-only">Monthly price </span>
-        {formatPrice(q.monthlyRate)}
+        <span className="sr-only">{bf ? "Regular price " : "Monthly price "}</span>
+        {formatPrice(struck)}
       </p>
       <p className="relative flex items-baseline gap-1">
         <span className={cn("tabular text-[40px] leading-none font-semibold tracking-[-0.03em]", dark ? "text-white" : "text-fg")}>
-          {formatPrice(q.perMonth)}
+          {formatPrice(big)}
         </span>
         <span className={cn("text-body", dark ? "text-fg-on-dark-secondary" : "text-fg-secondary")}>/mo</span>
       </p>
@@ -130,9 +140,13 @@ export function PlanCard({ plan, group, why, cta }: { plan: Plan; group: PlanGro
       </a>
 
       <p className={cn("relative mt-3 text-micro", dark ? "text-fg-on-dark-muted" : "text-fg-muted")}>
-        {q.months === 1
-          ? `Today you pay ${formatPrice(q.today)}${q.setup ? `, including a one-off ${formatPrice(q.setup)} setup fee` : ""}. Renews at ${formatPrice(q.total)}/mo. Cancel anytime.`
-          : `Today you pay ${formatPrice(q.today)} for ${q.months} months. Renews at the same price. Cancel anytime.`}
+        {bf
+          ? q.months === 1
+            ? `Black Friday: today you pay ${formatPrice(bf.today)}${bf.setup ? `, including a ${formatPrice(bf.setup)} setup fee` : ""} (regular ${formatPrice(q.today)}). Renews at ${formatPrice(q.total)}/mo. Ends ${BLACK_FRIDAY.endsLabel}.`
+            : `Black Friday: today you pay ${formatPrice(bf.today)} for ${q.months} months (regular ${formatPrice(q.today)}). Renews at ${formatPrice(q.total)}. Ends ${BLACK_FRIDAY.endsLabel}.`
+          : q.months === 1
+            ? `Today you pay ${formatPrice(q.today)}${q.setup ? `, including a one-off ${formatPrice(q.setup)} setup fee` : ""}. Renews at ${formatPrice(q.total)}/mo. Cancel anytime.`
+            : `Today you pay ${formatPrice(q.today)} for ${q.months} months. Renews at the same price. Cancel anytime.`}
         <span className={cn("mt-1.5 flex items-center gap-1.5 font-medium", dark ? "text-white" : "text-fg")}>
           {q.freeDomain ? (
             <>

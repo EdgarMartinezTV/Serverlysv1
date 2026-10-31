@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { Badge } from "@/components/ui/badge";
-import { products, upcomingProducts, startingPrice } from "@/data/products";
+import { products, upcomingProducts, startingPrice, saleStartingPrice } from "@/data/products";
 import { resolveNavTarget } from "@/data/routes";
-import { formatPrice } from "@/data/pricing";
+import { BLACK_FRIDAY, blackFridayActive, formatPrice } from "@/data/pricing";
 
 /**
  * Product grid.
@@ -38,7 +38,8 @@ export function Products() {
 
       <ul className="mt-12 grid gap-5 sm:grid-cols-2">
         {products.map((product) => {
-          const from = startingPrice(product);
+          const from = saleStartingPrice(product);
+          const regular = startingPrice(product);
           const target = resolveNavTarget(product.href);
           return (
             <li key={product.name} className="flex">
@@ -83,6 +84,11 @@ export function Products() {
                           {formatPrice(from)}
                         </span>
                         /mo
+                        {blackFridayActive() && regular !== null && (
+                          <span className="block text-micro">
+                            First month, Black Friday until {BLACK_FRIDAY.endsLabel}. Then {formatPrice(regular)}/mo.
+                          </span>
+                        )}
                       </p>
                     ) : (
                       <p className="text-small text-fg-muted">

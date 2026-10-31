@@ -1,4 +1,8 @@
 import type { FaqItem } from "@/components/ref/faqs";
+import { BLACK_FRIDAY, blackFridayActive, formatPrice, groupById, saleMonthly, type Plan } from "@/data/pricing";
+
+/** Entry WooCommerce plan, for copy that quotes a starting price. */
+const WOO_START = groupById("ecommerce")?.plans.find((p) => p.tier === "starter") as Plan;
 
 /**
  * Ecommerce hosting page content.
@@ -348,7 +352,9 @@ export const FAQS: FaqItem[] = [
         type: "p",
         runs: [
           {
-            text: "Our WooCommerce hosting costs from $7.95/mo for a plan with unlimited NVMe storage, a free domain, and free unlimited SSL.",
+            text: blackFridayActive()
+              ? `Our WooCommerce hosting costs from ${formatPrice(saleMonthly(WOO_START))} for the first month during Black Friday (until ${BLACK_FRIDAY.endsLabel}), then ${formatPrice(WOO_START.monthly)}/mo, for a plan with unlimited NVMe storage, a free domain, and free unlimited SSL.`
+              : `Our WooCommerce hosting costs from ${formatPrice(WOO_START.monthly)}/mo for a plan with unlimited NVMe storage, a free domain, and free unlimited SSL.`,
           },
         ],
       },

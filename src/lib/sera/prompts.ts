@@ -1,4 +1,5 @@
 import { company } from "@/data/company";
+import { BLACK_FRIDAY, bfPrice, blackFridayActive, formatPrice, groupById } from "@/data/pricing";
 import type { PageContext, WorkflowRecord } from "./types";
 import { WORKFLOWS, missingOptional, missingRequired } from "./workflows";
 import { highlightsFor } from "./highlight";
@@ -33,6 +34,35 @@ when they want something done you collect what the team needs and hand it over.
 A good conversation ends with either a question genuinely answered or a request
 on its way to a human.
 `.trim();
+
+/* Prices for the worked examples below, from data/pricing.ts so they never drift. */
+const WP_STARTER = groupById("wordpress")?.plans.find((p) => p.tier === "starter");
+const BF_ON = blackFridayActive();
+const BF_PCT = `${Math.round(BLACK_FRIDAY.pct * 100)}%`;
+const WP_REGULAR = WP_STARTER ? formatPrice(WP_STARTER.monthly) : "";
+const WP_SALE = WP_STARTER ? formatPrice(bfPrice(WP_STARTER.monthly)) : "";
+/** "Starter WordPress, $5.01 for the first month in the Black Friday sale, then $7.95/mo" */
+const WP_EXAMPLE = WP_STARTER
+  ? BF_ON
+    ? `${WP_STARTER.name}, ${WP_SALE} for the first month in the Black Friday sale, then ${WP_REGULAR}/mo`
+    : `${WP_STARTER.name}, ${WP_REGULAR}/mo and the same at renewal`
+  : "";
+
+const PRICE_RULE = BF_ON
+  ? `WHEN YOU QUOTE A PRICE, QUOTE BOTH NUMBERS. Black Friday is on until ${BLACK_FRIDAY.endsLabel}:
+${BF_PCT} off the FIRST payment (plan and setup fee, every billing term) on all
+hosting plans, the three email plans and ConvoAI Pro. It is applied
+automatically at checkout — the visitor does not need a code (it is
+${BLACK_FRIDAY.code} if they ask). The plan then renews at its regular price.
+So every price you give is two numbers: the Black Friday first payment AND the
+regular price it renews at. Take both from get_hosting_plans (the blackFriday
+field and renewsAt). Never give the sale price on its own, and never say a plan
+renews at a "standard rate" — Serverlys renews every plan at its own regular
+price. SEO, ServerCare, social media, website design, contractor plans,
+restaurant plans and domains are NOT in the sale.`
+  : `WHEN YOU QUOTE A PRICE, QUOTE BOTH NUMBERS: what they pay today (including any
+setup fee) and what the plan renews at. Serverlys renews every plan at its own
+regular price; never describe a separate "standard rate" as the renewal.`;
 
 const TRUTH = `
 FACTS COME FROM TOOLS. NEVER FROM MEMORY.
@@ -69,10 +99,8 @@ not know, but I will find out" is a good answer here. A confident guess is the
 worst thing you can do, because the visitor will believe it: you speak for the
 company.
 
-WHEN YOU QUOTE A PRICE, QUOTE BOTH NUMBERS. Every plan has a promotional
-monthly rate and a standard renewal rate, and Serverlys publishes both side by
-side deliberately — it is the company's position against the industry habit of
-hiding the second one. Never give the promotional rate on its own.
+${PRICE_RULE} Publishing both side by side is deliberate — it is
+the company's position against the industry habit of hiding the second one.
 
 NO PLAN HAS A TERM. The prices are monthly. Never tell a visitor that a rate
 requires a one-, two- or three-year commitment, and never repeat the legacy
@@ -317,7 +345,7 @@ HOW IT SHOULD GO:
   visitor  "I have a painting company"
   Sera     "For a painting company a WordPress site is the right shape — your
             work in photos, your area, and a form that turns into a phone call.
-            Starter WordPress at $7.95/mo, $12.62 after,
+            ${WP_EXAMPLE},
             covers one site comfortably. Let me open the plans and mark it."
            → offer_to_show /wordpress-hosting, plans, highlight starter-wordpress
 
@@ -339,7 +367,7 @@ needs, recommend the tier, and mark it.
 NAME ONE PLAN, WITH BOTH ITS NUMBERS. A recommendation without a price is not
 a recommendation — the visitor has to go and look up the one thing they asked
 you for. "The Starter WordPress plan is the right fit" is half an answer;
-"Starter WordPress, $7.95/mo and $12.62 after that, covers
+"${WP_EXAMPLE}, covers
 one site comfortably" is the answer. Both figures, every time, from the tool.
 
 Then say what would change your mind — "move up to Plus if you end up running a

@@ -1,7 +1,7 @@
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/animations/reveal";
-import { groupById, formatPrice, formatSavings, orderUrl } from "@/data/pricing";
+import { BLACK_FRIDAY, blackFridayActive, groupById, formatPrice, formatSavings, orderUrl, quote } from "@/data/pricing";
 import { billing } from "@/data/company";
 import { cn } from "@/lib/utils";
 
@@ -25,11 +25,9 @@ import { cn } from "@/lib/utils";
  * A lone "$7.95/mo" is the advertising this company positions itself against,
  * so the card is built so that it cannot be rendered on its own.
  */
-const BADGES = [
-  "30-day money-back guarantee",
-  "Free migration",
-  "Standard rate shown",
-] as const;
+const BADGES = blackFridayActive()
+  ? (["30-day money-back guarantee", "Free migration", "Renewal price shown"] as const)
+  : (["30-day money-back guarantee", "Free migration", "Standard rate shown"] as const);
 
 
 export function PricingBand() {
@@ -55,8 +53,9 @@ export function PricingBand() {
             Choose the plan that <span className="block">matches what you run</span>
           </h2>
           <p className="mx-auto mt-5 max-w-lg text-body-lg text-fg-secondary">
-            The monthly rate on every card, the standard rate it discounts
-            beside it, and the setup fee where one applies.
+            {blackFridayActive()
+              ? `Black Friday: ${Math.round(BLACK_FRIDAY.pct * 100)}% off your first payment until ${BLACK_FRIDAY.endsLabel}. Every card shows the regular price beside the sale price, what it renews at, and the setup fee where one applies.`
+              : "The monthly rate on every card, the standard rate it discounts beside it, and the setup fee where one applies."}
           </p>
           <ul className="mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
             {BADGES.map((b) => (
@@ -106,18 +105,22 @@ export function PricingBand() {
                   >
                     <span aria-hidden="true">✦</span> New: ConvoAI AI chat included
                   </span>
-                  <div className="relative flex items-start justify-between gap-3">
-                    <h3 className={cn("text-body-lg font-semibold", featured ? "text-white" : "text-fg")}>
-                      {plan.name}
-                    </h3>
+                  {/* Badge on its own row and the name on one line, so every card
+                      has the same rows and the prices and buttons line up. */}
+                  <div className="relative flex flex-col">
                     <span
                       className={cn(
-                        "shrink-0 rounded-md px-2 py-0.5 text-micro font-semibold",
+                        "w-fit rounded-md px-2 py-0.5 text-micro font-semibold",
                         featured ? "bg-white/15 text-white" : "bg-brand-50 text-primary",
                       )}
                     >
-                      {featured ? `Most popular · ${formatSavings(plan)} off` : `${formatSavings(plan)} off`}
+                      {quote(plan, "monthly").bf
+                        ? featured ? `Most popular · Black Friday ${Math.round(BLACK_FRIDAY.pct * 100)}% off` : `Black Friday · ${Math.round(BLACK_FRIDAY.pct * 100)}% off`
+                        : featured ? `Most popular · ${formatSavings(plan)} off` : `${formatSavings(plan)} off`}
                     </span>
+                    <h3 className={cn("mt-2 truncate text-body-lg font-semibold", featured ? "text-white" : "text-fg")}>
+                      {plan.name}
+                    </h3>
                   </div>
                   <p
                     className={cn(
@@ -134,8 +137,8 @@ export function PricingBand() {
                       featured ? "text-fg-on-dark-muted" : "text-fg-muted",
                     )}
                   >
-                    <span className="sr-only">Standard rate </span>
-                    {formatPrice(plan.standard)}
+                    <span className="sr-only">{quote(plan, "monthly").bf ? "Regular price " : "Standard rate "}</span>
+                    {formatPrice(quote(plan, "monthly").bf ? plan.monthly : plan.standard)}
                   </p>
                   <p className="relative flex items-baseline gap-1">
                     <span
@@ -144,7 +147,7 @@ export function PricingBand() {
                         featured ? "text-white" : "text-fg",
                       )}
                     >
-                      {formatPrice(plan.monthly)}
+                      {formatPrice(quote(plan, "monthly").bf?.perMonth ?? plan.monthly)}
                     </span>
                     <span className={cn("text-body", featured ? "text-fg-on-dark-muted" : "text-fg-muted")}>
                       /mo
@@ -166,8 +169,13 @@ export function PricingBand() {
                       featured ? "text-fg-on-dark-muted" : "text-fg-muted",
                     )}
                   >
-                    Renews at {formatPrice(plan.standard)}/mo.
-                    {plan.setupFee ? ` ${formatPrice(plan.setupFee)} one-off setup fee.` : " No setup fee."}
+                    {(() => {
+                      /* WHMCS renews at the monthly price itself, not at `standard`. */
+                      const bf = quote(plan, "monthly").bf;
+                      return bf
+                        ? `Black Friday first month${bf.setup ? `, ${formatPrice(bf.setup)} setup fee included` : ""}: ${formatPrice(bf.today)}. Renews at ${formatPrice(plan.monthly)}/mo. Ends ${BLACK_FRIDAY.endsLabel}.`
+                        : `Renews at ${formatPrice(plan.monthly)}/mo.${plan.setupFee ? ` ${formatPrice(plan.setupFee)} one-off setup fee.` : " No setup fee."}`;
+                    })()}
                   </p>
 
                   <div

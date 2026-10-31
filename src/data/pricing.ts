@@ -401,7 +401,80 @@ export type TermQuote = {
   /** Whole-percent saving against paying monthly for the same months; 0 for monthly. */
   savePct: number;
   freeDomain: boolean;
+  /** Black Friday first-payment price for this term, or null outside the sale. */
+  bf: BfQuote | null;
 };
+
+/* ── Black Friday 2026 ─────────────────────────────────────────────────────
+ *
+ * WHMCS promotion BLACKFRIDAY (tblpromotions id 8, created 2026-10-31 on
+ * Edgar's instruction): 37% off the FIRST payment — plan price and setup fee —
+ * on every term of the 12 hosting plans, the 3 email plans and ConvoAI Pro,
+ * 2026-10-31 through 2026-12-07. Renewals are at the normal price. A WHMCS hook
+ * (includes/hooks/serverlys_blackfriday.php) applies the code to every cart, so
+ * the figures below are what checkout charges.
+ *
+ * Rounding matches WHMCS: the discount is rounded to the cent and subtracted
+ * (7.95 → 7.95 − 2.94 = 5.01; verified against the live cart: Starter 36 mo
+ * $178.20 → $112.27).
+ *
+ * ⚠ Static pages decide "is the sale on" when they are BUILT. Redeploy on
+ * 2026-12-08 (or remove this block) so the site stops showing the sale the
+ * day WHMCS stops honouring it.
+ */
+export const BLACK_FRIDAY = {
+  code: "BLACKFRIDAY",
+  pct: 0.37,
+  /** Last day the code is valid (inclusive), store time. */
+  ends: "2026-12-07",
+  endsLabel: "Dec 7",
+} as const;
+
+export function blackFridayActive(now: Date = new Date()): boolean {
+  return now.toISOString().slice(0, 10) <= BLACK_FRIDAY.ends;
+}
+
+/** WHMCS percentage promo on one amount: discount rounded to the cent. */
+export function bfPrice(amount: number): number {
+  const off = Math.round(amount * BLACK_FRIDAY.pct * 100) / 100;
+  return Math.round((amount - off) * 100) / 100;
+}
+
+/** The monthly-term price to headline for a plan: the Black Friday first month while the sale runs. */
+export function saleMonthly(plan: Plan): number {
+  return blackFridayActive() ? bfPrice(plan.monthly) : plan.monthly;
+}
+
+/**
+ * One line for copy that quotes a plan's monthly price: the price, what it
+ * renews at (WHMCS renews at the plan's own monthly price — never `standard`)
+ * and the setup fee. During Black Friday it leads with the sale price.
+ * e.g. "$5.01/mo for the first month during Black Friday (until Dec 7), then $7.95/mo, plus a $1.86 one-off setup fee"
+ */
+export function monthlyLine(plan: Plan): string {
+  const setup = plan.setupFee ? (blackFridayActive() ? bfPrice(plan.setupFee) : plan.setupFee) : 0;
+  const setupText = setup ? `, plus a ${formatPrice(setup)} one-off setup fee` : "";
+  return blackFridayActive()
+    ? `${formatPrice(bfPrice(plan.monthly))}/mo for the first month during Black Friday (until ${BLACK_FRIDAY.endsLabel}), then ${formatPrice(plan.monthly)}/mo${setupText}`
+    : `${formatPrice(plan.monthly)}/mo, renewing at the same price${setupText}`;
+}
+
+export type BfQuote = {
+  /** First-term price after the discount (setup excluded). */
+  total: number;
+  /** Setup fee after the discount. */
+  setup: number;
+  /** Charged at checkout. */
+  today: number;
+  perMonth: number;
+};
+
+function bfQuote(total: number, setup: number, months: number): BfQuote | null {
+  if (!blackFridayActive()) return null;
+  const t = bfPrice(total);
+  const s = setup ? bfPrice(setup) : 0;
+  return { total: t, setup: s, today: Math.round((t + s) * 100) / 100, perMonth: t / months };
+}
 
 /** Everything a card needs to price `plan` on term `key`. */
 export function quote(plan: Plan, key: TermKey): TermQuote {
@@ -420,6 +493,7 @@ export function quote(plan: Plan, key: TermKey): TermQuote {
     monthlyRate,
     savePct: term.months > 1 && p.total < full ? Math.round((1 - p.total / full) * 100) : 0,
     freeDomain: FREE_DOMAIN_TERMS.includes(term.key),
+    bf: bfQuote(p.total, p.setup, term.months),
   };
 }
 
@@ -433,6 +507,9 @@ export function quote(plan: Plan, key: TermKey): TermQuote {
 export const lowestRate = Math.min(
   ...planGroups.flatMap((g) => g.plans.map((p) => p.monthly)),
 );
+
+/** `lowestRate` with the Black Friday price applied while the sale runs (first month, monthly term). */
+export const lowestSaleRate = blackFridayActive() ? bfPrice(lowestRate) : lowestRate;
 
 /** "37%" — the discount against the standard rate. */
 export function formatSavings(plan: Plan): string {

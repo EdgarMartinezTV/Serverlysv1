@@ -5,7 +5,12 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { pageMetadata, faqGraph } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 import { company, emailDisplay, sisterProducts } from "@/data/company";
-import { formatPrice, groupById, lowestRate } from "@/data/pricing";
+import { BLACK_FRIDAY, bfPrice, blackFridayActive, formatPrice, groupById, lowestRate, lowestSaleRate, saleMonthly } from "@/data/pricing";
+
+/* Black Friday 2026: "from" prices are the first-month sale price, labelled as such. */
+const BF_TAG = blackFridayActive() ? " first month, Black Friday" : "";
+/** Email Essentials, the cheapest email plan (store pid 20). */
+const EMAIL_FROM = 5.95;
 import { formatDesignPrice, designFromPrice } from "@/data/design-plans";
 import { formatSeoPrice, seoFromPrice } from "@/data/seo-plans";
 import { formatSocialPrice, socialFromPrice } from "@/data/social-plans";
@@ -394,9 +399,10 @@ function Standard() {
     {
       label: "Renewal shown",
       value: starter
-        ? `${formatPrice(starter.monthly)} → ${formatPrice(starter.standard)}`
+        ? /* Today → what it renews at. WHMCS renews at the monthly price itself, not `standard`. */
+          `${formatPrice(saleMonthly(starter))} → ${formatPrice(starter.monthly)}`
         : "",
-      ok: plans.every((p) => p.standard > 0),
+      ok: plans.every((p) => p.monthly > 0),
       href: "/pricing",
     },
     {
@@ -524,7 +530,7 @@ function PhotoStrip() {
 const PRODUCTS: { name: string; sub: string; href: string; src: string }[] = [
   {
     name: "Cloud hosting",
-    sub: `From ${formatPrice(lowestRate)}/mo`,
+    sub: `From ${formatPrice(lowestSaleRate)}/mo${BF_TAG}`,
     href: "/cloud-hosting",
     src: "/mock/about-servers.jpg",
   },
@@ -566,7 +572,7 @@ const PRODUCTS: { name: string; sub: string; href: string; src: string }[] = [
   },
   {
     name: "Business email",
-    sub: "From $5.95/mo",
+    sub: `From ${formatPrice(blackFridayActive() ? bfPrice(EMAIL_FROM) : EMAIL_FROM)}/mo${BF_TAG}`,
     href: "/business-email",
     src: "/mock/care-typing.jpg",
   },
@@ -751,7 +757,7 @@ export default function AboutPage() {
         }}
         thumb="/mock/about-miami.jpg"
         title="Put your whole online side with one team"
-        body={`Hosting from ${formatPrice(lowestRate)}/mo with free migration, or tell us what you need and we will scope it.`}
+        body={`Hosting from ${formatPrice(lowestSaleRate)}/mo${blackFridayActive() ? ` for the first month until ${BLACK_FRIDAY.endsLabel}, then ${formatPrice(lowestRate)}/mo,` : ""} with free migration, or tell us what you need and we will scope it.`}
         primary={{ label: "See plans", href: "/pricing" }}
       />
       <PageBreadcrumbs trail={breadcrumbTrail(PATH)} />

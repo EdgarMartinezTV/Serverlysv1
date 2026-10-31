@@ -1,4 +1,4 @@
-import { planGroups } from "./pricing";
+import { planGroups, saleMonthly } from "./pricing";
 
 /**
  * Hosting products for the homepage grid.
@@ -81,4 +81,12 @@ export function startingPrice(product: Product): number | null {
   const group = planGroups.find((g) => g.id === product.group);
   if (!group) return null;
   return Math.min(...group.plans.map((p) => p.monthly));
+}
+
+/** `startingPrice`, but the Black Friday first-month price while the sale runs (same as it otherwise). */
+export function saleStartingPrice(product: Product): number | null {
+  if (!product.group) return null;
+  const group = planGroups.find((g) => g.id === product.group);
+  if (!group) return null;
+  return Math.min(...group.plans.map((p) => saleMonthly(p)));
 }
