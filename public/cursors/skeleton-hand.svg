@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <!-- Serverlys Halloween pointer: a skeleton hand, index finger up. Hotspot = fingertip (11,1). -->
+  <g fill="#f5f1e4" stroke="#111" stroke-width="1" stroke-linejoin="round" stroke-linecap="round">
+    <!-- index finger -->
+    <rect x="9.3" y="1" width="3.4" height="5" rx="1.7"/>
+    <rect x="9.1" y="6.9" width="3.8" height="5.2" rx="1.9"/>
+    <rect x="9" y="13" width="4" height="6" rx="2"/>
+    <!-- middle, ring, little fingers (curled, two bones each) -->
+    <rect x="13.8" y="11.6" width="3.6" height="4" rx="1.8"/>
+    <rect x="13.8" y="16.2" width="3.6" height="4.2" rx="1.8"/>
+    <rect x="18.1" y="12.8" width="3.4" height="3.8" rx="1.7"/>
+    <rect x="18.1" y="17.2" width="3.4" height="4" rx="1.7"/>
+    <rect x="22.1" y="14.4" width="3.2" height="3.4" rx="1.6"/>
+    <rect x="22.1" y="18.4" width="3.2" height="3.6" rx="1.6"/>
+    <!-- thumb -->
+    <rect x="3.2" y="14.2" width="3.4" height="4.6" rx="1.7" transform="rotate(-35 4.9 16.5)"/>
+    <rect x="5.6" y="18.4" width="3.6" height="4.4" rx="1.8" transform="rotate(-35 7.4 20.6)"/>
+    <!-- palm: metacarpals -->
+    <rect x="10.2" y="19.6" width="2.4" height="6.4" rx="1.2" transform="rotate(4 11.4 22.8)"/>
+    <rect x="14.6" y="21" width="2.3" height="5.4" rx="1.15"/>
+    <rect x="18.4" y="21.8" width="2.2" height="4.8" rx="1.1" transform="rotate(-8 19.5 24.2)"/>
+    <rect x="21.9" y="22.6" width="2.1" height="4.2" rx="1.05" transform="rotate(-16 23 24.7)"/>
+    <!-- wrist: carpals -->
+    <circle cx="12.6" cy="28" r="1.6"/>
+    <circle cx="15.8" cy="28.4" r="1.7"/>
+    <circle cx="19" cy="28.2" r="1.6"/>
+    <circle cx="21.9" cy="27.7" r="1.4"/>
+  </g>
+</svg>

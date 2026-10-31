@@ -1751,3 +1751,27 @@ html:has([data-lumbre]) {
     transition: none;
   }
 }
+
+/* Halloween pointer (2026-10-31, Edgar): every clickable thing shows a skeleton
+   hand instead of the system pointing hand. Our own drawing,
+   public/cursors/skeleton-hand.svg, hotspot on the fingertip (11 1). Unlayered
+   on purpose so it outranks Tailwind's `cursor-pointer` utility; disabled
+   controls keep `not-allowed`. Falls back to the normal pointer anywhere SVG
+   cursors are unsupported. Remove this block to go back to the system hand. */
+a[href],
+button:not(:disabled),
+summary,
+label[for],
+select,
+[role="button"]:not([aria-disabled="true"]),
+[role="tab"],
+[role="link"],
+[role="menuitem"],
+[role="option"],
+input[type="checkbox"]:not(:disabled),
+input[type="radio"]:not(:disabled),
+input[type="submit"]:not(:disabled),
+input[type="range"],
+.cursor-pointer {
+  cursor: url("/cursors/skeleton-hand.svg") 11 1, pointer;
+}
