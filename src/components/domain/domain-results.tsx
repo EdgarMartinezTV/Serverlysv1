@@ -451,7 +451,9 @@ function PlanOffer({ plan, groupSlug, recommended, domain }: { plan: Plan; group
         </span>
       </p>
       <a
-        href={`${billing.order(groupSlug, plan.slug)}?billingcycle=annually`}
+        /* incartdomain: the WHMCS order form (sx-cart.js) opens on "From my
+           cart" with this name selected, so the plan and the domain are linked. */
+        href={`${billing.order(groupSlug, plan.slug)}?billingcycle=annually&incartdomain=${encodeURIComponent(domain)}`}
         className={cn(
           "mt-auto inline-flex h-11 items-center justify-center rounded-full px-5 text-small font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
           recommended ? "bg-primary text-white hover:bg-primary-hover" : "text-primary ring-1 ring-inset ring-primary hover:bg-primary hover:text-white",
@@ -474,7 +476,7 @@ function HostingUpsell({ domain }: { domain: string }) {
         Put {domain} online
       </h3>
       <p className="mt-1 text-small text-fg-secondary">
-        In the cart, choose <span className="font-medium text-fg">Use a domain already in my shopping cart</span> and pick {domain}.
+        Pick a plan and {domain} comes with it — it is already in your cart and will be attached to the plan.
       </p>
       <ul className="mt-4 grid gap-3 md:grid-cols-2">
         <PlanOffer plan={turbo} groupSlug={cloud.group} recommended domain={domain} />
