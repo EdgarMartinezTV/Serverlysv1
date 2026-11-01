@@ -32,7 +32,7 @@ export function HostingMock({ className }: { className?: string }) {
   return (
     <AppFrame
       nav={tx(HOSTING_NAV)}
-      active={tx("Overview")}
+      active="Overview"
       title={tx("hartley-bakery.com")}
       action="Open cPanel"
       className={className}

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { AssistantOpenButton } from "@/components/assistant/assistant-open-button";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useSitePathname } from "@/i18n/use-site-pathname";
 import {
   primaryNav,
   isActivePath,
@@ -52,7 +52,7 @@ export function MobileNav({
   const [expanded, setExpanded] = useState<string | null>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
-  const pathname = usePathname();
+  const pathname = useSitePathname();
   const spanish = isSpanish();
   const twin = twinOf(pathname || "/");
 

@@ -63,10 +63,10 @@ export function Hero() {
     return (
       <BlackFridayProductHero
         id="ecom-bf-hero"
-        groupId={tx("ecommerce")}
+        groupId="ecommerce"
         headline={tx("WooCommerce hosting this Black Friday")}
         bullets={["Free domain and store migration", "WooCommerce installed in one click", "Updates, backups and security handled"]}
-        ctaHref={tx("#pricing")}
+        ctaHref="#pricing"
       />
     );
   return <StandardHero />;

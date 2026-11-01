@@ -707,7 +707,7 @@ export default function AboutPage() {
           alt: "Miami lit up at night across the water",
           position: "50% 50%",
         }}
-        thumb={tx("/mock/about-miami.jpg")}
+        thumb="/mock/about-miami.jpg"
         title={tx("Put your whole online side with one team")}
         body={`Hosting from ${formatPrice(lowestSaleRate)}/mo${blackFridayActive() ? ` for the first month until ${BLACK_FRIDAY.endsLabel}, then ${formatPrice(lowestRate)}/mo,` : ""} with free migration, or tell us what you need and we will scope it.`}
         primary={{ label: "See plans", href: "/pricing" }}

@@ -19,11 +19,11 @@ export function Hero() {
     return (
       <BlackFridayProductHero
         id="cloud-bf-hero"
-        groupId={tx("cloud")}
+        groupId="cloud"
         headline={tx("Cloud hosting this Black Friday")}
         bullets={tx(HERO.bullets)}
         guarantee={tx(HERO.guarantee)}
-        ctaHref={tx("#pricing")}
+        ctaHref="#pricing"
       />
     );
   return <StandardHero />;

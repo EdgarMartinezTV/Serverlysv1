@@ -52,7 +52,7 @@ export function StageGrow() {
       <div className="mt-14 flex flex-col gap-20 sm:mt-16 lg:gap-28">
         <Reveal>
           <StageRow
-            mediaSide={tx("right")}
+            mediaSide="right"
             brandSlot={<ConvoAiLogo tone="light" className="h-7 w-auto" />}
             title={tx("The 2am enquiry gets an answer at 2am")}
             body={`${convo?.description ?? "Answers your customers, day and night."} Trained on your own pages, it answers about your prices and your hours, and hands the conversation to your team when a person should step in.`}
@@ -67,7 +67,7 @@ export function StageGrow() {
 
         <Reveal>
           <StageRow
-            mediaSide={tx("left")}
+            mediaSide="left"
             icon="phone"
             title={tx("And the missed call gets picked up")}
             body={`${callflow?.description ?? "Picks up the phone when you cannot."} It takes the details, books the slot and leaves you a transcript instead of a voicemail.`}

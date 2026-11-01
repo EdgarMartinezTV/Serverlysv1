@@ -117,5 +117,11 @@
 "→ Order online": "→ Pide en línea",
 "online": "en línea",
 "Black Friday first month{0}: {1}. Renews at {2}/mo. Ends {3}.": "Primer mes de Black Friday{0}: {1}. Se renueva a {2}/mes. Termina el {3}.",
-"% off": "% de descuento"
+"% off": "% de descuento",
+"and": "y",
+", and": ", y",
+"to see which pages help people": "para ver qué páginas ayudan a las personas",
+"to measure which of our adverts work": "para medir cuáles de nuestros anuncios funcionan",
+"We store what the site needs to work, like a notice you closed or your domain shortlist. With your OK we also use": "Guardamos lo que el sitio necesita para funcionar, como un aviso que cerraste o tu lista de dominios guardados. Con tu permiso también usamos",
+"No advertising cookies.": "Sin cookies publicitarias."
 }

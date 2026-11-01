@@ -16,14 +16,14 @@ export function Hero() {
     return (
       <BlackFridayProductHero
         id="wp-bf-hero"
-        groupId={tx("wordpress")}
+        groupId="wordpress"
         headline={tx("Managed hosting for WordPress this Black Friday")}
         bullets={[
           "WordPress installed and LiteSpeed-tuned, zero setup",
           "Updates applied with a backup taken first",
           "Free website migration",
         ]}
-        ctaHref={tx("#plans")}
+        ctaHref="#plans"
       />
     );
   return <StandardHero />;

@@ -105,7 +105,7 @@ export default function MigrationsPage() {
           src: "/mock/move-hero.jpg",
           alt: "A smiling shop owner holding an open sign in her shop",
         }}
-        photoClassName={tx("object-[50%_35%] lg:object-[40%_35%]")}
+        photoClassName="object-[50%_35%] lg:object-[40%_35%]"
         kicker={[
           "Free with every cloud plan",
           ...(from ? [`Plans from ${from}/mo${bfNote}`] : []),
@@ -244,7 +244,7 @@ export default function MigrationsPage() {
           alt: "A smiling couple holding an open sign in their café",
           position: "50% 35%",
         }}
-        thumb={tx("/mock/move-boxes.jpg")}
+        thumb="/mock/move-boxes.jpg"
         title={tx("Ready to move? We’ll do the heavy lifting.")}
         body={`Pick a cloud plan and send us your site’s details. Migration is free${from ? `, and plans start at ${from}/mo${bfNote}` : ""}.`}
         primary={{ label: "See cloud plans", href: "#plans" }}

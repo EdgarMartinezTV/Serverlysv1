@@ -114,7 +114,7 @@ export default function HostingPage() {
       <FaqSection items={tx(faqs)} />
       {/* This page owns an id="plans" section, so the closing CTA scrolls
           there rather than leaving for the homepage. */}
-      <FinalCta plansHref={tx("#plans")} />
+      <FinalCta plansHref="#plans" />
       <PageBreadcrumbs trail={[{ name: "Home", path: "/" }, { name: "Hosting", path: PATH }]} />
     </>
   );

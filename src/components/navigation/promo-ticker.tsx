@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { useSitePathname } from "@/i18n/use-site-pathname";
 import { t as tx } from "@/i18n/t";
 
 /**
@@ -44,7 +44,7 @@ function Row({ hidden }: { hidden?: boolean }) {
 }
 
 export function PromoTicker() {
-  const pathname = usePathname();
+  const pathname = useSitePathname();
   if (pathname !== "/") return null;
   return (
     <div className="relative overflow-hidden bg-error text-small font-semibold text-white">

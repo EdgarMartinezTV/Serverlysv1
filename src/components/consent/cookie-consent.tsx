@@ -81,8 +81,8 @@ export function CookieConsent({
   const marketingEnabled = marketingVendors.length > 0;
   const trackers = trackersFor(analyticsItems, marketingItems);
   const uses = [
-    analyticsEnabled && `${analyticsVendors.join(" and ")} to see which pages help people`,
-    marketingEnabled && `${marketingVendors.join(" and ")} to measure which of our adverts work`,
+    analyticsEnabled && `${analyticsVendors.join(tx(" and "))}${tx(" to see which pages help people")}`,
+    marketingEnabled && `${marketingVendors.join(tx(" and "))}${tx(" to measure which of our adverts work")}`,
   ].filter(Boolean);
   const emptyCategories = [!analyticsEnabled && "Analytics", !marketingEnabled && "Marketing"].filter(
     Boolean,
@@ -185,7 +185,7 @@ export function CookieConsent({
               <h2 className="text-body font-semibold text-fg">{tx("Your privacy")}</h2>
               <p className="mt-1.5 text-small text-fg-secondary">
                 {uses.length
-                  ? tx(`We store what the site needs to work, like a notice you closed or your domain shortlist. With your OK we also use ${uses.join(", and ")}.${marketingEnabled ? "" : " No advertising cookies."}`)
+                  ? `${tx("We store what the site needs to work, like a notice you closed or your domain shortlist. With your OK we also use")} ${uses.join(tx(", and "))}.${marketingEnabled ? "" : ` ${tx("No advertising cookies.")}`}`
                   : tx("We store only what the site needs to work, like a notice you closed or your domain shortlist. No advertising or analytics cookies, and no third-party trackers.")}{" "}
                 <Link
                   href={lh("/privacy-policy#cookies")}

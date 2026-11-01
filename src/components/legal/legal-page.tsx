@@ -12,7 +12,7 @@ import {
   legalDoc,
   relatedDocs,
 } from "@/data/legal";
-import { t as tx } from "@/i18n/t";
+import { t as tx, isSpanish } from "@/i18n/t";
 import { lh } from "@/i18n/href";
 
 /**
@@ -165,7 +165,12 @@ export function LegalPage({
           <div className="mt-8 max-w-3xl">
             <span className="inline-flex rounded-md bg-brand-50 px-2.5 py-1 text-small font-medium text-primary">{tx("Legal")}</span>
             <h1 className="display-lg mt-5 text-fg">{tx(title)}</h1>
-            <p className="mt-5 text-body-lg text-fg-secondary">{tx(intro)}</p>
+            <p className="mt-5 text-body-lg text-fg-secondary">
+              {tx(intro)}
+              {/* Spanish pages are a courtesy translation (Edgar, 2026-11-01): said in the
+                  intro itself so the page layout stays identical to the English one. */}
+              {isSpanish() ? " Esta es una traducción de cortesía: si hay alguna diferencia, rige la versión en inglés." : null}
+            </p>
             <p className="mt-6 inline-flex items-center gap-2 rounded-full bg-canvas px-3 py-1.5 text-small text-fg-secondary ring-1 ring-line">
               <span className="size-1.5 rounded-full bg-success-fill" />{tx("In effect from ")}<time dateTime={doc.effective} className="font-medium text-fg">{tx(effectiveLabel)}</time>
             </p>

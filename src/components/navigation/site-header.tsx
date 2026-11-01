@@ -3,7 +3,7 @@
 import { blackFridayActive } from "@/data/pricing";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useSitePathname } from "@/i18n/use-site-pathname";
 import { primaryNav, isActiveItem, isActivePath } from "@/data/navigation";
 import { resolveNavTarget } from "@/data/routes";
 import { Wordmark } from "@/components/layout/wordmark";
@@ -98,7 +98,7 @@ export function SiteHeader() {
   const triggerRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const panelRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
-  const pathname = usePathname();
+  const pathname = useSitePathname();
   const baseId = useId();
 
   // Close on navigation — adjusted during render, not in an effect, so a stale
