@@ -498,6 +498,9 @@ export function DomainResults({
   isSaved,
   onToggleSave,
   similar,
+  partial = false,
+  altFailed = false,
+  onRetry,
 }: {
   /** The exact name searched, e.g. "bluefern.com". */
   query: string;
@@ -511,6 +514,11 @@ export function DomainResults({
   isSaved: (domain: string) => boolean;
   onToggleSave: (r: DomainResult) => void;
   similar: React.ReactNode;
+  /** The exact answer is in; the first set of alternates is still loading. */
+  partial?: boolean;
+  /** The alternates request failed (the exact answer is still shown). */
+  altFailed?: boolean;
+  onRetry?: () => void;
 }) {
   const [justAdded, setJustAdded] = useState<string | null>(null);
   const exact = results.get(query);
@@ -610,13 +618,23 @@ export function DomainResults({
               onAdded={onAdded}
             />
           ))}
-          {loadingCategory === category &&
+          {(loadingCategory === category || partial) &&
             Array.from({ length: 3 }, (_, i) => <li key={`sk${i}`} aria-hidden="true" className="my-2 h-14 animate-pulse rounded-xl bg-canvas-inset" />)}
-          {loadingCategory !== category && shown.length === 0 && (
+          {altFailed && shown.length === 0 && (
+            <li className="py-6 text-center text-small text-fg-muted">
+              More options did not load.{" "}
+              {onRetry && (
+                <button type="button" onClick={onRetry} className="font-semibold text-primary underline underline-offset-4">
+                  Try again
+                </button>
+              )}
+            </li>
+          )}
+          {!partial && !altFailed && loadingCategory !== category && shown.length === 0 && (
             <li className="py-6 text-center text-small text-fg-muted">No available names in this group.</li>
           )}
         </ul>
-        {hidden > 0 && loadingCategory !== category && (
+        {hidden > 0 && !partial && loadingCategory !== category && (
           <p className="mt-2 text-small text-fg-muted">
             {hidden} more {hidden === 1 ? "extension is" : "extensions are"} already taken for {sld}.
           </p>

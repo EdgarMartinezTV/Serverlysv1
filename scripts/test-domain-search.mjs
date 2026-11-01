@@ -329,9 +329,13 @@ await ev(`const t=Date.now();
     if(performance.getEntriesByType('resource').some(e=>e.name.includes('/api/domains/check'))) return true;
     await new Promise(r=>setTimeout(r,200));
   } return false;`);
-const before = await ev(
-  `return performance.getEntriesByType('resource').filter(e=>e.name.includes('/api/domains/check')).length`,
-);
+// A search sends two requests (exact first, then the full set — 2026-11-01
+// speed pass), so wait until the count stops moving before taking "before".
+const before = await ev(`
+  const n=()=>performance.getEntriesByType('resource').filter(e=>e.name.includes('/api/domains/check')).length;
+  let last=n(), since=Date.now();
+  while(Date.now()-since<1500){ await new Promise(r=>setTimeout(r,150)); const c=n(); if(c!==last){last=c; since=Date.now();} }
+  return last;`);
 await search(TAKEN);
 await sleep(900);
 const after = await ev(

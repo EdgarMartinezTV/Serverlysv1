@@ -85,7 +85,13 @@ export async function POST(request: Request) {
   }
 
   // ── Rate limit ──────────────────────────────────────────────────────────
-  const limit = rateLimit(clientKey(request, "check"));
+  // `prefetch: true` is the search bar warming the cache while someone types
+  // (or the moment they press Search, before the results page loads). It has
+  // its OWN budget, so typing can never spend the allowance real searches
+  // need — and when that budget is gone it is simply skipped (204).
+  const prefetch = body.value.prefetch === true;
+  const limit = rateLimit(clientKey(request, prefetch ? "prefetch" : "check"));
+  if (!limit.ok && prefetch) return new NextResponse(null, { status: 204 });
   if (!limit.ok) {
     return fail(
       {
@@ -154,17 +160,20 @@ export async function POST(request: Request) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), OVERALL_TIMEOUT_MS);
   // Abort upstream work if the client goes away mid-request.
-  request.signal.addEventListener("abort", () => controller.abort(), { once: true });
+  // Not for a prefetch: its whole point is to finish and fill the cache even
+  // when the page that asked has already moved on to the results page.
+  if (!prefetch) request.signal.addEventListener("abort", () => controller.abort(), { once: true });
 
   try {
     const checked = await checkDomains(provider, domains, controller.signal);
-    // WHMCS rows carry the price WHMCS quoted for that lookup. RDAP-fallback
-    // rows only know the static list, so re-price them from live pricing — and
-    // a TLD WHMCS no longer sells is "unsupported", whatever the registry says.
+    // Every row is priced from live WHMCS pricing (the batch path and RDAP
+    // only know the static list). A premium/unknown row keeps no list price
+    // claim beyond what it had; an RDAP row for a TLD WHMCS no longer sells is
+    // "unsupported", whatever the registry says.
     const results = checked.map((r): DomainResult => {
-      if (r.source !== "rdap" || !r.tld) return r;
+      if (!r.tld || r.status === "unsupported") return r;
       const price = livePrice.get(r.tld);
-      if (price === undefined) return { ...r, status: "unsupported", price: null };
+      if (price === undefined) return r.source === "rdap" ? { ...r, status: "unsupported", price: null } : r;
       return { ...r, price };
     });
     const outcome: CheckOutcome = { ok: true, results, source: provider.name };

@@ -192,3 +192,21 @@ function makeStore<T>(load: () => T, empty: T) {
 
 export const recentStore = makeStore<string[]>(recentSearches.read, []);
 export const shortlistStore = makeStore<ShortlistItem[]>(shortlist.read, []);
+
+/**
+ * Warm the server's lookup cache without waiting for, or showing, the answer:
+ * called while someone types (exact name only) and the instant they press
+ * Search on a hero bar (the full first set), so the results page usually finds
+ * its answers already cached or in flight. `keepalive` lets it outlive the
+ * navigation; the route gives it its own rate-limit budget and never aborts it.
+ */
+export function prefetchCheck(query: string, tlds?: readonly string[]): void {
+  try {
+    void fetch("/api/domains/check", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(tlds ? { query, tlds, prefetch: true } : { query, prefetch: true }),
+      keepalive: true,
+    }).catch(() => {});
+  } catch {}
+}

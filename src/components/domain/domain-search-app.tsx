@@ -40,6 +40,7 @@ import { useRouter } from "next/navigation";
 import { parseDomainInput } from "@/lib/domains/normalize";
 import {
   checkDomains,
+  prefetchCheck,
   recentSearches,
   recentStore,
   shortlist,
@@ -56,7 +57,8 @@ import { track } from "@/lib/analytics";
 type Phase =
   | { kind: "idle" }
   | { kind: "loading"; query: string }
-  | { kind: "results"; query: string; results: DomainResult[]; source: string }
+  /** `partial`: the exact answer is in, the alternates are still coming. */
+  | { kind: "results"; query: string; results: DomainResult[]; source: string; partial?: boolean; altFailed?: boolean }
   | { kind: "error"; query: string; error: CheckError };
 
 type Option = { id: string; domain: string; label: string; hint: string; kind: "check" | "recent" | "idea" };
@@ -159,6 +161,30 @@ export function DomainSearchApp({
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  /* ── Speed: warm what the next search will need ───────────────────── */
+  // Hero bars hand off to the results page: have its code ready before Enter.
+  useEffect(() => {
+    if (mode === "hero") router.prefetch("/domain-name-results");
+  }, [mode, router]);
+
+  // A pause in typing pre-checks the exact name (one lookup, own rate-limit
+  // budget), so by the time Search is pressed its answer is usually cached.
+  const prefetched = useRef<string | null>(null);
+  useEffect(() => {
+    const raw = value.trim();
+    if (raw.length < 3 || /\s/.test(raw)) return;
+    const p = parseDomainInput(raw);
+    if (!p.ok || p.sld.length < 2 || p.sld.includes(".")) return;
+    const tld = p.tld ?? preferredTld;
+    const name = `${p.sld}${tld}`;
+    if (prefetched.current === name) return;
+    const t = setTimeout(() => {
+      prefetched.current = name;
+      prefetchCheck(name, [tld]);
+    }, 550);
+    return () => clearTimeout(t);
+  }, [value, preferredTld]);
+
   /* ── Close the dropdown on outside click ───────────────────────────── */
   useEffect(() => {
     const onDown = (e: MouseEvent) => {
@@ -216,6 +242,9 @@ export function DomainSearchApp({
       const query = parsed.tld ? `${parsed.sld}${parsed.tld}` : `${parsed.sld}${preferredTld}`;
       if (mode === "hero") {
         recentStore.set(recentSearches.add(query));
+        // Start the lookup NOW, not after the next page loads: the results
+        // page's own request joins it (server in-flight dedupe) or hits cache.
+        prefetchCheck(query);
         router.push(`/domain-name-results?domain=${encodeURIComponent(query)}`);
         return;
       }
@@ -234,7 +263,26 @@ export function DomainSearchApp({
       setLoadingCategory(null);
       setPhase({ kind: "loading", query });
 
-      const outcome = await checkDomains(query, controller.signal);
+      /*
+       * Two requests in parallel: the exact name alone (one lookup, ~1s — or
+       * instant if typing already warmed it) and the full first set. The exact
+       * answer renders the moment it lands; the alternates fill in after. The
+       * full request includes the exact name too, but the server collapses the
+       * duplicate onto the same lookup, so WHMCS is asked once.
+       */
+      const exactTld = parsed.tld ?? preferredTld;
+      const fullP = checkDomains(query, controller.signal);
+      const exactP = checkDomains(query, controller.signal, [exactTld]);
+      let shown = false;
+
+      const first = await Promise.race([exactP, fullP.then(() => null)]);
+      if (controller.signal.aborted) return;
+      if (first && first.ok && first.data.results.length > 0) {
+        shown = true;
+        setPhase({ kind: "results", query, results: first.data.results, source: first.data.source, partial: true });
+      }
+
+      const outcome = await fullP;
       if (controller.signal.aborted) return;
 
       if (outcome.ok) {
@@ -251,6 +299,10 @@ export function DomainSearchApp({
         // Shareable: the address bar now opens straight onto these results.
         window.history.replaceState(null, "", `?domain=${encodeURIComponent(query)}${window.location.hash}`);
         recentStore.set(recentSearches.add(query));
+      } else if (shown && first && first.ok) {
+        // The exact answer is on screen; only the alternates failed. Keep it,
+        // and let the tabs say so rather than replacing a good answer with an error.
+        setPhase({ kind: "results", query, results: first.data.results, source: first.data.source, altFailed: true });
       } else {
         if (outcome.error.kind === "network" && outcome.error.message === "Search cancelled.") return;
         setPhase({ kind: "error", query, error: outcome.error });
@@ -694,6 +746,9 @@ export function DomainSearchApp({
                 onCategory={(c) => void onCategory(c)}
                 loadingCategory={loadingCategory}
                 source={phase.source}
+                partial={phase.partial}
+                altFailed={phase.altFailed}
+                onRetry={() => void run(phase.query, true)}
                 isSaved={isSaved}
                 onToggleSave={onToggleSave}
                 similar={
