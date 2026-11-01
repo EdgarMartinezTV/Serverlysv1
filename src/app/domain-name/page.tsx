@@ -1,7 +1,7 @@
 import { JsonLd } from "@/components/ui/json-ld";
 import { DomainHero, Explainers, Manage, Popular, Reasons, Steps, TldTable } from "./_components/domain-ui";
 import { Faqs } from "@/components/ref/faqs";
-import { cheapestTld, tlds } from "@/data/tlds";
+import { allTlds, cheapestTld } from "@/data/tlds";
 import { faqGraph, pageMetadata, productGraph } from "@/lib/seo";
 import { FAQS, FAQ_HEAD, HERO, REASONS, STEPS } from "./_content";
 import { DomainSearchApp } from "@/components/domain/domain-search-app";
@@ -46,7 +46,7 @@ const BREADCRUMB = [
 ];
 
 /** Derived from the TLD list, so the schema cannot disagree with the table. */
-const PRICES = tlds.map((t) => t.price);
+const PRICES = allTlds.map((t) => t.price);
 
 const FAQ_TEXT = FAQS.map((f) => ({
   question: f.q,

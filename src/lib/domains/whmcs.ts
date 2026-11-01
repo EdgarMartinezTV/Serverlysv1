@@ -47,8 +47,11 @@ function cartBase(apiUrl: string) {
 }
 
 async function openSession(base: string, signal: AbortSignal): Promise<CartSession> {
+  // Follow redirects: the PUBLIC origin 301s cart.php -> /cart (the clean-URL
+  // proxy), and treating that hop as a failure silently dropped every lookup
+  // to RDAP. The session cookie is set by the final 200, which is what we read.
   const res = await fetch(`${base}/cart.php?a=add&domain=register`, {
-    redirect: "manual",
+    redirect: "follow",
     cache: "no-store",
     signal,
   });

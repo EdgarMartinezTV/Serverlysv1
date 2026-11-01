@@ -2,7 +2,7 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { DomainHero, Explainers, Manage, Popular, Reasons, Steps, TldTable } from "../domain-name/_components/domain-ui";
 import { Faqs } from "@/components/ref/faqs";
 import { DomainSearchApp } from "@/components/domain/domain-search-app";
-import { cheapestTld, tlds } from "@/data/tlds";
+import { allTlds, cheapestTld } from "@/data/tlds";
 import { faqsFor } from "@/data/faqs";
 import { faqGraph, pageMetadata, productGraph } from "@/lib/seo";
 import { FAQ_HEAD, HERO, REASONS, STEPS } from "./_content";
@@ -34,7 +34,7 @@ const DESCRIPTION =
 
 export const metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH });
 
-const PRICES = tlds.map((t) => t.price);
+const PRICES = allTlds.map((t) => t.price);
 
 export default function RegisterDomainPage() {
   const faqs = faqsFor(PATH);

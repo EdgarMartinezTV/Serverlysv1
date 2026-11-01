@@ -61,8 +61,11 @@ type Option = { id: string; domain: string; label: string; hint: string; kind: "
 
 const EXAMPLES = ["hearthbakery.com", "northlight.studio", "fernandfold.shop", "yourname.com", "cedarclinic.org"];
 
-/* "All" first and default: we check eight extensions, not hundreds, so a
-   narrowing default would hide sellable names (e.g. .eu) on first view. */
+/* "All" first and default: we check a handful of extensions, not hundreds,
+   so a narrowing default would hide sellable names (e.g. .eu) on first view.
+   A chip only renders when at least one checked name falls in its group —
+   the search checks the suggestion set (data/tlds `suggest`), so a group
+   built from extensions that were never checked would always come up empty. */
 const CATEGORIES: Record<string, readonly string[] | null> = {
   All: null,
   Popular: [".com", ".net", ".org"],
@@ -195,8 +198,9 @@ export function DomainSearchApp() {
       setIdeas(false);
 
       const query = parsed.tld ? `${parsed.sld}${parsed.tld}` : `${parsed.sld}${preferredTld}`;
-      // Re-submitting the search on screen is a no-op; an explicit retry is not.
-      if (!retry && phase.kind === "results" && phase.query === query) return;
+      // Re-submitting the search on screen, or the one still loading (a
+      // double-clicked Search), is a no-op; an explicit retry is not.
+      if (!retry && (phase.kind === "results" || phase.kind === "loading") && phase.query === query) return;
 
       abortRef.current?.abort();
       const controller = new AbortController();
@@ -665,7 +669,15 @@ export function DomainSearchApp() {
                         {featured.status === "available" ? "More options" : "Try these instead"}
                       </h3>
                       <div role="radiogroup" aria-label="Filter extensions" className="flex flex-wrap gap-2">
-                        {(Object.keys(CATEGORIES) as (keyof typeof CATEGORIES)[]).map((c) => (
+                        {(Object.keys(CATEGORIES) as (keyof typeof CATEGORIES)[])
+                          .filter((c) => {
+                            const group = CATEGORIES[c];
+                            if (!group) return true;
+                            const n = alternates.filter((r) => group.includes(r.tld)).length;
+                            // Hide groups that would be empty or identical to "All".
+                            return n > 0 && n < alternates.length;
+                          })
+                          .map((c) => (
                           <button
                             key={c}
                             type="button"

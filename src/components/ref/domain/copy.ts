@@ -19,10 +19,9 @@ export const TABLE = {
     note: "Best for",
   },
   /**
-   * data/tlds.ts holds first-year prices only. Renewal is deliberately NOT
-   * invented — the site's standing rule is that a term price never renders
-   * without the rate it renews at, so this column says where the real number
-   * comes from instead of guessing one.
+   * Used only by the legacy components/ref/domain/tld-table.tsx. The live
+   * table (app/domain-name/_components/domain-ui.tsx) shows each TLD's real
+   * renewal price from data/tlds.ts, read from WHMCS on 2026-11-01.
    */
   renewNote: "Shown at checkout",
 };

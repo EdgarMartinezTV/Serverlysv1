@@ -124,6 +124,18 @@ export function DomainResultRow({
                 </>
               )}
               {status === "unknown" && (result.reason ?? "The registry did not answer in time.")}
+              {status === "unsupported" && (
+                <>
+                  We do not sell {result.tld || "this extension"} yet.{" "}
+                  <a
+                    href="/domain-name#tld-prices"
+                    className="rounded-sm font-semibold text-primary underline underline-offset-4 hover:text-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                  >
+                    See the extensions we offer
+                  </a>
+                  .
+                </>
+              )}
             </p>
           </div>
         </div>

@@ -322,6 +322,13 @@ console.log("\n── Duplicate & network failure ──");
 await load();
 await search(TAKEN);
 await waitResults();
+// Page copy can already contain "available" (/domain-name does), so
+// waitResults() may return before the first request has finished.
+await ev(`const t=Date.now();
+  while(Date.now()-t<20000){
+    if(performance.getEntriesByType('resource').some(e=>e.name.includes('/api/domains/check'))) return true;
+    await new Promise(r=>setTimeout(r,200));
+  } return false;`);
 const before = await ev(
   `return performance.getEntriesByType('resource').filter(e=>e.name.includes('/api/domains/check')).length`,
 );

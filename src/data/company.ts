@@ -72,8 +72,9 @@ export const billing = {
    * Puts the name straight into the WHMCS cart and lands on its domain
    * configuration step (verified live 2026-10-05: GET `domains[]` adds it and
    * 302s to cart.php?a=confdomains). Use only for a name WHMCS itself just
-   * reported available — this path skips WHMCS's own lookup. The `query`
-   * prefill is not a handoff on the live cart: its AI search box ignores it.
+   * reported available — this path skips WHMCS's own lookup. (Re-verified
+   * 2026-11-01: `searchDomain`'s `query` prefill fills the cart search box and
+   * runs the lookup on load, so it IS a working handoff too.)
    */
   addDomain: (domain: string) =>
     `${BILLING}/cart.php?a=add&domain=register&domains[]=${encodeURIComponent(domain)}&domainsregperiod[${encodeURIComponent(domain)}]=1`,

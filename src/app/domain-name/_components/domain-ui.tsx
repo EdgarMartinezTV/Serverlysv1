@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { billing } from "@/data/company";
-import { tlds } from "@/data/tlds";
+import { allTlds, tlds } from "@/data/tlds";
 import { ArrowUpRight, CtaButton, Grid } from "@/components/ref/kit";
 import type { HeroCopy } from "@/components/ref/domain/hero";
 import type { ReasonsCopy } from "@/components/ref/domain/reasons";
@@ -79,15 +79,12 @@ export function DomainHero({ copy, tool }: { copy: HeroCopy; tool: React.ReactNo
         <ul className="mx-auto mt-6 flex max-w-[760px] flex-wrap justify-center gap-2">
           {chips.map((t) => (
             <li key={t.tld}>
-              <a
-                href={billing.searchDomain(`${DOMAIN}${t.tld}`)}
-                // Example-name cart URLs: useful to a visitor, worthless to a crawler.
-                rel="nofollow"
-                className="inline-flex min-h-11 items-center gap-2 rounded-full bg-white/10 px-4 text-small ring-1 ring-white/15 transition-colors duration-fast hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-              >
+              {/* Price tags, not links: they used to add the demo name
+                  (hearthbakery.com, a registered domain) to the cart. */}
+              <span className="inline-flex min-h-11 items-center gap-2 rounded-full bg-white/10 px-4 text-small ring-1 ring-white/15">
                 <span className="font-semibold text-white">{t.tld}</span>
                 <span className="text-fg-on-dark-secondary">${t.price.toFixed(2)}</span>
-              </a>
+              </span>
             </li>
           ))}
         </ul>
@@ -471,7 +468,7 @@ export function TldTable() {
         <TldFilter />
 
         <ul className="mt-8 flex flex-col gap-3 md:hidden">
-          {tlds.map((t) => (
+          {allTlds.map((t) => (
             <li key={t.tld} data-tld={t.tld} className="rounded-2xl bg-canvas-secondary p-5">
               <div className="flex items-baseline justify-between gap-3">
                 <p className="text-[22px] leading-7 font-semibold tracking-[-0.02em] text-fg">{t.tld}</p>
@@ -481,7 +478,7 @@ export function TldTable() {
                 </p>
               </div>
               <p className="mt-1 text-small text-fg-secondary">
-                {t.note ?? "General purpose"} · {TABLE.columns.renew}: {TABLE.renewNote}
+                {t.note ?? "General purpose"} · {TABLE.columns.renew}: ${t.renew.toFixed(2)}/yr
               </p>
               <a
                 href={billing.registerDomain}
@@ -509,11 +506,11 @@ export function TldTable() {
               </tr>
             </thead>
             <tbody className="divide-y divide-line-subtle">
-              {tlds.map((t) => (
+              {allTlds.map((t) => (
                 <tr key={t.tld} data-tld={t.tld} className="transition-colors duration-fast hover:bg-brand-50/50">
                   <th scope="row" className="px-6 py-2 text-body-lg font-semibold text-fg">{t.tld}</th>
                   <td className="px-6 py-2 text-body font-medium text-fg">${t.price.toFixed(2)}</td>
-                  <td className="px-6 py-2 text-small text-fg-muted">{TABLE.renewNote}</td>
+                  <td className="px-6 py-2 text-body text-fg-secondary">${t.renew.toFixed(2)}/yr</td>
                   <td className="px-6 py-2 text-small text-fg-secondary">{t.note ?? "—"}</td>
                   <td className="px-6 py-2 text-right">
                     <a
