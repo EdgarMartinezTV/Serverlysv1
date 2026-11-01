@@ -6,6 +6,7 @@ import { company, emailDisplay } from "@/data/company";
 import { faqGraph, pageMetadata } from "@/lib/seo";
 import { CATEGORIES, FAQ_HEAD, FAQS, HERO, NEXT, RELATED, TIPS } from "./_content";
 import { AbuseForm } from "./_components/abuse-form";
+import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { AbuseIcon } from "./_components/abuse-icon";
 
 /**
@@ -20,10 +21,6 @@ import { AbuseIcon } from "./_components/abuse-icon";
  *   3. How to send a report we can act on, plus what we cannot do.
  *   4. FAQ (with matching FAQPage schema).
  *   5. Related policies.
- *
- * No breadcrumb strip above the footer on this page (Edgar, 2026-10-31:
- * "Remove this from the footer"). Its BreadcrumbList JSON-LD went with it,
- * since schema must match visible content.
  *
  * The form emails the abuse inbox via /api/report-abuse. See _components/abuse-form.
  */
@@ -219,6 +216,7 @@ export default function ReportAbusePage() {
         </Grid>
       </section>
 
+      <PageBreadcrumbs trail={[{ name: "Home", path: "/" }, { name: "Report abuse", path: PATH }]} />
     </div>
   );
 }
