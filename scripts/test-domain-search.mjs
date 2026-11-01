@@ -13,7 +13,7 @@ const TAKEN = "google.com";
 
 // Wait out any rate-limit window left by earlier requests.
 for (let i = 0; i < 70; i++) {
-  const r = await fetch("http://localhost:3000/api/domains/check", {
+  const r = await fetch(new globalThis.URL("/api/domains/check", URL).href, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ query: "warmup-probe-0001.com" }),
@@ -454,7 +454,7 @@ console.log("\n── Live integration (real registry, no stub) ──");
   // proves the provider chain actually reaches a real registry. A definite
   // answer OR an honest "unknown" both pass; what must never happen is a
   // fabricated availability.
-  const res = await fetch("http://localhost:3000/api/domains/check", {
+  const res = await fetch(new globalThis.URL("/api/domains/check", URL).href, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ query: "google.com" }),

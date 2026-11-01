@@ -41,6 +41,7 @@ await new Promise((res) => { ws.onopen = res; });
 let id = 0;
 const pending = new Map();
 let bucket = [];
+const requestUrls = new Map();
 ws.onmessage = (ev) => {
   const m = JSON.parse(ev.data);
   if (m.id && pending.has(m.id)) { pending.get(m.id)(m.result ?? {}); pending.delete(m.id); return; }
@@ -50,8 +51,10 @@ ws.onmessage = (ev) => {
   if (m.method === "Runtime.exceptionThrown") {
     bucket.push(`exception: ${m.params.exceptionDetails.exception?.description ?? m.params.exceptionDetails.text}`);
   }
+  if (m.method === "Network.requestWillBeSent") requestUrls.set(m.params.requestId, m.params.request.url);
   if (m.method === "Network.loadingFailed" && !m.params.errorText.includes("ERR_ABORTED")) {
-    bucket.push(`request failed: ${m.params.type} ${m.params.errorText}`);
+    // The URL is what makes a one-off (e.g. ERR_BLOCKED_BY_ORB) traceable.
+    bucket.push(`request failed: ${m.params.type} ${m.params.errorText} ${requestUrls.get(m.params.requestId) ?? ""}`.trim());
   }
 };
 const send = (method, params = {}, sessionId) =>

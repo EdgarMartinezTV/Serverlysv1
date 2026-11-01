@@ -364,20 +364,23 @@ check(
     !!document.querySelector('#mobile-nav-panel a[aria-label*="home"]')`),
 );
 check(
-  "expanding a section reveals nested categories and items",
-  await ev(`const b=document.querySelector('#mobile-nav-panel button[aria-controls^="mnav-"]');
-    b.click(); await new Promise(r=>setTimeout(r,420));
-    const s=document.getElementById(b.getAttribute('aria-controls'));
-    return b.getAttribute('aria-expanded')==='true' && !s.hasAttribute('inert')
-      && /AI and automation/.test(s.textContent) && /ConvoAI/.test(s.textContent);`),
+  "opening a section reveals its pages",
+  // The drawer drills down (2026-10): section buttons swap the panel's contents
+  // rather than expanding an accordion, so there is no aria-controls to follow.
+  await ev(`const p=document.getElementById('mobile-nav-panel');
+    const b=[...p.querySelectorAll('button')].find(x=>x.textContent.trim()==='AI and automation');
+    if(!b) return false;
+    b.click(); await new Promise(r=>setTimeout(r,500));
+    return /ConvoAI/.test(p.textContent) && [...p.querySelectorAll('a')].some(a=>a.offsetParent);`),
 );
 check(
   // The drawer's primary CTA was "Get started" (straight to the cloud-hosting
   // store) until Sera replaced it with "Ask Sera", which opens the assistant.
   // Login and language are unchanged.
+  // Sera became ConvoAI on 2026-11-01.
   "drawer shows CTA, login and language",
   await ev(`const t=document.querySelector('#mobile-nav-panel').textContent;
-    return /Ask Sera/.test(t) && /Client login/.test(t) && /English/.test(t)`),
+    return /Ask ConvoAI/.test(t) && /Client login/.test(t) && /English/.test(t)`),
 );
 check(
   "no horizontal overflow on mobile",

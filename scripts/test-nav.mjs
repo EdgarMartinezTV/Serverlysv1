@@ -339,6 +339,10 @@ for (const w of [1440, 1280, 1024]) {
 }
 
 // ══════════════════════════════════════════════════════ ANNOUNCEMENT BAR
+// The bar is switched off in data/navigation.ts (announcement.enabled = false);
+// these checks only run while it is on.
+await load();
+if (await evaluate(`!!document.querySelector('[data-announcement-bar]')`)) {
 console.log("\n── Announcement bar ──");
 await load();
 check(
@@ -374,6 +378,9 @@ check(
   `before ${beforeTop}px → after ${afterTop}px`,
 );
 await evaluate(`localStorage.clear()`);
+} else {
+  console.log("\n── Announcement bar ── (switched off — skipped)");
+}
 
 // ══════════════════════════════════════════════════════ MOBILE
 console.log("\n── Mobile · 390px ──");
@@ -432,29 +439,24 @@ check(
   await evaluate(`(()=>{const b=document.querySelector('[aria-label="Close menu"]');
      const r=b?.getBoundingClientRect(); return !!b && r.height>=44 && r.width>=44})()`),
 );
+// The drawer drills down (Oct 2026) instead of using accordions: each section
+// button replaces the panel's list with that section's pages.
 check(
   "all nav items are reachable inside the drawer",
-  await evaluate(
-    `document.querySelectorAll('#mobile-nav-panel button[aria-controls^="mnav-"]').length >= 3`,
-  ),
+  await evaluate(`(()=>{const p=document.getElementById('mobile-nav-panel');
+     const names=[...p.querySelectorAll('button')].map(b=>b.textContent.trim());
+     return ['AI and automation','Hosting','Domains','Email','Support'].every(n=>names.includes(n))})()`),
 );
-
 check(
-  "collapsed accordion sections are inert (links unfocusable)",
-  await evaluate(`(()=>{const s=[...document.querySelectorAll('#mobile-nav-panel [id^="mnav-"]')];
-     return s.length>0 && s.every(x=>x.hasAttribute('inert') || x.querySelectorAll('a').length===0)})()`),
+  "section pages are not in the tab order until their section opens",
+  await evaluate(`!document.querySelector('#mobile-nav-panel a[href="/cloud-hosting"]')?.offsetParent`),
 );
-
-await evaluate(
-  `document.querySelector('#mobile-nav-panel button[aria-controls^="mnav-"]').click()`,
-);
-await sleep(400);
+await evaluate(`[...document.querySelectorAll('#mobile-nav-panel button')].find(b=>b.textContent.trim()==='Hosting').click()`);
+await sleep(500);
 check(
-  "accordion expands and its links become focusable",
-  await evaluate(`(()=>{const b=document.querySelector('#mobile-nav-panel button[aria-controls^="mnav-"]');
-     const s=document.getElementById(b.getAttribute('aria-controls'));
-     return b.getAttribute('aria-expanded')==='true' && !s.hasAttribute('inert') &&
-       s.getBoundingClientRect().height > 0})()`),
+  "opening a section shows its pages, and they are focusable",
+  await evaluate(`(()=>{const a=document.querySelector('#mobile-nav-panel a[href="/cloud-hosting"]');
+     if(!a||!a.offsetParent) return false; a.focus(); return document.activeElement===a})()`),
 );
 
 await evaluate(

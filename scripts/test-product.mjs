@@ -125,10 +125,12 @@ check(
     const h=[...document.querySelectorAll('#plans h3')].map(e=>e.textContent||'');
     return h.filter(t=>t.includes(want)).length===4 && !others.some(o=>h.some(t=>t.includes(o)));`),
 );
+// Prices follow the term picker and any promo (Black Friday to Dec 7), so
+// assert the shape — four priced cards, each with its renewal — not figures.
 check(
   "every card shows the monthly rate and the rate it renews at",
   await ev(`const t=document.getElementById('plans')?.innerText||'';
-    return ['$7.95','$12.62','$17.95','$21.37'].every(p=>t.includes(p)) && (t.match(/Renews at/g)||[]).length===4`),
+    return (t.match(/\\$\\d+\\.\\d{2}\\s*\\/mo/g)||[]).length>=4 && (t.match(/Renews at \\$\\d/g)||[]).length===4`),
 );
 
 /* The breadcrumb assertion that used to sit here was removed with the trail
@@ -167,7 +169,7 @@ const dead = await ev(`return JSON.stringify([...document.querySelectorAll('a')]
 check("no dead links (empty href or bare #)", JSON.parse(dead).length === 0, dead);
 
 const ctas = await ev(`return JSON.stringify([...document.querySelectorAll('a')]
-  .map(a=>a.getAttribute('href')).filter(h=>h && /\/(cart|clientarea|submitticket)\.php|\/store\/|\/login$/.test(h))
+  .map(a=>a.getAttribute('href')).filter(h=>h && /\\/(cart|clientarea|submitticket)(\\.php)?([?#]|$)|\\/store\\/|\\/login$/.test(h))
   .filter((v,i,s)=>s.indexOf(v)===i).slice(0,8))`);
 check(
   "checkout CTAs point at real WHMCS paths",
@@ -188,11 +190,13 @@ check(
   // Found by POSITION, not by label. Each product page writes its own hero CTA
   // copy, and hardcoding one page's wording makes this script unusable against
   // the others — which is the whole point of it taking a URL.
-  "hero CTAs are full-width and ≥44px tall",
+  // Was "full-width": the Black Friday hero (to Dec 7) uses a content-width
+  // "Claim deal" button (185x48), so assert the tap target, not the stretch.
+  "hero CTA is a ≥44px-tall, ≥150px-wide tap target",
   await ev(`const hero=document.querySelector('main section, main header') || document.body;
-    const b=[...hero.querySelectorAll('a')].find(a=>{const r=a.getBoundingClientRect(); return r.height>=40 && r.width>200;});
+    const b=[...hero.querySelectorAll('a')].find(a=>{const r=a.getBoundingClientRect(); return r.height>=40 && r.width>=150;});
     if(!b) return false;
-    const r=b.getBoundingClientRect(); return r.height>=44 && r.width > 250`),
+    const r=b.getBoundingClientRect(); return r.height>=44 && r.width>=150`),
 );
 
 console.log(

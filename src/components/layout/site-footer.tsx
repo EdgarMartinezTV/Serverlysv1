@@ -138,7 +138,9 @@ export function SiteFooter() {
 
         {/* ── Brand row: logo + social, then trust + legal ───────────── */}
         <div className="mt-16 flex flex-col gap-6">
-          <div className="flex items-center justify-between gap-6">
+          {/* Wraps on the narrowest phones (320px): the wordmark plus five 44px
+              tap targets is ~9px wider than the screen and scrolled the page. */}
+          <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
             <Wordmark tone="dark" className="h-9" />
             <ul className="flex items-center gap-1">
               {socialLinks.map((social) => (
@@ -210,11 +212,12 @@ export function SiteFooter() {
             © <CurrentYear buildYear={year} /> {company.legalName}. All rights reserved. Domain registrations are
             subject to the policies of ICANN and the relevant registry.
           </p>
+          {/* min-h-6: 24px tap targets (WCAG 2.5.8); both links sit alone on their line. */}
           <p className="flex flex-wrap items-center gap-x-4 lg:shrink-0">
-            <a href={company.phoneHref} className="tabular transition-colors hover:text-primary">
+            <a href={company.phoneHref} className="tabular inline-flex min-h-6 items-center transition-colors hover:text-primary">
               {company.phone}
             </a>
-            <a href={`mailto:${company.email}`} className="transition-colors hover:text-primary">
+            <a href={`mailto:${company.email}`} className="inline-flex min-h-6 items-center transition-colors hover:text-primary">
               {emailDisplay}
             </a>
           </p>

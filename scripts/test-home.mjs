@@ -300,29 +300,38 @@ check("typing fills the brief field", (brief.value ?? "").length > 10, brief.err
  * exists, pressing it opens the panel, the draft arrives as a visitor message,
  * and the textarea is cleared so a second press cannot double-send.
  */
+// Sera was replaced by the ConvoAI messenger on 2026-11-01. The button is labelled
+// "Ask ConvoAI" (sr-only) and hands the draft to window.ConvoAI. The send is
+// intercepted, so the test never files a real conversation in the inbox.
 const askSera = await evaluate(`(async () => {
+  for (let i = 0; i < 60 && !window.ConvoAI; i++) await new Promise((r) => setTimeout(r, 250));
+  if (!window.ConvoAI) return { error: "the ConvoAI messenger script never loaded" };
   const band = document.querySelector('section[aria-labelledby="brief-heading"]');
-  const button = [...band.querySelectorAll("button")]
-    .find((b) => b.textContent.trim().startsWith("Ask Sera"));
-  if (!button) return { error: "no Ask Sera control" };
+  const button = [...(band?.querySelectorAll("button") ?? [])]
+    .find((b) => b.textContent.trim().includes("Ask ConvoAI"));
+  if (!button) return { error: "no Ask ConvoAI control" };
 
-  const draft = document.getElementById("brief").value;
+  const box = document.getElementById("brief");
+  const draft = "Test draft: I need hosting for a small bakery site";
+  const setter = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(box), "value").set;
+  setter.call(box, draft);
+  box.dispatchEvent(new Event("input", { bubbles: true }));
+  await new Promise((r) => setTimeout(r, 100));
+
+  let sent = null;
+  const api = window.ConvoAI;
+  const orig = { send: api.send, showNewMessage: api.showNewMessage };
+  api.send = (t) => { sent = t; };
+  api.showNewMessage = (t) => { sent = t; };
   button.click();
-
-  // The panel mounts on demand and the message lands on the next tick.
-  for (let i = 0; i < 40; i++) {
-    await new Promise((r) => setTimeout(r, 250));
-    const panel = document.querySelector('[role="dialog"]');
-    if (panel && panel.innerText.includes(draft.slice(0, 24))) {
-      return { opened: true, carried: true, cleared: document.getElementById("brief").value === "" };
-    }
-  }
-  const panel = document.querySelector('[role="dialog"]');
-  return { opened: Boolean(panel), carried: false, cleared: false };
+  for (let i = 0; i < 20 && sent === null; i++) await new Promise((r) => setTimeout(r, 100));
+  Object.assign(api, orig);
+  await new Promise((r) => setTimeout(r, 300)); // React clears the box on the next render
+  return { opened: sent !== null, carried: sent === draft, cleared: box.value === "" };
 })()`);
-check("Ask Sera control exists", !askSera.error, askSera.error ?? "found");
-check("Ask Sera opens the panel", askSera.opened === true);
-check("the draft arrives in Sera as a message", askSera.carried === true);
+check("Ask ConvoAI control exists", !askSera.error, askSera.error ?? "found");
+check("Ask ConvoAI hands the draft to the messenger", askSera.opened === true);
+check("the draft arrives as the visitor's message", askSera.carried === true);
 check("the draft is cleared after sending", askSera.cleared === true);
 
 // ── 6b. (removed) ─────────────────────────────────────────────────────────
