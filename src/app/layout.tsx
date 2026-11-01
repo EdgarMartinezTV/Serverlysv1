@@ -159,6 +159,24 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to main content
         </a>
 
+        {/*
+          * Cookie notice FIRST in the body (2026-11-01). It is position:fixed, so
+          * DOM order does not move it on screen — but it does decide WHEN it
+          * paints. At the end of a ~240KB page it arrived last on slow mobile
+          * connections and, being the largest text block in the viewport (the
+          * Black Friday H1 is two short words), it became the mobile LCP at the
+          * very end of the load: Lighthouse mobile 83, LCP 3.7s, 83% "render
+          * delay". Here it paints with the first chunk of HTML. Returning
+          * visitors are unaffected: the blocking consent script still hides it
+          * before first paint.
+          */}
+        <CookieConsent
+          analyticsVendors={vendorNames(publicEnv.analytics)}
+          analyticsItems={analyticsDisclosures(publicEnv.analytics)}
+          marketingVendors={marketingVendorNames(publicEnv.analytics)}
+          marketingItems={marketingDisclosures(publicEnv.analytics)}
+        />
+
         <JsonLd data={organizationGraph()} />
         {/* In-browser agent tools (WebMCP); renders nothing. */}
         <WebMcp />
@@ -170,12 +188,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             {children}
           </main>
           <SiteFooter />
-          <CookieConsent
-            analyticsVendors={vendorNames(publicEnv.analytics)}
-            analyticsItems={analyticsDisclosures(publicEnv.analytics)}
-            marketingVendors={marketingVendorNames(publicEnv.analytics)}
-            marketingItems={marketingDisclosures(publicEnv.analytics)}
-          />
           {/* Renders nothing. GTM / GA4 / Clarity load only after an analytics
               Accept, the Meta Pixel only after a marketing Accept; page views,
               events and WHMCS attribution start here. */}
