@@ -784,7 +784,7 @@ export const legalNav: readonly NavLink[] = FOOTER_LEGAL.map((path) => {
 
 export const socialLinks = [
   { label: "X", href: "https://x.com/serverlys" },
-  { label: "Instagram", href: "https://www.instagram.com/getserverlys/" },
+  { label: "Instagram", href: "https://www.instagram.com/tryserverlys/" },
   { label: "TikTok", href: "https://www.tiktok.com/@serverlys" },
 ] as const;
 
