@@ -2,6 +2,7 @@ import { Check, CtaButton, Grid, ShieldCheck } from "@/components/ref/kit";
 import { HERO } from "../_content";
 import { HeroCanvas } from "./hero-canvas";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * Hero.
@@ -53,7 +54,7 @@ export function Hero() {
               ))}
             </ul>
 
-            <CtaButton href="#how-it-works" tone="on-dark" className="w-full xl:w-auto">
+            <CtaButton href={lh("#how-it-works")} tone="on-dark" className="w-full xl:w-auto">
               {tx(HERO.cta)}
             </CtaButton>
 

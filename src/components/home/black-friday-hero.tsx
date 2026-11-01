@@ -3,6 +3,7 @@ import { GlossyPercent } from "@/components/home/glossy-percent";
 import { Button } from "@/components/ui/button";
 import { BLACK_FRIDAY, groupById, formatPrice, quote, type Plan } from "@/data/pricing";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * Black Friday homepage hero — 2026-10-31, on Edgar's request ("a hero section
@@ -102,7 +103,7 @@ export function BlackFridayHero() {
             {tx(formatPrice(MONTHLY.total))}{tx("/mo. ")}{tx(PCT)}{tx(" off applies to your first payment.")}</p>
 
           <div className="mt-8">
-            <Button href="/pricing" variant="inverse" size="lg">{tx("Claim deal")}</Button>
+            <Button href={lh("/pricing")} variant="inverse" size="lg">{tx("Claim deal")}</Button>
           </div>
 
           <p className="mt-6 flex items-center gap-2 text-body font-medium text-white">

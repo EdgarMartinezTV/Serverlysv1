@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 export type StageRowLink = { label: string; href: string; external?: boolean };
 
@@ -110,7 +111,7 @@ export function StageRow({
             {links.map((link) => (
               <li key={link.label} className={cn("border-b", dark ? "border-line-on-dark" : "border-line")}>
                 <Link
-                  href={link.href}
+                  href={lh(link.href)}
                   {...(link.external ? { target: "_blank", rel: "noopener" } : {})}
                   className={cn(
                     "group/row stage-link",

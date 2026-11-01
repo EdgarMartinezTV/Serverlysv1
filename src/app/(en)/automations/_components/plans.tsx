@@ -2,6 +2,7 @@ import { Check, Grid, Headline } from "@/components/ref/kit";
 import { billing } from "@/data/company";
 import { INCLUDED } from "../_content";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * Plans — 2026-10-03, in the reference's plan-card format (four-up dark cards,
@@ -64,7 +65,7 @@ export function Plans() {
                   <p className="mt-1.5 text-micro text-fg-on-dark-muted">{tx("After a free mapping call")}</p>
 
                   <a
-                    href={billing.sales}
+                    href={lh(billing.sales)}
                     className={`mt-6 flex h-12 items-center justify-center rounded-md text-body font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${
                       featured ? "bg-white text-fg hover:bg-ink-100" : "text-white ring-1 ring-inset ring-white/50 hover:bg-white/10"
                     }`}

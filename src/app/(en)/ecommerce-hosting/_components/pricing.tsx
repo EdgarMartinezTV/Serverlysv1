@@ -5,6 +5,7 @@ import { PLAN_CARD_ITEM, PlanCard } from "@/components/ref/plan-card";
 import { TermProvider, TermSelect } from "@/components/ref/term";
 import { PRICING_HEAD, WHY } from "../_content";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * "Choose your managed WooCommerce plan" — the reference's plan cards, driven
@@ -60,7 +61,7 @@ export function Pricing() {
 
         <div className="mt-8 flex flex-col items-center gap-4">
           <Link
-            href="/pricing"
+            href={lh("/pricing")}
             className="inline-flex items-center gap-1.5 text-body font-semibold text-primary hover:text-primary-hover"
           >
             {tx(PRICING_HEAD.compare)}
@@ -68,7 +69,7 @@ export function Pricing() {
           </Link>
           <p className="text-center text-micro text-fg-secondary">
             {tx(PRICING_HEAD.fairUsage.lead)}
-            <Link href={PRICING_HEAD.fairUsage.href} className="underline decoration-from-font">
+            <Link href={lh(PRICING_HEAD.fairUsage.href)} className="underline decoration-from-font">
               {tx(PRICING_HEAD.fairUsage.link)}
             </Link>
             .

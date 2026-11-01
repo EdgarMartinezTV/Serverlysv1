@@ -38,7 +38,8 @@ type Site = {
   links: [string, string];
   accent: { label: string; className: string };
   prompt: string;
-  hero: React.ReactNode;
+  /** A function, not a node: its text is translated per render (module-level JSX would freeze one language). */
+  hero: () => React.ReactNode;
   /** Legibility wash over the photo, matched to where the type sits. */
   wash: string;
 };
@@ -53,7 +54,7 @@ const SITES: readonly Site[] = [
     accent: { label: "Cart (2)", className: "bg-[#e7efe9] text-[#1f4d3a]" },
     prompt: "Move my WooCommerce store to Serverlys without any downtime.",
     wash: "bg-gradient-to-b from-white/10 via-transparent to-transparent",
-    hero: (
+    hero: () => (
       <>
         {/* Headline on the wall above the sofa; offer on the floor below it. */}
         <p className="absolute left-[6%] top-[19%] font-display text-[6.2cqw] font-semibold leading-[0.95] tracking-[-0.04em] text-[#1d2a24]">{tx("Sit down. Stay a while.")}</p>
@@ -74,7 +75,7 @@ const SITES: readonly Site[] = [
     accent: { label: "Contact", className: "bg-[#efe9df] text-[#5b4630]" },
     prompt: "Build a portfolio site for my architecture studio.",
     wash: "bg-gradient-to-t from-black/55 via-black/10 to-transparent",
-    hero: (
+    hero: () => (
       <div className="absolute bottom-[19%] left-[6%] max-w-[70%] text-white">
         <p className="text-[1.8cqw] font-medium uppercase tracking-[0.18em] text-white/80">{tx("Residential · 2026")}</p>
         <p className="mt-[1.2cqw] font-display text-[7.6cqw] font-medium leading-[0.98] tracking-[-0.035em]">{tx("Houses that hold")}<br />{tx("the evening light.")}</p>
@@ -90,7 +91,7 @@ const SITES: readonly Site[] = [
     accent: { label: "Order ahead", className: "bg-[#f6e7da] text-[#7a3e17]" },
     prompt: "Set up my café's site with online ordering and a fast checkout.",
     wash: "bg-gradient-to-r from-black/60 via-black/25 to-transparent",
-    hero: (
+    hero: () => (
       <div className="absolute left-[6%] top-[22%] max-w-[72%] text-white">
         <p className="font-display text-[8.8cqw] font-semibold italic leading-[0.92] tracking-[-0.04em]">{tx("Slow coffee,")}<br />{tx("fast mornings.")}</p>
         <p className="mt-[2cqw] text-[1.9cqw] text-white/80">{tx("Open 7am · Roasted in-house")}</p>
@@ -315,7 +316,7 @@ function SiteCard({
         </span>
       </div>
 
-      {tx(site.hero)}
+      {site.hero()}
 
       {/* Depth: cards further back wash out toward the page. */}
       <div

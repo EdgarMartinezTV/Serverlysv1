@@ -7,6 +7,7 @@ import { CurrentYear } from "./current-year";
 import { SocialIcon } from "./social-icon";
 import { CookieSettingsLink } from "@/components/consent/cookie-settings-link";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * Site footer.
@@ -119,7 +120,7 @@ export function SiteFooter() {
                   return (
                     <li key={link.label}>
                       {target.mode === "link" ? (
-                        <Link href={target.href} className={LINK}>
+                        <Link href={lh(target.href)} className={LINK}>
                           {tx(label)}
                         </Link>
                       ) : (
@@ -145,7 +146,7 @@ export function SiteFooter() {
               {socialLinks.map((social) => (
                 <li key={social.label}>
                   <a
-                    href={social.href}
+                    href={lh(social.href)}
                     target="_blank"
                     rel="noopener noreferrer me"
                     className="inline-flex size-11 items-center justify-center rounded-md text-fg transition-colors duration-fast hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:size-10 [&_svg]:size-6"
@@ -183,7 +184,7 @@ export function SiteFooter() {
                 return (
                   <li key={link.label}>
                     {target.mode === "link" ? (
-                      <Link href={target.href} className={LINK}>
+                      <Link href={lh(target.href)} className={LINK}>
                         <span className="relative">
                           {tx(link.label)}
                           <span aria-hidden="true" className={UNDERLINE} />
@@ -211,10 +212,10 @@ export function SiteFooter() {
             © <CurrentYear buildYear={tx(year)} /> {tx(company.legalName)}{tx(". All rights reserved. Domain registrations are subject to the policies of ICANN and the relevant registry.")}</p>
           {/* min-h-6: 24px tap targets (WCAG 2.5.8); both links sit alone on their line. */}
           <p className="flex flex-wrap items-center gap-x-4 lg:shrink-0">
-            <a href={company.phoneHref} className="tabular inline-flex min-h-6 items-center transition-colors hover:text-primary">
+            <a href={lh(company.phoneHref)} className="tabular inline-flex min-h-6 items-center transition-colors hover:text-primary">
               {tx(company.phone)}
             </a>
-            <a href={`mailto:${company.email}`} className="inline-flex min-h-6 items-center transition-colors hover:text-primary">
+            <a href={lh(`mailto:${company.email}`)} className="inline-flex min-h-6 items-center transition-colors hover:text-primary">
               {tx(emailDisplay)}
             </a>
           </p>

@@ -19,6 +19,7 @@ import {
   Speed,
 } from "./_components/sections";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 const PATH = "/wordpress-hosting";
 const DESCRIPTION =
@@ -84,7 +85,7 @@ export default function WordPressHostingPage() {
       <Banner
         title={tx("Launch WordPress today")}
         body={tx("Try Serverlys WordPress hosting risk-free. If it is not right, tell us within 30 days for a full refund.")}
-        href="#plans"
+        href={lh("#plans")}
       />
       <PageBreadcrumbs trail={tx(breadcrumbTrail(PATH))} />
     </>

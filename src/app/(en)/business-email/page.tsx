@@ -15,6 +15,7 @@ import { HeroShowcase } from "./_components/hero-showcase";
 import { StatsRoll } from "./_components/stats-roll";
 import { IncludedPanel, PlansShowcase } from "./_components/plans-showcase";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * /business-email — laid out section for section after Hostinger's business
@@ -172,7 +173,7 @@ export default function BusinessEmailPage() {
               ))}
             </ul>
             <a
-              href={plansHref}
+              href={lh(plansHref)}
               className="mt-8 inline-flex h-12 items-center rounded-md bg-primary px-8 text-body font-semibold text-white transition-colors hover:bg-primary-hover"
             >{tx("Choose plan")}</a>
             <p className="mt-4 text-small text-fg-secondary">{tx("From ")}<span className="font-semibold text-fg">${tx(PLANS[0].price)}{tx("/mo")}</span>{tx(". One-time $")}{tx(SETUP_FEE)}{tx(" setup.")}</p>
@@ -281,7 +282,7 @@ export default function BusinessEmailPage() {
           <p className="mx-auto mt-4 max-w-[560px] text-body-lg text-fg-secondary">{tx("One mailbox at your own domain, in the browser, on the desktop and in your pocket, without changing how you work.")}</p>
           <AppsCards />
           <a
-            href={plansHref}
+            href={lh(plansHref)}
             className="mt-12 inline-flex h-12 items-center rounded-md bg-primary px-8 text-body font-semibold text-white transition-colors hover:bg-primary-hover"
           >{tx("Choose plan")}</a>
         </div>
@@ -307,7 +308,7 @@ export default function BusinessEmailPage() {
           >{tx("Bring your inbox with you")}</h2>
           <p className="mt-6 max-w-[440px] text-body text-white/85">{tx("Moving from another provider? When your site moves to Serverlys, your mailboxes move with it as part of the free migration, staged first and switched over when you say.")}</p>
           <Link
-            href="/migrations"
+            href={lh("/migrations")}
             className="mt-8 inline-flex h-12 items-center rounded-md bg-white px-7 text-body font-semibold text-primary transition-colors hover:bg-white/90"
           >{tx("Migrate mailbox")}</Link>
         </div>
@@ -346,11 +347,11 @@ export default function BusinessEmailPage() {
             </ol>
             <div className="mt-9 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
               <Link
-                href="/domain-name"
+                href={lh("/domain-name")}
                 className="inline-flex h-12 items-center rounded-xl bg-primary px-7 text-body font-semibold text-white shadow-[0_10px_30px_-10px_rgb(0_0_255/0.7)] transition-colors hover:bg-primary-hover"
               >{tx("Find a domain")}</Link>
               <a
-                href={plansHref}
+                href={lh(plansHref)}
                 className="inline-flex h-12 items-center rounded-xl px-6 text-body font-semibold text-primary ring-1 ring-inset ring-brand-200 transition-colors hover:bg-brand-50"
               >{tx("See email plans")}</a>
             </div>
@@ -422,7 +423,7 @@ export default function BusinessEmailPage() {
           >{tx("Start today")}</h2>
           <p className="mt-4 max-w-[460px] text-body text-white/85">{tx("Get your business email at your own domain up and running, with real people on support.")}</p>
           <a
-            href={plansHref}
+            href={lh(plansHref)}
             className="mt-8 inline-flex h-12 items-center rounded-md bg-white px-8 text-body font-semibold text-primary transition-colors hover:bg-white/90"
           >{tx("Choose plan")}</a>
         </div>

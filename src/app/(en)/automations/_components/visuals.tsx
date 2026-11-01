@@ -133,9 +133,7 @@ export function IntegrateArt({ className }: { className?: string }) {
         <circle cx="8" cy="13" r="1.5" className="fill-white stroke-none" />
         <circle cx="18" cy="13" r="1.5" className="fill-white stroke-none" />
       </g>
-      <text x="250" y="80" className="fill-fg-on-dark text-[18px] font-semibold">
-        AI Agent
-      </text>
+      <text x="250" y="80" className="fill-fg-on-dark text-[18px] font-semibold">{tx("AI Agent")}</text>
 
       <path d="M428 72h34" className="stroke-line-on-dark" strokeWidth="1.5" />
       <rect x="462" y="46" width="52" height="52" rx="14" className="fill-none stroke-line-on-dark" strokeWidth="1.5" />
@@ -157,10 +155,10 @@ export function IntegrateArt({ className }: { className?: string }) {
               strokeWidth={active ? 3 : 1.5}
             />
             <text x={cx} y={308} textAnchor="middle" className={cn("text-[20px] font-bold", active ? "fill-brand-600" : "fill-fg-on-dark")}>
-              {mono}
+              {tx(mono)}
             </text>
             <text x={cx} y={366} textAnchor="middle" className={cn("text-[14px]", active ? "fill-fg-on-dark font-semibold" : "fill-fg-on-dark-muted")}>
-              {name}
+              {tx(name)}
             </text>
           </g>
         );
@@ -205,14 +203,14 @@ export function TemplatesArt({ className }: { className?: string }) {
             />
             <rect x="52" y={y + 18} width="44" height="44" rx="10" className={on ? "fill-white" : "fill-surface-dark-active"} />
             <g className={on ? "text-error-fill" : "text-fg-on-dark-muted"}>
-              <NodeGlyph x={60} y={y + 30} scale={1.15} />
+              <NodeGlyph x={60} y={tx(y + 30)} scale={1.15} />
             </g>
             <text x="116" y={y + 48} className="fill-fg-on-dark text-[21px] font-semibold">
-              {label}
+              {tx(label)}
             </text>
             <rect x="388" y={y + 26} width="84" height="28" rx="14" className={on ? "fill-success-fill/20" : "fill-surface-dark-active"} />
             <text x="430" y={y + 45} textAnchor="middle" className={cn("text-[13px] font-semibold", on ? "fill-success-fill" : "fill-fg-on-dark-muted")}>
-              {on ? "Active" : "Ready"}
+              {on ? tx("Active") : tx("Ready")}
             </text>
           </g>
         );
@@ -228,16 +226,14 @@ export function TemplatesArt({ className }: { className?: string }) {
       </Node>
       <path d="M222 464h44" className="stroke-line-on-dark" strokeWidth="1.5" />
       <Node x={266} y={430} w={200} h={68}>
-        <text x="300" y="470" className="fill-fg-on-dark-secondary text-[17px]">
-          AI Agent
-        </text>
+        <text x="300" y="470" className="fill-fg-on-dark-secondary text-[17px]">{tx("AI Agent")}</text>
       </Node>
       <path d="M330 498v48h-60v36M330 546h66v36" className="stroke-line-on-dark" strokeWidth="1.5" fill="none" />
       <circle cx="270" cy="608" r="26" className="fill-surface-dark stroke-line-on-dark" strokeWidth="1.5" />
       <circle cx="396" cy="608" r="26" className="fill-surface-dark stroke-line-on-dark" strokeWidth="1.5" />
-      <text x="270" y="613" textAnchor="middle" className="fill-fg-on-dark-secondary text-[13px] font-semibold">CRM</text>
-      <text x="270" y="660" textAnchor="middle" className="fill-fg-on-dark-muted text-[12px]">New contact</text>
-      <text x="396" y="660" textAnchor="middle" className="fill-fg-on-dark-muted text-[12px]">Job sheet</text>
+      <text x="270" y="613" textAnchor="middle" className="fill-fg-on-dark-secondary text-[13px] font-semibold">{tx("CRM")}</text>
+      <text x="270" y="660" textAnchor="middle" className="fill-fg-on-dark-muted text-[12px]">{tx("New contact")}</text>
+      <text x="396" y="660" textAnchor="middle" className="fill-fg-on-dark-muted text-[12px]">{tx("Job sheet")}</text>
       <g transform="translate(380 594)" className="stroke-fg-on-dark-muted" fill="none" strokeWidth="1.8">
         <ellipse cx="16" cy="6" rx="11" ry="4" />
         <path d="M5 6v14c0 2.2 4.9 4 11 4s11-1.8 11-4V6" />
@@ -263,12 +259,8 @@ export function RunsArt({ className }: { className?: string }) {
       <rect x="46" y="38" width="270" height="30" rx="12" className="fill-surface-dark-active/70" />
 
       <rect x="30" y="50" width="302" height="228" rx="14" className="fill-surface-dark stroke-line-on-dark" strokeWidth="1.5" />
-      <text x="50" y="82" className="fill-fg-on-dark text-[14px] font-semibold">
-        Enquiry handling
-      </text>
-      <text x="228" y="82" className="fill-success-fill text-[12px] font-semibold">
-        Active
-      </text>
+      <text x="50" y="82" className="fill-fg-on-dark text-[14px] font-semibold">{tx("Enquiry handling")}</text>
+      <text x="228" y="82" className="fill-success-fill text-[12px] font-semibold">{tx("Active")}</text>
       <rect x="276" y="68" width="38" height="20" rx="10" className="fill-success-fill" />
       <circle cx="305" cy="78" r="7" className="fill-white" />
 
@@ -276,13 +268,11 @@ export function RunsArt({ className }: { className?: string }) {
         <g key={id} opacity={1 - i * 0.16}>
           <path d={`M50 ${104 + i * 32}v18`} className="stroke-success-fill" strokeWidth="2" />
           <text x="60" y={`${119 + i * 32}`} className="fill-fg-on-dark-secondary text-ui">
-            {name}
+            {tx(name)}
           </text>
-          <text x="176" y={`${119 + i * 32}`} className="fill-fg-on-dark-secondary text-ui">
-            Success
-          </text>
+          <text x="176" y={`${119 + i * 32}`} className="fill-fg-on-dark-secondary text-ui">{tx("Success")}</text>
           <text x="262" y={`${119 + i * 32}`} className="fill-fg-on-dark-muted text-ui">
-            {id}
+            {tx(id)}
           </text>
         </g>
       ))}
@@ -307,7 +297,7 @@ export function ValueArt({ className }: { className?: string }) {
             strokeWidth="1.5"
           />
           <g className="text-fg-on-dark">
-            <NodeGlyph x={78} y={76 + i * 82} scale={1.2} />
+            <NodeGlyph x={78} y={tx(76 + i * 82)} scale={1.2} />
           </g>
           {i === 1 ? (
             <>
@@ -349,9 +339,7 @@ export function CommunityArt({ className }: { className?: string }) {
       <g transform="translate(58 88)" className="stroke-brand-500" fill="none" strokeWidth="1.8" strokeLinejoin="round">
         <path d="M2 4h10l3 4h15a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" />
       </g>
-      <text x="112" y="110" className="fill-fg-on-dark text-[18px] font-semibold">
-        Quote follow-up
-      </text>
+      <text x="112" y="110" className="fill-fg-on-dark text-[18px] font-semibold">{tx("Quote follow-up")}</text>
       <Cursor x={280} y={118} />
 
       {tiles.map((kind, i) => (
@@ -365,9 +353,9 @@ export function CommunityArt({ className }: { className?: string }) {
             className="fill-surface-dark stroke-line-on-dark"
             strokeWidth="1.5"
           />
-          <TileMark kind={kind} cx={379 + i * 124} cy={96} />
+          <TileMark kind={kind} cx={tx(379 + i * 124)} cy={96} />
           <text x={379 + i * 124} y={134} textAnchor="middle" className="fill-fg-on-dark-muted text-[13px]">
-            {names[i]}
+            {tx(names[i])}
           </text>
         </g>
       ))}
@@ -437,14 +425,10 @@ export function RunLogArt({ className }: { className?: string }) {
         strokeWidth="1.5"
       />
 
-      <text x="52" y="72" className="fill-fg-on-dark text-[17px] font-semibold">
-        Enquiry handling
-      </text>
+      <text x="52" y="72" className="fill-fg-on-dark text-[17px] font-semibold">{tx("Enquiry handling")}</text>
       <rect x="446" y="54" width="104" height="26" rx="13" className="fill-success-fill/15" />
       <circle cx="466" cy="67" r="4" className="fill-success-fill" />
-      <text x="478" y="72" className="fill-success-fill text-[13px] font-semibold">
-        Running
-      </text>
+      <text x="478" y="72" className="fill-success-fill text-[13px] font-semibold">{tx("Running")}</text>
 
       <path d="M52 96h496" className="stroke-line-on-dark" strokeWidth="1" />
 
@@ -454,7 +438,7 @@ export function RunLogArt({ className }: { className?: string }) {
         return (
           <g key={`${r.t}-${i}`}>
             <text x="52" y={y} className="fill-fg-on-dark-muted text-[13px]">
-              {r.t}
+              {tx(r.t)}
             </text>
             <path
               d={`M104 ${y - 12}v16`}
@@ -462,7 +446,7 @@ export function RunLogArt({ className }: { className?: string }) {
               strokeWidth="2.5"
             />
             <text x="118" y={y} className="fill-fg-on-dark text-[14px]">
-              {r.label}
+              {tx(r.label)}
             </text>
             <text
               x="548"
@@ -470,7 +454,7 @@ export function RunLogArt({ className }: { className?: string }) {
               y={y}
               className={failed ? "fill-warning-fill text-[13px]" : "fill-fg-on-dark-muted text-[13px]"}
             >
-              {failed ? "retried" : "done"}
+              {failed ? tx("retried") : tx("done")}
             </text>
           </g>
         );
@@ -507,9 +491,7 @@ export function ConversationArt({ className }: { className?: string }) {
       <g transform="translate(126 104)" className="stroke-fg-on-dark" fill="none" strokeWidth="1.8" strokeLinecap="round">
         <path d="M2 10 12 2M2 10l10 8M16 2l6 8-6 8" />
       </g>
-      <text x="160" y="124" className="fill-fg-on-dark text-[22px] font-semibold">
-        New enquiry
-      </text>
+      <text x="160" y="124" className="fill-fg-on-dark text-[22px] font-semibold">{tx("New enquiry")}</text>
 
       {/* Request. */}
       <rect x="126" y="166" width="42" height="42" rx="11" className="fill-surface-dark" />
@@ -517,35 +499,23 @@ export function ConversationArt({ className }: { className?: string }) {
         <circle cx="8" cy="5" r="3.4" />
         <path d="M1.5 16c1-3.4 3.6-5 6.5-5s5.5 1.6 6.5 5" />
       </g>
-      <text x="186" y="194" className="fill-fg-on-dark text-[15px]">
-        Do you cover Coral Gables on Friday?
-      </text>
+      <text x="186" y="194" className="fill-fg-on-dark text-[15px]">{tx("Do you cover Coral Gables on Friday?")}</text>
 
       {/* Two replies, the second confirmed. */}
       <rect x="126" y="236" width="42" height="42" rx="11" className="fill-brand-500" />
       <AgentGlyph x={139} y={249} />
-      <text x="186" y="256" className="fill-fg-on-dark text-[15px]">
-        We do — Friday has a 9am and a
-      </text>
-      <text x="186" y="282" className="fill-fg-on-dark text-[15px]">
-        2pm free. Can I take a name and
-      </text>
-      <text x="186" y="308" className="fill-fg-on-dark text-[15px]">
-        a number to hold one?
-      </text>
+      <text x="186" y="256" className="fill-fg-on-dark text-[15px]">{tx("We do — Friday has a 9am and a")}</text>
+      <text x="186" y="282" className="fill-fg-on-dark text-[15px]">{tx("2pm free. Can I take a name and")}</text>
+      <text x="186" y="308" className="fill-fg-on-dark text-[15px]">{tx("a number to hold one?")}</text>
 
       <rect x="114" y="340" width="388" height="76" rx="12" className="fill-brand-600/35 stroke-brand-500" strokeWidth="1.3" />
       <rect x="126" y="358" width="42" height="42" rx="11" className="fill-brand-500" />
       <AgentGlyph x={139} y={371} />
-      <text x="186" y="386" className="fill-fg-on-dark text-[15px]">
-        Booked · record created · you were emailed
-      </text>
+      <text x="186" y="386" className="fill-fg-on-dark text-[15px]">{tx("Booked · record created · you were emailed")}</text>
 
       {/* Composer. */}
       <rect x="114" y="442" width="388" height="72" rx="12" className="fill-none stroke-line-on-dark" strokeWidth="1.4" />
-      <text x="138" y="484" className="fill-fg-on-dark-muted text-[15px]">
-        Type a message
-      </text>
+      <text x="138" y="484" className="fill-fg-on-dark-muted text-[15px]">{tx("Type a message")}</text>
       <rect x="438" y="458" width="42" height="40" rx="10" className="fill-surface-dark" />
       <path d="M450 470l20 8-20 8 4-8z" className="fill-fg-on-dark-muted" />
     </svg>
@@ -576,13 +546,9 @@ export function TutorialArt({ kind, className }: { kind: string; className?: str
           <text x="30" y="58" className="fill-brand-700 text-[26px] font-semibold">
             S
           </text>
-          <text x="82" y="48" className="fill-fg-on-dark text-[20px] font-semibold">
-            Automation
-          </text>
+          <text x="82" y="48" className="fill-fg-on-dark text-[20px] font-semibold">{tx("Automation")}</text>
           <rect x="82" y="60" width="132" height="30" rx="4" className="fill-primary" />
-          <text x="90" y="83" className="fill-white text-[20px] font-semibold">
-            Ideas
-          </text>
+          <text x="90" y="83" className="fill-white text-[20px] font-semibold">{tx("Ideas")}</text>
           <path d="M104 100v18" className="stroke-fg-on-dark" strokeWidth="2" markerEnd="" />
           <path d="M98 112l6 8 6-8" className="fill-none stroke-fg-on-dark" strokeWidth="2" strokeLinecap="round" />
           <g className="text-error-fill">
@@ -596,26 +562,22 @@ export function TutorialArt({ kind, className }: { kind: string; className?: str
 
       {kind === "api" && (
         <>
-          <text x="24" y="46" className="fill-fg-on-dark text-[23px] font-semibold">
-            n8n + Serverlys API
-          </text>
+          <text x="24" y="46" className="fill-fg-on-dark text-[23px] font-semibold">{tx("n8n + Serverlys API")}</text>
           <rect x="44" y="66" width="270" height="120" rx="8" className="fill-surface-dark stroke-line-on-dark" strokeWidth="1.4" />
           <rect x="44" y="66" width="34" height="120" rx="8" className="fill-surface-dark-active" />
-          <text x="150" y="92" className="fill-fg-on-dark text-[13px] font-semibold">
-            Workflows
-          </text>
-          <text x="92" y="112" className="fill-fg-on-dark text-[11px]">Enquiry → record</text>
+          <text x="150" y="92" className="fill-fg-on-dark text-[13px] font-semibold">{tx("Workflows")}</text>
+          <text x="92" y="112" className="fill-fg-on-dark text-[11px]">{tx("Enquiry → record")}</text>
           <rect x="248" y="102" width="52" height="14" rx="7" className="fill-success-fill/25" />
-          <text x="257" y="113" className="fill-success-fill text-[9px] font-semibold">Active</text>
-          <text x="92" y="131" className="fill-fg-on-dark text-[11px]">Booking → calendar</text>
+          <text x="257" y="113" className="fill-success-fill text-[9px] font-semibold">{tx("Active")}</text>
+          <text x="92" y="131" className="fill-fg-on-dark text-[11px]">{tx("Booking → calendar")}</text>
           <rect x="248" y="121" width="52" height="14" rx="7" className="fill-success-fill/25" />
-          <text x="257" y="132" className="fill-success-fill text-[9px] font-semibold">Active</text>
-          <text x="92" y="150" className="fill-fg-on-dark text-[11px]">Invoice reminder</text>
+          <text x="257" y="132" className="fill-success-fill text-[9px] font-semibold">{tx("Active")}</text>
+          <text x="92" y="150" className="fill-fg-on-dark text-[11px]">{tx("Invoice reminder")}</text>
           <rect x="248" y="140" width="52" height="14" rx="7" className="fill-success-fill/25" />
-          <text x="257" y="151" className="fill-success-fill text-[9px] font-semibold">Active</text>
-          <text x="92" y="169" className="fill-fg-on-dark text-[11px]">Review request</text>
+          <text x="257" y="151" className="fill-success-fill text-[9px] font-semibold">{tx("Active")}</text>
+          <text x="92" y="169" className="fill-fg-on-dark text-[11px]">{tx("Review request")}</text>
           <rect x="248" y="159" width="52" height="14" rx="7" className="fill-line-on-dark" />
-          <text x="257" y="170" className="fill-fg-on-dark-muted text-[9px] font-semibold">Paused</text>
+          <text x="257" y="170" className="fill-fg-on-dark-muted text-[9px] font-semibold">{tx("Paused")}</text>
         </>
       )}
 
@@ -630,13 +592,9 @@ export function TutorialArt({ kind, className }: { kind: string; className?: str
           <text x="96" y="96" className="fill-fg-on-dark text-[24px] font-semibold">
             +
           </text>
-          <text x="60" y="132" className="fill-fg-on-dark text-[15px]">
-            Model Context Protocol
-          </text>
+          <text x="60" y="132" className="fill-fg-on-dark text-[15px]">{tx("Model Context Protocol")}</text>
           <rect x="56" y="146" width="174" height="30" rx="4" className="fill-primary" />
-          <text x="64" y="169" className="fill-white text-[19px] font-semibold">
-            Automation
-          </text>
+          <text x="64" y="169" className="fill-white text-[19px] font-semibold">{tx("Automation")}</text>
         </>
       )}
     </svg>

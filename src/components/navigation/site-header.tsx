@@ -16,6 +16,7 @@ import { AssistantOpenButton } from "@/components/assistant/assistant-open-butto
 import { Chevron } from "./nav-icons";
 import { cn } from "@/lib/utils";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * Site header.
@@ -266,7 +267,7 @@ export function SiteHeader() {
                 return (
                   <Link
                     key={item.label}
-                    href={target.href}
+                    href={lh(target.href)}
                     data-nav-link={item.label}
                     aria-current={
                       isActivePath(item.href, pathname) ? "page" : undefined

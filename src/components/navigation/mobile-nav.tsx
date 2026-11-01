@@ -18,6 +18,10 @@ import { Wordmark } from "@/components/layout/wordmark";
 import { NavIcon, Chevron, ArrowUpRight } from "./nav-icons";
 import { cn } from "@/lib/utils";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
+import { isSpanish } from "@/i18n/t";
+import { twinOf } from "@/i18n/paths";
+import { syncWhmcsLanguage } from "./language-selector";
 
 /**
  * Mobile navigation.
@@ -49,6 +53,8 @@ export function MobileNav({
   const panelRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
+  const spanish = isSpanish();
+  const twin = twinOf(pathname || "/");
 
   // Collapse sections on navigation — adjusted during render, not in an
   // effect. Closing the drawer itself is SiteHeader's job: it owns `open`.
@@ -193,7 +199,7 @@ export function MobileNav({
                 return (
                   <div key={item.label} className={cn("border-b border-line", i > 0 && "pt-2")}>
                     <Link
-                      href={target.href}
+                      href={lh(target.href)}
                       aria-current={active ? "page" : undefined}
                       className={cn(
                         "flex min-h-16 items-center text-[18px] leading-6",
@@ -236,19 +242,32 @@ export function MobileNav({
                 put it somewhere the visitor cannot see it.
               */}
               <AssistantOpenButton block onOpen={() => onOpenChange(false)} />
-              <Button href={billing.login} variant="secondary" size="lg" block>{tx("Client login")}</Button>
+              <Button href={lh(billing.login)} variant="secondary" size="lg" block>{tx("Client login")}</Button>
             </div>
 
             <div className="mt-6 flex items-center justify-between border-t border-line pt-5">
-              <span className="flex items-center gap-2 text-small text-fg-secondary">
-                <span
-                  aria-hidden="true"
-                  className="flex h-4 w-4 items-center justify-center rounded-full text-micro font-bold text-fg ring-1 ring-inset ring-line-strong"
-                >
-                  E
-                </span>{tx("English")}</span>
+              <span className="flex items-center gap-1 text-small">
+                {(["en", "es"] as const).map((code) =>
+                  code === (spanish ? "es" : "en") ? (
+                    <span key={code} aria-current="true" className="rounded-md bg-canvas-secondary px-2.5 py-1.5 font-semibold text-fg">
+                      {code === "en" ? tx("English") : tx("Español")}
+                    </span>
+                  ) : (
+                    <a
+                      key={code}
+                      href={twin ? twin[code] : code === "es" ? "/es" : "/"}
+                      hrefLang={code}
+                      lang={code}
+                      onClick={() => syncWhmcsLanguage(code === "es" ? "spanish" : "english")}
+                      className="rounded-md px-2.5 py-1.5 text-fg-secondary underline underline-offset-4"
+                    >
+                      {code === "en" ? tx("English") : tx("Español")}
+                    </a>
+                  ),
+                )}
+              </span>
               <a
-                href={company.phoneHref}
+                href={lh(company.phoneHref)}
                 className="tabular text-small text-fg-secondary underline underline-offset-4"
               >
                 {tx(company.phone)}
@@ -349,11 +368,11 @@ function MobilePromo({ promo }: { promo: MegaCategory["promo"] }) {
       <p className="mt-3 text-[20px] font-medium leading-[26px]">{tx(promo.title)}</p>
       <p className="mt-2 text-small text-white/85">{tx(promo.body)}</p>
       {promo.cta.external ? (
-        <a href={promo.cta.href} target="_blank" rel="noopener noreferrer" className={cls}>
+        <a href={lh(promo.cta.href)} target="_blank" rel="noopener noreferrer" className={cls}>
           {tx(promo.cta.label)}
         </a>
       ) : (
-        <Link href={target.href} className={cls}>
+        <Link href={lh(target.href)} className={cls}>
           {tx(promo.cta.label)}
         </Link>
       )}
@@ -402,13 +421,13 @@ function MobileItem({ item, pathname }: { item: MegaItem; pathname: string }) {
   if (!interactive || item.linkable === false) return <span>{tx(inner)}</span>;
   if (item.external) {
     return (
-      <a href={item.href} target="_blank" rel="noopener noreferrer">
+      <a href={lh(item.href)} target="_blank" rel="noopener noreferrer">
         {tx(inner)}
       </a>
     );
   }
   return (
-    <Link href={target.href} aria-current={active ? "page" : undefined}>
+    <Link href={lh(target.href)} aria-current={active ? "page" : undefined}>
       {tx(inner)}
     </Link>
   );

@@ -3,6 +3,7 @@ import { Reveal } from "@/components/animations/reveal";
 import { stageById } from "./stages";
 import { MockPhoto } from "@/components/ui/mock-photo";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 const stage = stageById("launch");
 
@@ -273,7 +274,7 @@ export function StageLaunch() {
               className="tools-card w-[min(305px,78vw)] shrink-0 snap-start lg:w-auto lg:min-w-0 lg:shrink lg:grow lg:basis-0"
             >
               <a
-                href={tool.href}
+                href={lh(tool.href)}
                 className="group block rounded-[16px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
               >
                 <div className="relative aspect-[305/400] w-full overflow-hidden rounded-[16px] bg-brand-100 lg:aspect-auto lg:h-[400px]">

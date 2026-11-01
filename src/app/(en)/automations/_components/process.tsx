@@ -2,6 +2,7 @@ import { CtaButton, Grid, Headline } from "@/components/ref/kit";
 import { billing } from "@/data/company";
 import { PROCESS } from "../_content";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * "How an automation gets built".
@@ -55,7 +56,7 @@ export function Process() {
 
 
         <div className="mt-10 flex justify-center">
-          <CtaButton href={billing.sales} tone="on-dark">
+          <CtaButton href={lh(billing.sales)} tone="on-dark">
             {tx(PROCESS.cta)}
           </CtaButton>
         </div>

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight, CtaButton, Grid, PillLabel } from "@/components/ref/kit";
 import { BLACK_FRIDAY, formatPrice, groupById, lowestRate, quote } from "@/data/pricing";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * The reference's `homepage-agents-hero` bento: one wide brand card spanning
@@ -51,7 +52,7 @@ export function PromoBento() {
               >{tx("Both prices, before you pay")}</h2>
               <p className="mt-2 max-w-[440px] text-small text-fg-on-brand-muted">{tx("Every plan shows the rate it renews at next to the rate you start on, with the same tools and free migration.")}</p>
               <div className="mt-6">
-                <CtaButton href="/pricing" tone="light">{tx("Compare all plans")}</CtaButton>
+                <CtaButton href={lh("/pricing")} tone="light">{tx("Compare all plans")}</CtaButton>
               </div>
             </div>
             <div className="flex gap-8 text-white md:flex-col md:gap-4 md:text-right">
@@ -81,7 +82,7 @@ export function PromoBento() {
             {SIDE.map((s, i) => (
               <Link
                 key={s.title}
-                href={s.href}
+                href={lh(s.href)}
                 className="group relative flex flex-1 flex-col overflow-hidden rounded-2xl bg-brand-50 p-6 transition-colors duration-fast hover:bg-brand-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
                 <span className="flex items-start justify-between gap-4">

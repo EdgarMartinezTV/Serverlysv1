@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 
 /**
@@ -45,7 +46,7 @@ export function PillNav({ items }: { items: readonly { id: string; label: string
         {items.map((i) => (
           <li key={i.id} className="shrink-0">
             <a
-              href={`#${i.id}`}
+              href={lh(`#${i.id}`)}
               data-pill-nav={i.id}
               aria-current={active === i.id ? "true" : undefined}
               className={cn(

@@ -21,6 +21,7 @@ import { Reveal } from "@/components/animations/reveal";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { breadcrumbTrail } from "@/data/routes";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * About — 2026-10-13, rebuilt to the retellai.com/about-us layout, section for
@@ -436,8 +437,8 @@ function Standard() {
                 {tx(r.value)}
               </span>
               <Link
-                href={r.href}
-                aria-label={`Check it: ${r.label}`}
+                href={lh(r.href)}
+                aria-label={`${tx("Check it:")} ${tx(r.label)}`}
                 className={cn(
                   "flex size-7 items-center justify-center rounded-sm text-[12px] font-bold text-white",
                   r.ok ? "bg-[#0b1530] hover:bg-[#3b5bdb]" : "bg-[#e03131]",
@@ -585,7 +586,7 @@ function Products() {
           <ul className="mt-12 grid gap-x-1 sm:grid-cols-2 lg:grid-cols-3">
             {PRODUCTS.map((p) => (
               <li key={p.name} className="border-b border-[#e3e4e8]">
-                <a href={p.href} className="group flex items-center gap-4 py-4">
+                <a href={lh(p.href)} className="group flex items-center gap-4 py-4">
                   <span className="relative size-12 shrink-0 overflow-hidden rounded-sm">
                     <Image
                       src={p.src}
@@ -637,7 +638,7 @@ function TalkToUs() {
         <div className="mt-8 flex flex-wrap justify-center gap-2">
           <ChatButton size="sm">{tx("Ask ConvoAI")}</ChatButton>
           <a
-            href={company.phoneHref}
+            href={lh(company.phoneHref)}
             className="inline-flex h-9 items-center rounded-[4px] bg-[#0b1530] px-3.5 text-[13px] font-semibold text-white hover:bg-[#1b2750]"
           >{tx("Call ")}{tx(company.phone)}
           </a>

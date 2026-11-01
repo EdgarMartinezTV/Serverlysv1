@@ -1,4 +1,5 @@
 import type { NavIconName } from "@/data/navigation";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Navigation icon set.
@@ -118,7 +119,7 @@ export function NavIcon({
       strokeLinejoin="round"
       className={className}
     >
-      {PATHS[name]}
+      {tx(PATHS[name])}
     </svg>
   );
 }

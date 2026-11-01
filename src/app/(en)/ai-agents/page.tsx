@@ -22,6 +22,7 @@ import { canonical, pageMetadata, faqGraph, serviceGraph } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * /ai-agents — the AI hub. Expanded 2026-10-26 from ~620 words into the full
@@ -279,7 +280,7 @@ export default function AiAgentsPage() {
         footnote={
           <>{tx("ConvoAI prices in USD, plus tax. No contracts. Not sure whether you need chat, voice or both?")}{" "}
             <a
-              href={billing.sales}
+              href={lh(billing.sales)}
               className="font-semibold text-primary hover:text-primary-hover"
             >{tx("Ask the team")}</a>
             .

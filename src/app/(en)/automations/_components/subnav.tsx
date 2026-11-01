@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { SUBNAV } from "../_content";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * The reference's floating in-page rail.
@@ -53,7 +54,7 @@ export function SubNav() {
             return (
               <li key={item.id}>
                 <a
-                  href={`#${item.id}`}
+                  href={lh(`#${item.id}`)}
                   aria-current={current ? "true" : undefined}
                   className={cn(
                     "inline-flex h-10 items-center rounded-full px-4 text-[14px] leading-5 font-semibold whitespace-nowrap transition-colors duration-fast focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-on-dark",

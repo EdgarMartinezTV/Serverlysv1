@@ -5,6 +5,7 @@ import { BLACK_FRIDAY, blackFridayActive, groupById, formatPrice, formatSavings,
 import { billing } from "@/data/company";
 import { cn } from "@/lib/utils";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * Pricing band.
@@ -152,7 +153,7 @@ export function PricingBand() {
                   </p>
 
                   <Button
-                    href={orderUrl(cloud, plan)}
+                    href={lh(orderUrl(cloud, plan))}
                     variant={featured ? "primary" : "outline"}
                     size="md"
                     className="relative mt-6 w-full"
@@ -214,12 +215,12 @@ export function PricingBand() {
             <h3 className="text-h4 font-medium text-fg">{tx("Need more from your hosting?")}</h3>
             <p className="mt-1 text-small text-fg-secondary">{tx("Root access and dedicated resources are coming with VPS hosting. Tell us what you need and we will size it.")}</p>
           </div>
-          <Button href="/vps-hosting" variant="outline" size="sm" className="shrink-0 bg-white">{tx("See VPS hosting")}</Button>
+          <Button href={lh("/vps-hosting")} variant="outline" size="sm" className="shrink-0 bg-white">{tx("See VPS hosting")}</Button>
         </div>
 
         <p className="mt-10 text-center text-small text-fg-muted">{tx("All four cloud tiers, at the monthly rate.")}{" "}
           <a
-            href={billing.store("cloud-hosting")}
+            href={lh(billing.store("cloud-hosting"))}
             className="inline-block rounded-sm py-1 font-medium text-primary underline underline-offset-4 hover:text-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >{tx("See every tier")}</a>
           .

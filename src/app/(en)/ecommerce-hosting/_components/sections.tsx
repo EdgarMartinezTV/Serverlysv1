@@ -6,6 +6,7 @@ import { AssistantMark } from "@/components/assistant/assistant-mark";
 import { ConvoAiLogo } from "@/components/layout/convoai-logo";
 import { HERO } from "../_content";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /*
  * Ecommerce hosting sections — 2026-10-03, in the reference's order and
@@ -83,7 +84,7 @@ function StandardHero() {
             </h1>
             <Checks items={["Free domain and store migration", "WooCommerce installed in one click", "Updates, backups and security handled", "Support from a real team"]} />
             <div className="mt-8">
-              <CtaButton href="#pricing" className="w-full sm:w-auto">{tx("Start now")}</CtaButton>
+              <CtaButton href={lh("#pricing")} className="w-full sm:w-auto">{tx("Start now")}</CtaButton>
             </div>
             <p className="mt-4 flex items-center gap-2 text-small text-fg-secondary">
               <ShieldCheck className="size-4 shrink-0" />{tx("30-day money-back guarantee")}</p>
@@ -255,7 +256,7 @@ export function StoreAgent() {
             <h2 id="ecom-agent-heading" className="mt-6 text-h3 font-medium tracking-[-0.02em] text-fg">{tx("A chat agent trained on your own store")}</h2>
             <p className="mt-3 text-body text-fg-secondary">{tx("Shipping, returns, sizing and stock, answered from your own pages day and night. It captures the buyer's details and hands anything it should not attempt to a person.")}</p>
             <div className="mt-7">
-              <CtaButton href="https://convoai.cloud/">{tx("Explore ConvoAI")}</CtaButton>
+              <CtaButton href={lh("https://convoai.cloud/")}>{tx("Explore ConvoAI")}</CtaButton>
             </div>
           </div>
         </div>
@@ -475,7 +476,7 @@ export function DarkBand() {
                 ]}
               />
               <div className="mt-8">
-                <CtaButton href="/migrations" tone="light">{tx("Request a migration")}</CtaButton>
+                <CtaButton href={lh("/migrations")} tone="light">{tx("Request a migration")}</CtaButton>
               </div>
             </div>
           </div>

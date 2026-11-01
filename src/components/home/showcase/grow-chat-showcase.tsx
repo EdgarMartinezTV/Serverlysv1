@@ -248,7 +248,7 @@ export function GrowChatShowcase() {
                       fill="currentColor"
                       style={{ width: u(18), height: u(18) }}
                     >
-                      {icon}
+                      {tx(icon)}
                     </svg>
                   </span>
                 ))}

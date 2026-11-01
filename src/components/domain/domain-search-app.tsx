@@ -54,6 +54,7 @@ import { billing } from "@/data/company";
 import { cn } from "@/lib/utils";
 import { track } from "@/lib/analytics";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 type Phase =
   | { kind: "idle" }
@@ -719,7 +720,7 @@ export function DomainSearchApp({
                 <p className="mt-1.5 text-small text-fg-secondary">{tx("That is unusual rather than expected. The name may use an extension no registry answered for.")}</p>
                 <div className="mt-4 flex flex-col gap-3 sm:flex-row">
                   <Button type="button" variant="secondary" size="md" onClick={() => void run(phase.query, true)}>{tx("Try again")}</Button>
-                  <Button href={`${billing.root}/cart.php?a=add&domain=register`} variant="ghost" size="md">{tx("Search in the cart instead")}</Button>
+                  <Button href={lh(`${billing.root}/cart.php?a=add&domain=register`)} variant="ghost" size="md">{tx("Search in the cart instead")}</Button>
                 </div>
               </div>
             )}
@@ -795,7 +796,7 @@ function ErrorState({ error, retryIn, onRetry }: { error: CheckError; retryIn: n
             {blocked ? tx(`Try again in ${retryIn}s`) : tx("Try again")}
           </Button>
         )}
-        <Button href={`${billing.root}/cart.php?a=add&domain=register`} variant="ghost" size="md">{tx("Search in the cart instead")}</Button>
+        <Button href={lh(`${billing.root}/cart.php?a=add&domain=register`)} variant="ghost" size="md">{tx("Search in the cart instead")}</Button>
       </div>
     </div>
   );
@@ -823,7 +824,7 @@ function Shortlist({ items }: { items: ShortlistItem[] }) {
             <span className="flex shrink-0 items-center gap-3">
               {item.price !== null && <span className="tabular text-small text-fg-secondary">${tx(item.price.toFixed(2))}</span>}
               <a
-                href={`${billing.root}/cart.php?a=add&domain=register&query=${encodeURIComponent(item.domain)}`}
+                href={lh(`${billing.root}/cart.php?a=add&domain=register&query=${encodeURIComponent(item.domain)}`)}
                 className="inline-flex h-11 items-center rounded-full bg-primary px-5 text-small font-semibold text-white transition-colors hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >{tx("Register")}<span className="sr-only"> {tx(item.domain)}</span>
               </a>

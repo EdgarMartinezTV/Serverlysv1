@@ -1,6 +1,7 @@
 import { BANNER } from "../_content";
 import { CtaButton } from "@/components/ref/kit";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * Closing CTA band — full-bleed brand fill, copy inset 80px from the left, and
@@ -45,7 +46,7 @@ export function Banner({
             {tx(body)}
           </p>
           <div className="mt-6">
-            <CtaButton href={href} tone="light">
+            <CtaButton href={lh(href)} tone="light">
               {tx(BANNER.cta)}
             </CtaButton>
           </div>

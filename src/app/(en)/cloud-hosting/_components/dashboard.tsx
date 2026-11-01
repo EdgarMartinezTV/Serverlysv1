@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Grid } from "@/components/ref/kit";
 import { DASHBOARD } from "../_content";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 const SITES = [
   ["northlight.studio", "WordPress", "Online"],
@@ -25,7 +26,7 @@ export function Dashboard() {
             </h2>
             <p className="mt-5 text-body text-fg-secondary">{tx("See security, speed and backups for every site at a glance. Manage client accounts, get alerted the moment something breaks, and tag sites to keep a growing portfolio organised.")}</p>
             <Link
-              href="/site-management"
+              href={lh("/site-management")}
               className="mt-7 inline-flex h-11 items-center rounded-md px-6 text-body font-semibold text-primary ring-1 ring-inset ring-primary transition-colors duration-fast hover:bg-primary-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >{tx("See site management")}</Link>
           </div>

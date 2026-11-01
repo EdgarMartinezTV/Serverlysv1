@@ -2,6 +2,9 @@ import type { MetadataRoute } from "next";
 import { sitemapRoutes } from "@/data/routes";
 import { articles, articleCategories, categorySlug } from "@/data/articles";
 import { canonical } from "@/lib/seo";
+import { ES_PATHS, esPath } from "@/i18n/paths";
+
+const LANG = (path: string) => ({ "en-US": path, "es-US": esPath(path), "x-default": path });
 import { tutorials, tutorialPath } from "@/data/tutorials";
 
 /**
@@ -21,7 +24,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // told Google every page changed on every deploy. Google learns to ignore a
   // sitemap whose lastmod is not trustworthy, and that would cost the articles
   // below, whose dates ARE real. An absent lastmod is honest; a fake one is not.
-  const pages = sitemapRoutes().map((route) => ({
+  // Pages published in both languages (i18n/paths.ts) that the registry does
+  // not already pair: the English entry gains the hreflang set and a Spanish
+  // twin is added beside it.
+  const withSpanish = sitemapRoutes().flatMap((route) =>
+    ES_PATHS.has(route.path) && !route.languages
+      ? [
+          { ...route, languages: LANG(route.path) },
+          { ...route, path: esPath(route.path), languages: LANG(route.path) },
+        ]
+      : [route],
+  );
+  const pages = withSpanish.map((route) => ({
     url: canonical(route.path),
     changeFrequency: route.changeFrequency,
     priority: route.priority,

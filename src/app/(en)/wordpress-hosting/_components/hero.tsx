@@ -3,6 +3,7 @@ import { blackFridayActive } from "@/data/pricing";
 import { BlackFridayProductHero } from "@/components/sections/black-friday-product-hero";
 import { MockPhoto } from "@/components/ui/mock-photo";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * WordPress hero — 2026-10-03 rebuild. Copy left; right, a coded block
@@ -38,7 +39,7 @@ function StandardHero() {
             <h1 id="wp-hero-heading" className="display-lg mt-4 text-fg">{tx("Manage your WordPress website the easy way")}</h1>
             <p className="mt-5 max-w-[520px] text-body text-fg-secondary">{tx("WordPress installed, LiteSpeed tuned for it, updates applied with a backup taken first, and free migration. No server work on your side.")}</p>
             <div className="mt-8">
-              <CtaButton href="#plans" className="w-full sm:w-auto">{tx("Start now")}</CtaButton>
+              <CtaButton href={lh("#plans")} className="w-full sm:w-auto">{tx("Start now")}</CtaButton>
             </div>
             <p className="mt-4 flex items-center gap-2 text-small text-fg-secondary">
               <ShieldCheck className="size-4 shrink-0" />{tx("30-day money-back guarantee")}</p>

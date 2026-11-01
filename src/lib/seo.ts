@@ -4,6 +4,7 @@ import { ogCards, ogKeyFor } from "@/data/og-cards";
 import type { Faq } from "@/data/faqs";
 import { socialLinks } from "@/data/navigation";
 import { publicEnv } from "@/lib/env";
+import { ES_PATHS, esPath } from "@/i18n/paths";
 
 /**
  * SEO / structured data.
@@ -48,6 +49,11 @@ type PageMetaInput = {
  * `title` is used verbatim — the template in the root layout is bypassed so
  * each page controls its full SERP title.
  */
+/** Reciprocal hreflang set for a page published in English and Spanish. */
+export function languagesFor(path: string) {
+  return { "en-US": canonical(path), "es-US": canonical(esPath(path)), "x-default": canonical(path) };
+}
+
 export function pageMetadata({
   title,
   description,
@@ -65,7 +71,7 @@ export function pageMetadata({
   return {
     title: { absolute: title },
     description,
-    alternates: { canonical: url },
+    alternates: { canonical: url, ...(ES_PATHS.has(path) ? { languages: languagesFor(path) } : {}) },
     // A deployment that may not be indexed (staging — see lib/env.ts) says so
     // on every page as well as in robots.txt, so a stray inbound link cannot
     // get a staging URL into the index.

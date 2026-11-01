@@ -4,6 +4,7 @@ import { BlackFridayProductHero } from "@/components/sections/black-friday-produ
 import { HERO } from "../_content";
 import { MockPhoto } from "@/components/ui/mock-photo";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * Cloud hosting hero — 2026-10-03 rebuild.
@@ -59,7 +60,7 @@ function StandardHero() {
               )}
             </p>
             <div className="mt-5">
-              <CtaButton href="#pricing">{tx("View plans")}</CtaButton>
+              <CtaButton href={lh("#pricing")}>{tx("View plans")}</CtaButton>
             </div>
             <p className="mt-4 flex items-center gap-2 text-small text-fg-secondary">
               <ShieldCheck className="size-4 shrink-0" />

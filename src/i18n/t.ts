@@ -30,5 +30,15 @@ export const rscStore: (() => { dict: Dict | null }) | null = IS_RSC ? R.cache((
 export function t<T>(v: T): T {
   if (typeof v !== "string") return v;
   if (IS_RSC) return lookup(rscStore!().dict, v) as T;
+  // use() is not bound by the rules of hooks (it may be called conditionally);
+  // t() is only ever called while rendering.
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   return lookup(R.use(DictContext) as Dict | null, v) as T;
+}
+
+/** Whether the current render is a Spanish (/es) page — Server or browser component. */
+export function isSpanish(): boolean {
+  if (IS_RSC) return rscStore!().dict !== null;
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  return R.use(DictContext) !== null;
 }

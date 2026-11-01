@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { AssistantOpenButton } from "@/components/assistant/assistant-open-button";
 import { useReducedAfterMount } from "./use-reduced";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * "Before you buy" for /business-email: a sticky intro with a help card on
@@ -54,7 +55,7 @@ export function EmailFaq({
             <div className="relative mt-6 flex flex-wrap items-center gap-4">
               <AssistantOpenButton onDark label={tx("Ask ConvoAI")} />
               <a
-                href={`mailto:${supportEmail}`}
+                href={lh(`mailto:${supportEmail}`)}
                 className="inline-block py-2.5 text-small font-semibold text-[#bfd2ff] underline-offset-4 hover:text-white hover:underline"
               >
                 {tx(supportEmail)}

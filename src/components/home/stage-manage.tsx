@@ -3,6 +3,7 @@ import { Reveal } from "@/components/animations/reveal";
 import { Button } from "@/components/ui/button";
 import { stageById } from "./stages";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 const stage = stageById("manage");
 
@@ -137,7 +138,7 @@ export function StageManage() {
               ))}
             </ul>
             <div className="mt-7">
-              <Button href="/managed-hosting" variant="outline" block>{tx("See managed hosting")}</Button>
+              <Button href={lh("/managed-hosting")} variant="outline" block>{tx("See managed hosting")}</Button>
             </div>
           </div>
         </Reveal>

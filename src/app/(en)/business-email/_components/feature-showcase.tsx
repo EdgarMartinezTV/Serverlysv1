@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { useReducedAfterMount } from "./use-reduced";
 import { Avatar, Check, Icon } from "./inbox-showcase";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * The feature tabs, at product-launch quality: a heading, a tab bar whose
@@ -252,7 +253,7 @@ export function FeatureShowcase({ cta }: { cta: { label: string; href: string } 
                 </motion.div>
               </AnimatePresence>
               <a
-                href={cta.href}
+                href={lh(cta.href)}
                 className="group mt-9 inline-flex h-12 w-fit items-center gap-2 rounded-md bg-white px-6 text-body font-semibold text-primary shadow-[0_10px_30px_-10px_rgb(31_85_255/0.8)] transition-colors hover:bg-brand-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               >
                 {tx(cta.label)}

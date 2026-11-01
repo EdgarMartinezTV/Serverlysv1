@@ -4,6 +4,7 @@ import { resolveNavTarget } from "@/data/routes";
 import { NavIcon, ArrowUpRight } from "./nav-icons";
 import { cn } from "@/lib/utils";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * One mega-menu entry: icon, title, optional badge, description.
@@ -107,7 +108,7 @@ export function MegaMenuItem({
   if (item.external) {
     return (
       <a
-        href={item.href}
+        href={lh(item.href)}
         target="_blank"
         rel="noopener noreferrer"
         onClick={onNavigate}
@@ -120,7 +121,7 @@ export function MegaMenuItem({
 
   return (
     <Link
-      href={target.href}
+      href={lh(target.href)}
       onClick={onNavigate}
       className={cn(classes, "hover:bg-ink-50")}
     >

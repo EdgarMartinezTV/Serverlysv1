@@ -3,6 +3,7 @@ import { billing } from "@/data/company";
 import { INTEGRATE } from "../_content";
 import { IntegrateArt } from "./visuals";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * "Connects the tools you already pay for" — the reference's two-column band.
@@ -52,7 +53,7 @@ export function Integrate() {
             </ul>
 
             <div className="mt-8">
-              <CtaButton href={billing.sales} tone="on-dark">
+              <CtaButton href={lh(billing.sales)} tone="on-dark">
                 {tx(INTEGRATE.cta)}
               </CtaButton>
             </div>

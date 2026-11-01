@@ -1,23 +1,54 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Chevron } from "./nav-icons";
 import { cn } from "@/lib/utils";
+import { isSpanish } from "@/i18n/t";
+import { twinOf } from "@/i18n/paths";
+import { publicEnv } from "@/lib/env";
 import { t as tx } from "@/i18n/t";
 
 /**
- * Locale control.
+ * Locale control: English (default) and Spanish (es-419).
  *
- * Serverlys ships one locale today (ARCHITECTURE.md: "No i18n — single
- * locale"). Rather than render a dead control that opens nothing, this is a
- * real disclosure that states plainly what is available. When locales are
- * added, extend LOCALES and wire the hrefs — the markup does not change.
+ * Each option links to the same page in the other language when it exists,
+ * otherwise to that language's home page. Choosing also tells WHMCS (served
+ * under the same origin) to switch the client area/checkout language, so the
+ * cart and emails follow the visitor's choice. English stays the default:
+ * nothing switches without a click.
  */
-const LOCALES = [{ code: "en", label: "English", region: "International" }] as const;
+const LOCALES = [
+  { code: "en", label: "English", region: "International", whmcs: "english" },
+  { code: "es", label: "Español", region: "Latinoamérica", whmcs: "spanish" },
+] as const;
+
+/** Set the WHMCS session language. Same-origin in production; best-effort. */
+export function syncWhmcsLanguage(lang: "english" | "spanish") {
+  try {
+    try {
+      sessionStorage.setItem("sv-whmcs-lang", lang);
+    } catch {
+      /* storage blocked */
+    }
+    void fetch(`${publicEnv.billingOrigin.replace(/\/+$/, "")}/index.php?language=${lang}`, {
+      credentials: "include",
+      mode: "no-cors",
+      cache: "no-store",
+    }).catch(() => {});
+  } catch {
+    /* offline or blocked — WHMCS links on /es pages still carry language=spanish */
+  }
+}
 
 export function LanguageSelector({ onDark = false }: { onDark?: boolean }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const es = isSpanish();
+  const current = es ? "es" : "en";
+  const pathname = usePathname() || "/";
+  const twin = twinOf(pathname);
+  const hrefFor = (code: "en" | "es") => (twin ? twin[code] : code === "es" ? "/es" : "/");
 
   useEffect(() => {
     if (!open) return;
@@ -60,49 +91,64 @@ export function LanguageSelector({ onDark = false }: { onDark?: boolean }) {
           )}
         >
           E
-        </span>{tx("EN")}<Chevron
+        </span>{es ? tx("ES") : tx("EN")}<Chevron
           className={cn(
             "h-[1.125rem] w-[1.125rem] transition-transform",
             open && "rotate-180",
           )}
         />
-        <span className="sr-only">{tx("Change language. Current language: English")}</span>
+        <span className="sr-only">{es ? tx("Cambiar idioma. Idioma actual: español") : tx("Change language. Current language: English")}</span>
       </button>
 
       {open && (
         <div className="absolute right-0 top-full z-20 mt-2 w-60 rounded-xl bg-surface p-2 shadow-e5 ring-1 ring-line">
           <ul>
-            {LOCALES.map((l) => (
-              <li key={l.code}>
-                <span
-                  aria-current="true"
-                  className="flex items-center justify-between gap-3 rounded-lg bg-canvas-secondary px-3 py-2.5"
-                >
+            {LOCALES.map((l) => {
+              const active = l.code === current;
+              const inner = (
+                <>
                   <span>
-                    <span className="block text-small font-medium text-fg">
-                      {tx(l.label)}
-                    </span>
+                    <span className="block text-small font-medium text-fg">{tx(l.label)}</span>
                     <span className="block text-caption text-fg-muted">{tx(l.region)}</span>
                   </span>
-                  <svg
-                    viewBox="0 0 16 16"
-                    aria-hidden="true"
-                    className="h-4 w-4 text-primary"
-                  >
-                    <path
-                      d="m3.5 8.5 3 3 6-7"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.75"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </span>
-              </li>
-            ))}
+                  {active && (
+                    <svg viewBox="0 0 16 16" aria-hidden="true" className="h-4 w-4 text-primary">
+                      <path
+                        d="m3.5 8.5 3 3 6-7"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.75"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  )}
+                </>
+              );
+              return (
+                <li key={l.code}>
+                  {active ? (
+                    <span
+                      aria-current="true"
+                      className="flex items-center justify-between gap-3 rounded-lg bg-canvas-secondary px-3 py-2.5"
+                    >
+                      {tx(inner)}
+                    </span>
+                  ) : (
+                    <a
+                      href={hrefFor(l.code)}
+                      hrefLang={l.code}
+                      lang={l.code}
+                      onClick={() => syncWhmcsLanguage(l.whmcs)}
+                      className="flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 transition-colors hover:bg-canvas-inset"
+                    >
+                      {tx(inner)}
+                    </a>
+                  )}
+                </li>
+              );
+            })}
           </ul>
-          <p className="px-3 pb-1 pt-2.5 text-caption text-fg-muted">{tx("English is the only language we publish in today.")}</p>
         </div>
       )}
     </div>

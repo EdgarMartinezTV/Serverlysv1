@@ -5,6 +5,7 @@ import { CtaButton, Grid, Headline } from "@/components/ref/kit";
 import { cn } from "@/lib/utils";
 import { MockPhoto } from "@/components/ui/mock-photo";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 const MODES = {
   fresh: {
@@ -73,7 +74,7 @@ export function Launch() {
             <h3 className="display-md text-fg">{tx(m.title)}</h3>
             <p className="mt-4 max-w-[480px] text-body text-fg-secondary">{tx(m.body)}</p>
             <div className="mt-7">
-              <CtaButton href={m.cta.href}>{tx(m.cta.label)}</CtaButton>
+              <CtaButton href={lh(m.cta.href)}>{tx(m.cta.label)}</CtaButton>
             </div>
           </div>
           <div

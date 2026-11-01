@@ -2,6 +2,7 @@ import { CtaButton, Grid } from "@/components/ref/kit";
 import { billing } from "@/data/company";
 import { BANNER } from "../_content";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * The closing banner.
@@ -42,7 +43,7 @@ export function Banner() {
             <p className="mt-4 text-[28px] leading-9 font-normal tracking-[-0.14px] text-fg-on-dark lg:text-[36px] lg:leading-[44px] lg:tracking-[-0.18px]">
               {tx(BANNER.title)}
             </p>
-            <CtaButton href={billing.sales} tone="on-dark" className="mt-8">
+            <CtaButton href={lh(billing.sales)} tone="on-dark" className="mt-8">
               {tx(BANNER.cta)}
             </CtaButton>
           </div>

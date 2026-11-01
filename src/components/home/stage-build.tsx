@@ -6,6 +6,7 @@ import { upcomingProducts } from "@/data/products";
 import { StageRow } from "./stage-row";
 import { stageById } from "./stages";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 const stage = stageById("build");
 
@@ -63,7 +64,7 @@ export function StageBuild() {
           {hands.map((product, index) => (
             <Reveal as="li" key={product.href} delay={index * 80}>
               <Link
-                href={product.href}
+                href={lh(product.href)}
                 className="group flex h-full flex-col rounded-2xl bg-brand-50 p-6 transition-colors duration-fast hover:bg-brand-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
                 <span className="flex items-start justify-between gap-4">

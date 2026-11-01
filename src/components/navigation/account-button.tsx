@@ -1,6 +1,7 @@
 import { billing } from "@/data/company";
 import { cn } from "@/lib/utils";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * Account control. Links to the real WHMCS client area — Serverlys does not
@@ -9,7 +10,7 @@ import { t as tx } from "@/i18n/t";
 export function AccountButton({ onDark = false }: { onDark?: boolean }) {
   return (
     <a
-      href={billing.login}
+      href={lh(billing.login)}
       className={cn(
         "inline-flex h-10 w-10 items-center justify-center rounded-full transition-colors duration-fast",
         "focus-visible:outline-2 focus-visible:outline-offset-2",

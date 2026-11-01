@@ -7,6 +7,7 @@ import Image from "next/image";
 import { planGroups, quote } from "@/data/pricing";
 import { cn } from "@/lib/utils";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * Promotional panel — the mega menu's right-hand zone.
@@ -58,7 +59,7 @@ export function MegaMenuPromo({ promo }: { promo: MegaPromo }) {
 
         {isExternal ? (
           <a
-            href={promo.cta.href}
+            href={lh(promo.cta.href)}
             target="_blank"
             rel="noopener noreferrer"
             className="group/promo block rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
@@ -67,7 +68,7 @@ export function MegaMenuPromo({ promo }: { promo: MegaPromo }) {
           </a>
         ) : (
           <Link
-            href={target.href}
+            href={lh(target.href)}
             className="group/promo block rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             {tx(cta)}

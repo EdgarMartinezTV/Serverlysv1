@@ -4,6 +4,7 @@ import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { Reveal } from "@/components/animations/reveal";
 import { cn } from "@/lib/utils";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * Product page hero.
@@ -122,7 +123,7 @@ export function ProductHero({
 
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <Button
-                href={primary.href}
+                href={lh(primary.href)}
                 variant={dark ? "inverse" : "primary"}
                 size="lg"
                 block
@@ -130,7 +131,7 @@ export function ProductHero({
                 {tx(primary.label)}
               </Button>
               <Button
-                href={secondary.href}
+                href={lh(secondary.href)}
                 variant={dark ? "inverseOutline" : "outline"}
                 size="lg"
                 block

@@ -3,6 +3,7 @@ import { Grid } from "@/components/ref/kit";
 import { AssistantMark } from "@/components/assistant/assistant-mark";
 import { CoworkerBento } from "./coworker-bento";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * "Your AI co-worker. Free with every plan."
@@ -65,7 +66,7 @@ export function CoworkerBand() {
           <div className="lg:justify-self-end lg:max-w-[400px]">
             <p className="text-body text-fg-on-dark-secondary">{tx("ConvoAI answers your customers day and night, and hands anything it should not attempt to a person with the full transcript.")}</p>
             <Link
-              href="https://convoai.cloud/"
+              href={lh("https://convoai.cloud/")}
               className="mt-5 inline-flex items-center gap-2 rounded-full px-4 py-2 text-small font-semibold text-white ring-1 ring-white/40 transition-colors duration-fast hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
               <AssistantMark className="h-4 w-4" />{tx("Start a chat")}</Link>
@@ -81,7 +82,7 @@ export function CoworkerBand() {
             <h3 className="display-md text-white">{tx("Same agent. More ways to grow.")}</h3>
             <p className="mt-4 text-body text-fg-on-dark-secondary">{tx("Connect it to automations, so a conversation becomes a booking, a ticket or a follow-up without anyone copying it across.")}</p>
             <Link
-              href="/automations"
+              href={lh("/automations")}
               className="group/row mt-7 flex items-center justify-between gap-4 border-b border-line-on-dark py-4 text-body-lg text-white transition-colors duration-fast hover:text-primary-on-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >{tx("See automations")}<svg viewBox="0 0 16 16" aria-hidden="true" className="h-4 w-4 transition-transform duration-fast group-hover/row:translate-x-1">
                 <path d="M3 8h9m-3.5-3.5L12 8l-3.5 3.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />

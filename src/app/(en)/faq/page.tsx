@@ -7,6 +7,7 @@ import { pageMetadata, faqGraph } from "@/lib/seo";
 import { PageHero } from "../resources/_components/page-hero";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 const PATH = "/faq";
 
@@ -62,7 +63,7 @@ export default function FaqPage() {
         lede={
           <p>
             {tx(faqs.length)}{tx(" answers covering price, renewals, migration, domains and the AI products. If yours is not here,")}{" "}
-            <Link href="/support" className="font-medium text-primary underline underline-offset-4 hover:text-primary-hover">{tx("ask us directly")}</Link>
+            <Link href={lh("/support")} className="font-medium text-primary underline underline-offset-4 hover:text-primary-hover">{tx("ask us directly")}</Link>
             .
           </p>
         }
@@ -71,7 +72,7 @@ export default function FaqPage() {
           {groups.map((g) => (
             <li key={g.id}>
               <a
-                href={`#${g.id}`}
+                href={lh(`#${g.id}`)}
                 className="inline-flex min-h-10 items-center gap-2 rounded-full bg-canvas-secondary px-4 text-small font-medium text-fg ring-1 ring-line transition-colors hover:bg-brand-50 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
                 {tx(g.label)}
@@ -91,7 +92,7 @@ export default function FaqPage() {
               {groups.map((g) => (
                 <li key={g.id}>
                   <a
-                    href={`#${g.id}`}
+                    href={lh(`#${g.id}`)}
                     className="flex min-h-[2.75rem] items-center rounded-md px-3 text-small text-fg-secondary transition-colors hover:bg-canvas-secondary hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                   >
                     {tx(g.label)}

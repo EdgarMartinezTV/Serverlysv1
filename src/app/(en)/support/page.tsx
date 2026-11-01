@@ -8,6 +8,7 @@ import { pageMetadata } from "@/lib/seo";
 import { PageHero } from "../resources/_components/page-hero";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 const PATH = "/support";
 
@@ -63,8 +64,8 @@ export default function SupportPage() {
         visual={<TicketMock />}
       >
         <div className="mt-8 flex flex-wrap gap-3">
-          <Button href={billing.sales} size="lg">{tx("Open a ticket")}</Button>
-          <Button href={billing.login} variant="outline" size="lg">{tx("Client area")}</Button>
+          <Button href={lh(billing.sales)} size="lg">{tx("Open a ticket")}</Button>
+          <Button href={lh(billing.login)} variant="outline" size="lg">{tx("Client area")}</Button>
         </div>
       </PageHero>
 
@@ -83,7 +84,7 @@ export default function SupportPage() {
               <h3 className="text-body-lg font-semibold text-fg">{tx(c.title)}</h3>
               <p className="flex-1 text-small text-fg-secondary">{tx(c.detail)}</p>
               <a
-                href={c.action.href}
+                href={lh(c.action.href)}
                 className="inline-flex min-h-[2.75rem] items-center gap-1.5 text-small font-semibold text-primary hover:text-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
                 {tx(c.action.label)}
@@ -144,7 +145,7 @@ export default function SupportPage() {
             <h2 className="text-h4 text-fg">{tx("Question about buying rather than fixing?")}</h2>
             <p className="mt-2 text-body text-fg-secondary">{tx("Pricing, renewals, refunds and plan choice are answered on the FAQ.")}</p>
           </div>
-          <Button href="/faq" variant="secondary">{tx("Read the FAQ")}</Button>
+          <Button href={lh("/faq")} variant="secondary">{tx("Read the FAQ")}</Button>
         </div>
       </Section>
 

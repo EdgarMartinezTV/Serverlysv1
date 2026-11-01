@@ -11,6 +11,7 @@ import { TermProvider, TermSelect } from "@/components/ref/term";
 import { NavIcon } from "@/components/navigation/nav-icons";
 import { BANDS, CTA, INCLUDES_LABEL, TABS, TERM_NOTE, WHY } from "../_content";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * The reference's category pills plus the plan band they switch.
@@ -118,7 +119,7 @@ export function Plans({ tlds }: { tlds: readonly Tld[] }) {
                     <span className="text-[14px] leading-5 text-fg-secondary">{tx("/1st yr")}</span>
                   </p>
                   <a
-                    href={billing.registerDomain}
+                    href={lh(billing.registerDomain)}
                     className="mt-4 flex h-12 items-center justify-center rounded-md border border-primary text-[16px] font-semibold text-primary transition-colors duration-fast hover:bg-primary-soft"
                   >{tx("Check availability")}</a>
                 </li>
@@ -135,7 +136,7 @@ export function Plans({ tlds }: { tlds: readonly Tld[] }) {
               <div className="mt-10 flex flex-col items-center gap-4 text-center">
                 <p className="text-micro text-fg-muted">{tx("Prices are per month for the term you pick, paid upfront. Every term renews at the same price.")}</p>
                 <a
-                  href="#compare-heading"
+                  href={lh("#compare-heading")}
                   className="inline-flex h-12 items-center rounded-md px-8 text-body font-semibold text-primary ring-1 ring-inset ring-primary transition-colors duration-fast hover:bg-primary-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                 >{tx("Compare plans")}</a>
               </div>

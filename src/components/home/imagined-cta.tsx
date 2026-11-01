@@ -2,6 +2,7 @@ import { AssistantMark } from "@/components/assistant/assistant-mark";
 import { MockPhoto } from "@/components/ui/mock-photo";
 import { CtaButton } from "@/components/ref/kit";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * The closing banner — layout from the reference's `h-banner-with-image`.
@@ -75,7 +76,7 @@ export function ImaginedCta() {
           </h2>
           <p className="mt-5 max-w-[380px] text-body text-white/85">{tx("30-day money-back guarantee. Free migration. The renewal price shown before you buy.")}</p>
           <div className="mt-10">
-            <CtaButton href="/pricing" tone="light">{tx("Choose a plan")}</CtaButton>
+            <CtaButton href={lh("/pricing")} tone="light">{tx("Choose a plan")}</CtaButton>
           </div>
         </div>
 

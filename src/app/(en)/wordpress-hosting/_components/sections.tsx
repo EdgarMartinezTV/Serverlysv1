@@ -4,6 +4,7 @@ import { AssistantMark } from "@/components/assistant/assistant-mark";
 import { ConvoAiLogo } from "@/components/layout/convoai-logo";
 import { MockPhoto } from "@/components/ui/mock-photo";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /*
  * WordPress page sections — 2026-10-03, in the reference's order and layout.
@@ -91,7 +92,7 @@ export function Answering() {
             <ConvoAiLogo tone="light" className="h-7 w-auto self-start" />
             <h3 className="mt-6 text-h3 font-medium tracking-[-0.02em] text-fg">{tx("A chat agent that knows your site")}</h3>
             <p className="mt-3 text-body text-fg-secondary">{tx("It answers about your prices, your hours and your products from your own pages, captures the enquiry, and hands anything it should not attempt to a person.")}</p>
-            <Link href="https://convoai.cloud/" className="mt-6 inline-flex items-center gap-1.5 text-body font-semibold text-primary hover:text-primary-hover">{tx("See how ConvoAI works")}<span aria-hidden="true">›</span>
+            <Link href={lh("https://convoai.cloud/")} className="mt-6 inline-flex items-center gap-1.5 text-body font-semibold text-primary hover:text-primary-hover">{tx("See how ConvoAI works")}<span aria-hidden="true">›</span>
             </Link>
           </div>
         </div>
@@ -186,7 +187,7 @@ export function SaveHours() {
           </li>
         </ul>
         <div className="mt-10 flex justify-center">
-          <CtaButton href="#plans">{tx("Get started")}</CtaButton>
+          <CtaButton href={lh("#plans")}>{tx("Get started")}</CtaButton>
         </div>
       </Grid>
     </section>
@@ -328,7 +329,7 @@ export function FreeMigration() {
               ))}
             </ul>
             <div className="mt-8">
-              <CtaButton href="/migrations">{tx("Migrate your site")}</CtaButton>
+              <CtaButton href={lh("/migrations")}>{tx("Migrate your site")}</CtaButton>
             </div>
           </div>
         </div>

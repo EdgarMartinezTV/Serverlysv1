@@ -9,6 +9,7 @@ import { AbuseForm } from "./_components/abuse-form";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { AbuseIcon } from "./_components/abuse-icon";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * Report abuse.
@@ -73,7 +74,7 @@ export default function ReportAbusePage() {
             <p className="mx-auto mt-4 max-w-[700px] text-body text-fg-secondary">
               {tx(HERO.lede)}{" "}
               <a
-                href={`mailto:${company.email}?subject=Abuse%20report`}
+                href={lh(`mailto:${company.email}?subject=Abuse%20report`)}
                 className="font-medium text-primary underline underline-offset-4 hover:text-primary-hover"
               >
                 {tx(emailDisplay)}
@@ -121,7 +122,7 @@ export default function ReportAbusePage() {
                   </li>
                 ))}
               </ol>
-              <Link href="/abuse-handling-policy" className="group mt-6 inline-flex items-center gap-1.5 text-small font-semibold text-primary hover:text-primary-hover">{tx("Read the full process")}<Arrow />
+              <Link href={lh("/abuse-handling-policy")} className="group mt-6 inline-flex items-center gap-1.5 text-small font-semibold text-primary hover:text-primary-hover">{tx("Read the full process")}<Arrow />
               </Link>
             </aside>
           </div>
@@ -198,7 +199,7 @@ export default function ReportAbusePage() {
             {RELATED.items.map((l) => (
               <li key={l.href}>
                 <Link
-                  href={l.href}
+                  href={lh(l.href)}
                   className="group flex h-full items-start justify-between gap-4 rounded-2xl p-5 ring-1 ring-line ring-inset transition-colors hover:bg-canvas-secondary hover:ring-line-strong"
                 >
                   <span>

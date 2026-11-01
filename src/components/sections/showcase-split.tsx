@@ -6,6 +6,7 @@ import { NavIcon } from "@/components/navigation/nav-icons";
 import type { NavIconName } from "@/data/navigation";
 import { cn } from "@/lib/utils";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * Copy beside a product visual.
@@ -137,7 +138,7 @@ export function ShowcaseSplit({
               <div className="mt-9">
                 {cta.external ? (
                   <a
-                    href={cta.href}
+                    href={lh(cta.href)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={cn(
@@ -153,7 +154,7 @@ export function ShowcaseSplit({
                   </a>
                 ) : (
                   <Link
-                    href={target.href}
+                    href={lh(target.href)}
                     className={cn(
                       "inline-flex items-center gap-2 rounded-sm text-body font-medium underline-offset-4 transition-colors hover:underline",
                       "focus-visible:outline-2 focus-visible:outline-offset-4",

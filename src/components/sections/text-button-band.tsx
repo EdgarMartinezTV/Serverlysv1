@@ -2,6 +2,7 @@ import { Section } from "@/components/ui/section";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/animations/reveal";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * A short centred pitch with a single button.
@@ -51,7 +52,7 @@ export function TextButtonBand({
           {tx(body)}
         </p>
         <div className="mt-2">
-          <Button href={cta.href} variant={dark ? "inverse" : "primary"} size="lg">
+          <Button href={lh(cta.href)} variant={dark ? "inverse" : "primary"} size="lg">
             {tx(cta.label)}
           </Button>
         </div>

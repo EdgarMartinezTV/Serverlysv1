@@ -58,7 +58,7 @@ export function Security() {
                   aria-hidden="true"
                   className="size-5"
                 >
-                  {it.icon}
+                  {tx(it.icon)}
                 </svg>
               </span>
               <h3 className="mt-6 text-body-lg font-medium text-fg">{tx(it.title)}</h3>

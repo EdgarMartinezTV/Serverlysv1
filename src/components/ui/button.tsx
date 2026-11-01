@@ -2,6 +2,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Spinner } from "./spinner";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * The only button in the system.
@@ -170,7 +171,7 @@ export function Button(props: AsButton | AsLink) {
       const { target, rel, ...others } = anchorProps as Record<string, string>;
       return (
         <a
-          href={href}
+          href={lh(href)}
           className={classes}
           target={target ?? "_blank"}
           rel={rel ?? "noopener noreferrer"}
@@ -181,7 +182,7 @@ export function Button(props: AsButton | AsLink) {
       );
     }
     return (
-      <Link href={href} className={classes} {...anchorProps}>
+      <Link href={lh(href)} className={classes} {...anchorProps}>
         {children}
       </Link>
     );

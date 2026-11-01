@@ -44,6 +44,7 @@ import { addToCart, cartStore } from "@/lib/domains/cart";
 import type { DomainResult } from "@/lib/domains/types";
 import { cn } from "@/lib/utils";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /* ── Shared bits ─────────────────────────────────────────────────────────── */
 
@@ -115,7 +116,7 @@ function AddButton({
   if (added) {
     return (
       <a
-        href={billing.viewCart}
+        href={lh(billing.viewCart)}
         className={cn(base, "h-11 bg-success-soft px-5 text-small text-success ring-1 ring-inset ring-success/30 hover:bg-success/15")}
       >
         <svg viewBox="0 0 16 16" aria-hidden="true" className="size-4"><path d="m3.5 8.5 3 3 6-7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>{tx("View cart")}<span className="sr-only"> ({tx(srName)}{tx(" added)")}</span>
@@ -126,7 +127,7 @@ function AddButton({
   const href = domains.length === 1 ? billing.addDomain(domains[0]) : billing.addDomains(domains);
   return (
     <a
-      href={href}
+      href={lh(href)}
       aria-busy={busy || undefined}
       onClick={async (e) => {
         if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
@@ -223,7 +224,7 @@ function OfferCard({
             ) : (
               /* RDAP fallback: WHMCS has not confirmed it, so its own search re-checks. */
               <a
-                href={billing.searchDomain(result.domain)}
+                href={lh(billing.searchDomain(result.domain))}
                 className="inline-flex h-12 shrink-0 items-center rounded-full bg-primary px-6 text-body font-semibold text-white shadow-e2 hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >{tx("Make it yours")}<span className="sr-only"> {tx(result.domain)}</span>
               </a>
@@ -277,21 +278,21 @@ function Verdict({ result }: { result: DomainResult }) {
       <p className="text-small text-fg-secondary">
         {status === "registered" && (
           <>{tx("Already registered.")}{" "}
-            <a href={billing.transferDomainSearch(domain)} className="rounded-sm font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">{tx("Transfer it here")}</a>{" "}{tx("if it is yours, or")}{" "}
-            <a href={`/whois-lookup?domain=${encodeURIComponent(domain)}`} className="rounded-sm font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">{tx("see who owns it")}</a>
+            <a href={lh(billing.transferDomainSearch(domain))} className="rounded-sm font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">{tx("Transfer it here")}</a>{" "}{tx("if it is yours, or")}{" "}
+            <a href={lh(`/whois-lookup?domain=${encodeURIComponent(domain)}`)} className="rounded-sm font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">{tx("see who owns it")}</a>
             .
           </>
         )}
         {(status === "unsupported" || (status === "available" && result.price === null)) && (
           <>{tx("We do not sell this extension")}{result.tld ? tx(` (${result.tld})`) : ""}{tx(" yet.")}{" "}
-            <a href="/domain-name#tld-prices" className="rounded-sm font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">{tx("See the extensions we offer")}</a>
+            <a href={lh("/domain-name#tld-prices")} className="rounded-sm font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">{tx("See the extensions we offer")}</a>
             .
           </>
         )}
         {status === "unknown" && (
           <>
             {tx(result.reason) ?? tx("The registry did not answer in time.")}{" "}
-            <a href={billing.searchDomain(domain)} className="rounded-sm font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">{tx("Search in the cart")}</a>
+            <a href={lh(billing.searchDomain(domain))} className="rounded-sm font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">{tx("Search in the cart")}</a>
             .
           </>
         )}
@@ -339,7 +340,7 @@ function FreeDomainStrip() {
         <span className="text-fg-secondary">
           {tx(FREE_WITH_HOSTING.join(", "))}{tx(" on any Cloud, WordPress or WooCommerce plan billed yearly or longer.")}</span>
       </p>
-      <a href="/pricing" className="shrink-0 rounded-sm font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">{tx("See hosting plans")}</a>
+      <a href={lh("/pricing")} className="shrink-0 rounded-sm font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">{tx("See hosting plans")}</a>
     </div>
   );
 }
@@ -376,7 +377,7 @@ function OptionRow({
         {result.status === "unknown" && (
           <p className="mt-1 text-small text-fg-muted">
             {tx(result.reason) ?? tx("The registry did not answer in time.")}{" "}
-            <a href={billing.searchDomain(result.domain)} className="font-medium text-primary underline underline-offset-4">{tx("Check in the cart")}</a>
+            <a href={lh(billing.searchDomain(result.domain))} className="font-medium text-primary underline underline-offset-4">{tx("Check in the cart")}</a>
           </p>
         )}
       </div>
@@ -388,7 +389,7 @@ function OptionRow({
             <AddButton domains={[result.domain]} label={tx("Get it")} onAdded={onAdded} srName={tx(result.domain)} />
           ) : (
             <a
-              href={billing.searchDomain(result.domain)}
+              href={lh(billing.searchDomain(result.domain))}
               className="inline-flex h-11 shrink-0 items-center rounded-full px-5 text-small font-semibold text-primary ring-1 ring-inset ring-primary hover:bg-primary hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >{tx("Get it")}<span className="sr-only"> {tx(result.domain)}</span>
             </a>
@@ -432,7 +433,7 @@ function PlanOffer({ plan, groupSlug, recommended, domain }: { plan: Plan; group
       <a
         /* incartdomain: the WHMCS order form (sx-cart.js) opens on "From my
            cart" with this name selected, so the plan and the domain are linked. */
-        href={`${billing.order(groupSlug, plan.slug)}?billingcycle=annually&incartdomain=${encodeURIComponent(domain)}`}
+        href={lh(`${billing.order(groupSlug, plan.slug)}?billingcycle=annually&incartdomain=${encodeURIComponent(domain)}`)}
         className={cn(
           "mt-auto inline-flex h-11 items-center justify-center rounded-full px-5 text-small font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
           recommended ? "bg-primary text-white hover:bg-primary-hover" : "text-primary ring-1 ring-inset ring-primary hover:bg-primary hover:text-white",

@@ -3,6 +3,7 @@ import { billing } from "@/data/company";
 import { RELIABILITY } from "../_content";
 import { RunLogArt } from "./visuals";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * "The same steps, every single time".
@@ -47,7 +48,7 @@ export function Reliability() {
               </ul>
 
               <div className="mt-8">
-                <CtaButton href={billing.sales} tone="on-dark">
+                <CtaButton href={lh(billing.sales)} tone="on-dark">
                   {tx(RELIABILITY.cta)}
                 </CtaButton>
               </div>

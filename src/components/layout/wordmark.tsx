@@ -3,6 +3,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { company } from "@/data/company";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * The Serverlys logo.
@@ -72,9 +73,9 @@ export function Wordmark({
 
   return (
     <Link
-      href="/"
+      href={lh("/")}
       className="inline-flex w-fit shrink-0 items-center self-start rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
-      aria-label={`${company.name} — home`}
+      aria-label={`${company.name} — ${tx("home")}`}
     >
       <Image
         src={onDark ? "/brand/logo-on-dark.webp" : "/brand/logo.webp"}

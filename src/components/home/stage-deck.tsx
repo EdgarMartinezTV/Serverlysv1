@@ -5,6 +5,7 @@ import { Container } from "@/components/ui/container";
 import { stages, type StageId } from "./stages";
 import { cn } from "@/lib/utils";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * The four stage bands, plus the rail that heads them.
@@ -137,7 +138,7 @@ export function StageDeck({
               return (
                 <li key={stage.id} className="min-w-0 sm:shrink-0" role={tabbed ? "presentation" : undefined}>
                   <a
-                    href={`#${stage.id}`}
+                    href={lh(`#${stage.id}`)}
                     role={tabbed ? "tab" : undefined}
                     aria-selected={tabbed ? active : undefined}
                     aria-controls={tabbed ? `${stage.id}-panel` : undefined}

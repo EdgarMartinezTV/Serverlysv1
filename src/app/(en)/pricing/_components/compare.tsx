@@ -3,6 +3,7 @@ import { bfPrice, blackFridayActive, formatPrice, groupById, orderUrl, quote, sa
 import { Check, Grid, Headline } from "@/components/ref/kit";
 import { COMPARE } from "../_content";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * "Compare our plans" — the reference's `h-compare-table`, 48px band with a
@@ -110,7 +111,7 @@ export function Compare() {
                 ))}
               </dl>
               <a
-                href={orderUrl(g, p)}
+                href={lh(orderUrl(g, p))}
                 className="mt-4 flex h-11 items-center justify-center rounded-md bg-primary text-small font-semibold text-white hover:bg-primary-hover"
               >{tx("Get started")}</a>
             </li>
@@ -148,7 +149,7 @@ export function Compare() {
                     )}
                     <span className="font-semibold text-fg">{tx(formatPrice(saleMonthly(p)))}</span>{tx("/mo")}</p>
                   <a
-                    href={orderUrl(g, p)}
+                    href={lh(orderUrl(g, p))}
                     className={cn(
                       "mt-3 flex h-10 items-center justify-center rounded-md text-small font-semibold transition-colors duration-fast focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
                       p.popular ? "bg-primary text-white hover:bg-primary-hover" : "bg-fg text-white hover:bg-ink-800",
@@ -168,7 +169,7 @@ export function Compare() {
                   <path d="M8 3v10" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" className="group-open/cmp:hidden" />
                 </svg>
               </summary>
-              <div role="table" aria-label={`${grp.title}: compare cloud hosting plans`}>
+              <div role="table" aria-label={`${tx(grp.title)}: ${tx("compare cloud hosting plans")}`}>
                 <div role="rowgroup" className="sr-only">
                   <div role="row">
                     <span role="columnheader">{tx("Feature")}</span>

@@ -1,4 +1,5 @@
 import type { AbuseIcon as Name } from "../_content";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Category glyphs. Same spec as components/navigation/nav-icons: 24×24
@@ -81,7 +82,7 @@ export function AbuseIcon({ name, className }: { name: Name; className?: string 
       strokeLinejoin="round"
       className={className}
     >
-      {PATHS[name]}
+      {tx(PATHS[name])}
     </svg>
   );
 }

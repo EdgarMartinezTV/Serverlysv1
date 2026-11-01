@@ -6,6 +6,7 @@ import { billing } from "@/data/company";
 import type { Tld } from "@/data/tlds";
 import { ChevronLeft, ChevronRight, Grid } from "@/components/ref/kit";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /** The scrolling extension rail inside the dark Popular band. Prices from lib/domains/pricing, via props. */
 export function PopularRail({
@@ -31,7 +32,7 @@ export function PopularRail({
               {tx(title)}
             </h2>
             <Link
-              href={cta.href}
+              href={lh(cta.href)}
               className="mt-4 inline-flex min-h-11 items-center gap-1.5 text-body font-semibold text-white hover:text-primary-on-dark"
             >
               {tx(cta.label)} <span aria-hidden="true">→</span>
@@ -84,7 +85,7 @@ export function PopularRail({
               <span className={`text-small ${i === 0 ? "text-fg-on-brand-muted" : "text-fg-secondary"}`}>{tx("/1st yr")}</span>
             </p>
             <a
-              href={billing.registerDomain}
+              href={lh(billing.registerDomain)}
               className={`mt-4 flex h-12 items-center justify-center rounded-md text-body font-semibold transition-colors duration-fast ${
                 i === 0 ? "bg-white text-fg hover:bg-ink-100" : "bg-primary text-white hover:bg-primary-hover"
               }`}

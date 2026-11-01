@@ -5,6 +5,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Grid, Headline, Minus, Plus } from "./kit";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * Answer blocks. Stored as structure rather than an HTML string so the panel
@@ -167,7 +168,7 @@ function Block({ block, dark = false }: { block: FaqBlock; dark?: boolean }) {
         "href" in run ? (
           <Link
             key={i}
-            href={run.href}
+            href={lh(run.href)}
             className={cn(
               "font-medium underline decoration-from-font",
               dark

@@ -7,6 +7,7 @@ import type { NavIconName } from "@/data/navigation";
 import { CardRail, CardRailItem } from "./card-rail";
 import { billing } from "@/data/company";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * Services rail — "Done for you".
@@ -128,7 +129,7 @@ export function ServicesRail() {
           <p className="mt-4 text-body-lg text-fg-on-dark-secondary">{tx("The same team that runs the infrastructure will design it, build it and market it.")}</p>
         </div>
         <div className="shrink-0">
-          <Button href={billing.sales} variant="inverse">{tx("Talk about a project")}</Button>
+          <Button href={lh(billing.sales)} variant="inverse">{tx("Talk about a project")}</Button>
         </div>
       </Reveal>
 
@@ -141,7 +142,7 @@ export function ServicesRail() {
                   <a> wrapping the whole plate there is nothing to stretch, and
                   no nested interactive element to reason about. */}
               <Link
-                href={service.href}
+                href={lh(service.href)}
                 className="group/card service-card"
               >
                 <span className="flex items-start justify-between gap-4">

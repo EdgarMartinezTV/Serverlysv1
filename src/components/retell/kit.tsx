@@ -9,6 +9,7 @@ import { ChatButton } from "./chat-button";
 import { FeaturesScroller, type FeatureGroup } from "./features-scroller";
 import { Icon, type IconName } from "./icons";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * Service-page kit, built to the Retell AI receptionists page (2026-10-13)
@@ -211,7 +212,7 @@ export function Hero({
           </p>
           <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-5">
             <a
-              href={cta.href}
+              href={lh(cta.href)}
               className="inline-flex h-[54px] items-center justify-center rounded-full bg-white px-8 text-body font-semibold text-[#0b0d10] transition-colors duration-fast hover:bg-white/85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
               {tx(cta.label)}
@@ -396,7 +397,7 @@ export function NavyBand({
               <Amber text={tx(aside)} />
             </p>
             <a
-              href={cta.href}
+              href={lh(cta.href)}
               className="mt-6 inline-flex h-10 items-center rounded-md bg-white px-5 text-[14px] font-semibold text-[#0b1530] transition-colors hover:bg-white/85"
             >
               {tx(cta.label)}
@@ -553,7 +554,7 @@ export function ToolsMarquee({
         </Heading>
         <div className="mt-8 flex justify-center">
           <a
-            href={cta.href}
+            href={lh(cta.href)}
             className="inline-flex h-10 items-center rounded-md bg-[#0b1530] px-5 text-[14px] font-semibold text-white transition-colors hover:bg-[#1b2750]"
           >
             {tx(cta.label)}
@@ -650,7 +651,7 @@ export function PanelCard({
       </p>
       <div className="mt-6">{tx(price)}</div>
       <a
-        href={cta.href}
+        href={lh(cta.href)}
         className={cn(
           "mt-6 flex h-11 items-center justify-center rounded-md text-[14px] font-semibold transition-colors",
           blue
@@ -810,7 +811,7 @@ export function Related({
           {items.map(([label, href]) => (
             <li key={href}>
               <Link
-                href={href}
+                href={lh(href)}
                 className="inline-flex rounded-md bg-[#f1f2f5] px-3.5 py-2 text-[14px] font-medium text-[#0b1530] transition-colors hover:bg-brand-50 hover:text-primary"
               >
                 {tx(label)}
@@ -871,7 +872,7 @@ export function PhotoCta({
             <p className={cn("text-[14px] leading-snug", INK)}>{tx(body)}</p>
             <div className="mt-4 flex flex-wrap gap-2">
               <a
-                href={primary.href}
+                href={lh(primary.href)}
                 className="inline-flex h-9 items-center rounded-[4px] bg-[#0b1530] px-3.5 text-[13px] font-semibold text-white hover:bg-[#1b2750]"
               >
                 {tx(primary.label)}

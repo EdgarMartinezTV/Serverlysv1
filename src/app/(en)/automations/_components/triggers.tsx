@@ -2,6 +2,7 @@ import { CtaButton, Grid } from "@/components/ref/kit";
 import { TRIGGERS } from "../_content";
 import { ConversationArt, FeatureIcon } from "./visuals";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * "Most of it starts with a customer saying something".
@@ -38,7 +39,7 @@ export function Triggers() {
               <p className="mt-4 text-body text-fg-on-dark-secondary">{tx(TRIGGERS.body)}</p>
               <div className="mt-6">
                 <CtaButton
-                  href={TRIGGERS.ctaHref}
+                  href={lh(TRIGGERS.ctaHref)}
                   tone="on-dark"
                   className="h-10 px-6 text-[14px]"
                 >

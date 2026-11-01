@@ -305,10 +305,11 @@ check(
 console.log("\n── Header controls ──");
 await load();
 check(
-  "language selector opens and states what is available",
+  "language selector opens and offers Spanish on the matching page",
   await ev(`const b=[...document.querySelectorAll('button[aria-haspopup="true"]')][0];
     b.click(); await new Promise(r=>setTimeout(r,220));
-    return b.getAttribute('aria-expanded')==='true' && /only language/i.test(document.body.textContent)`),
+    const es=[...document.querySelectorAll('header a[hreflang="es"]')][0];
+    return b.getAttribute('aria-expanded')==='true' && !!es && /Español/.test(es.textContent) && es.getAttribute('href').startsWith('/es')`),
 );
 check(
   "account control links to the real client area",

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * Layout + atom kit for the reference-built product pages.
@@ -178,13 +179,13 @@ export function CtaButton({
    */
   if (/^https?:\/\//.test(href)) {
     return (
-      <a href={href} className={classes}>
+      <a href={lh(href)} className={classes}>
         {children}
       </a>
     );
   }
   return (
-    <Link href={href} className={classes}>
+    <Link href={lh(href)} className={classes}>
       {children}
     </Link>
   );
@@ -212,11 +213,11 @@ export function ArrowLink({
   );
   // Absolute URLs get a plain <a> — see CtaButton.
   return /^https?:\/\//.test(href) ? (
-    <a href={href} className={classes}>
+    <a href={lh(href)} className={classes}>
       {tx(body)}
     </a>
   ) : (
-    <Link href={href} className={classes}>
+    <Link href={lh(href)} className={classes}>
       {tx(body)}
     </Link>
   );

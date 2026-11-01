@@ -7,6 +7,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { billing } from "@/data/company";
 import type { WhoisRecord } from "@/lib/domains/whois";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * Registration lookup.
@@ -208,7 +209,7 @@ export function WhoisLookup() {
             <p className="mt-2 text-body text-fg-secondary">{tx(state.reason)}</p>
             <div className="mt-5 flex flex-wrap gap-3">
               <Button onClick={() => void run(state.domain)} variant="secondary">{tx("Try again")}</Button>
-              <Button href="/register-domain" variant="ghost">{tx("Search for a domain instead")}</Button>
+              <Button href={lh("/register-domain")} variant="ghost">{tx("Search for a domain instead")}</Button>
             </div>
           </div>
         )}
@@ -228,9 +229,9 @@ function Record({ record }: { record: WhoisRecord }) {
           <span className="font-mono">{tx(record.domain)}</span>{tx(" has no registry record")}</h3>
         <p className="mt-3 max-w-[60ch] text-body text-fg-secondary">{tx("The registry holds nothing for this name, which means it is available to register. Premium and reserved names are the exception — the cart will tell you before you pay.")}</p>
         <div className="mt-6 flex flex-wrap gap-3">
-          <Button href={`${billing.registerDomain}&query=${encodeURIComponent(record.domain)}`} external>{tx("Register ")}{tx(record.domain)}
+          <Button href={lh(`${billing.registerDomain}&query=${encodeURIComponent(record.domain)}`)} external>{tx("Register ")}{tx(record.domain)}
           </Button>
-          <Button href="/register-domain" variant="secondary">{tx("Check other extensions")}</Button>
+          <Button href={lh("/register-domain")} variant="secondary">{tx("Check other extensions")}</Button>
         </div>
       </div>
     );
@@ -244,7 +245,7 @@ function Record({ record }: { record: WhoisRecord }) {
         <p className="mt-3 max-w-[60ch] text-body text-fg-secondary">
           {tx(record.reason) ??
             tx("The registry for this extension does not publish machine-readable records.")}{" "}{tx("Rather than guess, we are telling you we do not know.")}</p>
-        <Button href="/support" variant="secondary" className="mt-6">{tx("Ask us to check manually")}</Button>
+        <Button href={lh("/support")} variant="secondary" className="mt-6">{tx("Ask us to check manually")}</Button>
       </div>
     );
   }
@@ -287,7 +288,7 @@ function Record({ record }: { record: WhoisRecord }) {
             {tx(record.domain)}
           </h3>
         </div>
-        <Button href="/transfer-domain" variant="secondary">{tx("Transfer it to Serverlys")}</Button>
+        <Button href={lh("/transfer-domain")} variant="secondary">{tx("Transfer it to Serverlys")}</Button>
       </div>
 
       <dl className="grid gap-px bg-line sm:grid-cols-2">

@@ -3,6 +3,7 @@ import { announcement } from "@/data/navigation";
 import { resolveNavTarget } from "@/data/routes";
 import { DismissAnnouncement } from "./dismiss-announcement";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * Promotional bar above the header.
@@ -97,7 +98,7 @@ export function AnnouncementBar() {
             ·
           </span>
           <Link
-            href={resolveNavTarget(announcement.href).href}
+            href={lh(resolveNavTarget(announcement.href).href)}
             className="inline-block whitespace-nowrap rounded-sm py-1 font-semibold text-fg-on-brand underline underline-offset-2 transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             <span className="sm:hidden">{tx(announcement.linkLabelShort)}</span>

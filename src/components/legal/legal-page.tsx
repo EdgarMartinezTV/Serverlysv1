@@ -13,6 +13,7 @@ import {
   relatedDocs,
 } from "@/data/legal";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * Legal document layout.
@@ -77,7 +78,7 @@ function DocumentIndex() {
               {docs.map((doc) => (
                 <li key={doc.path}>
                   <Link
-                    href={doc.path}
+                    href={lh(doc.path)}
                     className="group flex flex-col gap-1 bg-surface p-4 transition-colors duration-fast hover:bg-canvas-secondary focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary sm:p-5"
                   >
                     <span className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
@@ -180,7 +181,7 @@ export function LegalPage({
               {sections.map((s, i) => (
                 <li key={s.id}>
                   <a
-                    href={`#${s.id}`}
+                    href={lh(`#${s.id}`)}
                     className="flex min-h-[2.5rem] items-center gap-3 rounded-md px-3 text-small text-fg-secondary transition-colors hover:bg-canvas-secondary hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                   >
                     <span aria-hidden="true" className="tabular w-5 text-micro text-fg-muted">
@@ -246,7 +247,7 @@ export function LegalPage({
                   {related.map((r) => (
                     <li key={r.path}>
                       <Link
-                        href={r.path}
+                        href={lh(r.path)}
                         className="group block rounded-md py-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                       >
                         <span className="text-body font-medium text-primary underline-offset-4 group-hover:underline">
@@ -261,7 +262,7 @@ export function LegalPage({
                 </ul>
                 <p className="mt-5 text-small text-fg-muted">
                   <Link
-                    href="/legal-information"
+                    href={lh("/legal-information")}
                     className="font-medium text-primary underline underline-offset-4 hover:text-primary-hover"
                   >{tx("All legal documents")}</Link>{" "}{tx("— including the order they take precedence in when two of them appear to disagree.")}</p>
               </nav>
@@ -272,7 +273,7 @@ export function LegalPage({
               <p className="mt-3 text-body text-fg-secondary">{tx(contact)}</p>
               <p className="mt-4 text-body text-fg-secondary">{tx("Write to")}{" "}
                 <a
-                  href={`mailto:${company.email}`}
+                  href={lh(`mailto:${company.email}`)}
                   className="font-medium text-primary underline underline-offset-4 hover:text-primary-hover"
                 >
                   {tx(emailDisplay)}

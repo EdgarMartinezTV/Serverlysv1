@@ -4,6 +4,7 @@ import { Reveal } from "@/components/animations/reveal";
 import { Button } from "@/components/ui/button";
 import { billing } from "@/data/company";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * Migration explainer.
@@ -107,7 +108,7 @@ export function Migration({
         >{tx("Move an existing site without downtime")}</h2>
         <p className={cn("mt-5 text-body-lg", dark ? "text-fg-on-dark-secondary" : "text-fg-secondary")}>{tx("Migration is free and handled by our team. Nothing points at Serverlys until you have seen the site working.")}</p>
         <div className="mt-8">
-          <Button href={billing.sales} variant={dark ? "inverse" : "secondary"}>{tx("Ask about migrating")}</Button>
+          <Button href={lh(billing.sales)} variant={dark ? "inverse" : "secondary"}>{tx("Ask about migrating")}</Button>
         </div>
       </Reveal>
 

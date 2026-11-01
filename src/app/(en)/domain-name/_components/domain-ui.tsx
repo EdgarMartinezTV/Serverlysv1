@@ -10,6 +10,7 @@ import { PopularRail } from "./popular-rail";
 import { TldFilter } from "./tld-filter";
 import { MockPhoto } from "@/components/ui/mock-photo";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /*
  * Domain page sections — 2026-10-03, shared by /domain-name, /register-domain,
@@ -120,7 +121,7 @@ export function DomainHero({ copy, tool, tlds }: { copy: HeroCopy; tool: React.R
 
           {/* Transfer card */}
           <Link
-            href={copy.aside.href}
+            href={lh(copy.aside.href)}
             className="group flex min-h-[260px] flex-col rounded-2xl bg-white/[0.06] p-6 ring-1 ring-white/10 transition-colors duration-fast hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             <ArrowUpRight className="size-5 self-end text-white transition-transform duration-fast group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -246,7 +247,7 @@ export function Reasons({ copy }: { copy: ReasonsCopy }) {
         </div>
 
         <div className="mt-10 flex justify-center">
-          <CtaButton href={copy.cta.href}>{tx(copy.cta.label)}</CtaButton>
+          <CtaButton href={lh(copy.cta.href)}>{tx(copy.cta.label)}</CtaButton>
         </div>
       </Grid>
     </section>
@@ -374,7 +375,7 @@ export function Steps({ copy }: { copy: StepsCopy }) {
                     <p className="text-small text-fg-secondary">{tx(s.body)}</p>
                     {s.cta && (
                       <div className="mt-4">
-                        <CtaButton href="#search" className="px-6">{tx(s.cta)}</CtaButton>
+                        <CtaButton href={lh("#search")} className="px-6">{tx(s.cta)}</CtaButton>
                       </div>
                     )}
                   </div>
@@ -421,7 +422,7 @@ export function Explainers() {
             </div>
             <h3 className="mt-5 text-body-lg font-medium text-white">{tx("How do I transfer my domain?")}</h3>
             <p className="mt-2 text-small text-fg-on-dark-secondary">{tx("Already own a name elsewhere? Move it to Serverlys and keep the time you paid for.")}</p>
-            <Link href="/transfer-domain" className="mt-3 inline-flex items-center gap-1.5 text-small font-semibold text-white hover:text-primary-on-dark">{tx("Domain transfer ")}<ArrowUpRight className="size-3.5" />
+            <Link href={lh("/transfer-domain")} className="mt-3 inline-flex items-center gap-1.5 text-small font-semibold text-white hover:text-primary-on-dark">{tx("Domain transfer ")}<ArrowUpRight className="size-3.5" />
             </Link>
           </li>
           <li>
@@ -467,7 +468,7 @@ export function TldTable({ tlds }: { tlds: readonly Tld[] }) {
               <p className="mt-1 text-small text-fg-secondary">
                 {tx(t.note) ?? tx("General purpose")} · {tx(TABLE.columns.renew)}: ${tx(t.renew.toFixed(2))}{tx("/yr")}</p>
               <a
-                href={billing.registerDomain}
+                href={lh(billing.registerDomain)}
                 className="mt-3 inline-flex min-h-11 items-center rounded-md px-3 text-body font-semibold text-primary hover:bg-primary-soft"
               >{tx("Register ")}{tx(t.tld)}
               </a>
@@ -499,7 +500,7 @@ export function TldTable({ tlds }: { tlds: readonly Tld[] }) {
                   <td className="px-6 py-2 text-small text-fg-secondary">{tx(t.note) ?? "—"}</td>
                   <td className="px-6 py-2 text-right">
                     <a
-                      href={billing.registerDomain}
+                      href={lh(billing.registerDomain)}
                       className="inline-flex min-h-11 items-center rounded-md px-4 text-small font-semibold text-primary ring-1 ring-inset ring-primary transition-colors duration-fast hover:bg-primary-soft"
                     >{tx("Register")}</a>
                   </td>

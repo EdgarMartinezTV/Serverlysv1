@@ -1,4 +1,5 @@
 import { useId } from "react";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Glossy 3D percent sign, drawn in code (house rule: no AI-generated art).
@@ -53,14 +54,14 @@ export function GlossyPercent({ tone }: { tone: Tone }) {
       {/* Contact shadow */}
       <ellipse cx="108" cy="212" rx="78" ry="9" fill="#000" opacity="0.35" />
       {/* Extrusion: the same strokes stepped down-right, darkest at the back. */}
-      {Array.from({ length: depth }, (_, i) => {
+      {tx(Array.from({ length: depth }, (_, i) => {
         const o = depth - i;
         return (
           <g key={i} transform={`translate(${o * 0.9} ${o * 1.1})`} opacity={0.6 + (i / depth) * 0.4}>
             <PercentStrokes stroke={t.side} width={30} />
           </g>
         );
-      })}
+      }))}
       {/* Face */}
       <PercentStrokes stroke={`url(#f${id})`} width={30} />
       {/* Specular bloom across the face */}

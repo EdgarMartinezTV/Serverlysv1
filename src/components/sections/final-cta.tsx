@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { billing, company } from "@/data/company";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * Closing conversion block.
@@ -40,14 +41,14 @@ export function FinalCta({ plansHref = "/#plans" }: { plansHref?: string } = {})
           <h2 id="final-cta-heading" className="display-lg text-white">{tx("A plan that still makes sense in year two")}</h2>
           <p className="mt-5 max-w-[480px] text-body-lg text-white/85">{tx("Free migration, free SSL and daily backups on every plan, with a 30-day money-back guarantee.")}</p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <Button href={plansHref} variant="inverse" size="lg">{tx("Compare plans")}</Button>
-            <Button href={billing.sales} variant="onBrand" size="lg">{tx("Talk to an expert")}</Button>
+            <Button href={lh(plansHref)} variant="inverse" size="lg">{tx("Compare plans")}</Button>
+            <Button href={lh(billing.sales)} variant="onBrand" size="lg">{tx("Talk to an expert")}</Button>
           </div>
           <p className="mt-8 text-small text-white/80">{tx("Prefer the phone?")}{" "}
-            <a href={company.phoneHref} className="tabular inline-block py-1 text-white underline underline-offset-2">
+            <a href={lh(company.phoneHref)} className="tabular inline-block py-1 text-white underline underline-offset-2">
               {tx(company.phone)}
             </a>{" "}{tx("· Existing customer?")}{" "}
-            <a href={billing.login} className="inline-block py-1 text-white underline underline-offset-2">{tx("Client login")}</a>
+            <a href={lh(billing.login)} className="inline-block py-1 text-white underline underline-offset-2">{tx("Client login")}</a>
           </p>
         </div>
       </div>

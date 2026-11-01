@@ -3,6 +3,7 @@ import { BLACK_FRIDAY, formatPrice, groupById, quote, type Plan } from "@/data/p
 import { GlossyPercent } from "@/components/home/glossy-percent";
 import { MotionToggle } from "./motion-toggle";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * Black Friday product intro (2026-10-31) for /cloud-hosting, /wordpress-hosting
@@ -103,7 +104,7 @@ export function BlackFridayProductHero({ id, groupId, headline, bullets, guarant
             )}
 
             <a
-              href={ctaHref}
+              href={lh(ctaHref)}
               className="mt-8 inline-flex h-12 min-w-[185px] items-center justify-center rounded-md bg-white px-8 text-body font-semibold text-fg transition-colors hover:bg-canvas-inset focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >{tx("Claim deal")}</a>
             <p className="mt-4 flex items-center gap-2 text-body text-white">

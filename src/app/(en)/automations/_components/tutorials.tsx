@@ -3,6 +3,7 @@ import { ArrowUpRight, Grid, Headline } from "@/components/ref/kit";
 import { TUTORIALS } from "../_content";
 import { TutorialArt } from "./visuals";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * "Want to dive deeper into n8n hosting?".
@@ -34,7 +35,7 @@ export function Tutorials() {
         <ul className="grid gap-6 md:grid-cols-3">
           {TUTORIALS.cards.map((card) => (
             <li key={card.key}>
-              <Link href={card.href} className="group flex flex-col gap-4">
+              <Link href={lh(card.href)} className="group flex flex-col gap-4">
                 <TutorialArt
                   kind={card.key}
                   className="overflow-hidden rounded-lg ring-1 ring-line-on-dark transition-transform duration-fast group-hover:-translate-y-0.5"
@@ -49,7 +50,7 @@ export function Tutorials() {
 
         <div className="mt-10 flex justify-center">
           <Link
-            href={TUTORIALS.ctaHref}
+            href={lh(TUTORIALS.ctaHref)}
             className="inline-flex h-12 items-center justify-center gap-2 rounded-md bg-primary px-12 text-body font-semibold text-white transition-colors duration-fast hover:bg-brand-500"
           >
             {tx(TUTORIALS.cta)}

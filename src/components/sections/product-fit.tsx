@@ -4,6 +4,7 @@ import { billing } from "@/data/company";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * Product-fit comparison.
@@ -114,7 +115,7 @@ export function ProductFit() {
                         is worse than plain text. */}
                     {col.available ? (
                       <Link
-                        href={col.href}
+                        href={lh(col.href)}
                         className="rounded-sm text-h4 text-fg transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                       >
                         {tx(col.name)}
@@ -165,7 +166,7 @@ export function ProductFit() {
 
       <p className="mt-6 text-small text-fg-muted">{tx("Shared, VPS and dedicated are in development and not orderable yet. If one of them is what you actually need,")}{" "}
         <a
-          href={billing.sales}
+          href={lh(billing.sales)}
           className="inline-block rounded-sm py-1 font-medium text-primary underline underline-offset-4 hover:text-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         >{tx("tell us")}</a>{" "}{tx("and we will say honestly whether cloud covers it today.")}</p>
     </Section>

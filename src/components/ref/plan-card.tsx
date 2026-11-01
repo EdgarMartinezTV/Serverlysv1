@@ -5,6 +5,7 @@ import { BLACK_FRIDAY, formatPrice, orderUrl, quote, type Plan, type PlanGroup }
 import { Check } from "./kit";
 import { useTerm } from "./term";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * The reference's plan card, shared by /ecommerce-hosting and /pricing.
@@ -128,7 +129,7 @@ export function PlanCard({ plan, group, why, cta }: { plan: Plan; group: PlanGro
       </p>
 
       <a
-        href={orderUrl(group, plan, q.key)}
+        href={lh(orderUrl(group, plan, q.key))}
         className={cn(
           "relative mt-6 flex h-12 w-full items-center justify-center rounded-md text-body font-semibold transition-colors duration-fast focus-visible:outline-2 focus-visible:outline-offset-2",
           dark

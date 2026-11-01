@@ -5,6 +5,7 @@ import { motion, useInView } from "motion/react";
 import { cn } from "@/lib/utils";
 import { useReducedAfterMount } from "./use-reduced";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * The plans, at product-launch quality: a team-size slider that points at the
@@ -188,7 +189,7 @@ function Card({
       >{tx("Works out to ")}{tx(money(perMailbox))}{tx(" per mailbox")}</p>
 
       <a
-        href={p.href}
+        href={lh(p.href)}
         className={cn(
           "group relative mt-7 inline-flex h-12 items-center justify-center gap-2 rounded-xl text-body font-semibold transition-all",
           dark

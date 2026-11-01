@@ -5,6 +5,7 @@ import { billing } from "@/data/company";
 import { cartStore } from "@/lib/domains/cart";
 import { cn } from "@/lib/utils";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * Header cart, Hostinger-style: an icon with the WHMCS cart count, linking to
@@ -20,7 +21,7 @@ export function CartButton({ onDark = false }: { onDark?: boolean }) {
   if (count <= 0) return null;
   return (
     <a
-      href={billing.viewCart}
+      href={lh(billing.viewCart)}
       className={cn(
         "relative inline-flex h-10 w-10 items-center justify-center rounded-full transition-colors duration-fast",
         "focus-visible:outline-2 focus-visible:outline-offset-2",

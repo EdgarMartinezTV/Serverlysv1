@@ -4,6 +4,7 @@ import { Grid, Headline } from "@/components/ref/kit";
 import { PLAN_CARD_ITEM, PlanCard } from "@/components/ref/plan-card";
 import { TermProvider, TermSelect } from "@/components/ref/term";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 const GROUP = groupById("wordpress");
 
@@ -40,7 +41,7 @@ export function Plans() {
           </ul>
         </TermProvider>
         <div className="mt-8 flex flex-col items-center gap-3 text-center">
-          <Link href="/pricing#compare-heading" className="inline-flex min-h-11 items-center gap-1.5 text-small font-semibold text-primary hover:text-primary-hover">{tx("View all features")}<svg viewBox="0 0 16 16" aria-hidden="true" className="size-3.5">
+          <Link href={lh("/pricing#compare-heading")} className="inline-flex min-h-11 items-center gap-1.5 text-small font-semibold text-primary hover:text-primary-hover">{tx("View all features")}<svg viewBox="0 0 16 16" aria-hidden="true" className="size-3.5">
               <path d="M5 11 11 5M6.5 5H11v4.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
             </svg>
           </Link>

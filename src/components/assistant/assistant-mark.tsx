@@ -1,3 +1,4 @@
+import { t as tx } from "@/i18n/t";
 /**
  * The assistant glyph (ConvoAI on serverlys.com) and a few inline icons.
  *
@@ -104,7 +105,7 @@ export function AssistantIcon({
       strokeLinejoin="round"
       className={className}
     >
-      {PATHS[name]}
+      {tx(PATHS[name])}
     </svg>
   );
 }

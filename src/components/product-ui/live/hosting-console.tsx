@@ -192,7 +192,7 @@ export function HostingConsole({ className }: { className?: string }) {
                 <div
                   className="mt-2 h-1.5 overflow-hidden rounded-full bg-line"
                   role="img"
-                  aria-label={`${storagePct} percent of ${site.storageTotalGb} gigabytes used`}
+                  aria-label={tx(`${storagePct} percent of ${site.storageTotalGb} gigabytes used`)}
                 >
                   <div
                     className="h-full rounded-full bg-primary transition-[width] duration-slow ease-entrance"

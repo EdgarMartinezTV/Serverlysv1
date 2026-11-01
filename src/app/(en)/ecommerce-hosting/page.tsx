@@ -17,6 +17,7 @@ import { Pricing } from "./_components/pricing";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { breadcrumbTrail } from "@/data/routes";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * Ecommerce hosting.
@@ -110,7 +111,7 @@ export default function EcommerceHostingPage() {
       <Banner
         title={tx("Your store is one step away")}
         body={tx("Try Serverlys ecommerce hosting risk-free. If it is not right, tell us within 30 days for a full refund.")}
-        href="#pricing"
+        href={lh("#pricing")}
       />
       <PageBreadcrumbs trail={tx(breadcrumbTrail(PATH))} />
     </div>

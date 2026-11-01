@@ -24,6 +24,7 @@ import { ZeroDowntime } from "./_components/zero-downtime";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { breadcrumbTrail } from "@/data/routes";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * /migrations — rebuilt 2026-10-13 on the shared Retell-style kit, the same
@@ -131,7 +132,7 @@ export default function MigrationsPage() {
         kicker={tx("Free with every cloud hosting plan")}
         title={tx("We move it. You keep running your business.")}
         body={tx("Most people put off changing hosts because moving a site sounds like a weekend lost. With Serverlys it is a form and a yes: our team does the rest, and your site never goes dark.")}
-        aside={`[Free migration] with every cloud plan${from ? `, from [${from}/mo]${bfNote}` : ""}. [One site or a hundred.]`}
+        aside={tx(`[Free migration] with every cloud plan${from ? `, from [${from}/mo]${bfNote}` : ""}. [One site or a hundred.]`)}
         cta={{ label: "See cloud plans", href: "#plans" }}
       />
       <Promises
@@ -158,11 +159,11 @@ export default function MigrationsPage() {
           footnote={
             <>{tx("Every plan includes free website migration and a 30-day money-back guarantee.")}{" "}
               <a
-                href="/cloud-hosting#pricing"
+                href={lh("/cloud-hosting#pricing")}
                 className="font-semibold text-primary hover:text-primary-hover"
               >{tx("Compare cloud hosting in full")}</a>{" "}{tx("or")}{" "}
               <a
-                href={billing.sales}
+                href={lh(billing.sales)}
                 className="font-semibold text-primary hover:text-primary-hover"
               >{tx("ask the team")}</a>
               .

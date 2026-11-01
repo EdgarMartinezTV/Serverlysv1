@@ -16,6 +16,7 @@ import {
 } from "@/lib/consent";
 import { cn } from "@/lib/utils";
 import { t as tx } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * Cookie consent banner and settings panel.
@@ -187,7 +188,7 @@ export function CookieConsent({
                   ? tx(`We store what the site needs to work, like a notice you closed or your domain shortlist. With your OK we also use ${uses.join(", and ")}.${marketingEnabled ? "" : " No advertising cookies."}`)
                   : tx("We store only what the site needs to work, like a notice you closed or your domain shortlist. No advertising or analytics cookies, and no third-party trackers.")}{" "}
                 <Link
-                  href="/privacy-policy#cookies"
+                  href={lh("/privacy-policy#cookies")}
                   className="font-medium text-primary underline underline-offset-2 hover:text-primary-hover"
                 >{tx("Privacy policy")}</Link>
               </p>
