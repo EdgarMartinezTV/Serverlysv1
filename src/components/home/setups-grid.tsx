@@ -1,6 +1,7 @@
 import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/animations/reveal";
 import { groupById, monthlyLine } from "@/data/pricing";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Typical setups.
@@ -77,12 +78,8 @@ export function SetupsGrid() {
   return (
     <Section surface="light" spacing="base" width="wide" labelledBy="setups-heading">
       <Reveal className="mx-auto max-w-[760px] text-center">
-        <h2 id="setups-heading" className="display-lg text-fg">
-          What people put together here
-        </h2>
-        <p className="mt-5 text-body-lg text-fg-secondary">
-          Six common shapes, priced from the same table as everything else on this page.
-        </p>
+        <h2 id="setups-heading" className="display-lg text-fg">{tx("What people put together here")}</h2>
+        <p className="mt-5 text-body-lg text-fg-secondary">{tx("Six common shapes, priced from the same table as everything else on this page.")}</p>
       </Reveal>
 
       <Reveal delay={80} className="mt-14">
@@ -97,13 +94,13 @@ export function SetupsGrid() {
                       dark ? "bg-white/15 text-white" : "bg-white text-primary shadow-e1"
                     }`}
                   >
-                    {setup.tag}
+                    {tx(setup.tag)}
                   </span>
                   <h3 className={`mt-10 text-[22px] leading-7 font-medium tracking-[-0.02em] ${dark ? "text-white" : "text-fg"}`}>
-                    {setup.title}
+                    {tx(setup.title)}
                   </h3>
                   <p className={`mt-3 text-small ${dark ? "text-fg-on-dark-secondary" : "text-fg-secondary"}`}>
-                    {setup.body}
+                    {tx(setup.body)}
                   </p>
                 </article>
               </li>

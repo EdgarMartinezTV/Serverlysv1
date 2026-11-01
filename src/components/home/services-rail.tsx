@@ -6,6 +6,7 @@ import { NavIcon, ArrowUpRight } from "@/components/navigation/nav-icons";
 import type { NavIconName } from "@/data/navigation";
 import { CardRail, CardRailItem } from "./card-rail";
 import { billing } from "@/data/company";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Services rail — "Done for you".
@@ -123,23 +124,16 @@ export function ServicesRail() {
 
       <Reveal className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <div className="max-w-[640px]">
-          <h2 id="services-heading" className="display-md text-white">
-            Or hand the build over entirely
-          </h2>
-          <p className="mt-4 text-body-lg text-fg-on-dark-secondary">
-            The same team that runs the infrastructure will design it, build it and
-            market it.
-          </p>
+          <h2 id="services-heading" className="display-md text-white">{tx("Or hand the build over entirely")}</h2>
+          <p className="mt-4 text-body-lg text-fg-on-dark-secondary">{tx("The same team that runs the infrastructure will design it, build it and market it.")}</p>
         </div>
         <div className="shrink-0">
-          <Button href={billing.sales} variant="inverse">
-            Talk about a project
-          </Button>
+          <Button href={billing.sales} variant="inverse">{tx("Talk about a project")}</Button>
         </div>
       </Reveal>
 
       <Reveal delay={80} className="mt-12">
-        <CardRail label="services" tone="on-dark">
+        <CardRail label={tx("services")} tone="on-dark">
           {SERVICES.map((service) => (
             <CardRailItem key={service.href}>
               {/* The card IS the link, exactly as the reference builds it. That
@@ -166,8 +160,8 @@ export function ServicesRail() {
                   />
                 </span>
 
-                <h3 className="mt-6 text-body-lg font-medium text-white">{service.title}</h3>
-                <p className="text-small leading-5 text-fg-on-dark-secondary">{service.body}</p>
+                <h3 className="mt-6 text-body-lg font-medium text-white">{tx(service.title)}</h3>
+                <p className="text-small leading-5 text-fg-on-dark-secondary">{tx(service.body)}</p>
               </Link>
             </CardRailItem>
           ))}

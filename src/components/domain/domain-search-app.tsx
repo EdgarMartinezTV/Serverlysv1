@@ -53,6 +53,7 @@ import { refreshCartCount } from "@/lib/domains/cart";
 import { billing } from "@/data/company";
 import { cn } from "@/lib/utils";
 import { track } from "@/lib/analytics";
+import { t as tx } from "@/i18n/t";
 
 type Phase =
   | { kind: "idle" }
@@ -441,9 +442,7 @@ export function DomainSearchApp({
         className="flex flex-col gap-3"
       >
         <div ref={wrapRef} className="relative">
-          <label htmlFor={`${baseId}-input`} className="sr-only">
-            Search for a domain name
-          </label>
+          <label htmlFor={`${baseId}-input`} className="sr-only">{tx("Search for a domain name")}</label>
           <div
             className={cn(
               "flex h-16 items-center gap-2 rounded-full bg-white pr-2 pl-5 shadow-[0_10px_40px_rgb(0_0_60/0.25)] ring-2 transition-[box-shadow,ring-color] duration-200",
@@ -484,7 +483,7 @@ export function DomainSearchApp({
               }}
               aria-invalid={validation ? true : undefined}
               aria-describedby={validation ? errorId : undefined}
-              placeholder={ph}
+              placeholder={tx(ph)}
               className="h-12 min-w-0 flex-1 bg-transparent text-body-lg text-fg outline-none placeholder:text-fg-muted"
             />
 
@@ -501,7 +500,7 @@ export function DomainSearchApp({
                 <svg viewBox="0 0 16 16" aria-hidden="true" className="size-4">
                   <path d="m4 4 8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
                 </svg>
-                <span className="sr-only">Clear search</span>
+                <span className="sr-only">{tx("Clear search")}</span>
               </button>
             )}
 
@@ -534,8 +533,8 @@ export function DomainSearchApp({
                 <path d="m12.5 13.5 3.5 3.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
                 <path d="M15.5 2.5 16.2 4.3 18 5l-1.8.7-.7 1.8-.7-1.8L13 5l1.8-.7Z" fill="currentColor" />
               </svg>
-              <span className="hidden sm:inline">Name ideas</span>
-              <span className="sr-only sm:hidden">Name ideas</span>
+              <span className="hidden sm:inline">{tx("Name ideas")}</span>
+              <span className="sr-only sm:hidden">{tx("Name ideas")}</span>
             </button>
 
             <button
@@ -551,7 +550,7 @@ export function DomainSearchApp({
                   <path d="M3 8h9m-3.5-3.5L12 8l-3.5 3.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               )}
-              <span className="sr-only">{busy ? "Searching" : "Search"}</span>
+              <span className="sr-only">{busy ? tx("Searching") : tx("Search")}</span>
             </button>
           </div>
 
@@ -561,16 +560,16 @@ export function DomainSearchApp({
               <p className="flex items-center justify-between px-5 pt-4 pb-2 text-micro font-semibold text-fg-muted">
                 <span>
                   {ideas
-                    ? `Ideas from “${sld}”`
+                    ? tx(`Ideas from “${sld}”`)
                     : value.trim()
-                      ? "Check this name on"
+                      ? tx("Check this name on")
                       : recent.length
-                        ? "Recent searches"
-                        : "Try one of these"}
+                        ? tx("Recent searches")
+                        : tx("Try one of these")}
                 </span>
-                <span className="hidden font-normal sm:inline">↑ ↓ to move · Enter to check</span>
+                <span className="hidden font-normal sm:inline">{tx("↑ ↓ to move · Enter to check")}</span>
               </p>
-              <ul id={listId} role="listbox" aria-label="Domain suggestions" className="max-h-[min(420px,60vh)] overflow-y-auto pb-2">
+              <ul id={listId} role="listbox" aria-label={tx("Domain suggestions")} className="max-h-[min(420px,60vh)] overflow-y-auto pb-2">
                 {options.map((o, i) => {
                   const dot = o.label.indexOf(".");
                   return (
@@ -614,10 +613,10 @@ export function DomainSearchApp({
                             <span className="font-semibold text-primary">{o.label.slice(dot)}</span>
                           </>
                         ) : (
-                          o.label
+                          tx(o.label)
                         )}
                       </span>
-                      <span className="shrink-0 text-small text-fg-secondary">{o.hint}</span>
+                      <span className="shrink-0 text-small text-fg-secondary">{tx(o.hint)}</span>
                       <span aria-hidden="true" className={cn("shrink-0 text-fg-muted transition-opacity", i === active ? "opacity-100" : "opacity-0")}>
                         ↵
                       </span>
@@ -630,19 +629,18 @@ export function DomainSearchApp({
         </div>
 
         <p id={errorId} role="alert" className={cn("rounded-lg bg-white/95 px-3 py-2 text-small text-error", !validation && "hidden")}>
-          {validation}
+          {tx(validation)}
         </p>
 
         {cleaned && !validation && (
-          <p className="text-small text-fg-on-dark-secondary">
-            We&apos;ll search <span className="font-semibold text-white">{cleaned}</span>
+          <p className="text-small text-fg-on-dark-secondary">{tx("We'll search ")}<span className="font-semibold text-white">{tx(cleaned)}</span>
           </p>
         )}
 
         {/* Default extension for a bare name. */}
         <fieldset className="flex flex-wrap items-center justify-center gap-2">
-          <legend className="sr-only">Preferred extension</legend>
-          <span className="mr-1 text-small text-fg-on-dark-secondary">Default extension</span>
+          <legend className="sr-only">{tx("Preferred extension")}</legend>
+          <span className="mr-1 text-small text-fg-on-dark-secondary">{tx("Default extension")}</span>
           {tlds
             .filter((t) => t.suggest)
             .map((t) => (
@@ -662,7 +660,7 @@ export function DomainSearchApp({
                   onChange={() => setPreferredTld(t.tld)}
                   className="sr-only-focusable"
                 />
-                {t.tld}
+                {tx(t.tld)}
               </label>
             ))}
         </fieldset>
@@ -671,7 +669,7 @@ export function DomainSearchApp({
       {/* ── Recent (idle) ──────────────────────────────────────────────── */}
       {phase.kind === "idle" && recent.length > 0 && (
         <div className="flex flex-wrap items-center justify-center gap-2">
-          <span className="text-small text-fg-on-dark-secondary">Recent</span>
+          <span className="text-small text-fg-on-dark-secondary">{tx("Recent")}</span>
           {recent.map((q) => (
             <button
               key={q}
@@ -682,16 +680,14 @@ export function DomainSearchApp({
               }}
               className="inline-flex min-h-9 items-center rounded-full bg-white/10 px-3.5 text-small text-white ring-1 ring-white/15 transition-colors hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
-              {q}
+              {tx(q)}
             </button>
           ))}
           <button
             type="button"
             onClick={() => recentStore.set(recentSearches.clear())}
             className="inline-flex min-h-9 items-center rounded-sm px-2 text-small text-fg-on-dark-secondary underline underline-offset-4 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-          >
-            Clear
-          </button>
+          >{tx("Clear")}</button>
         </div>
       )}
 
@@ -702,36 +698,28 @@ export function DomainSearchApp({
             {busy && (
               <div>
                 <p className="mb-4 flex items-center gap-2.5 text-small text-fg-secondary">
-                  <Spinner size="sm" />
-                  Checking {phase.query} and alternatives with the registry…
-                </p>
+                  <Spinner size="sm" />{tx("Checking ")}{tx(phase.query)}{tx(" and alternatives with the registry…")}</p>
                 <ul className="flex flex-col gap-3">
                   <li className="h-24 animate-pulse rounded-2xl bg-brand-50" />
-                  {Array.from({ length: 4 }, (_, i) => (
+                  {tx(Array.from({ length: 4 }, (_, i) => (
                     <li key={i} className="h-16 animate-pulse rounded-2xl bg-canvas-inset" />
-                  ))}
+                  )))}
                 </ul>
-                {slow && <p className="mt-4 text-small text-fg-muted">Still going — some registries are slower than others.</p>}
+                {slow && <p className="mt-4 text-small text-fg-muted">{tx("Still going — some registries are slower than others.")}</p>}
               </div>
             )}
 
             {phase.kind === "error" && (
-              <ErrorState error={phase.error} retryIn={retryIn} onRetry={() => void run(phase.query)} />
+              <ErrorState error={tx(phase.error)} retryIn={tx(retryIn)} onRetry={() => void run(phase.query)} />
             )}
 
             {phase.kind === "results" && phase.results.length === 0 && (
               <div role="status" className="rounded-2xl bg-canvas-secondary p-5">
-                <p className="text-body font-medium text-fg">No results came back for {phase.query}</p>
-                <p className="mt-1.5 text-small text-fg-secondary">
-                  That is unusual rather than expected. The name may use an extension no registry answered for.
-                </p>
+                <p className="text-body font-medium text-fg">{tx("No results came back for ")}{tx(phase.query)}</p>
+                <p className="mt-1.5 text-small text-fg-secondary">{tx("That is unusual rather than expected. The name may use an extension no registry answered for.")}</p>
                 <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-                  <Button type="button" variant="secondary" size="md" onClick={() => void run(phase.query, true)}>
-                    Try again
-                  </Button>
-                  <Button href={`${billing.root}/cart.php?a=add&domain=register`} variant="ghost" size="md">
-                    Search in the cart instead
-                  </Button>
+                  <Button type="button" variant="secondary" size="md" onClick={() => void run(phase.query, true)}>{tx("Try again")}</Button>
+                  <Button href={`${billing.root}/cart.php?a=add&domain=register`} variant="ghost" size="md">{tx("Search in the cart instead")}</Button>
                 </div>
               </div>
             )}
@@ -739,25 +727,23 @@ export function DomainSearchApp({
             {phase.kind === "results" && featured && (
               <DomainResults
                 query={featured.domain}
-                results={resultMap}
-                catalog={catalog}
-                categories={categories}
+                results={tx(resultMap)}
+                catalog={tx(catalog)}
+                categories={tx(categories)}
                 category={category}
                 onCategory={(c) => void onCategory(c)}
-                loadingCategory={loadingCategory}
-                source={phase.source}
-                partial={phase.partial}
-                altFailed={phase.altFailed}
+                loadingCategory={tx(loadingCategory)}
+                source={tx(phase.source)}
+                partial={tx(phase.partial)}
+                altFailed={tx(phase.altFailed)}
                 onRetry={() => void run(phase.query, true)}
-                isSaved={isSaved}
+                isSaved={tx(isSaved)}
                 onToggleSave={onToggleSave}
                 similar={
                   featured.status === "registered" && (
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="inline-flex items-center gap-1.5 text-small font-semibold text-fg">
-                        <svg viewBox="0 0 16 16" aria-hidden="true" className="size-4 text-primary"><path d="M8 1.5 9.2 5 12.5 6.2 9.2 7.4 8 10.9 6.8 7.4 3.5 6.2 6.8 5Z" fill="currentColor" /></svg>
-                        Similar names to check
-                      </span>
+                        <svg viewBox="0 0 16 16" aria-hidden="true" className="size-4 text-primary"><path d="M8 1.5 9.2 5 12.5 6.2 9.2 7.4 8 10.9 6.8 7.4 3.5 6.2 6.8 5Z" fill="currentColor" /></svg>{tx("Similar names to check")}</span>
                       {nameIdeas(featured.sld)
                         .slice(1, 5)
                         .map((x) => `${x}${featured.tld}`)
@@ -771,7 +757,7 @@ export function DomainSearchApp({
                             }}
                             className="inline-flex min-h-9 items-center rounded-full bg-brand-50 px-3.5 text-small font-medium text-primary transition-colors hover:bg-brand-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                           >
-                            {d}
+                            {tx(d)}
                           </button>
                         ))}
                     </div>
@@ -781,17 +767,14 @@ export function DomainSearchApp({
             )}
 
             {phase.kind === "results" && phase.results.length > 0 && phase.results.every((r) => r.status === "unknown") && (
-              <p className="mt-4 rounded-xl bg-warning-soft p-4 text-small text-warning">
-                No registry answered just now. This is usually temporary — try again in a moment, or search from the
-                cart directly.
-              </p>
+              <p className="mt-4 rounded-xl bg-warning-soft p-4 text-small text-warning">{tx("No registry answered just now. This is usually temporary — try again in a moment, or search from the cart directly.")}</p>
             )}
           </div>
         )}
       </div>
 
       {/* ── Shortlist ──────────────────────────────────────────────────── */}
-      {saved.length > 0 && <Shortlist items={saved} />}
+      {saved.length > 0 && <Shortlist items={tx(saved)} />}
     </div>
   );
 }
@@ -803,18 +786,16 @@ function ErrorState({ error, retryIn, onRetry }: { error: CheckError; retryIn: n
   return (
     <div role="alert" className="rounded-2xl bg-error-soft p-5 ring-1 ring-inset ring-error/25">
       <p className="text-body font-medium text-fg">
-        {error.kind === "unconfigured" ? "Domain search is unavailable" : "That search did not complete"}
+        {error.kind === "unconfigured" ? tx("Domain search is unavailable") : tx("That search did not complete")}
       </p>
-      <p className="mt-1.5 text-small text-fg-secondary">{error.message}</p>
+      <p className="mt-1.5 text-small text-fg-secondary">{tx(error.message)}</p>
       <div className="mt-4 flex flex-col gap-3 sm:flex-row">
         {error.kind !== "unconfigured" && (
-          <Button type="button" variant="secondary" size="md" onClick={onRetry} disabled={blocked}>
-            {blocked ? `Try again in ${retryIn}s` : "Try again"}
+          <Button type="button" variant="secondary" size="md" onClick={onRetry} disabled={tx(blocked)}>
+            {blocked ? tx(`Try again in ${retryIn}s`) : tx("Try again")}
           </Button>
         )}
-        <Button href={`${billing.root}/cart.php?a=add&domain=register`} variant="ghost" size="md">
-          Search in the cart instead
-        </Button>
+        <Button href={`${billing.root}/cart.php?a=add&domain=register`} variant="ghost" size="md">{tx("Search in the cart instead")}</Button>
       </div>
     </div>
   );
@@ -826,30 +807,25 @@ function Shortlist({ items }: { items: ShortlistItem[] }) {
   return (
     <section aria-labelledby="shortlist-heading" className="rounded-3xl bg-white p-5 text-left shadow-e4 sm:p-6">
       <div className="flex flex-wrap items-baseline justify-between gap-3">
-        <h3 id="shortlist-heading" className="text-h4 text-fg">
-          Saved names ({items.length})
+        <h3 id="shortlist-heading" className="text-h4 text-fg">{tx("Saved names (")}{tx(items.length)})
         </h3>
         <button
           type="button"
           onClick={() => shortlistStore.set(shortlist.clear())}
           className="min-h-9 rounded-sm text-small text-fg-muted underline underline-offset-4 hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-        >
-          Clear all
-        </button>
+        >{tx("Clear all")}</button>
       </div>
 
       <ul className="mt-4 flex flex-col divide-y divide-line border-y border-line">
         {items.map((item) => (
           <li key={item.domain} className="flex items-center justify-between gap-4 py-3">
-            <span className="min-w-0 break-all text-body text-fg">{item.domain}</span>
+            <span className="min-w-0 break-all text-body text-fg">{tx(item.domain)}</span>
             <span className="flex shrink-0 items-center gap-3">
-              {item.price !== null && <span className="tabular text-small text-fg-secondary">${item.price.toFixed(2)}</span>}
+              {item.price !== null && <span className="tabular text-small text-fg-secondary">${tx(item.price.toFixed(2))}</span>}
               <a
                 href={`${billing.root}/cart.php?a=add&domain=register&query=${encodeURIComponent(item.domain)}`}
                 className="inline-flex h-11 items-center rounded-full bg-primary px-5 text-small font-semibold text-white transition-colors hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-              >
-                Register
-                <span className="sr-only"> {item.domain}</span>
+              >{tx("Register")}<span className="sr-only"> {tx(item.domain)}</span>
               </a>
               <button
                 type="button"
@@ -859,7 +835,7 @@ function Shortlist({ items }: { items: ShortlistItem[] }) {
                 <svg viewBox="0 0 16 16" aria-hidden="true" className="h-4 w-4">
                   <path d="m4 4 8 8M12 4l-8 8" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
                 </svg>
-                <span className="sr-only">Remove {item.domain}</span>
+                <span className="sr-only">{tx("Remove ")}{tx(item.domain)}</span>
               </button>
             </span>
           </li>
@@ -867,9 +843,7 @@ function Shortlist({ items }: { items: ShortlistItem[] }) {
       </ul>
 
       <p className="mt-4 text-small text-fg-muted">
-        <span className="tabular font-medium text-fg">${total.toFixed(2)}</span> first year, before tax. Registration
-        completes in your Serverlys cart — each name is added there when you press Register.
-      </p>
+        <span className="tabular font-medium text-fg">${tx(total.toFixed(2))}</span>{tx(" first year, before tax. Registration completes in your Serverlys cart — each name is added there when you press Register.")}</p>
     </section>
   );
 }

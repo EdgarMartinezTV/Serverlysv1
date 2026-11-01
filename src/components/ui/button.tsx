@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Spinner } from "./spinner";
+import { t as tx } from "@/i18n/t";
 
 /**
  * The only button in the system.
@@ -221,7 +222,7 @@ export function IconButton({
   return (
     <button
       type="button"
-      aria-label={label}
+      aria-label={tx(label)}
       className={cn(
         BASE,
         VARIANTS[variant],

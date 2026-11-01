@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import styles from "./assistant.module.css";
 import { AssistantMark } from "./assistant-mark";
 import { ASSISTANT_NAME, openAssistant } from "./assistant";
+import { t as tx } from "@/i18n/t";
 
 /**
  * The gradient-ring "Ask ConvoAI" pill used in the header, the mobile drawer and a few page CTAs.
@@ -37,7 +38,7 @@ export function AssistantOpenButton({
       }}
     >
       <AssistantMark className="h-6 w-6 shrink-0" />
-      {label}
+      {tx(label)}
     </button>
   );
 }

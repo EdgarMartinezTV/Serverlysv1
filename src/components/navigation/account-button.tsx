@@ -1,5 +1,6 @@
 import { billing } from "@/data/company";
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Account control. Links to the real WHMCS client area — Serverlys does not
@@ -30,7 +31,7 @@ export function AccountButton({ onDark = false }: { onDark?: boolean }) {
         <circle cx="12" cy="8.5" r="3.5" />
         <path d="M5 19.5a7 7 0 0 1 14 0" />
       </svg>
-      <span className="sr-only">Client login</span>
+      <span className="sr-only">{tx("Client login")}</span>
     </a>
   );
 }

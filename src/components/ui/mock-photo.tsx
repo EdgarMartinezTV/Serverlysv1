@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 /**
  * A real photograph inside a coded mockup (a product tile, a hero banner, a
@@ -49,7 +50,7 @@ export function MockPhoto({
           eager loading at high fetch priority rather than a <head> preload. */}
       <Image
         src={`/mock/${src}.jpg`}
-        alt={alt}
+        alt={tx(alt)}
         fill
         sizes={sizes}
         {...(eager ? { loading: "eager" as const, fetchPriority: "high" as const } : {})}

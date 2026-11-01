@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { DemoBadge } from "./shell";
+import { t as tx } from "@/i18n/t";
 
 /**
  * CallFlow — the voice receptionist, as a playable call.
@@ -129,7 +130,7 @@ export function CallFlowConsole({ className }: { className?: string }) {
 
   return (
     <section
-      aria-label="CallFlow voice receptionist demonstration"
+      aria-label={tx("CallFlow voice receptionist demonstration")}
       className={cn(
         "overflow-hidden rounded-xl bg-surface-dark-elevated shadow-e5 ring-1 ring-inset ring-white/10",
         className,
@@ -151,12 +152,10 @@ export function CallFlowConsole({ className }: { className?: string }) {
           </svg>
         </span>
         <span className="min-w-0">
-          <span className="block truncate text-small font-semibold text-white">
-            Cedar Clinic · front desk
-          </span>
+          <span className="block truncate text-small font-semibold text-white">{tx("Cedar Clinic · front desk")}</span>
           <span className="tabular text-ui text-fg-on-dark-muted">
-            +1 (305) 555-0148 · {String(Math.floor(seconds / 60)).padStart(2, "0")}:
-            {String(seconds % 60).padStart(2, "0")}
+            +1 (305) 555-0148 · {tx(String(Math.floor(seconds / 60)).padStart(2, "0"))}:
+            {tx(String(seconds % 60).padStart(2, "0"))}
           </span>
         </span>
         <span className="ml-auto flex items-center gap-2">
@@ -175,7 +174,7 @@ export function CallFlowConsole({ className }: { className?: string }) {
                 running ? "bg-success-fill motion-safe:animate-pulse" : "bg-ink-400",
               )}
             />
-            {status}
+            {tx(status)}
           </span>
           <DemoBadge tone="dark" />
         </span>
@@ -187,13 +186,11 @@ export function CallFlowConsole({ className }: { className?: string }) {
           <div
             role="log"
             aria-live="polite"
-            aria-label="Call transcript"
+            aria-label={tx("Call transcript")}
             className="flex min-h-[13rem] flex-col gap-2"
           >
             {visible.length === 0 && (
-              <p className="m-auto max-w-[16rem] text-center text-micro text-fg-on-dark-muted">
-                Play the call to watch the agent take a booking, turn by turn.
-              </p>
+              <p className="m-auto max-w-[16rem] text-center text-micro text-fg-on-dark-muted">{tx("Play the call to watch the agent take a booking, turn by turn.")}</p>
             )}
             {visible.map((t, i) => (
               <p
@@ -206,9 +203,9 @@ export function CallFlowConsole({ className }: { className?: string }) {
                 )}
               >
                 <span className="mb-0.5 block text-ui text-fg-on-dark-muted font-semibold">
-                  {t.from === "agent" ? "CallFlow" : "Caller"}
+                  {t.from === "agent" ? tx("CallFlow") : tx("Caller")}
                 </span>
-                {t.text}
+                {tx(t.text)}
               </p>
             ))}
           </div>
@@ -224,29 +221,24 @@ export function CallFlowConsole({ className }: { className?: string }) {
                   <svg viewBox="0 0 12 12" aria-hidden="true" className="h-2.5 w-2.5">
                     <rect x="2" y="2" width="3" height="8" fill="currentColor" />
                     <rect x="7" y="2" width="3" height="8" fill="currentColor" />
-                  </svg>
-                  Stop call
-                </>
+                  </svg>{tx("Stop call")}</>
               ) : (
                 <>
                   <svg viewBox="0 0 12 12" aria-hidden="true" className="h-2.5 w-2.5">
                     <path d="M3 2l7 4-7 4z" fill="currentColor" />
                   </svg>
-                  {complete ? "Replay call" : "Play the call"}
+                  {complete ? tx("Replay call") : tx("Play the call")}
                 </>
               )}
             </button>
-            <span className="tabular text-ui text-fg-on-dark-muted">
-              Turn {Math.min(turn, CALL.length)} / {CALL.length}
+            <span className="tabular text-ui text-fg-on-dark-muted">{tx("Turn ")}{tx(Math.min(turn, CALL.length))} / {tx(CALL.length)}
             </span>
           </div>
         </div>
 
         {/* ── What the agent captured ───────────────────────────────────── */}
         <div className="p-3.5">
-          <p className="text-ui text-fg-on-dark-muted font-semibold">
-            Captured from the call
-          </p>
+          <p className="text-ui text-fg-on-dark-muted font-semibold">{tx("Captured from the call")}</p>
           <dl className="mt-2.5 flex flex-col gap-1.5">
             {EXTRACTION.map((row) => {
               const has = captured.includes(row);
@@ -261,7 +253,7 @@ export function CallFlowConsole({ className }: { className?: string }) {
                   )}
                 >
                   <dt className="text-ui text-fg-on-dark-muted font-semibold">
-                    {row.label}
+                    {tx(row.label)}
                   </dt>
                   <dd
                     className={cn(
@@ -269,7 +261,7 @@ export function CallFlowConsole({ className }: { className?: string }) {
                       has ? "text-white" : "text-ink-700",
                     )}
                   >
-                    {has ? row.value : "—"}
+                    {has ? tx(row.value) : "—"}
                   </dd>
                 </div>
               );
@@ -277,16 +269,14 @@ export function CallFlowConsole({ className }: { className?: string }) {
           </dl>
 
           <div className="mt-3 rounded-lg bg-white/[0.04] p-2.5 ring-1 ring-inset ring-white/8">
-            <p className="text-ui text-fg-on-dark-muted font-semibold">
-              This month
-            </p>
+            <p className="text-ui text-fg-on-dark-muted font-semibold">{tx("This month")}</p>
             <dl className="mt-1.5 grid grid-cols-2 gap-2">
               <div>
-                <dt className="text-ui text-fg-on-dark-muted">Answered</dt>
+                <dt className="text-ui text-fg-on-dark-muted">{tx("Answered")}</dt>
                 <dd className="tabular text-body font-semibold text-white">412</dd>
               </div>
               <div>
-                <dt className="text-ui text-fg-on-dark-muted">Booked</dt>
+                <dt className="text-ui text-fg-on-dark-muted">{tx("Booked")}</dt>
                 <dd className="tabular text-body font-semibold text-white">189</dd>
               </div>
             </dl>

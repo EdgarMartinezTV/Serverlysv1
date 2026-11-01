@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Layout + atom kit for the reference-built product pages.
@@ -118,7 +119,7 @@ export function Headline({
           dark ? "text-fg-on-dark" : "text-fg",
         )}
       >
-        {title}
+        {tx(title)}
       </h2>
       {description && (
         <p
@@ -127,7 +128,7 @@ export function Headline({
             dark ? "text-fg-on-dark-secondary" : "text-fg-secondary",
           )}
         >
-          {description}
+          {tx(description)}
         </p>
       )}
       {children}
@@ -212,11 +213,11 @@ export function ArrowLink({
   // Absolute URLs get a plain <a> — see CtaButton.
   return /^https?:\/\//.test(href) ? (
     <a href={href} className={classes}>
-      {body}
+      {tx(body)}
     </a>
   ) : (
     <Link href={href} className={classes}>
-      {body}
+      {tx(body)}
     </Link>
   );
 }

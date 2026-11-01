@@ -15,6 +15,7 @@ import {
   type ConsentState,
 } from "@/lib/consent";
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Cookie consent banner and settings panel.
@@ -174,34 +175,28 @@ export function CookieConsent({
       data-consent-reopened={reopened ? "" : undefined}
       className="fixed inset-x-0 bottom-0 z-50 p-3 sm:right-auto sm:bottom-4 sm:left-4 sm:w-[26rem] sm:p-0"
       role="region"
-      aria-label="Cookie notice"
+      aria-label={tx("Cookie notice")}
     >
       <div className="w-full overflow-hidden rounded-2xl bg-canvas shadow-e5 ring-1 ring-line">
         {!settingsOpen ? (
           <div className="flex flex-col gap-4 p-5">
             <div className="min-w-0">
-              <h2 className="text-body font-semibold text-fg">Your privacy</h2>
+              <h2 className="text-body font-semibold text-fg">{tx("Your privacy")}</h2>
               <p className="mt-1.5 text-small text-fg-secondary">
                 {uses.length
-                  ? `We store what the site needs to work, like a notice you closed or your domain shortlist. With your OK we also use ${uses.join(", and ")}.${marketingEnabled ? "" : " No advertising cookies."}`
-                  : "We store only what the site needs to work, like a notice you closed or your domain shortlist. No advertising or analytics cookies, and no third-party trackers."}{" "}
+                  ? tx(`We store what the site needs to work, like a notice you closed or your domain shortlist. With your OK we also use ${uses.join(", and ")}.${marketingEnabled ? "" : " No advertising cookies."}`)
+                  : tx("We store only what the site needs to work, like a notice you closed or your domain shortlist. No advertising or analytics cookies, and no third-party trackers.")}{" "}
                 <Link
                   href="/privacy-policy#cookies"
                   className="font-medium text-primary underline underline-offset-2 hover:text-primary-hover"
-                >
-                  Privacy policy
-                </Link>
+                >{tx("Privacy policy")}</Link>
               </p>
             </div>
 
             <div className="grid grid-cols-2 gap-2">
               {/* Equal weight — see the note above. */}
-              <Button onClick={() => decide(ACCEPT_ALL)} variant="primary" size="sm">
-                Accept all
-              </Button>
-              <Button onClick={() => decide(DEFAULT_CONSENT)} variant="outline" size="sm">
-                Reject all
-              </Button>
+              <Button onClick={() => decide(ACCEPT_ALL)} variant="primary" size="sm">{tx("Accept all")}</Button>
+              <Button onClick={() => decide(DEFAULT_CONSENT)} variant="outline" size="sm">{tx("Reject all")}</Button>
               {/* `Button` is a plain function component and forwards no ref,
                   so focus is restored by attribute lookup rather than by
                   widening the shared primitive for one call site. */}
@@ -211,9 +206,7 @@ export function CookieConsent({
                 variant="ghost"
                 size="sm"
                 className="col-span-2"
-              >
-                Cookie settings
-              </Button>
+              >{tx("Cookie settings")}</Button>
             </div>
           </div>
         ) : (
@@ -224,15 +217,11 @@ export function CookieConsent({
             aria-labelledby="cookie-settings-heading"
             className="max-h-[75vh] overflow-auto p-5 sm:p-6"
           >
-            <h2 id="cookie-settings-heading" className="text-h4 text-fg">
-              Cookie settings
-            </h2>
-            <p className="mt-2 text-small text-fg-secondary">
-              Every category is listed with exactly what it currently covers.
-              {emptyCategories.length === 1
-                ? ` ${emptyCategories[0]} is empty, and we would rather show you that than pad the list.`
+            <h2 id="cookie-settings-heading" className="text-h4 text-fg">{tx("Cookie settings")}</h2>
+            <p className="mt-2 text-small text-fg-secondary">{tx("Every category is listed with exactly what it currently covers.")}{emptyCategories.length === 1
+                ? tx(` ${emptyCategories[0]} is empty, and we would rather show you that than pad the list.`)
                 : emptyCategories.length === 2
-                  ? " Two of the three are empty, and we would rather show you that than pad the list."
+                  ? tx(" Two of the three are empty, and we would rather show you that than pad the list.")
                   : ""}
             </p>
 
@@ -259,16 +248,14 @@ export function CookieConsent({
                       <span className="min-w-0">
                         <span className="flex flex-wrap items-center gap-2">
                           <span className="text-body font-semibold text-fg">
-                            {copy.label}
+                            {tx(copy.label)}
                           </span>
                           {copy.locked && (
-                            <span className="rounded-full bg-canvas-inset px-2 py-0.5 text-micro text-fg-secondary font-semibold">
-                              Always on
-                            </span>
+                            <span className="rounded-full bg-canvas-inset px-2 py-0.5 text-micro text-fg-secondary font-semibold">{tx("Always on")}</span>
                           )}
                         </span>
                         <span className="mt-1 block text-small text-fg-secondary">
-                          {copy.detail}
+                          {tx(copy.detail)}
                         </span>
                         <span
                           className={cn(
@@ -277,8 +264,8 @@ export function CookieConsent({
                           )}
                         >
                           {items.length
-                            ? items.join(" · ")
-                            : "Nothing in this category is in use."}
+                            ? tx(items.join(" · "))
+                            : tx("Nothing in this category is in use.")}
                         </span>
                       </span>
                     </label>
@@ -288,15 +275,9 @@ export function CookieConsent({
             </ul>
 
             <div className="mt-6 flex flex-col gap-2.5 sm:flex-row">
-              <Button onClick={() => decide(draft)} variant="primary">
-                Save choices
-              </Button>
-              <Button onClick={() => decide(ACCEPT_ALL)} variant="outline">
-                Accept all
-              </Button>
-              <Button onClick={() => decide(DEFAULT_CONSENT)} variant="ghost">
-                Reject all
-              </Button>
+              <Button onClick={() => decide(draft)} variant="primary">{tx("Save choices")}</Button>
+              <Button onClick={() => decide(ACCEPT_ALL)} variant="outline">{tx("Accept all")}</Button>
+              <Button onClick={() => decide(DEFAULT_CONSENT)} variant="ghost">{tx("Reject all")}</Button>
             </div>
           </div>
         )}

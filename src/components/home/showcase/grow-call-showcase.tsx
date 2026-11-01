@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { cn } from "@/lib/utils";
 import { useLoop } from "./use-loop";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Grow, second row: CallFlow picking up a call the owner could not.
@@ -54,19 +55,15 @@ export function GrowCallShowcase() {
 
   return (
     <figure ref={root} className="@container relative w-full">
-      <figcaption className="sr-only">
-        A call to a bakery answered by CallFlow after hours. The caller books a cake tasting for
-        Saturday at 10:30; the slot fills in the bookings calendar and the owner gets a call
-        summary with the transcript.
-      </figcaption>
+      <figcaption className="sr-only">{tx("A call to a bakery answered by CallFlow after hours. The caller books a cake tasting for Saturday at 10:30; the slot fills in the bookings calendar and the owner gets a call summary with the transcript.")}</figcaption>
 
       <div aria-hidden="true" className="relative mx-auto aspect-[10/8.4] w-full max-w-[640px]">
         {/* ── Behind, left: bookings calendar ─────────────────────────────── */}
         {/* Side cards pad their phone-facing edge: the phone covers it. */}
         <div className="absolute left-0 top-[16%] w-[40%] rounded-[2.4cqw] bg-white py-[2.6cqw] pl-[2.6cqw] pr-[9cqw] shadow-[0_24px_50px_-26px_rgb(15_23_42/0.4),0_0_0_1px_rgb(15_23_42/0.06)]">
           <div className="flex items-center justify-between">
-            <span className="text-[1.9cqw] font-semibold text-[#1f2430]">Bookings</span>
-            <span className="text-[1.4cqw] text-[#6b7280]">Sat, Oct 10</span>
+            <span className="text-[1.9cqw] font-semibold text-[#1f2430]">{tx("Bookings")}</span>
+            <span className="text-[1.4cqw] text-[#6b7280]">{tx("Sat, Oct 10")}</span>
           </div>
           <ul className="mt-[2cqw] flex flex-col gap-[1cqw]">
             {[
@@ -78,7 +75,7 @@ export function GrowCallShowcase() {
               const fresh = slot.time === "10:30";
               return (
                 <li key={slot.time} className="flex items-center gap-[1.4cqw]">
-                  <span className="w-[5cqw] shrink-0 text-[1.35cqw] tabular-nums text-[#6b7280]">{slot.time}</span>
+                  <span className="w-[5cqw] shrink-0 text-[1.35cqw] tabular-nums text-[#6b7280]">{tx(slot.time)}</span>
                   <span
                     className={cn(
                       "flex h-[5cqw] flex-1 items-center rounded-[1cqw] px-[1.4cqw] text-[1.35cqw] font-medium transition-[background-color,color,box-shadow] duration-500",
@@ -91,7 +88,7 @@ export function GrowCallShowcase() {
                           : "border border-dashed border-[#e3e6ec] text-[#c0c5cf]",
                     )}
                   >
-                    {fresh ? (f.booked ? "Cake tasting · Maria G." : "Open") : slot.label || "Open"}
+                    {fresh ? (f.booked ? tx("Cake tasting · Maria G.") : tx("Open")) : tx(slot.label) || tx("Open")}
                   </span>
                 </li>
               );
@@ -114,8 +111,8 @@ export function GrowCallShowcase() {
               </svg>
             </span>
             <span className="min-w-0">
-              <span className="block text-[1.7cqw] font-semibold leading-tight text-[#1f2430]">Call answered by CallFlow</span>
-              <span className="block text-[1.3cqw] text-[#6b7280]">Today 7:42 PM · 0:31</span>
+              <span className="block text-[1.7cqw] font-semibold leading-tight text-[#1f2430]">{tx("Call answered by CallFlow")}</span>
+              <span className="block text-[1.3cqw] text-[#6b7280]">{tx("Today 7:42 PM · 0:31")}</span>
             </span>
           </div>
           <dl className="mt-[2cqw] grid gap-[1cqw] text-[1.35cqw]">
@@ -125,14 +122,12 @@ export function GrowCallShowcase() {
               ["Outcome", f.summary ? "Booked Sat 10:30 · SMS sent" : "—"],
             ].map(([k, v]) => (
               <div key={k} className="flex justify-between gap-[1.4cqw] border-b border-[#f0f1f4] pb-[0.8cqw]">
-                <dt className="text-[#6b7280]">{k}</dt>
-                <dd className="truncate text-right font-medium text-[#1f2430]">{v}</dd>
+                <dt className="text-[#6b7280]">{tx(k)}</dt>
+                <dd className="truncate text-right font-medium text-[#1f2430]">{tx(v)}</dd>
               </div>
             ))}
           </dl>
-          <span className="mt-[1.6cqw] inline-flex items-center gap-[0.6cqw] text-[1.35cqw] font-semibold text-primary">
-            Read transcript
-            <svg viewBox="0 0 16 16" className="size-[1.5cqw]" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+          <span className="mt-[1.6cqw] inline-flex items-center gap-[0.6cqw] text-[1.35cqw] font-semibold text-primary">{tx("Read transcript")}<svg viewBox="0 0 16 16" className="size-[1.5cqw]" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
               <path d="M5 11 11 5M6.5 5H11v4.5" />
             </svg>
           </span>
@@ -153,9 +148,9 @@ export function GrowCallShowcase() {
 
               {/* Call header */}
               <div className="mt-[3cqw] text-center">
-                <p className="text-[1.25cqw] text-white/60">Crumb &amp; Co. · Main line</p>
+                <p className="text-[1.25cqw] text-white/60">{tx("Crumb & Co. · Main line")}</p>
                 <p className="mt-[0.8cqw] text-[2.6cqw] font-semibold tracking-[-0.01em]">
-                  {f.summary || reduced ? "Maria Gómez" : "+1 (305) •••-0142"}
+                  {f.summary || reduced ? tx("Maria Gómez") : "+1 (305) •••-0142"}
                 </p>
                 <p
                   className={cn(
@@ -165,15 +160,12 @@ export function GrowCallShowcase() {
                 >
                   {f.ringing ? (
                     <>
-                      <span className="size-[0.9cqw] animate-ping rounded-full bg-[#4ade80]" />
-                      Incoming call…
-                    </>
+                      <span className="size-[0.9cqw] animate-ping rounded-full bg-[#4ade80]" />{tx("Incoming call…")}</>
                   ) : f.ended ? (
-                    `Call ended · ${clock}`
+                    tx(`Call ended · ${clock}`)
                   ) : (
                     <>
-                      <span className="size-[0.9cqw] animate-pulse rounded-full bg-[#7dd3fc]" />
-                      CallFlow answering · {clock}
+                      <span className="size-[0.9cqw] animate-pulse rounded-full bg-[#7dd3fc]" />{tx("CallFlow answering · ")}{tx(clock)}
                     </>
                   )}
                 </p>
@@ -191,7 +183,7 @@ export function GrowCallShowcase() {
                         : "self-start rounded-bl-[0.4cqw] bg-white/12 text-white",
                     )}
                   >
-                    {t.text}
+                    {tx(t.text)}
                   </span>
                 ))}
               </div>

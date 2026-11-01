@@ -4,6 +4,7 @@ import { useSyncExternalStore } from "react";
 import { billing } from "@/data/company";
 import { cartStore } from "@/lib/domains/cart";
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Header cart, Hostinger-style: an icon with the WHMCS cart count, linking to
@@ -37,9 +38,9 @@ export function CartButton({ onDark = false }: { onDark?: boolean }) {
         aria-hidden="true"
         className="tabular absolute -top-1 -right-1 inline-flex min-w-5 items-center justify-center rounded-full bg-primary px-1 text-micro font-semibold text-white"
       >
-        {count > 99 ? "99+" : count}
+        {count > 99 ? "99+" : tx(count)}
       </span>
-      <span className="sr-only">Cart, {count} {count === 1 ? "item" : "items"}</span>
+      <span className="sr-only">{tx("Cart, ")}{tx(count)} {count === 1 ? tx("item") : tx("items")}</span>
     </a>
   );
 }

@@ -3,6 +3,7 @@ import { Section, SectionHeader } from "@/components/ui/section";
 import { billing } from "@/data/company";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Product-fit comparison.
@@ -78,9 +79,9 @@ export function ProductFit() {
     <Section labelledBy="fit-heading">
       <SectionHeader
         id="fit-heading"
-        eyebrow="Choosing"
-        title="When cloud is the right answer — and when it is not"
-        lede="Cloud suits sites whose traffic moves. If yours is flat and small, shared is cheaper; if you need root access, a VPS is the better fit. Here is the honest comparison."
+        eyebrow={tx("Choosing")}
+        title={tx("When cloud is the right answer — and when it is not")}
+        lede={tx("Cloud suits sites whose traffic moves. If yours is flat and small, shared is cheaper; if you need root access, a VPS is the better fit. Here is the honest comparison.")}
       />
 
       <div
@@ -88,19 +89,15 @@ export function ProductFit() {
         // narrow viewports. Without tabIndex this region is unreachable.
         tabIndex={0}
         role="region"
-        aria-label="Comparison of Serverlys hosting types"
+        aria-label={tx("Comparison of Serverlys hosting types")}
         className="mt-12 -mx-5 overflow-x-auto px-5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:mx-0 sm:px-0"
       >
         <table className="w-full min-w-[44rem] border-collapse text-left">
-          <caption className="sr-only">
-            How Serverlys shared, cloud, VPS and dedicated hosting compare
-          </caption>
+          <caption className="sr-only">{tx("How Serverlys shared, cloud, VPS and dedicated hosting compare")}</caption>
           <thead>
             <tr>
               <th scope="col" className="w-40 pb-4 pr-4 align-bottom">
-                <span className="text-micro text-fg-muted font-semibold">
-                  Compare
-                </span>
+                <span className="text-micro text-fg-muted font-semibold">{tx("Compare")}</span>
               </th>
               {COLUMNS.map((col) => (
                 <th
@@ -120,18 +117,18 @@ export function ProductFit() {
                         href={col.href}
                         className="rounded-sm text-h4 text-fg transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                       >
-                        {col.name}
+                        {tx(col.name)}
                       </Link>
                     ) : (
-                      <span className="text-h4 text-fg">{col.name}</span>
+                      <span className="text-h4 text-fg">{tx(col.name)}</span>
                     )}
                     {col.available ? (
                       // `success`, not `brand`: the highlighted column is
                       // already primary-soft, so a brand badge's pill would
                       // disappear into it — and availability is a status.
-                      <Badge tone="success">Available now</Badge>
+                      <Badge tone="success">{tx("Available now")}</Badge>
                     ) : (
-                      <Badge tone="warning">Soon</Badge>
+                      <Badge tone="warning">{tx("Soon")}</Badge>
                     )}
                   </span>
                 </th>
@@ -145,7 +142,7 @@ export function ProductFit() {
                   scope="row"
                   className="py-4 pr-4 align-top text-small font-medium text-fg-secondary"
                 >
-                  {row.label}
+                  {tx(row.label)}
                 </th>
                 {COLUMNS.map((col) => (
                   <td
@@ -157,7 +154,7 @@ export function ProductFit() {
                         : "text-fg-secondary",
                     )}
                   >
-                    {row.values[col.key]}
+                    {tx(row.values[col.key])}
                   </td>
                 ))}
               </tr>
@@ -166,17 +163,11 @@ export function ProductFit() {
         </table>
       </div>
 
-      <p className="mt-6 text-small text-fg-muted">
-        Shared, VPS and dedicated are in development and not orderable yet. If one of
-        them is what you actually need,{" "}
+      <p className="mt-6 text-small text-fg-muted">{tx("Shared, VPS and dedicated are in development and not orderable yet. If one of them is what you actually need,")}{" "}
         <a
           href={billing.sales}
           className="inline-block rounded-sm py-1 font-medium text-primary underline underline-offset-4 hover:text-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-        >
-          tell us
-        </a>{" "}
-        and we will say honestly whether cloud covers it today.
-      </p>
+        >{tx("tell us")}</a>{" "}{tx("and we will say honestly whether cloud covers it today.")}</p>
     </Section>
   );
 }

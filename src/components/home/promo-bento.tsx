@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight, CtaButton, Grid, PillLabel } from "@/components/ref/kit";
 import { BLACK_FRIDAY, formatPrice, groupById, lowestRate, quote } from "@/data/pricing";
+import { t as tx } from "@/i18n/t";
 
 /**
  * The reference's `homepage-agents-hero` bento: one wide brand card spanning
@@ -43,46 +44,33 @@ export function PromoBento() {
               className="absolute inset-y-0 right-0 -z-10 w-1/3 bg-white/[0.06] [clip-path:polygon(55%_0,100%_0,100%_100%,0_100%)]"
             />
             <div>
-              <PillLabel tone="on-dark" className="w-fit">
-                Pricing
-              </PillLabel>
+              <PillLabel tone="on-dark" className="w-fit">{tx("Pricing")}</PillLabel>
               <h2
                 id="promo-heading"
                 className="mt-10 text-[26px] leading-8 font-medium tracking-[-0.02em] text-white"
-              >
-                Both prices, before you pay
-              </h2>
-              <p className="mt-2 max-w-[440px] text-small text-fg-on-brand-muted">
-                Every plan shows the rate it renews at next to the rate you start on, with
-                the same tools and free migration.
-              </p>
+              >{tx("Both prices, before you pay")}</h2>
+              <p className="mt-2 max-w-[440px] text-small text-fg-on-brand-muted">{tx("Every plan shows the rate it renews at next to the rate you start on, with the same tools and free migration.")}</p>
               <div className="mt-6">
-                <CtaButton href="/pricing" tone="light">
-                  Compare all plans
-                </CtaButton>
+                <CtaButton href="/pricing" tone="light">{tx("Compare all plans")}</CtaButton>
               </div>
             </div>
             <div className="flex gap-8 text-white md:flex-col md:gap-4 md:text-right">
               <p>
                 <span className="block text-small text-fg-on-brand-muted">
-                  {starter && quote(starter, "monthly").bf ? `Black Friday, until ${BLACK_FRIDAY.endsLabel}` : "Starts at"}
+                  {starter && quote(starter, "monthly").bf ? tx(`Black Friday, until ${BLACK_FRIDAY.endsLabel}`) : tx("Starts at")}
                 </span>
                 <span className="tabular block text-[48px] leading-none font-medium tracking-[-0.03em]">
-                  {formatPrice((starter && quote(starter, "monthly").bf?.perMonth) || lowestRate)}
-                  <span className="ml-1 text-body font-normal tracking-normal text-fg-on-brand-muted">
-                    /mo
-                  </span>
+                  {tx(formatPrice((starter && quote(starter, "monthly").bf?.perMonth) || lowestRate))}
+                  <span className="ml-1 text-body font-normal tracking-normal text-fg-on-brand-muted">{tx("/mo")}</span>
                 </span>
               </p>
               {starter && (
                 <p>
-                  <span className="block text-small text-fg-on-brand-muted">Renews at</span>
+                  <span className="block text-small text-fg-on-brand-muted">{tx("Renews at")}</span>
                   {/* WHMCS renews at the monthly price itself, not at `standard`. */}
-                  <span className="tabular block text-h4">{formatPrice(starter.monthly)}/mo</span>
+                  <span className="tabular block text-h4">{tx(formatPrice(starter.monthly))}{tx("/mo")}</span>
                   {starter.setupFee ? (
-                    <span className="block text-micro text-fg-on-brand-muted">
-                      plus {formatPrice(quote(starter, "monthly").bf?.setup ?? starter.setupFee)} one-off setup
-                    </span>
+                    <span className="block text-micro text-fg-on-brand-muted">{tx("plus ")}{tx(formatPrice(quote(starter, "monthly").bf?.setup ?? starter.setupFee))}{tx(" one-off setup")}</span>
                   ) : null}
                 </p>
               )}
@@ -97,11 +85,11 @@ export function PromoBento() {
                 className="group relative flex flex-1 flex-col overflow-hidden rounded-2xl bg-brand-50 p-6 transition-colors duration-fast hover:bg-brand-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
                 <span className="flex items-start justify-between gap-4">
-                  <PillLabel tone="brand">{s.pill}</PillLabel>
+                  <PillLabel tone="brand">{tx(s.pill)}</PillLabel>
                   <ArrowUpRight className="size-5 shrink-0 text-fg transition-transform duration-fast group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </span>
-                <span className="mt-6 block pr-20 text-body-lg font-medium text-fg">{s.title}</span>
-                <span className="mt-1 block pr-20 text-small text-fg-secondary">{s.body}</span>
+                <span className="mt-6 block pr-20 text-body-lg font-medium text-fg">{tx(s.title)}</span>
+                <span className="mt-1 block pr-20 text-small text-fg-secondary">{tx(s.body)}</span>
                 <span
                   aria-hidden="true"
                   className={`absolute right-5 bottom-5 inline-flex size-14 items-center justify-center rounded-2xl text-white shadow-e3 ring-8 ring-white/70 ${

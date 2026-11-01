@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { company } from "@/data/company";
+import { t as tx } from "@/i18n/t";
 
 /**
  * The Serverlys logo.
@@ -77,7 +78,7 @@ export function Wordmark({
     >
       <Image
         src={onDark ? "/brand/logo-on-dark.webp" : "/brand/logo.webp"}
-        alt={company.name}
+        alt={tx(company.name)}
         /* Intrinsic dimensions. Next needs the true ratio to reserve the right
            box and avoid a layout shift as it loads. Both files share them. */
         width={1653}

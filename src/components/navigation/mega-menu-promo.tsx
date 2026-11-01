@@ -6,6 +6,7 @@ import { ConvoAiLogo } from "@/components/layout/convoai-logo";
 import Image from "next/image";
 import { planGroups, quote } from "@/data/pricing";
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Promotional panel — the mega menu's right-hand zone.
@@ -20,7 +21,7 @@ export function MegaMenuPromo({ promo }: { promo: MegaPromo }) {
 
   const cta = (
     <span className="mt-5 flex h-11 w-full items-center justify-center rounded-lg bg-white px-4 text-body font-semibold text-fg transition-colors duration-fast group-hover/promo:bg-brand-50">
-      {promo.cta.label}
+      {tx(promo.cta.label)}
     </span>
   );
 
@@ -41,7 +42,7 @@ export function MegaMenuPromo({ promo }: { promo: MegaPromo }) {
           </span>
         ) : (
           <span className="text-caption uppercase font-semibold tracking-[0.04em] text-white">
-            {promo.eyebrow}
+            {tx(promo.eyebrow)}
           </span>
         )}
         <span aria-hidden="true" className="text-white">
@@ -52,8 +53,8 @@ export function MegaMenuPromo({ promo }: { promo: MegaPromo }) {
       <PromoVisual kind={promo.visual} />
 
       <div className="relative mt-auto">
-        <p className="text-[20px] leading-[26px] font-medium tracking-[-0.01em] text-white">{promo.title}</p>
-        <p className="mt-2 text-small text-white/85">{promo.body}</p>
+        <p className="text-[20px] leading-[26px] font-medium tracking-[-0.01em] text-white">{tx(promo.title)}</p>
+        <p className="mt-2 text-small text-white/85">{tx(promo.body)}</p>
 
         {isExternal ? (
           <a
@@ -62,14 +63,14 @@ export function MegaMenuPromo({ promo }: { promo: MegaPromo }) {
             rel="noopener noreferrer"
             className="group/promo block rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
-            {cta}
+            {tx(cta)}
           </a>
         ) : (
           <Link
             href={target.href}
             className="group/promo block rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
-            {cta}
+            {tx(cta)}
           </Link>
         )}
       </div>
@@ -111,7 +112,7 @@ function Dot({ className }: { className?: string }) {
 function PromoVisual({ kind }: { kind: MegaPromo["visual"] }) {
   return (
     <div aria-hidden="true" className="relative my-5 flex h-[12.5rem] select-none flex-col justify-center text-[11px] leading-[1.35]">
-      {VISUALS[kind]()}
+      {tx(VISUALS[kind]())}
     </div>
   );
 }
@@ -123,22 +124,17 @@ const VISUALS: Record<MegaPromo["visual"], () => React.ReactNode> = {
       <div className="flex items-center gap-2 border-b border-line-subtle px-3 py-2">
         <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">B</span>
         <span className="flex-1">
-          <span className="block font-semibold">Brightleaf Bakery</span>
-          <span className="flex items-center gap-1 text-[10px] text-fg-muted"><Dot className="bg-success-fill" />AI agent · online</span>
+          <span className="block font-semibold">{tx("Brightleaf Bakery")}</span>
+          <span className="flex items-center gap-1 text-[10px] text-fg-muted"><Dot className="bg-success-fill" />{tx("AI agent · online")}</span>
         </span>
-        <span className="rounded-md bg-ink-100 px-1.5 py-0.5 text-[10px] tabular-nums text-fg-secondary">2:04 AM</span>
+        <span className="rounded-md bg-ink-100 px-1.5 py-0.5 text-[10px] tabular-nums text-fg-secondary">{tx("2:04 AM")}</span>
       </div>
       <div className="flex flex-col gap-1.5 bg-ink-50 p-3">
-        <p className="ml-auto max-w-[78%] rounded-xl rounded-br-sm bg-primary px-2.5 py-1.5 text-white">Are you open on Sunday?</p>
-        <p className="max-w-[82%] rounded-xl rounded-bl-sm bg-white px-2.5 py-1.5 shadow-sm motion-safe:animate-[promoPop_6s_ease-out_infinite]">
-          Yes, 8am to 2pm. Want me to save you a table?
-        </p>
-        <p className="ml-auto max-w-[60%] rounded-xl rounded-br-sm bg-primary px-2.5 py-1.5 text-white motion-safe:animate-[promoPop2_6s_ease-out_infinite]">
-          9am for two, please
-        </p>
+        <p className="ml-auto max-w-[78%] rounded-xl rounded-br-sm bg-primary px-2.5 py-1.5 text-white">{tx("Are you open on Sunday?")}</p>
+        <p className="max-w-[82%] rounded-xl rounded-bl-sm bg-white px-2.5 py-1.5 shadow-sm motion-safe:animate-[promoPop_6s_ease-out_infinite]">{tx("Yes, 8am to 2pm. Want me to save you a table?")}</p>
+        <p className="ml-auto max-w-[60%] rounded-xl rounded-br-sm bg-primary px-2.5 py-1.5 text-white motion-safe:animate-[promoPop2_6s_ease-out_infinite]">{tx("9am for two, please")}</p>
         <p className="flex items-center gap-1.5 self-start rounded-full bg-success-soft px-2 py-1 font-semibold text-success motion-safe:animate-[promoPop3_6s_ease-out_infinite]">
-          <Check /> Table booked · Sun 9:00 AM
-        </p>
+          <Check />{tx(" Table booked · Sun 9:00 AM")}</p>
       </div>
     </div>
   ),
@@ -148,12 +144,12 @@ const VISUALS: Record<MegaPromo["visual"], () => React.ReactNode> = {
     <>
       <div className={cn(screen, "relative mx-1 p-3.5")}>
         <div className="flex items-center justify-between">
-          <span className="font-semibold">{TURBO.name}</span>
-          <span className="rounded-full bg-brand-50 px-2 py-0.5 text-[10px] font-semibold text-primary">{TURBO.specs.sites}</span>
+          <span className="font-semibold">{tx(TURBO.name)}</span>
+          <span className="rounded-full bg-brand-50 px-2 py-0.5 text-[10px] font-semibold text-primary">{tx(TURBO.specs.sites)}</span>
         </div>
         <p className="mt-2 flex items-baseline gap-1">
-          <span className="text-[26px] font-semibold leading-none tracking-[-0.02em]">${TURBO_TODAY.toFixed(2)}</span>
-          <span className="text-fg-muted">/mo</span>
+          <span className="text-[26px] font-semibold leading-none tracking-[-0.02em]">${tx(TURBO_TODAY.toFixed(2))}</span>
+          <span className="text-fg-muted">{tx("/mo")}</span>
         </p>
         <div className="mt-3 space-y-2">
           {[
@@ -162,8 +158,8 @@ const VISUALS: Record<MegaPromo["visual"], () => React.ReactNode> = {
           ].map(([label, v, bar]) => (
             <div key={label as string}>
               <div className="flex justify-between text-fg-secondary">
-                <span>{label}</span>
-                <span className="font-semibold tabular-nums text-fg">${(v as number).toFixed(2)}/mo</span>
+                <span>{tx(label)}</span>
+                <span className="font-semibold tabular-nums text-fg">${tx((v as number).toFixed(2))}{tx("/mo")}</span>
               </div>
               <span className="mt-1 block h-1.5 overflow-hidden rounded-full bg-ink-100">
                 <span
@@ -176,9 +172,7 @@ const VISUALS: Record<MegaPromo["visual"], () => React.ReactNode> = {
         </div>
       </div>
       <span className="absolute -bottom-1 right-0 flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1.5 font-semibold text-fg shadow-lg motion-safe:animate-[promoFloat_4s_ease-in-out_infinite]">
-        <span className="flex h-4 w-4 items-center justify-center rounded-full bg-success-fill text-white"><Check className="h-2 w-2" /></span>
-        Both prices, up front
-      </span>
+        <span className="flex h-4 w-4 items-center justify-center rounded-full bg-success-fill text-white"><Check className="h-2 w-2" /></span>{tx("Both prices, up front")}</span>
     </>
   ),
 
@@ -188,10 +182,10 @@ const VISUALS: Record<MegaPromo["visual"], () => React.ReactNode> = {
       <div className="flex items-center gap-2 rounded-lg px-2.5 py-2 ring-1 ring-primary shadow-[0_0_0_3px_rgb(0_0_255/0.1)]">
         <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-fg-muted" fill="none" stroke="currentColor" strokeWidth="2.2"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
         <span className="flex-1 font-medium">
-          <span className="inline-block overflow-hidden whitespace-nowrap align-bottom motion-safe:animate-[promoType_5s_steps(10)_infinite]">brightleaf</span>
+          <span className="inline-block overflow-hidden whitespace-nowrap align-bottom motion-safe:animate-[promoType_5s_steps(10)_infinite]">{tx("brightleaf")}</span>
           <span className="ml-px inline-block h-3 w-px translate-y-0.5 bg-primary motion-safe:animate-pulse" />
         </span>
-        <span className="rounded-md bg-primary px-2 py-1 text-[10px] font-semibold text-white">Search</span>
+        <span className="rounded-md bg-primary px-2 py-1 text-[10px] font-semibold text-white">{tx("Search")}</span>
       </div>
       <ul className="mt-2.5 space-y-1.5">
         {[
@@ -207,16 +201,15 @@ const VISUALS: Record<MegaPromo["visual"], () => React.ReactNode> = {
             )}
             style={{ animationDelay: `${i * 0.12}s` }}
           >
-            <span className={cn("font-semibold", !free && "text-fg-muted line-through")}>
-              brightleaf<span className={free ? "text-primary" : undefined}>{tld as string}</span>
+            <span className={cn("font-semibold", !free && "text-fg-muted line-through")}>{tx("brightleaf")}<span className={free ? "text-primary" : undefined}>{tx(tld as string)}</span>
             </span>
             {free ? (
               <span className={cn("flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-semibold", added ? "bg-success-fill text-white" : "text-primary ring-1 ring-brand-200")}>
                 {added && <Check className="h-2 w-2" />}
-                {added ? "Added" : "Add"}
+                {added ? tx("Added") : tx("Add")}
               </span>
             ) : (
-              <span className="text-[10px] text-fg-muted">Taken</span>
+              <span className="text-[10px] text-fg-muted">{tx("Taken")}</span>
             )}
           </li>
         ))}
@@ -229,8 +222,8 @@ const VISUALS: Record<MegaPromo["visual"], () => React.ReactNode> = {
     <>
       <div className={cn(screen, "relative mx-1 p-3")}>
         <div className="flex items-center justify-between">
-          <span className="font-semibold">Moving brightleaf.co</span>
-          <span className="flex items-center gap-1 rounded-full bg-success-soft px-2 py-0.5 text-[10px] font-semibold text-success"><Dot className="bg-success-fill motion-safe:animate-pulse" />Site live</span>
+          <span className="font-semibold">{tx("Moving brightleaf.co")}</span>
+          <span className="flex items-center gap-1 rounded-full bg-success-soft px-2 py-0.5 text-[10px] font-semibold text-success"><Dot className="bg-success-fill motion-safe:animate-pulse" />{tx("Site live")}</span>
         </div>
         <ul className="mt-2.5 space-y-2">
           {["Files", "Database", "Mailboxes", "Switch DNS"].map((step, i) => (
@@ -243,7 +236,7 @@ const VISUALS: Record<MegaPromo["visual"], () => React.ReactNode> = {
               >
                 {i < 2 ? <Check className="h-2 w-2" /> : <Dot className={i === 2 ? "bg-white" : "bg-current"} />}
               </span>
-              <span className={cn("w-[4.6rem]", i > 2 && "text-fg-muted")}>{step}</span>
+              <span className={cn("w-[4.6rem]", i > 2 && "text-fg-muted")}>{tx(step)}</span>
               <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-ink-100">
                 <span
                   className={cn(
@@ -258,9 +251,9 @@ const VISUALS: Record<MegaPromo["visual"], () => React.ReactNode> = {
         </ul>
       </div>
       <span className="absolute -bottom-1 left-0 flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1.5 font-semibold shadow-lg motion-safe:animate-[promoFloat_4s_ease-in-out_infinite]">
-        <span className="rounded-md bg-ink-100 px-1.5 py-0.5 text-[10px] text-fg-secondary">Old host</span>
+        <span className="rounded-md bg-ink-100 px-1.5 py-0.5 text-[10px] text-fg-secondary">{tx("Old host")}</span>
         <svg viewBox="0 0 16 16" className="h-3 w-3 text-primary" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 8h10M9 4l4 4-4 4" /></svg>
-        <span className="rounded-md bg-brand-50 px-1.5 py-0.5 text-[10px] text-primary">Serverlys</span>
+        <span className="rounded-md bg-brand-50 px-1.5 py-0.5 text-[10px] text-primary">{tx("Serverlys")}</span>
       </span>
     </>
   ),
@@ -270,8 +263,8 @@ const VISUALS: Record<MegaPromo["visual"], () => React.ReactNode> = {
     <div className={cn(screen, "relative mx-1 overflow-hidden")}>
       <div className="flex items-center justify-between border-b border-line-subtle px-3 py-2">
         <span>
-          <span className="block font-semibold">Inbox</span>
-          <span className="block text-[10px] text-fg-muted">jordan@brightleaf.co</span>
+          <span className="block font-semibold">{tx("Inbox")}</span>
+          <span className="block text-[10px] text-fg-muted">{tx("jordan@brightleaf.co")}</span>
         </span>
         <span className="rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-semibold text-white">3</span>
       </div>
@@ -293,8 +286,8 @@ const VISUALS: Record<MegaPromo["visual"], () => React.ReactNode> = {
               <Image src={src} alt="" fill sizes="24px" className="object-cover" />
             </span>
             <span className="min-w-0 flex-1">
-              <span className={cn("block truncate", i === 0 ? "font-semibold" : "font-medium")}>{name}</span>
-              <span className="block truncate text-[10px] text-fg-secondary">{subject}</span>
+              <span className={cn("block truncate", i === 0 ? "font-semibold" : "font-medium")}>{tx(name)}</span>
+              <span className="block truncate text-[10px] text-fg-secondary">{tx(subject)}</span>
             </span>
             {i === 0 && <Dot className="bg-primary" />}
           </li>
@@ -306,7 +299,7 @@ const VISUALS: Record<MegaPromo["visual"], () => React.ReactNode> = {
   /* Plan finder — answer one question, get the tier and its renewal. */
   finder: () => (
     <div className={cn(screen, "relative mx-1 p-3")}>
-      <p className="font-semibold">What do you run?</p>
+      <p className="font-semibold">{tx("What do you run?")}</p>
       <div className="mt-2 flex flex-wrap gap-1">
         {["Blog", "Online store", "Agency", "Busy site"].map((c) => (
           <span
@@ -316,17 +309,17 @@ const VISUALS: Record<MegaPromo["visual"], () => React.ReactNode> = {
               c === "Online store" ? "bg-primary text-white" : "bg-ink-100 text-fg-secondary",
             )}
           >
-            {c}
+            {tx(c)}
           </span>
         ))}
       </div>
       <div className="mt-2.5 rounded-lg bg-[linear-gradient(150deg,#0f1f4d,#071230)] p-2.5 text-white motion-safe:animate-[promoPop_5s_ease-out_infinite]">
         <div className="flex items-baseline justify-between">
-          <span className="font-semibold">{TURBO.name}</span>
-          <span className="text-[15px] font-semibold">${TURBO_TODAY.toFixed(2)}<span className="text-[10px] font-normal text-white/60">/mo</span></span>
+          <span className="font-semibold">{tx(TURBO.name)}</span>
+          <span className="text-[15px] font-semibold">${tx(TURBO_TODAY.toFixed(2))}<span className="text-[10px] font-normal text-white/60">{tx("/mo")}</span></span>
         </div>
-        <p className="mt-0.5 text-[10px] text-[#7dd3fc]">{TURBO.specs.sites} · {TURBO.specs.visits}</p>
-        <p className="mt-1.5 border-t border-white/10 pt-1.5 text-[10px] text-white/70">Renews at ${TURBO_RENEW.toFixed(2)}/mo</p>
+        <p className="mt-0.5 text-[10px] text-[#7dd3fc]">{tx(TURBO.specs.sites)} · {tx(TURBO.specs.visits)}</p>
+        <p className="mt-1.5 border-t border-white/10 pt-1.5 text-[10px] text-white/70">{tx("Renews at $")}{tx(TURBO_RENEW.toFixed(2))}{tx("/mo")}</p>
       </div>
     </div>
   ),
@@ -339,8 +332,8 @@ const VISUALS: Record<MegaPromo["visual"], () => React.ReactNode> = {
           <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 12h12M12 6l6 6-6 6" /></svg>
         </span>
         <span className="flex-1">
-          <span className="block font-semibold">Migration request</span>
-          <span className="block text-[10px] text-fg-muted">brightleaf.co · handled by the team</span>
+          <span className="block font-semibold">{tx("Migration request")}</span>
+          <span className="block text-[10px] text-fg-muted">{tx("brightleaf.co · handled by the team")}</span>
         </span>
       </div>
       <ol className="relative mt-3 space-y-2.5 pl-5 before:absolute before:bottom-1.5 before:left-[7px] before:top-1.5 before:w-px before:bg-line">
@@ -359,7 +352,7 @@ const VISUALS: Record<MegaPromo["visual"], () => React.ReactNode> = {
             >
               {state === "done" && <Check className="h-2 w-2" />}
             </span>
-            <span className={cn(state === "next" ? "text-fg-muted" : "font-medium")}>{label}</span>
+            <span className={cn(state === "next" ? "text-fg-muted" : "font-medium")}>{tx(label)}</span>
           </li>
         ))}
       </ol>
@@ -371,10 +364,10 @@ const VISUALS: Record<MegaPromo["visual"], () => React.ReactNode> = {
     <div className={cn(screen, "relative mx-1 overflow-hidden")}>
       <span className="relative block h-[5.5rem] bg-ink-100">
         <Image src="/blog/covers/how-to-read-hosting-renewal-pricing.webp" alt="" fill sizes="280px" className="object-cover" />
-        <span className="absolute left-2 top-2 rounded-md bg-white/90 px-1.5 py-0.5 text-[10px] font-semibold text-primary">Guide</span>
+        <span className="absolute left-2 top-2 rounded-md bg-white/90 px-1.5 py-0.5 text-[10px] font-semibold text-primary">{tx("Guide")}</span>
       </span>
       <div className="p-3">
-        <p className="font-semibold">How to read hosting renewal pricing</p>
+        <p className="font-semibold">{tx("How to read hosting renewal pricing")}</p>
         <div className="mt-2 flex items-end gap-3">
           {[
             ["First month", TURBO_TODAY, "bg-primary"],
@@ -386,8 +379,8 @@ const VISUALS: Record<MegaPromo["visual"], () => React.ReactNode> = {
                 style={{ height: `${((v as number) / TURBO_RENEW) * 26}px` }}
               />
               <span className="text-[10px] leading-tight text-fg-secondary">
-                {label}
-                <span className="block font-semibold tabular-nums text-fg">${(v as number).toFixed(2)}</span>
+                {tx(label)}
+                <span className="block font-semibold tabular-nums text-fg">${tx((v as number).toFixed(2))}</span>
               </span>
             </div>
           ))}
@@ -404,18 +397,16 @@ const VISUALS: Record<MegaPromo["visual"], () => React.ReactNode> = {
           S<span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full bg-success-fill ring-2 ring-white" />
         </span>
         <span className="flex-1">
-          <span className="block font-semibold">Serverlys support</span>
-          <span className="block text-[10px] text-fg-muted">A person on the team</span>
+          <span className="block font-semibold">{tx("Serverlys support")}</span>
+          <span className="block text-[10px] text-fg-muted">{tx("A person on the team")}</span>
         </span>
       </div>
       <div className="flex flex-col gap-1.5 bg-ink-50 p-3">
-        <p className="ml-auto max-w-[80%] rounded-xl rounded-br-sm bg-primary px-2.5 py-1.5 text-white">My domain still shows the old site</p>
-        <p className="max-w-[86%] rounded-xl rounded-bl-sm bg-white px-2.5 py-1.5 shadow-sm motion-safe:animate-[promoPop_6s_ease-out_infinite]">
-          Your A record still points to the old host. I&apos;ll walk you through the change.
-        </p>
+        <p className="ml-auto max-w-[80%] rounded-xl rounded-br-sm bg-primary px-2.5 py-1.5 text-white">{tx("My domain still shows the old site")}</p>
+        <p className="max-w-[86%] rounded-xl rounded-bl-sm bg-white px-2.5 py-1.5 shadow-sm motion-safe:animate-[promoPop_6s_ease-out_infinite]">{tx("Your A record still points to the old host. I'll walk you through the change.")}</p>
         <div className="flex gap-1 motion-safe:animate-[promoPop2_6s_ease-out_infinite]">
           {["Migration", "DNS", "Billing"].map((t) => (
-            <span key={t} className="rounded-full bg-white px-2 py-0.5 text-[10px] font-medium text-primary ring-1 ring-brand-100">{t}</span>
+            <span key={t} className="rounded-full bg-white px-2 py-0.5 text-[10px] font-medium text-primary ring-1 ring-brand-100">{tx(t)}</span>
           ))}
         </div>
       </div>

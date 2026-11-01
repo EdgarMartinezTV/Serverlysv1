@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 
 /**
@@ -37,7 +38,7 @@ export function PillNav({ items }: { items: readonly { id: string; label: string
 
   return (
     <nav
-      aria-label="On this page"
+      aria-label={tx("On this page")}
       className="pointer-events-none sticky top-18 z-30 -mb-16 bg-transparent py-3"
     >
       <ul className="pointer-events-auto mx-auto flex w-fit max-w-[calc(100vw-2rem)] gap-1 overflow-x-auto rounded-full bg-canvas/90 p-1.5 shadow-e3 ring-1 ring-line backdrop-blur-md">
@@ -54,7 +55,7 @@ export function PillNav({ items }: { items: readonly { id: string; label: string
                   : "text-fg hover:bg-canvas-secondary",
               )}
             >
-              {i.label}
+              {tx(i.label)}
             </a>
           </li>
         ))}

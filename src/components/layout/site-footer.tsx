@@ -6,6 +6,7 @@ import { Wordmark } from "./wordmark";
 import { CurrentYear } from "./current-year";
 import { SocialIcon } from "./social-icon";
 import { CookieSettingsLink } from "@/components/consent/cookie-settings-link";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Site footer.
@@ -93,13 +94,13 @@ export function SiteFooter() {
       <div className="mx-auto w-full max-w-mega px-5 sm:px-8 lg:px-20">
         {/* ── Index ───────────────────────────────────────────────────── */}
         <nav
-          aria-label="Footer"
+          aria-label={tx("Footer")}
           className="grid grid-cols-2 gap-x-6 gap-y-10 pt-12 sm:grid-cols-3 lg:flex lg:justify-between lg:gap-x-11 lg:pt-16"
         >
           {footerNav.map((col) => (
             <div key={col.heading} className="min-w-0">
               <h2 className="text-body font-semibold uppercase leading-6 text-fg">
-                {col.heading}
+                {tx(col.heading)}
               </h2>
               <ul className="mt-2 flex flex-col">
                 {col.links.map((link) => {
@@ -107,13 +108,11 @@ export function SiteFooter() {
                   const label = (
                     <span>
                       <span className="relative">
-                        {link.label}
+                        {tx(link.label)}
                         <span aria-hidden="true" className={UNDERLINE} />
                       </span>
                       {link.status === "soon" && (
-                        <span className="ml-1.5 whitespace-nowrap text-micro text-fg-muted">
-                          · by request
-                        </span>
+                        <span className="ml-1.5 whitespace-nowrap text-micro text-fg-muted">{tx("· by request")}</span>
                       )}
                     </span>
                   );
@@ -121,11 +120,11 @@ export function SiteFooter() {
                     <li key={link.label}>
                       {target.mode === "link" ? (
                         <Link href={target.href} className={LINK}>
-                          {label}
+                          {tx(label)}
                         </Link>
                       ) : (
                         <span className="inline-block py-[5px] text-small leading-5 text-fg-muted">
-                          {label}
+                          {tx(label)}
                         </span>
                       )}
                     </li>
@@ -153,7 +152,7 @@ export function SiteFooter() {
                   >
                     <SocialIcon name={social.label} />
                     <span className="sr-only">
-                      {company.name} on {social.label}
+                      {tx(company.name)}{tx(" on ")}{tx(social.label)}
                     </span>
                   </a>
                 </li>
@@ -173,7 +172,7 @@ export function SiteFooter() {
                   <span className="text-primary">
                     <TrustIcon name={t.icon} />
                   </span>
-                  {t.label}
+                  {tx(t.label)}
                 </li>
               ))}
             </ul>
@@ -186,13 +185,13 @@ export function SiteFooter() {
                     {target.mode === "link" ? (
                       <Link href={target.href} className={LINK}>
                         <span className="relative">
-                          {link.label}
+                          {tx(link.label)}
                           <span aria-hidden="true" className={UNDERLINE} />
                         </span>
                       </Link>
                     ) : (
                       <span className="inline-block py-[5px] text-small leading-5 text-fg-muted">
-                        {link.label}
+                        {tx(link.label)}
                       </span>
                     )}
                   </li>
@@ -209,16 +208,14 @@ export function SiteFooter() {
         {/* ── Bottom line ─────────────────────────────────────────────── */}
         <div className="flex flex-col justify-between gap-3 py-8 text-small text-fg-secondary lg:flex-row lg:items-center">
           <p>
-            © <CurrentYear buildYear={year} /> {company.legalName}. All rights reserved. Domain registrations are
-            subject to the policies of ICANN and the relevant registry.
-          </p>
+            © <CurrentYear buildYear={tx(year)} /> {tx(company.legalName)}{tx(". All rights reserved. Domain registrations are subject to the policies of ICANN and the relevant registry.")}</p>
           {/* min-h-6: 24px tap targets (WCAG 2.5.8); both links sit alone on their line. */}
           <p className="flex flex-wrap items-center gap-x-4 lg:shrink-0">
             <a href={company.phoneHref} className="tabular inline-flex min-h-6 items-center transition-colors hover:text-primary">
-              {company.phone}
+              {tx(company.phone)}
             </a>
             <a href={`mailto:${company.email}`} className="inline-flex min-h-6 items-center transition-colors hover:text-primary">
-              {emailDisplay}
+              {tx(emailDisplay)}
             </a>
           </p>
         </div>

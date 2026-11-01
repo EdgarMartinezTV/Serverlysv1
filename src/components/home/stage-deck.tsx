@@ -4,6 +4,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { Container } from "@/components/ui/container";
 import { stages, type StageId } from "./stages";
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 /**
  * The four stage bands, plus the rail that heads them.
@@ -120,7 +121,7 @@ export function StageDeck({
     <div data-stage-deck="">
       <nav
         data-stage-rail=""
-        aria-label="Stages"
+        aria-label={tx("Stages")}
         className="pointer-events-none sticky top-18 z-30 py-3"
       >
         <Container>
@@ -161,7 +162,7 @@ export function StageDeck({
                         : "text-fg hover:bg-canvas-secondary",
                     )}
                   >
-                    {stage.label}
+                    {tx(stage.label)}
                   </a>
                 </li>
               );
@@ -180,7 +181,7 @@ export function StageDeck({
              attribute is inert at `sm` and up. */
           data-inactive={selected === stage.id ? undefined : ""}
         >
-          {panels[stage.id]}
+          {tx(panels[stage.id])}
         </div>
       ))}
     </div>

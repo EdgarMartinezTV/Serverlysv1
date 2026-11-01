@@ -2,6 +2,7 @@ import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/animations/reveal";
 import { Button } from "@/components/ui/button";
 import { stageById } from "./stages";
+import { t as tx } from "@/i18n/t";
 
 const stage = stageById("manage");
 
@@ -67,10 +68,10 @@ export function StageManage() {
     >
       <Reveal>
         <h2 id="manage-heading" className="display-md mx-auto max-w-[900px] text-center text-fg">
-          {stage.heading}
+          {tx(stage.heading)}
         </h2>
         <p className="mx-auto mt-4 max-w-[620px] text-center text-body-lg text-fg-secondary">
-          {stage.lede}
+          {tx(stage.lede)}
         </p>
       </Reveal>
 
@@ -84,7 +85,7 @@ export function StageManage() {
               className="group/panel border-b border-line"
             >
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&::-webkit-details-marker]:hidden">
-                <span className="text-body-lg font-medium text-fg">{panel.title}</span>
+                <span className="text-body-lg font-medium text-fg">{tx(panel.title)}</span>
                 <svg
                   viewBox="0 0 16 16"
                   aria-hidden="true"
@@ -101,9 +102,9 @@ export function StageManage() {
                 </svg>
               </summary>
               <div className="max-w-[640px] pb-6">
-                <p className="text-body text-fg-secondary">{panel.body}</p>
+                <p className="text-body text-fg-secondary">{tx(panel.body)}</p>
                 <p className="mt-3 w-fit rounded-md bg-brand-50 px-2 py-0.5 text-micro font-semibold text-primary">
-                  {panel.meta}
+                  {tx(panel.meta)}
                 </p>
               </div>
             </details>
@@ -112,11 +113,8 @@ export function StageManage() {
 
         <Reveal delay={80} className="lg:sticky lg:top-32">
           <div className="rounded-2xl bg-brand-50 p-7">
-            <h3 className="text-h4 text-fg">Included before you ask</h3>
-            <p className="mt-2 text-small text-fg-secondary">
-              None of the five are an add-on, an upgrade prompt, or a line on the
-              renewal invoice.
-            </p>
+            <h3 className="text-h4 text-fg">{tx("Included before you ask")}</h3>
+            <p className="mt-2 text-small text-fg-secondary">{tx("None of the five are an add-on, an upgrade prompt, or a line on the renewal invoice.")}</p>
             <ul className="mt-5 flex flex-col gap-2.5">
               {INCLUDED.map((item) => (
                 <li key={item} className="flex items-start gap-2.5 text-body text-fg-secondary">
@@ -134,14 +132,12 @@ export function StageManage() {
                       strokeLinejoin="round"
                     />
                   </svg>
-                  {item}
+                  {tx(item)}
                 </li>
               ))}
             </ul>
             <div className="mt-7">
-              <Button href="/managed-hosting" variant="outline" block>
-                See managed hosting
-              </Button>
+              <Button href="/managed-hosting" variant="outline" block>{tx("See managed hosting")}</Button>
             </div>
           </div>
         </Reveal>

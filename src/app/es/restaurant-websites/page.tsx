@@ -1,7 +1,7 @@
 import { JsonLd } from "@/components/ui/json-ld";
-import { RestaurantLanding } from "@/app/restaurant-websites/_components/landing";
-import { es } from "@/app/restaurant-websites/_content/es";
-import { landingGraphs, landingMetadata } from "@/app/restaurant-websites/_seo";
+import { RestaurantLanding } from "@/app/(en)/restaurant-websites/_components/landing";
+import { es } from "@/app/(en)/restaurant-websites/_content/es";
+import { landingGraphs, landingMetadata } from "@/app/(en)/restaurant-websites/_seo";
 
 /**
  * /es/restaurant-websites — the Spanish twin of /restaurant-websites. Same

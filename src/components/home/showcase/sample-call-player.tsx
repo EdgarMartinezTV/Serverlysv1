@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Grow, second row: a play button so a prospect can hear what a CallFlow call
@@ -44,7 +45,7 @@ export function SampleCallPlayer() {
       <button
         type="button"
         onClick={toggle}
-        aria-label={playing ? "Pause the sample call" : "Play a sample CallFlow call"}
+        aria-label={playing ? tx("Pause the sample call") : tx("Play a sample CallFlow call")}
         className="inline-flex size-12 shrink-0 items-center justify-center rounded-full bg-primary text-white shadow-e3 transition-transform duration-fast hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
       >
         {playing ? (
@@ -61,14 +62,14 @@ export function SampleCallPlayer() {
 
       <div className="min-w-0 flex-1">
         <div className="flex items-baseline justify-between gap-3">
-          <span className="text-small font-medium text-fg">Listen to a sample call</span>
+          <span className="text-small font-medium text-fg">{tx("Listen to a sample call")}</span>
           <span className="tabular text-micro text-fg-secondary">
-            {playing || time > 0 ? `${clock(time)} / ${clock(length)}` : clock(length)}
+            {playing || time > 0 ? tx(`${clock(time)} / ${clock(length)}`) : tx(clock(length))}
           </span>
         </div>
         <div
           role="progressbar"
-          aria-label="Sample call progress"
+          aria-label={tx("Sample call progress")}
           aria-valuemin={0}
           aria-valuemax={Math.round(length)}
           aria-valuenow={Math.round(time)}
@@ -79,9 +80,7 @@ export function SampleCallPlayer() {
             style={{ width: `${progress * 100}%` }}
           />
         </div>
-        <span className="mt-1.5 block text-micro text-fg-secondary">
-          The bakery booking shown here, as the caller hears it. Voiced sample.
-        </span>
+        <span className="mt-1.5 block text-micro text-fg-secondary">{tx("The bakery booking shown here, as the caller hears it. Voiced sample.")}</span>
       </div>
 
       {/* React's own media props, not listeners added in an effect: a click

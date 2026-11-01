@@ -3,6 +3,7 @@ import type { MegaItem } from "@/data/navigation";
 import { resolveNavTarget } from "@/data/routes";
 import { NavIcon, ArrowUpRight } from "./nav-icons";
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 /**
  * One mega-menu entry: icon, title, optional badge, description.
@@ -54,7 +55,7 @@ export function MegaMenuItem({
               interactive ? cn("text-fg", hover) : "text-fg-muted",
             )}
           >
-            {item.label}
+            {tx(item.label)}
           </span>
           {item.badge && (
             <span
@@ -66,7 +67,7 @@ export function MegaMenuItem({
                 BADGE_TONE[item.badge.tone],
               )}
             >
-              {item.badge.text}
+              {tx(item.badge.text)}
             </span>
           )}
           {item.external && (
@@ -76,7 +77,7 @@ export function MegaMenuItem({
           )}
         </span>
         <span className="mt-1 block text-small leading-[1.45] text-fg-secondary">
-          {item.description}
+          {tx(item.description)}
         </span>
       </span>
     </>
@@ -100,7 +101,7 @@ export function MegaMenuItem({
     "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
 
   if (!linked) {
-    return <span className={cn(classes, "cursor-default")}>{body}</span>;
+    return <span className={cn(classes, "cursor-default")}>{tx(body)}</span>;
   }
 
   if (item.external) {
@@ -112,7 +113,7 @@ export function MegaMenuItem({
         onClick={onNavigate}
         className={cn(classes, "hover:bg-ink-50")}
       >
-        {body}
+        {tx(body)}
       </a>
     );
   }
@@ -123,7 +124,7 @@ export function MegaMenuItem({
       onClick={onNavigate}
       className={cn(classes, "hover:bg-ink-50")}
     >
-      {body}
+      {tx(body)}
     </Link>
   );
 }

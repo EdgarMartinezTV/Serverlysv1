@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { Spinner } from "@/components/ui/spinner";
 import { billing } from "@/data/company";
 import type { WhoisRecord } from "@/lib/domains/whois";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Registration lookup.
@@ -122,9 +123,7 @@ export function WhoisLookup() {
         }}
         className="flex flex-col gap-3"
       >
-        <label htmlFor={`${inputId}`} className="sr-only">
-          Domain name
-        </label>
+        <label htmlFor={`${inputId}`} className="sr-only">{tx("Domain name")}</label>
         <div
           className={cn(
             "flex h-16 items-center gap-2 rounded-full bg-white pr-2 pl-5 shadow-[0_10px_40px_rgb(0_0_60/0.25)] ring-2 transition-[box-shadow] duration-200",
@@ -146,7 +145,7 @@ export function WhoisLookup() {
               setValue(e.target.value);
               if (invalid) setInvalid(null);
             }}
-            placeholder="Look up any domain, e.g. serverlys.com"
+            placeholder={tx("Look up any domain, e.g. serverlys.com")}
             autoComplete="off"
             autoCapitalize="none"
             spellCheck={false}
@@ -165,7 +164,7 @@ export function WhoisLookup() {
               <svg viewBox="0 0 16 16" aria-hidden="true" className="size-4">
                 <path d="m4 4 8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
               </svg>
-              <span className="sr-only">Clear</span>
+              <span className="sr-only">{tx("Clear")}</span>
             </button>
           )}
           <button
@@ -175,14 +174,12 @@ export function WhoisLookup() {
             className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-primary px-5 text-body font-semibold text-white shadow-e2 transition-colors hover:bg-primary-hover active:scale-[0.98] disabled:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             {busy ? <Spinner size="sm" className="text-white" /> : null}
-            {busy ? "Looking up…" : "Look up"}
+            {busy ? tx("Looking up…") : tx("Look up")}
           </button>
         </div>
-        <p id={descId} className="text-center text-small text-fg-on-dark-secondary">
-          Any registered domain — yours or someone else&apos;s.
-        </p>
+        <p id={descId} className="text-center text-small text-fg-on-dark-secondary">{tx("Any registered domain — yours or someone else's.")}</p>
         <p id={errId} role="alert" className={cn("rounded-lg bg-white/95 px-3 py-2 text-small text-error", !invalid && "hidden")}>
-          {invalid}
+          {tx(invalid)}
         </p>
       </form>
 
@@ -193,38 +190,30 @@ export function WhoisLookup() {
         className={cn("mt-6", state.kind !== "idle" && "rounded-3xl bg-white p-4 text-left shadow-[0_24px_60px_rgb(0_0_60/0.25)] sm:p-6")}
       >
         {state.kind === "idle" && (
-          <p className="text-center text-small text-fg-on-dark-secondary">
-            Results come straight from the domain registry over RDAP, the
-            protocol that replaced WHOIS. Nothing is cached.
-          </p>
+          <p className="text-center text-small text-fg-on-dark-secondary">{tx("Results come straight from the domain registry over RDAP, the protocol that replaced WHOIS. Nothing is cached.")}</p>
         )}
 
         {state.kind === "loading" && (
           <div className="flex items-center gap-3 rounded-xl bg-canvas-secondary p-6 ring-1 ring-inset ring-line">
             <Spinner size="sm" label={`Looking up ${state.domain}`} />
-            <p className="text-body text-fg-secondary">
-              Asking the registry about{" "}
-              <span className="font-mono text-fg">{state.domain}</span>…
+            <p className="text-body text-fg-secondary">{tx("Asking the registry about")}{" "}
+              <span className="font-mono text-fg">{tx(state.domain)}</span>…
             </p>
           </div>
         )}
 
         {state.kind === "failed" && (
           <div className="rounded-xl bg-error-soft p-6 ring-1 ring-inset ring-error/25">
-            <h3 className="text-body-lg font-semibold text-fg">Lookup did not complete</h3>
-            <p className="mt-2 text-body text-fg-secondary">{state.reason}</p>
+            <h3 className="text-body-lg font-semibold text-fg">{tx("Lookup did not complete")}</h3>
+            <p className="mt-2 text-body text-fg-secondary">{tx(state.reason)}</p>
             <div className="mt-5 flex flex-wrap gap-3">
-              <Button onClick={() => void run(state.domain)} variant="secondary">
-                Try again
-              </Button>
-              <Button href="/register-domain" variant="ghost">
-                Search for a domain instead
-              </Button>
+              <Button onClick={() => void run(state.domain)} variant="secondary">{tx("Try again")}</Button>
+              <Button href="/register-domain" variant="ghost">{tx("Search for a domain instead")}</Button>
             </div>
           </div>
         )}
 
-        {state.kind === "done" && <Record record={state.record} />}
+        {state.kind === "done" && <Record record={tx(state.record)} />}
       </div>
     </div>
   );
@@ -234,24 +223,14 @@ function Record({ record }: { record: WhoisRecord }) {
   if (record.status === "available") {
     return (
       <div className="rounded-xl bg-success-soft p-6 ring-1 ring-inset ring-success/25 sm:p-8">
-        <p className="text-micro text-success font-semibold">
-          Not registered
-        </p>
+        <p className="text-micro text-success font-semibold">{tx("Not registered")}</p>
         <h3 className="mt-2 text-h4 text-fg">
-          <span className="font-mono">{record.domain}</span> has no registry record
-        </h3>
-        <p className="mt-3 max-w-[60ch] text-body text-fg-secondary">
-          The registry holds nothing for this name, which means it is available
-          to register. Premium and reserved names are the exception — the cart
-          will tell you before you pay.
-        </p>
+          <span className="font-mono">{tx(record.domain)}</span>{tx(" has no registry record")}</h3>
+        <p className="mt-3 max-w-[60ch] text-body text-fg-secondary">{tx("The registry holds nothing for this name, which means it is available to register. Premium and reserved names are the exception — the cart will tell you before you pay.")}</p>
         <div className="mt-6 flex flex-wrap gap-3">
-          <Button href={`${billing.registerDomain}&query=${encodeURIComponent(record.domain)}`} external>
-            Register {record.domain}
+          <Button href={`${billing.registerDomain}&query=${encodeURIComponent(record.domain)}`} external>{tx("Register ")}{tx(record.domain)}
           </Button>
-          <Button href="/register-domain" variant="secondary">
-            Check other extensions
-          </Button>
+          <Button href="/register-domain" variant="secondary">{tx("Check other extensions")}</Button>
         </div>
       </div>
     );
@@ -260,18 +239,12 @@ function Record({ record }: { record: WhoisRecord }) {
   if (record.status === "unsupported" || record.status === "error") {
     return (
       <div className="rounded-xl bg-canvas-secondary p-6 ring-1 ring-inset ring-line sm:p-8">
-        <p className="text-micro text-fg-muted font-semibold">
-          No answer
-        </p>
-        <h3 className="mt-2 text-h4 text-fg">We cannot tell you about this one</h3>
+        <p className="text-micro text-fg-muted font-semibold">{tx("No answer")}</p>
+        <h3 className="mt-2 text-h4 text-fg">{tx("We cannot tell you about this one")}</h3>
         <p className="mt-3 max-w-[60ch] text-body text-fg-secondary">
-          {record.reason ??
-            "The registry for this extension does not publish machine-readable records."}{" "}
-          Rather than guess, we are telling you we do not know.
-        </p>
-        <Button href="/support" variant="secondary" className="mt-6">
-          Ask us to check manually
-        </Button>
+          {tx(record.reason) ??
+            tx("The registry for this extension does not publish machine-readable records.")}{" "}{tx("Rather than guess, we are telling you we do not know.")}</p>
+        <Button href="/support" variant="secondary" className="mt-6">{tx("Ask us to check manually")}</Button>
       </div>
     );
   }
@@ -288,10 +261,10 @@ function Record({ record }: { record: WhoisRecord }) {
       "Expires",
       formatDate(record.expires) ? (
         <>
-          {formatDate(record.expires)}
+          {tx(formatDate(record.expires))}
           {expiresIn !== null && (
             <span className={expiresIn < 60 ? "ml-2 text-warning" : "ml-2 text-fg-muted"}>
-              ({expiresIn < 0 ? "lapsed" : `in ${expiresIn} days`})
+              ({expiresIn < 0 ? tx("lapsed") : tx(`in ${expiresIn} days`)})
             </span>
           )}
         </>
@@ -309,16 +282,12 @@ function Record({ record }: { record: WhoisRecord }) {
     <div className="overflow-hidden rounded-xl ring-1 ring-inset ring-line">
       <div className="flex flex-wrap items-center justify-between gap-3 bg-canvas-secondary px-6 py-4">
         <div>
-          <p className="text-micro text-fg-muted font-semibold">
-            Registered
-          </p>
+          <p className="text-micro text-fg-muted font-semibold">{tx("Registered")}</p>
           <h3 className="mt-1 font-mono text-body-lg font-semibold text-fg">
-            {record.domain}
+            {tx(record.domain)}
           </h3>
         </div>
-        <Button href="/transfer-domain" variant="secondary">
-          Transfer it to Serverlys
-        </Button>
+        <Button href="/transfer-domain" variant="secondary">{tx("Transfer it to Serverlys")}</Button>
       </div>
 
       <dl className="grid gap-px bg-line sm:grid-cols-2">
@@ -328,22 +297,20 @@ function Record({ record }: { record: WhoisRecord }) {
             className={cn("bg-canvas px-6 py-4", rows.length % 2 === 1 && i === rows.length - 1 && "sm:col-span-2")}
           >
             <dt className="text-micro text-fg-muted font-semibold">
-              {label}
+              {tx(label)}
             </dt>
-            <dd className="mt-1 text-body text-fg">{value}</dd>
+            <dd className="mt-1 text-body text-fg">{tx(value)}</dd>
           </div>
         ))}
       </dl>
 
       {record.nameservers && record.nameservers.length > 0 && (
         <div className="border-t border-line px-6 py-4">
-          <p className="text-micro text-fg-muted font-semibold">
-            Nameservers
-          </p>
+          <p className="text-micro text-fg-muted font-semibold">{tx("Nameservers")}</p>
           <ul className="mt-2 flex flex-wrap gap-x-6 gap-y-1">
             {record.nameservers.map((ns) => (
               <li key={ns} className="font-mono text-small text-fg">
-                {ns}
+                {tx(ns)}
               </li>
             ))}
           </ul>
@@ -352,31 +319,22 @@ function Record({ record }: { record: WhoisRecord }) {
 
       {record.epp && record.epp.length > 0 && (
         <div className="border-t border-line px-6 py-4">
-          <p className="text-micro text-fg-muted font-semibold">
-            Status codes
-          </p>
+          <p className="text-micro text-fg-muted font-semibold">{tx("Status codes")}</p>
           <ul className="mt-2 flex flex-wrap gap-2">
             {record.epp.map((code) => (
               <li
                 key={code}
                 className="rounded-full bg-canvas-inset px-2.5 py-1 font-mono text-caption text-fg-secondary"
               >
-                {code}
+                {tx(code)}
               </li>
             ))}
           </ul>
-          <p className="mt-3 max-w-[62ch] text-small text-fg-muted">
-            A code containing <span className="font-mono">transfer prohibited</span> means
-            the domain is locked and must be unlocked at its current registrar
-            before it can move.
-          </p>
+          <p className="mt-3 max-w-[62ch] text-small text-fg-muted">{tx("A code containing ")}<span className="font-mono">{tx("transfer prohibited")}</span>{tx(" means the domain is locked and must be unlocked at its current registrar before it can move.")}</p>
         </div>
       )}
 
-      <p className="border-t border-line bg-canvas-secondary px-6 py-4 text-small text-fg-muted">
-        Registrant contact details are redacted by the registries under GDPR and
-        ICANN policy. We show everything we are given and nothing we are not.
-      </p>
+      <p className="border-t border-line bg-canvas-secondary px-6 py-4 text-small text-fg-muted">{tx("Registrant contact details are redacted by the registries under GDPR and ICANN policy. We show everything we are given and nothing we are not.")}</p>
     </div>
   );
 }

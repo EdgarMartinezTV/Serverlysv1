@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { t as tx } from "@/i18n/t";
 
 /**
  * The ConvoAI lockup.
@@ -52,7 +53,7 @@ export function ConvoAiLogo({
   return (
     <Image
       src={onDark ? "/brand/dark-version-logo.webp" : "/brand/white-version-logo.webp"}
-      alt={decorative ? "" : "ConvoAI"}
+      alt={decorative ? "" : tx("ConvoAI")}
       aria-hidden={decorative || undefined}
       /* Intrinsic size of the light asset. The dark one is 1323×317; both are
          constrained by height here, so the small ratio difference is invisible

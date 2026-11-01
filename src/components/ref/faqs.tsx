@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Grid, Headline, Minus, Plus } from "./kit";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Answer blocks. Stored as structure rather than an HTML string so the panel
@@ -79,8 +80,8 @@ export function Faqs({
       <Grid>
         <Headline
           id={`${idPrefix}-faq-heading`}
-          title={title}
-          description={description}
+          title={tx(title)}
+          description={tx(description)}
           tone={tone}
           className="mb-10 xl:mb-16"
         />
@@ -114,7 +115,7 @@ export function Faqs({
                       dark ? "text-fg-on-dark" : "text-fg",
                     )}
                   >
-                    <span>{f.q}</span>
+                    <span>{tx(f.q)}</span>
                     <span
                       aria-hidden
                       className={cn("mt-1 shrink-0", dark ? "text-fg-on-dark" : "text-fg")}
@@ -135,7 +136,7 @@ export function Faqs({
                     )}
                   >
                     {f.a.map((block, j) => (
-                      <Block key={j} block={block} dark={dark} />
+                      <Block key={j} block={tx(block)} dark={tx(dark)} />
                     ))}
                   </div>
                 )}
@@ -154,7 +155,7 @@ function Block({ block, dark = false }: { block: FaqBlock; dark?: boolean }) {
       <ul className="ml-[18px] list-disc">
         {block.items.map((item) => (
           <li key={item} className="mb-1">
-            <b className="font-semibold">{item}</b>
+            <b className="font-semibold">{tx(item)}</b>
           </li>
         ))}
       </ul>
@@ -174,10 +175,10 @@ function Block({ block, dark = false }: { block: FaqBlock; dark?: boolean }) {
                 : "text-primary hover:text-primary-hover",
             )}
           >
-            {run.text}
+            {tx(run.text)}
           </Link>
         ) : (
-          <span key={i}>{run.text}</span>
+          <span key={i}>{tx(run.text)}</span>
         ),
       )}
     </p>

@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Indeterminate activity indicator.
@@ -47,7 +48,7 @@ export function Spinner({
           strokeLinecap="round"
         />
       </svg>
-      {label && <span className="sr-only">{label}</span>}
+      {label && <span className="sr-only">{tx(label)}</span>}
     </span>
   );
 }

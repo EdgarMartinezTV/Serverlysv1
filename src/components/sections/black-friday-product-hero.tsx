@@ -2,6 +2,7 @@ import { Check, Grid, ShieldCheck } from "@/components/ref/kit";
 import { BLACK_FRIDAY, formatPrice, groupById, quote, type Plan } from "@/data/pricing";
 import { GlossyPercent } from "@/components/home/glossy-percent";
 import { MotionToggle } from "./motion-toggle";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Black Friday product intro (2026-10-31) for /cloud-hosting, /wordpress-hosting
@@ -65,57 +66,53 @@ export function BlackFridayProductHero({ id, groupId, headline, bullets, guarant
         <div className="grid items-center gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:gap-8 xl:grid-cols-[1fr_1fr]">
           <div>
             <p className="font-display text-[clamp(2.5rem,1.6rem+3vw,3.5rem)] leading-[1.05] font-medium tracking-[-0.035em] text-brand-400">
-              {PCT} off
-            </p>
+              {tx(PCT)}{tx(" off")}</p>
             <h1
               id={headingId}
               className="mt-1 max-w-[560px] font-display text-[clamp(2.5rem,1.6rem+3vw,3.5rem)] leading-[1.05] font-medium tracking-[-0.035em] text-white"
             >
-              {headline}
+              {tx(headline)}
             </h1>
             <ul className="mt-8 flex flex-col gap-3">
               {bullets.map((b) => (
                 <li key={b} className="flex items-center gap-2.5 text-body text-white">
                   <Check className="size-4 shrink-0 text-brand-400" />
-                  {b}
+                  {tx(b)}
                 </li>
               ))}
             </ul>
 
             <p className="mt-10 flex flex-wrap items-center gap-x-2.5 gap-y-2 text-body text-white">
-              <span>From</span>
+              <span>{tx("From")}</span>
               <s className="text-white/80">
-                <span className="sr-only">regular price </span>
-                {formatPrice(LONG.perMonth)}
+                <span className="sr-only">{tx("regular price ")}</span>
+                {tx(formatPrice(LONG.perMonth))}
               </s>
               {LONG.bf && (
                 <span className="relative inline-flex items-center rounded-r-lg rounded-l-md bg-error-fill py-1.5 pr-3 pl-5 font-semibold text-white [clip-path:polygon(10px_0,100%_0,100%_100%,10px_100%,0_50%)]">
                   <span aria-hidden="true" className="absolute top-1/2 left-2.5 size-1.5 -translate-y-1/2 rounded-full bg-black/80" />
-                  <span className="sr-only">Black Friday price </span>
-                  {formatPrice(LONG.bf.perMonth)}/mo
-                </span>
+                  <span className="sr-only">{tx("Black Friday price ")}</span>
+                  {tx(formatPrice(LONG.bf.perMonth))}{tx("/mo")}</span>
               )}
             </p>
             {LONG.bf && (
               <p className="mt-2 max-w-[520px] text-small text-white/70">
-                {starter.name} on 36 months: {formatPrice(LONG.bf.today)} today (regular {formatPrice(LONG.today)}), renews at{" "}
-                {formatPrice(LONG.total)}. {PCT} off your first payment until {BLACK_FRIDAY.endsLabel}.
+                {tx(starter.name)}{tx(" on 36 months: ")}{tx(formatPrice(LONG.bf.today))}{tx(" today (regular ")}{tx(formatPrice(LONG.today))}{tx("), renews at")}{" "}
+                {tx(formatPrice(LONG.total))}. {tx(PCT)}{tx(" off your first payment until ")}{tx(BLACK_FRIDAY.endsLabel)}.
               </p>
             )}
 
             <a
               href={ctaHref}
               className="mt-8 inline-flex h-12 min-w-[185px] items-center justify-center rounded-md bg-white px-8 text-body font-semibold text-fg transition-colors hover:bg-canvas-inset focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-            >
-              Claim deal
-            </a>
+            >{tx("Claim deal")}</a>
             <p className="mt-4 flex items-center gap-2 text-body text-white">
               <ShieldCheck className="size-4 shrink-0" />
-              {guarantee}
+              {tx(guarantee)}
             </p>
           </div>
 
-          <BurstArt targetId={id} />
+          <BurstArt targetId={tx(id)} />
         </div>
       </Grid>
     </section>
@@ -154,12 +151,11 @@ function BurstArt({ targetId }: { targetId: string }) {
 
         {/* Tilted sale sticker */}
         <span className="absolute right-[4%] bottom-[20%] -rotate-[12deg] rounded-full bg-error-fill px-5 py-2 font-display text-[clamp(1.25rem,0.9rem+1.2vw,1.75rem)] font-semibold tracking-[-0.02em] text-white shadow-[0_14px_30px_-12px_rgb(231_58_71/0.8)] animate-float-slow">
-          {PCT} off
-        </span>
+          {tx(PCT)}{tx(" off")}</span>
       </div>
 
       <div className="absolute right-0 bottom-0 sm:-right-4">
-        <MotionToggle targetId={targetId} />
+        <MotionToggle targetId={tx(targetId)} />
       </div>
     </div>
   );

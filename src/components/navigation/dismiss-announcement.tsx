@@ -1,6 +1,7 @@
 "use client";
 
 import { announcement } from "@/data/navigation";
+import { t as tx } from "@/i18n/t";
 
 export const ANNOUNCEMENT_KEY = `serverlys.announcement.${announcement.version}`;
 
@@ -16,7 +17,7 @@ export function DismissAnnouncement() {
   return (
     <button
       type="button"
-      aria-label="Dismiss announcement"
+      aria-label={tx("Dismiss announcement")}
       onClick={() => {
         document.documentElement.dataset.announcement = "dismissed";
         try {

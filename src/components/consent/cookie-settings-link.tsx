@@ -1,5 +1,6 @@
 "use client";
 
+import { t as tx } from "@/i18n/t";
 /**
  * Reopens the cookie settings panel.
  *
@@ -18,8 +19,6 @@ export function CookieSettingsLink() {
       type="button"
       onClick={() => window.dispatchEvent(new Event("consent:open"))}
       className="inline-block rounded-sm py-1.5 text-small text-fg transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-    >
-      Cookie settings
-    </button>
+    >{tx("Cookie settings")}</button>
   );
 }

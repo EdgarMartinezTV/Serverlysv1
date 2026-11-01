@@ -2,6 +2,7 @@ import Link from "next/link";
 import { announcement } from "@/data/navigation";
 import { resolveNavTarget } from "@/data/routes";
 import { DismissAnnouncement } from "./dismiss-announcement";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Promotional bar above the header.
@@ -61,7 +62,7 @@ export function AnnouncementBar() {
     >
       <div className="mx-auto flex w-full max-w-desktop items-center justify-center gap-x-3 px-12 py-2.5 sm:px-14">
         <span className="hidden shrink-0 items-center rounded-full bg-white/20 px-2 py-0.5 text-micro text-fg-on-brand ring-1 ring-inset ring-white/30 sm:inline-flex font-semibold">
-          {announcement.badge}
+          {tx(announcement.badge)}
         </span>
 
         <span
@@ -79,14 +80,14 @@ export function AnnouncementBar() {
 
         <p className="text-center text-small">
           <span className="font-medium text-fg-on-brand">
-            <span className="sm:hidden">{announcement.titleShort}</span>
-            <span className="hidden sm:inline">{announcement.title}</span>
+            <span className="sm:hidden">{tx(announcement.titleShort)}</span>
+            <span className="hidden sm:inline">{tx(announcement.title)}</span>
           </span>
           {/* An em dash, not a space. Without it the two clauses read as one
               run-on sentence: "...answers your phone CallFlow books the job". */}
           <span className="hidden text-fg-on-brand-muted md:inline">
             {" — "}
-            {announcement.detail}
+            {tx(announcement.detail)}
           </span>
           {/* Below md the detail clause is hidden, which used to drop the
               separator with it and butt the link straight onto the headline:
@@ -99,8 +100,8 @@ export function AnnouncementBar() {
             href={resolveNavTarget(announcement.href).href}
             className="inline-block whitespace-nowrap rounded-sm py-1 font-semibold text-fg-on-brand underline underline-offset-2 transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
-            <span className="sm:hidden">{announcement.linkLabelShort}</span>
-            <span className="hidden sm:inline">{announcement.linkLabel}</span>
+            <span className="sm:hidden">{tx(announcement.linkLabelShort)}</span>
+            <span className="hidden sm:inline">{tx(announcement.linkLabel)}</span>
             <span aria-hidden="true"> →</span>
           </Link>
         </p>

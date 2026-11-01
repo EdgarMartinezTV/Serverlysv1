@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { Reveal } from "@/components/animations/reveal";
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Product page hero.
@@ -90,7 +91,7 @@ export function ProductHero({
         width="wide"
         className="relative pb-16 pt-6 sm:pb-20 lg:pb-24 lg:pt-10"
       >
-        <Breadcrumbs trail={breadcrumb} tone={dark ? "dark" : "light"} />
+        <Breadcrumbs trail={tx(breadcrumb)} tone={dark ? "dark" : "light"} />
 
         <div
           className={cn(
@@ -99,24 +100,24 @@ export function ProductHero({
           )}
         >
           <div className={visual ? "" : "max-w-3xl"}>
-            {eyebrowSlot ?? (
+            {tx(eyebrowSlot) ?? (
               <span
                 className={cn(
                   "inline-flex rounded-md px-2.5 py-1 text-small font-medium",
                   dark ? "bg-white/10 text-white" : "bg-brand-50 text-primary",
                 )}
               >
-                {eyebrow}
+                {tx(eyebrow)}
               </span>
             )}
-            <h1 className={cn("display-lg mt-5", dark ? "text-white" : "text-fg")}>{title}</h1>
+            <h1 className={cn("display-lg mt-5", dark ? "text-white" : "text-fg")}>{tx(title)}</h1>
             <p
               className={cn(
                 "mt-5 max-w-xl text-body-lg",
                 dark ? "text-fg-on-dark-secondary" : "text-fg-secondary",
               )}
             >
-              {lede}
+              {tx(lede)}
             </p>
 
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
@@ -126,7 +127,7 @@ export function ProductHero({
                 size="lg"
                 block
               >
-                {primary.label}
+                {tx(primary.label)}
               </Button>
               <Button
                 href={secondary.href}
@@ -134,7 +135,7 @@ export function ProductHero({
                 size="lg"
                 block
               >
-                {secondary.label}
+                {tx(secondary.label)}
               </Button>
             </div>
 
@@ -153,7 +154,7 @@ export function ProductHero({
                         dark ? "text-fg-on-dark-muted" : "text-fg-muted",
                       )}
                     >
-                      {spec.label}
+                      {tx(spec.label)}
                     </dt>
                     <dd
                       className={cn(
@@ -161,7 +162,7 @@ export function ProductHero({
                         dark ? "text-white" : "text-fg",
                       )}
                     >
-                      {spec.value}
+                      {tx(spec.value)}
                     </dd>
                   </div>
                 ))}
@@ -180,13 +181,13 @@ export function ProductHero({
             <Reveal delay={80}>
               <div className="relative isolate overflow-hidden rounded-3xl bg-brand-50 p-5 sm:p-8">
                 <div aria-hidden="true" className="absolute inset-0 -z-10 grid grid-cols-4 grid-rows-3">
-                  {Array.from({ length: 12 }, (_, i) => (
+                  {tx(Array.from({ length: 12 }, (_, i) => (
                     <span key={i} className={[1, 4, 6, 11].includes(i) ? "bg-brand-100" : ""} />
-                  ))}
+                  )))}
                 </div>
                 <div aria-hidden="true" className="absolute top-0 right-[8%] -z-10 h-[30%] w-[40%] bg-brand-300/70 [clip-path:polygon(18%_0,100%_0,100%_100%,0_100%)]" />
                 <div aria-hidden="true" className="absolute bottom-0 left-[14%] -z-10 h-[18%] w-[34%] bg-brand-400/60 [clip-path:polygon(0_0,100%_0,82%_100%,0_100%)]" />
-                <div className="drop-shadow-[0_24px_40px_rgb(0_0_60/0.18)]">{visual}</div>
+                <div className="drop-shadow-[0_24px_40px_rgb(0_0_60/0.18)]">{tx(visual)}</div>
               </div>
             </Reveal>
           )}

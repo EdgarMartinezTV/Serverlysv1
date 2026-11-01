@@ -3,6 +3,7 @@ import { Reveal } from "@/components/animations/reveal";
 import { NavIcon } from "@/components/navigation/nav-icons";
 import type { NavIconName } from "@/data/navigation";
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Capability grid.
@@ -49,12 +50,12 @@ export function FeatureGrid({
       <Container width="wide" className="relative">
         <Reveal className="mx-auto max-w-[760px] text-center">
           {/* `eyebrow` kept in the API, no longer rendered (2026-10-03). */}
-          <span className="sr-only">{eyebrow}</span>
+          <span className="sr-only">{tx(eyebrow)}</span>
           <h2
             id={id ? `${id}-heading` : undefined}
             className={cn("display-md", dark ? "text-white" : "text-fg")}
           >
-            {title}
+            {tx(title)}
           </h2>
           {lede && (
             <p
@@ -63,7 +64,7 @@ export function FeatureGrid({
                 dark ? "text-fg-on-dark-secondary" : "text-fg-secondary",
               )}
             >
-              {lede}
+              {tx(lede)}
             </p>
           )}
         </Reveal>
@@ -95,7 +96,7 @@ export function FeatureGrid({
                     dark ? "text-white" : "text-fg",
                   )}
                 >
-                  {item.label}
+                  {tx(item.label)}
                 </h3>
                 <p
                   className={cn(
@@ -103,7 +104,7 @@ export function FeatureGrid({
                     dark ? "text-fg-on-dark-muted" : "text-fg-secondary",
                   )}
                 >
-                  {item.detail}
+                  {tx(item.detail)}
                 </p>
               </div>
             </Reveal>

@@ -4,6 +4,7 @@ import { useId, useState } from "react";
 import { cn } from "@/lib/utils";
 import { ConsoleShell, Metric, Segmented, Sparkline } from "./shell";
 import { compactCount, demoSites, trend, type DemoSite } from "./demo-data";
+import { t as tx } from "@/i18n/t";
 
 /**
  * The Serverlys hosting console.
@@ -59,12 +60,12 @@ export function HostingConsole({ className }: { className?: string }) {
 
   return (
     <ConsoleShell
-      label="Serverlys hosting console demonstration"
-      title="Sites"
+      label={tx("Serverlys hosting console demonstration")}
+      title={tx("Sites")}
       toolbar={
         <Segmented
-          label="Console view"
-          options={VIEWS}
+          label={tx("Console view")}
+          options={tx(VIEWS)}
           value={view}
           onChange={setView}
         />
@@ -76,7 +77,7 @@ export function HostingConsole({ className }: { className?: string }) {
         <div
           role="tablist"
           aria-orientation="vertical"
-          aria-label="Choose a site"
+          aria-label={tx("Choose a site")}
           onKeyDown={onListKeyDown}
           className="flex gap-1 overflow-x-auto border-b border-line-subtle p-2 sm:flex-col sm:overflow-visible sm:border-b-0 sm:border-r"
         >
@@ -112,11 +113,11 @@ export function HostingConsole({ className }: { className?: string }) {
                       active ? "text-primary" : "text-fg",
                     )}
                   >
-                    {entry.domain}
+                    {tx(entry.domain)}
                   </span>
                 </span>
                 <span className="mt-0.5 block truncate pl-3 text-ui text-fg-muted">
-                  {entry.stack} · {entry.plan}
+                  {tx(entry.stack)} · {tx(entry.plan)}
                 </span>
               </button>
             );
@@ -133,7 +134,7 @@ export function HostingConsole({ className }: { className?: string }) {
         >
           <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
             <p className="truncate font-mono text-small font-medium text-fg">
-              {site.domain}
+              {tx(site.domain)}
             </p>
             <p
               className={cn(
@@ -145,7 +146,7 @@ export function HostingConsole({ className }: { className?: string }) {
                 aria-hidden="true"
                 className={cn("h-1.5 w-1.5 rounded-full", STATUS[site.status].dot)}
               />
-              {STATUS[site.status].label}
+              {tx(STATUS[site.status].label)}
             </p>
           </div>
 
@@ -153,45 +154,39 @@ export function HostingConsole({ className }: { className?: string }) {
             <>
               <div className="mt-3 rounded-lg bg-canvas-secondary p-3">
                 <div className="flex items-baseline justify-between gap-3">
-                  <span className="text-ui text-fg-muted font-semibold">
-                    Visits · 12 months
-                  </span>
+                  <span className="text-ui text-fg-muted font-semibold">{tx("Visits · 12 months")}</span>
                   <span className="tabular text-ui font-semibold text-success">
                     {growth >= 0 ? "+" : ""}
-                    {growth.toFixed(1)}%
+                    {tx(growth.toFixed(1))}%
                   </span>
                 </div>
                 <p className="tabular mt-1 text-h4 font-semibold text-fg">
-                  {compactCount(site.visits[site.visits.length - 1])}
-                  <span className="ml-1.5 text-small font-normal text-fg-muted">
-                    this month
-                  </span>
+                  {tx(compactCount(site.visits[site.visits.length - 1]))}
+                  <span className="ml-1.5 text-small font-normal text-fg-muted">{tx("this month")}</span>
                 </p>
                 <div className="mt-2 h-12">
-                  <Sparkline series={site.visits} />
+                  <Sparkline series={tx(site.visits)} />
                 </div>
               </div>
 
               <dl className="mt-2 grid grid-cols-2 gap-2">
                 <Metric
-                  label="Storage"
+                  label={tx("Storage")}
                   value={`${site.storageUsedGb} GB`}
                   sub={`${storagePct}% of ${site.storageTotalGb} GB NVMe`}
                 />
                 <Metric
-                  label="Uptime"
+                  label={tx("Uptime")}
                   value={`${site.uptimePct}%`}
-                  sub="Rolling 30 days"
+                  sub={tx("Rolling 30 days")}
                 />
               </dl>
 
               <div className="mt-2 rounded-lg bg-canvas-secondary p-3">
                 <div className="flex items-center justify-between gap-3">
-                  <span className="text-ui text-fg-muted font-semibold">
-                    Disk usage
-                  </span>
+                  <span className="text-ui text-fg-muted font-semibold">{tx("Disk usage")}</span>
                   <span className="tabular text-ui font-medium text-fg">
-                    {storagePct}%
+                    {tx(storagePct)}%
                   </span>
                 </div>
                 <div
@@ -212,16 +207,14 @@ export function HostingConsole({ className }: { className?: string }) {
             <>
               <dl className="mt-3 grid grid-cols-2 gap-2">
                 <Metric
-                  label="Response"
+                  label={tx("Response")}
                   value={`${site.responseMs} ms`}
-                  sub="Median, origin"
+                  sub={tx("Median, origin")}
                 />
-                <Metric label="PHP" value={site.phpVersion} sub="LiteSpeed + OPcache" />
+                <Metric label={tx("PHP")} value={site.phpVersion} sub={tx("LiteSpeed + OPcache")} />
               </dl>
               <div className="mt-2 rounded-lg bg-canvas-secondary p-3">
-                <span className="text-ui text-fg-muted font-semibold">
-                  Response time · 12 months
-                </span>
+                <span className="text-ui text-fg-muted font-semibold">{tx("Response time · 12 months")}</span>
                 <div className="mt-2 h-14">
                   <Sparkline
                     series={site.visits.map((v, i) =>
@@ -231,9 +224,7 @@ export function HostingConsole({ className }: { className?: string }) {
                     fill="text-cyan-500/12"
                   />
                 </div>
-                <p className="mt-2 text-ui text-fg-muted">
-                  Cached at the edge; origin only sees a miss.
-                </p>
+                <p className="mt-2 text-ui text-fg-muted">{tx("Cached at the edge; origin only sees a miss.")}</p>
               </div>
             </>
           )}
@@ -242,12 +233,12 @@ export function HostingConsole({ className }: { className?: string }) {
             <>
               <dl className="mt-3 grid grid-cols-2 gap-2">
                 <Metric
-                  label="Blocked"
+                  label={tx("Blocked")}
                   value={site.threatsBlocked.toLocaleString("en-US")}
-                  sub="Requests, last 24h"
+                  sub={tx("Requests, last 24h")}
                 />
                 <Metric
-                  label="Certificate"
+                  label={tx("Certificate")}
                   value={`${site.ssl.renewsInDays}d`}
                   sub={`${site.ssl.issuer}, auto-renews`}
                 />
@@ -286,11 +277,11 @@ export function HostingConsole({ className }: { className?: string }) {
                         />
                       </span>
                       <span className="truncate text-ui text-fg">
-                        {row.label}
+                        {tx(row.label)}
                       </span>
                     </span>
                     <span className="tabular shrink-0 text-ui text-fg-muted">
-                      {row.value}
+                      {tx(row.value)}
                     </span>
                   </li>
                 ))}

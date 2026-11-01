@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Features, scroll-driven — the reference's Build / Deploy / Monitor block.
@@ -42,7 +43,7 @@ function Visual({ group, className }: { group: FeatureGroup; className?: string 
         aria-hidden="true"
         className="absolute inset-0 bg-[#0b1530]/55 backdrop-blur-[2px]"
       />
-      <div className="relative p-5 sm:p-8">{group.visual}</div>
+      <div className="relative p-5 sm:p-8">{tx(group.visual)}</div>
     </div>
   );
 }
@@ -97,7 +98,7 @@ export function FeaturesScroller({
                     : "text-brand-300 hover:text-primary",
                 )}
               >
-                {g.tab}
+                {tx(g.tab)}
               </button>
             </li>
           ))}
@@ -133,7 +134,7 @@ export function FeaturesScroller({
             className="lg:flex lg:min-h-[78vh] lg:flex-col lg:justify-center lg:py-10"
           >
             <p className="mb-4 inline-flex self-start rounded-full bg-brand-50 px-3 py-1 text-[13px] font-medium text-primary">
-              {tabPrefix ? `${tabPrefix} ${g.tab}` : g.tab}
+              {tabPrefix ? tx(`${tabPrefix} ${g.tab}`) : tx(g.tab)}
             </p>
             <Visual group={g} className="mb-8 lg:hidden" />
             {g.features.map(([title, body], j) => (
@@ -142,9 +143,9 @@ export function FeaturesScroller({
                 className={cn(j > 0 && "mt-8 border-t border-black/[0.08] pt-8")}
               >
                 <h3 className="text-[20px] leading-snug font-normal tracking-[-0.01em] text-[#0b1530]">
-                  {title}
+                  {tx(title)}
                 </h3>
-                <p className="mt-4 text-[14px] leading-[1.65] text-[#5b6472]">{body}</p>
+                <p className="mt-4 text-[14px] leading-[1.65] text-[#5b6472]">{tx(body)}</p>
               </div>
             ))}
           </div>

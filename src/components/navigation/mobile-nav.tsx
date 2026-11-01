@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Wordmark } from "@/components/layout/wordmark";
 import { NavIcon, Chevron, ArrowUpRight } from "./nav-icons";
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Mobile navigation.
@@ -129,7 +130,7 @@ export function MobileNav({
       className="fixed inset-0 z-50 lg:hidden"
       role="dialog"
       aria-modal="true"
-      aria-label="Site menu"
+      aria-label={tx("Site menu")}
     >
       {/* Any link closes the drawer. A route change would too, but a link to
           the page already open changes nothing, and left it covering the page. */}
@@ -149,9 +150,7 @@ export function MobileNav({
               onClick={() => setExpanded(null)}
               className="-ml-2 inline-flex h-11 items-center gap-1.5 rounded-lg px-2 text-body font-medium text-fg focus-visible:outline-2 focus-visible:outline-primary"
             >
-              <Chevron className="h-5 w-5 rotate-90" />
-              Back
-            </button>
+              <Chevron className="h-5 w-5 rotate-90" />{tx("Back")}</button>
           ) : (
             <Wordmark tone="dark" className="h-10" />
           )}
@@ -161,7 +160,7 @@ export function MobileNav({
               onOpenChange(false);
               toggleRef.current?.focus();
             }}
-            aria-label="Close menu"
+            aria-label={tx("Close menu")}
             className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-fg transition-colors duration-fast hover:bg-ink-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             <svg viewBox="0 0 20 20" aria-hidden="true" className="h-6 w-6">
@@ -180,7 +179,7 @@ export function MobileNav({
           {/* ROOT — the reference's drill-down: top-level links, then each
               menu's categories as large rows that open their own screen. */}
           <nav
-            aria-label="Mobile"
+            aria-label={tx("Mobile")}
             inert={!!drill}
             className={cn(
               "absolute inset-0 overflow-y-auto overscroll-contain px-5 pb-8 sm:px-8 transition-transform duration-slow ease-hover",
@@ -201,7 +200,7 @@ export function MobileNav({
                         active ? "text-primary" : "text-fg",
                       )}
                     >
-                      {item.label}
+                      {tx(item.label)}
                     </Link>
                   </div>
                 );
@@ -209,7 +208,7 @@ export function MobileNav({
               return (
                 <section key={item.label} className="border-b border-line py-5">
                   <h2 className="pb-2 text-small font-semibold uppercase tracking-[0.02em] text-fg-secondary">
-                    {item.railLabel}
+                    {tx(item.railLabel)}
                   </h2>
                   <ul>
                     {item.categories.map((c) => (
@@ -220,7 +219,7 @@ export function MobileNav({
                           className="flex min-h-14 w-full items-center gap-4 text-left text-[18px] leading-6 text-fg focus-visible:outline-2 focus-visible:outline-primary"
                         >
                           <NavIcon name={c.icon} className="h-6 w-6 shrink-0" />
-                          <span className="flex-1">{c.label}</span>
+                          <span className="flex-1">{tx(c.label)}</span>
                           <Chevron className="h-5 w-5 shrink-0 -rotate-90" />
                         </button>
                       </li>
@@ -237,9 +236,7 @@ export function MobileNav({
                 put it somewhere the visitor cannot see it.
               */}
               <AssistantOpenButton block onOpen={() => onOpenChange(false)} />
-              <Button href={billing.login} variant="secondary" size="lg" block>
-                Client login
-              </Button>
+              <Button href={billing.login} variant="secondary" size="lg" block>{tx("Client login")}</Button>
             </div>
 
             <div className="mt-6 flex items-center justify-between border-t border-line pt-5">
@@ -249,14 +246,12 @@ export function MobileNav({
                   className="flex h-4 w-4 items-center justify-center rounded-full text-micro font-bold text-fg ring-1 ring-inset ring-line-strong"
                 >
                   E
-                </span>
-                English
-              </span>
+                </span>{tx("English")}</span>
               <a
                 href={company.phoneHref}
                 className="tabular text-small text-fg-secondary underline underline-offset-4"
               >
-                {company.phone}
+                {tx(company.phone)}
               </a>
             </div>
           </nav>
@@ -273,27 +268,27 @@ export function MobileNav({
             {drill && (
               <>
                 <p className="pt-2 text-small font-semibold uppercase tracking-[0.02em] text-fg-secondary">
-                  {drill.railLabel}
+                  {tx(drill.railLabel)}
                 </p>
                 <h2 className="mt-1 flex items-center gap-3 text-[24px] font-medium leading-8 tracking-[-0.01em] text-fg">
                   <NavIcon name={drill.category.icon} className="h-6 w-6 text-primary" />
-                  {drill.category.label}
+                  {tx(drill.category.label)}
                 </h2>
                 {drill.category.groups.map((g) => (
                   <section key={g.heading} className="mt-7">
                     <h3 className="text-caption font-semibold uppercase tracking-[0.04em] text-fg-secondary">
-                      {g.heading}
+                      {tx(g.heading)}
                     </h3>
                     <ul className="mt-3 flex flex-col gap-1">
                       {g.items.map((entry) => (
                         <li key={entry.label}>
-                          <MobileItem item={entry} pathname={pathname} />
+                          <MobileItem item={tx(entry)} pathname={tx(pathname)} />
                         </li>
                       ))}
                     </ul>
                   </section>
                 ))}
-                <MobilePromo promo={drill.category.promo} />
+                <MobilePromo promo={tx(drill.category.promo)} />
               </>
             )}
           </div>
@@ -310,7 +305,7 @@ export function MobileNav({
         onClick={() => onOpenChange(!open)}
         aria-expanded={open}
         aria-controls="mobile-nav-panel"
-        aria-label={open ? "Close menu" : "Open menu"}
+        aria-label={open ? tx("Close menu") : tx("Open menu")}
         className={cn(
           "inline-flex h-11 w-11 items-center justify-center rounded-lg transition-colors duration-fast lg:hidden",
           "focus-visible:outline-2 focus-visible:outline-offset-2",
@@ -330,7 +325,7 @@ export function MobileNav({
         </svg>
       </button>
 
-      {open && createPortal(drawer, document.body)}
+      {open && tx(createPortal(drawer, document.body))}
     </>
   );
 }
@@ -350,16 +345,16 @@ function MobilePromo({ promo }: { promo: MegaCategory["promo"] }) {
     "mt-4 flex h-11 w-full items-center justify-center rounded-lg bg-white text-body font-semibold text-fg";
   return (
     <div className="mt-8 rounded-2xl bg-[linear-gradient(165deg,#2a5bff,var(--color-primary)_55%,#0000d6)] p-5 text-white">
-      <p className="text-caption font-semibold uppercase tracking-[0.04em] text-white/85">{promo.eyebrow}</p>
-      <p className="mt-3 text-[20px] font-medium leading-[26px]">{promo.title}</p>
-      <p className="mt-2 text-small text-white/85">{promo.body}</p>
+      <p className="text-caption font-semibold uppercase tracking-[0.04em] text-white/85">{tx(promo.eyebrow)}</p>
+      <p className="mt-3 text-[20px] font-medium leading-[26px]">{tx(promo.title)}</p>
+      <p className="mt-2 text-small text-white/85">{tx(promo.body)}</p>
       {promo.cta.external ? (
         <a href={promo.cta.href} target="_blank" rel="noopener noreferrer" className={cls}>
-          {promo.cta.label}
+          {tx(promo.cta.label)}
         </a>
       ) : (
         <Link href={target.href} className={cls}>
-          {promo.cta.label}
+          {tx(promo.cta.label)}
         </Link>
       )}
     </div>
@@ -384,11 +379,11 @@ function MobileItem({ item, pathname }: { item: MegaItem; pathname: string }) {
               active ? "text-primary" : interactive ? "text-fg" : "text-fg-muted",
             )}
           >
-            {item.label}
+            {tx(item.label)}
           </span>
           {item.badge && (
             <span className="rounded-md bg-brand-50 px-1.5 py-0.5 text-micro leading-4 font-semibold text-primary ring-1 ring-inset ring-brand-100">
-              {item.badge.text}
+              {tx(item.badge.text)}
             </span>
           )}
           {item.external && (
@@ -398,23 +393,23 @@ function MobileItem({ item, pathname }: { item: MegaItem; pathname: string }) {
           )}
         </span>
         <span className="mt-1 block text-small leading-snug text-fg-secondary">
-          {item.description}
+          {tx(item.description)}
         </span>
       </span>
     </span>
   );
 
-  if (!interactive || item.linkable === false) return <span>{inner}</span>;
+  if (!interactive || item.linkable === false) return <span>{tx(inner)}</span>;
   if (item.external) {
     return (
       <a href={item.href} target="_blank" rel="noopener noreferrer">
-        {inner}
+        {tx(inner)}
       </a>
     );
   }
   return (
     <Link href={target.href} aria-current={active ? "page" : undefined}>
-      {inner}
+      {tx(inner)}
     </Link>
   );
 }

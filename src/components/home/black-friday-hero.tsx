@@ -2,6 +2,7 @@ import { Container } from "@/components/ui/container";
 import { GlossyPercent } from "@/components/home/glossy-percent";
 import { Button } from "@/components/ui/button";
 import { BLACK_FRIDAY, groupById, formatPrice, quote, type Plan } from "@/data/pricing";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Black Friday homepage hero — 2026-10-31, on Edgar's request ("a hero section
@@ -71,48 +72,37 @@ export function BlackFridayHero() {
 
       <Container width="wide" className="relative pb-48 pt-36 sm:pb-60 sm:pt-44 lg:pb-52">
         <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
-          <h1 className="font-display text-[clamp(3.5rem,1.6rem+7.4vw,8.25rem)] font-semibold leading-[0.95] tracking-[-0.05em] text-white">
-            Black Friday
-          </h1>
+          <h1 className="font-display text-[clamp(3.5rem,1.6rem+7.4vw,8.25rem)] font-semibold leading-[0.95] tracking-[-0.05em] text-white">{tx("Black Friday")}</h1>
 
           {/* Sale badge: red slab with the scalloped "ENDS DEC 7" sticker
               biting into its left edge, like a price tag slapped on. */}
           <p className="relative mt-3 inline-flex items-center sm:mt-4">
-            <span className="sr-only">{PCT} off, ends {BLACK_FRIDAY.endsLabel}</span>
+            <span className="sr-only">{tx(PCT)}{tx(" off, ends ")}{tx(BLACK_FRIDAY.endsLabel)}</span>
             <span
               aria-hidden="true"
               className="absolute -left-[0.7em] top-1/2 z-10 flex size-[clamp(4.25rem,2.6rem+4vw,6.5rem)] -translate-y-1/2 -rotate-[18deg] items-center justify-center text-[clamp(1rem,0.6rem+1vw,1.5rem)]"
             >
               <Scallop />
-              <span className="relative font-display font-bold uppercase leading-[0.9] tracking-[-0.02em] text-fg">
-                Ends
-                <br />
-                <span className="whitespace-nowrap text-[0.8em]">{BLACK_FRIDAY.endsLabel}</span>
+              <span className="relative font-display font-bold uppercase leading-[0.9] tracking-[-0.02em] text-fg">{tx("Ends")}<br />
+                <span className="whitespace-nowrap text-[0.8em]">{tx(BLACK_FRIDAY.endsLabel)}</span>
               </span>
             </span>
             <span
               aria-hidden="true"
               className="rounded-[clamp(0.75rem,0.4rem+0.8vw,1.25rem)] bg-error-fill py-[0.06em] pl-[1.45em] pr-[0.3em] sm:pl-[1.15em] font-display text-[clamp(2.75rem,1.2rem+5.2vw,6rem)] font-bold leading-[1.05] tracking-[-0.04em] text-white shadow-[0_18px_40px_-16px_rgb(231_58_71/0.7)]"
             >
-              {PCT} OFF
-            </span>
+              {tx(PCT)}{tx(" OFF")}</span>
           </p>
 
-          <p className="mt-7 text-body-lg font-medium text-white sm:mt-9">
-            Hosting, email and ConvoAI Pro. Get online from{" "}
-            {formatPrice(LONG.bf?.perMonth ?? LONG.perMonth)}/mo.
-          </p>
-          <p className="mt-1.5 max-w-[620px] text-small text-fg-on-dark-secondary">
-            Starter Cloud on 36 months: {formatPrice(LONG.bf?.today ?? LONG.today)} today (regular{" "}
-            {formatPrice(LONG.today)}), renews at {formatPrice(LONG.total)}. Or monthly:{" "}
-            {formatPrice(MONTHLY.bf?.today ?? MONTHLY.today)} first month incl. setup, then{" "}
-            {formatPrice(MONTHLY.total)}/mo. {PCT} off applies to your first payment.
-          </p>
+          <p className="mt-7 text-body-lg font-medium text-white sm:mt-9">{tx("Hosting, email and ConvoAI Pro. Get online from")}{" "}
+            {tx(formatPrice(LONG.bf?.perMonth ?? LONG.perMonth))}{tx("/mo.")}</p>
+          <p className="mt-1.5 max-w-[620px] text-small text-fg-on-dark-secondary">{tx("Starter Cloud on 36 months: ")}{tx(formatPrice(LONG.bf?.today ?? LONG.today))}{tx(" today (regular")}{" "}
+            {tx(formatPrice(LONG.today))}{tx("), renews at ")}{tx(formatPrice(LONG.total))}{tx(". Or monthly:")}{" "}
+            {tx(formatPrice(MONTHLY.bf?.today ?? MONTHLY.today))}{tx(" first month incl. setup, then")}{" "}
+            {tx(formatPrice(MONTHLY.total))}{tx("/mo. ")}{tx(PCT)}{tx(" off applies to your first payment.")}</p>
 
           <div className="mt-8">
-            <Button href="/pricing" variant="inverse" size="lg">
-              Claim deal
-            </Button>
+            <Button href="/pricing" variant="inverse" size="lg">{tx("Claim deal")}</Button>
           </div>
 
           <p className="mt-6 flex items-center gap-2 text-body font-medium text-white">
@@ -132,9 +122,7 @@ export function BlackFridayHero() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-            </svg>
-            30-day money-back guarantee
-          </p>
+            </svg>{tx("30-day money-back guarantee")}</p>
         </div>
       </Container>
     </section>

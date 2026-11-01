@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Field wiring.
@@ -62,20 +63,20 @@ export function Field({
   return (
     <div className={cn("flex flex-col gap-1.5", className)}>
       <label htmlFor={id} className="text-small font-medium text-fg">
-        {label}
+        {tx(label)}
         {required && (
           <>
             <span aria-hidden="true" className="ml-0.5 text-error">
               *
             </span>
-            <span className="sr-only"> (required)</span>
+            <span className="sr-only">{tx(" (required)")}</span>
           </>
         )}
       </label>
 
       {description && (
         <p id={descriptionId} className="text-small text-fg-muted">
-          {description}
+          {tx(description)}
         </p>
       )}
 
@@ -89,7 +90,7 @@ export function Field({
         aria-live="polite"
         className={cn("text-small text-error", !error && "hidden")}
       >
-        {error}
+        {tx(error)}
       </p>
 
       {success && !error && (
@@ -104,7 +105,7 @@ export function Field({
               strokeLinejoin="round"
             />
           </svg>
-          {success}
+          {tx(success)}
         </p>
       )}
     </div>

@@ -2,6 +2,7 @@ import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/animations/reveal";
 import { stageById } from "./stages";
 import { MockPhoto } from "@/components/ui/mock-photo";
+import { t as tx } from "@/i18n/t";
 
 const stage = stageById("launch");
 
@@ -55,12 +56,12 @@ function Tiles({ variant }: { variant: 0 | 1 | 2 | 3 }) {
   ][variant];
   return (
     <div aria-hidden="true" className="absolute inset-0 grid grid-cols-3 grid-rows-4 bg-brand-100">
-      {Array.from({ length: 12 }, (_, i) => (
+      {tx(Array.from({ length: 12 }, (_, i) => (
         <span
           key={i}
           className={strong.includes(i) ? "bg-brand-200" : i % 2 ? "bg-brand-50/60" : ""}
         />
-      ))}
+      )))}
     </div>
   );
 }
@@ -83,15 +84,13 @@ function HostingArt() {
           <span className="size-2 rounded-full bg-brand-200" />
           <span className="size-2 rounded-full bg-brand-200" />
           <span className="size-2 rounded-full bg-brand-200" />
-          <span className="ml-3 rounded bg-canvas-secondary px-2 py-0.5 text-[10px] text-fg-secondary">hearthbakery.com</span>
+          <span className="ml-3 rounded bg-canvas-secondary px-2 py-0.5 text-[10px] text-fg-secondary">{tx("hearthbakery.com")}</span>
         </div>
         <div className="p-5">
           <div className="flex items-center justify-between gap-3">
-            <span className="text-small font-semibold text-fg">hearthbakery.com</span>
+            <span className="text-small font-semibold text-fg">{tx("hearthbakery.com")}</span>
             <span className="flex items-center gap-1.5 text-micro font-semibold text-success">
-              <span className="size-1.5 rounded-full bg-success-fill" />
-              Online
-            </span>
+              <span className="size-1.5 rounded-full bg-success-fill" />{tx("Online")}</span>
           </div>
           <div className="mt-5 flex h-20 items-end gap-1.5">
             {[38, 52, 44, 63, 58, 72, 66, 81, 77, 90].map((h, i) => (
@@ -104,18 +103,18 @@ function HostingArt() {
           </div>
           <div className="mt-5 space-y-3 border-t border-line-subtle pt-4 text-micro">
             <div className="flex items-center justify-between">
-              <span className="text-fg-secondary">LiteSpeed cache</span>
+              <span className="text-fg-secondary">{tx("LiteSpeed cache")}</span>
               <span className="inline-flex h-4 w-7 items-center rounded-full bg-primary p-0.5">
                 <span className="ml-auto size-3 rounded-full bg-white" />
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-fg-secondary">Daily backup</span>
-              <span className="font-semibold text-fg">Done</span>
+              <span className="text-fg-secondary">{tx("Daily backup")}</span>
+              <span className="font-semibold text-fg">{tx("Done")}</span>
             </div>
             <div>
               <div className="flex items-center justify-between">
-                <span className="text-fg-secondary">NVMe storage</span>
+                <span className="text-fg-secondary">{tx("NVMe storage")}</span>
                 <span className="font-semibold text-fg">24%</span>
               </div>
               <span className="mt-1.5 block h-1.5 overflow-hidden rounded-full bg-brand-100">
@@ -139,8 +138,7 @@ function DomainArt() {
           <span className="inline-flex size-12 shrink-0 items-center justify-center rounded-xl bg-primary text-white">
             <GlobeIcon className="size-6" />
           </span>
-          <span className="whitespace-nowrap text-[22px] leading-none tracking-[-0.02em] text-fg">
-            hearthbakery<span className="font-semibold">.com</span>
+          <span className="whitespace-nowrap text-[22px] leading-none tracking-[-0.02em] text-fg">{tx("hearthbakery")}<span className="font-semibold">{tx(".com")}</span>
           </span>
         </div>
         <svg viewBox="0 0 24 24" aria-hidden="true" className="absolute top-14 left-10 size-9 drop-shadow-md">
@@ -156,30 +154,27 @@ function EmailArt() {
     <>
       <Tiles variant={2} />
       <div className="absolute top-14 left-6 right-0 bottom-10 overflow-hidden rounded-l-2xl bg-white/95 shadow-e3 ring-1 ring-brand-200">
-        <p className="border-b border-line-subtle px-5 py-3.5 text-small font-semibold text-fg">New message</p>
+        <p className="border-b border-line-subtle px-5 py-3.5 text-small font-semibold text-fg">{tx("New message")}</p>
         <div className="px-4 pt-4">
           <span className="flex w-fit items-center gap-2 rounded-full bg-white py-1.5 pr-4 pl-1.5 shadow-e2 ring-1 ring-line">
             <span className="inline-flex size-7 items-center justify-center rounded-full bg-primary text-micro font-semibold text-white">
               H
             </span>
-            <span className="text-small text-fg">hello@hearthbakery.com</span>
+            <span className="text-small text-fg">{tx("hello@hearthbakery.com")}</span>
           </span>
         </div>
         <dl className="mt-3 divide-y divide-line-subtle px-5 text-micro">
           <div className="flex items-center gap-4 py-2.5">
-            <dt className="w-14 text-fg-muted">To</dt>
-            <dd className="rounded-full bg-brand-50 px-2 py-0.5 text-primary">Regular customers</dd>
+            <dt className="w-14 text-fg-muted">{tx("To")}</dt>
+            <dd className="rounded-full bg-brand-50 px-2 py-0.5 text-primary">{tx("Regular customers")}</dd>
           </div>
           <div className="flex items-center gap-4 py-2.5">
-            <dt className="w-14 text-fg-muted">Subject</dt>
-            <dd className="text-fg-secondary">Fresh this weekend</dd>
+            <dt className="w-14 text-fg-muted">{tx("Subject")}</dt>
+            <dd className="text-fg-secondary">{tx("Fresh this weekend")}</dd>
           </div>
         </dl>
         <div className="mx-5 mt-2 space-y-2">
-          <p className="text-[11px] leading-relaxed text-fg-secondary">
-            Hi Maria, the sourdough is back this Saturday, and our first croissant
-            box goes out at 8am. Reply to reserve yours.
-          </p>
+          <p className="text-[11px] leading-relaxed text-fg-secondary">{tx("Hi Maria, the sourdough is back this Saturday, and our first croissant box goes out at 8am. Reply to reserve yours.")}</p>
           <MockPhoto src="bread" className="h-16 rounded-lg" sizes="260px" />
         </div>
       </div>
@@ -204,8 +199,8 @@ function MigrationArt() {
             </svg>
           </span>
           <span className="min-w-0">
-            <span className="block truncate text-small font-semibold text-fg">Moving your site</span>
-            <span className="block text-micro text-fg-muted">To staging first</span>
+            <span className="block truncate text-small font-semibold text-fg">{tx("Moving your site")}</span>
+            <span className="block text-micro text-fg-muted">{tx("To staging first")}</span>
           </span>
         </div>
         <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-brand-100">
@@ -214,7 +209,7 @@ function MigrationArt() {
         <ul className="mt-4 space-y-2.5">
           {steps.map(([label, done]) => (
             <li key={label} className="flex items-center justify-between text-small">
-              <span className="text-fg-secondary">{label}</span>
+              <span className="text-fg-secondary">{tx(label)}</span>
               {done ? (
                 <span className="inline-flex size-5 items-center justify-center rounded-full bg-success-fill text-white">
                   <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="size-3">
@@ -259,7 +254,7 @@ export function StageLaunch() {
           id="launch-heading"
           className="display-md mx-auto max-w-[900px] text-center text-fg"
         >
-          {stage.heading}
+          {tx(stage.heading)}
         </h2>
       </Reveal>
 
@@ -269,7 +264,7 @@ export function StageLaunch() {
             At lg the cards become `flex: 1 1 0` and share the track, which is
             the layout the expansion needs to have something to redistribute. */}
         <ul
-          aria-label="Launch tools"
+          aria-label={tx("Launch tools")}
           className="tools-row -mx-5 flex snap-x snap-mandatory scroll-pl-5 gap-5 overflow-x-auto px-5 pb-2 sm:-mx-8 sm:scroll-pl-8 sm:px-8 lg:mx-0 lg:snap-none lg:overflow-visible lg:px-0"
         >
           {TOOLS.map((tool) => (
@@ -283,7 +278,7 @@ export function StageLaunch() {
               >
                 <div className="relative aspect-[305/400] w-full overflow-hidden rounded-[16px] bg-brand-100 lg:aspect-auto lg:h-[400px]">
                   <div aria-hidden="true" className="absolute inset-0 transition-transform duration-500 ease-out group-hover:scale-[1.03]">
-                    {tool.art}
+                    {tx(tool.art)}
                   </div>
                   {/* Hidden until the card is hovered or focused. Focus is
                       included so the affordance exists for the keyboard, not
@@ -306,7 +301,7 @@ export function StageLaunch() {
                 </div>
 
                 <span className="mt-5 block text-[20px] leading-7 tracking-[-0.01em] text-fg">
-                  {tool.title}
+                  {tx(tool.title)}
                 </span>
               </a>
             </li>

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useLoop } from "./use-loop";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Grow, first row: ConvoAI working on a real small-business site at 2am.
@@ -118,11 +119,7 @@ export function GrowChatShowcase() {
       className="@container relative w-full"
       style={{ "--u": "0.1205cqw" } as React.CSSProperties}
     >
-      <figcaption className="sr-only">
-        A bakery&apos;s website at 2:04am with the ConvoAI chat widget. A visitor opens
-        it, asks about a custom cake for Saturday, and the agent answers and sends the
-        order to the team.
-      </figcaption>
+      <figcaption className="sr-only">{tx("A bakery's website at 2:04am with the ConvoAI chat widget. A visitor opens it, asks about a custom cake for Saturday, and the agent answers and sends the order to the team.")}</figcaption>
 
       <div
         aria-hidden="true"
@@ -136,9 +133,7 @@ export function GrowChatShowcase() {
               <span className="size-[1.4cqw] rounded-full bg-[#febc2e]" />
               <span className="size-[1.4cqw] rounded-full bg-[#28c840]" />
             </span>
-            <span className="mx-auto rounded-[0.8cqw] bg-white px-[3cqw] py-[0.5cqw] text-[1.55cqw] text-[#5b6170] shadow-[0_0_0_1px_rgb(15_23_42/0.06)]">
-              crumbandco.com
-            </span>
+            <span className="mx-auto rounded-[0.8cqw] bg-white px-[3cqw] py-[0.5cqw] text-[1.55cqw] text-[#5b6170] shadow-[0_0_0_1px_rgb(15_23_42/0.06)]">{tx("crumbandco.com")}</span>
             <span className="w-[5cqw]" />
           </div>
 
@@ -153,22 +148,14 @@ export function GrowChatShowcase() {
               style={{ objectPosition: "50% 75%" }}
             />
             <div className="absolute inset-x-[3%] top-[4%] flex items-center justify-between rounded-[1.2cqw] bg-white/95 px-[2.4cqw] py-[1.2cqw]">
-              <span className="font-display text-[2cqw] font-semibold tracking-[-0.02em] text-[#2b1d12]">
-                crumb &amp; co.
-              </span>
+              <span className="font-display text-[2cqw] font-semibold tracking-[-0.02em] text-[#2b1d12]">{tx("crumb & co.")}</span>
               <span className="flex items-center gap-[2cqw] text-[1.5cqw] font-medium text-[#4a3b2f]">
-                <span>Breads</span>
-                <span>Cakes</span>
-                <span className="rounded-[0.8cqw] bg-[#f3e6d6] px-[1.5cqw] py-[0.5cqw] font-semibold text-[#7a4a1d]">
-                  Order
-                </span>
+                <span>{tx("Breads")}</span>
+                <span>{tx("Cakes")}</span>
+                <span className="rounded-[0.8cqw] bg-[#f3e6d6] px-[1.5cqw] py-[0.5cqw] font-semibold text-[#7a4a1d]">{tx("Order")}</span>
               </span>
             </div>
-            <p className="absolute left-[5%] top-[19%] font-display text-[5.2cqw] font-semibold leading-[0.95] tracking-[-0.04em] text-[#2b1d12]">
-              Baked before
-              <br />
-              sunrise.
-            </p>
+            <p className="absolute left-[5%] top-[19%] font-display text-[5.2cqw] font-semibold leading-[0.95] tracking-[-0.04em] text-[#2b1d12]">{tx("Baked before")}<br />{tx("sunrise.")}</p>
 
             {/* ── ConvoAI messenger: pop-out welcome line (.cw-pop.cw-text) ── */}
             <div
@@ -193,7 +180,7 @@ export function GrowChatShowcase() {
                 transform: open ? `translate(${u(8)}, ${u(12)}) scale(0.35)` : "none",
               }}
             >
-              {WELCOME}
+              {tx(WELCOME)}
             </div>
 
             {/* ── ConvoAI messenger: panel (.cw-panel) ── */}
@@ -234,13 +221,13 @@ export function GrowChatShowcase() {
                     className="block truncate font-semibold"
                     style={{ fontSize: u(14), lineHeight: 1.1 }}
                   >
-                    {AGENT}
+                    {tx(AGENT)}
                   </span>
                   <span
                     className="block truncate"
                     style={{ fontSize: u(12.7), lineHeight: 1.45, color: MUTED }}
                   >
-                    {TAGLINE}
+                    {tx(TAGLINE)}
                   </span>
                 </span>
                 {[
@@ -286,10 +273,10 @@ export function GrowChatShowcase() {
                       letterSpacing: "-0.01em",
                     }}
                   >
-                    {AGENT}
+                    {tx(AGENT)}
                   </span>
                   <span style={{ marginTop: u(2), fontSize: u(13), color: MUTED }}>
-                    {TAGLINE}
+                    {tx(TAGLINE)}
                   </span>
                   <span className="flex" style={{ gap: u(4), marginTop: u(10) }}>
                     {MARKS.map((c) => (
@@ -317,9 +304,7 @@ export function GrowChatShowcase() {
                       style={{ width: u(12), height: u(12) }}
                     >
                       <path d="M11 2h2v3h4a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3h4zM9 11a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z" />
-                    </svg>
-                    AI assistant · a person can step in
-                  </span>
+                    </svg>{tx("AI assistant · a person can step in")}</span>
                 </div>
 
                 {/* .cw-day */}
@@ -330,13 +315,11 @@ export function GrowChatShowcase() {
                     color: MUTED,
                     margin: `${u(4)} 0 ${u(14)}`,
                   }}
-                >
-                  Today
-                </span>
+                >{tx("Today")}</span>
 
-                <Message role="bot" text={GREETING} first />
+                <Message role="bot" text={tx(GREETING)} first />
                 {MESSAGES.slice(0, shown).map((m, i) => (
-                  <Message key={i} role={m.role} text={m.text} />
+                  <Message key={i} role={m.role} text={tx(m.text)} />
                 ))}
 
                 {/* .cw-typing — a .cw-msg, so it enters like one; `.cw-msg + .cw-msg`
@@ -400,7 +383,7 @@ export function GrowChatShowcase() {
                       color: draft ? INK : MUTED,
                     }}
                   >
-                    {draft || "Ask a question…"}
+                    {tx(draft) || tx("Ask a question…")}
                     {draft && (
                       <span
                         className="ml-px inline-block animate-pulse"
@@ -454,15 +437,13 @@ export function GrowChatShowcase() {
                   color: MUTED,
                   padding: `${u(8)} ${u(16)} ${u(12)}`,
                 }}
-              >
-                By chatting with us, you agree to our{" "}
-                <span className="underline underline-offset-2">Privacy Policy</span>
+              >{tx("By chatting with us, you agree to our")}{" "}
+                <span className="underline underline-offset-2">{tx("Privacy Policy")}</span>
                 <span
                   className="block opacity-80"
                   style={{ marginTop: u(2), fontSize: u(11) }}
-                >
-                  Powered by{" "}
-                  <span className="underline underline-offset-2">ConvoAI</span>
+                >{tx("Powered by")}{" "}
+                  <span className="underline underline-offset-2">{tx("ConvoAI")}</span>
                 </span>
               </div>
             </div>
@@ -652,7 +633,7 @@ function Message({
           color: bot ? INK : "#fff",
         }}
       >
-        {text}
+        {tx(text)}
       </span>
       <span
         style={{
@@ -661,7 +642,7 @@ function Message({
           margin: bot ? `${u(6)} 0 0 ${u(16)}` : `${u(6)} ${u(16)} 0 0`,
         }}
       >
-        {bot ? `${AGENT} • AI Agent • Just now` : "Just now"}
+        {bot ? tx(`${AGENT} • AI Agent • Just now`) : tx("Just now")}
       </span>
     </div>
   );

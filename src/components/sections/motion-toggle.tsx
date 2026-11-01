@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Pause / play for the hero's looping motion (WCAG 2.2.2: anything that moves
@@ -14,7 +15,7 @@ export function MotionToggle({ targetId }: { targetId: string }) {
     <button
       type="button"
       aria-pressed={paused}
-      aria-label={paused ? "Play animation" : "Pause animation"}
+      aria-label={paused ? tx("Play animation") : tx("Pause animation")}
       onClick={() => {
         const next = !paused;
         setPaused(next);

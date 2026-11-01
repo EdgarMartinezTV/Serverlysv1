@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { IconButton } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Horizontal card rail with scroll snapping.
@@ -73,7 +74,7 @@ export function CardRail({
         <IconButton
           label={`Scroll ${label} left`}
           variant={arrowVariant}
-          disabled={atStart}
+          disabled={tx(atStart)}
           onClick={() => page(-1)}
         >
           <Chevron direction="left" />
@@ -81,7 +82,7 @@ export function CardRail({
         <IconButton
           label={`Scroll ${label} right`}
           variant={arrowVariant}
-          disabled={atEnd}
+          disabled={tx(atEnd)}
           onClick={() => page(1)}
         >
           <Chevron direction="right" />
@@ -91,7 +92,7 @@ export function CardRail({
       <ul
         ref={track}
         onScroll={measure}
-        aria-label={label}
+        aria-label={tx(label)}
         /* scroll-pl-* MUST match the px-* gutter. Without it, snap-mandatory
            aligns the first card's left edge to the CONTAINER's left edge and
            the browser silently parks the track at scrollLeft = gutter width —

@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { openAssistant } from "@/components/assistant/assistant";
+import { t as tx } from "@/i18n/t";
 
 /**
  * "Chat with us" — opens ConvoAI. Like the header's Ask ConvoAI pill, it degrades
@@ -57,7 +58,7 @@ export function ChatButton({
   );
   return (
     <button type="button" onClick={() => openAssistant()} className={classes}>
-      {body}
+      {tx(body)}
     </button>
   );
 }

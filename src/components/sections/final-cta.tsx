@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { billing, company } from "@/data/company";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Closing conversion block.
@@ -36,30 +37,17 @@ export function FinalCta({ plansHref = "/#plans" }: { plansHref?: string } = {})
       <div aria-hidden="true" className="absolute inset-y-0 right-0 -z-10 w-[35%] bg-white/[0.05] [clip-path:polygon(45%_0,100%_0,100%_100%,0_100%)]" />
       <div className="mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8 lg:px-10 lg:py-24">
         <div className="max-w-[620px]">
-          <h2 id="final-cta-heading" className="display-lg text-white">
-            A plan that still makes sense in year two
-          </h2>
-          <p className="mt-5 max-w-[480px] text-body-lg text-white/85">
-            Free migration, free SSL and daily backups on every plan, with a 30-day
-            money-back guarantee.
-          </p>
+          <h2 id="final-cta-heading" className="display-lg text-white">{tx("A plan that still makes sense in year two")}</h2>
+          <p className="mt-5 max-w-[480px] text-body-lg text-white/85">{tx("Free migration, free SSL and daily backups on every plan, with a 30-day money-back guarantee.")}</p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <Button href={plansHref} variant="inverse" size="lg">
-              Compare plans
-            </Button>
-            <Button href={billing.sales} variant="onBrand" size="lg">
-              Talk to an expert
-            </Button>
+            <Button href={plansHref} variant="inverse" size="lg">{tx("Compare plans")}</Button>
+            <Button href={billing.sales} variant="onBrand" size="lg">{tx("Talk to an expert")}</Button>
           </div>
-          <p className="mt-8 text-small text-white/80">
-            Prefer the phone?{" "}
+          <p className="mt-8 text-small text-white/80">{tx("Prefer the phone?")}{" "}
             <a href={company.phoneHref} className="tabular inline-block py-1 text-white underline underline-offset-2">
-              {company.phone}
-            </a>{" "}
-            · Existing customer?{" "}
-            <a href={billing.login} className="inline-block py-1 text-white underline underline-offset-2">
-              Client login
-            </a>
+              {tx(company.phone)}
+            </a>{" "}{tx("· Existing customer?")}{" "}
+            <a href={billing.login} className="inline-block py-1 text-white underline underline-offset-2">{tx("Client login")}</a>
           </p>
         </div>
       </div>

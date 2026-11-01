@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Container } from "@/components/ui/container";
 import { AssistantIcon, AssistantMark } from "@/components/assistant/assistant-mark";
 import { askAssistant, openAssistant } from "@/components/assistant/assistant";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Brief band — "tell us what you are building".
@@ -128,11 +129,7 @@ export function BriefBand() {
           <h2
             id="brief-heading"
             className="display-lg mt-6 text-fg"
-          >
-            Tell us your idea.
-            <span className="block bg-[linear-gradient(90deg,var(--color-brand-900),var(--color-brand-600)_45%,var(--color-brand-500))] bg-clip-text pb-1 text-transparent">
-              ConvoAI tells you what it takes.
-            </span>
+          >{tx("Tell us your idea.")}<span className="block bg-[linear-gradient(90deg,var(--color-brand-900),var(--color-brand-600)_45%,var(--color-brand-500))] bg-clip-text pb-1 text-transparent">{tx("ConvoAI tells you what it takes.")}</span>
           </h2>
 
           <form
@@ -142,9 +139,7 @@ export function BriefBand() {
               ask();
             }}
           >
-            <label htmlFor="brief" className="sr-only">
-              What do you want to build?
-            </label>
+            <label htmlFor="brief" className="sr-only">{tx("What do you want to build?")}</label>
             <div className="flex items-center gap-2 rounded-xl bg-canvas p-1.5 pl-5 shadow-e2 ring-1 ring-brand-200 transition-shadow duration-fast focus-within:ring-2 focus-within:ring-primary">
               <input
                 id="brief"
@@ -153,22 +148,20 @@ export function BriefBand() {
                 autoComplete="off"
                 value={draft}
                 onChange={(event) => setDraft(event.target.value)}
-                placeholder="What do you want to build?"
+                placeholder={tx("What do you want to build?")}
                 className="h-11 min-w-0 flex-1 bg-transparent text-body-lg text-fg placeholder:text-fg-secondary focus:outline-none"
               />
               <button
                 type="submit"
                 className="inline-flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary text-white transition-colors duration-fast ease-hover hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
-                <span className="sr-only">Ask ConvoAI</span>
+                <span className="sr-only">{tx("Ask ConvoAI")}</span>
                 <AssistantIcon name="arrowRight" className="h-5 w-5" />
               </button>
             </div>
           </form>
 
-          <p className="mt-4 text-small text-fg-secondary">
-            Get a plan and the real price in seconds. Free, no signup.
-          </p>
+          <p className="mt-4 text-small text-fg-secondary">{tx("Get a plan and the real price in seconds. Free, no signup.")}</p>
         </div>
       </Container>
     </section>

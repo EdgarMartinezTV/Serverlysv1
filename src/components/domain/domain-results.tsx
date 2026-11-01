@@ -43,6 +43,7 @@ import { groupById, quote, formatPrice, type Plan } from "@/data/pricing";
 import { addToCart, cartStore } from "@/lib/domains/cart";
 import type { DomainResult } from "@/lib/domains/types";
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 /* ── Shared bits ─────────────────────────────────────────────────────────── */
 
@@ -55,7 +56,7 @@ function Name({ domain, size = "md" }: { domain: string; size?: "md" | "lg" }) {
         size === "lg" ? "text-[26px] leading-8 tracking-[-0.02em]" : "text-body-lg",
       )}
     >
-      {dot > 0 ? domain.slice(0, dot) : domain}
+      {dot > 0 ? domain.slice(0, dot) : tx(domain)}
       {dot > 0 && <span className="text-primary">{domain.slice(dot)}</span>}
     </span>
   );
@@ -82,7 +83,7 @@ function SaveButton({ domain, saved, onToggle }: { domain: string; saved: boolea
           strokeLinejoin="round"
         />
       </svg>
-      <span className="sr-only">{saved ? `Remove ${domain} from saved names` : `Save ${domain}`}</span>
+      <span className="sr-only">{saved ? tx(`Remove ${domain} from saved names`) : tx(`Save ${domain}`)}</span>
     </button>
   );
 }
@@ -117,9 +118,7 @@ function AddButton({
         href={billing.viewCart}
         className={cn(base, "h-11 bg-success-soft px-5 text-small text-success ring-1 ring-inset ring-success/30 hover:bg-success/15")}
       >
-        <svg viewBox="0 0 16 16" aria-hidden="true" className="size-4"><path d="m3.5 8.5 3 3 6-7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-        View cart
-        <span className="sr-only"> ({srName} added)</span>
+        <svg viewBox="0 0 16 16" aria-hidden="true" className="size-4"><path d="m3.5 8.5 3 3 6-7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>{tx("View cart")}<span className="sr-only"> ({tx(srName)}{tx(" added)")}</span>
       </a>
     );
   }
@@ -147,8 +146,8 @@ function AddButton({
         busy && "opacity-70",
       )}
     >
-      {busy ? "Adding…" : label}
-      <span className="sr-only"> {srName}</span>
+      {busy ? tx("Adding…") : tx(label)}
+      <span className="sr-only"> {tx(srName)}</span>
     </a>
   );
 }
@@ -157,11 +156,11 @@ function PriceBlock({ price, renew, large = false }: { price: number; renew: num
   return (
     <p className="mr-auto text-left sm:mr-0 sm:text-right">
       <span className={cn("tabular font-semibold text-fg", large ? "text-[26px] leading-none tracking-[-0.02em]" : "text-body-lg")}>
-        ${price.toFixed(2)}
+        ${tx(price.toFixed(2))}
       </span>
-      <span className="text-small text-fg-muted">/1st yr</span>
+      <span className="text-small text-fg-muted">{tx("/1st yr")}</span>
       {renew !== null && (
-        <span className="block text-micro text-fg-muted">Renews at ${renew.toFixed(2)}/yr</span>
+        <span className="block text-micro text-fg-muted">{tx("Renews at $")}{tx(renew.toFixed(2))}{tx("/yr")}</span>
       )}
     </p>
   );
@@ -209,25 +208,24 @@ function OfferCard({
     <li className="flex flex-col gap-5 rounded-2xl bg-success-soft p-5 ring-1 ring-inset ring-success/25 sm:p-6">
       <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
-          <p className="text-micro font-semibold tracking-wide text-success uppercase">{label}</p>
+          <p className="text-micro font-semibold tracking-wide text-success uppercase">{tx(label)}</p>
           <p className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-2">
             <Name domain={result.domain} size="lg" />
-            <Badge tone="success">Available</Badge>
+            <Badge tone="success">{tx("Available")}</Badge>
           </p>
         </div>
         {price !== null && (
           <div className="flex w-full shrink-0 flex-wrap items-center justify-end gap-3 sm:w-auto sm:flex-nowrap">
-            <PriceBlock price={price} renew={tld?.renew ?? null} large />
-            <SaveButton domain={result.domain} saved={saved} onToggle={onToggleSave} />
+            <PriceBlock price={tx(price)} renew={tx(tld?.renew) ?? null} large />
+            <SaveButton domain={result.domain} saved={tx(saved)} onToggle={onToggleSave} />
             {result.source === "whmcs" ? (
-              <AddButton domains={[result.domain]} label="Make it yours" primary onAdded={onAdded} srName={result.domain} />
+              <AddButton domains={[result.domain]} label={tx("Make it yours")} primary onAdded={onAdded} srName={tx(result.domain)} />
             ) : (
               /* RDAP fallback: WHMCS has not confirmed it, so its own search re-checks. */
               <a
                 href={billing.searchDomain(result.domain)}
                 className="inline-flex h-12 shrink-0 items-center rounded-full bg-primary px-6 text-body font-semibold text-white shadow-e2 hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-              >
-                Make it yours<span className="sr-only"> {result.domain}</span>
+              >{tx("Make it yours")}<span className="sr-only"> {tx(result.domain)}</span>
               </a>
             )}
           </div>
@@ -239,14 +237,14 @@ function OfferCard({
             <li className="flex gap-2">
               <Tick />
               <span>
-                <span className="font-semibold text-fg">{tld.tld}</span> — {tld.note}.
+                <span className="font-semibold text-fg">{tx(tld.tld)}</span> — {tx(tld.note)}.
               </span>
             </li>
           )}
           {describe && (
             <li className="flex gap-2">
               <Tick />
-              <span>{describe}</span>
+              <span>{tx(describe)}</span>
             </li>
           )}
         </ul>
@@ -270,41 +268,30 @@ function Verdict({ result }: { result: DomainResult }) {
     <li className="flex flex-col gap-2 rounded-2xl bg-canvas-secondary p-5 ring-1 ring-inset ring-line sm:p-6">
       <p className="flex flex-wrap items-center gap-x-3 gap-y-2">
         <Name domain={domain} size="lg" />
-        {status === "registered" && <Badge tone="neutral">Taken</Badge>}
+        {status === "registered" && <Badge tone="neutral">{tx("Taken")}</Badge>}
         {(status === "unsupported" || (status === "available" && result.price === null)) && (
-          <Badge tone="neutral">Not offered</Badge>
+          <Badge tone="neutral">{tx("Not offered")}</Badge>
         )}
-        {status === "unknown" && <Badge tone="warning">No answer</Badge>}
+        {status === "unknown" && <Badge tone="warning">{tx("No answer")}</Badge>}
       </p>
       <p className="text-small text-fg-secondary">
         {status === "registered" && (
-          <>
-            Already registered.{" "}
-            <a href={billing.transferDomainSearch(domain)} className="rounded-sm font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">
-              Transfer it here
-            </a>{" "}
-            if it is yours, or{" "}
-            <a href={`/whois-lookup?domain=${encodeURIComponent(domain)}`} className="rounded-sm font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">
-              see who owns it
-            </a>
+          <>{tx("Already registered.")}{" "}
+            <a href={billing.transferDomainSearch(domain)} className="rounded-sm font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">{tx("Transfer it here")}</a>{" "}{tx("if it is yours, or")}{" "}
+            <a href={`/whois-lookup?domain=${encodeURIComponent(domain)}`} className="rounded-sm font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">{tx("see who owns it")}</a>
             .
           </>
         )}
         {(status === "unsupported" || (status === "available" && result.price === null)) && (
-          <>
-            We do not sell this extension{result.tld ? ` (${result.tld})` : ""} yet.{" "}
-            <a href="/domain-name#tld-prices" className="rounded-sm font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">
-              See the extensions we offer
-            </a>
+          <>{tx("We do not sell this extension")}{result.tld ? tx(` (${result.tld})`) : ""}{tx(" yet.")}{" "}
+            <a href="/domain-name#tld-prices" className="rounded-sm font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">{tx("See the extensions we offer")}</a>
             .
           </>
         )}
         {status === "unknown" && (
           <>
-            {result.reason ?? "The registry did not answer in time."}{" "}
-            <a href={billing.searchDomain(domain)} className="rounded-sm font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">
-              Search in the cart
-            </a>
+            {tx(result.reason) ?? tx("The registry did not answer in time.")}{" "}
+            <a href={billing.searchDomain(domain)} className="rounded-sm font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">{tx("Search in the cart")}</a>
             .
           </>
         )}
@@ -326,17 +313,17 @@ function Bundle({ sld, results, catalog, onAdded }: { sld: string; results: Map<
   return (
     <li className="flex flex-col gap-4 rounded-2xl bg-white p-5 ring-1 ring-inset ring-line sm:flex-row sm:items-center sm:justify-between sm:p-6">
       <div className="min-w-0">
-        <p className="text-micro font-semibold tracking-wide text-primary uppercase">Bundle</p>
+        <p className="text-micro font-semibold tracking-wide text-primary uppercase">{tx("Bundle")}</p>
         <p className="mt-1.5 text-body-lg font-semibold break-all text-fg">
-          {sld}
-          <span className="text-primary">.com</span> + <span className="text-primary">.org</span> +{" "}
-          <span className="text-primary">.info</span>
+          {tx(sld)}
+          <span className="text-primary">{tx(".com")}</span> + <span className="text-primary">{tx(".org")}</span> +{" "}
+          <span className="text-primary">{tx(".info")}</span>
         </p>
-        <p className="mt-1 text-small text-fg-secondary">Keep the name yours on all three, managed from one account.</p>
+        <p className="mt-1 text-small text-fg-secondary">{tx("Keep the name yours on all three, managed from one account.")}</p>
       </div>
       <div className="flex w-full shrink-0 flex-wrap items-center justify-end gap-3 sm:w-auto sm:flex-nowrap">
-        <PriceBlock price={total} renew={renew || null} />
-        <AddButton domains={domains} label="Get all three" onAdded={onAdded} srName={domains.join(", ")} />
+        <PriceBlock price={tx(total)} renew={tx(renew) || null} />
+        <AddButton domains={tx(domains)} label={tx("Get all three")} onAdded={onAdded} srName={tx(domains.join(", "))} />
       </div>
     </li>
   );
@@ -348,14 +335,11 @@ function FreeDomainStrip() {
   return (
     <div className="flex flex-col gap-1 rounded-2xl bg-brand-50 px-5 py-4 text-small sm:flex-row sm:items-center sm:justify-between sm:gap-4">
       <p className="text-fg">
-        <span className="font-semibold">Free domain for the first year with hosting.</span>{" "}
+        <span className="font-semibold">{tx("Free domain for the first year with hosting.")}</span>{" "}
         <span className="text-fg-secondary">
-          {FREE_WITH_HOSTING.join(", ")} on any Cloud, WordPress or WooCommerce plan billed yearly or longer.
-        </span>
+          {tx(FREE_WITH_HOSTING.join(", "))}{tx(" on any Cloud, WordPress or WooCommerce plan billed yearly or longer.")}</span>
       </p>
-      <a href="/pricing" className="shrink-0 rounded-sm font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">
-        See hosting plans
-      </a>
+      <a href="/pricing" className="shrink-0 rounded-sm font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">{tx("See hosting plans")}</a>
     </div>
   );
 }
@@ -384,32 +368,29 @@ function OptionRow({
         <p className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
           <Name domain={result.domain} />
           {best && sellable && (
-            <span className="rounded-md bg-success-soft px-2 py-0.5 text-micro font-semibold text-success">Best value</span>
+            <span className="rounded-md bg-success-soft px-2 py-0.5 text-micro font-semibold text-success">{tx("Best value")}</span>
           )}
-          {result.status === "available" && <Badge tone="success">Available</Badge>}
-          {result.status === "unknown" && <Badge tone="warning">No answer</Badge>}
+          {result.status === "available" && <Badge tone="success">{tx("Available")}</Badge>}
+          {result.status === "unknown" && <Badge tone="warning">{tx("No answer")}</Badge>}
         </p>
         {result.status === "unknown" && (
           <p className="mt-1 text-small text-fg-muted">
-            {result.reason ?? "The registry did not answer in time."}{" "}
-            <a href={billing.searchDomain(result.domain)} className="font-medium text-primary underline underline-offset-4">
-              Check in the cart
-            </a>
+            {tx(result.reason) ?? tx("The registry did not answer in time.")}{" "}
+            <a href={billing.searchDomain(result.domain)} className="font-medium text-primary underline underline-offset-4">{tx("Check in the cart")}</a>
           </p>
         )}
       </div>
       {sellable && (
         <div className="flex w-full shrink-0 flex-wrap items-center justify-end gap-3 sm:w-auto sm:flex-nowrap">
-          <PriceBlock price={result.price!} renew={tld?.renew ?? null} />
-          <SaveButton domain={result.domain} saved={saved} onToggle={onToggleSave} />
+          <PriceBlock price={tx(result.price!)} renew={tx(tld?.renew) ?? null} />
+          <SaveButton domain={result.domain} saved={tx(saved)} onToggle={onToggleSave} />
           {result.source === "whmcs" ? (
-            <AddButton domains={[result.domain]} label="Get it" onAdded={onAdded} srName={result.domain} />
+            <AddButton domains={[result.domain]} label={tx("Get it")} onAdded={onAdded} srName={tx(result.domain)} />
           ) : (
             <a
               href={billing.searchDomain(result.domain)}
               className="inline-flex h-11 shrink-0 items-center rounded-full px-5 text-small font-semibold text-primary ring-1 ring-inset ring-primary hover:bg-primary hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-            >
-              Get it<span className="sr-only"> {result.domain}</span>
+            >{tx("Get it")}<span className="sr-only"> {tx(result.domain)}</span>
             </a>
           )}
         </div>
@@ -427,27 +408,25 @@ function PlanOffer({ plan, groupSlug, recommended, domain }: { plan: Plan; group
   return (
     <li className={cn("flex flex-col gap-3 rounded-2xl p-5 ring-1 ring-inset", recommended ? "bg-brand-50 ring-brand-200" : "bg-white ring-line")}>
       <p className="flex flex-wrap items-center gap-2">
-        <span className="text-body-lg font-semibold text-fg">{plan.name}</span>
-        {recommended && <Badge tone="brand">Recommended</Badge>}
+        <span className="text-body-lg font-semibold text-fg">{tx(plan.name)}</span>
+        {recommended && <Badge tone="brand">{tx("Recommended")}</Badge>}
       </p>
       <p className="text-small text-fg-secondary">
         {free ? (
-          <>
-            Launch <span className="font-semibold text-fg">{domain}</span> and get the domain free for the first year.{" "}
+          <>{tx("Launch ")}<span className="font-semibold text-fg">{tx(domain)}</span>{tx(" and get the domain free for the first year.")}{" "}
           </>
         ) : (
-          <>
-            Host <span className="font-semibold text-fg">{domain}</span>.{" "}
+          <>{tx("Host ")}<span className="font-semibold text-fg">{tx(domain)}</span>.{" "}
           </>
         )}
-        {plan.summary}
+        {tx(plan.summary)}
       </p>
       <p>
-        <span className="tabular text-h4 font-semibold text-fg">{formatPrice(first)}</span>
-        <span className="text-small text-fg-muted">/mo billed yearly</span>
+        <span className="tabular text-h4 font-semibold text-fg">{tx(formatPrice(first))}</span>
+        <span className="text-small text-fg-muted">{tx("/mo billed yearly")}</span>
         <span className="block text-micro text-fg-muted">
-          {q.bf ? `Black Friday first year; renews at ${formatPrice(q.perMonth)}/mo` : "Renews at the same price"}
-          {q.setup ? ` · ${formatPrice(q.bf ? q.bf.setup : q.setup)} one-off setup` : ""}
+          {q.bf ? tx(`Black Friday first year; renews at ${formatPrice(q.perMonth)}/mo`) : tx("Renews at the same price")}
+          {q.setup ? tx(` · ${formatPrice(q.bf ? q.bf.setup : q.setup)} one-off setup`) : ""}
         </span>
       </p>
       <a
@@ -458,8 +437,7 @@ function PlanOffer({ plan, groupSlug, recommended, domain }: { plan: Plan; group
           "mt-auto inline-flex h-11 items-center justify-center rounded-full px-5 text-small font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
           recommended ? "bg-primary text-white hover:bg-primary-hover" : "text-primary ring-1 ring-inset ring-primary hover:bg-primary hover:text-white",
         )}
-      >
-        Choose {plan.name}
+      >{tx("Choose ")}{tx(plan.name)}
       </a>
     </li>
   );
@@ -472,15 +450,11 @@ function HostingUpsell({ domain }: { domain: string }) {
   if (!cloud || !turbo || !plus) return null;
   return (
     <section aria-labelledby="upsell-heading" className="rounded-2xl bg-canvas-secondary p-5 sm:p-6">
-      <h3 id="upsell-heading" className="text-body-lg font-semibold text-fg">
-        Put {domain} online
-      </h3>
-      <p className="mt-1 text-small text-fg-secondary">
-        Pick a plan and {domain} comes with it — it is already in your cart and will be attached to the plan.
-      </p>
+      <h3 id="upsell-heading" className="text-body-lg font-semibold text-fg">{tx("Put ")}{tx(domain)}{tx(" online")}</h3>
+      <p className="mt-1 text-small text-fg-secondary">{tx("Pick a plan and ")}{tx(domain)}{tx(" comes with it — it is already in your cart and will be attached to the plan.")}</p>
       <ul className="mt-4 grid gap-3 md:grid-cols-2">
-        <PlanOffer plan={turbo} groupSlug={cloud.group} recommended domain={domain} />
-        <PlanOffer plan={plus} groupSlug={cloud.group} recommended={false} domain={domain} />
+        <PlanOffer plan={turbo} groupSlug={tx(cloud.group)} recommended domain={domain} />
+        <PlanOffer plan={plus} groupSlug={tx(cloud.group)} recommended={false} domain={domain} />
       </ul>
     </section>
   );
@@ -550,47 +524,46 @@ export function DomainResults({
     <div className="flex flex-col gap-6">
       {exact && exact.status !== "available" && exact.status === "registered" && alternative && (
         <p role="status" className="text-body text-fg">
-          <span className="font-semibold">{exact.domain}</span> is already taken. We found a great alternative just for you!
-        </p>
+          <span className="font-semibold">{tx(exact.domain)}</span>{tx(" is already taken. We found a great alternative just for you!")}</p>
       )}
 
       <ul className="flex flex-col gap-3">
         {exact && exact.status === "available" && exact.price !== null ? (
           <OfferCard
-            label="Exact match"
-            result={exact}
+            label={tx("Exact match")}
+            result={tx(exact)}
             tld={tldOf(exact.tld)}
-            saved={isSaved(exact.domain)}
+            saved={tx(isSaved(exact.domain))}
             onToggleSave={() => onToggleSave(exact)}
             onAdded={onAdded}
           />
         ) : (
-          exact && <Verdict result={exact} />
+          exact && <Verdict result={tx(exact)} />
         )}
         {alternative && (
           <OfferCard
-            label="Great alternative"
-            result={alternative}
+            label={tx("Great alternative")}
+            result={tx(alternative)}
             tld={tldOf(alternative.tld)}
-            saved={isSaved(alternative.domain)}
+            saved={tx(isSaved(alternative.domain))}
             onToggleSave={() => onToggleSave(alternative)}
             onAdded={onAdded}
           />
         )}
         {exact?.status === "available" && exact.tld === ".com" && (
-          <Bundle sld={sld} results={results} catalog={catalog} onAdded={onAdded} />
+          <Bundle sld={tx(sld)} results={tx(results)} catalog={tx(catalog)} onAdded={onAdded} />
         )}
       </ul>
 
       {justAdded && <HostingUpsell domain={justAdded} />}
 
-      {similar}
+      {tx(similar)}
 
       <FreeDomainStrip />
 
       <div>
-        <h3 className="text-body-lg font-semibold text-fg">More options</h3>
-        <div role="tablist" aria-label="Extension categories" className="mt-3 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none]">
+        <h3 className="text-body-lg font-semibold text-fg">{tx("More options")}</h3>
+        <div role="tablist" aria-label={tx("Extension categories")} className="mt-3 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none]">
           {[...categories, "All"].map((c) => (
             <button
               key={c}
@@ -603,7 +576,7 @@ export function DomainResults({
                 category === c ? "bg-fg font-semibold text-white" : "bg-white text-fg ring-1 ring-line hover:bg-canvas-secondary",
               )}
             >
-              {c}
+              {tx(c)}
             </button>
           ))}
         </div>
@@ -612,41 +585,35 @@ export function DomainResults({
           {shown.map((r) => (
             <OptionRow
               key={r.domain}
-              result={r}
+              result={tx(r)}
               tld={tldOf(r.tld)}
-              best={cheapest?.domain === r.domain}
-              saved={isSaved(r.domain)}
+              best={tx(cheapest?.domain === r.domain)}
+              saved={tx(isSaved(r.domain))}
               onToggleSave={() => onToggleSave(r)}
               onAdded={onAdded}
             />
           ))}
           {(loadingCategory === category || partial) &&
-            Array.from({ length: 3 }, (_, i) => <li key={`sk${i}`} aria-hidden="true" className="my-2 h-14 animate-pulse rounded-xl bg-canvas-inset" />)}
+            tx(Array.from({ length: 3 }, (_, i) => <li key={`sk${i}`} aria-hidden="true" className="my-2 h-14 animate-pulse rounded-xl bg-canvas-inset" />))}
           {altFailed && shown.length === 0 && (
-            <li className="py-6 text-center text-small text-fg-muted">
-              More options did not load.{" "}
+            <li className="py-6 text-center text-small text-fg-muted">{tx("More options did not load.")}{" "}
               {onRetry && (
-                <button type="button" onClick={onRetry} className="font-semibold text-primary underline underline-offset-4">
-                  Try again
-                </button>
+                <button type="button" onClick={onRetry} className="font-semibold text-primary underline underline-offset-4">{tx("Try again")}</button>
               )}
             </li>
           )}
           {!partial && !altFailed && loadingCategory !== category && shown.length === 0 && (
-            <li className="py-6 text-center text-small text-fg-muted">No available names in this group.</li>
+            <li className="py-6 text-center text-small text-fg-muted">{tx("No available names in this group.")}</li>
           )}
         </ul>
         {hidden > 0 && !partial && loadingCategory !== category && (
           <p className="mt-2 text-small text-fg-muted">
-            {hidden} more {hidden === 1 ? "extension is" : "extensions are"} already taken for {sld}.
+            {tx(hidden)}{tx(" more ")}{hidden === 1 ? tx("extension is") : tx("extensions are")}{tx(" already taken for ")}{tx(sld)}.
           </p>
         )}
       </div>
 
-      <p className="text-small text-fg-muted">
-        Prices are first-year registration, with the yearly renewal shown beside each. Premium names are priced by the
-        registry and labelled before checkout.
-        {source === "rdap" && <> Availability is read live from the domain registry.</>}
+      <p className="text-small text-fg-muted">{tx("Prices are first-year registration, with the yearly renewal shown beside each. Premium names are priced by the registry and labelled before checkout.")}{source === "rdap" && <>{tx(" Availability is read live from the domain registry.")}</>}
       </p>
     </div>
   );

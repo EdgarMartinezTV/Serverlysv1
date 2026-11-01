@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { AssistantMark } from "@/components/assistant/assistant-mark";
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 /**
  * The co-worker bento as an accordion (2026-10-03).
@@ -85,7 +86,7 @@ export function CoworkerBento() {
             )}
 
             <h3 className="relative text-body-lg font-medium whitespace-nowrap text-white">
-              {card.title}
+              {tx(card.title)}
             </h3>
             <p
               className={cn(
@@ -95,7 +96,7 @@ export function CoworkerBento() {
                   : "mt-6 text-fg-on-dark-muted lg:mt-auto",
               )}
             >
-              {card.body}
+              {tx(card.body)}
             </p>
 
             {isOpen && (
@@ -148,8 +149,8 @@ function Demo({ id }: { id: Id }) {
     case "answer":
       return (
         <div className="flex flex-col gap-3">
-          <Bubble from="visitor">Do you deliver on Sundays?</Bubble>
-          <Bubble from="agent">Yes, from 9am to 1pm. Want me to book a slot this Sunday?</Bubble>
+          <Bubble from="visitor">{tx("Do you deliver on Sundays?")}</Bubble>
+          <Bubble from="agent">{tx("Yes, from 9am to 1pm. Want me to book a slot this Sunday?")}</Bubble>
         </div>
       );
 
@@ -157,10 +158,9 @@ function Demo({ id }: { id: Id }) {
       return (
         <div className="max-w-[340px] rounded-2xl bg-white p-5 shadow-e3">
           <div className="flex items-center justify-between">
-            <span className="text-small font-semibold text-fg">New enquiry</span>
+            <span className="text-small font-semibold text-fg">{tx("New enquiry")}</span>
             <span className="flex items-center gap-1.5 text-micro font-semibold text-success">
-              <Check /> Saved
-            </span>
+              <Check />{tx(" Saved")}</span>
           </div>
           <dl className="mt-4 divide-y divide-line-subtle text-small">
             {[
@@ -170,8 +170,8 @@ function Demo({ id }: { id: Id }) {
               ["Contact", "Text, not email"],
             ].map(([k, v]) => (
               <div key={k} className="flex justify-between gap-4 py-2">
-                <dt className="text-fg-muted">{k}</dt>
-                <dd className="text-right font-medium text-fg">{v}</dd>
+                <dt className="text-fg-muted">{tx(k)}</dt>
+                <dd className="text-right font-medium text-fg">{tx(v)}</dd>
               </div>
             ))}
           </dl>
@@ -181,23 +181,18 @@ function Demo({ id }: { id: Id }) {
     case "escalate":
       return (
         <div className="flex flex-col gap-3">
-          <Bubble from="visitor">My site is down and I have orders waiting.</Bubble>
-          <Bubble from="agent">I am passing this to the team now, with this whole conversation.</Bubble>
+          <Bubble from="visitor">{tx("My site is down and I have orders waiting.")}</Bubble>
+          <Bubble from="agent">{tx("I am passing this to the team now, with this whole conversation.")}</Bubble>
           <div className="flex w-fit items-center gap-2 rounded-full bg-white/15 px-3 py-1.5 text-micro font-semibold text-white">
-            <span className="size-1.5 rounded-full bg-success-fill" />
-            Handed to a person · transcript attached
-          </div>
+            <span className="size-1.5 rounded-full bg-success-fill" />{tx("Handed to a person · transcript attached")}</div>
         </div>
       );
 
     case "honest":
       return (
         <div className="flex flex-col gap-3">
-          <Bubble from="visitor">Can you do the whole job for $50?</Bubble>
-          <Bubble from="agent">
-            I cannot confirm a custom price. I am an assistant, so I will ask the team and text
-            you back today.
-          </Bubble>
+          <Bubble from="visitor">{tx("Can you do the whole job for $50?")}</Bubble>
+          <Bubble from="agent">{tx("I cannot confirm a custom price. I am an assistant, so I will ask the team and text you back today.")}</Bubble>
         </div>
       );
 
@@ -211,8 +206,8 @@ function Demo({ id }: { id: Id }) {
           ].map(([what, detail]) => (
             <li key={what} className="flex items-center gap-3 rounded-xl bg-white px-4 py-3 shadow-e2">
               <Check />
-              <span className="flex-1 text-small font-medium text-fg">{what}</span>
-              <span className="text-micro text-fg-muted">{detail}</span>
+              <span className="flex-1 text-small font-medium text-fg">{tx(what)}</span>
+              <span className="text-micro text-fg-muted">{tx(detail)}</span>
             </li>
           ))}
         </ul>

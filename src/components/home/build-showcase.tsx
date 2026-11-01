@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 /**
  * The Build-stage visual: a deck of real-looking customer sites with a
@@ -55,19 +56,11 @@ const SITES: readonly Site[] = [
     hero: (
       <>
         {/* Headline on the wall above the sofa; offer on the floor below it. */}
-        <p className="absolute left-[6%] top-[19%] font-display text-[6.2cqw] font-semibold leading-[0.95] tracking-[-0.04em] text-[#1d2a24]">
-          Sit down. Stay a while.
-        </p>
-        <p className="absolute left-[6%] top-[29%] text-[1.9cqw] text-[#1d2a24]/70">
-          The Marlow sofa · velvet, six colours
-        </p>
+        <p className="absolute left-[6%] top-[19%] font-display text-[6.2cqw] font-semibold leading-[0.95] tracking-[-0.04em] text-[#1d2a24]">{tx("Sit down. Stay a while.")}</p>
+        <p className="absolute left-[6%] top-[29%] text-[1.9cqw] text-[#1d2a24]/70">{tx("The Marlow sofa · velvet, six colours")}</p>
         <div className="absolute bottom-[19%] left-[6%] flex items-center gap-[1.6cqw]">
-          <span className="rounded-full bg-[#1f4d3a] px-[2.4cqw] py-[0.9cqw] text-[1.7cqw] font-semibold text-white">
-            Shop the collection
-          </span>
-          <span className="rounded-full bg-white/85 px-[2.4cqw] py-[0.9cqw] text-[1.7cqw] font-semibold text-[#1d2a24]">
-            Free delivery
-          </span>
+          <span className="rounded-full bg-[#1f4d3a] px-[2.4cqw] py-[0.9cqw] text-[1.7cqw] font-semibold text-white">{tx("Shop the collection")}</span>
+          <span className="rounded-full bg-white/85 px-[2.4cqw] py-[0.9cqw] text-[1.7cqw] font-semibold text-[#1d2a24]">{tx("Free delivery")}</span>
         </div>
       </>
     ),
@@ -83,14 +76,8 @@ const SITES: readonly Site[] = [
     wash: "bg-gradient-to-t from-black/55 via-black/10 to-transparent",
     hero: (
       <div className="absolute bottom-[19%] left-[6%] max-w-[70%] text-white">
-        <p className="text-[1.8cqw] font-medium uppercase tracking-[0.18em] text-white/80">
-          Residential · 2026
-        </p>
-        <p className="mt-[1.2cqw] font-display text-[7.6cqw] font-medium leading-[0.98] tracking-[-0.035em]">
-          Houses that hold
-          <br />
-          the evening light.
-        </p>
+        <p className="text-[1.8cqw] font-medium uppercase tracking-[0.18em] text-white/80">{tx("Residential · 2026")}</p>
+        <p className="mt-[1.2cqw] font-display text-[7.6cqw] font-medium leading-[0.98] tracking-[-0.035em]">{tx("Houses that hold")}<br />{tx("the evening light.")}</p>
       </div>
     ),
   },
@@ -105,15 +92,9 @@ const SITES: readonly Site[] = [
     wash: "bg-gradient-to-r from-black/60 via-black/25 to-transparent",
     hero: (
       <div className="absolute left-[6%] top-[22%] max-w-[72%] text-white">
-        <p className="font-display text-[8.8cqw] font-semibold italic leading-[0.92] tracking-[-0.04em]">
-          Slow coffee,
-          <br />
-          fast mornings.
-        </p>
-        <p className="mt-[2cqw] text-[1.9cqw] text-white/80">Open 7am · Roasted in-house</p>
-        <span className="mt-[2cqw] inline-block rounded-full bg-[#f2c49b] px-[2.4cqw] py-[0.9cqw] text-[1.7cqw] font-semibold text-[#3b1d08]">
-          See the menu
-        </span>
+        <p className="font-display text-[8.8cqw] font-semibold italic leading-[0.92] tracking-[-0.04em]">{tx("Slow coffee,")}<br />{tx("fast mornings.")}</p>
+        <p className="mt-[2cqw] text-[1.9cqw] text-white/80">{tx("Open 7am · Roasted in-house")}</p>
+        <span className="mt-[2cqw] inline-block rounded-full bg-[#f2c49b] px-[2.4cqw] py-[0.9cqw] text-[1.7cqw] font-semibold text-[#3b1d08]">{tx("See the menu")}</span>
       </div>
     ),
   },
@@ -218,10 +199,7 @@ export function BuildShowcase() {
 
   return (
     <figure ref={root} className="relative mx-auto w-full max-w-[680px]">
-      <figcaption className="sr-only">
-        Example sites hosted on Serverlys — a furniture store, an architecture studio and a café —
-        with the request that started each one.
-      </figcaption>
+      <figcaption className="sr-only">{tx("Example sites hosted on Serverlys — a furniture store, an architecture studio and a café — with the request that started each one.")}</figcaption>
 
       {/* Bottom padding is less than the prompt bar's height, so the bar
           overlaps the front card's lower edge by ~30px (phone) / ~55px. */}
@@ -234,7 +212,7 @@ export function BuildShowcase() {
             return (
               <SiteCard
                 key={site.key}
-                site={site}
+                site={tx(site)}
                 className={cn(
                   POSITIONS[pos],
                   // The rising card is animated, everything else transitions
@@ -244,7 +222,7 @@ export function BuildShowcase() {
                     : "transition-transform duration-[520ms] motion-reduce:transition-none",
                 )}
                 style={rising ? undefined : { transitionTimingFunction: EASE }}
-                wash={WASH[pos]}
+                wash={tx(WASH[pos])}
               />
             );
           })}
@@ -252,9 +230,9 @@ export function BuildShowcase() {
           {entering && (
             <SiteCard
               key={`ghost-${cycle}`}
-              site={SITES[active]}
+              site={tx(SITES[active])}
               className={cn(POSITIONS[2], "animate-[deckGhost_450ms_ease-out_both]")}
-              wash={WASH[2]}
+              wash={tx(WASH[2])}
             />
           )}
         </div>
@@ -326,18 +304,18 @@ function SiteCard({
       {/* Site navigation */}
       <div className="absolute inset-x-[2.6%] top-[3.6%] flex items-center justify-between rounded-[1.6cqw] bg-white/95 px-[3cqw] py-[1.5cqw] shadow-[0_1px_2px_rgb(15_23_42/0.08)]">
         <span className="font-display text-[2.3cqw] font-semibold tracking-[-0.02em] text-[#141414]">
-          {site.brand}
+          {tx(site.brand)}
         </span>
         <span className="flex items-center gap-[2.6cqw] text-[1.75cqw] font-medium text-[#3a3a3a]">
-          <span>{site.links[0]}</span>
-          <span>{site.links[1]}</span>
+          <span>{tx(site.links[0])}</span>
+          <span>{tx(site.links[1])}</span>
           <span className={cn("rounded-[1cqw] px-[1.8cqw] py-[0.7cqw] font-semibold", site.accent.className)}>
-            {site.accent.label}
+            {tx(site.accent.label)}
           </span>
         </span>
       </div>
 
-      {site.hero}
+      {tx(site.hero)}
 
       {/* Depth: cards further back wash out toward the page. */}
       <div

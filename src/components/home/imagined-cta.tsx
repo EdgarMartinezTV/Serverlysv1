@@ -1,6 +1,7 @@
 import { AssistantMark } from "@/components/assistant/assistant-mark";
 import { MockPhoto } from "@/components/ui/mock-photo";
 import { CtaButton } from "@/components/ref/kit";
+import { t as tx } from "@/i18n/t";
 
 /**
  * The closing banner — layout from the reference's `h-banner-with-image`.
@@ -70,17 +71,11 @@ export function ImaginedCta() {
       />
       <div className="mx-auto grid w-full max-w-[1280px] items-center gap-12 px-5 py-16 sm:px-8 lg:grid-cols-2 lg:px-10 lg:py-24">
         <div>
-          <h2 id="imagined-heading" className="display-lg text-white">
-            Pick a plan.
-            <span className="block">We move your site free.</span>
+          <h2 id="imagined-heading" className="display-lg text-white">{tx("Pick a plan.")}<span className="block">{tx("We move your site free.")}</span>
           </h2>
-          <p className="mt-5 max-w-[380px] text-body text-white/85">
-            30-day money-back guarantee. Free migration. The renewal price shown before you buy.
-          </p>
+          <p className="mt-5 max-w-[380px] text-body text-white/85">{tx("30-day money-back guarantee. Free migration. The renewal price shown before you buy.")}</p>
           <div className="mt-10">
-            <CtaButton href="/pricing" tone="light">
-              Choose a plan
-            </CtaButton>
+            <CtaButton href="/pricing" tone="light">{tx("Choose a plan")}</CtaButton>
           </div>
         </div>
 
@@ -88,24 +83,20 @@ export function ImaginedCta() {
           <div className="overflow-hidden rounded-2xl bg-white shadow-e5 ring-1 ring-white/30">
             <div className="flex items-center justify-between bg-[#1b1206] px-5 py-3 text-micro text-white/80">
               <span className="flex gap-4">
-                <span>Home</span>
-                <span>Menu</span>
-                <span>Order</span>
+                <span>{tx("Home")}</span>
+                <span>{tx("Menu")}</span>
+                <span>{tx("Order")}</span>
               </span>
-              <span className="font-semibold tracking-[0.2em] text-white">HEARTH</span>
-              <span>Cart (2)</span>
+              <span className="font-semibold tracking-[0.2em] text-white">{tx("HEARTH")}</span>
+              <span>{tx("Cart (2)")}</span>
             </div>
             <div className="relative h-[230px] overflow-hidden p-6 sm:h-[260px]">
               <div className="absolute inset-0">
                 <MockPhoto src="bread" className="h-full" sizes="520px" />
               </div>
               <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/25 to-transparent" />
-              <p className="relative mt-8 max-w-[260px] text-[30px] leading-[1.05] font-semibold tracking-[-0.03em] text-white sm:text-[34px]">
-                Fresh bread, every morning
-              </p>
-              <span className="relative mt-5 inline-flex rounded-full bg-white px-4 py-2 text-micro font-semibold text-[#1b1206]">
-                Order for pickup
-              </span>
+              <p className="relative mt-8 max-w-[260px] text-[30px] leading-[1.05] font-semibold tracking-[-0.03em] text-white sm:text-[34px]">{tx("Fresh bread, every morning")}</p>
+              <span className="relative mt-5 inline-flex rounded-full bg-white px-4 py-2 text-micro font-semibold text-[#1b1206]">{tx("Order for pickup")}</span>
             </div>
           </div>
 
@@ -116,14 +107,13 @@ export function ImaginedCta() {
                 <path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3Z" stroke="currentColor" strokeWidth="1.8" />
               </svg>
             </span>
-            <span className="text-body text-fg">
-              hearthbakery<span className="font-semibold">.com</span>
+            <span className="text-body text-fg">{tx("hearthbakery")}<span className="font-semibold">{tx(".com")}</span>
             </span>
           </div>
 
           <div className="absolute right-0 bottom-0 flex w-[82%] items-center gap-3 rounded-xl bg-white py-2 pr-2 pl-4 shadow-e5 ring-2 ring-brand-200 sm:-right-6">
             <AssistantMark className="h-4 w-4 shrink-0 text-primary" />
-            <span className="flex-1 truncate text-small text-fg">Create a website for my bakery</span>
+            <span className="flex-1 truncate text-small text-fg">{tx("Create a website for my bakery")}</span>
             <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary text-white">
               <svg viewBox="0 0 16 16" fill="none" className="size-4">
                 <path d="M3 8h9m-3.5-3.5L12 8l-3.5 3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />

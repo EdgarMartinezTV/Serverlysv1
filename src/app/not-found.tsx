@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { billing } from "@/data/company";
+import { SiteChrome } from "@/components/layout/site-chrome";
 
 /**
  * 404 — 2026-10-26 redesign, on Edgar's instruction: the page IS his artwork
@@ -56,7 +57,7 @@ const ELSEWHERE = [
   { name: "Support", href: "/support" },
 ] as const;
 
-export default function NotFound() {
+function NotFoundContent() {
   return (
     <section
       aria-labelledby="notfound-heading"
@@ -158,5 +159,14 @@ export default function NotFound() {
         </div>
       </div>
     </section>
+  );
+}
+
+/** Renders inside the root layout, which has no chrome since 2026-11-01 — so it brings its own. */
+export default function NotFound() {
+  return (
+    <SiteChrome>
+      <NotFoundContent />
+    </SiteChrome>
   );
 }

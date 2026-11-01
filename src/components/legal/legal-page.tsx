@@ -12,6 +12,7 @@ import {
   legalDoc,
   relatedDocs,
 } from "@/data/legal";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Legal document layout.
@@ -69,9 +70,9 @@ function DocumentIndex() {
         return (
           <section key={category} aria-labelledby={`index-${category}`}>
             <h3 id={`index-${category}`} className="text-h4 text-fg">
-              {CATEGORY_LABEL[category]}
+              {tx(CATEGORY_LABEL[category])}
             </h3>
-            <p className="mt-1 text-small text-fg-muted">{CATEGORY_BLURB[category]}</p>
+            <p className="mt-1 text-small text-fg-muted">{tx(CATEGORY_BLURB[category])}</p>
             <ul className="mt-5 flex flex-col gap-px overflow-hidden rounded-lg bg-line">
               {docs.map((doc) => (
                 <li key={doc.path}>
@@ -81,16 +82,16 @@ function DocumentIndex() {
                   >
                     <span className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                       <span className="text-body font-semibold text-fg group-hover:text-primary">
-                        {doc.title}
+                        {tx(doc.title)}
                       </span>
                       <time
                         dateTime={doc.effective}
                         className="text-micro text-fg-muted"
                       >
-                        {doc.effective}
+                        {tx(doc.effective)}
                       </time>
                     </span>
-                    <span className="text-small text-fg-secondary">{doc.summary}</span>
+                    <span className="text-small text-fg-secondary">{tx(doc.summary)}</span>
                   </Link>
                 </li>
               ))}
@@ -112,9 +113,9 @@ function Precedence() {
             aria-hidden="true"
             className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-soft text-micro font-semibold text-primary"
           >
-            {i + 1}
+            {tx(i + 1)}
           </span>
-          <span>{rule}</span>
+          <span>{tx(rule)}</span>
         </li>
       ))}
     </ol>
@@ -159,16 +160,13 @@ export function LegalPage({
       <section className="relative isolate overflow-hidden border-b border-line bg-canvas-secondary">
         <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[radial-gradient(50%_80%_at_85%_0%,rgb(0_0_255/0.07),transparent_70%)]" />
         <Container className="pb-12 pt-8 sm:pb-16 sm:pt-10">
-          <Breadcrumbs trail={trail} tone="light" />
+          <Breadcrumbs trail={tx(trail)} tone="light" />
           <div className="mt-8 max-w-3xl">
-            <span className="inline-flex rounded-md bg-brand-50 px-2.5 py-1 text-small font-medium text-primary">
-              Legal
-            </span>
-            <h1 className="display-lg mt-5 text-fg">{title}</h1>
-            <p className="mt-5 text-body-lg text-fg-secondary">{intro}</p>
+            <span className="inline-flex rounded-md bg-brand-50 px-2.5 py-1 text-small font-medium text-primary">{tx("Legal")}</span>
+            <h1 className="display-lg mt-5 text-fg">{tx(title)}</h1>
+            <p className="mt-5 text-body-lg text-fg-secondary">{tx(intro)}</p>
             <p className="mt-6 inline-flex items-center gap-2 rounded-full bg-canvas px-3 py-1.5 text-small text-fg-secondary ring-1 ring-line">
-              <span className="size-1.5 rounded-full bg-success-fill" />
-              In effect from <time dateTime={doc.effective} className="font-medium text-fg">{effectiveLabel}</time>
+              <span className="size-1.5 rounded-full bg-success-fill" />{tx("In effect from ")}<time dateTime={doc.effective} className="font-medium text-fg">{tx(effectiveLabel)}</time>
             </p>
           </div>
         </Container>
@@ -176,10 +174,8 @@ export function LegalPage({
 
       <Section>
         <div className="grid gap-12 lg:grid-cols-[minmax(0,16rem)_1fr] lg:gap-16">
-          <nav aria-label="Contents" className="lg:sticky lg:top-24 lg:self-start">
-            <p className="text-small font-semibold text-fg">
-              Contents
-            </p>
+          <nav aria-label={tx("Contents")} className="lg:sticky lg:top-24 lg:self-start">
+            <p className="text-small font-semibold text-fg">{tx("Contents")}</p>
             <ol className="mt-4 flex flex-col gap-1">
               {sections.map((s, i) => (
                 <li key={s.id}>
@@ -188,9 +184,9 @@ export function LegalPage({
                     className="flex min-h-[2.5rem] items-center gap-3 rounded-md px-3 text-small text-fg-secondary transition-colors hover:bg-canvas-secondary hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                   >
                     <span aria-hidden="true" className="tabular w-5 text-micro text-fg-muted">
-                      {i + 1}
+                      {tx(i + 1)}
                     </span>
-                    {s.heading}
+                    {tx(s.heading)}
                   </a>
                 </li>
               ))}
@@ -200,14 +196,14 @@ export function LegalPage({
           <div className="max-w-[70ch]">
             {sections.map((s) => (
               <section key={s.id} id={s.id} className="scroll-mt-28 [&+section]:mt-12">
-                <h2 className="text-h3 font-medium tracking-[-0.02em] text-fg">{s.heading}</h2>
+                <h2 className="text-h3 font-medium tracking-[-0.02em] text-fg">{tx(s.heading)}</h2>
                 {s.blocks.map((b, j) => {
                   if (b.type === "index") return <DocumentIndex key={j} />;
                   if (b.type === "precedence") return <Precedence key={j} />;
                   if (b.type === "p")
                     return (
                       <p key={j} className="mt-4 text-body text-fg-secondary">
-                        {b.text}
+                        {tx(b.text)}
                       </p>
                     );
                   if (b.type === "note")
@@ -216,7 +212,7 @@ export function LegalPage({
                         key={j}
                         className="mt-5 rounded-xl bg-brand-50 p-4 text-small text-fg"
                       >
-                        {b.text}
+                        {tx(b.text)}
                       </p>
                     );
                   return (
@@ -227,7 +223,7 @@ export function LegalPage({
                             aria-hidden="true"
                             className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary"
                           />
-                          <span>{item}</span>
+                          <span>{tx(item)}</span>
                         </li>
                       ))}
                     </ul>
@@ -238,9 +234,7 @@ export function LegalPage({
 
             {related.length > 0 && (
               <nav aria-labelledby="related-heading" className="mt-14 border-t border-line pt-8">
-                <h2 id="related-heading" className="text-h4 text-fg">
-                  Related documents
-                </h2>
+                <h2 id="related-heading" className="text-h4 text-fg">{tx("Related documents")}</h2>
                 {/*
                  * Each link carries the sibling's one-line summary, not just
                  * its title. Someone lands on a legal page from a search
@@ -256,10 +250,10 @@ export function LegalPage({
                         className="group block rounded-md py-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                       >
                         <span className="text-body font-medium text-primary underline-offset-4 group-hover:underline">
-                          {r.title}
+                          {tx(r.title)}
                         </span>
                         <span className="mt-0.5 block text-small text-fg-secondary">
-                          {r.summary}
+                          {tx(r.summary)}
                         </span>
                       </Link>
                     </li>
@@ -269,25 +263,19 @@ export function LegalPage({
                   <Link
                     href="/legal-information"
                     className="font-medium text-primary underline underline-offset-4 hover:text-primary-hover"
-                  >
-                    All legal documents
-                  </Link>{" "}
-                  — including the order they take precedence in when two of them appear to
-                  disagree.
-                </p>
+                  >{tx("All legal documents")}</Link>{" "}{tx("— including the order they take precedence in when two of them appear to disagree.")}</p>
               </nav>
             )}
 
             <div className="mt-14 border-t border-line pt-8">
-              <h2 className="text-h4 text-fg">Questions about this document</h2>
-              <p className="mt-3 text-body text-fg-secondary">{contact}</p>
-              <p className="mt-4 text-body text-fg-secondary">
-                Write to{" "}
+              <h2 className="text-h4 text-fg">{tx("Questions about this document")}</h2>
+              <p className="mt-3 text-body text-fg-secondary">{tx(contact)}</p>
+              <p className="mt-4 text-body text-fg-secondary">{tx("Write to")}{" "}
                 <a
                   href={`mailto:${company.email}`}
                   className="font-medium text-primary underline underline-offset-4 hover:text-primary-hover"
                 >
-                  {emailDisplay}
+                  {tx(emailDisplay)}
                 </a>
                 .
               </p>

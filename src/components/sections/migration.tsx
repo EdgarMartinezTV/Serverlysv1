@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { Reveal } from "@/components/animations/reveal";
 import { Button } from "@/components/ui/button";
 import { billing } from "@/data/company";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Migration explainer.
@@ -103,17 +104,10 @@ export function Migration({
         <h2
           id="migration-heading"
           className={cn("display-lg", dark ? "text-white" : "text-fg")}
-        >
-          Move an existing site without downtime
-        </h2>
-        <p className={cn("mt-5 text-body-lg", dark ? "text-fg-on-dark-secondary" : "text-fg-secondary")}>
-          Migration is free and handled by our team. Nothing points at Serverlys until you
-          have seen the site working.
-        </p>
+        >{tx("Move an existing site without downtime")}</h2>
+        <p className={cn("mt-5 text-body-lg", dark ? "text-fg-on-dark-secondary" : "text-fg-secondary")}>{tx("Migration is free and handled by our team. Nothing points at Serverlys until you have seen the site working.")}</p>
         <div className="mt-8">
-          <Button href={billing.sales} variant={dark ? "inverse" : "secondary"}>
-            Ask about migrating
-          </Button>
+          <Button href={billing.sales} variant={dark ? "inverse" : "secondary"}>{tx("Ask about migrating")}</Button>
         </div>
       </Reveal>
 
@@ -142,10 +136,10 @@ export function Migration({
                 )}
                 aria-hidden="true"
               >
-                {i + 1}
+                {tx(i + 1)}
               </span>
               <h3 className={cn("mt-4 text-body-lg", dark ? "text-fg-on-dark" : "text-fg")}>
-                {step.title}
+                {tx(step.title)}
               </h3>
               <p
                 className={cn(
@@ -153,7 +147,7 @@ export function Migration({
                   dark ? "text-fg-on-dark-muted" : "text-fg-secondary",
                 )}
               >
-                {step.body}
+                {tx(step.body)}
               </p>
             </li>
           ))}

@@ -6,6 +6,7 @@ import { NavIcon } from "./nav-icons";
 import { MegaMenuItem } from "./mega-menu-item";
 import { MegaMenuPromo } from "./mega-menu-promo";
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Mega menu panel — three zones, as in the target.
@@ -123,7 +124,7 @@ export function MegaMenu({
             {/* 12px / 600 / 16px line box — the target's eyebrow exactly.
                 `text-caption` alone is 12/16.8 (the site's 1.4 ratio). */}
             <p className="text-caption uppercase leading-4 font-semibold tracking-[0.04em] text-fg">
-              {railLabel}
+              {tx(railLabel)}
             </p>
             <div
               role="tablist"
@@ -174,7 +175,7 @@ export function MegaMenu({
                         selected ? "text-primary" : "text-fg",
                       )}
                     />
-                    <span className="truncate">{c.label}</span>
+                    <span className="truncate">{tx(c.label)}</span>
                   </button>
                 );
               })}
@@ -197,7 +198,7 @@ export function MegaMenu({
                 className={cn("flex flex-col gap-6", gi > 0 && "border-t border-line pt-7")}
               >
                 <h3 className="text-caption uppercase leading-4 font-semibold tracking-[0.04em] text-fg">
-                  {group.heading}
+                  {tx(group.heading)}
                 </h3>
                 {/* auto-fit at a 264px floor, exactly as the target: columns
                     appear and disappear with the panel width instead of
@@ -205,7 +206,7 @@ export function MegaMenu({
                 <ul className="grid grid-cols-[repeat(auto-fit,minmax(16.5rem,1fr))] gap-x-10 gap-y-7">
                   {group.items.map((item) => (
                     <li key={item.label} className="flex">
-                      <MegaMenuItem item={item} onNavigate={onNavigate} />
+                      <MegaMenuItem item={tx(item)} onNavigate={onNavigate} />
                     </li>
                   ))}
                 </ul>
@@ -215,7 +216,7 @@ export function MegaMenu({
 
           {/* ── Zone 3: promotional panel ──────────────────────────────── */}
           <div className="hidden min-h-[30rem] w-[20rem] shrink-0 xl:block">
-            <MegaMenuPromo promo={category.promo} />
+            <MegaMenuPromo promo={tx(category.promo)} />
           </div>
         </div>
       </div>

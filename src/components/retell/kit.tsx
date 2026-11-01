@@ -8,6 +8,7 @@ import { BRANDS, BrandIcon, type BrandSlug } from "./brands";
 import { ChatButton } from "./chat-button";
 import { FeaturesScroller, type FeatureGroup } from "./features-scroller";
 import { Icon, type IconName } from "./icons";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Service-page kit, built to the Retell AI receptionists page (2026-10-13)
@@ -107,11 +108,11 @@ function ShieldBadge({ caption, label, icon }: HeroBadge & { caption: string }) 
       </svg>
       <span className="relative flex h-[96px] flex-col items-center pt-2.5 text-center">
         <span className="text-[6.5px] font-bold tracking-[0.08em] text-fg-muted uppercase">
-          {caption}
+          {tx(caption)}
         </span>
         <Icon name={icon} className="mt-0.5 size-4 text-primary" />
         <span className="mt-1 px-1 text-[9.5px] leading-[1.1] font-bold whitespace-nowrap text-fg">
-          {label}
+          {tx(label)}
         </span>
       </span>
     </li>
@@ -160,7 +161,7 @@ export function Hero({
       >
         <Image
           src={photo.src}
-          alt={photo.alt}
+          alt={tx(photo.alt)}
           fill
           sizes="100vw"
           loading="eager"
@@ -189,7 +190,7 @@ export function Hero({
             "max-w-[11ch] text-[56px] leading-[0.98] font-normal tracking-[-0.035em] text-white sm:text-[80px] lg:max-w-[980px] lg:text-[96px] xl:text-[110px]",
           )}
         >
-          {title}
+          {tx(title)}
         </h1>
 
         <div className="max-w-[560px] lg:ml-[50%] lg:max-w-[600px]">
@@ -201,23 +202,23 @@ export function Hero({
                     ·
                   </span>
                 )}
-                {k}
+                {tx(k)}
               </span>
             ))}
           </p>
           <p className="mt-4 text-[19px] leading-[1.45] text-white/95 lg:text-[21px]">
-            {lede}
+            {tx(lede)}
           </p>
           <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-5">
             <a
               href={cta.href}
               className="inline-flex h-[54px] items-center justify-center rounded-full bg-white px-8 text-body font-semibold text-[#0b0d10] transition-colors duration-fast hover:bg-white/85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
-              {cta.label}
+              {tx(cta.label)}
             </a>
-            <ul className="flex flex-wrap gap-2" aria-label={badgeCaption}>
+            <ul className="flex flex-wrap gap-2" aria-label={tx(badgeCaption)}>
               {badges.map((b) => (
-                <ShieldBadge key={b.label} {...b} caption={badgeCaption} />
+                <ShieldBadge key={b.label} {...b} caption={tx(badgeCaption)} />
               ))}
             </ul>
           </div>
@@ -243,12 +244,12 @@ export function HowItWorks({
   return (
     <section aria-labelledby={id} className="bg-white py-20 lg:py-28">
       <Wrap>
-        <Label className="text-center">{label}</Label>
+        <Label className="text-center">{tx(label)}</Label>
         <Heading
           id={id}
           className="max-w-[560px] text-[24px] sm:text-[28px] lg:text-[30px]"
         >
-          {title}
+          {tx(title)}
         </Heading>
         <ol className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((s, i) => (
@@ -267,9 +268,9 @@ export function HowItWorks({
                   INK,
                 )}
               >
-                {s.title}
+                {tx(s.title)}
               </h3>
-              <p className={cn("mt-10 text-[14px] leading-[1.6]", MUTED)}>{s.body}</p>
+              <p className={cn("mt-10 text-[14px] leading-[1.6]", MUTED)}>{tx(s.body)}</p>
             </Reveal>
           ))}
         </ol>
@@ -294,8 +295,8 @@ export function UseCases({
   return (
     <section aria-labelledby={id} className="bg-white pb-20 lg:pb-28">
       <Wrap>
-        <Label className="text-center">{label}</Label>
-        <Heading id={id}>{title}</Heading>
+        <Label className="text-center">{tx(label)}</Label>
+        <Heading id={id}>{tx(title)}</Heading>
         <div className="mt-14 flex flex-col gap-14 lg:mt-20 lg:gap-20">
           {items.map((u, i) => {
             const flip = i % 2 === 1;
@@ -312,7 +313,7 @@ export function UseCases({
                 >
                   <Image
                     src={u.src}
-                    alt={u.alt}
+                    alt={tx(u.alt)}
                     fill
                     sizes="(min-width: 1024px) 540px, 100vw"
                     className="object-cover"
@@ -326,10 +327,10 @@ export function UseCases({
                       INK,
                     )}
                   >
-                    {u.title}
+                    {tx(u.title)}
                   </h3>
                   <hr className="my-7 border-black/[0.08] lg:my-9" />
-                  <p className={cn("text-[15px] leading-[1.65]", MUTED)}>{u.body}</p>
+                  <p className={cn("text-[15px] leading-[1.65]", MUTED)}>{tx(u.body)}</p>
                 </div>
               </Reveal>
             );
@@ -379,26 +380,26 @@ export function NavyBand({
       <div className="rounded-[20px] bg-[#0b1530] py-16 text-white lg:py-20">
         <Wrap className="grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:items-center">
           <div>
-            <p className="text-[13px] font-medium text-[#f5a524]">{kicker}</p>
+            <p className="text-[13px] font-medium text-[#f5a524]">{tx(kicker)}</p>
             <h2
               id={id}
               className="mt-5 max-w-[560px] font-display text-[32px] leading-[1.15] font-normal tracking-[-0.025em] text-white lg:text-[40px]"
             >
-              {title}
+              {tx(title)}
             </h2>
             <p className="mt-8 max-w-[520px] text-[16px] leading-[1.6] text-white/80">
-              {body}
+              {tx(body)}
             </p>
           </div>
           <div className="lg:justify-self-end">
             <p className="max-w-[300px] text-[15px] leading-[1.55] text-white/85">
-              <Amber text={aside} />
+              <Amber text={tx(aside)} />
             </p>
             <a
               href={cta.href}
               className="mt-6 inline-flex h-10 items-center rounded-md bg-white px-5 text-[14px] font-semibold text-[#0b1530] transition-colors hover:bg-white/85"
             >
-              {cta.label}
+              {tx(cta.label)}
             </a>
           </div>
         </Wrap>
@@ -423,7 +424,7 @@ export function Promises({
   return (
     <section aria-labelledby={id} className="bg-white py-20 lg:py-28">
       <Wrap>
-        <Label className="text-center">{label}</Label>
+        <Label className="text-center">{tx(label)}</Label>
         <p
           id={id}
           className={cn(
@@ -431,7 +432,7 @@ export function Promises({
             INK,
           )}
         >
-          {intro}
+          {tx(intro)}
         </p>
         <ul
           className={cn(
@@ -455,10 +456,10 @@ export function Promises({
                   INK,
                 )}
               >
-                {p.title}
+                {tx(p.title)}
               </h3>
               <p className="mt-10 max-w-[340px] text-[15px] leading-[1.6] text-[#2b3442]">
-                {p.body}
+                {tx(p.body)}
               </p>
             </Reveal>
           ))}
@@ -487,10 +488,10 @@ export function Features({
   return (
     <section aria-labelledby={id} className="bg-white pb-20 lg:pb-16">
       <Wrap>
-        <Label className="text-center">{label}</Label>
-        <Heading id={id}>{title}</Heading>
+        <Label className="text-center">{tx(label)}</Label>
+        <Heading id={id}>{tx(title)}</Heading>
         <div className="mt-14 lg:mt-12">
-          <FeaturesScroller groups={groups} tabPrefix={tabPrefix} />
+          <FeaturesScroller groups={tx(groups)} tabPrefix={tx(tabPrefix)} />
         </div>
       </Wrap>
     </section>
@@ -521,7 +522,7 @@ function MarqueeRow({
               className="flex shrink-0 items-center gap-3 px-7 py-2 text-[16px] font-medium whitespace-nowrap text-[#374151]"
             >
               <BrandIcon slug={t} className="size-7 shrink-0" />
-              {BRANDS[t].label}
+              {tx(BRANDS[t].label)}
             </li>
           )),
         )}
@@ -546,24 +547,24 @@ export function ToolsMarquee({
   return (
     <section aria-labelledby={id} className="bg-white pb-20 lg:pb-28">
       <Wrap>
-        <Label className="text-center">{label}</Label>
+        <Label className="text-center">{tx(label)}</Label>
         <Heading id={id} className="max-w-[560px]">
-          {title}
+          {tx(title)}
         </Heading>
         <div className="mt-8 flex justify-center">
           <a
             href={cta.href}
             className="inline-flex h-10 items-center rounded-md bg-[#0b1530] px-5 text-[14px] font-semibold text-white transition-colors hover:bg-[#1b2750]"
           >
-            {cta.label}
+            {tx(cta.label)}
           </a>
         </div>
       </Wrap>
       {/* The names are also in plain text elsewhere on each page; the moving
           copy is decoration and doubled for the loop. */}
       <div aria-hidden="true" className="mt-14 flex flex-col gap-4">
-        <MarqueeRow items={rows[0]} />
-        <MarqueeRow items={rows[1]} reverse />
+        <MarqueeRow items={tx(rows[0])} />
+        <MarqueeRow items={tx(rows[1])} reverse />
       </div>
     </section>
   );
@@ -632,10 +633,10 @@ export function PanelCard({
           blue ? "text-white" : INK,
         )}
       >
-        {name}
+        {tx(name)}
         {badge && (
           <span className="rounded-full bg-white/20 px-2 py-0.5 text-[11px] font-semibold">
-            {badge}
+            {tx(badge)}
           </span>
         )}
       </h3>
@@ -645,9 +646,9 @@ export function PanelCard({
           blue ? "text-white/80" : MUTED,
         )}
       >
-        {summary}
+        {tx(summary)}
       </p>
-      <div className="mt-6">{price}</div>
+      <div className="mt-6">{tx(price)}</div>
       <a
         href={cta.href}
         className={cn(
@@ -657,7 +658,7 @@ export function PanelCard({
             : "bg-white text-[#0b1530] ring-1 ring-black/[0.08] hover:bg-[#f7f7f8]",
         )}
       >
-        {cta.label}
+        {tx(cta.label)}
       </a>
       {list && (
         <>
@@ -668,7 +669,7 @@ export function PanelCard({
                 blue ? "text-white" : INK,
               )}
             >
-              {listTitle}
+              {tx(listTitle)}
             </p>
           )}
           <ul className="mt-4 flex flex-col gap-3.5">
@@ -681,7 +682,7 @@ export function PanelCard({
                 )}
               >
                 <Tick onBlue={blue} />
-                {f}
+                {tx(f)}
               </li>
             ))}
           </ul>
@@ -714,8 +715,8 @@ export function PricingPanel({
       className="scroll-mt-20 bg-[#f7f7f8] py-20 lg:py-28"
     >
       <Wrap>
-        <Label className="text-center">{label}</Label>
-        <Heading id={id}>{title}</Heading>
+        <Label className="text-center">{tx(label)}</Label>
+        <Heading id={id}>{tx(title)}</Heading>
         <div
           className={cn(
             "mt-14 grid gap-3 rounded-[24px] bg-[#ececef] p-3",
@@ -727,7 +728,7 @@ export function PricingPanel({
           {children}
         </div>
         {footnote && (
-          <p className={cn("mt-8 text-center text-[14px]", MUTED)}>{footnote}</p>
+          <p className={cn("mt-8 text-center text-[14px]", MUTED)}>{tx(footnote)}</p>
         )}
       </Wrap>
     </section>
@@ -751,8 +752,8 @@ export function Faqs({
   return (
     <section aria-labelledby={id} className="bg-[#f7f7f8] pb-20 lg:pb-28">
       <Wrap>
-        <Label className="text-center">{label}</Label>
-        <Heading id={id}>{title}</Heading>
+        <Label className="text-center">{tx(label)}</Label>
+        <Heading id={id}>{tx(title)}</Heading>
         <div className="mt-14 border-t border-black/[0.08]">
           {items.map((f) => (
             <details key={f.question} className="group border-b border-black/[0.08]">
@@ -762,7 +763,7 @@ export function Faqs({
                   INK,
                 )}
               >
-                {f.question}
+                {tx(f.question)}
                 <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-[#eceef2] transition-colors group-open:bg-primary group-open:text-white">
                   <svg
                     viewBox="0 0 24 24"
@@ -778,7 +779,7 @@ export function Faqs({
                 </span>
               </summary>
               <p className={cn("max-w-[820px] pb-7 text-[15px] leading-[1.7]", MUTED)}>
-                {f.answer}
+                {tx(f.answer)}
               </p>
             </details>
           ))}
@@ -803,7 +804,7 @@ export function Related({
     <section aria-labelledby={id} className="bg-white py-14">
       <Wrap>
         <Label className="text-center">
-          <span id={id}>{label}</span>
+          <span id={id}>{tx(label)}</span>
         </Label>
         <ul className="mt-5 flex flex-wrap justify-center gap-2">
           {items.map(([label, href]) => (
@@ -812,7 +813,7 @@ export function Related({
                 href={href}
                 className="inline-flex rounded-md bg-[#f1f2f5] px-3.5 py-2 text-[14px] font-medium text-[#0b1530] transition-colors hover:bg-brand-50 hover:text-primary"
               >
-                {label}
+                {tx(label)}
               </Link>
             </li>
           ))}
@@ -844,7 +845,7 @@ export function PhotoCta({
       <div className="relative flex min-h-[560px] items-center justify-center overflow-hidden rounded-[20px] px-5 py-16 lg:min-h-[640px]">
         <Image
           src={photo.src}
-          alt={photo.alt}
+          alt={tx(photo.alt)}
           fill
           sizes="100vw"
           className="object-cover"
@@ -860,22 +861,22 @@ export function PhotoCta({
                 INK,
               )}
             >
-              {title}
+              {tx(title)}
             </h2>
             <div className="relative size-[76px] shrink-0 overflow-hidden rounded-md">
               <Image src={thumb} alt="" fill sizes="80px" className="object-cover" />
             </div>
           </div>
           <div>
-            <p className={cn("text-[14px] leading-snug", INK)}>{body}</p>
+            <p className={cn("text-[14px] leading-snug", INK)}>{tx(body)}</p>
             <div className="mt-4 flex flex-wrap gap-2">
               <a
                 href={primary.href}
                 className="inline-flex h-9 items-center rounded-[4px] bg-[#0b1530] px-3.5 text-[13px] font-semibold text-white hover:bg-[#1b2750]"
               >
-                {primary.label}
+                {tx(primary.label)}
               </a>
-              <ChatButton size="sm">Ask ConvoAI</ChatButton>
+              <ChatButton size="sm">{tx("Ask ConvoAI")}</ChatButton>
             </div>
           </div>
         </div>

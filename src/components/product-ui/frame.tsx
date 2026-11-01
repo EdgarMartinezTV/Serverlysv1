@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Product framing.
@@ -54,7 +55,7 @@ export function BrowserFrame({
               : "bg-surface text-fg-muted ring-1 ring-line-subtle",
           )}
         >
-          {url}
+          {tx(url)}
         </span>
       </div>
       {children}
@@ -94,9 +95,7 @@ export function AppFrame({
       <div className="flex">
         {/* Sidebar */}
         <div className="hidden w-[8.5rem] shrink-0 flex-col gap-0.5 border-r border-line-subtle bg-canvas-secondary p-2.5 sm:flex">
-          <span className="mb-2 px-2 text-ui text-fg-muted font-semibold">
-            Serverlys
-          </span>
+          <span className="mb-2 px-2 text-ui text-fg-muted font-semibold">{tx("Serverlys")}</span>
           {nav.map((item) => (
             <span
               key={item.label}
@@ -107,8 +106,8 @@ export function AppFrame({
                   : "text-fg-muted",
               )}
             >
-              <span className="shrink-0 [&>svg]:h-3.5 [&>svg]:w-3.5">{item.icon}</span>
-              {item.label}
+              <span className="shrink-0 [&>svg]:h-3.5 [&>svg]:w-3.5">{tx(item.icon)}</span>
+              {tx(item.label)}
             </span>
           ))}
         </div>
@@ -116,10 +115,10 @@ export function AppFrame({
         {/* Content */}
         <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between border-b border-line-subtle px-4 py-2.5">
-            <span className="text-small font-semibold text-fg">{title}</span>
+            <span className="text-small font-semibold text-fg">{tx(title)}</span>
             {action && (
               <span className="rounded-md bg-primary px-2.5 py-1 text-ui font-medium text-white">
-                {action}
+                {tx(action)}
               </span>
             )}
           </div>

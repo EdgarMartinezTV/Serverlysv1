@@ -4,6 +4,7 @@ import { Reveal } from "@/components/animations/reveal";
 import { BLACK_FRIDAY, blackFridayActive, groupById, formatPrice, formatSavings, orderUrl, quote } from "@/data/pricing";
 import { billing } from "@/data/company";
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Pricing band.
@@ -49,13 +50,12 @@ export function PricingBand() {
       />
       <Container width="wide" className="relative">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <h2 id="pricing-heading" className="display-lg text-fg">
-            Choose the plan that <span className="block">matches what you run</span>
+          <h2 id="pricing-heading" className="display-lg text-fg">{tx("Choose the plan that ")}<span className="block">{tx("matches what you run")}</span>
           </h2>
           <p className="mx-auto mt-5 max-w-lg text-body-lg text-fg-secondary">
             {blackFridayActive()
-              ? `Black Friday: ${Math.round(BLACK_FRIDAY.pct * 100)}% off your first payment until ${BLACK_FRIDAY.endsLabel}. Every card shows the regular price beside the sale price, what it renews at, and the setup fee where one applies.`
-              : "The monthly rate on every card, the standard rate it discounts beside it, and the setup fee where one applies."}
+              ? tx(`Black Friday: ${Math.round(BLACK_FRIDAY.pct * 100)}% off your first payment until ${BLACK_FRIDAY.endsLabel}. Every card shows the regular price beside the sale price, what it renews at, and the setup fee where one applies.`)
+              : tx("The monthly rate on every card, the standard rate it discounts beside it, and the setup fee where one applies.")}
           </p>
           <ul className="mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
             {BADGES.map((b) => (
@@ -64,7 +64,7 @@ export function PricingBand() {
                 className="flex items-center gap-2 text-small text-fg-secondary"
               >
                 <span aria-hidden="true" className="icon-check h-4 w-4 text-success-fill" />
-                {b}
+                {tx(b)}
               </li>
             ))}
           </ul>
@@ -103,8 +103,7 @@ export function PricingBand() {
                       featured ? "bg-success-fill text-white" : "bg-success-soft text-success",
                     )}
                   >
-                    <span aria-hidden="true">✦</span> New: ConvoAI AI chat included
-                  </span>
+                    <span aria-hidden="true">✦</span>{tx(" New: ConvoAI AI chat included")}</span>
                   {/* Badge on its own row and the name on one line, so every card
                       has the same rows and the prices and buttons line up. */}
                   <div className="relative flex flex-col">
@@ -115,11 +114,11 @@ export function PricingBand() {
                       )}
                     >
                       {quote(plan, "monthly").bf
-                        ? featured ? `Most popular · Black Friday ${Math.round(BLACK_FRIDAY.pct * 100)}% off` : `Black Friday · ${Math.round(BLACK_FRIDAY.pct * 100)}% off`
-                        : featured ? `Most popular · ${formatSavings(plan)} off` : `${formatSavings(plan)} off`}
+                        ? featured ? tx(`Most popular · Black Friday ${Math.round(BLACK_FRIDAY.pct * 100)}% off`) : tx(`Black Friday · ${Math.round(BLACK_FRIDAY.pct * 100)}% off`)
+                        : featured ? tx(`Most popular · ${formatSavings(plan)} off`) : tx(`${formatSavings(plan)} off`)}
                     </span>
                     <h3 className={cn("mt-2 truncate text-body-lg font-semibold", featured ? "text-white" : "text-fg")}>
-                      {plan.name}
+                      {tx(plan.name)}
                     </h3>
                   </div>
                   <p
@@ -128,7 +127,7 @@ export function PricingBand() {
                       featured ? "text-fg-on-dark-muted" : "text-fg-secondary",
                     )}
                   >
-                    {plan.summary}
+                    {tx(plan.summary)}
                   </p>
 
                   <p
@@ -137,8 +136,8 @@ export function PricingBand() {
                       featured ? "text-fg-on-dark-muted" : "text-fg-muted",
                     )}
                   >
-                    <span className="sr-only">{quote(plan, "monthly").bf ? "Regular price " : "Standard rate "}</span>
-                    {formatPrice(quote(plan, "monthly").bf ? plan.monthly : plan.standard)}
+                    <span className="sr-only">{quote(plan, "monthly").bf ? tx("Regular price ") : tx("Standard rate ")}</span>
+                    {tx(formatPrice(quote(plan, "monthly").bf ? plan.monthly : plan.standard))}
                   </p>
                   <p className="relative flex items-baseline gap-1">
                     <span
@@ -147,11 +146,9 @@ export function PricingBand() {
                         featured ? "text-white" : "text-fg",
                       )}
                     >
-                      {formatPrice(quote(plan, "monthly").bf?.perMonth ?? plan.monthly)}
+                      {tx(formatPrice(quote(plan, "monthly").bf?.perMonth ?? plan.monthly))}
                     </span>
-                    <span className={cn("text-body", featured ? "text-fg-on-dark-muted" : "text-fg-muted")}>
-                      /mo
-                    </span>
+                    <span className={cn("text-body", featured ? "text-fg-on-dark-muted" : "text-fg-muted")}>{tx("/mo")}</span>
                   </p>
 
                   <Button
@@ -159,9 +156,7 @@ export function PricingBand() {
                     variant={featured ? "primary" : "outline"}
                     size="md"
                     className="relative mt-6 w-full"
-                  >
-                    Choose plan
-                  </Button>
+                  >{tx("Choose plan")}</Button>
 
                   <p
                     className={cn(
@@ -169,13 +164,13 @@ export function PricingBand() {
                       featured ? "text-fg-on-dark-muted" : "text-fg-muted",
                     )}
                   >
-                    {(() => {
+                    {tx((() => {
                       /* WHMCS renews at the monthly price itself, not at `standard`. */
                       const bf = quote(plan, "monthly").bf;
                       return bf
                         ? `Black Friday first month${bf.setup ? `, ${formatPrice(bf.setup)} setup fee included` : ""}: ${formatPrice(bf.today)}. Renews at ${formatPrice(plan.monthly)}/mo. Ends ${BLACK_FRIDAY.endsLabel}.`
                         : `Renews at ${formatPrice(plan.monthly)}/mo.${plan.setupFee ? ` ${formatPrice(plan.setupFee)} one-off setup fee.` : " No setup fee."}`;
-                    })()}
+                    })())}
                   </p>
 
                   <div
@@ -188,7 +183,7 @@ export function PricingBand() {
                       {[plan.specs.sites, plan.specs.visits, `${plan.specs.memory} memory`, "Unlimited NVMe storage", "Free SSL and daily backups"].map((spec) => (
                         <li key={spec} className="flex items-center gap-2.5 text-small">
                           <span aria-hidden="true" className={cn("icon-check", "h-4 w-4 shrink-0", featured ? "text-primary-on-dark" : "text-success-fill")} />
-                          <span className={featured ? "text-white" : "text-fg"}>{spec}</span>
+                          <span className={featured ? "text-white" : "text-fg"}>{tx(spec)}</span>
                         </li>
                       ))}
                     </ul>
@@ -203,12 +198,12 @@ export function PricingBand() {
             data/pricing.ts), so it is printed once here rather than four times
             inside the cards, where it buried the three rows that differ. */}
         <Reveal className="mt-10 rounded-2xl bg-surface p-7 ring-1 ring-line sm:p-8">
-          <h3 className="text-h4 text-fg">Every plan includes</h3>
+          <h3 className="text-h4 text-fg">{tx("Every plan includes")}</h3>
           <ul className="mt-5 grid gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {shown[0].includes.map((inc) => (
               <li key={inc} className="flex items-center gap-2 text-small text-fg-secondary">
                 <span aria-hidden="true" className="icon-check h-4 w-4 shrink-0 text-success-fill" />
-                {inc}
+                {tx(inc)}
               </li>
             ))}
           </ul>
@@ -216,25 +211,17 @@ export function PricingBand() {
 
         <div className="mt-4 flex flex-col gap-4 rounded-2xl bg-brand-50 p-6 sm:flex-row sm:items-center sm:justify-between sm:px-8">
           <div>
-            <h3 className="text-h4 font-medium text-fg">Need more from your hosting?</h3>
-            <p className="mt-1 text-small text-fg-secondary">
-              Root access and dedicated resources are coming with VPS hosting. Tell us what you
-              need and we will size it.
-            </p>
+            <h3 className="text-h4 font-medium text-fg">{tx("Need more from your hosting?")}</h3>
+            <p className="mt-1 text-small text-fg-secondary">{tx("Root access and dedicated resources are coming with VPS hosting. Tell us what you need and we will size it.")}</p>
           </div>
-          <Button href="/vps-hosting" variant="outline" size="sm" className="shrink-0 bg-white">
-            See VPS hosting
-          </Button>
+          <Button href="/vps-hosting" variant="outline" size="sm" className="shrink-0 bg-white">{tx("See VPS hosting")}</Button>
         </div>
 
-        <p className="mt-10 text-center text-small text-fg-muted">
-          All four cloud tiers, at the monthly rate.{" "}
+        <p className="mt-10 text-center text-small text-fg-muted">{tx("All four cloud tiers, at the monthly rate.")}{" "}
           <a
             href={billing.store("cloud-hosting")}
             className="inline-block rounded-sm py-1 font-medium text-primary underline underline-offset-4 hover:text-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-          >
-            See every tier
-          </a>
+          >{tx("See every tier")}</a>
           .
         </p>
       </Container>

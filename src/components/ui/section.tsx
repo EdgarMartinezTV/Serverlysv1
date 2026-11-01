@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Container, type ContainerWidth } from "./container";
+import { t as tx } from "@/i18n/t";
 
 /**
  * A page band. Owns vertical rhythm and surface colour so no section invents
@@ -104,7 +105,7 @@ export function SectionHeader({
           uppercase label above every section was the single most repeated
           template tell on the site; the rebuilt pages carry none. */}
       <h2 id={id} className={cn("display-md", tone === "dark" ? "text-white" : "text-fg")}>
-        {title}
+        {tx(title)}
       </h2>
       {lede && (
         <p
@@ -113,7 +114,7 @@ export function SectionHeader({
             tone === "dark" ? "text-fg-on-dark-secondary" : "text-fg-secondary",
           )}
         >
-          {lede}
+          {tx(lede)}
         </p>
       )}
     </div>

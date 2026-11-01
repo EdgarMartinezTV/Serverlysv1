@@ -5,6 +5,7 @@ import { BuildShowcase } from "./build-showcase";
 import { upcomingProducts } from "@/data/products";
 import { StageRow } from "./stage-row";
 import { stageById } from "./stages";
+import { t as tx } from "@/i18n/t";
 
 const stage = stageById("build");
 
@@ -43,10 +44,10 @@ export function StageBuild() {
         <StageRow
           id="build-heading"
           icon="server"
-          title={stage.heading}
-          body={stage.lede}
-          links={LINKS}
-          proof={PROOF}
+          title={tx(stage.heading)}
+          body={tx(stage.lede)}
+          links={tx(LINKS)}
+          proof={tx(PROOF)}
           media={<BuildShowcase />}
           bareMedia
         />
@@ -55,9 +56,7 @@ export function StageBuild() {
       {/* ── Hands-on control ─────────────────────────────────────────────── */}
       <div className="mt-20">
         <Reveal>
-          <h3 className="text-h3 font-medium tracking-[-0.02em] text-fg">
-            Want more hands-on control?
-          </h3>
+          <h3 className="text-h3 font-medium tracking-[-0.02em] text-fg">{tx("Want more hands-on control?")}</h3>
         </Reveal>
 
         <ul className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -87,12 +86,10 @@ export function StageBuild() {
                   </svg>
                 </span>
                 <span className="mt-8 flex items-center gap-2">
-                  <span className="text-body-lg font-medium text-fg">{product.name}</span>
-                  <span className="rounded-md bg-white px-2 py-0.5 text-micro font-semibold text-warning">
-                    Coming soon
-                  </span>
+                  <span className="text-body-lg font-medium text-fg">{tx(product.name)}</span>
+                  <span className="rounded-md bg-white px-2 py-0.5 text-micro font-semibold text-warning">{tx("Coming soon")}</span>
                 </span>
-                <span className="mt-1 text-small text-fg-secondary">{product.summary}</span>
+                <span className="mt-1 text-small text-fg-secondary">{tx(product.summary)}</span>
               </Link>
             </Reveal>
           ))}

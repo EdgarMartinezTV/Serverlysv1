@@ -11,6 +11,7 @@ const PRICE_ANSWER = blackFridayActive()
   : `Plans start at ${formatPrice(lowestRate)}/mo and renew at the same price — we show both up front. That includes free SSL, free migration and daily backups.`;
 import { DemoBadge } from "./shell";
 import { ConvoAiLogo } from "@/components/layout/convoai-logo";
+import { t as tx } from "@/i18n/t";
 
 /**
  * ConvoAI — the website agent, running for real in the page.
@@ -178,7 +179,7 @@ export function ConvoChat({
 
   return (
     <section
-      aria-label="ConvoAI website agent demonstration"
+      aria-label={tx("ConvoAI website agent demonstration")}
       className={cn(
         "flex flex-col overflow-hidden rounded-xl",
         dark
@@ -201,14 +202,12 @@ export function ConvoChat({
             a logo we already had. */}
         <ConvoAiLogo tone={dark ? "dark" : "light"} className="h-5 w-auto shrink-0" />
         <span className="min-w-0">
-          <span className="sr-only">ConvoAI</span>
+          <span className="sr-only">{tx("ConvoAI")}</span>
           <span className="flex items-center gap-1.5 text-ui text-fg-muted">
             <span
               aria-hidden="true"
               className="h-1.5 w-1.5 rounded-full bg-success-fill"
-            />
-            Answering now
-          </span>
+            />{tx("Answering now")}</span>
         </span>
         <span className="ml-auto">
           <DemoBadge tone={tone} />
@@ -220,7 +219,7 @@ export function ConvoChat({
         ref={logRef}
         role="log"
         aria-live="polite"
-        aria-label="Conversation"
+        aria-label={tx("Conversation")}
         className="flex min-h-[15rem] flex-1 flex-col gap-2.5 overflow-y-auto p-3.5"
       >
         {messages.map((message) => (
@@ -236,9 +235,9 @@ export function ConvoChat({
             )}
           >
             <span className="sr-only">
-              {message.from === "visitor" ? "You said: " : "Agent said: "}
+              {message.from === "visitor" ? tx("You said: ") : tx("Agent said: ")}
             </span>
-            {message.text}
+            {tx(message.text)}
           </p>
         ))}
 
@@ -249,7 +248,7 @@ export function ConvoChat({
               dark ? "bg-white/8" : "bg-canvas-inset",
             )}
           >
-            <span className="sr-only">Agent is typing</span>
+            <span className="sr-only">{tx("Agent is typing")}</span>
             {[0, 1, 2].map((i) => (
               <span
                 key={i}
@@ -277,18 +276,14 @@ export function ConvoChat({
                 "text-ui font-semibold",
                 dark ? "text-white" : "text-fg",
               )}
-            >
-              Where should we reply?
-            </p>
+            >{tx("Where should we reply?")}</p>
             <div className="mt-2 flex flex-col gap-1.5">
-              <label htmlFor={`${formId}-name`} className="sr-only">
-                Your name
-              </label>
+              <label htmlFor={`${formId}-name`} className="sr-only">{tx("Your name")}</label>
               <input
                 id={`${formId}-name`}
                 value={lead.name}
                 onChange={(e) => setLead((l) => ({ ...l, name: e.target.value }))}
-                placeholder="Name"
+                placeholder={tx("Name")}
                 autoComplete="name"
                 className={cn(
                   "h-9 rounded-md px-2.5 text-[0.8125rem] outline-none ring-1 ring-inset",
@@ -298,15 +293,13 @@ export function ConvoChat({
                     : "bg-surface text-fg ring-line-input placeholder:text-fg-muted",
                 )}
               />
-              <label htmlFor={`${formId}-email`} className="sr-only">
-                Your email
-              </label>
+              <label htmlFor={`${formId}-email`} className="sr-only">{tx("Your email")}</label>
               <input
                 id={`${formId}-email`}
                 type="email"
                 value={lead.email}
                 onChange={(e) => setLead((l) => ({ ...l, email: e.target.value }))}
-                placeholder="Email"
+                placeholder={tx("Email")}
                 autoComplete="email"
                 aria-describedby={leadError ? `${formId}-error` : undefined}
                 aria-invalid={leadError ? true : undefined}
@@ -325,15 +318,13 @@ export function ConvoChat({
                 role="alert"
                 className="mt-1.5 text-ui text-error"
               >
-                {leadError}
+                {tx(leadError)}
               </p>
             )}
             <button
               type="submit"
               className="mt-2 h-9 w-full rounded-md bg-primary text-[0.8125rem] font-medium text-white transition-colors duration-fast hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-            >
-              Send it through
-            </button>
+            >{tx("Send it through")}</button>
           </form>
         )}
 
@@ -349,8 +340,7 @@ export function ConvoChat({
             <span
               aria-hidden="true"
               className="h-1.5 w-1.5 shrink-0 rounded-full bg-success-fill"
-            />
-            Lead captured · {captured.name} · {captured.email}
+            />{tx("Lead captured · ")}{tx(captured.name)} · {tx(captured.email)}
           </p>
         )}
       </div>
@@ -377,7 +367,7 @@ export function ConvoChat({
                   : "text-fg-secondary ring-1 ring-inset ring-line hover:bg-canvas-secondary focus-visible:outline-primary",
               )}
             >
-              {s}
+              {tx(s)}
             </button>
           ))}
         </div>
@@ -394,14 +384,12 @@ export function ConvoChat({
           dark ? "border-white/10" : "border-line-subtle",
         )}
       >
-        <label htmlFor={`${formId}-draft`} className="sr-only">
-          Message the agent
-        </label>
+        <label htmlFor={`${formId}-draft`} className="sr-only">{tx("Message the agent")}</label>
         <input
           id={`${formId}-draft`}
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
-          placeholder="Ask about plans, migration, domains…"
+          placeholder={tx("Ask about plans, migration, domains…")}
           autoComplete="off"
           className={cn(
             "h-9 min-w-0 flex-1 rounded-md px-2.5 text-[0.8125rem] outline-none ring-1 ring-inset",
@@ -416,7 +404,7 @@ export function ConvoChat({
           disabled={!draft.trim() || typing}
           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-primary text-white transition-colors duration-fast hover:bg-primary-hover disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         >
-          <span className="sr-only">Send message</span>
+          <span className="sr-only">{tx("Send message")}</span>
           <svg viewBox="0 0 20 20" aria-hidden="true" className="h-4 w-4">
             <path
               d="M3.5 10h11m0 0-4.2-4.2M14.5 10l-4.2 4.2"

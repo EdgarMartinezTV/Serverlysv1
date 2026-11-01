@@ -3,6 +3,7 @@
 import { createContext, useContext, useId, useState } from "react";
 import { cn } from "@/lib/utils";
 import { BEST_TERM, DEFAULT_TERM, TERMS, type TermKey } from "@/data/pricing";
+import { t as tx } from "@/i18n/t";
 
 /**
  * The billing term every plan card on the page is priced for, after
@@ -32,9 +33,7 @@ export function TermSelect({ className, tone = "light" }: { className?: string; 
   const id = useId();
   return (
     <div className={cn("relative inline-flex", className)}>
-      <label htmlFor={id} className="sr-only">
-        Billing term
-      </label>
+      <label htmlFor={id} className="sr-only">{tx("Billing term")}</label>
       <select
         id={id}
         value={term}
@@ -48,7 +47,7 @@ export function TermSelect({ className, tone = "light" }: { className?: string; 
       >
         {TERMS.map((t) => (
           <option key={t.key} value={t.key} className="text-fg">
-            {t.label} plan{t.key === BEST_TERM ? " · Best value" : ""}
+            {tx(t.label)}{tx(" plan")}{t.key === BEST_TERM ? tx(" · Best value") : ""}
           </option>
         ))}
       </select>

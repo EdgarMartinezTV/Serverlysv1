@@ -1,5 +1,6 @@
 import { Section } from "@/components/ui/section";
 import type { Faq } from "@/data/faqs";
+import { t as tx } from "@/i18n/t";
 
 /**
  * FAQ accordion.
@@ -33,12 +34,8 @@ export function FaqSection({
           section picks it up. */}
       <div className="mx-auto max-w-[760px]">
         <div className="text-center">
-          <h2 id="faq-heading" className="display-md text-fg">
-            Before you buy
-          </h2>
-          <p className="mt-4 text-body-lg text-fg-secondary">
-            The things people actually ask us, answered plainly.
-          </p>
+          <h2 id="faq-heading" className="display-md text-fg">{tx("Before you buy")}</h2>
+          <p className="mt-4 text-body-lg text-fg-secondary">{tx("The things people actually ask us, answered plainly.")}</p>
         </div>
 
         <ul className="mt-12 divide-y divide-line border-y border-line">
@@ -51,7 +48,7 @@ export function FaqSection({
               <details className="group">
                 <summary className="faq-summary">
                   <span className="text-body-lg text-fg">
-                    {faq.question}
+                    {tx(faq.question)}
                   </span>
                   <span
                     aria-hidden="true"
@@ -69,7 +66,7 @@ export function FaqSection({
                   </span>
                 </summary>
                 <p className="mt-3 max-w-2xl pb-5 text-body text-fg-secondary">
-                  {faq.answer}
+                  {tx(faq.answer)}
                 </p>
               </details>
             </li>

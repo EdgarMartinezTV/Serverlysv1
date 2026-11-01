@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 export type StageRowLink = { label: string; href: string; external?: boolean };
 
@@ -65,9 +66,9 @@ export function StageRow({
       >
         {!dark && !bareMedia && (
           <div aria-hidden="true" className="absolute inset-0 -z-10 grid grid-cols-4 grid-rows-3">
-            {Array.from({ length: 12 }, (_, i) => (
+            {tx(Array.from({ length: 12 }, (_, i) => (
               <span key={i} className={[1, 4, 6, 11].includes(i) ? "bg-brand-100" : ""} />
-            ))}
+            )))}
           </div>
         )}
         {dark && !bareMedia && (
@@ -76,11 +77,11 @@ export function StageRow({
             className="absolute inset-0 -z-10 bg-[radial-gradient(60%_60%_at_30%_20%,rgb(0_0_255/0.35),transparent_70%)]"
           />
         )}
-        {media}
+        {tx(media)}
       </div>
 
       <div className={cn("min-w-0 lg:max-w-[460px]", mediaSide === "right" && "lg:order-1 lg:justify-self-end")}>
-        {brandSlot ??
+        {tx(brandSlot) ??
           (icon && (
             <span
               className={cn(
@@ -96,13 +97,13 @@ export function StageRow({
           id={id}
           className={cn("display-md mt-6", dark ? "text-white" : "text-fg")}
         >
-          {title}
+          {tx(title)}
         </h2>
         <p className={cn("mt-4 text-body", dark ? "text-fg-on-dark-secondary" : "text-fg-secondary")}>
-          {body}
+          {tx(body)}
         </p>
 
-        {extra}
+        {tx(extra)}
 
         {links && links.length > 0 && (
           <ul className={cn("mt-7 border-t", dark ? "border-line-on-dark" : "border-line")}>
@@ -118,7 +119,7 @@ export function StageRow({
                       : "text-fg hover:text-primary focus-visible:outline-primary",
                   )}
                 >
-                  {link.label}
+                  {tx(link.label)}
                   <svg
                     viewBox="0 0 16 16"
                     aria-hidden="true"
@@ -150,7 +151,7 @@ export function StageRow({
                 )}
               >
                 <span aria-hidden="true" className="icon-check h-4 w-4 shrink-0 text-success-fill" />
-                {item}
+                {tx(item)}
               </li>
             ))}
           </ul>

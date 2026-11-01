@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { industries, industryBySlug } from "@/data/industries";
-import { IndustryPage, industryMetadata } from "@/app/website-design/_industry/industry-page";
+import { IndustryPage, industryMetadata } from "@/app/(en)/website-design/_industry/industry-page";
 
 /** /es/website-design/<industry> — the Spanish twin of /website-design/<industry>. */
 export function generateStaticParams() {

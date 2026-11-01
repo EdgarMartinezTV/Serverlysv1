@@ -2,6 +2,7 @@ import { AppFrame, BrowserFrame, PhoneFrame } from "./frame";
 import { NavIcon } from "@/components/navigation/nav-icons";
 import { cn } from "@/lib/utils";
 import { MockPhoto } from "@/components/ui/mock-photo";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Serverlys product interfaces.
@@ -30,9 +31,9 @@ const HOSTING_NAV = [
 export function HostingMock({ className }: { className?: string }) {
   return (
     <AppFrame
-      nav={HOSTING_NAV}
-      active="Overview"
-      title="hartley-bakery.com"
+      nav={tx(HOSTING_NAV)}
+      active={tx("Overview")}
+      title={tx("hartley-bakery.com")}
       action="Open cPanel"
       className={className}
     >
@@ -43,8 +44,8 @@ export function HostingMock({ className }: { className?: string }) {
           ["Storage", "6.2 GB", 12],
         ].map(([label, value, pct]) => (
           <div key={label as string} className="rounded-lg bg-canvas-secondary p-2.5">
-            <p className="text-ui text-fg-muted font-semibold">{label}</p>
-            <p className="tabular mt-1 text-small font-semibold text-fg">{value}</p>
+            <p className="text-ui text-fg-muted font-semibold">{tx(label)}</p>
+            <p className="tabular mt-1 text-small font-semibold text-fg">{tx(value)}</p>
             <span className="mt-2 block h-1 overflow-hidden rounded-full bg-line">
               <span
                 style={{ width: `${pct as number}%` }}
@@ -57,9 +58,7 @@ export function HostingMock({ className }: { className?: string }) {
 
       <div className="mt-3 grid gap-3 sm:grid-cols-2">
         <div className="rounded-lg ring-1 ring-line-subtle">
-          <p className="border-b border-line-subtle px-3 py-1.5 text-ui font-semibold text-fg">
-            Security
-          </p>
+          <p className="border-b border-line-subtle px-3 py-1.5 text-ui font-semibold text-fg">{tx("Security")}</p>
           <ul className="p-2">
             {[
               ["SSL certificate", "Valid · renews in 61 days"],
@@ -72,29 +71,25 @@ export function HostingMock({ className }: { className?: string }) {
                     <path d="m3.5 8.5 3 3 6-7" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </span>
-                <span className="text-ui text-fg">{k}</span>
-                <span className="ml-auto truncate text-ui text-fg-muted">{v}</span>
+                <span className="text-ui text-fg">{tx(k)}</span>
+                <span className="ml-auto truncate text-ui text-fg-muted">{tx(v)}</span>
               </li>
             ))}
           </ul>
         </div>
 
         <div className="rounded-lg ring-1 ring-line-subtle">
-          <p className="border-b border-line-subtle px-3 py-1.5 text-ui font-semibold text-fg">
-            Backups
-          </p>
+          <p className="border-b border-line-subtle px-3 py-1.5 text-ui font-semibold text-fg">{tx("Backups")}</p>
           <ul className="p-2">
             {["Today 02:00", "Yesterday 02:00", "2 days ago 02:00"].map((d, i) => (
               <li key={d} className="flex items-center gap-2 px-1 py-1.5">
-                <span className="font-mono text-ui text-fg-muted">{d}</span>
+                <span className="font-mono text-ui text-fg-muted">{tx(d)}</span>
                 <span
                   className={cn(
                     "ml-auto rounded px-1.5 py-0.5 text-ui font-medium",
                     i === 0 ? "bg-primary/10 text-primary" : "bg-canvas-inset text-fg-secondary",
                   )}
-                >
-                  Restore
-                </span>
+                >{tx("Restore")}</span>
               </li>
             ))}
           </ul>
@@ -118,10 +113,8 @@ export function DomainMock({ className }: { className?: string }) {
       <div className="p-4 sm:p-5">
         <div className="flex items-center gap-2.5 rounded-lg bg-canvas-secondary px-3 py-2.5 ring-1 ring-line">
           <NavIcon name="globe" className="h-4 w-4 shrink-0 text-fg-muted" />
-          <span className="flex-1 text-small text-fg">hartleybakery</span>
-          <span className="rounded-md bg-primary px-3 py-1.5 text-ui font-medium text-white">
-            Search
-          </span>
+          <span className="flex-1 text-small text-fg">{tx("hartleybakery")}</span>
+          <span className="rounded-md bg-primary px-3 py-1.5 text-ui font-medium text-white">{tx("Search")}</span>
         </div>
         <ul className="mt-3 flex flex-col gap-1.5">
           {rows.map(([tld, price, state]) => (
@@ -132,8 +125,7 @@ export function DomainMock({ className }: { className?: string }) {
                 state === "available" ? "bg-success-soft" : "bg-canvas-secondary",
               )}
             >
-              <span className="font-mono text-ui text-fg">
-                hartleybakery<span className="font-semibold">{tld}</span>
+              <span className="font-mono text-ui text-fg">{tx("hartleybakery")}<span className="font-semibold">{tx(tld)}</span>
               </span>
               <span className="flex items-center gap-2.5">
                 <span
@@ -142,13 +134,11 @@ export function DomainMock({ className }: { className?: string }) {
                     state === "available" ? "text-success" : "text-fg-muted",
                   )}
                 >
-                  {state}
+                  {tx(state)}
                 </span>
-                <span className="tabular text-ui font-semibold text-fg">{price}</span>
+                <span className="tabular text-ui font-semibold text-fg">{tx(price)}</span>
                 {state === "available" && (
-                  <span className="rounded bg-primary px-2 py-0.5 text-ui font-medium text-white">
-                    Add
-                  </span>
+                  <span className="rounded bg-primary px-2 py-0.5 text-ui font-medium text-white">{tx("Add")}</span>
                 )}
               </span>
             </li>
@@ -174,37 +164,23 @@ export function ChatMock({ className }: { className?: string }) {
           C
         </span>
         <div className="min-w-0">
-          <p className="text-small font-semibold text-fg">ConvoAI</p>
+          <p className="text-small font-semibold text-fg">{tx("ConvoAI")}</p>
           <p className="flex items-center gap-1.5 text-caption text-fg-muted">
-            <span className="h-1.5 w-1.5 rounded-full bg-success-fill" />
-            Answering · hartley-bakery.com
-          </p>
+            <span className="h-1.5 w-1.5 rounded-full bg-success-fill" />{tx("Answering · hartley-bakery.com")}</p>
         </div>
-        <span className="ml-auto rounded-full bg-primary-soft px-2 py-0.5 text-ui text-primary font-semibold">
-          Live
-        </span>
+        <span className="ml-auto rounded-full bg-primary-soft px-2 py-0.5 text-ui text-primary font-semibold">{tx("Live")}</span>
       </div>
 
       <div className="flex flex-col gap-2.5 p-4">
-        <p className="max-w-[82%] rounded-2xl rounded-tl-md bg-canvas-secondary px-3.5 py-2 text-small text-fg-secondary">
-          Do you do birthday cakes at short notice?
-        </p>
-        <p className="ml-auto max-w-[82%] rounded-2xl rounded-tr-md bg-primary px-3.5 py-2 text-small text-white">
-          We can do 48 hours&rsquo; notice. What date were you thinking?
-        </p>
-        <p className="max-w-[82%] rounded-2xl rounded-tl-md bg-canvas-secondary px-3.5 py-2 text-small text-fg-secondary">
-          Saturday, for 20 people
-        </p>
-        <p className="ml-auto max-w-[82%] rounded-2xl rounded-tr-md bg-primary px-3.5 py-2 text-small text-white">
-          That works. Shall I take your name and number?
-        </p>
+        <p className="max-w-[82%] rounded-2xl rounded-tl-md bg-canvas-secondary px-3.5 py-2 text-small text-fg-secondary">{tx("Do you do birthday cakes at short notice?")}</p>
+        <p className="ml-auto max-w-[82%] rounded-2xl rounded-tr-md bg-primary px-3.5 py-2 text-small text-white">{tx("We can do 48 hours’ notice. What date were you thinking?")}</p>
+        <p className="max-w-[82%] rounded-2xl rounded-tl-md bg-canvas-secondary px-3.5 py-2 text-small text-fg-secondary">{tx("Saturday, for 20 people")}</p>
+        <p className="ml-auto max-w-[82%] rounded-2xl rounded-tr-md bg-primary px-3.5 py-2 text-small text-white">{tx("That works. Shall I take your name and number?")}</p>
 
         {/* The outcome — the thing the gap analysis said we never showed */}
         <div className="mt-1 rounded-lg bg-success-soft p-3 ring-1 ring-inset ring-success/20">
           <p className="flex items-center gap-1.5 text-ui text-success font-semibold">
-            <NavIcon name="shield" className="h-3 w-3" />
-            Lead captured
-          </p>
+            <NavIcon name="shield" className="h-3 w-3" />{tx("Lead captured")}</p>
           <dl className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1">
             {[
               ["Name", "R. Whitfield"],
@@ -213,8 +189,8 @@ export function ChatMock({ className }: { className?: string }) {
               ["Sent to", "Email + panel"],
             ].map(([k, v]) => (
               <div key={k} className="flex flex-col">
-                <dt className="text-ui text-fg-muted">{k}</dt>
-                <dd className="text-ui font-medium text-fg">{v}</dd>
+                <dt className="text-ui text-fg-muted">{tx(k)}</dt>
+                <dd className="text-ui font-medium text-fg">{tx(v)}</dd>
               </div>
             ))}
           </dl>
@@ -229,14 +205,12 @@ export function CallMock({ className }: { className?: string }) {
   return (
     <PhoneFrame className={className}>
       <div className="flex flex-col items-center">
-        <span className="text-ui text-fg-muted font-semibold">
-          Incoming · 00:42
-        </span>
+        <span className="text-ui text-fg-muted font-semibold">{tx("Incoming · 00:42")}</span>
         <span className="mt-2 flex h-12 w-12 items-center justify-center rounded-full bg-primary-soft text-primary">
           <NavIcon name="phone" />
         </span>
         <p className="mt-2 text-small font-semibold text-fg">+1 (305) 555-0148</p>
-        <p className="text-ui text-fg-muted">Answered by CallFlow</p>
+        <p className="text-ui text-fg-muted">{tx("Answered by CallFlow")}</p>
       </div>
 
       <div className="mt-4 flex flex-col gap-1.5">
@@ -255,14 +229,14 @@ export function CallMock({ className }: { className?: string }) {
                 : "rounded-tl-sm bg-canvas-secondary text-fg-secondary",
             )}
           >
-            {text}
+            {tx(text)}
           </p>
         ))}
       </div>
 
       <div className="mt-3 rounded-lg bg-success-soft px-2.5 py-2">
-        <p className="text-ui text-success font-semibold">Booked</p>
-        <p className="mt-0.5 text-ui font-medium text-fg">Sunday 13:00 · 6 covers</p>
+        <p className="text-ui text-success font-semibold">{tx("Booked")}</p>
+        <p className="mt-0.5 text-ui font-medium text-fg">{tx("Sunday 13:00 · 6 covers")}</p>
       </div>
     </PhoneFrame>
   );
@@ -286,13 +260,9 @@ export function AutomationMock({ className }: { className?: string }) {
       )}
     >
       <div className="flex items-center justify-between">
-        <p className="text-micro text-fg-on-dark-muted font-semibold">
-          Enquiry workflow
-        </p>
+        <p className="text-micro text-fg-on-dark-muted font-semibold">{tx("Enquiry workflow")}</p>
         <span className="flex items-center gap-1.5 rounded-full bg-success-fill/15 px-2 py-0.5 text-ui text-success-fill font-semibold">
-          <span className="h-1.5 w-1.5 rounded-full bg-success-fill" />
-          Running
-        </span>
+          <span className="h-1.5 w-1.5 rounded-full bg-success-fill" />{tx("Running")}</span>
       </div>
 
       <ol className="mt-4 flex flex-col">
@@ -321,9 +291,9 @@ export function AutomationMock({ className }: { className?: string }) {
                 <NavIcon name={n.icon} className="h-4 w-4" />
               </span>
               <span className="min-w-0">
-                <span className="block text-small font-medium text-white">{n.label}</span>
+                <span className="block text-small font-medium text-white">{tx(n.label)}</span>
                 <span className="block text-ui text-fg-on-dark-muted font-semibold">
-                  {n.sub}
+                  {tx(n.sub)}
                 </span>
               </span>
             </div>
@@ -349,8 +319,8 @@ export function SeoMock({ className }: { className?: string }) {
     <BrowserFrame url="serverlys.com/seo" className={className}>
       <div className="p-4 sm:p-5">
         <div className="flex items-center justify-between">
-          <p className="text-small font-semibold text-fg">Rankings</p>
-          <span className="font-mono text-caption text-fg-muted">Last 30 days</span>
+          <p className="text-small font-semibold text-fg">{tx("Rankings")}</p>
+          <span className="font-mono text-caption text-fg-muted">{tx("Last 30 days")}</span>
         </div>
         <table className="mt-3 w-full">
           <tbody>
@@ -358,9 +328,9 @@ export function SeoMock({ className }: { className?: string }) {
               const up = String(delta).startsWith("+");
               return (
                 <tr key={term} className="border-b border-line-subtle last:border-0">
-                  <td className="py-2 text-ui text-fg">{term}</td>
+                  <td className="py-2 text-ui text-fg">{tx(term)}</td>
                   <td className="tabular py-2 text-right text-ui font-semibold text-fg">
-                    #{pos}
+                    #{tx(pos)}
                   </td>
                   <td className="py-2 pl-3 text-right">
                     <span
@@ -369,7 +339,7 @@ export function SeoMock({ className }: { className?: string }) {
                         up ? "bg-success-soft text-success" : "bg-canvas-inset text-fg-secondary",
                       )}
                     >
-                      {delta}
+                      {tx(delta)}
                     </span>
                   </td>
                 </tr>
@@ -385,8 +355,8 @@ export function SeoMock({ className }: { className?: string }) {
             ["Broken links", "0"],
           ].map(([k, v]) => (
             <div key={k} className="rounded-lg bg-canvas-secondary p-2.5">
-              <p className="text-ui text-fg-muted">{k}</p>
-              <p className="mt-0.5 text-ui font-semibold text-fg">{v}</p>
+              <p className="text-ui text-fg-muted">{tx(k)}</p>
+              <p className="mt-0.5 text-ui font-semibold text-fg">{tx(v)}</p>
             </div>
           ))}
         </div>
@@ -402,33 +372,23 @@ export function SitePreviewMock({ className }: { className?: string }) {
       <div className="bg-canvas-secondary">
         {/* Site header */}
         <div className="flex items-center justify-between border-b border-line-subtle bg-surface px-4 py-2.5">
-          <span className="font-display text-ui font-bold uppercase tracking-[0.14em] text-fg">
-            Hartley
-          </span>
+          <span className="font-display text-ui font-bold uppercase tracking-[0.14em] text-fg">{tx("Hartley")}</span>
           <span className="hidden gap-3 sm:flex">
             {["Menu", "Order", "Visit"].map((l) => (
               <span key={l} className="text-ui text-fg-muted">
-                {l}
+                {tx(l)}
               </span>
             ))}
           </span>
-          <span className="rounded bg-fg px-2 py-0.5 text-ui font-medium text-white">
-            Order
-          </span>
+          <span className="rounded bg-fg px-2 py-0.5 text-ui font-medium text-white">{tx("Order")}</span>
         </div>
         {/* Site hero */}
         <div className="relative overflow-hidden px-5 py-7">
           <div className="absolute inset-0 bg-[radial-gradient(70%_80%_at_20%_0%,rgb(199_122_9/0.16)_0%,transparent_70%)]" />
           <div className="relative">
-            <p className="max-w-[16rem] font-display text-h4 leading-tight text-fg">
-              Bread, cakes and very good coffee.
-            </p>
-            <p className="mt-1.5 max-w-[14rem] text-ui text-fg-secondary">
-              Baked on site every morning since 2011.
-            </p>
-            <span className="mt-3 inline-block rounded-md bg-fg px-2.5 py-1 text-ui font-medium text-white">
-              See the menu
-            </span>
+            <p className="max-w-[16rem] font-display text-h4 leading-tight text-fg">{tx("Bread, cakes and very good coffee.")}</p>
+            <p className="mt-1.5 max-w-[14rem] text-ui text-fg-secondary">{tx("Baked on site every morning since 2011.")}</p>
+            <span className="mt-3 inline-block rounded-md bg-fg px-2.5 py-1 text-ui font-medium text-white">{tx("See the menu")}</span>
           </div>
         </div>
         {/* Product row */}
@@ -442,7 +402,7 @@ export function SitePreviewMock({ className }: { className?: string }) {
           ).map(([label, photo]) => (
             <div key={label} className="overflow-hidden rounded-md bg-surface ring-1 ring-line-subtle">
               <MockPhoto src={photo} className="h-10" sizes="120px" />
-              <p className="px-1.5 py-1 text-ui text-fg-secondary">{label}</p>
+              <p className="px-1.5 py-1 text-ui text-fg-secondary">{tx(label)}</p>
             </div>
           ))}
         </div>

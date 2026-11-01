@@ -1,5 +1,5 @@
-import { DemoPage } from "@/app/restaurant-websites/_demo/demo-page";
-import { demoMetadata } from "@/app/restaurant-websites/_seo";
+import { DemoPage } from "@/app/(en)/restaurant-websites/_demo/demo-page";
+import { demoMetadata } from "@/app/(en)/restaurant-websites/_seo";
 
 /** /es/restaurant-websites/demo — la demo de Lumbre en español. Noindex. */
 export const metadata = demoMetadata("es");

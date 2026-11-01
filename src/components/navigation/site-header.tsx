@@ -15,6 +15,7 @@ import { CartButton } from "./cart-button";
 import { AssistantOpenButton } from "@/components/assistant/assistant-open-button";
 import { Chevron } from "./nav-icons";
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Site header.
@@ -254,7 +255,7 @@ export function SiteHeader() {
           </span>
 
           <nav
-            aria-label="Main"
+            aria-label={tx("Main")}
             className="z-20 ml-8 hidden lg:flex lg:items-center lg:gap-6"
           >
             {primaryNav.map((item, index) => {
@@ -292,7 +293,7 @@ export function SiteHeader() {
                           : "text-fg hover:text-primary focus-visible:outline-primary",
                     )}
                   >
-                    {item.label}
+                    {tx(item.label)}
                   </Link>
                 );
               }
@@ -348,7 +349,7 @@ export function SiteHeader() {
                             : "text-fg hover:text-primary focus-visible:outline-primary",
                     )}
                   >
-                    {item.label}
+                    {tx(item.label)}
                     {/* 18px box, measured off the target's own chevron (18×18 in
                         a 24 viewBox, arrow glyph 9.4×5.4). Ours was h-2.5 — a
                         10px box whose arrow drew 5.8×2.9, barely half theirs,
@@ -362,11 +363,11 @@ export function SiteHeader() {
                   </button>
 
                   <MegaMenu
-                    railLabel={item.railLabel}
-                    categories={item.categories}
-                    panelId={panelId}
+                    railLabel={tx(item.railLabel)}
+                    categories={tx(item.categories)}
+                    panelId={tx(panelId)}
                     labelledBy={triggerId}
-                    open={isOpen}
+                    open={tx(isOpen)}
                     registerPanel={(el) => {
                       panelRefs.current[item.label] = el;
                     }}
@@ -395,7 +396,7 @@ export function SiteHeader() {
             <span className="hidden sm:block">
               <AccountButton onDark={dark} />
             </span>
-            <MobileNav overlay={dark} open={mobileOpen} onOpenChange={setMobileOpen} />
+            <MobileNav overlay={tx(dark)} open={tx(mobileOpen)} onOpenChange={setMobileOpen} />
           </div>
         </div>
       </header>

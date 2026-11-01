@@ -5,6 +5,7 @@ import { resolveNavTarget } from "@/data/routes";
 import { NavIcon } from "@/components/navigation/nav-icons";
 import type { NavIconName } from "@/data/navigation";
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Copy beside a product visual.
@@ -79,13 +80,13 @@ export function ShowcaseSplit({
                 dark ? "bg-white/10 text-white" : "bg-brand-50 text-primary",
               )}
             >
-              {eyebrow}
+              {tx(eyebrow)}
             </span>
             <h2
               id={id ? `${id}-heading` : undefined}
               className={cn("display-md mt-5", dark ? "text-white" : "text-fg")}
             >
-              {title}
+              {tx(title)}
             </h2>
             <p
               className={cn(
@@ -93,7 +94,7 @@ export function ShowcaseSplit({
                 dark ? "text-fg-on-dark-secondary" : "text-fg-secondary",
               )}
             >
-              {body}
+              {tx(body)}
             </p>
 
             {points && (
@@ -116,7 +117,7 @@ export function ShowcaseSplit({
                           dark ? "text-white" : "text-fg",
                         )}
                       >
-                        {p.label}
+                        {tx(p.label)}
                       </span>
                       <span
                         className={cn(
@@ -124,7 +125,7 @@ export function ShowcaseSplit({
                           dark ? "text-fg-on-dark-muted" : "text-fg-secondary",
                         )}
                       >
-                        {p.detail}
+                        {tx(p.detail)}
                       </span>
                     </span>
                   </li>
@@ -147,7 +148,7 @@ export function ShowcaseSplit({
                         : "text-primary hover:text-primary-hover focus-visible:outline-primary",
                     )}
                   >
-                    {cta.label}
+                    {tx(cta.label)}
                     <span aria-hidden="true">→</span>
                   </a>
                 ) : (
@@ -161,7 +162,7 @@ export function ShowcaseSplit({
                         : "text-primary hover:text-primary-hover focus-visible:outline-primary",
                     )}
                   >
-                    {cta.label}
+                    {tx(cta.label)}
                     <span aria-hidden="true">→</span>
                   </Link>
                 )}
@@ -186,12 +187,12 @@ export function ShowcaseSplit({
             >
               {!dark && (
                 <div aria-hidden="true" className="absolute inset-0 -z-10 grid grid-cols-4 grid-rows-3">
-                  {Array.from({ length: 12 }, (_, i) => (
+                  {tx(Array.from({ length: 12 }, (_, i) => (
                     <span key={i} className={[1, 4, 6, 11].includes(i) ? "bg-brand-100" : ""} />
-                  ))}
+                  )))}
                 </div>
               )}
-              <div className="drop-shadow-[0_24px_40px_rgb(0_0_60/0.16)]">{visual}</div>
+              <div className="drop-shadow-[0_24px_40px_rgb(0_0_60/0.16)]">{tx(visual)}</div>
             </div>
           </Reveal>
         </div>

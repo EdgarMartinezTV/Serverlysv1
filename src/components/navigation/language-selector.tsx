@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Chevron } from "./nav-icons";
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Locale control.
@@ -59,15 +60,13 @@ export function LanguageSelector({ onDark = false }: { onDark?: boolean }) {
           )}
         >
           E
-        </span>
-        EN
-        <Chevron
+        </span>{tx("EN")}<Chevron
           className={cn(
             "h-[1.125rem] w-[1.125rem] transition-transform",
             open && "rotate-180",
           )}
         />
-        <span className="sr-only">Change language. Current language: English</span>
+        <span className="sr-only">{tx("Change language. Current language: English")}</span>
       </button>
 
       {open && (
@@ -81,9 +80,9 @@ export function LanguageSelector({ onDark = false }: { onDark?: boolean }) {
                 >
                   <span>
                     <span className="block text-small font-medium text-fg">
-                      {l.label}
+                      {tx(l.label)}
                     </span>
-                    <span className="block text-caption text-fg-muted">{l.region}</span>
+                    <span className="block text-caption text-fg-muted">{tx(l.region)}</span>
                   </span>
                   <svg
                     viewBox="0 0 16 16"
@@ -103,9 +102,7 @@ export function LanguageSelector({ onDark = false }: { onDark?: boolean }) {
               </li>
             ))}
           </ul>
-          <p className="px-3 pb-1 pt-2.5 text-caption text-fg-muted">
-            English is the only language we publish in today.
-          </p>
+          <p className="px-3 pb-1 pt-2.5 text-caption text-fg-muted">{tx("English is the only language we publish in today.")}</p>
         </div>
       )}
     </div>

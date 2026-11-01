@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { t as tx } from "@/i18n/t";
 
 /**
  * Chrome for the INTERACTIVE product surfaces.
@@ -31,9 +32,7 @@ export function DemoBadge({ tone = "light" }: { tone?: "light" | "dark" }) {
       <span
         aria-hidden="true"
         className="h-1.5 w-1.5 rounded-full bg-success-fill motion-safe:animate-pulse"
-      />
-      Live demo
-    </span>
+      />{tx("Live demo")}</span>
   );
 }
 
@@ -61,7 +60,7 @@ export function ConsoleShell({
   const dark = tone === "dark";
   return (
     <section
-      aria-label={label}
+      aria-label={tx(label)}
       className={cn(
         "overflow-hidden rounded-xl",
         dark
@@ -89,10 +88,10 @@ export function ConsoleShell({
             dark ? "text-white" : "text-fg",
           )}
         >
-          {title}
+          {tx(title)}
         </span>
         <div className="ml-auto flex items-center gap-2">
-          {toolbar}
+          {tx(toolbar)}
           <DemoBadge tone={tone} />
         </div>
       </header>
@@ -138,7 +137,7 @@ export function Segmented<T extends string>({
   return (
     <div
       role="radiogroup"
-      aria-label={label}
+      aria-label={tx(label)}
       onKeyDown={onKeyDown}
       className={cn(
         "inline-flex shrink-0 items-center gap-0.5 rounded-md p-0.5",
@@ -179,7 +178,7 @@ export function Segmented<T extends string>({
                   : "text-fg-secondary hover:text-fg focus-visible:outline-primary",
             )}
           >
-            {option.label}
+            {tx(option.label)}
           </button>
         );
       })}
@@ -268,7 +267,7 @@ export function Metric({
           dark ? "text-fg-on-dark-muted" : "text-fg-muted",
         )}
       >
-        {label}
+        {tx(label)}
       </dt>
       <dd
         className={cn(
@@ -276,7 +275,7 @@ export function Metric({
           dark ? "text-white" : "text-fg",
         )}
       >
-        {value}
+        {tx(value)}
       </dd>
       {sub && (
         <dd
@@ -285,7 +284,7 @@ export function Metric({
             dark ? "text-fg-on-dark-muted" : "text-fg-muted",
           )}
         >
-          {sub}
+          {tx(sub)}
         </dd>
       )}
     </div>

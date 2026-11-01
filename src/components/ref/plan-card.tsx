@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { BLACK_FRIDAY, formatPrice, orderUrl, quote, type Plan, type PlanGroup } from "@/data/pricing";
 import { Check } from "./kit";
 import { useTerm } from "./term";
+import { t as tx } from "@/i18n/t";
 
 /**
  * The reference's plan card, shared by /ecommerce-hosting and /pricing.
@@ -94,22 +95,21 @@ export function PlanCard({ plan, group, why, cta }: { plan: Plan; group: PlanGro
             dark ? "bg-success-fill text-white" : "bg-success-soft text-success",
           )}
         >
-          <span aria-hidden="true">✦</span> New: ConvoAI AI chat included
-        </span>
+          <span aria-hidden="true">✦</span>{tx(" New: ConvoAI AI chat included")}</span>
         <span
           className={cn(
             "rounded-md px-2 py-0.5 text-micro font-semibold",
             dark ? "bg-white/15 text-white" : "bg-brand-50 text-primary",
           )}
         >
-          {pill}
+          {tx(pill)}
         </span>
       </div>
       <h3 className={cn("relative mt-2 text-[20px] leading-7 font-semibold tracking-[-0.01em]", dark ? "text-white" : "text-fg")}>
-        {plan.name}
+        {tx(plan.name)}
       </h3>
       <p className={cn("relative mt-1.5 min-h-10 text-small", dark ? "text-fg-on-dark-secondary" : "text-fg-secondary")}>
-        {plan.summary}
+        {tx(plan.summary)}
       </p>
 
       {/* Struck monthly price; kept (invisible) on the monthly term so rows stay aligned. */}
@@ -117,14 +117,14 @@ export function PlanCard({ plan, group, why, cta }: { plan: Plan; group: PlanGro
         className={cn("relative mt-5 text-small line-through", dark ? "text-fg-on-dark-muted" : "text-fg-muted", !showStruck && "invisible")}
         aria-hidden={!showStruck}
       >
-        <span className="sr-only">{bf ? "Regular price " : "Monthly price "}</span>
-        {formatPrice(struck)}
+        <span className="sr-only">{bf ? tx("Regular price ") : tx("Monthly price ")}</span>
+        {tx(formatPrice(struck))}
       </p>
       <p className="relative flex items-baseline gap-1">
         <span className={cn("tabular text-[40px] leading-none font-semibold tracking-[-0.03em]", dark ? "text-white" : "text-fg")}>
-          {formatPrice(big)}
+          {tx(formatPrice(big))}
         </span>
-        <span className={cn("text-body", dark ? "text-fg-on-dark-secondary" : "text-fg-secondary")}>/mo</span>
+        <span className={cn("text-body", dark ? "text-fg-on-dark-secondary" : "text-fg-secondary")}>{tx("/mo")}</span>
       </p>
 
       <a
@@ -136,53 +136,47 @@ export function PlanCard({ plan, group, why, cta }: { plan: Plan; group: PlanGro
             : "text-primary ring-1 ring-inset ring-primary hover:bg-primary-soft focus-visible:outline-primary",
         )}
       >
-        {cta}
+        {tx(cta)}
       </a>
 
       <p className={cn("relative mt-3 text-micro", dark ? "text-fg-on-dark-muted" : "text-fg-muted")}>
         {bf
           ? q.months === 1
-            ? `Black Friday: today you pay ${formatPrice(bf.today)}${bf.setup ? `, including a ${formatPrice(bf.setup)} setup fee` : ""} (regular ${formatPrice(q.today)}). Renews at ${formatPrice(q.total)}/mo. Ends ${BLACK_FRIDAY.endsLabel}.`
-            : `Black Friday: today you pay ${formatPrice(bf.today)} for ${q.months} months (regular ${formatPrice(q.today)}). Renews at ${formatPrice(q.total)}. Ends ${BLACK_FRIDAY.endsLabel}.`
+            ? tx(`Black Friday: today you pay ${formatPrice(bf.today)}${bf.setup ? `, including a ${formatPrice(bf.setup)} setup fee` : ""} (regular ${formatPrice(q.today)}). Renews at ${formatPrice(q.total)}/mo. Ends ${BLACK_FRIDAY.endsLabel}.`)
+            : tx(`Black Friday: today you pay ${formatPrice(bf.today)} for ${q.months} months (regular ${formatPrice(q.today)}). Renews at ${formatPrice(q.total)}. Ends ${BLACK_FRIDAY.endsLabel}.`)
           : q.months === 1
-            ? `Today you pay ${formatPrice(q.today)}${q.setup ? `, including a one-off ${formatPrice(q.setup)} setup fee` : ""}. Renews at ${formatPrice(q.total)}/mo. Cancel anytime.`
-            : `Today you pay ${formatPrice(q.today)} for ${q.months} months. Renews at the same price. Cancel anytime.`}
+            ? tx(`Today you pay ${formatPrice(q.today)}${q.setup ? `, including a one-off ${formatPrice(q.setup)} setup fee` : ""}. Renews at ${formatPrice(q.total)}/mo. Cancel anytime.`)
+            : tx(`Today you pay ${formatPrice(q.today)} for ${q.months} months. Renews at the same price. Cancel anytime.`)}
         <span className={cn("mt-1.5 flex items-center gap-1.5 font-medium", dark ? "text-white" : "text-fg")}>
           {q.freeDomain ? (
             <>
-              <Check className={cn("size-3.5 shrink-0", dark ? "text-primary-on-dark" : "text-success-fill")} />
-              Free domain for the first year
-            </>
+              <Check className={cn("size-3.5 shrink-0", dark ? "text-primary-on-dark" : "text-success-fill")} />{tx("Free domain for the first year")}</>
           ) : (
-            <span className={dark ? "text-fg-on-dark-muted" : "text-fg-muted"}>Free domain on 12 months or longer</span>
+            <span className={dark ? "text-fg-on-dark-muted" : "text-fg-muted"}>{tx("Free domain on 12 months or longer")}</span>
           )}
         </span>
       </p>
 
       <span aria-hidden className={cn("relative my-6 block h-px", dark ? "bg-white/12" : "bg-line")} />
 
-      <p className={cn("relative text-small font-semibold", dark ? "text-white" : "text-fg")}>Resources</p>
+      <p className={cn("relative text-small font-semibold", dark ? "text-white" : "text-fg")}>{tx("Resources")}</p>
       <ul className="relative mt-3 flex flex-col gap-2.5">
         {resources.map((f) => (
           <li key={f} className={cn("flex items-start gap-2.5 text-small", dark ? "text-white" : "text-fg")}>
             <Check className={cn("mt-0.5 size-4 shrink-0", dark ? "text-primary-on-dark" : "text-success-fill")} />
-            <span className="flex-1">{f}</span>
+            <span className="flex-1">{tx(f)}</span>
           </li>
         ))}
       </ul>
 
-      <p className={cn("relative mt-6 text-small font-semibold", dark ? "text-white" : "text-fg")}>Included</p>
-      <p className={cn("relative mt-2 text-small", dark ? "text-fg-on-dark-secondary" : "text-fg-secondary")}>
-        Free SSL, daily backups, free migration and ConvoAI Essentials AI website chat, the same on every plan.
-      </p>
+      <p className={cn("relative mt-6 text-small font-semibold", dark ? "text-white" : "text-fg")}>{tx("Included")}</p>
+      <p className={cn("relative mt-2 text-small", dark ? "text-fg-on-dark-secondary" : "text-fg-secondary")}>{tx("Free SSL, daily backups, free migration and ConvoAI Essentials AI website chat, the same on every plan.")}</p>
 
       {why && (
         <div className="relative self-end pt-6">
           <div className={cn("rounded-xl p-4", dark ? "bg-white/[0.07]" : "bg-canvas-secondary")}>
-            <p className={cn("text-small font-semibold", dark ? "text-primary-on-dark" : "text-primary")}>
-              Why this plan?
-            </p>
-            <p className={cn("mt-1 text-small", dark ? "text-white" : "text-fg")}>{why}</p>
+            <p className={cn("text-small font-semibold", dark ? "text-primary-on-dark" : "text-primary")}>{tx("Why this plan?")}</p>
+            <p className={cn("mt-1 text-small", dark ? "text-white" : "text-fg")}>{tx(why)}</p>
           </div>
         </div>
       )}

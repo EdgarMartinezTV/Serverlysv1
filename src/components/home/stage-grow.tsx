@@ -7,6 +7,7 @@ import { sisterProducts } from "@/data/company";
 import { ConvoAiLogo } from "@/components/layout/convoai-logo";
 import { StageRow } from "./stage-row";
 import { stageById } from "./stages";
+import { t as tx } from "@/i18n/t";
 
 const stage = stageById("grow");
 const convo = sisterProducts.find((product) => product.name === "ConvoAI");
@@ -41,19 +42,19 @@ export function StageGrow() {
     >
       <Reveal>
         <h2 id="grow-heading" className="display-md mx-auto max-w-[900px] text-center text-fg">
-          {stage.heading}
+          {tx(stage.heading)}
         </h2>
         <p className="mx-auto mt-4 max-w-[620px] text-center text-body-lg text-fg-secondary">
-          {stage.lede}
+          {tx(stage.lede)}
         </p>
       </Reveal>
 
       <div className="mt-14 flex flex-col gap-20 sm:mt-16 lg:gap-28">
         <Reveal>
           <StageRow
-            mediaSide="right"
+            mediaSide={tx("right")}
             brandSlot={<ConvoAiLogo tone="light" className="h-7 w-auto" />}
-            title="The 2am enquiry gets an answer at 2am"
+            title={tx("The 2am enquiry gets an answer at 2am")}
             body={`${convo?.description ?? "Answers your customers, day and night."} Trained on your own pages, it answers about your prices and your hours, and hands the conversation to your team when a person should step in.`}
             links={[
               { label: "How the chat agent works", href: "https://convoai.cloud/", external: true },
@@ -66,9 +67,9 @@ export function StageGrow() {
 
         <Reveal>
           <StageRow
-            mediaSide="left"
+            mediaSide={tx("left")}
             icon="phone"
-            title="And the missed call gets picked up"
+            title={tx("And the missed call gets picked up")}
             body={`${callflow?.description ?? "Picks up the phone when you cannot."} It takes the details, books the slot and leaves you a transcript instead of a voicemail.`}
             links={[
               { label: "What CallFlow handles", href: "https://callflow.serverlys.com/", external: true },

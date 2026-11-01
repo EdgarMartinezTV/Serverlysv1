@@ -1,6 +1,7 @@
 import { Section } from "@/components/ui/section";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/animations/reveal";
+import { t as tx } from "@/i18n/t";
 
 /**
  * A short centred pitch with a single button.
@@ -38,20 +39,20 @@ export function TextButtonBand({
           <span
             className={`font-mono text-caption uppercase ${dark ? "text-primary-on-dark" : "text-primary"}`}
           >
-            {eyebrow}
+            {tx(eyebrow)}
           </span>
         )}
         <h2 className={`text-h2 ${dark ? "text-white" : "text-fg"}`} id={headingId}>
-          {title}
+          {tx(title)}
         </h2>
         <p
           className={`text-body-lg ${dark ? "text-fg-on-dark-secondary" : "text-fg-secondary"}`}
         >
-          {body}
+          {tx(body)}
         </p>
         <div className="mt-2">
           <Button href={cta.href} variant={dark ? "inverse" : "primary"} size="lg">
-            {cta.label}
+            {tx(cta.label)}
           </Button>
         </div>
       </Reveal>
