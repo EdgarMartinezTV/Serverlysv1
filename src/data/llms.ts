@@ -105,7 +105,9 @@ export const LLMS_SECTIONS = [
       "/vps-hosting",
       "/dedicated-servers",
       "/managed-hosting",
+      "/startup-hosting",
       "/hosting-alternatives",
+      "/web-hosting-renewal-prices",
       "/hostinger-alternative",
       "/bluehost-alternative",
       "/godaddy-alternative",
@@ -219,8 +221,12 @@ export const LLMS_SUMMARIES: Record<string, string> = {
     "Single-tenant hardware for sustained load, predictable I/O and compliance requirements that forbid shared tenancy. Specified to your workload, quoted, then built.",
   "/managed-hosting":
     "Patching, hardening, monitoring, backups and restores handled for you on any Serverlys tier. What managed covers, what it does not, and who it is for.",
+  "/startup-hosting":
+    "Managed cloud hosting for startups: which plan fits each stage, the full bill including renewal price, unmetered bandwidth, free migration and the honest limits for SaaS apps.",
   "/hosting-alternatives":
     "Shared, cloud, VPS and dedicated compared on the things that decide the choice, plus the questions to ask any hosting company before you pay.",
+  "/web-hosting-renewal-prices":
+    "Web hosting renewal prices compared: the entry plan's advertised price, the term it requires and what it renews at, for Serverlys and five large hosts, with dated, sourced competitor figures and the real cost over one and three years.",
   "/hostinger-alternative":
     "Serverlys compared with Hostinger on advertised price, renewal price, billing required, migration, backups and support, with dated Hostinger figures and when Hostinger is the better choice.",
   "/bluehost-alternative":

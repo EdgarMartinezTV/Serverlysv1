@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { NC_HOSTING, NC_RENEWAL_NOTE, NC_SHARED } from "@/data/competitor-pricing";
 import { Container } from "@/components/ui/container";
 import { Band, Heading, Pill, Stage, Tick } from "../hosting/_components/band";
 import { Button } from "@/components/ui/button";
@@ -52,22 +53,9 @@ export const metadata = pageMetadata({
 
 const SOURCE_DATE = "2026-10-26";
 const SOURCE_LABEL = "26 October 2026";
-const NC_SHARED = "https://www.namecheap.com/hosting/shared/";
 const NC_COM = "https://www.namecheap.com/domains/registration/gtld/com/";
 
-/**
- * Read off namecheap.com/hosting/shared on SOURCE_DATE, US data center, with
- * each billing toggle selected in turn. Yearly is the default view. Each card
- * read "Free trial $0.00 for 30 days, Then $X/mo".
- */
-const NC_HOSTING = [
-  { name: "Stellar", monthly: 5.88, yearly: 2.28, biyearly: 1.88, sites: "3 websites", mail: "30 mailboxes", backups: "twice a week" },
-  { name: "Stellar Plus", monthly: 7.88, yearly: 2.98, biyearly: 2.28, sites: "Unlimited websites", mail: "unlimited mailboxes", backups: "twice a week plus AutoBackup" },
-  { name: "Stellar Business", monthly: 11.88, yearly: 4.98, biyearly: 4.48, sites: "Unlimited websites", mail: "unlimited mailboxes", backups: "twice a week plus AutoBackup" },
-] as const;
 const NC_TRIAL_DAYS = 30;
-const NC_RENEWAL_NOTE =
-  "Our advertised discount offer only applies to purchases of annual and biennial plans. This discount offer does not apply to renewals.";
 
 /**
  * Read off namecheap.com/domains/registration/gtld/com on SOURCE_DATE: 1-year

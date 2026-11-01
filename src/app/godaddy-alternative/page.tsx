@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { GD_HOSTING, GD_HOSTING_TERM, GD_WEB } from "@/data/competitor-pricing";
 import { Container } from "@/components/ui/container";
 import { Band, Heading, Pill, Stage, Tick } from "../hosting/_components/band";
 import { Button } from "@/components/ui/button";
@@ -46,25 +47,11 @@ export const metadata = pageMetadata({
 
 const SOURCE_DATE = "2026-10-26";
 const SOURCE_LABEL = "26 October 2026";
-const GD_WEB = "https://www.godaddy.com/hosting/web-hosting";
 const GD_WP = "https://www.godaddy.com/hosting/wordpress-hosting";
 const GD_COM = "https://www.godaddy.com/tlds/com-domain";
 const GD_DOMAINS = "https://www.godaddy.com/domains";
 const GD_REFUNDS = "https://www.godaddy.com/legal/agreements/refund-policy";
 
-/**
- * Read off godaddy.com/hosting/web-hosting on SOURCE_DATE. Each card showed a
- * struck-through price, the price, "/mo" and "For first 3-yr term". The page's
- * disclaimer: "Special introductory pricing valid for the initial purchase
- * term only. Product renewal pricing subject to change." No renewal figure was
- * printed, so none is stated here.
- */
-const GD_HOSTING = [
-  { name: "Economy", price: 5.99, struck: 11.99, sites: "1 website" },
-  { name: "Deluxe", price: 7.99, struck: 16.99, sites: "10 websites" },
-  { name: "Ultimate", price: 12.99, struck: 21.99, sites: "25 websites" },
-] as const;
-const GD_HOSTING_TERM = "first 3-yr term";
 
 /** Read off godaddy.com/hosting/wordpress-hosting on SOURCE_DATE ("For first 1-yr term"). */
 const GD_WORDPRESS = [

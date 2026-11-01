@@ -417,6 +417,16 @@ export const routes: readonly RouteMeta[] = [
   // sitemap. Each one either carries an honest interim destination or renders
   // as plain text — see resolveNavTarget below.
   {
+    path: "/startup-hosting",
+    name: "Startup hosting",
+    group: "commercial",
+    built: true,
+    indexable: true,
+    priority: 0.7,
+    changeFrequency: "monthly",
+    parents: ["/", "/hosting"],
+  },
+  {
     path: "/managed-hosting",
     name: "Managed hosting",
     group: "commercial",
@@ -525,6 +535,16 @@ export const routes: readonly RouteMeta[] = [
     priority: 0.4,
     changeFrequency: "monthly",
     parents: ["/"],
+  },
+  {
+    path: "/web-hosting-renewal-prices",
+    name: "Web hosting renewal prices",
+    group: "commercial",
+    built: true,
+    indexable: true,
+    priority: 0.6,
+    changeFrequency: "monthly",
+    parents: ["/", "/pricing"],
   },
   {
     path: "/hostinger-alternative",

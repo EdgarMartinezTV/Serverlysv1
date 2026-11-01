@@ -23,7 +23,7 @@ export const article: Article = {
         ["Premium", "$5.99–$9.99/mo", "$14.99–$24.99/mo", "$72–$120", "$180–$300"],
       ],
     },
-    { type: "p", text: "The most important number in this table is Year 2+ cost. A shared hosting plan that advertises $2.99/month often costs $12.99/month at renewal — a 334% increase. Always check the renewal price before committing, and calculate your cost over 2–3 years rather than just the first billing period." },
+    { type: "p", text: "The most important number in this table is Year 2+ cost. A shared hosting plan that advertises $2.99/month often costs $12.99/month at renewal — a 334% increase. Always check the renewal price before committing, and calculate your cost over 2–3 years rather than just the first billing period. For dated, sourced figures from six hosts, see [web hosting renewal prices, compared](/web-hosting-renewal-prices)." },
     { type: "p", text: "**What is included:** 1–3 websites, 10–50GB storage, unmetered bandwidth, free SSL, email accounts. **What usually costs extra:** Automated backups ($1–$3/month), CDN ($5–$10/month), domain privacy ($10–$15/year), priority support ($5–$20/month)." },
     { type: "h3", text: "Cloud Hosting: $3–$30/month" },
     {
@@ -40,7 +40,7 @@ export const article: Article = {
     {
       type: "callout",
       title: "Serverlys Tip",
-      text: "Our [cloud hosting pricing](/pricing) is transparent — the renewal price is shown right on the pricing page, not hidden in terms of service. Plans start at $7.95/month (standard rate $12.62) with NVMe storage, daily backups, Cloudflare, free SSL and free migration included.",
+      text: "Our [cloud hosting pricing](/pricing) is transparent — the renewal price is shown right on the pricing page, not hidden in terms of service. Plans start at $7.95/month (and it renews at that same price) with NVMe storage, daily backups, Cloudflare, free SSL and free migration included.",
     },
     { type: "h3", text: "VPS Hosting: $10–$100/month" },
     {
@@ -119,7 +119,7 @@ export const article: Article = {
     {
       type: "callout",
       title: "Serverlys Tip",
-      text: "We believe in transparent pricing. Our [pricing page](/pricing) shows both introductory and renewal rates upfront. Cloud hosting starts at $7.95/month (standard rate $12.62) with daily backups, Cloudflare, SSL and free migration included — no surprise add-ons.",
+      text: "We believe in transparent pricing. Our [pricing page](/pricing) shows both introductory and renewal rates upfront. Cloud hosting starts at $7.95/month (and it renews at that same price) with daily backups, Cloudflare, SSL and free migration included — no surprise add-ons.",
     },
     { type: "h2", id: "how-to-save-money-on-hosting", text: "How to Save Money on Hosting" },
     { type: "h3", text: "1. Pay Annually Instead of Monthly" },

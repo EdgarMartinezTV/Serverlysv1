@@ -11,7 +11,7 @@ import { UptimePanel } from "@/components/product-ui/panels";
 import { pageMetadata, faqGraph, productGraph, serviceGraph } from "@/lib/seo";
 import type { Faq } from "@/data/faqs";
 import { billing } from "@/data/company";
-import { formatPrice, groupById, BLACK_FRIDAY, blackFridayActive, saleMonthly } from "@/data/pricing";
+import { formatPrice, groupById, BLACK_FRIDAY, blackFridayActive, quote, saleMonthly } from "@/data/pricing";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { breadcrumbTrail } from "@/data/routes";
 
@@ -34,8 +34,10 @@ const AFTER = BF ? `Black Friday first month until ${BLACK_FRIDAY.endsLabel}, th
 const TOP = CLOUD.at(-1);
 
 export const metadata = pageMetadata({
-  title: BF ? `Managed Hosting Services, Black Friday from ${FROM}/mo | Serverlys` : `Managed Hosting Services from ${FROM}/mo | Serverlys`,
-  description: `Fully managed hosting from ${FROM}/mo (${AFTER}): patching, security, daily backups, free restores and free migration, handled for you.`,
+  title: BF
+    ? `Managed Hosting Pricing & Services, Black Friday from ${FROM}/mo`
+    : `Managed Hosting Pricing & Services from ${FROM}/mo | Serverlys`,
+  description: `Managed web hosting for small business from ${FROM}/mo (${AFTER}): patching, security, daily backups, free restores and migration included.`,
   path: PATH,
 });
 
@@ -63,6 +65,22 @@ const FAQS: readonly Faq[] = [
   {
     question: "How much does managed hosting cost?",
     answer: `Serverlys managed cloud hosting starts at ${FROM} a month (${AFTER})${TOP ? `, up to ${formatPrice(TOP.monthly)} a month for the largest plan` : ""}. Management, daily backups, restores and migration are included rather than sold as add-ons.`,
+    scopes: [PATH],
+  },
+  {
+    question: "What is included in managed hosting pricing?",
+    answer: `On Serverlys the plan price is the whole price: operating system and software patching, firewall and hardening, SSL, daily backups with free restores, uptime monitoring and a free migration.${ENTRY?.setupFee ? ` The only extra is a one-off ${formatPrice(ENTRY.setupFee)} setup fee on the entry plan's monthly term.` : ""} Plans differ by resources (websites, monthly visits, memory), not by how much is managed.`,
+    scopes: [PATH],
+  },
+  {
+    question: "What is the best managed hosting for a small business?",
+    answer: `One where the renewal price is printed before you buy, backups and restores are included, and someone else patches the server. For a single business site, ${ENTRY ? `${ENTRY.name} (${ENTRY.specs.sites}, ${ENTRY.specs.visits})` : "the entry plan"} is usually enough; a growing site with more traffic or several sites moves up a tier. Compare hosts on renewal prices, not advertised ones.`,
+    scopes: [PATH],
+  },
+  {
+    question: "What are managed web hosting services?",
+    answer:
+      "The jobs a host does for you on top of the server itself: keeping the operating system and server software patched, hardening and firewalling it, monitoring uptime, taking and testing backups, restoring them when something breaks, renewing SSL and moving your site in. On unmanaged hosting each of those is your job.",
     scopes: [PATH],
   },
   {
@@ -127,7 +145,7 @@ const BENEFITS: ReadonlyArray<readonly [string, string]> = [
   ["Speed that stays fast", "NVMe storage, LiteSpeed and server-level caching are configured and kept tuned, so performance does not quietly decay as software ages."],
   ["Time back", "Server work moves off your list. The hours an owner or developer spent on updates and fixes go back to customers and product."],
   ["One accountable party", "When something on the server breaks, it is our problem to fix. No forum threads, no arguing about whose fault it is."],
-  ["Predictable cost", "Management, backups, restores and migration are in the plan price, and the standard rate is published beside the advertised one."],
+  ["Predictable cost", "Management, backups, restores and migration are in the plan price, and the renewal price is published beside the advertised one."],
 ];
 
 export default function ManagedHostingPage() {
@@ -157,8 +175,8 @@ export default function ManagedHostingPage() {
 
       <ProductHero
         eyebrow="Managed hosting"
-        title="Managed hosting: we run the server, you run the business"
-        lede={`Managed hosting means we patch, secure, monitor and back up the server your website runs on, and restore it for free when something goes wrong. Fully managed plans start at ${FROM}/mo (${AFTER}), with free migration.`}
+        title="Managed web hosting for small business: we run the server"
+        lede={`Managed hosting services mean we patch, secure, monitor and back up the server your website runs on, and restore it for free when something goes wrong. Managed hosting pricing starts at ${FROM}/mo (${AFTER}), with free migration and no add-ons to buy.`}
         breadcrumb={[
           { name: "Home", href: "/" },
           { name: "Hosting", href: "/hosting" },
@@ -208,6 +226,61 @@ export default function ManagedHostingPage() {
             </li>
           ))}
         </ul>
+      </Band>
+
+      {/* Managed hosting pricing at a glance, every term, from the WHMCS-backed pricing data. */}
+      <Band tone="subtle" labelledBy="mh-price-heading">
+        <Heading
+          id="mh-price-heading"
+          title="Managed hosting pricing"
+          lede="Every plan is fully managed. You choose resources and a billing term; each term renews at the same price."
+        />
+        <div className="mx-auto mt-12 max-w-[1040px] overflow-x-auto rounded-2xl bg-canvas ring-1 ring-line">
+          <table className="w-full min-w-[44rem] border-collapse text-left text-small">
+            <caption className="sr-only">Managed cloud hosting plans: resources and price per billing term</caption>
+            <thead className="bg-canvas-secondary text-fg">
+              <tr>
+                <th scope="col" className="p-4 font-semibold">Plan</th>
+                <th scope="col" className="p-4 font-semibold">Resources</th>
+                <th scope="col" className="p-4 font-semibold">Monthly</th>
+                <th scope="col" className="p-4 font-semibold">12 months</th>
+                <th scope="col" className="p-4 font-semibold">36 months</th>
+              </tr>
+            </thead>
+            <tbody>
+              {CLOUD.map((plan) => {
+                const m = quote(plan, "monthly");
+                const y = quote(plan, "annually");
+                const t = quote(plan, "triennially");
+                return (
+                  <tr key={plan.tier} className="border-t border-line">
+                    <th scope="row" className="p-4 font-semibold text-fg">{plan.name}</th>
+                    <td className="p-4 text-fg-secondary">{plan.specs.sites}, {plan.specs.visits}, {plan.specs.memory} RAM</td>
+                    <td className="p-4 text-fg">
+                      {formatPrice(m.total)}/mo{m.setup ? ` + ${formatPrice(m.setup)} setup` : ""}
+                      {m.bf && <span className="block text-micro text-error">Black Friday: {formatPrice(m.bf.today)} first month</span>}
+                    </td>
+                    <td className="p-4 text-fg">
+                      {formatPrice(y.total)} ({formatPrice(y.perMonth)}/mo)
+                      {y.bf && <span className="block text-micro text-error">Black Friday: {formatPrice(y.bf.today)} first year</span>}
+                    </td>
+                    <td className="p-4 text-fg">
+                      {formatPrice(t.total)} ({formatPrice(t.perMonth)}/mo)
+                      {t.bf && <span className="block text-micro text-error">Black Friday: {formatPrice(t.bf.today)} first term</span>}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        <p className="mx-auto mt-6 max-w-[70ch] text-center text-small text-fg-secondary">
+          Every term renews at the price shown{BF ? `; the Black Friday discount (until ${BLACK_FRIDAY.endsLabel}) applies to the first payment only` : ""}. See how that compares with other hosts in{" "}
+          <Link href="/web-hosting-renewal-prices" className="text-primary underline underline-offset-4">
+            web hosting renewal prices, compared
+          </Link>
+          .
+        </p>
       </Band>
 
       {/* What it costs: the managed cloud plans, rendered from the pricing data. */}

@@ -40,7 +40,7 @@ export const article: Article = {
     {
       type: "callout",
       title: "Serverlys Tip",
-      text: "Our [cloud hosting for startups](/cloud-hosting) starts at $7.95/month (standard rate $12.62) with auto-scaling, NVMe storage, and free migration. You start small and scale seamlessly as your business grows — no plan changes, no migrations, no downtime.",
+      text: "Our [cloud hosting for startups](/startup-hosting) starts at $7.95/month on the monthly term, renewing at that same price, with auto-scaling, NVMe storage, and free migration. You start small and scale seamlessly as your business grows — no plan changes, no migrations, no downtime.",
     },
     { type: "h2", id: "the-startup-hosting-lifecycle", text: "The Startup Hosting Lifecycle" },
     { type: "p", text: "Startups go through predictable hosting phases. Understanding these phases helps you choose a hosting plan that works at every stage without forcing expensive migrations." },

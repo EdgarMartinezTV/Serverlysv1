@@ -157,6 +157,9 @@ export const FAQS: FaqItem[] = [
               ? `Only after a Black Friday first payment. Until ${BLACK_FRIDAY.endsLabel} your first payment is ${Math.round(BLACK_FRIDAY.pct * 100)}% off; after that every plan renews at its regular price for the term you chose, and that regular price is printed beside the sale price on every card and in the compare table. Outside a sale, a plan renews at the same price you paid.`
               : "No. Every plan renews at the same price for the term you chose — monthly at the monthly price, 12, 24 or 36 months at that term's price. Both figures are on every card and in the compare table, because quoting a price without what it renews at is the practice we position against.",
           },
+          { text: " How other hosts compare: " },
+          { text: "web hosting renewal prices, side by side", href: "/web-hosting-renewal-prices" },
+          { text: "." },
         ],
       },
     ],
