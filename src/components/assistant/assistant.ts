@@ -17,6 +17,7 @@ type ConvoAIApi = {
   showNewMessage: (text?: string) => void;
   onShow: (cb: () => void) => void;
   onHide: (cb: () => void) => void;
+  identify: (o: { user_jwt: string }) => Promise<unknown>;
 };
 
 declare global {
@@ -58,5 +59,29 @@ export function askAssistant(text: string): void {
     const send = (api as ConvoAIApi & { send?: (t: string) => void }).send;
     if (send) send(text);
     else api.showNewMessage(text);
+  });
+}
+
+/**
+ * Recognise a client who is signed in to the client area (same origin, so the WHMCS session cookie
+ * goes with the request): the first time the messenger opens on this page, ask the portal hook for
+ * the client's signed identity token and hand it to ConvoAI, which verifies it. Visitors who never
+ * open the chat cost WHMCS nothing; signed-out visitors get the login page back and stay anonymous.
+ */
+let recognizing = false;
+export function recognizeSignedInClient(): void {
+  const api = window.ConvoAI;
+  if (!api || recognizing) return;
+  recognizing = true;
+  let asked = false;
+  api.onShow(() => {
+    if (asked) return;
+    asked = true;
+    fetch("/clientarea?sv_convoai_token=1", { credentials: "same-origin", headers: { accept: "application/json" }, cache: "no-store" })
+      .then((r) => ((r.headers.get("content-type") ?? "").includes("application/json") ? r.json() : null))
+      .then((d: { token?: string | null } | null) => {
+        if (d && typeof d.token === "string" && d.token.split(".").length === 3) return api.identify({ user_jwt: d.token });
+      })
+      .catch(() => {});
   });
 }
