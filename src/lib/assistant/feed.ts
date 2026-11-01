@@ -35,8 +35,12 @@ function plansDoc(): FeedDocument {
   const out: string[] = [
     "Serverlys hosting plans. Every price below is monthly; NO plan has a term or commitment.",
     "When quoting a price ALWAYS give two numbers: what they pay today (first payment, incl. any setup fee) and the regular price it renews at. Serverlys renews every plan at its own regular price.",
+    "\"From $X/mo\" figures in the FAQ and page summaries are the plan price WITHOUT its setup fee. When you tell someone what they pay today, use the \"first payment ... in total\" figure below for the term they are asking about (monthly unless they say otherwise).",
     "",
   ];
+  /* The page each group's plan cards are on; each card carries data-convoai-target="<group>-<tier>". */
+  const PAGE: Record<string, string> = { cloud: "/cloud-hosting", wordpress: "/wordpress-hosting", ecommerce: "/ecommerce-hosting" };
+  out.push("To SHOW a plan, link it: the link scrolls the visitor to that plan's card and highlights it (\"See it\" below).", "");
   for (const g of hostingPlans()) {
     out.push(`## ${g.label} (${g.id})`, g.blurb, `Store: ${g.storeUrl}`, "");
     for (const p of g.plans) {
@@ -49,6 +53,7 @@ function plansDoc(): FeedDocument {
           p.setupFee,
           `Sites: ${p.sites}. Visits: ${p.visits}. Memory: ${p.memory}. Storage: ${p.storage}. Transfer: ${p.transfer}.`,
           p.includes.length ? `Includes: ${p.includes.join("; ")}.` : "",
+          PAGE[g.id] ? `See it: ${company.url}${PAGE[g.id]}#${g.id}-${p.tier}` : "",
           `Order: ${p.orderUrl}`,
         ]),
         "",

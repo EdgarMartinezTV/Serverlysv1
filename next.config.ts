@@ -139,6 +139,17 @@ const nextConfig: NextConfig = {
     const ext = analyticsCspSources(resolveAnalytics(process.env));
     const more = (list: string[]) => (list.length ? ` ${list.join(" ")}` : "");
     /*
+     * The ConvoAI messenger (components/assistant/convoai-embed.tsx): its script, its API calls,
+     * and the avatars / attachments it shows all come from one origin (convoai.cloud by default).
+     */
+    const convoai = (() => {
+      try {
+        return new URL(process.env.NEXT_PUBLIC_CONVOAI_WIDGET_SRC?.trim() || "https://convoai.cloud/widget/convoai-widget.js").origin;
+      } catch {
+        return "https://convoai.cloud";
+      }
+    })();
+    /*
      * /public files are NOT content-hashed, so they cannot be `immutable` like
      * /_next/static. They were served `max-age=0` — revalidated on every page
      * view. A day fresh plus a week stale-while-revalidate means a replaced
@@ -241,8 +252,7 @@ const nextConfig: NextConfig = {
              *                           X-Frame-Options, which is kept above
              *                           only for ancient browsers
              *
-             * connect-src is 'self': the domain search calls our own /api and
-             * nothing else. Fonts are self-hosted by next/font, so no external
+             * connect-src is 'self' plus the ConvoAI messenger's API origin. Fonts are self-hosted by next/font, so no external
              * font origin is needed. Analytics vendors add theirs via `ext`.
              */
             key: "Content-Security-Policy",
@@ -257,13 +267,13 @@ const nextConfig: NextConfig = {
                * production bundle was verified to raise zero CSP violations —
                * so the shipped policy must not carry it.
                */
-              `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}${more(ext.script)}`,
+              `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} ${convoai}${more(ext.script)}`,
               // Tailwind and next/font emit inline <style>; no external sheets.
               `style-src 'self' 'unsafe-inline'${more(ext.style)}`,
               // data: for inlined SVG/blur placeholders, blob: for canvas work.
-              `img-src 'self' data: blob:${more(ext.img)}`,
+              `img-src 'self' data: blob: ${convoai}${more(ext.img)}`,
               `font-src 'self' data:${more(ext.font)}`,
-              `connect-src 'self'${more(ext.connect)}`,
+              `connect-src 'self' ${convoai}${more(ext.connect)}`,
               "object-src 'none'",
               "base-uri 'self'",
               "form-action 'self'",
