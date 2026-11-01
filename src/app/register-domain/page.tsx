@@ -2,7 +2,7 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { DomainHero, Explainers, Manage, Popular, Reasons, Steps, TldTable } from "../domain-name/_components/domain-ui";
 import { Faqs } from "@/components/ref/faqs";
 import { DomainSearchApp } from "@/components/domain/domain-search-app";
-import { allTlds, cheapestTld } from "@/data/tlds";
+import { getTldPricing } from "@/lib/domains/pricing";
 import { faqsFor } from "@/data/faqs";
 import { faqGraph, pageMetadata, productGraph } from "@/lib/seo";
 import { FAQ_HEAD, HERO, REASONS, STEPS } from "./_content";
@@ -28,16 +28,23 @@ import { breadcrumbTrail } from "@/data/routes";
 
 const PATH = "/register-domain";
 
-const TITLE = `Register a domain name from $${cheapestTld.price.toFixed(2)} | Serverlys`;
 const DESCRIPTION =
   "Check domain availability against the registry and register at Serverlys. Free WHOIS privacy where allowed, and the renewal rate shown before you pay.";
 
-export const metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH });
+/** The title quotes the cheapest live price, so it is built per render. */
+export async function generateMetadata() {
+  const { cheapest } = await getTldPricing();
+  const title = `Register a domain name from $${cheapest.price.toFixed(2)} | Serverlys`;
+  return pageMetadata({ title, description: DESCRIPTION, path: PATH });
+}
 
-const PRICES = allTlds.map((t) => t.price);
+/** Prices come from WHMCS (lib/domains/pricing); re-render at the same cadence. */
+export const revalidate = 3600;
 
-export default function RegisterDomainPage() {
+export default async function RegisterDomainPage() {
   const faqs = faqsFor(PATH);
+  const { all, featured } = await getTldPricing();
+  const PRICES = all.map((t) => t.price);
 
   return (
     /** globals.css balances headings; the reference wraps normally. */
@@ -55,13 +62,13 @@ export default function RegisterDomainPage() {
       />
       <JsonLd data={faqGraph(faqs, "/register-domain")} />
 
-      <DomainHero copy={HERO} tool={<DomainSearchApp />} />
+      <DomainHero copy={HERO} tlds={featured} tool={<DomainSearchApp tlds={featured} />} />
       <Reasons copy={REASONS} />
-      <Popular />
+      <Popular tlds={featured} />
       <Manage />
       <Steps copy={STEPS} />
       <Explainers />
-      <TldTable />
+      <TldTable tlds={all} />
 
       <Faqs
         idPrefix="rd"

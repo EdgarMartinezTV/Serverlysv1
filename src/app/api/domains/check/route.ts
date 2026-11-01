@@ -3,8 +3,8 @@ import { parseDomainInput } from "@/lib/domains/normalize";
 import { checkDomains, clientKey, rateLimit, resolveProvider } from "@/lib/domains/provider";
 import { domainProviderName } from "@/lib/env";
 import { readJsonObject } from "@/lib/request";
-import { suggestionTlds, tldSet } from "@/data/tlds";
-import type { CheckOutcome } from "@/lib/domains/types";
+import { getTldPricing } from "@/lib/domains/pricing";
+import type { CheckOutcome, DomainResult } from "@/lib/domains/types";
 
 /**
  * POST /api/domains/check
@@ -107,6 +107,13 @@ export async function POST(request: Request) {
   }
 
   // ── Build the candidate list ────────────────────────────────────────────
+  // Live WHMCS pricing (cached, data/tlds fallback): which TLDs are on sale,
+  // which are suggested, and what each costs.
+  const pricing = await getTldPricing();
+  const tldSet = new Set(pricing.all.map((t) => t.tld));
+  const livePrice = new Map(pricing.all.map((t) => [t.tld, t.price]));
+  const suggestionTlds = (exclude: string) => pricing.all.filter((t) => t.suggest && t.tld !== exclude);
+
   // The exact match first, so the primary answer is always row one.
   const primaryTld = parsed.tld && tldSet.has(parsed.tld) ? parsed.tld : ".com";
   const primary = `${parsed.sld}${parsed.tld ?? primaryTld}`;
@@ -128,7 +135,16 @@ export async function POST(request: Request) {
   request.signal.addEventListener("abort", () => controller.abort(), { once: true });
 
   try {
-    const results = await checkDomains(provider, domains, controller.signal);
+    const checked = await checkDomains(provider, domains, controller.signal);
+    // WHMCS rows carry the price WHMCS quoted for that lookup. RDAP-fallback
+    // rows only know the static list, so re-price them from live pricing — and
+    // a TLD WHMCS no longer sells is "unsupported", whatever the registry says.
+    const results = checked.map((r): DomainResult => {
+      if (r.source !== "rdap" || !r.tld) return r;
+      const price = livePrice.get(r.tld);
+      if (price === undefined) return { ...r, status: "unsupported", price: null };
+      return { ...r, price };
+    });
     const outcome: CheckOutcome = { ok: true, results, source: provider.name };
     return NextResponse.json(outcome, {
       headers: { "Cache-Control": "no-store" },

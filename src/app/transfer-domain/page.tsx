@@ -2,7 +2,7 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { DomainHero, Explainers, Manage, Popular, Reasons, Steps, TldTable } from "../domain-name/_components/domain-ui";
 import { Faqs } from "@/components/ref/faqs";
 import { DomainSearchApp } from "@/components/domain/domain-search-app";
-import { tlds } from "@/data/tlds";
+import { getTldPricing } from "@/lib/domains/pricing";
 import { faqGraph, pageMetadata } from "@/lib/seo";
 import { FAQ_HEAD, HERO, REASONS, STEPS } from "./_content";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
@@ -32,8 +32,8 @@ const DESCRIPTION =
 
 export const metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH });
 
-/** Kept so the TLD bands have something to show; registration prices. */
-void tlds;
+/** Prices come from WHMCS (lib/domains/pricing); re-render at the same cadence. */
+export const revalidate = 3600;
 
 const FAQ_TEXT = [
   {
@@ -68,19 +68,21 @@ const FAQ_TEXT = [
   },
 ];
 
-export default function TransferDomainPage() {
+export default async function TransferDomainPage() {
+  const { all, featured } = await getTldPricing();
+
   return (
     /** globals.css balances headings; the reference wraps normally. */
     <div className="[&_h1]:text-wrap [&_h2]:text-wrap [&_h3]:text-wrap [&_p]:text-wrap">
       <JsonLd data={faqGraph(FAQ_TEXT, "/transfer-domain")} />
 
-      <DomainHero copy={HERO} tool={<DomainSearchApp />} />
+      <DomainHero copy={HERO} tlds={featured} tool={<DomainSearchApp tlds={featured} />} />
       <Reasons copy={REASONS} />
-      <Popular />
+      <Popular tlds={featured} />
       <Manage />
       <Steps copy={STEPS} />
       <Explainers />
-      <TldTable />
+      <TldTable tlds={all} />
 
       <Faqs
         idPrefix="td"

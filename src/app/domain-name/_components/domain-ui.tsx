@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { billing } from "@/data/company";
-import { allTlds, tlds } from "@/data/tlds";
+import type { Tld } from "@/data/tlds";
 import { ArrowUpRight, CtaButton, Grid } from "@/components/ref/kit";
 import type { HeroCopy } from "@/components/ref/domain/hero";
 import type { ReasonsCopy } from "@/components/ref/domain/reasons";
@@ -17,7 +17,7 @@ import { MockPhoto } from "@/components/ui/mock-photo";
  * Built in the page folders rather than by editing components/ref/domain/*,
  * which stay in place untouched. Same section ids as before (#search,
  * #tld-prices) because the tests, the in-page CTAs and ConvoAI's navigation map
- * all point at them. Every price is read from data/tlds — nothing invented.
+ * all point at them. Every price comes in as a prop from lib/domains/pricing (live WHMCS, data/tlds fallback) — nothing invented.
  */
 
 const DOMAIN = "hearthbakery";
@@ -51,7 +51,8 @@ function Toggle({ on = true }: { on?: boolean }) {
 
 /* ── Hero ─────────────────────────────────────────────────────────────────── */
 
-export function DomainHero({ copy, tool }: { copy: HeroCopy; tool: React.ReactNode }) {
+/** `tlds`: the featured list from lib/domains/pricing (live WHMCS prices). */
+export function DomainHero({ copy, tool, tlds }: { copy: HeroCopy; tool: React.ReactNode; tlds: readonly Tld[] }) {
   const chips = tlds.slice(0, 6);
   return (
     <section
@@ -253,11 +254,11 @@ export function Reasons({ copy }: { copy: ReasonsCopy }) {
 
 /* ── Popular extensions (dark band, scroll rail) ──────────────────────────── */
 
-export function Popular() {
+export function Popular({ tlds }: { tlds: readonly Tld[] }) {
   return (
     <section aria-labelledby="dn-popular-heading" className="relative isolate overflow-hidden bg-canvas-abyss py-16 lg:py-24">
       <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[radial-gradient(60%_60%_at_80%_110%,rgb(0_0_255/0.5),transparent_70%)]" />
-      <PopularRail title={POPULAR.title} cta={POPULAR.cta} check={POPULAR.check} />
+      <PopularRail tlds={tlds} title={POPULAR.title} cta={POPULAR.cta} check={POPULAR.check} />
     </section>
   );
 }
@@ -458,7 +459,8 @@ export function Explainers() {
 
 /* ── TLD price table ──────────────────────────────────────────────────────── */
 
-export function TldTable() {
+/** `tlds`: every TLD on sale, from lib/domains/pricing (live WHMCS prices). */
+export function TldTable({ tlds }: { tlds: readonly Tld[] }) {
   return (
     <section id="tld-prices" aria-labelledby="dn-table-heading" className="scroll-mt-24 bg-canvas py-16 lg:py-24">
       <Grid>
@@ -468,7 +470,7 @@ export function TldTable() {
         <TldFilter />
 
         <ul className="mt-8 flex flex-col gap-3 md:hidden">
-          {allTlds.map((t) => (
+          {tlds.map((t) => (
             <li key={t.tld} data-tld={t.tld} className="rounded-2xl bg-canvas-secondary p-5">
               <div className="flex items-baseline justify-between gap-3">
                 <p className="text-[22px] leading-7 font-semibold tracking-[-0.02em] text-fg">{t.tld}</p>
@@ -506,7 +508,7 @@ export function TldTable() {
               </tr>
             </thead>
             <tbody className="divide-y divide-line-subtle">
-              {allTlds.map((t) => (
+              {tlds.map((t) => (
                 <tr key={t.tld} data-tld={t.tld} className="transition-colors duration-fast hover:bg-brand-50/50">
                   <th scope="row" className="px-6 py-2 text-body-lg font-semibold text-fg">{t.tld}</th>
                   <td className="px-6 py-2 text-body font-medium text-fg">${t.price.toFixed(2)}</td>

@@ -46,7 +46,7 @@ import {
   type ShortlistItem,
 } from "@/lib/domains/client";
 import type { CheckError, DomainResult } from "@/lib/domains/types";
-import { tlds } from "@/data/tlds";
+import { tlds as staticTlds, type Tld } from "@/data/tlds";
 import { billing } from "@/data/company";
 import { cn } from "@/lib/utils";
 import { track } from "@/lib/analytics";
@@ -86,7 +86,8 @@ function sldOf(raw: string): string {
   return p.ok ? p.sld : raw.trim().toLowerCase().replace(/^https?:\/\//, "").replace(/^www\./, "").split(/[./\s]/)[0];
 }
 
-export function DomainSearchApp() {
+/** `tlds`: the featured list with live WHMCS prices; the static list if omitted. */
+export function DomainSearchApp({ tlds = staticTlds }: { tlds?: readonly Tld[] } = {}) {
   const [value, setValue] = useState("");
   const [preferredTld, setPreferredTld] = useState(".com");
   const [phase, setPhase] = useState<Phase>({ kind: "idle" });
@@ -276,7 +277,7 @@ export function DomainSearchApp() {
         kind: "check" as const,
       };
     });
-  }, [ideas, sld, value, recent, preferredTld, baseId]);
+  }, [ideas, sld, value, recent, preferredTld, baseId, tlds]);
 
   const choose = (o: Option) => {
     setValue(o.domain);

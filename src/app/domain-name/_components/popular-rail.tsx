@@ -3,15 +3,17 @@
 import { useRef } from "react";
 import Link from "next/link";
 import { billing } from "@/data/company";
-import { tlds } from "@/data/tlds";
+import type { Tld } from "@/data/tlds";
 import { ChevronLeft, ChevronRight, Grid } from "@/components/ref/kit";
 
-/** The scrolling extension rail inside the dark Popular band. Prices from data/tlds. */
+/** The scrolling extension rail inside the dark Popular band. Prices from lib/domains/pricing, via props. */
 export function PopularRail({
+  tlds,
   title,
   cta,
   check,
 }: {
+  tlds: readonly Tld[];
   title: string;
   cta: { label: string; href: string };
   check: string;

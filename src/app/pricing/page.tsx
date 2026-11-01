@@ -6,6 +6,7 @@ import { BLACK_FRIDAY, blackFridayActive, lowestRate, lowestSaleRate, planGroups
 import { faqGraph, pageMetadata, productGraph } from "@/lib/seo";
 import { FAQS, FAQ_HEAD, HERO } from "./_content";
 import { Plans } from "./_components/plans";
+import { getTldPricing } from "@/lib/domains/pricing";
 import { Compare } from "./_components/compare";
 
 /**
@@ -85,7 +86,11 @@ function Cancel({ className }: { className?: string }) {
 
 const TRUST_ICONS = { shield: ShieldCheck, support: Support, cancel: Cancel } as const;
 
-export default function PricingPage() {
+/** The Domains tab shows WHMCS prices (lib/domains/pricing); re-render hourly. */
+export const revalidate = 3600;
+
+export default async function PricingPage() {
+  const { featured } = await getTldPricing();
   return (
     /** globals.css balances headings; the reference wraps normally. */
     <div className="[&_h1]:text-wrap [&_h2]:text-wrap [&_h3]:text-wrap [&_p]:text-wrap">
@@ -138,7 +143,7 @@ export default function PricingPage() {
           </ul>
         </Grid>
 
-        <Plans />
+        <Plans tlds={featured} />
       </section>
 
       <Compare />

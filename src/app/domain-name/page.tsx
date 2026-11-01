@@ -1,7 +1,7 @@
 import { JsonLd } from "@/components/ui/json-ld";
 import { DomainHero, Explainers, Manage, Popular, Reasons, Steps, TldTable } from "./_components/domain-ui";
 import { Faqs } from "@/components/ref/faqs";
-import { allTlds, cheapestTld } from "@/data/tlds";
+import { getTldPricing } from "@/lib/domains/pricing";
 import { faqGraph, pageMetadata, productGraph } from "@/lib/seo";
 import { FAQS, FAQ_HEAD, HERO, REASONS, STEPS } from "./_content";
 import { DomainSearchApp } from "@/components/domain/domain-search-app";
@@ -24,7 +24,8 @@ import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
  * `serverlys.com/cart.php?a=add&domain=register&query=…`, so a name
  * the visitor picks arrives in checkout prefilled.
  *
- * Every price on this page comes from `data/tlds.ts`. Nothing is hardcoded.
+ * Every price on this page comes from WHMCS via lib/domains/pricing (falling
+ * back to `data/tlds.ts`). Nothing is hardcoded.
  *
  * Removed from the reference: the "Trusted by 4+ million website owners"
  * review carousel (their customers, not ours) and the promo strip offering a
@@ -40,13 +41,13 @@ const DESCRIPTION =
 
 export const metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH });
 
+/** Prices come from WHMCS (lib/domains/pricing); re-render at the same cadence. */
+export const revalidate = 3600;
+
 const BREADCRUMB = [
   { name: "Home", path: "/" },
   { name: "Domain names", path: PATH },
 ];
-
-/** Derived from the TLD list, so the schema cannot disagree with the table. */
-const PRICES = allTlds.map((t) => t.price);
 
 const FAQ_TEXT = FAQS.map((f) => ({
   question: f.q,
@@ -58,7 +59,11 @@ const FAQ_TEXT = FAQS.map((f) => ({
   scopes: [PATH],
 }));
 
-export default function DomainNamePage() {
+export default async function DomainNamePage() {
+  const { all, featured, cheapest } = await getTldPricing();
+  /** Derived from the TLD list, so the schema cannot disagree with the table. */
+  const PRICES = all.map((t) => t.price);
+
   return (
     /**
      * globals.css balances every heading and prettifies every paragraph; the
@@ -68,7 +73,7 @@ export default function DomainNamePage() {
       <JsonLd
         data={productGraph({
           name: "Serverlys Domain Registration",
-          description: `Domain registration from ${cheapestTld.tld} at $${cheapestTld.price.toFixed(2)} for the first year.`,
+          description: `Domain registration from ${cheapest.tld} at $${cheapest.price.toFixed(2)} for the first year.`,
           path: PATH,
           lowPrice: Math.min(...PRICES),
           highPrice: Math.max(...PRICES),
@@ -78,13 +83,13 @@ export default function DomainNamePage() {
       />
       <JsonLd data={faqGraph(FAQ_TEXT, "/domain-name")} />
 
-      <DomainHero copy={HERO} tool={<DomainSearchApp />} />
+      <DomainHero copy={HERO} tlds={featured} tool={<DomainSearchApp tlds={featured} />} />
       <Reasons copy={REASONS} />
-      <Popular />
+      <Popular tlds={featured} />
       <Manage />
       <Steps copy={STEPS} />
       <Explainers />
-      <TldTable />
+      <TldTable tlds={all} />
 
       <Faqs
         idPrefix="dn"

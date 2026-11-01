@@ -4,7 +4,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { billing } from "@/data/company";
 import { groupById } from "@/data/pricing";
-import { tlds } from "@/data/tlds";
+import type { Tld } from "@/data/tlds";
 import { Check, Grid } from "@/components/ref/kit";
 import { PLAN_CARD_ITEM, PlanCard } from "@/components/ref/plan-card";
 import { TermProvider, TermSelect } from "@/components/ref/term";
@@ -27,7 +27,8 @@ import { BANDS, CTA, INCLUDES_LABEL, TABS, TERM_NOTE, WHY } from "../_content";
  * The term select (2026-10-26, Hostinger's /pricing) re-prices every card in
  * the panel; the terms are the ones WHMCS sells. See data/pricing.ts.
  */
-export function Plans() {
+/** `tlds`: featured TLDs with live WHMCS prices (lib/domains/pricing). */
+export function Plans({ tlds }: { tlds: readonly Tld[] }) {
   const [active, setActive] = useState<string>(TABS[0].id);
   const band = BANDS[active];
 

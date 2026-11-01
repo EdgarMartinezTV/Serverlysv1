@@ -7,6 +7,7 @@ import { faqGraph, pageMetadata } from "@/lib/seo";
 import { FAQ_HEAD, HERO, REASONS, STEPS } from "./_content";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { breadcrumbTrail } from "@/data/routes";
+import { getTldPricing } from "@/lib/domains/pricing";
 
 /**
  * WHOIS lookup.
@@ -65,19 +66,24 @@ const FAQS: readonly Faq[] = [
   },
 ];
 
-export default function WhoisLookupPage() {
+/** The TLD bands show WHMCS prices (lib/domains/pricing); re-render hourly. */
+export const revalidate = 3600;
+
+export default async function WhoisLookupPage() {
+  const { all, featured } = await getTldPricing();
+
   return (
     /** globals.css balances headings; the reference wraps normally. */
     <div className="[&_h1]:text-wrap [&_h2]:text-wrap [&_h3]:text-wrap [&_p]:text-wrap">
       <JsonLd data={faqGraph(FAQS, "/whois-lookup")} />
 
-      <DomainHero copy={HERO} tool={<WhoisLookup />} />
+      <DomainHero copy={HERO} tlds={featured} tool={<WhoisLookup />} />
       <Reasons copy={REASONS} />
-      <Popular />
+      <Popular tlds={featured} />
       <Manage />
       <Steps copy={STEPS} />
       <Explainers />
-      <TldTable />
+      <TldTable tlds={all} />
 
       <Faqs
         idPrefix="wl"
