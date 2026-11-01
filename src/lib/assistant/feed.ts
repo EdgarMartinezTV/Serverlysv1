@@ -2,6 +2,7 @@ import "server-only";
 import { BLACK_FRIDAY, blackFridayActive } from "@/data/pricing";
 import { faqs } from "@/data/faqs";
 import { company } from "@/data/company";
+import { upcomingProducts } from "@/data/products";
 import { hostingPlans, hostingProducts } from "./knowledge/hosting";
 import { companyFacts, contactChannels, serviceCatalogue } from "./knowledge/services";
 import { NAVIGABLE } from "./navigation-map";
@@ -80,9 +81,10 @@ function servicesDoc(): FeedDocument {
     "Which page owns what: NEW website or website design = /website-design; work on an EXISTING site and hourly rates = /website-development; SEO = /seo; social media management = /social-media; website maintenance / ServerCare = /site-management; all-in-one website + hosting plans = /business-solutions.",
     "",
   ];
+  const soon = new Set<string>(upcomingProducts.map((p) => p.href));
   for (const s of serviceCatalogue()) {
     out.push(`## ${s.area}`, s.note ?? "");
-    for (const p of s.pages) out.push(`- ${p.name} (${company.url}${p.path}): ${p.summary}`);
+    for (const p of s.pages) out.push(`- ${p.name} (${company.url}${p.path})${soon.has(p.path) ? " — COMING SOON, NOT PURCHASABLE YET (never offer it as available)" : ""}: ${p.summary}`);
     out.push("");
   }
   return { key: "services", title: "Serverlys services and published prices", url: company.url, content: out.join("\n").trim() };

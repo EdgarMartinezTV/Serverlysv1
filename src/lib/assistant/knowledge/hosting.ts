@@ -62,7 +62,7 @@ function toPlanFact(groupSlug: string, plan: (typeof planGroups)[number]["plans"
       const y = quote(plan, "annually");
       const t = quote(plan, "triennially");
       if (!m.bf || !y.bf || !t.bf) return undefined;
-      return `Black Friday until ${BLACK_FRIDAY.endsLabel}: ${Math.round(BLACK_FRIDAY.pct * 100)}% off the first payment, applied automatically at checkout. Monthly ${formatPrice(m.bf.today)} first month${m.bf.setup ? " incl. setup" : ""} (then ${formatPrice(m.total)}/mo); 12 months ${formatPrice(y.bf.today)} (regular ${formatPrice(y.total)}); 36 months ${formatPrice(t.bf.today)} (regular ${formatPrice(t.total)}). Renews at the regular price.`;
+      return `Black Friday until ${BLACK_FRIDAY.endsLabel}: ${Math.round(BLACK_FRIDAY.pct * 100)}% off the first payment, applied automatically at checkout. Monthly term: first payment ${formatPrice(m.bf.today)} in total${m.bf.setup ? ` (this ALREADY INCLUDES the ${formatPrice(plan.setupFee ?? 0)} setup fee — nothing else is added)` : ""}, then ${formatPrice(plan.monthly)}/mo. Paying 12 months up front: ${formatPrice(y.bf.today)} (regular ${formatPrice(y.total)}). Paying 36 months up front: ${formatPrice(t.bf.today)} (regular ${formatPrice(t.total)}). Renews at the regular price.`;
     })(),
     setupFee: plan.setupFee ? `${formatPrice(plan.setupFee)} one-off setup fee` : undefined,
     sites: plan.specs.sites,

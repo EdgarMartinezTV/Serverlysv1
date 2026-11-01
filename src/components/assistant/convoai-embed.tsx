@@ -20,7 +20,7 @@ export function ConvoAIEmbed() {
       id="convoai-messenger"
       src={SRC}
       data-agent={AGENT}
-      data-color="#0B57D0"
+      data-color="#1F55FF"
       strategy="lazyOnload"
       onLoad={flushAssistantQueue}
     />
