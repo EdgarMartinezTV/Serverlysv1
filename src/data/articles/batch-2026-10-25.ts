@@ -245,7 +245,7 @@ export const batch20261025: readonly Article[] = [
       { type: "h2", id: "costs", text: "What each one costs" },
       {
         type: "p",
-        text: "At Serverlys, a `.com` costs **$14.95 for the first year**; other extensions are listed on the [domain search page](/domain-name). Hosting starts at **$7.95 a month and renews at $12.62 a month**, plus a one-off $2.95 setup fee, on the entry cloud plan. We show both numbers because the renewal price is the one you will pay for longest; [how to read hosting renewal pricing](/blog/how-to-read-hosting-renewal-pricing) explains why that matters with any host.",
+        text: "At Serverlys, a `.com` costs **$14.95 for the first year**; other extensions are listed on the [domain search page](/domain-name). Hosting starts at **$7.95 a month and renews at that same $7.95 a month**, plus a one-off $2.95 setup fee, on the entry cloud plan. We show both numbers because the renewal price is the one you will pay for longest; [how to read hosting renewal pricing](/blog/how-to-read-hosting-renewal-pricing) explains why that matters with any host.",
       },
       {
         type: "callout",

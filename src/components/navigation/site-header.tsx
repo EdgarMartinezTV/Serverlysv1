@@ -83,7 +83,7 @@ import { cn } from "@/lib/utils";
    their Black Friday heroes are up (2026-10-31): after the sale it is back to a white hero,
    where a transparent white-text bar would disappear. */
 const OVERLAY_ROUTES = new Set(
-  blackFridayActive() ? ["/", "/cloud-hosting", "/wordpress-hosting", "/ecommerce-hosting"] : ["/"],
+  blackFridayActive() ? ["/", "/cloud-hosting", "/wordpress-hosting", "/ecommerce-hosting", "/startup-hosting"] : ["/"],
 );
 
 export function SiteHeader() {

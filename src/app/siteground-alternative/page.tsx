@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SG_HOSTING, SG_TERM_MONTHS, SG_WEB } from "@/data/competitor-pricing";
 import { Container } from "@/components/ui/container";
 import { Band, Heading, Pill, Stage, Tick } from "../hosting/_components/band";
 import { Button } from "@/components/ui/button";
@@ -49,21 +50,9 @@ export const metadata = pageMetadata({
 
 const SOURCE_DATE = "2026-10-26";
 const SOURCE_LABEL = "26 October 2026";
-const SG_WEB = "https://www.siteground.com/web-hosting.htm";
 const SG_WP = "https://www.siteground.com/wordpress-hosting.htm";
 const SG_DOMAINS = "https://www.siteground.com/domain_names";
 
-/**
- * Read off siteground.com/web-hosting.htm on SOURCE_DATE (the WordPress
- * hosting page showed the same three prices). Each card read e.g. "$2.99 /mo.
- * … Renews at $17.99 /mo. Prepaid for 12 months."
- */
-const SG_HOSTING = [
-  { name: "StartUp", intro: 2.99, renews: 17.99, sites: "1 website", storage: "10 GB" },
-  { name: "GrowBig", intro: 4.99, renews: 29.99, sites: "Unlimited websites", storage: "50 GB" },
-  { name: "GoGeek", intro: 7.99, renews: 44.99, sites: "Unlimited websites", storage: "100 GB" },
-] as const;
-const SG_TERM_MONTHS = 12;
 
 /**
  * Read off siteground.com/domain_names on SOURCE_DATE: ".com -48% $22.99 /yr

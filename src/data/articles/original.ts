@@ -176,7 +176,7 @@ export const originalArticles: readonly Article[] = [
           [
             "Hosting where WordPress updates, daily backups and free SSL are handled for you",
             "[WordPress hosting](/wordpress-hosting)",
-            "$7.95/mo, renews at $12.62/mo",
+            "$7.95/mo, renews at $7.95/mo",
           ],
           [
             "Someone to apply WordPress, plugin and theme updates for you every month, with daily backups and uptime alerts",
@@ -292,7 +292,7 @@ export const originalArticles: readonly Article[] = [
           [
             "A WooCommerce store that stays fast when AI traffic sends shoppers your way",
             "[Ecommerce hosting](/ecommerce-hosting)",
-            "$7.95/mo, renews at $12.62/mo",
+            "$7.95/mo, renews at $7.95/mo",
           ],
           [
             "Product schema, on-page fixes and a new optimised article every month",
@@ -435,7 +435,7 @@ export const originalArticles: readonly Article[] = [
           [
             "A fast, reliable site that crawlers never time out on",
             "[Cloud hosting](/cloud-hosting) with free SSL and daily backups",
-            "$7.95/mo, renews at $12.62/mo",
+            "$7.95/mo, renews at $7.95/mo",
           ],
           [
             "Your Google Business Profile, local listings and on-page basics fixed",
@@ -606,7 +606,7 @@ export const originalArticles: readonly Article[] = [
       { type: "h2", id: "how-we-help", text: "Where Serverlys fits in" },
       {
         type: "p",
-        text: "If you built the site yourself and want it somewhere dependable, our [hosting plans](/pricing) start at $7.95/mo, renewing at $12.62/mo, with free SSL, daily backups and the cPanel tools above. Domains are [registered here](/register-domain) in your own name.",
+        text: "If you built the site yourself and want it somewhere dependable, our [hosting plans](/pricing) start at $7.95/mo, renewing at that same price, with free SSL, daily backups and the cPanel tools above. Domains are [registered here](/register-domain) in your own name.",
       },
       {
         type: "p",
@@ -678,7 +678,7 @@ export const originalArticles: readonly Article[] = [
             "1",
             "~10,000",
             "2 GB",
-            "$7.95/mo, renews at $12.62/mo (+$2.95 setup)",
+            "$7.95/mo, renews at $7.95/mo (+$2.95 setup)",
           ],
           ["Plus", "7", "~25,000", "4 GB", "$11.95/mo, renews at $15.93/mo"],
           ["Turbo", "Unlimited", "~50,000", "6 GB", "$17.95/mo, renews at $21.37/mo"],
@@ -1320,7 +1320,7 @@ export const originalArticles: readonly Article[] = [
       { type: "h2", id: "next", text: "If you have not launched yet" },
       {
         type: "p",
-        text: "Start with [how much a website costs](/blog/website-cost-guide) and [how much hosting you actually need](/blog/how-much-hosting-do-you-need). Our plans start at $7.95/mo, renewing at $12.62/mo, with SSL, daily backups and free migration included; [compare them here](/pricing). And if you would rather have the site built for you, our [website design](/website-design) team builds it, hosts it and wires in analytics from day one.",
+        text: "Start with [how much a website costs](/blog/website-cost-guide) and [how much hosting you actually need](/blog/how-much-hosting-do-you-need). Our plans start at $7.95/mo, renewing at that same price, with SSL, daily backups and free migration included; [compare them here](/pricing). And if you would rather have the site built for you, our [website design](/website-design) team builds it, hosts it and wires in analytics from day one.",
       },
     ],
   },
@@ -1460,7 +1460,7 @@ export const originalArticles: readonly Article[] = [
       { type: "h2", id: "the-arithmetic", text: "The arithmetic that matters" },
       {
         type: "p",
-        text: "Multiply the advertised rate by twelve, add any setup fee, then do it again at the renewal rate. Our own entry plan is $7.95/mo and renews at $12.62/mo, so a first year is 12 × $7.95 = $95.40 plus a $2.95 setup fee, or $98.35 — and every year after it is 12 × $12.62 = $151.44. Both numbers are on the plan card. The gap between them is the whole decision, and it is the number most providers make you hunt for.",
+        text: "Multiply the advertised rate by twelve, add any setup fee, then do it again at the renewal rate. Our own entry plan is $7.95/mo and renews at that same $7.95/mo, so a first year is 12 × $7.95 = $95.40 plus a $2.95 setup fee, or $98.35 — and every year after it is $95.40. Both numbers are on the plan card. With many providers the gap between the two is the whole decision, and it is the number they make you hunt for.",
       },
       {
         type: "p",

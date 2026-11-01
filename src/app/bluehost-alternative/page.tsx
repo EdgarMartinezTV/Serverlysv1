@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BLUEHOST, BLUEHOST_TERM, BLUEHOST_SHARED } from "@/data/competitor-pricing";
 import { Container } from "@/components/ui/container";
 import { Band, Heading, Pill, Stage, Tick } from "../hosting/_components/band";
 import { Button } from "@/components/ui/button";
@@ -47,20 +48,8 @@ export const metadata = pageMetadata({
 
 const SOURCE_DATE = "2026-10-26";
 const SOURCE_LABEL = "26 October 2026";
-const BLUEHOST_SHARED = "https://www.bluehost.com/hosting/shared";
 const BLUEHOST_WP = "https://www.bluehost.com/wordpress/wordpress-hosting";
 
-/**
- * Read off bluehost.com/hosting/shared and /wordpress/wordpress-hosting on
- * SOURCE_DATE. Both pages showed the same three priced plans, each card
- * reading e.g. "$3.99/mo … For 36 month term … Renews at $9.99/mo".
- */
-const BLUEHOST = [
-  { name: "Starter", intro: 3.99, renews: 9.99, sites: "10 websites", storage: "10 GB NVMe SSD storage", phone: false },
-  { name: "Business", intro: 6.99, renews: 13.99, sites: "50 websites", storage: "50 GB NVMe SSD storage", phone: true },
-  { name: "eCommerce Essentials", intro: 14.99, renews: 21.99, sites: "100 websites", storage: "100 GB NVMe SSD storage", phone: true },
-] as const;
-const BLUEHOST_TERM = "36 month term";
 
 const cloud = groupById("cloud");
 const PLANS = cloud?.plans ?? [];

@@ -33,7 +33,15 @@ const SIGNAL = "search=yes, ai-input=yes, ai-train=yes";
  * CRAWLABLE: the site links to them, and a blocked URL never shows Google its
  * noindex. Only the admin area is disallowed.
  */
-const WHMCS_DISALLOW = ["/billinguseradmin/"];
+const WHMCS_DISALLOW = [
+  "/billinguseradmin/",
+  /* 2026-10-31: WHMCS's language switcher turns every help-center article and
+     cart link into ~40 copies (?language=farsi, &language=turkish...). Search
+     Console showed thousands of them eating the crawl as "Crawled - currently
+     not indexed". The plain URLs stay crawlable; only the language copies stop. */
+  "/*?language=",
+  "/*&language=",
+];
 
 export function GET() {
   const lines: string[] = [];

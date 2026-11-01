@@ -245,6 +245,11 @@ const PAGES: Record<string, OgCard> = {
     title: "How the tiers differ, and how to judge a host.",
     detail: "No scores out of ten. Six questions that work on anyone.",
   },
+  "/web-hosting-renewal-prices": {
+    eyebrow: "Hosting prices",
+    title: "What hosting renews at, side by side.",
+    detail: "Advertised price, term required and renewal price. Dated figures.",
+  },
   "/hostinger-alternative": {
     eyebrow: "Hostinger alternative",
     title: "A plain monthly price, renewal printed beside it.",

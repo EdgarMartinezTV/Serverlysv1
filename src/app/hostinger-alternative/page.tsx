@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HOSTINGER, HOSTINGER_WEB } from "@/data/competitor-pricing";
 import { Container } from "@/components/ui/container";
 import { Band, Heading, Pill, Stage, Tick } from "../hosting/_components/band";
 import { Button } from "@/components/ui/button";
@@ -46,22 +47,10 @@ export const metadata = pageMetadata({
 
 const SOURCE_DATE = "2026-10-26";
 const SOURCE_LABEL = "26 October 2026";
-const HOSTINGER_WEB = "https://www.hostinger.com/web-hosting";
 const HOSTINGER_WP = "https://www.hostinger.com/wordpress-hosting";
 const HOSTINGER_MIGRATION = "https://www.hostinger.com/website-migration";
 const HOSTINGER_TUTORIALS = "https://www.hostinger.com/tutorials/";
 
-/**
- * Read off hostinger.com/web-hosting and /wordpress-hosting on SOURCE_DATE.
- * Both pages showed the same three plans with identical text, e.g.
- * "$2.49 /mo … Get 48 months for $119.52 (regular price $585.12). Renews at
- * $10.99/mo." and "All plans are paid upfront."
- */
-const HOSTINGER = [
-  { name: "Premium", intro: 2.49, renews: 10.99, months: 48, upfront: 119.52, backups: "Free weekly backups" },
-  { name: "Unlimited", intro: 3.49, renews: 16.99, months: 48, upfront: 167.52, backups: "Daily backups + easy data restore" },
-  { name: "Cloud Startup", intro: 7.99, renews: 25.99, months: 48, upfront: 383.52, backups: "Daily and on demand backups" },
-] as const;
 
 const cloud = groupById("cloud");
 const PLANS = cloud?.plans ?? [];
