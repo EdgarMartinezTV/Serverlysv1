@@ -62,7 +62,7 @@ export default function TldIndexPage() {
               {SORTED.map((t) => (
                 <tr key={t.slug} className="border-t border-line">
                   <th scope="row" className="p-4 font-semibold">
-                    <Link href={`/tld/${t.slug}`} className="text-primary hover:underline">
+                    <Link href={`/tld/${t.slug}`} className="inline-flex min-h-6 min-w-6 items-center text-primary hover:underline">
                       .{t.slug}
                     </Link>
                   </th>

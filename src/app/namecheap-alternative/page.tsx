@@ -512,7 +512,7 @@ export default function NamecheapAlternativePage() {
                 <span className="text-body-lg font-medium text-white">{title}</span>
               </span>
               <p className="mt-3 flex-1 text-small text-fg-on-dark-secondary">{body}</p>
-              <Link href={href} className="mt-4 text-small font-semibold text-white underline-offset-4 hover:underline">
+              <Link href={href} className="mt-4 inline-flex min-h-6 items-center self-start text-small font-semibold text-white underline-offset-4 hover:underline">
                 {cta}
               </Link>
             </li>

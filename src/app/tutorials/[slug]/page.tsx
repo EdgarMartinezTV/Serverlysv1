@@ -146,7 +146,9 @@ export default async function TutorialPage(props: PageProps<"/tutorials/[slug]">
                   >
                     {i + 1}
                   </span>
-                  <div className="min-w-0">
+                  {/* overflow-x-clip: a long code line ("dig +short TXT _dmarc…") still
+                      widened the page to 402px at 320 even though its <pre> scrolls. */}
+                  <div className="min-w-0 overflow-x-clip">
                     <h2 className="text-body font-semibold text-fg">
                       <span className="sr-only">Step {i + 1}: </span>
                       {s.title}

@@ -160,7 +160,7 @@ function LinkList({ links }: { links: readonly Entry[] }) {
     <ul className="mt-4 flex flex-col gap-2.5">
       {links.map((l) => (
         <li key={l.href}>
-          <Link href={l.href} className="text-small text-primary hover:underline">
+          <Link href={l.href} className="inline-flex min-h-6 min-w-6 items-center text-small text-primary hover:underline">
             {l.label}
           </Link>
         </li>
@@ -209,7 +209,7 @@ export default function SitemapPage() {
           {GUIDES.map((g) => (
             <section key={g.category} aria-labelledby={`sm-guides-${categorySlug(g.category)}`}>
               <h3 id={`sm-guides-${categorySlug(g.category)}`} className="text-body-lg font-semibold text-fg">
-                <Link href={g.href} className="hover:underline">
+                <Link href={g.href} className="inline-flex min-h-6 min-w-6 items-center hover:underline">
                   {g.category}
                 </Link>
               </h3>

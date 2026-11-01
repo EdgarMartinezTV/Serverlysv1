@@ -56,7 +56,7 @@ export function StoryList({ stories }: { stories: readonly Story[] }) {
       </ul>
 
       {pages > 1 && (
-        <nav aria-label="All stories pages" className="mt-8 flex items-center justify-center gap-2">
+        <nav aria-label="All stories pages" className="mt-8 flex flex-wrap items-center justify-center gap-2">
           {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
             <button
               key={n}
@@ -64,7 +64,7 @@ export function StoryList({ stories }: { stories: readonly Story[] }) {
               onClick={() => go(n)}
               aria-current={n === page ? "page" : undefined}
               className={cn(
-                "flex size-9 items-center justify-center rounded-full text-small font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
+                "flex size-9 shrink-0 items-center justify-center rounded-full text-small font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
                 n === page ? "bg-primary text-white" : "text-fg hover:bg-brand-50 hover:text-primary",
               )}
             >

@@ -111,7 +111,7 @@ export function ViewAll({ href, label }: { href: string; label: string }) {
     <Link
       href={href}
       aria-label={label}
-      className="inline-flex items-center gap-1.5 text-small font-semibold text-primary hover:text-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+      className="inline-flex min-h-6 items-center gap-1.5 text-small font-semibold text-primary hover:text-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
     >
       View all
     </Link>

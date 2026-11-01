@@ -43,7 +43,7 @@ function InlineLink({ href, children }: { href: string; children: ReactNode }) {
   const isInternal = href.startsWith("/") && !href.startsWith("//");
 
   const className =
-    "font-medium text-primary underline decoration-primary/30 underline-offset-2 transition-colors hover:decoration-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
+    "py-[3px] font-medium text-primary underline decoration-primary/30 underline-offset-2 transition-colors hover:decoration-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
 
   if (isInternal) {
     return (

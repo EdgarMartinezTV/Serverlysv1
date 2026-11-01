@@ -303,7 +303,7 @@ export function ReviewForm({
         {text("email", f.email, { type: "email", autoComplete: "email", inputMode: "email" })}
         <div className="sm:col-span-2">
           {text("website", f.website, { type: "url", autoComplete: "url", inputMode: "url", hint: f.websiteHint, optional: noWebsite, disabled: noWebsite })}
-          <label className="mt-3 inline-flex cursor-pointer items-center gap-2.5 text-[14px] text-[#2b3442]">
+          <label className="mt-3 inline-flex min-h-6 cursor-pointer items-center gap-2.5 text-[14px] text-[#2b3442]">
             <input
               type="checkbox"
               checked={noWebsite}

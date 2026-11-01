@@ -94,7 +94,7 @@ export function GuideList({ items }: { items: readonly { title: string; body: Re
 
 export function InlineLink({ href, children }: { href: string; children: React.ReactNode }) {
   const external = href.startsWith("http");
-  const cls = "font-semibold text-primary underline underline-offset-2 hover:no-underline";
+  const cls = "py-0.5 font-semibold text-primary underline underline-offset-2 hover:no-underline"; // py-0.5: 24px tap target when alone in a table cell
   return external ? (
     <a href={href} className={cls} target="_blank" rel="noopener">
       {children}

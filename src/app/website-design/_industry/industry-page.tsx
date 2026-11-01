@@ -130,7 +130,7 @@ export function IndustryPage({ industry, locale }: { industry: Industry; locale:
             </Button>
           </div>
           <p className="mt-6 text-small">
-            <Link href={industryPath(industry.slug, other)} hrefLang={other} className="text-fg-on-dark-secondary underline underline-offset-4">
+            <Link href={industryPath(industry.slug, other)} hrefLang={other} className="inline-flex min-h-6 items-center text-fg-on-dark-secondary underline underline-offset-4">
               {ui.lang}
             </Link>
           </p>
@@ -254,7 +254,7 @@ export function IndustryPage({ industry, locale }: { industry: Industry; locale:
             ))}
           </ul>
           <p className="mt-8 text-center text-small">
-            <Link href={locale === "es" ? "/es/website-design/industries" : "/website-design/industries"} className="text-primary underline underline-offset-4">
+            <Link href={locale === "es" ? "/es/website-design/industries" : "/website-design/industries"} className="inline-flex min-h-6 items-center text-primary underline underline-offset-4">
               {ui.allIndustries}
             </Link>
           </p>
