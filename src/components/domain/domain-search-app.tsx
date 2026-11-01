@@ -14,9 +14,9 @@
  * network call. "Name ideas" → variations of the typed words. ↑ ↓ Enter Esc
  * all work; picking a row searches that exact name.
  *
- * THE RESULTS: a white panel under the bar. The exact name first, large, with
- * a clear verdict; then category chips (Popular / Business / Personal / All)
- * over the alternates, Hostinger-style rows with the price and "Register".
+ * THE RESULTS (2026-11-01): Hostinger's results page — see domain-results.tsx.
+ * In "hero" mode the bar does not search in place: it navigates to
+ * /domain-name-results?domain=…, which mounts this component in "results" mode.
  *
  * Nothing here invents availability or prices: the dropdown says "check",
  * not "available", and only the registry answer drives the verdict. The live
@@ -35,7 +35,8 @@ import {
 } from "react";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { DomainResultRow } from "./domain-result-row";
+import { DomainResults } from "./domain-results";
+import { useRouter } from "next/navigation";
 import { parseDomainInput } from "@/lib/domains/normalize";
 import {
   checkDomains,
@@ -46,7 +47,8 @@ import {
   type ShortlistItem,
 } from "@/lib/domains/client";
 import type { CheckError, DomainResult } from "@/lib/domains/types";
-import { tlds as staticTlds, type Tld } from "@/data/tlds";
+import { allTlds as staticAll, tlds as staticTlds, tldCategories, type Tld } from "@/data/tlds";
+import { refreshCartCount } from "@/lib/domains/cart";
 import { billing } from "@/data/company";
 import { cn } from "@/lib/utils";
 import { track } from "@/lib/analytics";
@@ -61,17 +63,6 @@ type Option = { id: string; domain: string; label: string; hint: string; kind: "
 
 const EXAMPLES = ["hearthbakery.com", "northlight.studio", "fernandfold.shop", "yourname.com", "cedarclinic.org"];
 
-/* "All" first and default: we check a handful of extensions, not hundreds,
-   so a narrowing default would hide sellable names (e.g. .eu) on first view.
-   A chip only renders when at least one checked name falls in its group —
-   the search checks the suggestion set (data/tlds `suggest`), so a group
-   built from extensions that were never checked would always come up empty. */
-const CATEGORIES: Record<string, readonly string[] | null> = {
-  All: null,
-  Popular: [".com", ".net", ".org"],
-  Business: [".com", ".info", ".website", ".design"],
-  Personal: [".name", ".eu", ".website"],
-};
 
 /** Variations of what was typed — local, instant, and labelled as ideas. */
 function nameIdeas(sld: string): string[] {
@@ -86,8 +77,20 @@ function sldOf(raw: string): string {
   return p.ok ? p.sld : raw.trim().toLowerCase().replace(/^https?:\/\//, "").replace(/^www\./, "").split(/[./\s]/)[0];
 }
 
-/** `tlds`: the featured list with live WHMCS prices; the static list if omitted. */
-export function DomainSearchApp({ tlds = staticTlds }: { tlds?: readonly Tld[] } = {}) {
+/**
+ * Props, all optional:
+ *   tlds     the featured list with live WHMCS prices (dropdown, default-extension chips)
+ *   catalog  every TLD on sale with prices + WHMCS categories (results tabs)
+ *   mode     "hero"    → submitting navigates to /domain-name-results?domain=… (Hostinger's flow)
+ *            "results" → the results page itself: searches run here
+ *            "inline"  → search and results on the same page (/transfer-domain)
+ */
+export function DomainSearchApp({
+  tlds = staticTlds,
+  catalog = staticAll,
+  mode = "inline",
+}: { tlds?: readonly Tld[]; catalog?: readonly Tld[]; mode?: "hero" | "results" | "inline" } = {}) {
+  const router = useRouter();
   const [value, setValue] = useState("");
   const [preferredTld, setPreferredTld] = useState(".com");
   const [phase, setPhase] = useState<Phase>({ kind: "idle" });
@@ -95,7 +98,12 @@ export function DomainSearchApp({ tlds = staticTlds }: { tlds?: readonly Tld[] }
   const [open, setOpen] = useState(false);
   const [ideas, setIdeas] = useState(false);
   const [active, setActive] = useState(-1);
-  const [category, setCategory] = useState<keyof typeof CATEGORIES>("All");
+  const categories = useMemo(() => tldCategories(catalog), [catalog]);
+  const [category, setCategory] = useState<string>("Popular");
+  /** Rows a category tab checked after the first answer, keyed by domain. */
+  const [extra, setExtra] = useState<Record<string, DomainResult>>({});
+  const [loadingCategory, setLoadingCategory] = useState<string | null>(null);
+  const tabAbortRef = useRef<AbortController | null>(null);
   const recent = useSyncExternalStore(recentStore.subscribe, recentStore.getSnapshot, recentStore.getServerSnapshot);
   const saved = useSyncExternalStore(shortlistStore.subscribe, shortlistStore.getSnapshot, shortlistStore.getServerSnapshot);
   const [slow, setSlow] = useState(false);
@@ -178,12 +186,19 @@ export function DomainSearchApp({ tlds = staticTlds }: { tlds?: readonly Tld[] }
   const runRef = useRef<(q: string) => void>(() => {});
   useEffect(() => {
     const d = new URLSearchParams(window.location.search).get("domain");
+    if (mode === "results") void refreshCartCount();
     if (!d) return;
+    if (mode === "hero") {
+      // Old shareable links (/domain-name?domain=x) now belong to the results page.
+      router.replace(`/domain-name-results?domain=${encodeURIComponent(d)}`);
+      return;
+    }
     const t = setTimeout(() => {
       setValue(d);
       runRef.current(d);
     }, 0);
     return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- arrival only
   }, []);
 
   const run = useCallback(
@@ -199,6 +214,11 @@ export function DomainSearchApp({ tlds = staticTlds }: { tlds?: readonly Tld[] }
       setIdeas(false);
 
       const query = parsed.tld ? `${parsed.sld}${parsed.tld}` : `${parsed.sld}${preferredTld}`;
+      if (mode === "hero") {
+        recentStore.set(recentSearches.add(query));
+        router.push(`/domain-name-results?domain=${encodeURIComponent(query)}`);
+        return;
+      }
       // Re-submitting the search on screen, or the one still loading (a
       // double-clicked Search), is a no-op; an explicit retry is not.
       if (!retry && (phase.kind === "results" || phase.kind === "loading") && phase.query === query) return;
@@ -208,7 +228,10 @@ export function DomainSearchApp({ tlds = staticTlds }: { tlds?: readonly Tld[] }
       abortRef.current = controller;
 
       setSlow(false);
-      setCategory("All");
+      setCategory(categories.includes("Popular") ? "Popular" : "All");
+      tabAbortRef.current?.abort();
+      setExtra({});
+      setLoadingCategory(null);
       setPhase({ kind: "loading", query });
 
       const outcome = await checkDomains(query, controller.signal);
@@ -234,7 +257,36 @@ export function DomainSearchApp({ tlds = staticTlds }: { tlds?: readonly Tld[] }
         if (outcome.error.kind === "rate_limited") setRetryIn(outcome.error.retryAfterSeconds);
       }
     },
-    [phase, preferredTld],
+    [phase, preferredTld, mode, router, categories],
+  );
+
+  /* ── Category tabs: check the extensions this tab has not checked yet ── */
+  const onCategory = useCallback(
+    async (c: string) => {
+      setCategory(c);
+      if (phase.kind !== "results") return;
+      const sldNow = phase.results[0]?.sld ?? phase.query.split(".")[0];
+      const known = new Set([...phase.results.map((r) => r.domain), ...Object.keys(extra)]);
+      const missing = (c === "All" ? catalog : catalog.filter((t) => t.categories?.includes(c)))
+        .map((t) => t.tld)
+        .filter((t) => !known.has(`${sldNow}${t}`));
+      if (!missing.length) return;
+      tabAbortRef.current?.abort();
+      const controller = new AbortController();
+      tabAbortRef.current = controller;
+      setLoadingCategory(c);
+      const outcome = await checkDomains(phase.query, controller.signal, missing.slice(0, 16));
+      if (controller.signal.aborted) return;
+      setLoadingCategory(null);
+      if (outcome.ok) {
+        setExtra((prev) => {
+          const next = { ...prev };
+          for (const r of outcome.data.results) next[r.domain] = r;
+          return next;
+        });
+      }
+    },
+    [phase, extra, catalog],
   );
 
   useEffect(() => {
@@ -310,12 +362,13 @@ export function DomainSearchApp({ tlds = staticTlds }: { tlds?: readonly Tld[] }
 
   const isSaved = (domain: string) => saved.some((s) => s.domain === domain);
   const busy = phase.kind === "loading";
-  const [featured, ...alternates] = phase.kind === "results" ? phase.results : ([] as DomainResult[]);
-  const filter = CATEGORIES[category];
-  const shownAlternates = filter ? alternates.filter((r) => filter.includes(r.tld)) : alternates;
-  const cheapest = alternates
-    .filter((r) => r.status === "available" && r.price !== null)
-    .reduce<DomainResult | null>((a, b) => (a && (a.price ?? 0) <= (b.price ?? 0) ? a : b), null);
+  const featured = phase.kind === "results" ? phase.results[0] : undefined;
+  const resultMap = useMemo(() => {
+    const m = new Map<string, DomainResult>();
+    if (phase.kind === "results") for (const r of phase.results) m.set(r.domain, r);
+    for (const [d, r] of Object.entries(extra)) if (!m.has(d)) m.set(d, r);
+    return m;
+  }, [phase, extra]);
   const showDropdown = open && options.length > 0 && !busy;
   const normalized = parseDomainInput(value);
   const cleaned =
@@ -632,104 +685,51 @@ export function DomainSearchApp({ tlds = staticTlds }: { tlds?: readonly Tld[] }
             )}
 
             {phase.kind === "results" && featured && (
-              <div className="flex flex-col gap-6">
-                <ul className="flex flex-col">
-                  <DomainResultRow result={featured} featured saved={isSaved(featured.domain)} onToggleSave={onToggleSave} />
-                </ul>
-
-                {/* Taken? Offer close variations, one click each. */}
-                {featured.status === "registered" && (
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="inline-flex items-center gap-1.5 text-small font-semibold text-fg">
-                      <svg viewBox="0 0 16 16" aria-hidden="true" className="size-4 text-primary"><path d="M8 1.5 9.2 5 12.5 6.2 9.2 7.4 8 10.9 6.8 7.4 3.5 6.2 6.8 5Z" fill="currentColor" /></svg>
-                      Similar names to check
-                    </span>
-                    {nameIdeas(featured.sld)
-                      .slice(1, 5)
-                      .map((s) => `${s}${featured.tld}`)
-                      .map((d) => (
-                        <button
-                          key={d}
-                          type="button"
-                          onClick={() => {
-                            setValue(d);
-                            void run(d);
-                          }}
-                          className="inline-flex min-h-9 items-center rounded-full bg-brand-50 px-3.5 text-small font-medium text-primary transition-colors hover:bg-brand-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                        >
-                          {d}
-                        </button>
-                      ))}
-                  </div>
-                )}
-
-                {alternates.length > 0 && (
-                  <div>
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                      <h3 className="text-body-lg font-semibold text-fg">
-                        {featured.status === "available" ? "More options" : "Try these instead"}
-                      </h3>
-                      <div role="radiogroup" aria-label="Filter extensions" className="flex flex-wrap gap-2">
-                        {(Object.keys(CATEGORIES) as (keyof typeof CATEGORIES)[])
-                          .filter((c) => {
-                            const group = CATEGORIES[c];
-                            if (!group) return true;
-                            const n = alternates.filter((r) => group.includes(r.tld)).length;
-                            // Hide groups that would be empty or identical to "All".
-                            return n > 0 && n < alternates.length;
-                          })
-                          .map((c) => (
+              <DomainResults
+                query={featured.domain}
+                results={resultMap}
+                catalog={catalog}
+                categories={categories}
+                category={category}
+                onCategory={(c) => void onCategory(c)}
+                loadingCategory={loadingCategory}
+                source={phase.source}
+                isSaved={isSaved}
+                onToggleSave={onToggleSave}
+                similar={
+                  featured.status === "registered" && (
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="inline-flex items-center gap-1.5 text-small font-semibold text-fg">
+                        <svg viewBox="0 0 16 16" aria-hidden="true" className="size-4 text-primary"><path d="M8 1.5 9.2 5 12.5 6.2 9.2 7.4 8 10.9 6.8 7.4 3.5 6.2 6.8 5Z" fill="currentColor" /></svg>
+                        Similar names to check
+                      </span>
+                      {nameIdeas(featured.sld)
+                        .slice(1, 5)
+                        .map((x) => `${x}${featured.tld}`)
+                        .map((d) => (
                           <button
-                            key={c}
+                            key={d}
                             type="button"
-                            role="radio"
-                            aria-checked={category === c}
-                            onClick={() => setCategory(c)}
-                            className={cn(
-                              "inline-flex min-h-9 items-center rounded-full px-3.5 text-small transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
-                              category === c ? "bg-fg font-semibold text-white" : "bg-white text-fg ring-1 ring-line hover:bg-canvas-secondary",
-                            )}
+                            onClick={() => {
+                              setValue(d);
+                              void run(d);
+                            }}
+                            className="inline-flex min-h-9 items-center rounded-full bg-brand-50 px-3.5 text-small font-medium text-primary transition-colors hover:bg-brand-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                           >
-                            {c}
+                            {d}
                           </button>
                         ))}
-                      </div>
                     </div>
-                    <ul className="mt-3 flex flex-col divide-y divide-line-subtle">
-                      {shownAlternates.map((r) => (
-                        <DomainResultRow
-                          key={r.domain}
-                          result={r}
-                          bestValue={cheapest?.domain === r.domain}
-                          saved={isSaved(r.domain)}
-                          onToggleSave={onToggleSave}
-                        />
-                      ))}
-                      {shownAlternates.length === 0 && (
-                        <li className="py-6 text-center text-small text-fg-muted">
-                          None of the checked names fall in this group.{" "}
-                          <button type="button" onClick={() => setCategory("All")} className="font-semibold text-primary underline underline-offset-4">
-                            Show all
-                          </button>
-                        </li>
-                      )}
-                    </ul>
-                  </div>
-                )}
+                  )
+                }
+              />
+            )}
 
-                {phase.results.every((r) => r.status === "unknown") && (
-                  <p className="rounded-xl bg-warning-soft p-4 text-small text-warning">
-                    No registry answered just now. This is usually temporary — try again in a moment, or search from the
-                    cart directly.
-                  </p>
-                )}
-
-                <p className="text-small text-fg-muted">
-                  Prices are standard first-year registration. Premium names are priced by the registry and labelled
-                  before checkout.
-                  {phase.source === "rdap" && <> Availability is read live from the domain registry.</>}
-                </p>
-              </div>
+            {phase.kind === "results" && phase.results.length > 0 && phase.results.every((r) => r.status === "unknown") && (
+              <p className="mt-4 rounded-xl bg-warning-soft p-4 text-small text-warning">
+                No registry answered just now. This is usually temporary — try again in a moment, or search from the
+                cart directly.
+              </p>
             )}
           </div>
         )}

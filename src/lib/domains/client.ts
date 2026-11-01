@@ -21,6 +21,8 @@ function isTransient(status: number) {
 export async function checkDomains(
   query: string,
   signal: AbortSignal,
+  /** Check only these extensions for the name (a category tab); see the route. */
+  tlds?: readonly string[],
 ): Promise<{ ok: true; data: CheckSuccess } | { ok: false; error: CheckError }> {
   const attempt = async (): Promise<Response> => {
     const timer = new AbortController();
@@ -31,7 +33,7 @@ export async function checkDomains(
       return await fetch("/api/domains/check", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query }),
+        body: JSON.stringify(tlds ? { query, tlds } : { query }),
         signal: timer.signal,
       });
     } finally {

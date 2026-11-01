@@ -22,7 +22,7 @@
     "test:nav": "node scripts/test-nav.mjs",
     "test:megamenu": "node scripts/test-megamenu.mjs",
     "test:product": "node scripts/test-product.mjs",
-    "test:domains": "node scripts/test-domain-search.mjs",
+    "test:domains": "node scripts/test-domain-search.mjs && node scripts/test-domain-results.mjs",
     "test:console": "node scripts/test-console.mjs",
     "audit:a11y": "node scripts/a11y.mjs",
     "audit:links": "node scripts/audit-links.mjs",

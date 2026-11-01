@@ -62,7 +62,7 @@ export default async function RegisterDomainPage() {
       />
       <JsonLd data={faqGraph(faqs, "/register-domain")} />
 
-      <DomainHero copy={HERO} tlds={featured} tool={<DomainSearchApp tlds={featured} />} />
+      <DomainHero copy={HERO} tlds={featured} tool={<DomainSearchApp tlds={featured} catalog={all} mode="hero" />} />
       <Reasons copy={REASONS} />
       <Popular tlds={featured} />
       <Manage />

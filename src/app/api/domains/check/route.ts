@@ -9,8 +9,13 @@ import type { CheckOutcome, DomainResult } from "@/lib/domains/types";
 /**
  * POST /api/domains/check
  *
- * Body: { query: string }
- * Returns availability for the searched name plus alternate TLDs.
+ * Body: { query: string, tlds?: string[] }
+ * Without `tlds`: availability for the searched name, then its name on every
+ * extension in the WHMCS "Popular" category (the default tab on
+ * /domain-name-results; falls back to the `suggest` set without categories).
+ * With `tlds`: exactly those extensions for the searched name, no primary row —
+ * how a category tab loads the extensions it has not checked yet. Unknown or
+ * unsold extensions in `tlds` are ignored, so a client cannot widen the check.
  *
  * This route exists because an in-page search cannot be done from the browser:
  * WHMCS admin credentials must stay server-side, and calling RDAP from the
@@ -22,7 +27,8 @@ import type { CheckOutcome, DomainResult } from "@/lib/domains/types";
  */
 export const dynamic = "force-dynamic";
 
-const MAX_DOMAINS = 8;
+/** Exact match + the Popular category (14 in WHMCS today), with headroom. */
+const MAX_DOMAINS = 16;
 /** Whole-request budget. Individual provider calls time out sooner. */
 const OVERALL_TIMEOUT_MS = 12_000;
 
@@ -52,6 +58,13 @@ export async function POST(request: Request) {
     );
   }
   const query = body.value.query;
+  const requestedTlds = body.value.tlds;
+  if (
+    requestedTlds !== undefined &&
+    (!Array.isArray(requestedTlds) || requestedTlds.length > MAX_DOMAINS || requestedTlds.some((t) => typeof t !== "string"))
+  ) {
+    return fail({ ok: false, error: { kind: "invalid", message: "Malformed request." } }, 400);
+  }
 
   if (typeof query !== "string" || query.length > 255) {
     return fail(
@@ -112,7 +125,9 @@ export async function POST(request: Request) {
   const pricing = await getTldPricing();
   const tldSet = new Set(pricing.all.map((t) => t.tld));
   const livePrice = new Map(pricing.all.map((t) => [t.tld, t.price]));
-  const suggestionTlds = (exclude: string) => pricing.all.filter((t) => t.suggest && t.tld !== exclude);
+  const popular = pricing.all.filter((t) => t.categories?.includes("Popular"));
+  const suggestionTlds = (exclude: string) =>
+    (popular.length ? popular : pricing.all.filter((t) => t.suggest)).filter((t) => t.tld !== exclude);
 
   // The exact match first, so the primary answer is always row one.
   const primaryTld = parsed.tld && tldSet.has(parsed.tld) ? parsed.tld : ".com";
@@ -126,7 +141,14 @@ export async function POST(request: Request) {
   const alternates = parsed.sld.includes(".")
     ? []
     : suggestionTlds(parsed.tld ?? primaryTld).map((t) => `${parsed.sld}${t.tld}`);
-  const domains = [primary, ...alternates].slice(0, MAX_DOMAINS);
+  const domains = Array.isArray(requestedTlds)
+    ? parsed.sld.includes(".")
+      ? []
+      : [...new Set(requestedTlds.map((t) => t.toLowerCase()))]
+          .filter((t) => tldSet.has(t))
+          .map((t) => `${parsed.sld}${t}`)
+          .slice(0, MAX_DOMAINS)
+    : [primary, ...alternates].slice(0, MAX_DOMAINS);
 
   // ── Check ───────────────────────────────────────────────────────────────
   const controller = new AbortController();

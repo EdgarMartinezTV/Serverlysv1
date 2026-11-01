@@ -11,6 +11,7 @@ import { MegaMenu, panelLinks } from "./mega-menu";
 import { MobileNav } from "./mobile-nav";
 import { LanguageSelector } from "./language-selector";
 import { AccountButton } from "./account-button";
+import { CartButton } from "./cart-button";
 import { AssistantOpenButton } from "@/components/assistant/assistant-open-button";
 import { Chevron } from "./nav-icons";
 import { cn } from "@/lib/utils";
@@ -390,6 +391,7 @@ export function SiteHeader() {
             <span className="hidden md:block">
               <LanguageSelector onDark={dark} />
             </span>
+            <CartButton onDark={dark} />
             <span className="hidden sm:block">
               <AccountButton onDark={dark} />
             </span>

@@ -76,7 +76,7 @@ export default async function TransferDomainPage() {
     <div className="[&_h1]:text-wrap [&_h2]:text-wrap [&_h3]:text-wrap [&_p]:text-wrap">
       <JsonLd data={faqGraph(FAQ_TEXT, "/transfer-domain")} />
 
-      <DomainHero copy={HERO} tlds={featured} tool={<DomainSearchApp tlds={featured} />} />
+      <DomainHero copy={HERO} tlds={featured} tool={<DomainSearchApp tlds={featured} catalog={all} />} />
       <Reasons copy={REASONS} />
       <Popular tlds={featured} />
       <Manage />

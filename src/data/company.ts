@@ -79,6 +79,17 @@ export const billing = {
   addDomain: (domain: string) =>
     `${BILLING}/cart.php?a=add&domain=register&domains[]=${encodeURIComponent(domain)}&domainsregperiod[${encodeURIComponent(domain)}]=1`,
   /**
+   * Several names into the cart in ONE request (verified live 2026-11-01:
+   * three `domains[]` → cartItemCount 3; re-adding a name already in the cart
+   * is ignored by WHMCS). The bundle card and in-place "Get it" use this.
+   */
+  addDomains: (domains: readonly string[]) =>
+    `${BILLING}/cart.php?a=add&domain=register&${domains
+      .map((d) => `domains[]=${encodeURIComponent(d)}&domainsregperiod[${encodeURIComponent(d)}]=1`)
+      .join("&")}`,
+  /** The cart itself. Carries `#cartItemCount`, which lib/domains/cart reads. */
+  viewCart: `${BILLING}/cart.php?a=view`,
+  /**
    * The transfer cart, prefilled. Same `query` contract as `searchDomain`, and
    * verified the same way: the transfer page fills `#inputTransferDomain` from
    * it. A name that came back registered is not a dead end — it is a transfer

@@ -83,7 +83,7 @@ export default async function DomainNamePage() {
       />
       <JsonLd data={faqGraph(FAQ_TEXT, "/domain-name")} />
 
-      <DomainHero copy={HERO} tlds={featured} tool={<DomainSearchApp tlds={featured} />} />
+      <DomainHero copy={HERO} tlds={featured} tool={<DomainSearchApp tlds={featured} catalog={all} mode="hero" />} />
       <Reasons copy={REASONS} />
       <Popular tlds={featured} />
       <Manage />

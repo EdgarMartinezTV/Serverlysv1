@@ -50,6 +50,7 @@ const FETCH_TIMEOUT_MS = 5_000;
 type WhmcsTld = {
   register?: Record<string, string>;
   renew?: Record<string, string>;
+  categories?: string[];
 };
 
 function money(value: string | undefined): number | null {
@@ -60,12 +61,13 @@ function money(value: string | undefined): number | null {
 
 /** Exported for tests: pure merge of a GetTLDPricing payload onto the static list. */
 export function mergePricing(pricing: Record<string, WhmcsTld>): Tld[] {
-  const live = new Map<string, { price: number; renew: number }>();
+  const live = new Map<string, { price: number; renew: number; categories?: readonly string[] }>();
   for (const [key, entry] of Object.entries(pricing)) {
     const price = money(entry.register?.["1"]);
     if (price === null) continue; // not sold for a 1-year term
     const renew = money(entry.renew?.["1"]) ?? price;
-    live.set(`.${key.replace(/^\./, "").toLowerCase()}`, { price, renew });
+    const categories = Array.isArray(entry.categories) && entry.categories.length ? entry.categories : undefined;
+    live.set(`.${key.replace(/^\./, "").toLowerCase()}`, { price, renew, ...(categories && { categories }) });
   }
 
   const known = STATIC_TLDS.filter((t) => live.has(t.tld)).map((t) => ({ ...t, ...live.get(t.tld)! }));

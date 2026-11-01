@@ -6,7 +6,7 @@ import { spawn } from "node:child_process";
 import { setTimeout as sleep } from "node:timers/promises";
 
 const CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
-const URL = process.argv[2] ?? "http://localhost:3000/register-domain";
+const URL = process.argv[2] ?? "http://localhost:3000/domain-name-results";
 const PORT = 9701;
 const AVAILABLE = "zzq-serverlys-probe-5521";
 const TAKEN = "google.com";
@@ -443,14 +443,15 @@ check(
   await ev(`return document.documentElement.scrollWidth <= document.documentElement.clientWidth+1
     && /\\bAVAILABLE\\b/i.test(document.body.innerText)`),
 );
-// Scoped to <main>: this is about the RESULT ROW's Register button, a primary
+// Scoped to <main>: this is about the RESULT ROW's add-to-cart button ("Make it
+// yours" / "Get it" since the 2026-11-01 Hostinger results), a primary
 // touch CTA. Searching the whole document also picks up the footer's
 // "Register a domain" nav link and the closed mega-menu's hidden copy, which
 // are held to the WCAG 2.2 24px floor by test-nav rather than to 44px.
 check(
   "every visible Register control meets the 44px touch target",
   await ev(`const links=[...document.querySelectorAll('main a')]
-      .filter(a=>/^register/i.test(a.textContent.trim()))
+      .filter(a=>/^(register|make it yours|get it|get all three)/i.test(a.textContent.trim()))
       .filter(a=>a.getBoundingClientRect().width>0);
     return links.length>0 && links.every(a=>a.getBoundingClientRect().height>=44)`),
 );

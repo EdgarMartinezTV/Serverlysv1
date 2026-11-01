@@ -123,6 +123,18 @@ export const routes: readonly RouteMeta[] = [
     parents: ["/"],
   },
   {
+    // Search results for one name (?domain=…): a tool view, not a landing
+    // page — every URL is a different query, so it is kept out of the index.
+    path: "/domain-name-results",
+    name: "Domain search results",
+    group: "commercial",
+    built: true,
+    indexable: false,
+    priority: 0.1,
+    changeFrequency: "weekly",
+    parents: ["/", "/domain-name"],
+  },
+  {
     path: "/register-domain",
     name: "Register a domain",
     group: "commercial",
