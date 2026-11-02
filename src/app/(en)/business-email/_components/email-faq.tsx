@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { AssistantOpenButton } from "@/components/assistant/assistant-open-button";
 import { useReducedAfterMount } from "./use-reduced";
-import { t as tx } from "@/i18n/t";
+import { t as tx, tc } from "@/i18n/t";
 import { lh } from "@/i18n/href";
 
 /**
@@ -53,7 +53,7 @@ export function EmailFaq({
             <p className="relative text-h4 font-semibold">{tx("Still have a question?")}</p>
             <p className="relative mt-2 text-small text-white/70">{tx("Ask ConvoAI now, or write to the team and a real person will answer.")}</p>
             <div className="relative mt-6 flex flex-wrap items-center gap-4">
-              <AssistantOpenButton onDark label={tx("Ask ConvoAI")} />
+              <AssistantOpenButton onDark label={tc("compact", "Ask ConvoAI")} />
               <a
                 href={lh(`mailto:${supportEmail}`)}
                 className="inline-block py-2.5 text-small font-semibold text-[#bfd2ff] underline-offset-4 hover:text-white hover:underline"

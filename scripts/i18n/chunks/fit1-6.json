@@ -1,0 +1,1161 @@
+[
+ {
+  "en": "A refund policy that lists no exceptions is hiding them. Ours are these.",
+  "es": "Una política de reembolso que no menciona excepciones las está escondiendo. Las nuestras son estas.",
+  "maxChars": 72,
+  "where": [
+   "/refund-policy@1440",
+   "/refund-policy@390",
+   "/refund-policy@768"
+  ]
+ },
+ {
+  "en": "Accounts terminated for breaching the acceptable use terms are not refunded.",
+  "es": "Las cuentas canceladas por incumplir los términos de uso aceptable no se reembolsan.",
+  "maxChars": 77,
+  "where": [
+   "/refund-policy@1440",
+   "/refund-policy@390",
+   "/refund-policy@768"
+  ]
+ },
+ {
+  "en": "Outside those three, if you ask within 30 days on a hosting plan, you get your money back.",
+  "es": "Fuera de esos tres casos, si lo pides dentro de los 30 días en un plan de hosting, te devolvemos tu dinero.",
+  "maxChars": 90,
+  "where": [
+   "/refund-policy@390"
+  ]
+ },
+ {
+  "en": "Design, development and AI work",
+  "es": "Trabajos de diseño, desarrollo e IA",
+  "maxChars": 33,
+  "where": [
+   "/refund-policy@1440"
+  ]
+ },
+ {
+  "en": "Acceptable Use Policy",
+  "es": "Política de uso aceptable",
+  "maxChars": 22,
+  "where": [
+   "/acceptable-use-policy@390"
+  ]
+ },
+ {
+  "en": "What you may and may not run on Serverlys infrastructure, how we handle breaches, and how to report something you have found.",
+  "es": "Lo que puedes y no puedes ejecutar en la infraestructura de Serverlys, cómo manejamos los incumplimientos y cómo reportar algo que encontraste.",
+  "maxChars": 98,
+  "where": [
+   "/acceptable-use-policy@1440",
+   "/acceptable-use-policy@390",
+   "/acceptable-use-policy@768"
+  ]
+ },
+ {
+  "en": "Who this applies to",
+  "es": "A quién aplica",
+  "maxChars": 13,
+  "where": [
+   "/acceptable-use-policy@390",
+   "/acceptable-use-policy@768"
+  ]
+ },
+ {
+  "en": "Content you may not host",
+  "es": "Contenido que no puedes alojar",
+  "maxChars": 26,
+  "where": [
+   "/acceptable-use-policy@1440",
+   "/acceptable-use-policy@390",
+   "/acceptable-use-policy@768"
+  ]
+ },
+ {
+  "en": "Conduct you may not engage in",
+  "es": "Conductas no permitidas",
+  "maxChars": 21,
+  "where": [
+   "/acceptable-use-policy@390",
+   "/acceptable-use-policy@768"
+  ]
+ },
+ {
+  "en": "Email, messaging and anti-spam",
+  "es": "Correo, mensajería y antispam",
+  "maxChars": 27,
+  "where": [
+   "/acceptable-use-policy@390",
+   "/acceptable-use-policy@768"
+  ]
+ },
+ {
+  "en": "Fair use of shared resources",
+  "es": "Uso justo de los recursos compartidos",
+  "maxChars": 28,
+  "where": [
+   "/acceptable-use-policy@1440",
+   "/acceptable-use-policy@390",
+   "/acceptable-use-policy@768"
+  ]
+ },
+ {
+  "en": "Keeping your own account secure",
+  "es": "Mantener segura tu cuenta",
+  "maxChars": 23,
+  "where": [
+   "/acceptable-use-policy@390",
+   "/acceptable-use-policy@768"
+  ]
+ },
+ {
+  "en": "How we enforce this",
+  "es": "Cómo aplicamos esta política",
+  "maxChars": 22,
+  "where": [
+   "/acceptable-use-policy@390",
+   "/acceptable-use-policy@768"
+  ]
+ },
+ {
+  "en": "Reporting something",
+  "es": "Reportar algo",
+  "maxChars": 12,
+  "where": [
+   "/acceptable-use-policy@390",
+   "/acceptable-use-policy@768"
+  ]
+ },
+ {
+  "en": "Phishing pages, fake login screens, or anything impersonating a person, business or public body in order to deceive.",
+  "es": "Páginas de phishing, pantallas de inicio de sesión falsas o cualquier cosa que suplante a una persona, empresa u organismo público para engañar.",
+  "maxChars": 125,
+  "where": [
+   "/acceptable-use-policy@390"
+  ]
+ },
+ {
+  "en": "Fraudulent schemes, including fake stores, advance-fee fraud, and investment or earnings claims designed to mislead.",
+  "es": "Esquemas fraudulentos, incluidas tiendas falsas, fraudes de pago por adelantado y promesas de inversión o ganancias diseñadas para engañar.",
+  "maxChars": 123,
+  "where": [
+   "/acceptable-use-policy@390"
+  ]
+ },
+ {
+  "en": "Attempt to access any system, account or data you are not authorised to access, whether ours or anyone else's.",
+  "es": "Intentar acceder a cualquier sistema, cuenta o dato al que no tengas autorización, sea nuestro o de cualquier otra persona.",
+  "maxChars": 116,
+  "where": [
+   "/acceptable-use-policy@390"
+  ]
+ },
+ {
+  "en": "Mail sent from our infrastructure affects the deliverability of every other customer on it, so the rules here are firm.",
+  "es": "El correo enviado desde nuestra infraestructura afecta la entregabilidad de todos los demás clientes, así que aquí las reglas son firmes.",
+  "maxChars": 130,
+  "where": [
+   "/acceptable-use-policy@390"
+  ]
+ },
+ {
+  "en": "Cryptocurrency mining, and distributed computing run for its own sake, are not permitted on any plan.",
+  "es": "La minería de criptomonedas, y la computación distribuida que se ejecuta por sí misma, no están permitidas en ningún plan.",
+  "maxChars": 115,
+  "where": [
+   "/acceptable-use-policy@390"
+  ]
+ },
+ {
+  "en": "Do not use hosting storage as a personal backup target, media archive or file-distribution service unrelated to a site you run.",
+  "es": "No uses el almacenamiento del hosting como destino de backups personales, archivo multimedia o servicio de distribución de archivos sin relación con un sitio que administras.",
+  "maxChars": 149,
+  "where": [
+   "/acceptable-use-policy@1440",
+   "/acceptable-use-policy@390",
+   "/acceptable-use-policy@768"
+  ]
+ },
+ {
+  "en": "Repeated or deliberate breaches can end the agreement under the terms of service.",
+  "es": "Los incumplimientos repetidos o deliberados pueden terminar el acuerdo según los términos del servicio.",
+  "maxChars": 82,
+  "where": [
+   "/acceptable-use-policy@390"
+  ]
+ },
+ {
+  "en": "What we store in your browser, what we deliberately do not, and how to change your mind at any time.",
+  "es": "Qué guardamos en tu navegador, qué decidimos no guardar y cómo cambiar de opinión en cualquier momento.",
+  "maxChars": 62,
+  "where": [
+   "/cookie-policy@1440",
+   "/cookie-policy@390",
+   "/cookie-policy@768"
+  ]
+ },
+ {
+  "en": "Strictly necessary — always on",
+  "es": "Estrictamente necesarias: siempre activas",
+  "maxChars": 29,
+  "where": [
+   "/cookie-policy@1440",
+   "/cookie-policy@390"
+  ]
+ },
+ {
+  "en": "Your cookie choice itself. Remembering that you accepted or rejected is the only way to stop asking you on every page.",
+  "es": "Tu propia elección sobre las cookies. Recordar si aceptaste o rechazaste es la única forma de no preguntarte en cada página.",
+  "maxChars": 117,
+  "where": [
+   "/cookie-policy@390"
+  ]
+ },
+ {
+  "en": "Your domain shortlist, which is held in your own browser so that names you saved survive a page reload. It is not sent to us as a profile.",
+  "es": "Tu lista de dominios favoritos, que se guarda en tu propio navegador para que los nombres que guardaste no se pierdan al recargar la página. No se nos envía como un perfil.",
+  "maxChars": 156,
+  "where": [
+   "/cookie-policy@1440",
+   "/cookie-policy@390",
+   "/cookie-policy@768"
+  ]
+ },
+ {
+  "en": "Questions about what this site stores, or a request about your data? The privacy policy sets out your rights and how to exercise them.",
+  "es": "¿Tienes preguntas sobre lo que guarda este sitio o una solicitud sobre tus datos? La política de privacidad explica tus derechos y cómo ejercerlos.",
+  "maxChars": 136,
+  "where": [
+   "/cookie-policy@390"
+  ]
+ },
+ {
+  "en": "What a cookie is here",
+  "es": "Qué es una cookie aquí",
+  "maxChars": 20,
+  "where": [
+   "/cookie-policy@1440"
+  ]
+ },
+ {
+  "en": "How to report copyright infringement on material we host, what a valid notice has to contain, and how the customer answers back.",
+  "es": "Cómo reportar una infracción de derechos de autor en material que alojamos, qué debe incluir un aviso válido y cómo puede responder el cliente.",
+  "maxChars": 100,
+  "where": [
+   "/dmca-policy@1440",
+   "/dmca-policy@390",
+   "/dmca-policy@768"
+  ]
+ },
+ {
+  "en": "The specific URL or location of the material you say is infringing — precise enough for us to find it without guessing.",
+  "es": "La URL o ubicación específica del material que dices que infringe, con la precisión suficiente para que podamos encontrarlo sin adivinar.",
+  "maxChars": 128,
+  "where": [
+   "/dmca-policy@390"
+  ]
+ },
+ {
+  "en": "A statement that you believe in good faith that the use is not authorised by the copyright owner, its agent, or the law.",
+  "es": "Una declaración de que crees de buena fe que el uso no está autorizado por el titular de los derechos de autor, su representante o la ley.",
+  "maxChars": 129,
+  "where": [
+   "/dmca-policy@390"
+  ]
+ },
+ {
+  "en": "We tell the customer how to file a counter-notice if they believe the claim is mistaken.",
+  "es": "Le explicamos al cliente cómo presentar un contraaviso si cree que el reclamo es un error.",
+  "maxChars": 85,
+  "where": [
+   "/dmca-policy@390"
+  ]
+ },
+ {
+  "en": "Company details, the index of every document below, and the order they take precedence in.",
+  "es": "Datos de la empresa, el índice de todos los documentos de abajo y el orden de prioridad entre ellos.",
+  "maxChars": 93,
+  "where": [
+   "/dmca-policy@1440",
+   "/dmca-policy@390",
+   "/dmca-policy@768"
+  ]
+ },
+ {
+  "en": "Copyright and DMCA Policy",
+  "es": "Política de derechos de autor y DMCA",
+  "maxChars": 28,
+  "where": [
+   "/dmca-policy@1440",
+   "/dmca-policy@768"
+  ]
+ },
+ {
+  "en": "Reporting infringement: what a notice must contain",
+  "es": "Cómo reportar una infracción: qué debe incluir un aviso",
+  "maxChars": 50,
+  "where": [
+   "/dmca-policy@768"
+  ]
+ },
+ {
+  "en": "Repeat infringers",
+  "es": "Infractores reincidentes",
+  "maxChars": 19,
+  "where": [
+   "/dmca-policy@1440"
+  ]
+ },
+ {
+  "en": "If you are the customer: filing a counter-notice",
+  "es": "Si eres el cliente: cómo presentar un contraaviso",
+  "maxChars": 46,
+  "where": [
+   "/dmca-policy@1440"
+  ]
+ },
+ {
+  "en": "Access control on our side limited to staff who need it to do their job, with authentication on administrative systems.",
+  "es": "Control de acceso de nuestro lado, limitado al personal que lo necesita para hacer su trabajo, con autenticación en los sistemas administrativos.",
+  "maxChars": 129,
+  "where": [
+   "/data-processing-agreement@390"
+  ]
+ },
+ {
+  "en": "Daily backups with restore points, so data can be recovered after an incident rather than just after a mistake.",
+  "es": "Respaldos diarios con puntos de restauración, para que los datos se puedan recuperar después de un incidente y no solo después de un error.",
+  "maxChars": 125,
+  "where": [
+   "/data-processing-agreement@390"
+  ]
+ },
+ {
+  "en": "Patching of the platform we operate, and monitoring for unauthorised access.",
+  "es": "Aplicación de parches en la plataforma que operamos y monitoreo de accesos no autorizados.",
+  "maxChars": 76,
+  "where": [
+   "/data-processing-agreement@1440",
+   "/data-processing-agreement@390",
+   "/data-processing-agreement@768"
+  ]
+ },
+ {
+  "en": "Infrastructure and data centre providers, which host the servers your site runs on.",
+  "es": "Proveedores de infraestructura y centros de datos, que alojan los servidores donde funciona tu sitio.",
+  "maxChars": 80,
+  "where": [
+   "/data-processing-agreement@1440",
+   "/data-processing-agreement@390",
+   "/data-processing-agreement@768"
+  ]
+ },
+ {
+  "en": "Payment processing, for billing. Card details are entered directly with the processor and are not stored on our systems.",
+  "es": "Procesamiento de pagos, para la facturación. Los datos de la tarjeta se ingresan directamente con el procesador y no se guardan en nuestros sistemas.",
+  "maxChars": 125,
+  "where": [
+   "/data-processing-agreement@390"
+  ]
+ },
+ {
+  "en": "Support and business tooling used to run the account relationship.",
+  "es": "Herramientas de soporte y de negocio que usamos para gestionar la relación con tu cuenta.",
+  "maxChars": 69,
+  "where": [
+   "/data-processing-agreement@1440",
+   "/data-processing-agreement@390",
+   "/data-processing-agreement@768"
+  ]
+ },
+ {
+  "en": "Audits: we make available the information needed to demonstrate compliance with Article 28 and will respond to reasonable audit requests.",
+  "es": "Auditorías: ponemos a disposición la información necesaria para demostrar el cumplimiento del Artículo 28 y respondemos a solicitudes de auditoría razonables.",
+  "maxChars": 150,
+  "where": [
+   "/data-processing-agreement@390"
+  ]
+ },
+ {
+  "en": "Data Processing Agreement",
+  "es": "Acuerdo de tratamiento de datos",
+  "maxChars": 27,
+  "where": [
+   "/data-processing-agreement@1440"
+  ]
+ },
+ {
+  "en": "International transfers",
+  "es": "Transferencias internacionales",
+  "maxChars": 24,
+  "where": [
+   "/data-processing-agreement@1440"
+  ]
+ },
+ {
+  "en": "Do not register a name you know infringes someone else's trademark or other rights.",
+  "es": "No registres un dominio que sepas que infringe la marca u otros derechos de alguien más.",
+  "maxChars": 82,
+  "where": [
+   "/domain-registration-agreement@390"
+  ]
+ },
+ {
+  "en": "Renewal, expiry and recovery",
+  "es": "Renovación, vencimiento y recuperación",
+  "maxChars": 28,
+  "where": [
+   "/domain-registration-agreement@1440",
+   "/domain-registration-agreement@390"
+  ]
+ },
+ {
+  "en": "Domains renew on their expiry date, not on your hosting cycle. We send renewal reminders to the account email before expiry.",
+  "es": "Los dominios se renuevan en su fecha de vencimiento, no según tu ciclo de hosting. Enviamos recordatorios de renovación al correo de la cuenta antes del vencimiento.",
+  "maxChars": 132,
+  "where": [
+   "/domain-registration-agreement@390"
+  ]
+ },
+ {
+  "en": "After expiry a domain normally enters a grace period during which you can still renew at the standard price.",
+  "es": "Después del vencimiento, un dominio normalmente entra en un periodo de gracia durante el cual todavía puedes renovarlo al precio estándar.",
+  "maxChars": 122,
+  "where": [
+   "/domain-registration-agreement@390"
+  ]
+ },
+ {
+  "en": "You can transfer a domain to another provider. We will not obstruct it, charge an exit fee, or make you ask twice.",
+  "es": "Puedes transferir un dominio a otro proveedor. No lo vamos a obstaculizar, ni a cobrarte una tarifa de salida, ni a hacerte pedirlo dos veces.",
+  "maxChars": 134,
+  "where": [
+   "/domain-registration-agreement@390"
+  ]
+ },
+ {
+  "en": "A request without a stated legal basis is not actionable and will not be forwarded.",
+  "es": "Una solicitud sin una base legal declarada no se puede tramitar y no será reenviada.",
+  "maxChars": 79,
+  "where": [
+   "/domain-registration-agreement@1440",
+   "/domain-registration-agreement@768"
+  ]
+ },
+ {
+  "en": "Every document, grouped",
+  "es": "Todos los documentos, agrupados",
+  "maxChars": 25,
+  "where": [
+   "/legal-information@1440",
+   "/legal-information@390"
+  ]
+ },
+ {
+  "en": "What you may not run on our platform, and what happens to an account that does.",
+  "es": "Lo que no puedes ejecutar en nuestra plataforma, y qué pasa con una cuenta que lo hace.",
+  "maxChars": 82,
+  "where": [
+   "/legal-information@390"
+  ]
+ },
+ {
+  "en": "How to send a takedown notice that we can act on, how a customer files a counter-notice, and what each of those obliges us to do.",
+  "es": "Cómo enviar un aviso de retiro sobre el que podamos actuar, cómo un cliente presenta una contranotificación y qué nos obliga a hacer cada uno.",
+  "maxChars": 134,
+  "where": [
+   "/legal-information@390"
+  ]
+ },
+ {
+  "en": "How to reach support, what we aim to respond in, and what we will not do — including the retention scripts we do not run.",
+  "es": "Cómo contactar a soporte, en cuánto tiempo buscamos responder y lo que no haremos, incluidos los guiones de retención que no usamos.",
+  "maxChars": 125,
+  "where": [
+   "/legal-information@390"
+  ]
+ },
+ {
+  "en": "Where to send a formal notice",
+  "es": "A dónde enviar una notificación formal",
+  "maxChars": 29,
+  "where": [
+   "/legal-information@1440",
+   "/legal-information@390"
+  ]
+ },
+ {
+  "en": "Security vulnerabilities — the responsible disclosure policy, which also carries our undertaking not to pursue researchers who follow it.",
+  "es": "Vulnerabilidades de seguridad: la política de divulgación responsable, que también incluye nuestro compromiso de no tomar acciones contra los investigadores que la sigan.",
+  "maxChars": 156,
+  "where": [
+   "/legal-information@1440",
+   "/legal-information@390",
+   "/legal-information@768"
+  ]
+ },
+ {
+  "en": "Each document carries the date its current version took effect, shown at the top of the document and beside it in the index above.",
+  "es": "Cada documento lleva la fecha en que entró en vigor su versión actual, que aparece al inicio del documento y a su lado en el índice de arriba.",
+  "maxChars": 134,
+  "where": [
+   "/legal-information@390"
+  ]
+ },
+ {
+  "en": "Which document wins",
+  "es": "Qué documento prevalece",
+  "maxChars": 20,
+  "where": [
+   "/legal-information@1440"
+  ]
+ },
+ {
+  "en": "What we target, what we have actually tested, and — the part most statements omit — what we know is not done yet.",
+  "es": "Nuestro objetivo, lo que realmente hemos probado y (la parte que la mayoría de las declaraciones omite) lo que sabemos que aún no está hecho.",
+  "maxChars": 73,
+  "where": [
+   "/accessibility@1440",
+   "/accessibility@390",
+   "/accessibility@768"
+  ]
+ },
+ {
+  "en": "Motion respects prefers-reduced-motion. Under that setting, reveal animations do not have a hidden initial state at all.",
+  "es": "Las animaciones respetan prefers-reduced-motion. Con esa configuración, las animaciones de aparición no tienen ningún estado inicial oculto.",
+  "maxChars": 124,
+  "where": [
+   "/accessibility@390"
+  ]
+ },
+ {
+  "en": "Data tables that are wider than a small screen scroll inside their own region, so the page itself never scrolls sideways.",
+  "es": "Las tablas de datos más anchas que una pantalla pequeña se desplazan dentro de su propia área, así que la página nunca se desplaza hacia los lados.",
+  "maxChars": 124,
+  "where": [
+   "/accessibility@390"
+  ]
+ },
+ {
+  "en": "No independent audit has been carried out. Our testing is our own, and self-assessment has blind spots by definition.",
+  "es": "No se ha hecho ninguna auditoría independiente. Las pruebas son nuestras, y una autoevaluación tiene puntos ciegos por definición.",
+  "maxChars": 123,
+  "where": [
+   "/accessibility@390"
+  ]
+ },
+ {
+  "en": "Where a domain registry or payment provider renders part of a flow, its accessibility is outside our control.",
+  "es": "Cuando un registro de dominios o un proveedor de pagos muestra parte de un proceso, su accesibilidad está fuera de nuestro control.",
+  "maxChars": 123,
+  "where": [
+   "/accessibility@390"
+  ]
+ },
+ {
+  "en": "What we are aiming at",
+  "es": "Nuestro objetivo",
+  "maxChars": 15,
+  "where": [
+   "/accessibility@1440"
+  ]
+ },
+ {
+  "en": "What we have actually done",
+  "es": "Lo que realmente hemos hecho",
+  "maxChars": 26,
+  "where": [
+   "/accessibility@1440"
+  ]
+ },
+ {
+  "en": "What we require before disclosing customer data, what records we actually hold, and when we tell the customer that someone has asked.",
+  "es": "Qué exigimos antes de divulgar datos de clientes, qué registros guardamos realmente y cuándo le decimos al cliente que alguien los pidió.",
+  "maxChars": 98,
+  "where": [
+   "/law-enforcement-requests@1440",
+   "/law-enforcement-requests@390",
+   "/law-enforcement-requests@768"
+  ]
+ },
+ {
+  "en": "The identity of the requesting agency and a named, contactable officer or official.",
+  "es": "La identidad de la agencia solicitante y un agente o funcionario identificado y localizable.",
+  "maxChars": 82,
+  "where": [
+   "/law-enforcement-requests@1440",
+   "/law-enforcement-requests@390",
+   "/law-enforcement-requests@768"
+  ]
+ },
+ {
+  "en": "Legal process should be sent to the address above, marked “Legal request”. Abuse and copyright complaints have their own faster routes.",
+  "es": "Los requerimientos legales deben enviarse a la dirección de arriba, con el asunto “Solicitud legal”. Las quejas de abuso y de derechos de autor tienen sus propias vías, más rápidas.",
+  "maxChars": 166,
+  "where": [
+   "/law-enforcement-requests@1440",
+   "/law-enforcement-requests@768"
+  ]
+ },
+ {
+  "en": "How we approach these",
+  "es": "Cómo las manejamos",
+  "maxChars": 17,
+  "where": [
+   "/law-enforcement-requests@1440"
+  ]
+ },
+ {
+  "en": "What we require",
+  "es": "Qué exigimos",
+  "maxChars": 11,
+  "where": [
+   "/law-enforcement-requests@1440"
+  ]
+ },
+ {
+  "en": "What we actually hold",
+  "es": "Qué guardamos realmente",
+  "maxChars": 20,
+  "where": [
+   "/law-enforcement-requests@1440"
+  ]
+ },
+ {
+  "en": "Preservation requests",
+  "es": "Solicitudes de conservación",
+  "maxChars": 23,
+  "where": [
+   "/law-enforcement-requests@1440"
+  ]
+ },
+ {
+  "en": "Emergency requests",
+  "es": "Solicitudes de emergencia",
+  "maxChars": 21,
+  "where": [
+   "/law-enforcement-requests@1440"
+  ]
+ },
+ {
+  "en": "Telling the customer",
+  "es": "Avisar al cliente",
+  "maxChars": 16,
+  "where": [
+   "/law-enforcement-requests@1440"
+  ]
+ },
+ {
+  "en": "Costs",
+  "es": "Costos",
+  "maxChars": 5,
+  "where": [
+   "/law-enforcement-requests@1440"
+  ]
+ },
+ {
+  "en": "How to send one",
+  "es": "Cómo enviar una",
+  "maxChars": 14,
+  "where": [
+   "/law-enforcement-requests@1440"
+  ]
+ },
+ {
+  "en": "What we are not certified for",
+  "es": "Para qué no estamos certificados",
+  "maxChars": 28,
+  "where": [
+   "/information-security-policy@1440",
+   "/information-security-policy@390"
+  ]
+ },
+ {
+  "en": "Administrative access requires multi-factor authentication. This is not optional for staff and there is no exemption for convenience.",
+  "es": "El acceso administrativo requiere autenticación multifactor. No es opcional para el personal y no hay excepciones por comodidad.",
+  "maxChars": 121,
+  "where": [
+   "/information-security-policy@390"
+  ]
+ },
+ {
+  "en": "Backups and restoration",
+  "es": "Copias de seguridad y restauración",
+  "maxChars": 25,
+  "where": [
+   "/information-security-policy@1440",
+   "/information-security-policy@390"
+  ]
+ },
+ {
+  "en": "Infrastructure is monitored continuously, with alerting to staff on failure rather than on a scheduled check.",
+  "es": "La infraestructura se monitorea de forma continua, con alertas al personal en cuanto ocurre una falla, no en una revisión programada.",
+  "maxChars": 125,
+  "where": [
+   "/information-security-policy@390"
+  ]
+ },
+ {
+  "en": "Every provider has incidents. What distinguishes them is what happens next, so here is what we commit to.",
+  "es": "Todos los proveedores tienen incidentes. Lo que los distingue es lo que pasa después, así que esto es lo que nos comprometemos a hacer.",
+  "maxChars": 125,
+  "where": [
+   "/information-security-policy@390"
+  ]
+ },
+ {
+  "en": "Where we act as your processor, our notification obligations to you are set out in the data processing agreement, and that document governs.",
+  "es": "Cuando actuamos como tu encargado del tratamiento, nuestras obligaciones de notificación contigo están establecidas en el acuerdo de tratamiento de datos, y ese documento es el que rige.",
+  "maxChars": 154,
+  "where": [
+   "/information-security-policy@1440",
+   "/information-security-policy@390",
+   "/information-security-policy@768"
+  ]
+ },
+ {
+  "en": "Information security policy",
+  "es": "Política de seguridad de la información",
+  "maxChars": 28,
+  "where": [
+   "/information-security-policy@1440",
+   "/information-security-policy@768"
+  ]
+ },
+ {
+  "en": "The short version",
+  "es": "La versión corta",
+  "maxChars": 15,
+  "where": [
+   "/responsible-disclosure-policy@390"
+  ]
+ },
+ {
+  "en": "How to report",
+  "es": "Cómo reportar",
+  "maxChars": 12,
+  "where": [
+   "/responsible-disclosure-policy@390"
+  ]
+ },
+ {
+  "en": "What is in scope",
+  "es": "Qué está dentro del alcance",
+  "maxChars": 18,
+  "where": [
+   "/responsible-disclosure-policy@390"
+  ]
+ },
+ {
+  "en": "What is out of scope",
+  "es": "Qué está fuera del alcance",
+  "maxChars": 22,
+  "where": [
+   "/responsible-disclosure-policy@390"
+  ]
+ },
+ {
+  "en": "What we ask of you",
+  "es": "Lo que te pedimos",
+  "maxChars": 16,
+  "where": [
+   "/customer-service-policy@390",
+   "/responsible-disclosure-policy@390"
+  ]
+ },
+ {
+  "en": "What we will do",
+  "es": "Lo que haremos",
+  "maxChars": 13,
+  "where": [
+   "/responsible-disclosure-policy@390"
+  ]
+ },
+ {
+  "en": "Our undertaking to you",
+  "es": "Nuestro compromiso contigo",
+  "maxChars": 22,
+  "where": [
+   "/responsible-disclosure-policy@390"
+  ]
+ },
+ {
+  "en": "Email Support@serverlys.com with \"Security\" in the subject line. It reaches a person, not an autoresponder queue.",
+  "es": "Escribe a Support@serverlys.com con \"Security\" en el asunto. Le llega a una persona, no a una cola de respuestas automáticas.",
+  "maxChars": 118,
+  "where": [
+   "/responsible-disclosure-policy@390"
+  ]
+ },
+ {
+  "en": "A report we can act on quickly contains all of the following. A report missing them is not rejected, but it will take longer while we ask.",
+  "es": "Un reporte con el que podemos actuar rápido incluye todo lo siguiente. Un reporte al que le falte algo no se rechaza, pero tardará más mientras te preguntamos.",
+  "maxChars": 131,
+  "where": [
+   "/responsible-disclosure-policy@390"
+  ]
+ },
+ {
+  "en": "The affected host, URL or endpoint — specific enough for us to reproduce it.",
+  "es": "El host, la URL o el endpoint afectado, con suficiente detalle para que podamos reproducirlo.",
+  "maxChars": 79,
+  "where": [
+   "/responsible-disclosure-policy@1440",
+   "/responsible-disclosure-policy@390",
+   "/responsible-disclosure-policy@768"
+  ]
+ },
+ {
+  "en": "The steps to reproduce, in order. A proof-of-concept request or short script is ideal.",
+  "es": "Los pasos para reproducirlo, en orden. Lo ideal es una solicitud de prueba de concepto o un script corto.",
+  "maxChars": 79,
+  "where": [
+   "/responsible-disclosure-policy@1440",
+   "/responsible-disclosure-policy@390",
+   "/responsible-disclosure-policy@768"
+  ]
+ },
+ {
+  "en": "The client area and billing system.",
+  "es": "El área de cliente y el sistema de facturación.",
+  "maxChars": 38,
+  "where": [
+   "/responsible-disclosure-policy@390"
+  ]
+ },
+ {
+  "en": "Social engineering of our staff, customers or suppliers, and physical access attempts.",
+  "es": "Ingeniería social contra nuestro personal, clientes o proveedores, e intentos de acceso físico.",
+  "maxChars": 87,
+  "where": [
+   "/responsible-disclosure-policy@390"
+  ]
+ },
+ {
+  "en": "Issues that require an already-compromised device, a rooted browser, or physical possession of a logged-in machine.",
+  "es": "Problemas que requieren un dispositivo ya comprometido, un navegador con acceso root o tener físicamente un equipo con la sesión iniciada.",
+  "maxChars": 124,
+  "where": [
+   "/responsible-disclosure-policy@390"
+  ]
+ },
+ {
+  "en": "Use only your own test accounts and your own data. If a flaw exposes someone else's, stop immediately and tell us what you saw.",
+  "es": "Usa solo tus propias cuentas de prueba y tus propios datos. Si una falla expone los de otra persona, detente de inmediato y cuéntanos lo que viste.",
+  "maxChars": 127,
+  "where": [
+   "/responsible-disclosure-policy@390"
+  ]
+ },
+ {
+  "en": "Acknowledge your report, to a person rather than an automated reply.",
+  "es": "Confirmar la recepción de tu reporte, con una persona y no con una respuesta automática.",
+  "maxChars": 73,
+  "where": [
+   "/responsible-disclosure-policy@1440",
+   "/responsible-disclosure-policy@390",
+   "/responsible-disclosure-policy@768"
+  ]
+ },
+ {
+  "en": "Responsible disclosure policy",
+  "es": "Política de divulgación responsable",
+  "maxChars": 30,
+  "where": [
+   "/responsible-disclosure-policy@1440"
+  ]
+ },
+ {
+  "en": "Abuse handling policy",
+  "es": "Política de gestión de abusos",
+  "maxChars": 22,
+  "where": [
+   "/abuse-handling-policy@390"
+  ]
+ },
+ {
+  "en": "What this page is for",
+  "es": "Para qué es esta página",
+  "maxChars": 21,
+  "where": [
+   "/abuse-handling-policy@390"
+  ]
+ },
+ {
+  "en": "What we act on",
+  "es": "Sobre qué actuamos",
+  "maxChars": 15,
+  "where": [
+   "/abuse-handling-policy@390"
+  ]
+ },
+ {
+  "en": "Child sexual abuse material",
+  "es": "Material de abuso sexual infantil",
+  "maxChars": 30,
+  "where": [
+   "/abuse-handling-policy@1440",
+   "/abuse-handling-policy@390"
+  ]
+ },
+ {
+  "en": "What happens to your report",
+  "es": "Qué pasa con tu reporte",
+  "maxChars": 21,
+  "where": [
+   "/abuse-handling-policy@390"
+  ]
+ },
+ {
+  "en": "How quickly",
+  "es": "Con qué rapidez",
+  "maxChars": 12,
+  "where": [
+   "/abuse-handling-policy@390"
+  ]
+ },
+ {
+  "en": "What we do with the customer",
+  "es": "Qué hacemos con el cliente",
+  "maxChars": 24,
+  "where": [
+   "/abuse-handling-policy@390"
+  ]
+ },
+ {
+  "en": "What we cannot do",
+  "es": "Lo que no podemos hacer",
+  "maxChars": 19,
+  "where": [
+   "/abuse-handling-policy@390"
+  ]
+ },
+ {
+  "en": "Reports made in bad faith",
+  "es": "Reportes hechos de mala fe",
+  "maxChars": 24,
+  "where": [
+   "/abuse-handling-policy@390"
+  ]
+ },
+ {
+  "en": "Reaching us",
+  "es": "Cómo contactarnos",
+  "maxChars": 12,
+  "where": [
+   "/abuse-handling-policy@390"
+  ]
+ },
+ {
+  "en": "To make a report, use the abuse form. You do not need to read this first, and nothing here is a precondition for us acting.",
+  "es": "Para hacer un reporte, usa el formulario de abuso. No necesitas leer esto antes, y nada de lo que aquí se dice es una condición para que actuemos.",
+  "maxChars": 134,
+  "where": [
+   "/abuse-handling-policy@390"
+  ]
+ },
+ {
+  "en": "Copyright infringement — see the copyright and DMCA policy for the notice requirements, which are stricter and statutory.",
+  "es": "Infracción de derechos de autor — consulta la política de derechos de autor y DMCA para conocer los requisitos de la notificación, que son más estrictos y legales.",
+  "maxChars": 148,
+  "where": [
+   "/abuse-handling-policy@1440",
+   "/abuse-handling-policy@390",
+   "/abuse-handling-policy@768"
+  ]
+ },
+ {
+  "en": "Fraudulent or impersonating sites.",
+  "es": "Sitios fraudulentos o que suplantan identidad.",
+  "maxChars": 36,
+  "where": [
+   "/abuse-handling-policy@390"
+  ]
+ },
+ {
+  "en": "A customer whose account is suspended is told why, and by a person.",
+  "es": "Un cliente cuya cuenta se suspende recibe la explicación del motivo, y se la da una persona.",
+  "maxChars": 74,
+  "where": [
+   "/abuse-handling-policy@1440",
+   "/abuse-handling-policy@390",
+   "/abuse-handling-policy@768"
+  ]
+ },
+ {
+  "en": "AI services terms",
+  "es": "Términos de los servicios de IA",
+  "maxChars": 18,
+  "where": [
+   "/ai-services-terms@390"
+  ]
+ },
+ {
+  "en": "Call recording and consent",
+  "es": "Grabación de llamadas y consentimiento",
+  "maxChars": 26,
+  "where": [
+   "/ai-services-terms@1440",
+   "/ai-services-terms@390"
+  ]
+ },
+ {
+  "en": "You are responsible for knowing which rule applies to you and to the people who call you, including callers in other states.",
+  "es": "Eres responsable de saber qué regla aplica para ti y para las personas que te llaman, incluidas las que llaman desde otros estados.",
+  "maxChars": 124,
+  "where": [
+   "/ai-services-terms@390"
+  ]
+ },
+ {
+  "en": "Who owns the conversations",
+  "es": "Quién es dueño de las conversaciones",
+  "maxChars": 28,
+  "where": [
+   "/ai-services-terms@1440",
+   "/ai-services-terms@390"
+  ]
+ },
+ {
+  "en": "You can export your conversation data, and you can ask us to delete it. Ending your subscription does not mean we keep it as leverage.",
+  "es": "Puedes exportar los datos de tus conversaciones y pedirnos que los eliminemos. Terminar tu suscripción no significa que los guardemos como forma de presión.",
+  "maxChars": 148,
+  "where": [
+   "/ai-services-terms@390"
+  ]
+ },
+ {
+  "en": "Serverlys owns the platform, the models we license, and the software that runs them. Nothing here transfers any of that to you.",
+  "es": "Serverlys es dueño de la plataforma, de los modelos que licenciamos y del software que los ejecuta. Nada de esto te transfiere nada de eso.",
+  "maxChars": 126,
+  "where": [
+   "/ai-services-terms@390"
+  ]
+ },
+ {
+  "en": "Availability, limits and changes",
+  "es": "Disponibilidad, límites y cambios",
+  "maxChars": 31,
+  "where": [
+   "/ai-services-terms@390"
+  ]
+ },
+ {
+  "en": "How to reach us",
+  "es": "Cómo contactarnos",
+  "maxChars": 15,
+  "where": [
+   "/customer-service-policy@390"
+  ]
+ },
+ {
+  "en": "What we aim to respond in",
+  "es": "En cuánto tiempo buscamos responder",
+  "maxChars": 25,
+  "where": [
+   "/customer-service-policy@1440",
+   "/customer-service-policy@390"
+  ]
+ },
+ {
+  "en": "What you can expect from us",
+  "es": "Lo que puedes esperar de nosotros",
+  "maxChars": 28,
+  "where": [
+   "/customer-service-policy@1440",
+   "/customer-service-policy@390"
+  ]
+ },
+ {
+  "en": "What we will not do",
+  "es": "Lo que no haremos",
+  "maxChars": 16,
+  "where": [
+   "/customer-service-policy@390"
+  ]
+ },
+ {
+  "en": "What support covers, and what it does not",
+  "es": "Qué cubre el soporte y qué no",
+  "maxChars": 27,
+  "where": [
+   "/customer-service-policy@390"
+  ]
+ },
+ {
+  "en": "If we get it wrong",
+  "es": "Si nos equivocamos",
+  "maxChars": 17,
+  "where": [
+   "/customer-service-policy@390"
+  ]
+ },
+ {
+  "en": "Migrations and project work: we agree timings with you in advance, in writing, and we tell you when one is going to slip.",
+  "es": "Migraciones y proyectos: acordamos los tiempos contigo por adelantado, por escrito, y te avisamos cuando uno se va a retrasar.",
+  "maxChars": 119,
+  "where": [
+   "/customer-service-policy@390"
+  ]
+ },
+ {
+  "en": "Free migration of an existing site onto our platform, as advertised, without a bait-and-switch when we see the size of it.",
+  "es": "Migración gratis de un sitio existente a nuestra plataforma, tal como se anuncia, sin cambiar las condiciones cuando vemos su tamaño.",
+  "maxChars": 125,
+  "where": [
+   "/customer-service-policy@390"
+  ]
+ },
+ {
+  "en": "The useful half of a service policy is the part that constrains the company, so here is ours.",
+  "es": "La mitad útil de una política de servicio es la que limita a la empresa, así que aquí está la nuestra.",
+  "maxChars": 93,
+  "where": [
+   "/customer-service-policy@390"
+  ]
+ },
+ {
+  "en": "We will not make you ask twice for a refund you are entitled to under the refund policy, and we will not ask you to justify it.",
+  "es": "No te haremos pedir dos veces un reembolso al que tienes derecho según la política de reembolsos, ni te pediremos que lo justifiques.",
+  "maxChars": 126,
+  "where": [
+   "/customer-service-policy@390"
+  ]
+ },
+ {
+  "en": "We tell you what we found, including when the finding is that we were wrong.",
+  "es": "Te decimos lo que encontramos, incluso cuando lo que encontramos es que nos equivocamos.",
+  "maxChars": 73,
+  "where": [
+   "/customer-service-policy@1440",
+   "/customer-service-policy@390",
+   "/customer-service-policy@768"
+  ]
+ },
+ {
+  "en": "Where we disagree with you, we say so plainly and explain why, instead of going quiet and hoping it goes away.",
+  "es": "Cuando no estamos de acuerdo contigo, lo decimos claramente y explicamos por qué, en lugar de quedarnos callados esperando que el tema desaparezca.",
+  "maxChars": 120,
+  "where": [
+   "/customer-service-policy@390"
+  ]
+ },
+ {
+  "en": "If a complaint cannot be resolved between us, the dispute resolution provisions in the terms of service apply.",
+  "es": "Si una queja no se puede resolver entre nosotros, se aplican las disposiciones de resolución de disputas de los términos del servicio.",
+  "maxChars": 127,
+  "where": [
+   "/customer-service-policy@390"
+  ]
+ },
+ {
+  "en": "No charge for a backup restore. Your worst day is not a sales opportunity.",
+  "es": "No cobramos por restaurar un respaldo. Tu peor día no es una oportunidad de venta.",
+  "maxChars": 74,
+  "where": [
+   "/customer-service-policy@1440",
+   "/customer-service-policy@768"
+  ]
+ }
+]

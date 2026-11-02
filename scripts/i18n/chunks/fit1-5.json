@@ -1,0 +1,1206 @@
+[
+ {
+  "en": "A move you barely have to think about",
+  "es": "Una mudanza en la que casi no tienes que pensar",
+  "maxChars": 36,
+  "where": [
+   "/migrations@390",
+   "/migrations@768"
+  ]
+ },
+ {
+  "en": "Migration is free with any cloud hosting plan, whether you are moving a single brochure site or every client site an agency looks after.",
+  "es": "La migración es gratis con cualquier plan de cloud hosting, ya sea que muevas un solo sitio informativo o todos los sitios de clientes que administra una agencia.",
+  "maxChars": 137,
+  "where": [
+   "/migrations@1440",
+   "/migrations@390"
+  ]
+ },
+ {
+  "en": "Faster from the day it lands",
+  "es": "Más rápido desde el primer día",
+  "maxChars": 26,
+  "where": [
+   "/migrations@1440",
+   "/migrations@390"
+  ]
+ },
+ {
+  "en": "We move it. You keep running your business.",
+  "es": "Nosotros lo movemos. Tú sigues con tu negocio.",
+  "maxChars": 43,
+  "where": [
+   "/migrations@390"
+  ]
+ },
+ {
+  "en": "Your old host keeps serving until the new site is proven, and both answer while the switch spreads. No gap, no error pages.",
+  "es": "Tu hosting anterior sigue funcionando hasta que el nuevo sitio esté comprobado, y ambos responden mientras se propaga el cambio. Sin interrupciones ni páginas de error.",
+  "maxChars": 117,
+  "where": [
+   "/migrations@1440",
+   "/migrations@390",
+   "/migrations@768"
+  ]
+ },
+ {
+  "en": "From old host → Serverlys Turbo Cloud",
+  "es": "Del hosting anterior → Serverlys Turbo Cloud",
+  "maxChars": 38,
+  "where": [
+   "/migrations@390"
+  ]
+ },
+ {
+  "en": "Files, database and settings",
+  "es": "Archivos, base de datos y configuración",
+  "maxChars": 28,
+  "where": [
+   "/migrations@390"
+  ]
+ },
+ {
+  "en": "→ Serverlys mail · no messages lost",
+  "es": "→ correo de Serverlys · sin mensajes perdidos",
+  "maxChars": 28,
+  "where": [
+   "/migrations@390"
+  ]
+ },
+ {
+  "en": "A final sync, then the switch",
+  "es": "Una sincronización final y luego el cambio",
+  "maxChars": 30,
+  "where": [
+   "/migrations@390"
+  ]
+ },
+ {
+  "en": "Both servers answer while it spreads",
+  "es": "Ambos servidores responden mientras se propaga",
+  "maxChars": 33,
+  "where": [
+   "/migrations@1440",
+   "/migrations@390"
+  ]
+ },
+ {
+  "en": "Your old host still has the full site while the DNS change reaches every visitor, so nobody hits an error.",
+  "es": "Tu hosting anterior aún tiene el sitio completo mientras el cambio de DNS llega a cada visitante, así que nadie ve un error.",
+  "maxChars": 104,
+  "where": [
+   "/migrations@390",
+   "/migrations@768"
+  ]
+ },
+ {
+  "en": "Your certificate is issued on the new server and we tell you when it’s safe to cancel your old hosting.",
+  "es": "Tu certificado se emite en el nuevo servidor y te avisamos cuándo es seguro cancelar tu hosting anterior.",
+  "maxChars": 99,
+  "where": [
+   "/migrations@390"
+  ]
+ },
+ {
+  "en": "What do I need for a successful website migration?",
+  "es": "¿Qué necesito para que la migración de mi sitio web salga bien?",
+  "maxChars": 59,
+  "where": [
+   "/migrations@390"
+  ]
+ },
+ {
+  "en": "Only after the new copy is built and tested — repointing before that is what causes avoidable downtime. When it is ready we agree a quiet time with you, lower your DNS TTL beforehand so the change spreads in minutes, and switch it. If your domain is managed somewhere else, we tell you exactly which records to change and when, or make the change for you with your login.",
+  "es": "Solo cuando la nueva copia esté creada y probada; redirigirlo antes es lo que causa caídas evitables. Cuando esté lista, acordamos contigo un horario tranquilo, bajamos antes el TTL de tu DNS para que el cambio se propague en minutos y hacemos el cambio. Si tu dominio se administra en otro lugar, te decimos exactamente qué registros cambiar y cuándo, o hacemos el cambio por ti con tu acceso.",
+  "maxChars": 374,
+  "where": [
+   "/migrations@390",
+   "/migrations@768"
+  ]
+ },
+ {
+  "en": "As many as your plan allows, at no extra cost — whether that is one or a hundred. Note that each website needs its own migration request.",
+  "es": "Todos los que permita tu plan, sin costo adicional, ya sea uno o cien. Ten en cuenta que cada sitio web necesita su propia solicitud de migración.",
+  "maxChars": 138,
+  "where": [
+   "/migrations@390"
+  ]
+ },
+ {
+  "en": "It depends on the platform. A simple automatic WordPress migration is typically done in under two hours. A control-panel migration of another open-source CMS — Laravel, PrestaShop, or similar — usually takes longer, sometimes more than 20 hours. We can still migrate them.",
+  "es": "Depende de la plataforma. Una migración automática sencilla de WordPress suele estar lista en menos de dos horas. La migración desde un panel de control de otro CMS de código abierto (Laravel, PrestaShop o similar) suele tardar más, a veces más de 20 horas. Aun así, podemos migrarlos.",
+  "maxChars": 270,
+  "where": [
+   "/migrations@390",
+   "/migrations@768"
+  ]
+ },
+ {
+  "en": "Usually not. Do make sure you do not cancel your existing hosting until the migration is fully complete — cancelling early is the one thing that can lose data.",
+  "es": "Normalmente no. Eso sí, no canceles tu hosting actual hasta que la migración esté completamente terminada: cancelar antes de tiempo es lo único que puede hacerte perder datos.",
+  "maxChars": 166,
+  "where": [
+   "/migrations@390"
+  ]
+ },
+ {
+  "en": "They are kept. Your site keeps taking orders, sign-ups and form entries on your old host while we work. Right before the switch we run a final sync that copies across anything that changed since the first copy, so nothing placed during the move is lost.",
+  "es": "Se conservan. Tu sitio sigue recibiendo pedidos, registros y formularios en tu hosting anterior mientras trabajamos. Justo antes del cambio hacemos una sincronización final que copia todo lo que cambió desde la primera copia, así que no se pierde nada de lo recibido durante la mudanza.",
+  "maxChars": 271,
+  "where": [
+   "/migrations@390"
+  ]
+ },
+ {
+  "en": "Yes, the whole time. Your site keeps serving from its current host while we copy and test the new one. At the switch we sync anything that changed during the move, such as new orders, and while the DNS change spreads both servers have your full site, so every visitor lands on a working page. That is why you must keep your old hosting until we tell you the move is finished.",
+  "es": "Sí, todo el tiempo. Tu sitio sigue funcionando desde su hosting actual mientras copiamos y probamos el nuevo. Al hacer el cambio sincronizamos todo lo que cambió durante la mudanza, como pedidos nuevos, y mientras se propaga el cambio de DNS ambos servidores tienen tu sitio completo, así que cada visitante llega a una página que funciona. Por eso debes mantener tu hosting anterior hasta que te digamos que la mudanza terminó.",
+  "maxChars": 372,
+  "where": [
+   "/migrations@390",
+   "/migrations@768"
+  ]
+ },
+ {
+  "en": "Ready to move? We’ll do the heavy lifting.",
+  "es": "¿Listo para mudarte? Nosotros hacemos el trabajo pesado.",
+  "maxChars": 42,
+  "where": [
+   "/migrations@1440",
+   "/migrations@390",
+   "/migrations@768"
+  ]
+ },
+ {
+  "en": "Test order placed and refunded",
+  "es": "Pedido de prueba realizado y reembolsado",
+  "maxChars": 31,
+  "where": [
+   "/migrations@1440",
+   "/migrations@768"
+  ]
+ },
+ {
+  "en": "Contact form delivers to inbox",
+  "es": "El formulario de contacto llega a la bandeja de entrada",
+  "maxChars": 33,
+  "where": [
+   "/migrations@1440",
+   "/migrations@768"
+  ]
+ },
+ {
+  "en": "Logins and customer accounts work",
+  "es": "Inicios de sesión y cuentas de clientes funcionan",
+  "maxChars": 39,
+  "where": [
+   "/migrations@1440",
+   "/migrations@768"
+  ]
+ },
+ {
+  "en": "Redirects and image paths intact",
+  "es": "Redirecciones y rutas de imágenes intactas",
+  "maxChars": 34,
+  "where": [
+   "/migrations@1440",
+   "/migrations@768"
+  ]
+ },
+ {
+  "en": "Cloud hosting plans, with free migration",
+  "es": "Planes de cloud hosting, con migración gratis",
+  "maxChars": 38,
+  "where": [
+   "/migrations@768"
+  ]
+ },
+ {
+  "en": "~10,000 monthly visits",
+  "es": "~10,000 visitas mensuales",
+  "maxChars": 22,
+  "where": [
+   "/migrations@1440",
+   "/migrations@768"
+  ]
+ },
+ {
+  "en": "~25,000 monthly visits",
+  "es": "~25,000 visitas mensuales",
+  "maxChars": 22,
+  "where": [
+   "/migrations@768"
+  ]
+ },
+ {
+  "en": "~50,000 monthly visits",
+  "es": "~50,000 visitas mensuales",
+  "maxChars": 22,
+  "where": [
+   "/migrations@768"
+  ]
+ },
+ {
+  "en": "The website's URL and either its WordPress admin login or its control-panel login, plus any backup files you already have. If the site is not on WordPress, tell us what it runs on — we can still move it.",
+  "es": "La URL del sitio web y el acceso de administrador de WordPress o el acceso a su panel de control, además de cualquier respaldo que ya tengas. Si el sitio no está en WordPress, dinos en qué funciona; aun así podemos moverlo.",
+  "maxChars": 189,
+  "where": [
+   "/migrations@768"
+  ]
+ },
+ {
+  "en": "Do I need to inform my current hosting provider about the migration?",
+  "es": "¿Tengo que avisar a mi proveedor de hosting actual sobre la migración?",
+  "maxChars": 66,
+  "where": [
+   "/migrations@768"
+  ]
+ },
+ {
+  "en": "What happens to orders or messages that arrive during the move?",
+  "es": "¿Qué pasa con los pedidos o mensajes que llegan durante la mudanza?",
+  "maxChars": 63,
+  "where": [
+   "/migrations@768"
+  ]
+ },
+ {
+  "en": "Pick a cloud plan and send us your site’s details. Migration is free, and plans start at {0}/mo (Black Friday first month, until {1}).",
+  "es": "Elige un plan cloud y envíanos los datos de tu sitio. La migración es gratis y los planes empiezan en {0}/mes (primer mes de Black Friday, hasta el {1}).",
+  "maxChars": 139,
+  "where": [
+   "/migrations@1440",
+   "/migrations@768"
+  ]
+ },
+ {
+  "en": "How your website moves to Serverlys",
+  "es": "Cómo se muda tu sitio web a Serverlys",
+  "maxChars": 34,
+  "where": [
+   "/migrations@1440"
+  ]
+ },
+ {
+  "en": "Your live site is still on the old host and taking orders.",
+  "es": "Tu sitio en vivo sigue en el hosting anterior y recibiendo pedidos.",
+  "maxChars": 63,
+  "where": [
+   "/migrations@1440"
+  ]
+ },
+ {
+  "en": "Orders and changes made during the move are copied across, then your domain is pointed at Serverlys at a quiet time you pick.",
+  "es": "Los pedidos y cambios hechos durante la mudanza se copian, y luego tu dominio se apunta a Serverlys en un horario tranquilo que tú eliges.",
+  "maxChars": 122,
+  "where": [
+   "/migrations@1440"
+  ]
+ },
+ {
+  "en": ". No setup fee",
+  "es": ". Sin cargo de configuración",
+  "maxChars": 25,
+  "where": [
+   "/migrations@1440"
+  ]
+ },
+ {
+  "en": "Check the registry, then register at Serverlys. The first-year price is the price.",
+  "es": "Consulta el registro y luego regístralo en Serverlys. El precio del primer año es el precio.",
+  "maxChars": 86,
+  "where": [
+   "/register-domain@390"
+  ]
+ },
+ {
+  "en": "A name that comes back registered is a transfer candidate, not a dead end.",
+  "es": "Un nombre que aparece registrado es candidato a transferencia, no un callejón sin salida.",
+  "maxChars": 79,
+  "where": [
+   "/register-domain@1440",
+   "/register-domain@390",
+   "/register-domain@768"
+  ]
+ },
+ {
+  "en": "Registration is usually instant. When it is not — a registry hold, a verification email — you get someone who can read the whole ticket.",
+  "es": "El registro suele ser instantáneo. Cuando no lo es (un bloqueo del registro, un correo de verificación), te atiende alguien que puede leer todo el ticket.",
+  "maxChars": 140,
+  "where": [
+   "/register-domain@390"
+  ]
+ },
+ {
+  "en": "Point the name at Serverlys hosting, at your own nameservers, or at another provider entirely. Records stay editable either way.",
+  "es": "Apunta el nombre al hosting de Serverlys, a tus propios nameservers o a otro proveedor. Los registros siguen siendo editables en cualquier caso.",
+  "maxChars": 135,
+  "where": [
+   "/register-domain@390"
+  ]
+ },
+ {
+  "en": "Type the name you want. We ask the registry directly rather than guessing from a list.",
+  "es": "Escribe el nombre que quieres. Consultamos directamente al registro en lugar de adivinar a partir de una lista.",
+  "maxChars": 87,
+  "where": [
+   "/register-domain@1440",
+   "/register-domain@390",
+   "/register-domain@768"
+  ]
+ },
+ {
+  "en": "If .com is gone, an alternate may be the better name anyway. Prices per extension are below.",
+  "es": "Si el .com ya no está, una alternativa podría ser incluso mejor nombre. Los precios por extensión están abajo.",
+  "maxChars": 99,
+  "where": [
+   "/register-domain@390",
+   "/register-domain@768"
+  ]
+ },
+ {
+  "en": "Availability at the registry is not permission to trade under a name. Check before you build a brand on it.",
+  "es": "Que esté disponible en el registro no te da permiso para operar con ese nombre. Verifícalo antes de construir una marca sobre él.",
+  "maxChars": 100,
+  "where": [
+   "/register-domain@390",
+   "/register-domain@768"
+  ]
+ },
+ {
+  "en": "A lapsed domain can be re-registered by anyone. Auto-renewal is the cheapest insurance there is.",
+  "es": "Cualquiera puede volver a registrar un dominio vencido. La renovación automática es el seguro más barato que existe.",
+  "maxChars": 98,
+  "where": [
+   "/register-domain@390",
+   "/register-domain@768"
+  ]
+ },
+ {
+  "en": "Domain registration FAQs",
+  "es": "Preguntas frecuentes sobre registro de dominios",
+  "maxChars": 26,
+  "where": [
+   "/register-domain@1440",
+   "/register-domain@390",
+   "/register-domain@768"
+  ]
+ },
+ {
+  "en": "Find answers to frequently asked questions about registering a domain with Serverlys.",
+  "es": "Encuentra respuestas a las preguntas frecuentes sobre cómo registrar un dominio con Serverlys.",
+  "maxChars": 85,
+  "where": [
+   "/register-domain@390",
+   "/register-domain@768"
+  ]
+ },
+ {
+  "en": "Do I need hosting to register a domain?",
+  "es": "¿Necesito hosting para registrar un dominio?",
+  "maxChars": 40,
+  "where": [
+   "/register-domain@390"
+  ]
+ },
+ {
+  "en": "Are domain registrations refundable?",
+  "es": "¿Los registros de dominio son reembolsables?",
+  "maxChars": 37,
+  "where": [
+   "/register-domain@390"
+  ]
+ },
+ {
+  "en": "Register a domain name",
+  "es": "Registra un nombre de dominio",
+  "maxChars": 23,
+  "where": [
+   "/register-domain@768"
+  ]
+ },
+ {
+  "en": "The renewal rate is on the page, not buried in checkout",
+  "es": "La tarifa de renovación está en la página, no escondida en el pago",
+  "maxChars": 57,
+  "where": [
+   "/register-domain@1440",
+   "/register-domain@768"
+  ]
+ },
+ {
+  "en": "How to register a domain name",
+  "es": "Cómo registrar un nombre de dominio",
+  "maxChars": 30,
+  "where": [
+   "/register-domain@768"
+  ]
+ },
+ {
+  "en": "Compare all TLD prices",
+  "es": "Compara todos los precios de TLD",
+  "maxChars": 24,
+  "where": [
+   "/register-domain@1440"
+  ]
+ },
+ {
+  "en": "Check the name, then move it. Your remaining registration comes with it.",
+  "es": "Revisa el nombre y luego muévelo. El tiempo de registro que te queda viene con él.",
+  "maxChars": 77,
+  "where": [
+   "/transfer-domain@390"
+  ]
+ },
+ {
+  "en": "A transfer adds to the term. Most registries add a further year at transfer.",
+  "es": "Una transferencia suma al plazo. La mayoría de los registros agregan un año más al transferir.",
+  "maxChars": 87,
+  "where": [
+   "/transfer-domain@390"
+  ]
+ },
+ {
+  "en": "the ICANN lock after a registration or transfer",
+  "es": "el bloqueo de ICANN tras un registro o una transferencia",
+  "maxChars": 44,
+  "where": [
+   "/transfer-domain@390"
+  ]
+ },
+ {
+  "en": "No downtime",
+  "es": "Sin tiempo de inactividad",
+  "maxChars": 14,
+  "where": [
+   "/transfer-domain@1440",
+   "/transfer-domain@390",
+   "/transfer-domain@768"
+  ]
+ },
+ {
+  "en": "DNS keeps resolving while the transfer runs",
+  "es": "El DNS sigue resolviendo mientras se hace la transferencia",
+  "maxChars": 45,
+  "where": [
+   "/transfer-domain@390",
+   "/transfer-domain@768"
+  ]
+ },
+ {
+  "en": "What a transfer to Serverlys involves",
+  "es": "Qué implica una transferencia a Serverlys",
+  "maxChars": 34,
+  "where": [
+   "/transfer-domain@390",
+   "/transfer-domain@768"
+  ]
+ },
+ {
+  "en": "You keep the time you paid for",
+  "es": "Conservas el tiempo que pagaste",
+  "maxChars": 29,
+  "where": [
+   "/transfer-domain@390"
+  ]
+ },
+ {
+  "en": "A transfer moves the registration; it does not restart it. Remaining years carry over, and most registries add a year at transfer.",
+  "es": "Una transferencia mueve el registro, no lo reinicia. Los años restantes se conservan, y la mayoría de los registros agregan un año al transferir.",
+  "maxChars": 137,
+  "where": [
+   "/transfer-domain@390"
+  ]
+ },
+ {
+  "en": "Unlock the domain and get the auth code (sometimes called EPP). Without both, no registrar can move it — including us.",
+  "es": "Desbloquea el dominio y obtén el código de autorización (a veces llamado EPP). Sin ambos, ningún registrador puede moverlo, ni siquiera nosotros.",
+  "maxChars": 133,
+  "where": [
+   "/transfer-domain@390"
+  ]
+ },
+ {
+  "en": "Turn off the registrar lock in your current provider's panel. Transfers silently fail while it is on.",
+  "es": "Desactiva el bloqueo de registrador en el panel de tu proveedor actual. Mientras esté activo, las transferencias fallan sin aviso.",
+  "maxChars": 102,
+  "where": [
+   "/transfer-domain@390",
+   "/transfer-domain@768"
+  ]
+ },
+ {
+  "en": "Click the link in that email. Unapproved transfers time out after five days and you start again.",
+  "es": "Haz clic en el enlace de ese correo. Las transferencias no aprobadas vencen a los cinco días y tienes que empezar de nuevo.",
+  "maxChars": 98,
+  "where": [
+   "/transfer-domain@390",
+   "/transfer-domain@768"
+  ]
+ },
+ {
+  "en": "Domain transfer FAQs",
+  "es": "Preguntas frecuentes sobre transferencia de dominio",
+  "maxChars": 21,
+  "where": [
+   "/transfer-domain@1440",
+   "/transfer-domain@390",
+   "/transfer-domain@768"
+  ]
+ },
+ {
+  "en": "Find answers to frequently asked questions about moving a domain to Serverlys.",
+  "es": "Encuentra respuestas a las preguntas frecuentes sobre cómo mover un dominio a Serverlys.",
+  "maxChars": 81,
+  "where": [
+   "/transfer-domain@390",
+   "/transfer-domain@768"
+  ]
+ },
+ {
+  "en": "Will I lose the time left on my registration?",
+  "es": "¿Perderé el tiempo que le queda a mi registro?",
+  "maxChars": 41,
+  "where": [
+   "/transfer-domain@390"
+  ]
+ },
+ {
+  "en": "Your remaining registration comes with the domain",
+  "es": "El tiempo de registro que te queda viene con el dominio",
+  "maxChars": 52,
+  "where": [
+   "/transfer-domain@768"
+  ]
+ },
+ {
+  "en": "Need a new name?",
+  "es": "¿Necesitas un nombre nuevo?",
+  "maxChars": 17,
+  "where": [
+   "/transfer-domain@1440",
+   "/transfer-domain@768"
+  ]
+ },
+ {
+  "en": "Registered or transferred in the last 60 days? The registry will refuse. Wait it out.",
+  "es": "¿Registrado o transferido en los últimos 60 días? El registro lo rechazará. Espera a que pase el plazo.",
+  "maxChars": 87,
+  "where": [
+   "/transfer-domain@1440"
+  ]
+ },
+ {
+  "en": "Look up who holds a domain, when it expires, and where its nameservers point.",
+  "es": "Averigua quién tiene un dominio, cuándo vence y a dónde apuntan sus servidores de nombres.",
+  "maxChars": 77,
+  "where": [
+   "/whois-lookup@390"
+  ]
+ },
+ {
+  "en": "What a lookup can and cannot tell you",
+  "es": "Lo que una búsqueda puede y no puede decirte",
+  "maxChars": 41,
+  "where": [
+   "/whois-lookup@390"
+  ]
+ },
+ {
+  "en": "We query RDAP and show what it returns. Where a registry answers slowly or not at all, you get told that rather than a blank.",
+  "es": "Consultamos RDAP y mostramos lo que devuelve. Si un registro responde lento o no responde, te lo decimos en lugar de mostrarte un espacio vacío.",
+  "maxChars": 131,
+  "where": [
+   "/whois-lookup@390"
+  ]
+ },
+ {
+  "en": "Most contacts are masked",
+  "es": "La mayoría de los contactos están ocultos",
+  "maxChars": 27,
+  "where": [
+   "/whois-lookup@390"
+  ]
+ },
+ {
+  "en": "Nameservers show the host",
+  "es": "Los servidores de nombres muestran el hosting",
+  "maxChars": 28,
+  "where": [
+   "/whois-lookup@1440",
+   "/whois-lookup@390"
+  ]
+ },
+ {
+  "en": "Blank contact fields are the norm now. If you need to reach an owner, registrars usually forward a message.",
+  "es": "Hoy lo normal es que los campos de contacto estén vacíos. Si necesitas contactar al dueño, los registradores suelen reenviar un mensaje.",
+  "maxChars": 103,
+  "where": [
+   "/whois-lookup@390"
+  ]
+ },
+ {
+  "en": "WHOIS lookup FAQs",
+  "es": "Preguntas frecuentes sobre la búsqueda WHOIS",
+  "maxChars": 20,
+  "where": [
+   "/whois-lookup@1440",
+   "/whois-lookup@390",
+   "/whois-lookup@768"
+  ]
+ },
+ {
+  "en": "My domain expires soon. What should I do?",
+  "es": "Mi dominio vence pronto. ¿Qué debo hacer?",
+  "maxChars": 38,
+  "where": [
+   "/whois-lookup@390"
+  ]
+ },
+ {
+  "en": "the protocol that replaced WHOIS",
+  "es": "el protocolo que reemplazó a WHOIS",
+  "maxChars": 29,
+  "where": [
+   "/whois-lookup@1440",
+   "/whois-lookup@768"
+  ]
+ },
+ {
+  "en": "Name looks free?",
+  "es": "¿El nombre parece libre?",
+  "maxChars": 18,
+  "where": [
+   "/whois-lookup@1440",
+   "/whois-lookup@768"
+  ]
+ },
+ {
+  "en": "Results come straight from the domain registry over RDAP, the protocol that replaced WHOIS. Nothing is cached.",
+  "es": "Los resultados vienen directo del registro del dominio por RDAP, el protocolo que reemplazó a WHOIS. Nada se guarda en caché.",
+  "maxChars": 107,
+  "where": [
+   "/whois-lookup@1440"
+  ]
+ },
+ {
+  "en": "A lookup that finds no record usually means it is unregistered.",
+  "es": "Una búsqueda sin registro suele significar que el dominio no está registrado.",
+  "maxChars": 65,
+  "where": [
+   "/whois-lookup@1440"
+  ]
+ },
+ {
+  "en": "Find your domain name",
+  "es": "Encuentra tu nombre de dominio",
+  "maxChars": 22,
+  "where": [
+   "/domain-name-results@390"
+  ]
+ },
+ {
+  "en": "Trust & safety",
+  "es": "Confianza y seguridad",
+  "maxChars": 15,
+  "where": [
+   "/report-abuse@1440",
+   "/report-abuse@390",
+   "/report-abuse@768"
+  ]
+ },
+ {
+  "en": "No account needed",
+  "es": "No necesitas cuenta",
+  "maxChars": 18,
+  "where": [
+   "/report-abuse@1440",
+   "/report-abuse@390"
+  ]
+ },
+ {
+  "en": "Fax number",
+  "es": "Número de fax",
+  "maxChars": 3,
+  "where": [
+   "/report-abuse@1440",
+   "/report-abuse@390",
+   "/report-abuse@768"
+  ]
+ },
+ {
+  "en": "Active phishing and malware come down first. Otherwise the customer gets a deadline, or the account is suspended.",
+  "es": "El phishing y el malware activos se eliminan primero. En otros casos, el cliente recibe un plazo o la cuenta se suspende.",
+  "maxChars": 114,
+  "where": [
+   "/report-abuse@390"
+  ]
+ },
+ {
+  "en": "Read the full process",
+  "es": "Lee el proceso completo",
+  "maxChars": 20,
+  "where": [
+   "/report-abuse@1440",
+   "/report-abuse@390",
+   "/report-abuse@768"
+  ]
+ },
+ {
+  "en": "Fake login pages and emails built to steal passwords or card details.",
+  "es": "Páginas de inicio de sesión y correos falsos creados para robar contraseñas o datos de tarjetas.",
+  "maxChars": 82,
+  "where": [
+   "/report-abuse@1440",
+   "/report-abuse@390",
+   "/report-abuse@768"
+  ]
+ },
+ {
+  "en": "Pirated or copied content. DMCA notices need a few extra statements.",
+  "es": "Contenido pirateado o copiado. Los avisos DMCA necesitan algunas declaraciones adicionales.",
+  "maxChars": 80,
+  "where": [
+   "/report-abuse@1440",
+   "/report-abuse@390",
+   "/report-abuse@768"
+  ]
+ },
+ {
+  "en": "How to send a report we can act on",
+  "es": "Cómo enviar un reporte con el que podamos actuar",
+  "maxChars": 32,
+  "where": [
+   "/report-abuse@390",
+   "/report-abuse@768"
+  ]
+ },
+ {
+  "en": "A screenshot, the email you received, or a PDF. Up to five files of 2 MB each.",
+  "es": "Una captura de pantalla, el correo que recibiste o un PDF. Hasta cinco archivos de 2 MB cada uno.",
+  "maxChars": 84,
+  "where": [
+   "/report-abuse@1440",
+   "/report-abuse@390",
+   "/report-abuse@768"
+  ]
+ },
+ {
+  "en": "Share a customer's identity or contact details without legal process.",
+  "es": "Compartir la identidad o los datos de contacto de un cliente sin un proceso legal.",
+  "maxChars": 77,
+  "where": [
+   "/report-abuse@1440",
+   "/report-abuse@390"
+  ]
+ },
+ {
+  "en": "What we do after you report, step by step.",
+  "es": "Lo que hacemos después de tu reporte, paso a paso.",
+  "maxChars": 39,
+  "where": [
+   "/report-abuse@1440",
+   "/report-abuse@390"
+  ]
+ },
+ {
+  "en": "Copyright & DMCA policy",
+  "es": "Política de derechos de autor y DMCA",
+  "maxChars": 25,
+  "where": [
+   "/report-abuse@390",
+   "/report-abuse@768"
+  ]
+ },
+ {
+  "en": "What a valid copyright notice must include.",
+  "es": "Qué debe incluir un aviso de derechos de autor válido.",
+  "maxChars": 41,
+  "where": [
+   "/report-abuse@1440",
+   "/report-abuse@390"
+  ]
+ },
+ {
+  "en": "What is and is not allowed on our platform.",
+  "es": "Qué está permitido y qué no en nuestra plataforma.",
+  "maxChars": 40,
+  "where": [
+   "/report-abuse@1440",
+   "/report-abuse@390"
+  ]
+ },
+ {
+  "en": "Report a security vulnerability",
+  "es": "Reporta una vulnerabilidad de seguridad",
+  "maxChars": 30,
+  "where": [
+   "/report-abuse@1440",
+   "/report-abuse@390",
+   "/report-abuse@768"
+  ]
+ },
+ {
+  "en": "Unsolicited email sent from our network, or advertising a site we host.",
+  "es": "Correo no solicitado enviado desde nuestra red, o que promociona un sitio que alojamos.",
+  "maxChars": 81,
+  "where": [
+   "/report-abuse@1440",
+   "/report-abuse@768"
+  ]
+ },
+ {
+  "en": "Most reports that stall are missing one of these. None of them needs technical knowledge.",
+  "es": "A la mayoría de los reportes que se estancan les falta uno de estos. Ninguno requiere conocimientos técnicos.",
+  "maxChars": 87,
+  "where": [
+   "/report-abuse@1440",
+   "/report-abuse@768"
+  ]
+ },
+ {
+  "en": "For spam and phishing, the full headers tell us which server sent it. Your mail app can show them.",
+  "es": "En casos de spam y phishing, los encabezados completos nos dicen qué servidor lo envió. Tu aplicación de correo puede mostrarlos.",
+  "maxChars": 114,
+  "where": [
+   "/report-abuse@768"
+  ]
+ },
+ {
+  "en": "Read by a person, not a bot",
+  "es": "Lo lee una persona, no un bot",
+  "maxChars": 27,
+  "where": [
+   "/report-abuse@1440"
+  ]
+ },
+ {
+  "en": "We aim to reply within one business day",
+  "es": "Buscamos responder en un día hábil",
+  "maxChars": 32,
+  "where": [
+   "/report-abuse@1440"
+  ]
+ },
+ {
+  "en": "Privacy violations",
+  "es": "Violaciones de privacidad",
+  "maxChars": 18,
+  "where": [
+   "/report-abuse@1440"
+  ]
+ },
+ {
+  "en": "Adult sexual material",
+  "es": "Material sexual para adultos",
+  "maxChars": 22,
+  "where": [
+   "/report-abuse@1440"
+  ]
+ },
+ {
+  "en": "Remove content we do not host. If a site only uses our nameservers, its host of record must act.",
+  "es": "Eliminar contenido que no alojamos. Si un sitio solo usa nuestros nameservers, debe actuar su proveedor de hosting.",
+  "maxChars": 109,
+  "where": [
+   "/report-abuse@1440"
+  ]
+ },
+ {
+  "en": "Settle private disputes, defamation or trademark arguments. Those need a court.",
+  "es": "Resolver disputas privadas, difamación o conflictos de marcas. Eso le corresponde a un tribunal.",
+  "maxChars": 91,
+  "where": [
+   "/report-abuse@1440"
+  ]
+ },
+ {
+  "en": "Found a flaw in Serverlys itself? Tell us here.",
+  "es": "¿Encontraste una falla en Serverlys? Cuéntanos aquí.",
+  "maxChars": 42,
+  "where": [
+   "/report-abuse@1440"
+  ]
+ },
+ {
+  "en": "What we collect, why we have it, who else sees it and what you can ask us to do about it. Written to be read rather than to be defensible.",
+  "es": "Qué recopilamos, por qué lo tenemos, quién más lo ve y qué puedes pedirnos que hagamos al respecto. Escrita para leerse, no para defenderse.",
+  "maxChars": 98,
+  "where": [
+   "/privacy-policy@1440",
+   "/privacy-policy@390",
+   "/privacy-policy@768"
+  ]
+ },
+ {
+  "en": "Payment data — handled by our payment processors. Card numbers are entered directly with the processor and are not stored on our systems.",
+  "es": "Datos de pago: los manejan nuestros procesadores de pago. Los números de tarjeta se ingresan directamente con el procesador y no se guardan en nuestros sistemas.",
+  "maxChars": 152,
+  "where": [
+   "/privacy-policy@1440",
+   "/privacy-policy@390",
+   "/privacy-policy@768"
+  ]
+ },
+ {
+  "en": "Technical data — server logs containing IP addresses, request paths and timestamps, kept for security, abuse handling and diagnosing faults.",
+  "es": "Datos técnicos: registros del servidor con direcciones IP, rutas de solicitud y marcas de tiempo, que se conservan por seguridad, para atender abusos y para diagnosticar fallas.",
+  "maxChars": 161,
+  "where": [
+   "/privacy-policy@1440",
+   "/privacy-policy@390",
+   "/privacy-policy@768"
+  ]
+ },
+ {
+  "en": "To keep the platform secure and to investigate abuse. This is our legitimate interest and, for abuse, our legal obligation.",
+  "es": "Para mantener la plataforma segura e investigar abusos. Es nuestro interés legítimo y, en caso de abuso, nuestra obligación legal.",
+  "maxChars": 123,
+  "where": [
+   "/privacy-policy@390"
+  ]
+ },
+ {
+  "en": "How long we keep it",
+  "es": "Cuánto tiempo los conservamos",
+  "maxChars": 19,
+  "where": [
+   "/privacy-policy@1440",
+   "/privacy-policy@390"
+  ]
+ },
+ {
+  "en": "Account and billing records: for as long as you hold a service, and afterwards for the period tax and company law requires.",
+  "es": "Registros de cuenta y facturación: mientras tengas un servicio y, después, durante el periodo que exijan las leyes fiscales y societarias.",
+  "maxChars": 131,
+  "where": [
+   "/privacy-policy@390"
+  ]
+ },
+ {
+  "en": "Server access logs: a short rolling window, sufficient for security investigation and fault diagnosis.",
+  "es": "Registros de acceso al servidor: un periodo corto y continuo, suficiente para investigaciones de seguridad y diagnóstico de fallas.",
+  "maxChars": 119,
+  "where": [
+   "/privacy-policy@390"
+  ]
+ },
+ {
+  "en": "Backups: on the retention cycle of your plan. Deleted data can persist in backups until that cycle completes.",
+  "es": "Respaldos: según el ciclo de retención de tu plan. Los datos eliminados pueden permanecer en los respaldos hasta que ese ciclo termine.",
+  "maxChars": 125,
+  "where": [
+   "/privacy-policy@390"
+  ]
+ },
+ {
+  "en": "If you are unhappy with how we have handled a request, you can complain to your local data protection authority.",
+  "es": "Si no estás conforme con cómo manejamos una solicitud, puedes presentar una queja ante tu autoridad local de protección de datos.",
+  "maxChars": 122,
+  "where": [
+   "/privacy-policy@390"
+  ]
+ },
+ {
+  "en": "The billing area sets a session cookie so you can stay signed in. That cookie is necessary for the service to function.",
+  "es": "El área de facturación usa una cookie de sesión para que puedas mantener la sesión iniciada. Esa cookie es necesaria para que el servicio funcione.",
+  "maxChars": 133,
+  "where": [
+   "/privacy-policy@390"
+  ]
+ },
+ {
+  "en": "We collect four categories of data, and no more than we need for each.",
+  "es": "Recopilamos cuatro categorías de datos, y no más de lo que necesitamos para cada una.",
+  "maxChars": 72,
+  "where": [
+   "/privacy-policy@1440",
+   "/privacy-policy@768"
+  ]
+ },
+ {
+  "en": "Who we share it with",
+  "es": "Con quién los compartimos",
+  "maxChars": 21,
+  "where": [
+   "/privacy-policy@1440"
+  ]
+ },
+ {
+  "en": "The agreement between you and Serverlys. Written in plain language on purpose — terms nobody can read are terms nobody agreed to.",
+  "es": "El acuerdo entre tú y Serverlys. Escrito en lenguaje sencillo a propósito: términos que nadie puede leer son términos que nadie aceptó.",
+  "maxChars": 98,
+  "where": [
+   "/terms-of-service@1440",
+   "/terms-of-service@390",
+   "/terms-of-service@768"
+  ]
+ },
+ {
+  "en": "Billing, renewals and price changes",
+  "es": "Facturación, renovaciones y cambios de precio",
+  "maxChars": 41,
+  "where": [
+   "/terms-of-service@390"
+  ]
+ },
+ {
+  "en": "Keep your own copy of anything you cannot afford to lose. Our backups are a service, not a substitute for your own.",
+  "es": "Guardar tu propia copia de todo lo que no puedas darte el lujo de perder. Nuestros respaldos son un servicio, no un sustituto de los tuyos.",
+  "maxChars": 127,
+  "where": [
+   "/terms-of-service@390"
+  ]
+ },
+ {
+  "en": "Keep the software you install patched. On unmanaged plans that responsibility is entirely yours.",
+  "es": "Mantener actualizado el software que instales. En los planes no administrados, esa responsabilidad es completamente tuya.",
+  "maxChars": 111,
+  "where": [
+   "/terms-of-service@390"
+  ]
+ },
+ {
+  "en": "Send unsolicited bulk email, or host a site advertised by it.",
+  "es": "Enviar correo masivo no solicitado, o alojar un sitio promocionado mediante ese correo.",
+  "maxChars": 61,
+  "where": [
+   "/terms-of-service@1440",
+   "/terms-of-service@390",
+   "/terms-of-service@768"
+  ]
+ },
+ {
+  "en": "Host phishing pages, malware, or material designed to compromise other systems.",
+  "es": "Alojar páginas de phishing, malware o material diseñado para comprometer otros sistemas.",
+  "maxChars": 80,
+  "where": [
+   "/terms-of-service@390"
+  ]
+ },
+ {
+  "en": "Infringe copyright or trademark rights.",
+  "es": "Infringir derechos de autor o de marca registrada.",
+  "maxChars": 41,
+  "where": [
+   "/terms-of-service@390"
+  ]
+ },
+ {
+  "en": "Consume resources in a way that materially degrades service for other customers on shared infrastructure.",
+  "es": "Consumir recursos de una forma que degrade de manera significativa el servicio de otros clientes en infraestructura compartida.",
+  "maxChars": 120,
+  "where": [
+   "/terms-of-service@390"
+  ]
+ },
+ {
+  "en": "If a payment fails we will retry and contact you. Services may be suspended after non-payment, and eventually terminated with data removed.",
+  "es": "Si un pago falla, lo volveremos a intentar y te contactaremos. Los servicios pueden suspenderse por falta de pago y, con el tiempo, cancelarse con eliminación de los datos.",
+  "maxChars": 159,
+  "where": [
+   "/terms-of-service@1440",
+   "/terms-of-service@390",
+   "/terms-of-service@768"
+  ]
+ },
+ {
+  "en": "Registrations are generally non-refundable once made, because the registry fee is paid immediately and is not returned to us.",
+  "es": "Por lo general, los registros no son reembolsables una vez realizados, porque la tarifa del registro se paga de inmediato y no se nos devuelve.",
+  "maxChars": 128,
+  "where": [
+   "/terms-of-service@390"
+  ]
+ },
+ {
+  "en": "The 30-day hosting guarantee, why domain registrations sit outside it, and the three exceptions.",
+  "es": "La garantía de 30 días del hosting, por qué los registros de dominio quedan fuera y las tres excepciones.",
+  "maxChars": 94,
+  "where": [
+   "/customer-service-policy@1440",
+   "/customer-service-policy@390",
+   "/customer-service-policy@768"
+  ]
+ },
+ {
+  "en": "Attack, scan or attempt to gain unauthorised access to any network or system.",
+  "es": "Atacar, escanear o intentar obtener acceso no autorizado a cualquier red o sistema.",
+  "maxChars": 78,
+  "where": [
+   "/terms-of-service@1440",
+   "/terms-of-service@768"
+  ]
+ },
+ {
+  "en": "Upgrades and downgrades are prorated to your billing cycle.",
+  "es": "Los cambios a un plan superior o inferior se prorratean según tu periodo de facturación.",
+  "maxChars": 65,
+  "where": [
+   "/terms-of-service@1440",
+   "/terms-of-service@768"
+  ]
+ },
+ {
+  "en": "What personal data we hold, why we hold it, and what you can ask us to do about it.",
+  "es": "Qué datos personales tenemos, por qué los tenemos y qué puedes pedirnos que hagamos con ellos.",
+  "maxChars": 81,
+  "where": [
+   "/ai-services-terms@1440",
+   "/ai-services-terms@768",
+   "/cookie-policy@1440"
+  ]
+ },
+ {
+  "en": "In effect from",
+  "es": "Vigente desde el",
+  "maxChars": 15,
+  "where": [
+   "/abuse-handling-policy@390",
+   "/acceptable-use-policy@1440",
+   "/acceptable-use-policy@390"
+  ]
+ },
+ {
+  "en": "30 days on hosting, no questions. Domains are not refundable, and this page explains exactly why rather than burying it in a clause.",
+  "es": "30 días en hosting, sin preguntas. Los dominios no son reembolsables, y esta página explica exactamente por qué en lugar de esconderlo en una cláusula.",
+  "maxChars": 101,
+  "where": [
+   "/refund-policy@1440",
+   "/refund-policy@390",
+   "/refund-policy@768"
+  ]
+ },
+ {
+  "en": "Domains are different, and here is why",
+  "es": "Los dominios son diferentes, y esta es la razón",
+  "maxChars": 42,
+  "where": [
+   "/refund-policy@390"
+  ]
+ },
+ {
+  "en": "Check the spelling before you confirm. A typo in a domain is a purchase, not a mistake we can undo.",
+  "es": "Revisa la ortografía antes de confirmar. Un error de tipeo en un dominio es una compra, no un error que podamos deshacer.",
+  "maxChars": 114,
+  "where": [
+   "/refund-policy@390"
+  ]
+ },
+ {
+  "en": "The time it takes to appear depends on your bank or card issuer rather than on us — typically a few working days once processed.",
+  "es": "El tiempo que tarda en reflejarse depende de tu banco o emisor de tarjeta, no de nosotros: normalmente unos pocos días hábiles una vez procesado.",
+  "maxChars": 130,
+  "where": [
+   "/refund-policy@390"
+  ]
+ },
+ {
+  "en": "The exceptions, stated plainly",
+  "es": "Las excepciones, dichas claramente",
+  "maxChars": 28,
+  "where": [
+   "/refund-policy@1440",
+   "/refund-policy@390"
+  ]
+ }
+]

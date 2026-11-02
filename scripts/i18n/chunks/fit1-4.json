@@ -1,0 +1,1210 @@
+[
+ {
+  "en": "Included with every Serverlys hosting plan",
+  "es": "Incluido con cada plan de hosting de Serverlys",
+  "maxChars": 42,
+  "where": [
+   "/ai-agents@390",
+   "/ai-agents@768"
+  ]
+ },
+ {
+  "en": "AI agent in the messenger on your website",
+  "es": "Agente de IA en el messenger de tu sitio web",
+  "maxChars": 41,
+  "where": [
+   "/ai-agents@390"
+  ]
+ },
+ {
+  "en": "AI auto-replies on your website",
+  "es": "Respuestas automáticas con IA en tu sitio web",
+  "maxChars": 32,
+  "where": [
+   "/ai-agents@1440",
+   "/ai-agents@390"
+  ]
+ },
+ {
+  "en": "Smart AI routing",
+  "es": "Enrutamiento inteligente con IA",
+  "maxChars": 17,
+  "where": [
+   "/ai-agents@390"
+  ]
+ },
+ {
+  "en": "Click-to-WhatsApp ads attribution",
+  "es": "Atribución de anuncios Click-to-WhatsApp",
+  "maxChars": 34,
+  "where": [
+   "/ai-agents@390",
+   "/ai-agents@768"
+  ]
+ },
+ {
+  "en": "Priority support from real humans",
+  "es": "Soporte prioritario de personas reales",
+  "maxChars": 36,
+  "where": [
+   "/ai-agents@390",
+   "/ai-agents@768"
+  ]
+ },
+ {
+  "en": "Custom fine-tuning on your playbook",
+  "es": "Ajuste fino personalizado con tus procesos",
+  "maxChars": 39,
+  "where": [
+   "/ai-agents@390",
+   "/ai-agents@768"
+  ]
+ },
+ {
+  "en": "Dedicated account manager",
+  "es": "Gerente de cuenta dedicado",
+  "maxChars": 24,
+  "where": [
+   "/ai-agents@390"
+  ]
+ },
+ {
+  "en": "SLA guarantee and GDPR DPA",
+  "es": "Garantía de SLA y DPA según el GDPR",
+  "maxChars": 29,
+  "where": [
+   "/ai-agents@1440",
+   "/ai-agents@390"
+  ]
+ },
+ {
+  "en": "Enterprise security and audit logs",
+  "es": "Seguridad empresarial y registros de auditoría",
+  "maxChars": 35,
+  "where": [
+   "/ai-agents@1440",
+   "/ai-agents@390"
+  ]
+ },
+ {
+  "en": "Training data export and ownership",
+  "es": "Exportación y propiedad de los datos de entrenamiento",
+  "maxChars": 36,
+  "where": [
+   "/ai-agents@1440",
+   "/ai-agents@390",
+   "/ai-agents@768"
+  ]
+ },
+ {
+  "en": "Books appointments with calendar sync (Google, Outlook, Cal.com)",
+  "es": "Agenda citas con sincronización de calendario (Google, Outlook, Cal.com)",
+  "maxChars": 68,
+  "where": [
+   "/ai-agents@390"
+  ]
+ },
+ {
+  "en": "SMS follow-ups after the call",
+  "es": "Seguimiento por SMS después de la llamada",
+  "maxChars": 28,
+  "where": [
+   "/ai-agents@1440",
+   "/ai-agents@390",
+   "/ai-agents@768"
+  ]
+ },
+ {
+  "en": "ConvoAI Essentials is {0} and comes with every Serverlys hosting plan: one AI agent in the chat window on your website, with {1} AI replies every {2} weeks. ConvoAI Pro is {3}/month, or {4}/year (during Black Friday, until {5}, your first payment is {6}% off: {7} for the first month or {8} for the first year, then the regular price), with unlimited AI replies and the same agent on WhatsApp and email. ConvoAI Enterprise is priced to your setup. CallFlow, the voice agent, is usage-based and quoted for your setup.",
+  "es": "ConvoAI Essentials cuesta {0} y viene con todos los planes de hosting de Serverlys: un agente de IA en la ventana de chat de tu sitio web, con {1} respuestas de IA cada {2} semanas. ConvoAI Pro cuesta {3}/mes o {4}/año (durante Black Friday, hasta el {5}, tu primer pago tiene {6}% de descuento: {7} el primer mes o {8} el primer año, luego el precio regular), con respuestas de IA ilimitadas y el mismo agente en WhatsApp y correo. ConvoAI Enterprise tiene un precio según tu configuración. CallFlow, el agente de voz, se cobra por uso y se cotiza según tu configuración.",
+  "maxChars": 503,
+  "where": [
+   "/ai-agents@1440",
+   "/ai-agents@390",
+   "/ai-agents@768"
+  ]
+ },
+ {
+  "en": "The routine questions that make up most of the volume: hours, location, delivery, pricing, availability, booking. It answers from the content you give it — quick answers on every plan, and your own documents through the knowledge base on Pro — so it talks about your business rather than in general.",
+  "es": "Las preguntas rutinarias que forman la mayor parte del volumen: horarios, ubicación, entregas, precios, disponibilidad, reservas. Responde con el contenido que le das (respuestas rápidas en cada plan, y tus propios documentos mediante la base de conocimiento en Pro), así que habla de tu negocio y no en general.",
+  "maxChars": 296,
+  "where": [
+   "/ai-agents@390",
+   "/faq@390"
+  ]
+ },
+ {
+  "en": "Yes, from ConvoAI Pro. Website chat is included on every plan and works on its own. WhatsApp needs a verified Meta Business account and a WhatsApp Business number connected through Meta's official Cloud API; a number on the regular WhatsApp Business app has to be migrated first.",
+  "es": "Sí, desde ConvoAI Pro. El chat del sitio web está incluido en cada plan y funciona por sí solo. WhatsApp requiere una cuenta de Meta Business verificada y un número de WhatsApp Business conectado mediante la Cloud API oficial de Meta; un número en la app normal de WhatsApp Business debe migrarse primero.",
+  "maxChars": 280,
+  "where": [
+   "/ai-agents@390",
+   "/faq@1440",
+   "/faq@390"
+  ]
+ },
+ {
+  "en": "Will callers know it is not a person?",
+  "es": "¿Sabrán quienes llaman que no es una persona?",
+  "maxChars": 33,
+  "where": [
+   "/ai-agents@390",
+   "/faq@390"
+  ]
+ },
+ {
+  "en": "The call is answered, the caller gets the information they asked for, and anything needing a person is captured as a message with a callback number.",
+  "es": "Se contesta la llamada, quien llama recibe la información que pidió, y todo lo que necesite a una persona queda registrado como mensaje con un número para devolver la llamada.",
+  "maxChars": 166,
+  "where": [
+   "/ai-agents@1440",
+   "/ai-agents@390",
+   "/ai-agents@768"
+  ]
+ },
+ {
+  "en": "Your knowledge base and conversation data are kept separate and used only to power your own agent. Customer data is encrypted in transit and at rest, and it is not sold or shared. You can delete a contact's data on request and export your data in standard formats; a Data Processing Agreement is available on Enterprise.",
+  "es": "Tu base de conocimiento y los datos de tus conversaciones se mantienen separados y solo se usan para tu propio agente. Los datos de clientes se cifran en tránsito y en reposo, y no se venden ni se comparten. Puedes eliminar los datos de un contacto a pedido y exportar tus datos en formatos estándar; en Enterprise hay un Acuerdo de Procesamiento de Datos disponible.",
+  "maxChars": 337,
+  "where": [
+   "/ai-agents@1440",
+   "/ai-agents@390",
+   "/ai-agents@768"
+  ]
+ },
+ {
+  "en": "Lead captured",
+  "es": "Contacto capturado",
+  "maxChars": 14,
+  "where": [
+   "/ai-agents@768"
+  ]
+ },
+ {
+  "en": "65 AI replies every 2 weeks",
+  "es": "65 respuestas de IA cada 2 semanas",
+  "maxChars": 26,
+  "where": [
+   "/ai-agents@1440",
+   "/ai-agents@768"
+  ]
+ },
+ {
+  "en": "Hallucination prevention built in",
+  "es": "Prevención de alucinaciones integrada",
+  "maxChars": 32,
+  "where": [
+   "/ai-agents@1440",
+   "/ai-agents@768"
+  ]
+ },
+ {
+  "en": "Instant human handoff",
+  "es": "Traspaso inmediato a una persona",
+  "maxChars": 23,
+  "where": [
+   "/ai-agents@1440",
+   "/ai-agents@768"
+  ]
+ },
+ {
+  "en": "A/B prompt testing",
+  "es": "Pruebas A/B de prompts",
+  "maxChars": 18,
+  "where": [
+   "/ai-agents@768"
+  ]
+ },
+ {
+  "en": "Custom integrations and webhooks",
+  "es": "Integraciones y webhooks personalizados",
+  "maxChars": 35,
+  "where": [
+   "/ai-agents@1440",
+   "/ai-agents@768"
+  ]
+ },
+ {
+  "en": "Multi-language, with automatic language detection",
+  "es": "Multilingüe, con detección automática de idioma",
+  "maxChars": 44,
+  "where": [
+   "/ai-agents@1440",
+   "/ai-agents@768"
+  ]
+ },
+ {
+  "en": "Recording and searchable transcripts",
+  "es": "Grabaciones y transcripciones con búsqueda",
+  "maxChars": 36,
+  "where": [
+   "/ai-agents@1440",
+   "/ai-agents@768"
+  ]
+ },
+ {
+  "en": "Post-call analysis",
+  "es": "Análisis posterior a la llamada",
+  "maxChars": 19,
+  "where": [
+   "/ai-agents@1440",
+   "/ai-agents@768"
+  ]
+ },
+ {
+  "en": "No. ConvoAI has no contracts or commitments, and you can request cancellation from your Serverlys client area at any time. ConvoAI Essentials has no expiry date.",
+  "es": "No. ConvoAI no tiene contratos ni compromisos, y puedes solicitar la cancelación desde tu área de cliente de Serverlys en cualquier momento. ConvoAI Essentials no tiene fecha de vencimiento.",
+  "maxChars": 169,
+  "where": [
+   "/ai-agents@1440",
+   "/ai-agents@768"
+  ]
+ },
+ {
+  "en": "Hi — I'm the Serverlys agent. Ask me about plans, migration or domains, and I can book a callback.",
+  "es": "Hola, soy el agente de Serverlys. Pregúntame sobre planes, migración o dominios, y puedo agendarte una llamada.",
+  "maxChars": 105,
+  "where": [
+   "/ai-agents@1440"
+  ]
+ },
+ {
+  "en": "From Pro, the same agent answers your email channel with the same knowledge.",
+  "es": "Desde Pro, el mismo agente responde tu canal de correo con el mismo conocimiento.",
+  "maxChars": 76,
+  "where": [
+   "/ai-agents@1440"
+  ]
+ },
+ {
+  "en": "See automations",
+  "es": "Ver automatizaciones",
+  "maxChars": 17,
+  "where": [
+   "/ai-agents@1440"
+  ]
+ },
+ {
+  "en": "An AI agent in the chat window on your website, answering visitors while you are busy.",
+  "es": "Un agente de IA en la ventana de chat de tu sitio web, atendiendo a los visitantes mientras estás ocupado.",
+  "maxChars": 100,
+  "where": [
+   "/ai-agents@1440"
+  ]
+ },
+ {
+  "en": "Quick answers",
+  "es": "Respuestas rápidas",
+  "maxChars": 14,
+  "where": [
+   "/ai-agents@1440"
+  ]
+ },
+ {
+  "en": "WhatsApp and email channels for the same agent",
+  "es": "Canales de WhatsApp y correo para el mismo agente",
+  "maxChars": 46,
+  "where": [
+   "/ai-agents@1440"
+  ]
+ },
+ {
+  "en": "Knowledge base: your agent answers from your docs",
+  "es": "Base de conocimiento: tu agente responde con tus documentos",
+  "maxChars": 56,
+  "where": [
+   "/ai-agents@1440"
+  ]
+ },
+ {
+  "en": "Advanced WhatsApp templates (rich media, buttons, lists)",
+  "es": "Plantillas avanzadas de WhatsApp (multimedia, botones, listas)",
+  "maxChars": 58,
+  "where": [
+   "/ai-agents@1440"
+  ]
+ },
+ {
+  "en": "Custom AI training",
+  "es": "Entrenamiento de IA personalizado",
+  "maxChars": 19,
+  "where": [
+   "/ai-agents@1440"
+  ]
+ },
+ {
+  "en": "SSO / SAML for your organization",
+  "es": "SSO / SAML para tu organización",
+  "maxChars": 29,
+  "where": [
+   "/ai-agents@1440"
+  ]
+ },
+ {
+  "en": "Full white label, your brand everywhere",
+  "es": "Marca blanca completa, tu marca en todo",
+  "maxChars": 37,
+  "where": [
+   "/ai-agents@1440"
+  ]
+ },
+ {
+  "en": "An AI receptionist that answers your business line, books, transfers and takes the message.",
+  "es": "Una recepcionista con IA que contesta la línea de tu negocio, agenda citas, transfiere llamadas y toma mensajes.",
+  "maxChars": 105,
+  "where": [
+   "/ai-agents@1440"
+  ]
+ },
+ {
+  "en": "Usage-based, quoted for your setup",
+  "es": "Según uso, cotizado para tu configuración",
+  "maxChars": 36,
+  "where": [
+   "/ai-agents@1440"
+  ]
+ },
+ {
+  "en": "Answers inbound calls on your existing number or a new one",
+  "es": "Contesta llamadas entrantes en tu número actual o en uno nuevo",
+  "maxChars": 58,
+  "where": [
+   "/ai-agents@1440"
+  ]
+ },
+ {
+  "en": "Warm transfer to a person on your team",
+  "es": "Transferencia asistida a una persona de tu equipo",
+  "maxChars": 46,
+  "where": [
+   "/ai-agents@1440"
+  ]
+ },
+ {
+  "en": "Knowledge base built from your documents",
+  "es": "Base de conocimiento creada a partir de tus documentos",
+  "maxChars": 49,
+  "where": [
+   "/ai-agents@1440"
+  ]
+ },
+ {
+  "en": "everyday",
+  "es": "la administración diaria",
+  "maxChars": 10,
+  "where": [
+   "/automations@390"
+  ]
+ },
+ {
+  "en": "Built on n8n, set up by us, owned by you",
+  "es": "Hecho con n8n, configurado por nosotros y tuyo",
+  "maxChars": 40,
+  "where": [
+   "/automations@390"
+  ]
+ },
+ {
+  "en": "AI Agent",
+  "es": "Agente de IA",
+  "maxChars": 8,
+  "where": [
+   "/automations@390"
+  ]
+ },
+ {
+  "en": "Every option starts with a free mapping call. We quote after it, never per task or per run.",
+  "es": "Cada opción empieza con una llamada de diagnóstico gratis. Cotizamos después, nunca por tarea ni por ejecución.",
+  "maxChars": 85,
+  "where": [
+   "/automations@1440",
+   "/automations@390",
+   "/automations@768"
+  ]
+ },
+ {
+  "en": "Chat, call and form triggers",
+  "es": "Disparadores por chat, llamada y formulario",
+  "maxChars": 28,
+  "where": [
+   "/automations@390"
+  ]
+ },
+ {
+  "en": "Hosted and monitored by us",
+  "es": "Alojado y monitoreado por nosotros",
+  "maxChars": 28,
+  "where": [
+   "/automations@390"
+  ]
+ },
+ {
+  "en": "New workflows as needs change",
+  "es": "Nuevos flujos según cambien tus necesidades",
+  "maxChars": 36,
+  "where": [
+   "/automations@390"
+  ]
+ },
+ {
+  "en": "Run review on request",
+  "es": "Revisión de ejecuciones cuando la pidas",
+  "maxChars": 23,
+  "where": [
+   "/automations@390"
+  ]
+ },
+ {
+  "en": "Your data stays yours",
+  "es": "Tus datos siguen siendo tuyos",
+  "maxChars": 22,
+  "where": [
+   "/automations@390"
+  ]
+ },
+ {
+  "en": "On n8n, on infrastructure we run. Connected to the tools you already pay for rather than replacing them.",
+  "es": "Con n8n, en infraestructura que operamos nosotros. Conectado a las herramientas que ya pagas, en lugar de reemplazarlas.",
+  "maxChars": 106,
+  "where": [
+   "/automations@390",
+   "/automations@768"
+  ]
+ },
+ {
+  "en": "Every run is recorded. Failures retry, and if one keeps failing a person is told — you should not be the monitoring.",
+  "es": "Cada ejecución queda registrada. Los fallos se reintentan, y si uno sigue fallando se avisa a una persona: tú no deberías ser el sistema de monitoreo.",
+  "maxChars": 120,
+  "where": [
+   "/automations@1440",
+   "/automations@390"
+  ]
+ },
+ {
+  "en": "Book the mapping call",
+  "es": "Agenda la llamada de diagnóstico",
+  "maxChars": 22,
+  "where": [
+   "/automations@390"
+  ]
+ },
+ {
+  "en": "The jobs worth automating first",
+  "es": "Las tareas que vale la pena automatizar primero",
+  "maxChars": 32,
+  "where": [
+   "/automations@390",
+   "/automations@768"
+  ]
+ },
+ {
+  "en": "A held slot reaches the right calendar with the address and job notes attached, and the customer gets the confirmation.",
+  "es": "El horario reservado llega al calendario correcto con la dirección y las notas del trabajo, y el cliente recibe la confirmación.",
+  "maxChars": 121,
+  "where": [
+   "/automations@1440",
+   "/automations@390"
+  ]
+ },
+ {
+  "en": "Form to the right person",
+  "es": "Del formulario a la persona indicada",
+  "maxChars": 26,
+  "where": [
+   "/automations@1440",
+   "/automations@390",
+   "/automations@768"
+  ]
+ },
+ {
+  "en": "Connects the tools you already pay for",
+  "es": "Conecta las herramientas que ya pagas",
+  "maxChars": 35,
+  "where": [
+   "/automations@390"
+  ]
+ },
+ {
+  "en": "The same steps, every single time",
+  "es": "Los mismos pasos, todas las veces",
+  "maxChars": 31,
+  "where": [
+   "/automations@390"
+  ]
+ },
+ {
+  "en": "Connecting the tools you already use",
+  "es": "Conectamos las herramientas que ya usas",
+  "maxChars": 36,
+  "where": [
+   "/automations@390",
+   "/automations@768"
+  ]
+ },
+ {
+  "en": "Questions about business automation",
+  "es": "Preguntas sobre automatización de negocios",
+  "maxChars": 39,
+  "where": [
+   "/automations@390"
+  ]
+ },
+ {
+  "en": "What kind of tasks can you automate?",
+  "es": "¿Qué tipo de tareas pueden automatizar?",
+  "maxChars": 37,
+  "where": [
+   "/automations@390"
+  ]
+ },
+ {
+  "en": "Running · step",
+  "es": "En curso · paso",
+  "maxChars": 11,
+  "where": [
+   "/automations@1440",
+   "/automations@768"
+  ]
+ },
+ {
+  "en": "of 5",
+  "es": "de 5",
+  "maxChars": 3,
+  "where": [
+   "/automations@1440",
+   "/automations@768"
+  ]
+ },
+ {
+  "en": "Deep clean · Maria L.",
+  "es": "Limpieza profunda · Maria L.",
+  "maxChars": 21,
+  "where": [
+   "/automations@1440",
+   "/automations@768"
+  ]
+ },
+ {
+  "en": "Fri, Oct 9 · 9:00 AM – 12:00 PM",
+  "es": "vie, 9 oct · 9:00 a. m. – 12:00 p. m.",
+  "maxChars": 34,
+  "where": [
+   "/automations@1440",
+   "/automations@768"
+  ]
+ },
+ {
+  "en": "SMS sent",
+  "es": "SMS enviado",
+  "maxChars": 9,
+  "where": [
+   "/automations@1440",
+   "/automations@768"
+  ]
+ },
+ {
+  "en": "Added to CRM",
+  "es": "Agregado al CRM",
+  "maxChars": 14,
+  "where": [
+   "/automations@1440",
+   "/automations@768"
+  ]
+ },
+ {
+  "en": "this week · 0 failed",
+  "es": "esta semana · 0 fallidos",
+  "maxChars": 22,
+  "where": [
+   "/automations@768"
+  ]
+ },
+ {
+  "en": "After a free mapping call",
+  "es": "Después de una llamada de diagnóstico gratis",
+  "maxChars": 25,
+  "where": [
+   "/automations@768"
+  ]
+ },
+ {
+  "en": "Connected to the tools you use",
+  "es": "Conectado a las herramientas que usas",
+  "maxChars": 34,
+  "where": [
+   "/automations@768"
+  ]
+ },
+ {
+  "en": "Changes on request",
+  "es": "Cambios cuando los pidas",
+  "maxChars": 22,
+  "where": [
+   "/automations@768"
+  ]
+ },
+ {
+  "en": "Workflow set",
+  "es": "Conjunto de flujos",
+  "maxChars": 13,
+  "where": [
+   "/automations@768"
+  ]
+ },
+ {
+  "en": "The daily admin, end to end: enquiry, booking, follow-up.",
+  "es": "La administración diaria, de principio a fin: consulta, reserva y seguimiento.",
+  "maxChars": 70,
+  "where": [
+   "/automations@768"
+  ]
+ },
+ {
+  "en": "Open any workflow, see what it does, change it or ask us to. It is not a black box and you are not locked in.",
+  "es": "Abre cualquier flujo, mira lo que hace, cámbialo o pídenos que lo cambiemos. No es una caja negra y no quedas atado.",
+  "maxChars": 107,
+  "where": [
+   "/automations@768"
+  ]
+ },
+ {
+  "en": "What to automate first",
+  "es": "Qué automatizar primero",
+  "maxChars": 21,
+  "where": [
+   "/automations@768"
+  ]
+ },
+ {
+  "en": "Automations for",
+  "es": "Automatizaciones para",
+  "maxChars": 15,
+  "where": [
+   "/automations@1440"
+  ]
+ },
+ {
+  "en": "business admin",
+  "es": "de tu negocio",
+  "maxChars": 9,
+  "where": [
+   "/automations@1440"
+  ]
+ },
+ {
+  "en": "A call first — we map the task before quoting anything",
+  "es": "Primero una llamada: analizamos la tarea antes de cotizar nada",
+  "maxChars": 56,
+  "where": [
+   "/automations@1440"
+  ]
+ },
+ {
+  "en": "No per-task or per-run billing. Nothing to sign before the call.",
+  "es": "Sin cobro por tarea ni por ejecución. Nada que firmar antes de la llamada.",
+  "maxChars": 62,
+  "where": [
+   "/automations@1440"
+  ]
+ },
+ {
+  "en": "How an automation gets built",
+  "es": "Cómo se crea una automatización",
+  "maxChars": 26,
+  "where": [
+   "/automations@1440"
+  ]
+ },
+ {
+  "en": "Tell us the job nobody wants to do",
+  "es": "Cuéntanos la tarea que nadie quiere hacer",
+  "maxChars": 35,
+  "where": [
+   "/automations@1440"
+  ]
+ },
+ {
+  "en": "Small businesses still run on calls, quotes and word of mouth. We started Serverlys to put their whole online side in one place.",
+  "es": "Los pequeños negocios todavía funcionan con llamadas, presupuestos y recomendaciones de boca en boca. Creamos Serverlys para reunir todo su lado digital en un solo lugar.",
+  "maxChars": 136,
+  "where": [
+   "/about@1440",
+   "/about@390",
+   "/about@768"
+  ]
+ },
+ {
+  "en": "A world where every small business has a website that works for it, not against it.",
+  "es": "Un mundo donde cada pequeño negocio tenga un sitio web que trabaje a su favor, no en su contra.",
+  "maxChars": 76,
+  "where": [
+   "/about@1440",
+   "/about@390",
+   "/about@768"
+  ]
+ },
+ {
+  "en": "The hosting, website and growth team for small businesses, built so nobody opens a renewal bill and wonders what happened.",
+  "es": "El equipo de hosting, sitios web y crecimiento para pequeños negocios, pensado para que nadie abra una factura de renovación y se pregunte qué pasó.",
+  "maxChars": 140,
+  "where": [
+   "/about@1440",
+   "/about@390",
+   "/about@768"
+  ]
+ },
+ {
+  "en": "“Migration is a paid extra.”",
+  "es": "“La migración tiene un costo extra.”",
+  "maxChars": 28,
+  "where": [
+   "/about@390"
+  ]
+ },
+ {
+  "en": "Not here. The renewal price is shown before you buy, migration and backup restores are free, and a person reads every message.",
+  "es": "Aquí no. El precio de renovación se muestra antes de comprar, la migración y la restauración de copias de seguridad son gratis, y una persona lee cada mensaje.",
+  "maxChars": 133,
+  "where": [
+   "/about@1440",
+   "/about@390",
+   "/about@768"
+  ]
+ },
+ {
+  "en": "SEO, social and care",
+  "es": "SEO, redes y mantenimiento",
+  "maxChars": 20,
+  "where": [
+   "/about@390"
+  ]
+ },
+ {
+  "en": "SEO plans, social media management and ServerCare maintenance, for owners who want the marketing and upkeep handled.",
+  "es": "Planes de SEO, gestión de redes sociales y mantenimiento ServerCare, para dueños que quieren delegar el marketing y el mantenimiento.",
+  "maxChars": 126,
+  "where": [
+   "/about@1440",
+   "/about@390",
+   "/about@768"
+  ]
+ },
+ {
+  "en": "{0} years in, still one team, one bill and one number to call. Thank you for being part of it.",
+  "es": "{0} años después, seguimos siendo un solo equipo, una sola factura y un solo número al que llamar. Gracias por ser parte de esto.",
+  "maxChars": 94,
+  "where": [
+   "/about@1440",
+   "/about@390",
+   "/about@768"
+  ]
+ },
+ {
+  "en": "Renewal shown",
+  "es": "Renovación visible",
+  "maxChars": 16,
+  "where": [
+   "/about@390"
+  ]
+ },
+ {
+  "en": "Free daily backups",
+  "es": "Copias de seguridad diarias gratis",
+  "maxChars": 20,
+  "where": [
+   "/about@1440",
+   "/about@390",
+   "/about@768"
+  ]
+ },
+ {
+  "en": "Everything a Small Business Runs On",
+  "es": "Todo lo que un pequeño negocio necesita para funcionar",
+  "maxChars": 36,
+  "where": [
+   "/about@390",
+   "/about@768"
+  ]
+ },
+ {
+  "en": "Twelve products, one account, one bill. Starting prices are read live from the same plan data as each product’s own page.",
+  "es": "Doce productos, una cuenta, una factura. Los precios iniciales se leen en vivo de los mismos datos de planes que usa la página de cada producto.",
+  "maxChars": 122,
+  "where": [
+   "/about@1440",
+   "/about@390",
+   "/about@768"
+  ]
+ },
+ {
+  "en": "Leads to bookings, automatically",
+  "es": "De prospectos a reservas, automáticamente",
+  "maxChars": 32,
+  "where": [
+   "/about@390",
+   "/about@768"
+  ]
+ },
+ {
+  "en": "A person reads every message. Ask us anything.",
+  "es": "Una persona lee cada mensaje. Pregúntanos lo que quieras.",
+  "maxChars": 48,
+  "where": [
+   "/about@390"
+  ]
+ },
+ {
+  "en": "Every plan shows the price it renews at next to the price you start at, so year two is never a surprise. And the same team that hosts your site can build it, grow it and look after it, on one bill.",
+  "es": "Cada plan muestra el precio de renovación junto al precio con el que empiezas, así que el segundo año nunca es una sorpresa. Y el mismo equipo que aloja tu sitio puede crearlo, hacerlo crecer y cuidarlo, en una sola factura.",
+  "maxChars": 190,
+  "where": [
+   "/about@390",
+   "/about@768"
+  ]
+ },
+ {
+  "en": "If your site is on a closed website builder like Wix, Squarespace or Shopify, its files cannot be moved, so it would need rebuilding rather than migrating. If you need a large custom infrastructure contract, talk to us first so we can tell you honestly whether we are the right fit.",
+  "es": "Si tu sitio está en un creador de sitios cerrado como Wix, Squarespace o Shopify, sus archivos no se pueden mover, así que habría que reconstruirlo en lugar de migrarlo. Si necesitas un contrato grande de infraestructura a medida, háblanos primero para decirte con honestidad si somos la opción adecuada.",
+  "maxChars": 285,
+  "where": [
+   "/about@390",
+   "/about@768"
+  ]
+ },
+ {
+  "en": "Put your whole online side with one team",
+  "es": "Pon todo lo digital de tu negocio en manos de un solo equipo",
+  "maxChars": 43,
+  "where": [
+   "/about@1440",
+   "/about@390",
+   "/about@768"
+  ]
+ },
+ {
+  "en": "AI agents that answer customers by website chat and by phone, day and night.",
+  "es": "Agentes de IA que atienden a tus clientes por chat en tu sitio web y por teléfono, de día y de noche.",
+  "maxChars": 94,
+  "where": [
+   "/about@1440",
+   "/about@768"
+  ]
+ },
+ {
+  "en": "Call",
+  "es": "Llama",
+  "maxChars": 4,
+  "where": [
+   "/about@1440",
+   "/about@768"
+  ]
+ },
+ {
+  "en": ", email",
+  "es": ", correo",
+  "maxChars": 7,
+  "where": [
+   "/about@1440",
+   "/about@768"
+  ]
+ },
+ {
+  "en": ", or ask ConvoAI now, and the team follows up on anything that needs a human.",
+  "es": ", o pregúntale ahora a ConvoAI, y el equipo da seguimiento a todo lo que necesite a una persona.",
+  "maxChars": 90,
+  "where": [
+   "/about@1440",
+   "/about@768"
+  ]
+ },
+ {
+  "en": "How can we help?",
+  "es": "¿Cómo podemos ayudarte?",
+  "maxChars": 15,
+  "where": [
+   "/support@1440",
+   "/support@390"
+  ]
+ },
+ {
+  "en": "Support is included on every plan at every tier. There is no priority queue to buy: there is one queue, and one team.",
+  "es": "El soporte está incluido en todos los planes y niveles. No hay una fila prioritaria que comprar: hay una sola fila y un solo equipo.",
+  "maxChars": 125,
+  "where": [
+   "/support@1440",
+   "/support@390"
+  ]
+ },
+ {
+  "en": "Checkout shows a 502 since this morning. Nothing changed on our side.",
+  "es": "El checkout muestra un error 502 desde esta mañana. No cambiamos nada de nuestro lado.",
+  "maxChars": 73,
+  "where": [
+   "/support@390"
+  ]
+ },
+ {
+  "en": "A plugin update hit the PHP memory limit. We raised it and restored the cache; checkout is taking orders again.",
+  "es": "Una actualización de un plugin alcanzó el límite de memoria de PHP. Lo aumentamos y restauramos la caché; el checkout ya está recibiendo pedidos otra vez.",
+  "maxChars": 112,
+  "where": [
+   "/support@390"
+  ]
+ },
+ {
+  "en": "Files, database and email moved to staging, checked, then cut over when you say so.",
+  "es": "Archivos, base de datos y correo migrados a staging, revisados y luego activados cuando tú digas.",
+  "maxChars": 86,
+  "where": [
+   "/support@390",
+   "/support@768"
+  ]
+ },
+ {
+  "en": "Any daily restore point, restored for you. No restore fee.",
+  "es": "Cualquier punto de restauración diario, restaurado por nosotros. Sin cargo por restaurar.",
+  "maxChars": 57,
+  "where": [
+   "/support@1440",
+   "/support@390",
+   "/support@768"
+  ]
+ },
+ {
+  "en": "Certificates, records, nameserver changes and the propagation wait explained.",
+  "es": "Certificados, registros, cambios de nameservers y la espera de propagación, explicados.",
+  "maxChars": 82,
+  "where": [
+   "/support@390",
+   "/support@768"
+  ]
+ },
+ {
+  "en": "If a site on our platform is compromised, we help you clean it and close the hole.",
+  "es": "Si un sitio en nuestra plataforma se ve comprometido, te ayudamos a limpiarlo y cerrar la brecha.",
+  "maxChars": 86,
+  "where": [
+   "/support@390",
+   "/support@768"
+  ]
+ },
+ {
+  "en": "The error text verbatim if there is one. A screenshot beats a description.",
+  "es": "El texto exacto del error, si lo hay. Una captura de pantalla vale más que una descripción.",
+  "maxChars": 86,
+  "where": [
+   "/support@390"
+  ]
+ },
+ {
+  "en": "And whether anything changed just before — a plugin update, a DNS change, a new theme.",
+  "es": "Y si algo cambió justo antes: una actualización de plugin, un cambio de DNS, un tema nuevo.",
+  "maxChars": 86,
+  "where": [
+   "/support@390"
+  ]
+ },
+ {
+  "en": "Pricing, renewals, refunds and plan choice are answered on the FAQ.",
+  "es": "Precios, renovaciones, reembolsos y elección de plan se responden en las preguntas frecuentes.",
+  "maxChars": 73,
+  "where": [
+   "/support@390",
+   "/support@768"
+  ]
+ },
+ {
+  "en": "Question about buying rather than fixing?",
+  "es": "¿Tu pregunta es sobre comprar y no sobre arreglar algo?",
+  "maxChars": 32,
+  "where": [
+   "/support@768"
+  ]
+ },
+ {
+  "en": "SPF, DKIM and DMARC records set up so your mail arrives.",
+  "es": "Registros SPF, DKIM y DMARC configurados para que tu correo llegue.",
+  "maxChars": 55,
+  "where": [
+   "/support@1440"
+  ]
+ },
+ {
+  "en": "Questions, answered",
+  "es": "Tus preguntas, respondidas",
+  "maxChars": 21,
+  "where": [
+   "/faq@390"
+  ]
+ },
+ {
+  "en": "answers covering price, renewals, migration, domains and the AI products. If yours is not here,",
+  "es": "respuestas sobre precios, renovaciones, migración, dominios y los productos de IA. Si la tuya no está aquí,",
+  "maxChars": 101,
+  "where": [
+   "/faq@1440",
+   "/faq@390",
+   "/faq@768"
+  ]
+ },
+ {
+  "en": "Pricing, billing and refunds",
+  "es": "Precios, facturación y reembolsos",
+  "maxChars": 26,
+  "where": [
+   "/faq@1440",
+   "/faq@390"
+  ]
+ },
+ {
+  "en": "It needs headroom at checkout rather than raw capacity all the time. Store pages cache poorly by nature — carts and checkouts cannot be served from cache — so the tier that matters is the one that keeps the database responsive under concurrent orders.",
+  "es": "Necesita margen en el checkout más que capacidad bruta todo el tiempo. Las páginas de una tienda se cachean mal por naturaleza (el carrito y el checkout no pueden servirse desde caché), así que el nivel que importa es el que mantiene la base de datos ágil con pedidos simultáneos.",
+  "maxChars": 266,
+  "where": [
+   "/faq@390"
+  ]
+ },
+ {
+  "en": "Can you migrate an existing store?",
+  "es": "¿Pueden migrar una tienda existente?",
+  "maxChars": 33,
+  "where": [
+   "/faq@390"
+  ]
+ },
+ {
+  "en": "Yes, free, and to a staging URL first. Stores are the case where checking before cutover matters most: you get to place a test order on staging before anything points at us.",
+  "es": "Sí, gratis, y primero a una URL de staging. Las tiendas son el caso donde más importa revisar antes del cambio: puedes hacer un pedido de prueba en staging antes de que nada apunte a nosotros.",
+  "maxChars": 174,
+  "where": [
+   "/faq@390"
+  ]
+ },
+ {
+  "en": "Generally no. The registry fee is paid the moment a name is registered, which is standard across registrars and set out in the refund policy. The 30-day money-back guarantee covers hosting plans, not domains.",
+  "es": "Por lo general, no. La tarifa del registro se paga en el momento en que se registra el nombre, algo estándar entre registradores y explicado en la política de reembolsos. La garantía de reembolso de 30 días cubre los planes de hosting, no los dominios.",
+  "maxChars": 219,
+  "where": [
+   "/faq@1440",
+   "/faq@390",
+   "/faq@768"
+  ]
+ },
+ {
+  "en": "AI agents and automations",
+  "es": "Agentes de IA y automatizaciones",
+  "maxChars": 25,
+  "where": [
+   "/faq@1440",
+   "/faq@390"
+  ]
+ },
+ {
+  "en": "No. The common workflows — enquiry to record, booking to calendar, form to notification — are set up for you. n8n is there if you want to build something specific.",
+  "es": "No. Los flujos comunes (de consulta a registro, de reserva a calendario, de formulario a notificación) ya vienen configurados. n8n está ahí si quieres crear algo específico.",
+  "maxChars": 164,
+  "where": [
+   "/faq@390"
+  ]
+ },
+ {
+  "en": "Yes. Every hosting plan comes with ConvoAI Essentials at no extra cost: an AI assistant that answers visitors in a chat window on your website, with 65 AI replies every 14 days. Your ConvoAI account is set up when your hosting goes live, and the sign-in email arrives with your hosting welcome email. ConvoAI Pro adds WhatsApp, email and higher limits if you need them.",
+  "es": "Sí. Cada plan de hosting incluye ConvoAI Essentials sin costo extra: un asistente de IA que atiende a los visitantes en una ventana de chat de tu sitio web, con 65 respuestas de IA cada 14 días. Tu cuenta de ConvoAI se crea cuando tu hosting se activa, y el correo de acceso llega junto con el correo de bienvenida de tu hosting. ConvoAI Pro agrega WhatsApp, correo y límites más altos si los necesitas.",
+  "maxChars": 366,
+  "where": [
+   "/faq@1440",
+   "/faq@768"
+  ]
+ },
+ {
+  "en": "No. You can register a domain on its own and point it wherever you like. If you add hosting later, annual plans include a free domain for the first year.",
+  "es": "No. Puedes registrar un dominio por sí solo y apuntarlo a donde quieras. Si agregas hosting más adelante, los planes anuales incluyen un dominio gratis el primer año.",
+  "maxChars": 144,
+  "where": [
+   "/faq@1440",
+   "/faq@768"
+  ]
+ },
+ {
+  "en": "Old host",
+  "es": "Hosting anterior",
+  "maxChars": 8,
+  "where": [
+   "/migrations@1440",
+   "/migrations@390",
+   "/migrations@768"
+  ]
+ },
+ {
+  "en": "At every moment, at least one server has your full site. That is why there is no downtime.",
+  "es": "En todo momento, al menos un servidor tiene tu sitio completo. Por eso no hay tiempo sin servicio.",
+  "maxChars": 93,
+  "where": [
+   "/migrations@390"
+  ]
+ },
+ {
+  "en": "Your site’s address and a login for your current host or WordPress. This is the only part you do. Don’t cancel your old hosting yet.",
+  "es": "La dirección de tu sitio y un acceso a tu hosting actual o a WordPress. Esta es la única parte que haces tú. No canceles tu hosting anterior todavía.",
+  "maxChars": 135,
+  "where": [
+   "/migrations@390"
+  ]
+ },
+ {
+  "en": "· serving",
+  "es": "· en servicio",
+  "maxChars": 10,
+  "where": [
+   "/migrations@1440",
+   "/migrations@390",
+   "/migrations@768"
+  ]
+ },
+ {
+  "en": "We test it on a private address",
+  "es": "Lo probamos en una dirección privada",
+  "maxChars": 28,
+  "where": [
+   "/migrations@1440",
+   "/migrations@390",
+   "/migrations@768"
+  ]
+ },
+ {
+  "en": "Final sync, then we switch",
+  "es": "Sincronización final y luego el cambio",
+  "maxChars": 28,
+  "where": [
+   "/migrations@1440",
+   "/migrations@390",
+   "/migrations@768"
+  ]
+ },
+ {
+  "en": "· retired",
+  "es": "· retirado",
+  "maxChars": 8,
+  "where": [
+   "/migrations@390"
+  ]
+ },
+ {
+  "en": "Email is a separate service from the website. We move it only when you ask, and plan it so messages keep arriving throughout.",
+  "es": "El correo es un servicio separado del sitio web. Lo migramos solo si nos lo pides, y lo planeamos para que los mensajes sigan llegando todo el tiempo.",
+  "maxChars": 132,
+  "where": [
+   "/migrations@390"
+  ]
+ },
+ {
+  "en": "Don’t cancel your old hosting until we tell you the move is finished. It is the safety net that makes zero downtime possible.",
+  "es": "No canceles tu hosting anterior hasta que te digamos que la migración terminó. Es la red de seguridad que hace posible que no haya tiempo sin servicio.",
+  "maxChars": 125,
+  "where": [
+   "/migrations@1440",
+   "/migrations@390",
+   "/migrations@768"
+  ]
+ }
+]

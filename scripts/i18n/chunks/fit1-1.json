@@ -1,0 +1,1264 @@
+[
+ {
+  "en": "OFF",
+  "es": "DESCUENTO",
+  "maxChars": 5,
+  "where": [
+   "/@390"
+  ]
+ },
+ {
+  "en": "30-day money-back guarantee",
+  "es": "Garantía de reembolso de 30 días",
+  "maxChars": 30,
+  "where": [
+   "/@1440",
+   "/@390",
+   "/cloud-hosting@768"
+  ]
+ },
+ {
+  "en": "Tools for every stage of a project",
+  "es": "Herramientas para cada etapa de un proyecto",
+  "maxChars": 32,
+  "where": [
+   "/@390",
+   "/@768"
+  ]
+ },
+ {
+  "en": "Build it on infrastructure that is not the bottleneck",
+  "es": "Créalo en una infraestructura que no sea el cuello de botella",
+  "maxChars": 50,
+  "where": [
+   "/@1440",
+   "/@390"
+  ]
+ },
+ {
+  "en": "A site built around what the business actually needs to say, then handed over on hosting that keeps it fast.",
+  "es": "Un sitio construido en torno a lo que el negocio realmente necesita decir, y luego entregado en un hosting que lo mantiene rápido.",
+  "maxChars": 111,
+  "where": [
+   "/@1440",
+   "/@390",
+   "/@768"
+  ]
+ },
+ {
+  "en": "Bigger projects: multi-site estates, migrations off legacy hosts, and the systems around them.",
+  "es": "Proyectos más grandes: conjuntos de varios sitios, migraciones desde hostings antiguos y los sistemas que los rodean.",
+  "maxChars": 109,
+  "where": [
+   "/@390"
+  ]
+ },
+ {
+  "en": "Nobody answers the phone at 6pm, so CallFlow does",
+  "es": "Nadie contesta el teléfono a las 6pm, así que CallFlow lo hace",
+  "maxChars": 56,
+  "where": [
+   "/@390",
+   "/@768"
+  ]
+ },
+ {
+  "en": "Your AI co-worker. Free with every plan.",
+  "es": "Tu compañero de trabajo con IA. Gratis con todos los planes.",
+  "maxChars": 48,
+  "where": [
+   "/@1440",
+   "/@390"
+  ]
+ },
+ {
+  "en": "ConvoAI answers your customers day and night, and hands anything it should not attempt to a person with the full transcript.",
+  "es": "ConvoAI responde a tus clientes de día y de noche, y le pasa a una persona, con la transcripción completa, todo lo que no debe intentar resolver.",
+  "maxChars": 137,
+  "where": [
+   "/@390"
+  ]
+ },
+ {
+  "en": "A conversation can start a booking, a ticket or a follow-up without you wiring it up.",
+  "es": "Una conversación puede iniciar una reserva, un ticket o un seguimiento sin que tengas que configurarlo.",
+  "maxChars": 86,
+  "where": [
+   "/@1440",
+   "/@390",
+   "/@768"
+  ]
+ },
+ {
+  "en": "Hours, prices, stock and delivery: the questions that make up most of a site's volume, answered from your own pages.",
+  "es": "Horarios, precios, existencias y entregas: las preguntas que forman la mayor parte del volumen de un sitio, respondidas a partir de tus propias páginas.",
+  "maxChars": 136,
+  "where": [
+   "/@1440",
+   "/@390"
+  ]
+ },
+ {
+  "en": "Yes, from 9am to 1pm. Want me to book a slot this Sunday?",
+  "es": "Sí, de 9am a 1pm. ¿Quieres que te reserve un horario este domingo?",
+  "maxChars": 62,
+  "where": [
+   "/@390"
+  ]
+ },
+ {
+  "en": "Connect it to automations, so a conversation becomes a booking, a ticket or a follow-up without anyone copying it across.",
+  "es": "Conéctalo a automatizaciones, para que una conversación se convierta en una reserva, un ticket o un seguimiento sin que nadie tenga que copiarla.",
+  "maxChars": 134,
+  "where": [
+   "/@390"
+  ]
+ },
+ {
+  "en": "Book a cleaning for Friday morning",
+  "es": "Agenda una limpieza para el viernes en la mañana",
+  "maxChars": 10,
+  "where": [
+   "/@1440",
+   "/@390",
+   "/@768"
+  ]
+ },
+ {
+  "en": "Choose the plan that",
+  "es": "Elige el plan que",
+  "maxChars": 16,
+  "where": [
+   "/@390",
+   "/hosting@390"
+  ]
+ },
+ {
+  "en": "matches what you run",
+  "es": "se ajusta a lo que tienes",
+  "maxChars": 23,
+  "where": [
+   "/@390",
+   "/hosting@390"
+  ]
+ },
+ {
+  "en": "Black Friday first month, {0} setup fee included: {1}. Renews at {2}/mo. Ends {3}.",
+  "es": "Primer mes de Black Friday, con la tarifa de configuración de {0} incluida: {1}. Se renueva a {2}/mes. Termina el {3}.",
+  "maxChars": 90,
+  "where": [
+   "/@1440",
+   "/@390",
+   "/@768"
+  ]
+ },
+ {
+  "en": "New: ConvoAI AI chat included",
+  "es": "Nuevo: chat con IA de ConvoAI incluido",
+  "maxChars": 32,
+  "where": [
+   "/@390",
+   "/cloud-hosting@768",
+   "/ecommerce-hosting@1440"
+  ]
+ },
+ {
+  "en": "Google Analytics integration",
+  "es": "Integración con Google Analytics",
+  "maxChars": 27,
+  "where": [
+   "/@390",
+   "/migrations@1440",
+   "/pricing@390"
+  ]
+ },
+ {
+  "en": "FREE LiteSpeed Caching",
+  "es": "Caché LiteSpeed GRATIS",
+  "maxChars": 20,
+  "where": [
+   "/@390",
+   "/@768",
+   "/pricing@1440"
+  ]
+ },
+ {
+  "en": "ConvoAI Essentials AI Website Chat",
+  "es": "Chat con IA ConvoAI Essentials para tu sitio web",
+  "maxChars": 37,
+  "where": [
+   "/@1440",
+   "/@390",
+   "/@768"
+  ]
+ },
+ {
+  "en": "LiteSpeed Website Cache",
+  "es": "Caché LiteSpeed para sitios web",
+  "maxChars": 25,
+  "where": [
+   "/@390",
+   "/migrations@1440",
+   "/migrations@768"
+  ]
+ },
+ {
+  "en": "Move an existing site without downtime",
+  "es": "Muda un sitio existente sin tiempo de inactividad",
+  "maxChars": 45,
+  "where": [
+   "/@390",
+   "/hosting@390"
+  ]
+ },
+ {
+  "en": "Send us the current host login, or just the domain. No sales call required.",
+  "es": "Envíanos el acceso de tu hosting actual, o solo el dominio. No hace falta una llamada de ventas.",
+  "maxChars": 82,
+  "where": [
+   "/@1440",
+   "/@390",
+   "/@768"
+  ]
+ },
+ {
+  "en": "Site, database and email are copied to a temporary URL, usually within a business day.",
+  "es": "El sitio, la base de datos y el correo se copian a una URL temporal, normalmente en un día hábil.",
+  "maxChars": 89,
+  "where": [
+   "/@390",
+   "/hosting@390"
+  ]
+ },
+ {
+  "en": "Click through it on the staging URL. We fix anything that looks wrong before go-live.",
+  "es": "Revísalo en la URL de staging. Corregimos cualquier cosa que se vea mal antes de publicarlo.",
+  "maxChars": 80,
+  "where": [
+   "/@1440",
+   "/@390",
+   "/@768"
+  ]
+ },
+ {
+  "en": "Your old host keeps serving until propagation finishes, so there is no gap in service.",
+  "es": "Tu hosting anterior sigue funcionando hasta que termina la propagación, así que el servicio no se interrumpe.",
+  "maxChars": 87,
+  "where": [
+   "/@390",
+   "/hosting@390"
+  ]
+ },
+ {
+  "en": "Cloud, WordPress and ecommerce hosting all start at {0}/mo on the monthly term. During Black Friday (until {1}) Starter is {2} for the first month, with its one-off setup fee cut to {3}, then {4}/mo. The {5}% discount applies to the first payment on every hosting, email and ConvoAI Pro plan and is added automatically at checkout. Longer terms cost less per month and renew at the same term price. We print what you pay today and what it renews at side by side, so compare the renewal before anything else.",
+  "es": "El hosting Cloud, WordPress y de ecommerce empieza en {0}/mes con el periodo mensual. Durante Black Friday (hasta el {1}), Starter cuesta {2} el primer mes, con su tarifa única de configuración rebajada a {3}, y luego {4}/mes. El {5}% de descuento se aplica al primer pago de cada plan de hosting, correo y ConvoAI Pro, y se agrega automáticamente al pagar. Los periodos más largos cuestan menos por mes y se renuevan al mismo precio del periodo. Mostramos lado a lado lo que pagas hoy y a cuánto se renueva, así que compara la renovación antes que nada.",
+  "maxChars": 498,
+  "where": [
+   "/@1440",
+   "/@390",
+   "/@768"
+  ]
+ },
+ {
+  "en": "Only after a Black Friday first payment. A plan bought in the sale (until {0}) gets {1}% off its first payment, then renews at its regular price — the same price it renews at outside the sale. Otherwise no: every plan renews at the price you signed up at, and we print that renewal next to today's price.",
+  "es": "Solo después de un primer pago de Black Friday. Un plan comprado en la promoción (hasta el {0}) tiene {1}% de descuento en su primer pago y luego se renueva a su precio regular, el mismo al que se renueva fuera de la promoción. Si no, no: cada plan se renueva al precio con el que te registraste, y mostramos esa renovación junto al precio de hoy.",
+  "maxChars": 308,
+  "where": [
+   "/@1440",
+   "/@390",
+   "/@768"
+  ]
+ },
+ {
+  "en": "No hidden ones. The only setup fee is a one-off {0} on the monthly term of the entry plans (Starter hosting) and on email plans, and it is printed on the plan card ({1}% off during Black Friday). Migration is free, SSL is free, WHOIS privacy on domains is free, and restoring a backup is free. Domain registrations renew at published rates, and premium domains are labelled as premium before checkout.",
+  "es": "No hay cargos ocultos. La única tarifa de configuración es un pago único de {0} en el periodo mensual de los planes de entrada (hosting Starter) y en los planes de correo, y aparece en la tarjeta del plan ({1}% de descuento durante Black Friday). La migración es gratis, el SSL es gratis, la privacidad WHOIS en dominios es gratis y restaurar un backup es gratis. Los registros de dominio se renuevan a las tarifas publicadas, y los dominios premium se marcan como premium antes de pagar.",
+  "maxChars": 429,
+  "where": [
+   "/@1440",
+   "/@390",
+   "/@768"
+  ]
+ },
+ {
+  "en": "Yes, 30 days on all hosting plans, no questions asked. Domain registrations are generally not refundable once registered because the registry fee is paid immediately, which is standard across registrars and set out in the refund policy.",
+  "es": "Sí, 30 días en todos los planes de hosting, sin preguntas. Los registros de dominio por lo general no son reembolsables una vez registrados, porque la tarifa del registro se paga de inmediato, algo estándar entre registradores y explicado en la política de reembolsos.",
+  "maxChars": 254,
+  "where": [
+   "/@390",
+   "/faq@390"
+  ]
+ },
+ {
+  "en": "Match it to the workload. Brochure sites and blogs fit shared hosting; variable or growing traffic suits cloud; applications needing root access want a VPS; sustained heavy load justifies a dedicated server. If nobody in-house wants to maintain a server, choose managed hosting at whichever tier.",
+  "es": "Elígelo según la carga de trabajo. Los sitios informativos y blogs caben en un hosting compartido; el tráfico variable o en crecimiento va bien con cloud; las aplicaciones que necesitan acceso root piden un VPS; una carga alta sostenida justifica un servidor dedicado. Si nadie en tu equipo quiere mantener un servidor, elige hosting administrado en cualquier nivel.",
+  "maxChars": 318,
+  "where": [
+   "/@1440",
+   "/@390",
+   "/@768"
+  ]
+ },
+ {
+  "en": "Can I upgrade my plan later?",
+  "es": "¿Puedo mejorar mi plan más adelante?",
+  "maxChars": 28,
+  "where": [
+   "/@390",
+   "/faq@390"
+  ]
+ },
+ {
+  "en": "Is ConvoAI included with hosting?",
+  "es": "¿ConvoAI viene incluido con el hosting?",
+  "maxChars": 35,
+  "where": [
+   "/@390",
+   "/faq@390",
+   "/hosting@390"
+  ]
+ },
+ {
+  "en": "Pick a plan.",
+  "es": "Elige un plan.",
+  "maxChars": 13,
+  "where": [
+   "/@1440",
+   "/@390"
+  ]
+ },
+ {
+  "en": "We move your site free.",
+  "es": "Movemos tu sitio gratis.",
+  "maxChars": 22,
+  "where": [
+   "/@1440",
+   "/@390"
+  ]
+ },
+ {
+  "en": "Ecommerce hosting",
+  "es": "Hosting para ecommerce",
+  "maxChars": 3,
+  "where": [
+   "/@390",
+   "/about@390",
+   "/abuse-handling-policy@390"
+  ]
+ },
+ {
+  "en": "AI and automation",
+  "es": "IA y automatización",
+  "maxChars": 17,
+  "where": [
+   "/@390",
+   "/about@390",
+   "/abuse-handling-policy@390"
+  ]
+ },
+ {
+  "en": "Restaurant websites",
+  "es": "Sitios web para restaurantes",
+  "maxChars": 8,
+  "where": [
+   "/@390",
+   "/about@390",
+   "/abuse-handling-policy@390"
+  ]
+ },
+ {
+  "en": "Business solutions",
+  "es": "Soluciones empresariales",
+  "maxChars": 21,
+  "where": [
+   "/@390",
+   "/about@390",
+   "/abuse-handling-policy@390"
+  ]
+ },
+ {
+  "en": "Secure checkout",
+  "es": "Pago seguro",
+  "maxChars": 10,
+  "where": [
+   "/@390",
+   "/accessibility@390",
+   "/accessibility@768"
+  ]
+ },
+ {
+  "en": "30-day money-back",
+  "es": "Reembolso en 30 días",
+  "maxChars": 19,
+  "where": [
+   "/@390",
+   "/accessibility@390",
+   "/accessibility@768"
+  ]
+ },
+ {
+  "en": "Free migration",
+  "es": "Migración gratis",
+  "maxChars": 15,
+  "where": [
+   "/@1440",
+   "/@390",
+   "/accessibility@390"
+  ]
+ },
+ {
+  "en": "Fresh this weekend",
+  "es": "Recién hecho este fin de semana",
+  "maxChars": 19,
+  "where": [
+   "/@768"
+  ]
+ },
+ {
+  "en": "AI assistant · a person can step in",
+  "es": "Asistente de IA · una persona puede intervenir",
+  "maxChars": 30,
+  "where": [
+   "/@768"
+  ]
+ },
+ {
+  "en": "The 2am enquiry gets an answer at 2am",
+  "es": "La consulta de las 2am recibe respuesta a las 2am",
+  "maxChars": 41,
+  "where": [
+   "/@1440",
+   "/@768"
+  ]
+ },
+ {
+  "en": "Wedding cake pickup",
+  "es": "Recogida de pastel de bodas",
+  "maxChars": 9,
+  "where": [
+   "/@1440",
+   "/@768"
+  ]
+ },
+ {
+  "en": "Read transcript",
+  "es": "Leer transcripción",
+  "maxChars": 16,
+  "where": [
+   "/@768"
+  ]
+ },
+ {
+  "en": "Manage it without it becoming a second job",
+  "es": "Adminístralo sin que se vuelva un segundo trabajo",
+  "maxChars": 45,
+  "where": [
+   "/@768"
+  ]
+ },
+ {
+  "en": "WordPress core and security patches applied automatically, with the backup taken first. You keep the switch — automatic is the default, not the only option.",
+  "es": "El núcleo de WordPress y los parches de seguridad se aplican automáticamente, con el respaldo hecho primero. Tú decides: lo automático es la opción predeterminada, no la única.",
+  "maxChars": 160,
+  "where": [
+   "/@1440",
+   "/@768"
+  ]
+ },
+ {
+  "en": "None of the five are an add-on, an upgrade prompt, or a line on the renewal invoice.",
+  "es": "Ninguno de los cinco es un complemento, una invitación a mejorar el plan ni una línea en la factura de renovación.",
+  "maxChars": 88,
+  "where": [
+   "/@1440",
+   "/@768"
+  ]
+ },
+ {
+  "en": "Custom builds, integrations and the awkward bits — payment flows, portals, anything the template will not do.",
+  "es": "Desarrollos a medida, integraciones y las partes complicadas: flujos de pago, portales, todo lo que una plantilla no hace.",
+  "maxChars": 115,
+  "where": [
+   "/@1440",
+   "/@768"
+  ]
+ },
+ {
+  "en": "Six common shapes, priced from the same table as everything else on this page.",
+  "es": "Seis configuraciones comunes, con precios de la misma tabla que todo lo demás en esta página.",
+  "maxChars": 78,
+  "where": [
+   "/@1440",
+   "/@768"
+  ]
+ },
+ {
+  "en": "Start a chat",
+  "es": "Inicia un chat",
+  "maxChars": 13,
+  "where": [
+   "/@1440",
+   "/@768"
+  ]
+ },
+ {
+  "en": "FREE cPanel",
+  "es": "cPanel GRATIS",
+  "maxChars": 11,
+  "where": [
+   "/@768",
+   "/hosting@768",
+   "/migrations@1440"
+  ]
+ },
+ {
+  "en": "FREE WP Install",
+  "es": "Instalación de WP GRATIS",
+  "maxChars": 16,
+  "where": [
+   "/@768",
+   "/hosting@768",
+   "/pricing@768"
+  ]
+ },
+ {
+  "en": "FREE Auto SSL Certificate",
+  "es": "Certificado SSL automático GRATIS",
+  "maxChars": 25,
+  "where": [
+   "/@768",
+   "/migrations@1440",
+   "/migrations@768"
+  ]
+ },
+ {
+  "en": "Auto Website Updates",
+  "es": "Actualizaciones automáticas del sitio",
+  "maxChars": 24,
+  "where": [
+   "/@768",
+   "/migrations@1440",
+   "/migrations@390"
+  ]
+ },
+ {
+  "en": "30-Day Money-Back Guarantee",
+  "es": "Garantía de reembolso de 30 días",
+  "maxChars": 30,
+  "where": [
+   "/@768",
+   "/migrations@1440"
+  ]
+ },
+ {
+  "en": "30-day money-back guarantee. Free migration. The renewal price shown before you buy.",
+  "es": "Garantía de reembolso de 30 días. Migración gratis. El precio de renovación visible antes de comprar.",
+  "maxChars": 95,
+  "where": [
+   "/@1440",
+   "/@768"
+  ]
+ },
+ {
+  "en": "Cleaning company websites",
+  "es": "Sitios web para empresas de limpieza",
+  "maxChars": 15,
+  "where": [
+   "/@768",
+   "/about@768",
+   "/abuse-handling-policy@768"
+  ]
+ },
+ {
+  "en": "NVMe + LiteSpeed on every tier",
+  "es": "NVMe + LiteSpeed en todos los niveles",
+  "maxChars": 32,
+  "where": [
+   "/@1440"
+  ]
+ },
+ {
+  "en": "By chatting with us, you agree to our",
+  "es": "Al chatear con nosotros, aceptas nuestra",
+  "maxChars": 38,
+  "where": [
+   "/@1440"
+  ]
+ },
+ {
+  "en": "Privacy Policy",
+  "es": "Política de privacidad",
+  "maxChars": 14,
+  "where": [
+   "/@1440",
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Daily backups with self-service restore",
+  "es": "Respaldos diarios con restauración por tu cuenta",
+  "maxChars": 39,
+  "where": [
+   "/@1440"
+  ]
+ },
+ {
+  "en": "Free SSL, issued and renewed",
+  "es": "SSL gratis, emitido y renovado",
+  "maxChars": 28,
+  "where": [
+   "/@1440"
+  ]
+ },
+ {
+  "en": "Free migration from your current host",
+  "es": "Migración gratis desde tu hosting actual",
+  "maxChars": 38,
+  "where": [
+   "/@1440"
+  ]
+ },
+ {
+  "en": "A business card that loads instantly",
+  "es": "Una tarjeta de presentación que carga al instante",
+  "maxChars": 37,
+  "where": [
+   "/@1440"
+  ]
+ },
+ {
+  "en": "Twenty client sites on one account",
+  "es": "Veinte sitios de clientes en una sola cuenta",
+  "maxChars": 37,
+  "where": [
+   "/@1440"
+  ]
+ },
+ {
+  "en": "It says when it does not know, and tells customers they are talking to an assistant.",
+  "es": "Dice cuando no sabe algo y les avisa a los clientes que están hablando con un asistente.",
+  "maxChars": 83,
+  "where": [
+   "/@1440"
+  ]
+ },
+ {
+  "en": "Renewal price shown",
+  "es": "Precio de renovación visible",
+  "maxChars": 23,
+  "where": [
+   "/@1440"
+  ]
+ },
+ {
+  "en": "We switch DNS when you say",
+  "es": "Cambiamos el DNS cuando tú digas",
+  "maxChars": 27,
+  "where": [
+   "/@1440",
+   "/hosting@1440"
+  ]
+ },
+ {
+  "en": "Live demo",
+  "es": "Demo en vivo",
+  "maxChars": 11,
+  "where": [
+   "/ai-agents@390",
+   "/hosting@390"
+  ]
+ },
+ {
+  "en": "When cloud is the right answer — and when it is not",
+  "es": "Cuándo cloud es la respuesta correcta, y cuándo no",
+  "maxChars": 47,
+  "where": [
+   "/hosting@390"
+  ]
+ },
+ {
+  "en": "Custom stacks, root access",
+  "es": "Stacks a medida, acceso root",
+  "maxChars": 17,
+  "where": [
+   "/hosting@390",
+   "/hosting@768"
+  ]
+ },
+ {
+  "en": "Sites, domains, mailboxes, agents and automations sit in the same control panel. No separate logins, no reconciling two billing accounts.",
+  "es": "Sitios, dominios, buzones, agentes y automatizaciones están en el mismo panel de control. Sin accesos separados ni dos cuentas de facturación que cuadrar.",
+  "maxChars": 146,
+  "where": [
+   "/hosting@390"
+  ]
+ },
+ {
+  "en": "Storage",
+  "es": "Almacenamiento",
+  "maxChars": 7,
+  "where": [
+   "/hosting@390"
+  ]
+ },
+ {
+  "en": "SSL certificate",
+  "es": "Certificado SSL",
+  "maxChars": 14,
+  "where": [
+   "/hosting@390"
+  ]
+ },
+ {
+  "en": "Valid · renews in 61 days",
+  "es": "Válido · se renueva en 61 días",
+  "maxChars": 26,
+  "where": [
+   "/hosting@390"
+  ]
+ },
+ {
+  "en": "Configured at server level before you arrive.",
+  "es": "Configurado a nivel de servidor antes de que llegues.",
+  "maxChars": 42,
+  "where": [
+   "/hosting@390",
+   "/hosting@768"
+  ]
+ },
+ {
+  "en": "No per-gigabyte overage when traffic spikes.",
+  "es": "Sin cargos extra por gigabyte cuando sube el tráfico.",
+  "maxChars": 43,
+  "where": [
+   "/hosting@390",
+   "/hosting@768"
+  ]
+ },
+ {
+  "en": "Match it to the workload rather than the price. Brochure sites and blogs fit the entry tier; variable or growing traffic suits cloud; a store needs checkout headroom. If nobody in-house wants to maintain a server, choose managed at whichever tier.",
+  "es": "Elígelo según la carga de trabajo, no según el precio. Los sitios informativos y blogs caben en el nivel de entrada; el tráfico variable o en crecimiento va bien con cloud; una tienda necesita margen en el checkout. Si nadie en tu equipo quiere mantener un servidor, elige administrado en cualquier nivel.",
+  "maxChars": 262,
+  "where": [
+   "/faq@1440",
+   "/faq@390",
+   "/faq@768"
+  ]
+ },
+ {
+  "en": "Is cloud hosting cheaper than a VPS?",
+  "es": "¿El hosting cloud es más barato que un VPS?",
+  "maxChars": 34,
+  "where": [
+   "/faq@390",
+   "/hosting@390"
+  ]
+ },
+ {
+  "en": "No. It is managed the same way shared hosting is — a cPanel control panel, one-click WordPress installs, and a support team you can reach. “Cloud” describes the infrastructure underneath, not extra work for you.",
+  "es": "No. Se administra igual que el hosting compartido: un panel de control cPanel, instalación de WordPress en un clic y un equipo de soporte al que puedes contactar. “Cloud” describe la infraestructura de fondo, no trabajo extra para ti.",
+  "maxChars": 219,
+  "where": [
+   "/faq@1440",
+   "/faq@390",
+   "/faq@768"
+  ]
+ },
+ {
+  "en": "A plan that still makes sense in year two",
+  "es": "Un plan que sigue teniendo sentido en el segundo año",
+  "maxChars": 43,
+  "where": [
+   "/ai-agents@1440",
+   "/ai-agents@390",
+   "/faq@1440"
+  ]
+ },
+ {
+  "en": "Databases",
+  "es": "Bases de datos",
+  "maxChars": 11,
+  "where": [
+   "/hosting@1440",
+   "/hosting@768"
+  ]
+ },
+ {
+  "en": "Backups",
+  "es": "Copias de seguridad",
+  "maxChars": 10,
+  "where": [
+   "/hosting@1440",
+   "/hosting@768"
+  ]
+ },
+ {
+  "en": "Domains",
+  "es": "Dominios",
+  "maxChars": 7,
+  "where": [
+   "/hosting@1440",
+   "/hosting@768",
+   "/pricing@390"
+  ]
+ },
+ {
+  "en": "Malware scan",
+  "es": "Escaneo de malware",
+  "maxChars": 12,
+  "where": [
+   "/hosting@1440",
+   "/hosting@768"
+  ]
+ },
+ {
+  "en": "Clean · 04:00 today",
+  "es": "Limpio · 04:00 hoy",
+  "maxChars": 15,
+  "where": [
+   "/hosting@1440",
+   "/hosting@768"
+  ]
+ },
+ {
+  "en": "The control panel you already know, not a bespoke one to learn.",
+  "es": "El panel de control que ya conoces, no uno a medida que tengas que aprender.",
+  "maxChars": 65,
+  "where": [
+   "/hosting@1440"
+  ]
+ },
+ {
+  "en": "Taken nightly and kept ready. Restores cost nothing.",
+  "es": "Se hacen cada noche y quedan listos. Restaurar no cuesta nada.",
+  "maxChars": 53,
+  "where": [
+   "/hosting@1440"
+  ]
+ },
+ {
+  "en": "Get started in complete confidence. Our 30-day money-back guarantee means it’s risk-free.",
+  "es": "Empieza con total confianza. Nuestra garantía de reembolso de 30 días significa que no tienes ningún riesgo.",
+  "maxChars": 87,
+  "where": [
+   "/cloud-hosting@1440",
+   "/cloud-hosting@390",
+   "/cloud-hosting@768"
+  ]
+ },
+ {
+  "en": "Search-ready from day one",
+  "es": "Listo para buscadores desde el primer día",
+  "maxChars": 29,
+  "where": [
+   "/cloud-hosting@390",
+   "/cloud-hosting@768"
+  ]
+ },
+ {
+  "en": "Free SSL, fast NVMe pages and clean URLs, the basics Google and AI search reward.",
+  "es": "SSL gratis, páginas rápidas con NVMe y URLs limpias: lo básico que premian Google y las búsquedas con IA.",
+  "maxChars": 88,
+  "where": [
+   "/cloud-hosting@390",
+   "/cloud-hosting@768"
+  ]
+ },
+ {
+  "en": "Starting fresh",
+  "es": "Empezar desde cero",
+  "maxChars": 12,
+  "where": [
+   "/cloud-hosting@390"
+  ]
+ },
+ {
+  "en": "Already have a website?",
+  "es": "¿Ya tienes un sitio web?",
+  "maxChars": 16,
+  "where": [
+   "/cloud-hosting@390"
+  ]
+ },
+ {
+  "en": "Build your site your way",
+  "es": "Crea tu sitio a tu manera",
+  "maxChars": 23,
+  "where": [
+   "/cloud-hosting@390"
+  ]
+ },
+ {
+  "en": "Fast cloud hosting for growing websites",
+  "es": "Cloud hosting rápido para sitios web en crecimiento",
+  "maxChars": 45,
+  "where": [
+   "/cloud-hosting@390"
+  ]
+ },
+ {
+  "en": "Page views",
+  "es": "Vistas de página",
+  "maxChars": 11,
+  "where": [
+   "/cloud-hosting@390"
+  ]
+ },
+ {
+  "en": "Disk usage",
+  "es": "Uso de disco",
+  "maxChars": 10,
+  "where": [
+   "/cloud-hosting@390"
+  ]
+ },
+ {
+  "en": "Keep visitors with faster pages",
+  "es": "Retén visitantes con páginas más rápidas",
+  "maxChars": 30,
+  "where": [
+   "/cloud-hosting@390"
+  ]
+ },
+ {
+  "en": "Website status",
+  "es": "Estado del sitio web",
+  "maxChars": 15,
+  "where": [
+   "/cloud-hosting@1440",
+   "/cloud-hosting@390",
+   "/cloud-hosting@768"
+  ]
+ },
+ {
+  "en": "Move up a tier in a few clicks when you need more power",
+  "es": "Sube de nivel en unos clics cuando necesites más potencia",
+  "maxChars": 54,
+  "where": [
+   "/cloud-hosting@1440",
+   "/cloud-hosting@390"
+  ]
+ },
+ {
+  "en": "More memory and visits on every step up, same panel",
+  "es": "Más memoria y visitas en cada nivel, el mismo panel",
+  "maxChars": 48,
+  "where": [
+   "/cloud-hosting@390"
+  ]
+ },
+ {
+  "en": "Free migration if you are coming from another host",
+  "es": "Migración gratis si vienes de otro proveedor de hosting",
+  "maxChars": 52,
+  "where": [
+   "/cloud-hosting@390"
+  ]
+ },
+ {
+  "en": "Issued and renewed automatically, so visitors' data is always encrypted.",
+  "es": "Se emite y se renueva automáticamente, para que los datos de tus visitantes siempre estén cifrados.",
+  "maxChars": 75,
+  "where": [
+   "/cloud-hosting@1440",
+   "/cloud-hosting@390",
+   "/cloud-hosting@768"
+  ]
+ },
+ {
+  "en": "All checks passing",
+  "es": "Todas las verificaciones en orden",
+  "maxChars": 19,
+  "where": [
+   "/cloud-hosting@1440",
+   "/cloud-hosting@390",
+   "/cloud-hosting@768"
+  ]
+ },
+ {
+  "en": "Hosting you can hold us to",
+  "es": "Un hosting con compromisos que puedes exigirnos",
+  "maxChars": 26,
+  "where": [
+   "/cloud-hosting@1440",
+   "/cloud-hosting@390",
+   "/cloud-hosting@768"
+  ]
+ },
+ {
+  "en": "The renewal price, up front",
+  "es": "El precio de renovación, por adelantado",
+  "maxChars": 28,
+  "where": [
+   "/cloud-hosting@390",
+   "/cloud-hosting@768",
+   "/ecommerce-hosting@390"
+  ]
+ },
+ {
+  "en": "Thirty days to change your mind",
+  "es": "Treinta días para cambiar de opinión",
+  "maxChars": 33,
+  "where": [
+   "/cloud-hosting@390",
+   "/cloud-hosting@768",
+   "/ecommerce-hosting@390"
+  ]
+ },
+ {
+  "en": "If it is not right, ask within 30 days for a full refund. No forms, no retention call.",
+  "es": "Si no es lo que buscas, pide un reembolso completo dentro de 30 días. Sin formularios ni llamadas para retenerte.",
+  "maxChars": 88,
+  "where": [
+   "/cloud-hosting@1440",
+   "/cloud-hosting@390",
+   "/cloud-hosting@768"
+  ]
+ },
+ {
+  "en": "Free migration by our team, tested on staging before anything points at us.",
+  "es": "Migración gratis hecha por nuestro equipo, probada en un entorno de prueba antes de que nada apunte a nosotros.",
+  "maxChars": 84,
+  "where": [
+   "/cloud-hosting@1440",
+   "/cloud-hosting@390",
+   "/cloud-hosting@768"
+  ]
+ },
+ {
+  "en": "How can I help today?",
+  "es": "¿Cómo puedo ayudarte hoy?",
+  "maxChars": 20,
+  "where": [
+   "/cloud-hosting@390",
+   "/ecommerce-hosting@390",
+   "/wordpress-hosting@390"
+  ]
+ },
+ {
+  "en": "Help me choose the right plan",
+  "es": "Ayúdame a elegir el plan adecuado",
+  "maxChars": 29,
+  "where": [
+   "/cloud-hosting@390",
+   "/ecommerce-hosting@390",
+   "/wordpress-hosting@390"
+  ]
+ },
+ {
+  "en": "Answers setup questions in plain language",
+  "es": "Responde preguntas de configuración en lenguaje sencillo",
+  "maxChars": 43,
+  "where": [
+   "/cloud-hosting@390",
+   "/wordpress-hosting@390"
+  ]
+ },
+ {
+  "en": "Cloud hosting FAQs",
+  "es": "Preguntas frecuentes sobre cloud hosting",
+  "maxChars": 20,
+  "where": [
+   "/cloud-hosting@1440",
+   "/cloud-hosting@390",
+   "/cloud-hosting@768"
+  ]
+ },
+ {
+  "en": "Is ConvoAI included with my hosting plan?",
+  "es": "¿ConvoAI viene incluido con mi plan de hosting?",
+  "maxChars": 40,
+  "where": [
+   "/cloud-hosting@390",
+   "/ecommerce-hosting@390",
+   "/pricing@390"
+  ]
+ },
+ {
+  "en": "Can I run Node.js on your cloud server?",
+  "es": "¿Puedo ejecutar Node.js en su servidor cloud?",
+  "maxChars": 40,
+  "where": [
+   "/cloud-hosting@390"
+  ]
+ },
+ {
+  "en": "Try Serverlys cloud hosting risk-free. If it is not right, tell us within 30 days for a full refund.",
+  "es": "Prueba el cloud hosting de Serverlys sin riesgo. Si no es lo que buscas, avísanos dentro de 30 días y te hacemos un reembolso completo.",
+  "maxChars": 90,
+  "where": [
+   "/cloud-hosting@1440",
+   "/cloud-hosting@390",
+   "/cloud-hosting@768"
+  ]
+ },
+ {
+  "en": "/mo",
+  "es": "/mes",
+  "maxChars": 3,
+  "where": [
+   "/cloud-hosting@768",
+   "/ecommerce-hosting@1440",
+   "/migrations@1440"
+  ]
+ },
+ {
+  "en": "Choose the right cloud hosting plan",
+  "es": "Elige el plan de cloud hosting adecuado",
+  "maxChars": 34,
+  "where": [
+   "/cloud-hosting@768"
+  ]
+ },
+ {
+  "en": "Black Friday: today you pay {0} for {1} months (regular {2}). Renews at {3}. Ends {4}.",
+  "es": "Black Friday: hoy pagas {0} por {1} meses (regular {2}). Se renueva a {3}. Termina el {4}.",
+  "maxChars": 85,
+  "where": [
+   "/cloud-hosting@768",
+   "/ecommerce-hosting@768",
+   "/pricing@768"
+  ]
+ },
+ {
+  "en": "Free SSL, daily backups, free migration and ConvoAI Essentials AI website chat, the same on every plan.",
+  "es": "SSL gratis, copias de seguridad diarias, migración gratis y el chat con IA ConvoAI Essentials para tu sitio web, igual en cada plan.",
+  "maxChars": 117,
+  "where": [
+   "/cloud-hosting@1440",
+   "/cloud-hosting@768",
+   "/ecommerce-hosting@1440"
+  ]
+ },
+ {
+  "en": "A chat agent, free",
+  "es": "Un agente de chat, gratis",
+  "maxChars": 19,
+  "where": [
+   "/cloud-hosting@768"
+  ]
+ },
+ {
+  "en": "ConvoAI answers your visitors day and night, included with every plan.",
+  "es": "ConvoAI atiende a tus visitantes de día y de noche, incluido en cada plan.",
+  "maxChars": 70,
+  "where": [
+   "/cloud-hosting@768"
+  ]
+ },
+ {
+  "en": "Find the right hosting for your website",
+  "es": "Encuentra el hosting adecuado para tu sitio web",
+  "maxChars": 39,
+  "where": [
+   "/cloud-hosting@768"
+  ]
+ },
+ {
+  "en": "The file system is scanned on a schedule, and anything harmful is flagged.",
+  "es": "El sistema de archivos se escanea de forma programada y se marca cualquier cosa dañina.",
+  "maxChars": 80,
+  "where": [
+   "/cloud-hosting@768"
+  ]
+ },
+ {
+  "en": "SSL · Backups · Firewall",
+  "es": "SSL · Respaldos · Firewall",
+  "maxChars": 21,
+  "where": [
+   "/cloud-hosting@1440",
+   "/cloud-hosting@768"
+  ]
+ },
+ {
+  "en": "Every plan shows the rate it renews at next to the rate you start on. Year two is never a surprise.",
+  "es": "Cada plan muestra el precio de renovación junto al precio con el que empiezas. El segundo año nunca es una sorpresa.",
+  "maxChars": 103,
+  "where": [
+   "/cloud-hosting@1440",
+   "/cloud-hosting@768",
+   "/ecommerce-hosting@1440"
+  ]
+ },
+ {
+  "en": "Most popular · Black Friday {0}% off",
+  "es": "Más popular · Black Friday {0}% de descuento",
+  "maxChars": 36,
+  "where": [
+   "/cloud-hosting@1440",
+   "/ecommerce-hosting@1440",
+   "/pricing@1440"
+  ]
+ },
+ {
+  "en": "Best value for high-traffic sites",
+  "es": "Mejor valor para sitios con mucho tráfico",
+  "maxChars": 32,
+  "where": [
+   "/cloud-hosting@1440",
+   "/migrations@1440",
+   "/pricing@1440"
+  ]
+ },
+ {
+  "en": "Unlimited sites and 6 GB RAM. The tier most projects settle on.",
+  "es": "Sitios ilimitados y 6 GB de RAM. El nivel que eligen la mayoría de los proyectos.",
+  "maxChars": 68,
+  "where": [
+   "/cloud-hosting@1440",
+   "/pricing@1440"
+  ]
+ },
+ {
+  "en": "8 GB RAM and ~100,000 monthly visits, for peak-season traffic.",
+  "es": "8 GB de RAM y ~100,000 visitas al mes, para el tráfico de temporada alta.",
+  "maxChars": 67,
+  "where": [
+   "/cloud-hosting@1440",
+   "/ecommerce-hosting@1440",
+   "/pricing@1440"
+  ]
+ },
+ {
+  "en": "Load pages faster with NVMe storage and LiteSpeed servers",
+  "es": "Carga páginas más rápido con almacenamiento NVMe y servidores LiteSpeed",
+  "maxChars": 58,
+  "where": [
+   "/cloud-hosting@1440"
+  ]
+ },
+ {
+  "en": "I want to move my site to Serverlys",
+  "es": "Quiero mudar mi sitio a Serverlys",
+  "maxChars": 31,
+  "where": [
+   "/cloud-hosting@1440"
+  ]
+ },
+ {
+  "en": "Managed hosting for WordPress this Black Friday",
+  "es": "Hosting administrado para WordPress este Black Friday",
+  "maxChars": 50,
+  "where": [
+   "/wordpress-hosting@390"
+  ]
+ },
+ {
+  "en": "Updates applied with a backup taken first",
+  "es": "Actualizaciones aplicadas con un backup previo",
+  "maxChars": 42,
+  "where": [
+   "/wordpress-hosting@1440",
+   "/wordpress-hosting@390"
+  ]
+ },
+ {
+  "en": "Explore managed WordPress plans",
+  "es": "Explora los planes de WordPress administrado",
+  "maxChars": 33,
+  "where": [
+   "/wordpress-hosting@390",
+   "/wordpress-hosting@768"
+  ]
+ }
+]

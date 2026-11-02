@@ -1,0 +1,1195 @@
+[
+ {
+  "en": "What is a business email address?",
+  "es": "¿Qué es una dirección de correo empresarial?",
+  "maxChars": 3,
+  "where": [
+   "/business-email@1440",
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "What is email hosting?",
+  "es": "¿Qué es el hosting de correo?",
+  "maxChars": 3,
+  "where": [
+   "/business-email@1440",
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "How much does business email cost?",
+  "es": "¿Cuánto cuesta el correo empresarial?",
+  "maxChars": 3,
+  "where": [
+   "/business-email@1440",
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Will it work on my phone and with Outlook or Apple Mail?",
+  "es": "¿Funcionará en mi celular y con Outlook o Apple Mail?",
+  "maxChars": 4,
+  "where": [
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Do I need a domain first?",
+  "es": "¿Necesito un dominio primero?",
+  "maxChars": 3,
+  "where": [
+   "/business-email@1440",
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Start today",
+  "es": "Empieza hoy",
+  "maxChars": 6,
+  "where": [
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Sitemap",
+  "es": "Mapa del sitio",
+  "maxChars": 11,
+  "where": [
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Terms of service",
+  "es": "Términos del servicio",
+  "maxChars": 3,
+  "where": [
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Cookie settings",
+  "es": "Configuración de cookies",
+  "maxChars": 16,
+  "where": [
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Business email, Black Friday first month (then {0}/mo)",
+  "es": "Correo empresarial, primer mes de Black Friday (luego {0}/mes)",
+  "maxChars": 58,
+  "where": [
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "Favorites",
+  "es": "Favoritos",
+  "maxChars": 7,
+  "where": [
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "Inbox",
+  "es": "Bandeja de entrada",
+  "maxChars": 4,
+  "where": [
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "Sent Items",
+  "es": "Elementos enviados",
+  "maxChars": 3,
+  "where": [
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "Deleted Items",
+  "es": "Elementos eliminados",
+  "maxChars": 5,
+  "where": [
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "Junk Email",
+  "es": "Correo no deseado",
+  "maxChars": 5,
+  "where": [
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "Q4 brand refresh",
+  "es": "Renovación de marca Q4",
+  "maxChars": 8,
+  "where": [
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "Works for me, see you at noon…",
+  "es": "Me parece bien, nos vemos al mediodía…",
+  "maxChars": 12,
+  "where": [
+   "/business-email@1440",
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "See 2 more messages",
+  "es": "Ver 2 mensajes más",
+  "maxChars": 17,
+  "where": [
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "All day",
+  "es": "Todo el día",
+  "maxChars": 7,
+  "where": [
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "New event",
+  "es": "Nuevo evento",
+  "maxChars": 9,
+  "where": [
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "Can't wait to see you and catch up!",
+  "es": "¡Tengo muchas ganas de verte y ponernos al día!",
+  "maxChars": 10,
+  "where": [
+   "/business-email@1440",
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "Existing email moved with your site",
+  "es": "Tu correo actual se muda con tu sitio",
+  "maxChars": 35,
+  "where": [
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "Choose plan",
+  "es": "Elegir plan",
+  "maxChars": 6,
+  "where": [
+   "/business-email@1440",
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "Moving your email",
+  "es": "Mudando tu correo",
+  "maxChars": 15,
+  "where": [
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "Inbox, Sent, Archive",
+  "es": "Recibidos, Enviados, Archivo",
+  "maxChars": 21,
+  "where": [
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "2,418 messages",
+  "es": "2,418 mensajes",
+  "maxChars": 10,
+  "where": [
+   "/business-email@1440",
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "First month, then {0}/mo · {1} setup fee · ends {2}",
+  "es": "Primer mes, luego {0}/mes · {1} de configuración · termina el {2}",
+  "maxChars": 55,
+  "where": [
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "{0} email accounts",
+  "es": "{0} cuentas de correo",
+  "maxChars": 18,
+  "where": [
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "Encrypted TLS connections",
+  "es": "Conexiones cifradas con TLS",
+  "maxChars": 25,
+  "where": [
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "{0} GB email storage",
+  "es": "{0} GB de almacenamiento de correo",
+  "maxChars": 20,
+  "where": [
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "An address at your own domain",
+  "es": "Una dirección en tu propio dominio",
+  "maxChars": 31,
+  "where": [
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "Mailboxes moved with your site",
+  "es": "Buzones migrados junto con tu sitio",
+  "maxChars": 18,
+  "where": [
+   "/business-email@1440",
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "Prices in USD, billed monthly. The setup fee is charged once, on the first invoice.",
+  "es": "Precios en USD, facturados mensualmente. El cargo de instalación se cobra una sola vez, en la primera factura.",
+  "maxChars": 85,
+  "where": [
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "Open your inbox from any computer. Nothing to install, nothing to configure.",
+  "es": "Abre tu bandeja de entrada desde cualquier computadora. Nada que instalar ni configurar.",
+  "maxChars": 80,
+  "where": [
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "Add your account with IMAP and SMTP, and your folders stay in sync everywhere.",
+  "es": "Agrega tu cuenta con IMAP y SMTP, y tus carpetas se mantienen sincronizadas en todas partes.",
+  "maxChars": 80,
+  "where": [
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "for your email?",
+  "es": "para tu correo?",
+  "maxChars": 11,
+  "where": [
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "Questions?",
+  "es": "¿Preguntas?",
+  "maxChars": 8,
+  "where": [
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "Tell it your team size, get the plan that fits.",
+  "es": "Dile el tamaño de tu equipo y obtén el plan que te conviene.",
+  "maxChars": 45,
+  "where": [
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "Ask ConvoAI",
+  "es": "Pregúntale a ConvoAI",
+  "maxChars": 14,
+  "where": [
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "Hi, I'm ConvoAI. How can I help with your email today?",
+  "es": "Hola, soy ConvoAI. ¿Cómo puedo ayudarte hoy con tu correo?",
+  "maxChars": 51,
+  "where": [
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "Your domain, your inbox",
+  "es": "Tu dominio, tu bandeja de entrada",
+  "maxChars": 3,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "Every email you send says something about your business. Stand out with your own domain and a signature that reflects your brand.",
+  "es": "Cada correo que envías dice algo de tu negocio. Destaca con tu propio dominio y una firma que refleje tu marca.",
+  "maxChars": 6,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "View",
+  "es": "Vista",
+  "maxChars": 3,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "Focused",
+  "es": "Prioritarios",
+  "maxChars": 3,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "Thu, 12:00 PM",
+  "es": "Jue, 12:00 PM",
+  "maxChars": 5,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "Thanks,",
+  "es": "Gracias,",
+  "maxChars": 7,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "Follow up",
+  "es": "Seguimiento",
+  "maxChars": 9,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "To: jordan@brightleaf.co · Tue 10/6 9:41 AM",
+  "es": "Para: jordan@brightleaf.co · Mar 6/10 9:41 AM",
+  "maxChars": 42,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "Hi Jordan,",
+  "es": "Hola Jordan:",
+  "maxChars": 10,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "Proposal walkthrough",
+  "es": "Repaso de la propuesta",
+  "maxChars": 7,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "Built for real businesses",
+  "es": "Hecho para negocios reales",
+  "maxChars": 5,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "Set-up",
+  "es": "Configuración",
+  "maxChars": 4,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "Easy setup and migration",
+  "es": "Configuración y migración fáciles",
+  "maxChars": 6,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "Mon",
+  "es": "Lun",
+  "maxChars": 3,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "Mailboxes at your own domain, ready to use",
+  "es": "Buzones con tu propio dominio, listos para usar",
+  "maxChars": 18,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "Mailboxes",
+  "es": "Buzones",
+  "maxChars": 3,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "Webmail in any browser",
+  "es": "Webmail en cualquier navegador",
+  "maxChars": 26,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "Works in Outlook and Apple Mail",
+  "es": "Funciona en Outlook y Apple Mail",
+  "maxChars": 8,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "Logo files: final versions",
+  "es": "Archivos del logo: versiones finales",
+  "maxChars": 15,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "Bring your inbox with you",
+  "es": "Lleva tu bandeja de entrada contigo",
+  "maxChars": 8,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "Your email address lives at your domain. Find the name, register it with Serverlys and set up your mailboxes on it in the same order.",
+  "es": "Tu dirección de correo vive en tu dominio. Encuentra el nombre, regístralo con Serverlys y configura tus buzones en él en el mismo pedido.",
+  "maxChars": 40,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "The address your email will live at",
+  "es": "La dirección donde vivirá tu correo",
+  "maxChars": 31,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "yourbusiness",
+  "es": "tunegocio",
+  "maxChars": 3,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "Search for your name",
+  "es": "Busca tu nombre",
+  "maxChars": 10,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "Start a migration",
+  "es": "Inicia una migración",
+  "maxChars": 6,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "Reach a real person",
+  "es": "Habla con una persona real",
+  "maxChars": 11,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "ConvoAI hands off to the team",
+  "es": "ConvoAI te pasa con el equipo",
+  "maxChars": 8,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "buy",
+  "es": "comprar",
+  "maxChars": 3,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "Shared hosting",
+  "es": "Hosting compartido",
+  "maxChars": 9,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "· by request",
+  "es": "· a solicitud",
+  "maxChars": 10,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "Services",
+  "es": "Servicios",
+  "maxChars": 6,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "Resources",
+  "es": "Recursos",
+  "maxChars": 4,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "GoDaddy alternative",
+  "es": "Alternativa a GoDaddy",
+  "maxChars": 3,
+  "where": [
+   "/business-email@1440"
+  ]
+ },
+ {
+  "en": "live registry answers, never a guess",
+  "es": "respuestas en vivo del registro, nunca suposiciones",
+  "maxChars": 37,
+  "where": [
+   "/domain-name@390",
+   "/domain-name@768"
+  ]
+ },
+ {
+  "en": "Trusted domain registrar",
+  "es": "Registrador de dominios de confianza",
+  "maxChars": 25,
+  "where": [
+   "/domain-name@1440",
+   "/domain-name@390"
+  ]
+ },
+ {
+  "en": "Security",
+  "es": "Seguridad",
+  "maxChars": 7,
+  "where": [
+   "/domain-name@390",
+   "/whois-lookup@768"
+  ]
+ },
+ {
+  "en": "Quick setup, easy management",
+  "es": "Configuración rápida, administración fácil",
+  "maxChars": 32,
+  "where": [
+   "/domain-name@1440",
+   "/domain-name@390"
+  ]
+ },
+ {
+  "en": "Auto-renew",
+  "es": "Renovación automática",
+  "maxChars": 7,
+  "where": [
+   "/domain-name@390",
+   "/register-domain@390",
+   "/transfer-domain@390"
+  ]
+ },
+ {
+  "en": "Renewals, privacy and DNS live together, so pointing the name at a website or an inbox takes a minute, not a support ticket.",
+  "es": "Renovaciones, privacidad y DNS están juntos, así que apuntar tu dominio a un sitio web o a un buzón toma un minuto, no un ticket de soporte.",
+  "maxChars": 126,
+  "where": [
+   "/domain-name@1440",
+   "/domain-name@390",
+   "/domain-name@768"
+  ]
+ },
+ {
+  "en": "A lapsed domain can be re-registered by anyone. Keep it on.",
+  "es": "Cualquiera puede volver a registrar un dominio vencido. Mantenla activada.",
+  "maxChars": 69,
+  "where": [
+   "/domain-name@390",
+   "/register-domain@390",
+   "/transfer-domain@390"
+  ]
+ },
+ {
+  "en": "Contact details masked wherever the registry allows it.",
+  "es": "Datos de contacto ocultos siempre que el registro lo permita.",
+  "maxChars": 57,
+  "where": [
+   "/domain-name@390",
+   "/register-domain@390",
+   "/transfer-domain@390"
+  ]
+ },
+ {
+  "en": "How to get the best domain name",
+  "es": "Cómo conseguir el mejor nombre de dominio",
+  "maxChars": 31,
+  "where": [
+   "/domain-name@1440",
+   "/domain-name@390",
+   "/domain-name@768"
+  ]
+ },
+ {
+  "en": "Use your brand name or keywords to boost recognition and visibility in search results.",
+  "es": "Usa el nombre de tu marca o palabras clave para ganar reconocimiento y visibilidad en los resultados de búsqueda.",
+  "maxChars": 85,
+  "where": [
+   "/domain-name@1440",
+   "/domain-name@390",
+   "/domain-name@768"
+  ]
+ },
+ {
+  "en": "If .com is taken, try a country-specific extension like .co.uk, .us, or .pk for better regional targeting.",
+  "es": "Si el .com está ocupado, prueba una extensión de país como .co.uk, .us o .pk para enfocarte mejor en tu región.",
+  "maxChars": 99,
+  "where": [
+   "/domain-name@390",
+   "/domain-name@768"
+  ]
+ },
+ {
+  "en": "Domain availability search",
+  "es": "Búsqueda de disponibilidad de dominios",
+  "maxChars": 26,
+  "where": [
+   "/domain-name@390"
+  ]
+ },
+ {
+  "en": "A domain name is how people find your site. It's far easier to remember than the IP address it points to.",
+  "es": "Un nombre de dominio es la forma en que la gente encuentra tu sitio. Es mucho más fácil de recordar que la dirección IP a la que apunta.",
+  "maxChars": 103,
+  "where": [
+   "/domain-name@1440",
+   "/domain-name@390",
+   "/domain-name@768"
+  ]
+ },
+ {
+  "en": "Technical, infrastructure",
+  "es": "Técnico, infraestructura",
+  "maxChars": 22,
+  "where": [
+   "/domain-name@390",
+   "/register-domain@390",
+   "/transfer-domain@390"
+  ]
+ },
+ {
+  "en": "Renews at",
+  "es": "Se renueva a",
+  "maxChars": 9,
+  "where": [
+   "/domain-name@390",
+   "/migrations@1440",
+   "/register-domain@390"
+  ]
+ },
+ {
+  "en": "/yr",
+  "es": "/año",
+  "maxChars": 3,
+  "where": [
+   "/domain-name@390",
+   "/register-domain@390",
+   "/transfer-domain@390"
+  ]
+ },
+ {
+  "en": "Non-profit, community",
+  "es": "Sin fines de lucro, comunidad",
+  "maxChars": 24,
+  "where": [
+   "/domain-name@390",
+   "/domain-name@768",
+   "/register-domain@390"
+  ]
+ },
+ {
+  "en": "United States presence",
+  "es": "Presencia en Estados Unidos",
+  "maxChars": 22,
+  "where": [
+   "/domain-name@390",
+   "/register-domain@390",
+   "/transfer-domain@390"
+  ]
+ },
+ {
+  "en": "Clubs and communities",
+  "es": "Clubes y comunidades",
+  "maxChars": 18,
+  "where": [
+   "/domain-name@390",
+   "/register-domain@390",
+   "/transfer-domain@390"
+  ]
+ },
+ {
+  "en": "Hosting providers",
+  "es": "Proveedores de hosting",
+  "maxChars": 11,
+  "where": [
+   "/domain-name@390",
+   "/domain-name@768",
+   "/register-domain@390"
+  ]
+ },
+ {
+  "en": "Domain name search FAQs",
+  "es": "Preguntas frecuentes sobre la búsqueda de dominios",
+  "maxChars": 27,
+  "where": [
+   "/domain-name@1440",
+   "/domain-name@390",
+   "/domain-name@768"
+  ]
+ },
+ {
+  "en": "Find answers to frequently asked questions about our domain checker tool.",
+  "es": "Encuentra respuestas a las preguntas frecuentes sobre nuestro buscador de dominios.",
+  "maxChars": 78,
+  "where": [
+   "/domain-name@390"
+  ]
+ },
+ {
+  "en": "Why do I need to buy a domain name?",
+  "es": "¿Por qué necesito comprar un nombre de dominio?",
+  "maxChars": 37,
+  "where": [
+   "/domain-name@390"
+  ]
+ },
+ {
+  "en": "How to pick the right website name?",
+  "es": "¿Cómo elegir el nombre correcto para tu sitio web?",
+  "maxChars": 38,
+  "where": [
+   "/domain-name@390"
+  ]
+ },
+ {
+  "en": "Search for a domain name",
+  "es": "Busca un nombre de dominio",
+  "maxChars": 23,
+  "where": [
+   "/domain-name@768"
+  ]
+ },
+ {
+  "en": "Check availability against the registry, then register at Serverlys.",
+  "es": "Verifica la disponibilidad directamente con el registro y luego regístralo en Serverlys.",
+  "maxChars": 66,
+  "where": [
+   "/domain-name@1440",
+   "/domain-name@768"
+  ]
+ },
+ {
+  "en": "Applies wherever the registry permits masked contact details.",
+  "es": "Aplica siempre que el registro permita ocultar los datos de contacto.",
+  "maxChars": 64,
+  "where": [
+   "/domain-name@768"
+  ]
+ },
+ {
+  "en": "Domain transfer",
+  "es": "Transferencia de dominio",
+  "maxChars": 16,
+  "where": [
+   "/domain-name@1440",
+   "/domain-name@768"
+  ]
+ },
+ {
+  "en": "Already own the name? Move it and keep the remaining registration.",
+  "es": "¿Ya tienes el dominio? Muévelo y conserva el tiempo de registro restante.",
+  "maxChars": 69,
+  "where": [
+   "/domain-name@768"
+  ]
+ },
+ {
+  "en": "Already own a name elsewhere? Move it to Serverlys and keep the time you paid for.",
+  "es": "¿Ya tienes un dominio en otro lugar? Muévelo a Serverlys y conserva el tiempo que ya pagaste.",
+  "maxChars": 88,
+  "where": [
+   "/domain-name@768",
+   "/register-domain@768",
+   "/transfer-domain@768"
+  ]
+ },
+ {
+  "en": "Your domain is the address; hosting keeps the site online. Run both from one Serverlys account, on one bill.",
+  "es": "Tu dominio es la dirección; el hosting mantiene el sitio en línea. Administra ambos desde una sola cuenta de Serverlys, en una sola factura.",
+  "maxChars": 121,
+  "where": [
+   "/domain-name@1440",
+   "/domain-name@768",
+   "/register-domain@1440"
+  ]
+ },
+ {
+  "en": "Compare domain extension prices",
+  "es": "Compara precios de extensiones de dominio",
+  "maxChars": 31,
+  "where": [
+   "/domain-name@768",
+   "/register-domain@768",
+   "/transfer-domain@768"
+  ]
+ },
+ {
+  "en": "Most recognised",
+  "es": "La más reconocida",
+  "maxChars": 10,
+  "where": [
+   "/domain-name@768",
+   "/register-domain@768",
+   "/transfer-domain@768"
+  ]
+ },
+ {
+  "en": "Personal brands",
+  "es": "Marcas personales",
+  "maxChars": 10,
+  "where": [
+   "/domain-name@768",
+   "/register-domain@768",
+   "/transfer-domain@768"
+  ]
+ },
+ {
+  "en": "Tech startups",
+  "es": "Startups tecnológicas",
+  "maxChars": 11,
+  "where": [
+   "/domain-name@768",
+   "/register-domain@768",
+   "/transfer-domain@768"
+  ]
+ },
+ {
+  "en": "Lost? Here's what you need to know about domains",
+  "es": "¿Perdido? Esto es lo que necesitas saber sobre dominios",
+  "maxChars": 52,
+  "where": [
+   "/domain-name@1440",
+   "/register-domain@1440",
+   "/transfer-domain@1440"
+  ]
+ },
+ {
+  "en": "Cloud hosting",
+  "es": "Hosting cloud",
+  "maxChars": 11,
+  "where": [
+   "/pricing@390"
+  ]
+ },
+ {
+  "en": "WordPress hosting",
+  "es": "Hosting WordPress",
+  "maxChars": 15,
+  "where": [
+   "/pricing@390"
+  ]
+ },
+ {
+  "en": "Unlimited NVMe storage",
+  "es": "Almacenamiento NVMe ilimitado",
+  "maxChars": 22,
+  "where": [
+   "/pricing@390"
+  ]
+ },
+ {
+  "en": "Unlimited NVMe Storage",
+  "es": "Almacenamiento NVMe ilimitado",
+  "maxChars": 23,
+  "where": [
+   "/migrations@1440",
+   "/migrations@390",
+   "/pricing@390"
+  ]
+ },
+ {
+  "en": "FREE Daily Backups",
+  "es": "Copias de seguridad diarias GRATIS",
+  "maxChars": 20,
+  "where": [
+   "/migrations@1440",
+   "/pricing@390",
+   "/pricing@768"
+  ]
+ },
+ {
+  "en": "Compare our plans",
+  "es": "Compara nuestros planes",
+  "maxChars": 18,
+  "where": [
+   "/pricing@390"
+  ]
+ },
+ {
+  "en": "Setup fee",
+  "es": "Cargo de configuración",
+  "maxChars": 9,
+  "where": [
+   "/pricing@390"
+  ]
+ },
+ {
+  "en": "{0} (Black Friday; regular {1})",
+  "es": "{0} (Black Friday; precio regular {1})",
+  "maxChars": 22,
+  "where": [
+   "/pricing@1440",
+   "/pricing@390"
+  ]
+ },
+ {
+  "en": "Serverlys pricing FAQs",
+  "es": "Preguntas frecuentes sobre precios de Serverlys",
+  "maxChars": 22,
+  "where": [
+   "/pricing@1440",
+   "/pricing@390",
+   "/pricing@768"
+  ]
+ },
+ {
+  "en": "24/7 support",
+  "es": "Soporte 24/7",
+  "maxChars": 11,
+  "where": [
+   "/pricing@1440",
+   "/pricing@768"
+  ]
+ },
+ {
+  "en": "Cancel anytime",
+  "es": "Cancela cuando quieras",
+  "maxChars": 15,
+  "where": [
+   "/pricing@1440",
+   "/pricing@768"
+  ]
+ },
+ {
+  "en": "Daily backups",
+  "es": "Copias de seguridad diarias",
+  "maxChars": 14,
+  "where": [
+   "/pricing@768"
+  ]
+ },
+ {
+  "en": "Unmetered Bandwidth",
+  "es": "Ancho de banda sin medición",
+  "maxChars": 22,
+  "where": [
+   "/pricing@768"
+  ]
+ },
+ {
+  "en": "Tools and help",
+  "es": "Herramientas y ayuda",
+  "maxChars": 17,
+  "where": [
+   "/pricing@768"
+  ]
+ },
+ {
+  "en": "FREE Website Migration",
+  "es": "Migración del sitio web GRATIS",
+  "maxChars": 24,
+  "where": [
+   "/migrations@390",
+   "/pricing@1440",
+   "/pricing@768"
+  ]
+ },
+ {
+  "en": "{0}/mo first month, then {1}/mo",
+  "es": "{0}/mes el primer mes, luego {1}/mes",
+  "maxChars": 34,
+  "where": [
+   "/pricing@768"
+  ]
+ },
+ {
+  "en": "~100,000 monthly visits",
+  "es": "~100,000 visitas mensuales",
+  "maxChars": 23,
+  "where": [
+   "/migrations@768",
+   "/pricing@768"
+  ]
+ },
+ {
+  "en": "Live",
+  "es": "En vivo",
+  "maxChars": 3,
+  "where": [
+   "/ai-agents@390"
+  ]
+ },
+ {
+  "en": "We can do 48 hours’ notice. What date were you thinking?",
+  "es": "Podemos con 48 horas de aviso. ¿Qué fecha tenías en mente?",
+  "maxChars": 51,
+  "where": [
+   "/ai-agents@390"
+  ]
+ },
+ {
+  "en": "Name, contact and intent saved to the built-in CRM contacts, not lost in a chat log.",
+  "es": "Nombre, contacto e intención guardados en los contactos del CRM integrado, no perdidos en un historial de chat.",
+  "maxChars": 84,
+  "where": [
+   "/ai-agents@390",
+   "/ai-agents@768"
+  ]
+ },
+ {
+  "en": "Anything unusual reaches a person in the same inbox, with the conversation attached.",
+  "es": "Todo lo inusual llega a una persona en la misma bandeja de entrada, con la conversación adjunta.",
+  "maxChars": 85,
+  "where": [
+   "/ai-agents@390",
+   "/ai-agents@768"
+  ]
+ },
+ {
+  "en": "Chat that ends in a booking",
+  "es": "Un chat que termina en reserva",
+  "maxChars": 26,
+  "where": [
+   "/ai-agents@1440",
+   "/ai-agents@390"
+  ]
+ },
+ {
+  "en": "Quick answers on every plan; your documents through the Pro knowledge base.",
+  "es": "Respuestas rápidas en todos los planes; tus documentos a través de la base de conocimiento de Pro.",
+  "maxChars": 83,
+  "where": [
+   "/ai-agents@390",
+   "/ai-agents@768"
+  ]
+ },
+ {
+  "en": "Answering now",
+  "es": "Respondiendo ahora",
+  "maxChars": 16,
+  "where": [
+   "/ai-agents@390"
+  ]
+ },
+ {
+  "en": "From Pro, through Meta’s official Cloud API, with rich templates: media, buttons and lists.",
+  "es": "Desde Pro, a través de la Cloud API oficial de Meta, con plantillas enriquecidas: multimedia, botones y listas.",
+  "maxChars": 88,
+  "where": [
+   "/ai-agents@390",
+   "/ai-agents@768"
+  ]
+ },
+ {
+  "en": "CallFlow answers your business line, books, transfers and sends an SMS follow-up.",
+  "es": "CallFlow contesta la línea de tu negocio, agenda, transfiere y envía un SMS de seguimiento.",
+  "maxChars": 86,
+  "where": [
+   "/ai-agents@390",
+   "/ai-agents@768"
+  ]
+ },
+ {
+  "en": "Recording, searchable transcript, post-call analysis and an SMS follow-up.",
+  "es": "Grabación, transcripción con búsqueda, análisis posterior a la llamada y un SMS de seguimiento.",
+  "maxChars": 76,
+  "where": [
+   "/ai-agents@1440",
+   "/ai-agents@390"
+  ]
+ },
+ {
+  "en": "See CallFlow",
+  "es": "Ver CallFlow",
+  "maxChars": 11,
+  "where": [
+   "/ai-agents@390"
+  ]
+ },
+ {
+  "en": "Your whole team works from one inbox, so the handover lands where they already are.",
+  "es": "Todo tu equipo trabaja desde una sola bandeja de entrada, así que la transferencia llega donde ya están.",
+  "maxChars": 85,
+  "where": [
+   "/ai-agents@1440",
+   "/ai-agents@390",
+   "/ai-agents@768"
+  ]
+ },
+ {
+  "en": "Qualify the enquiry before the first meeting — what they need, budget and timing — with lead scoring and tags in the Pro CRM pipeline.",
+  "es": "Califica la consulta antes de la primera reunión (qué necesitan, presupuesto y plazos) con puntuación de prospectos y etiquetas en el pipeline del CRM de Pro.",
+  "maxChars": 132,
+  "where": [
+   "/ai-agents@390"
+  ]
+ }
+]

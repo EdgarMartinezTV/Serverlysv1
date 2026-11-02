@@ -6,7 +6,7 @@ import { Wordmark } from "./wordmark";
 import { CurrentYear } from "./current-year";
 import { SocialIcon } from "./social-icon";
 import { CookieSettingsLink } from "@/components/consent/cookie-settings-link";
-import { t as tx } from "@/i18n/t";
+import { t as tx, tc } from "@/i18n/t";
 import { lh } from "@/i18n/href";
 
 /**
@@ -186,7 +186,7 @@ export function SiteFooter() {
                     {target.mode === "link" ? (
                       <Link href={lh(target.href)} className={LINK}>
                         <span className="relative">
-                          {tx(link.label)}
+                          {tc("footer", link.label)}
                           <span aria-hidden="true" className={UNDERLINE} />
                         </span>
                       </Link>

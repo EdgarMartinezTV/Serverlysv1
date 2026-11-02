@@ -4,9 +4,12 @@
 import { readFileSync, writeFileSync, readdirSync } from "node:fs";
 const dir = "scripts/i18n/es";
 const all = {};
-for (const f of readdirSync(dir).filter((f) => f.endsWith(".json")).sort()) Object.assign(all, JSON.parse(readFileSync(`${dir}/${f}`, "utf8")));
+const files = readdirSync(dir).filter((f) => f.endsWith(".json")).sort();
+// zz-fit*.json = wording shortened so Spanish keeps the English layout; applied last (after es-extra).
+for (const f of files.filter((f) => !f.startsWith("zz-"))) Object.assign(all, JSON.parse(readFileSync(`${dir}/${f}`, "utf8")));
 const extra = (() => { try { return JSON.parse(readFileSync("scripts/i18n/es-extra.json", "utf8")); } catch { return {}; } })();
 Object.assign(all, extra);
+for (const f of files.filter((f) => f.startsWith("zz-"))) Object.assign(all, JSON.parse(readFileSync(`${dir}/${f}`, "utf8")));
 const es = {};
 for (const [k, v] of Object.entries(all)) { const key = k.trim(); if (key && v !== k) es[key] = v.trim() === v ? v : v.trim(); }
 const scope = JSON.parse(readFileSync("scripts/i18n/scope.json", "utf8"));

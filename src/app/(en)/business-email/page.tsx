@@ -14,7 +14,7 @@ import { ImpressionStage } from "./_components/impression-stage";
 import { HeroShowcase } from "./_components/hero-showcase";
 import { StatsRoll } from "./_components/stats-roll";
 import { IncludedPanel, PlansShowcase } from "./_components/plans-showcase";
-import { t as tx } from "@/i18n/t";
+import { t as tx, tc } from "@/i18n/t";
 import { lh } from "@/i18n/href";
 
 /**
@@ -371,7 +371,7 @@ export default function BusinessEmailPage() {
             <h2
               id="assistant-title"
               className="mt-5 font-display text-[36px] font-normal leading-[1.08] tracking-[-0.03em] text-fg sm:text-[52px]"
-            >{tx("Questions? ")}<span className="text-primary">{tx("Ask ConvoAI")}</span>
+            >{tx("Questions? ")}<span className="text-primary">{tc("heading", "Ask ConvoAI")}</span>
             </h2>
             <p className="mx-auto mt-4 max-w-[480px] text-body-lg text-fg-secondary lg:mx-0">{tx("ConvoAI, the Serverlys assistant, knows the email plans and the setup, and brings in a person from the team when you need one.")}</p>
             <ul className="mt-8 grid gap-3 text-left sm:grid-cols-2">
@@ -396,7 +396,7 @@ export default function BusinessEmailPage() {
               ))}
             </ul>
             <div className="mt-8 flex justify-center lg:justify-start">
-              <AssistantOpenButton label={tx("Ask ConvoAI")} />
+              <AssistantOpenButton label={tc("compact", "Ask ConvoAI")} />
             </div>
           </div>
           <MotionIn variant="rise">

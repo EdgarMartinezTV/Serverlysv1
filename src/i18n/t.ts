@@ -42,3 +42,17 @@ export function isSpanish(): boolean {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   return R.use(DictContext) !== null;
 }
+
+/**
+ * tc(): t() with a layout context. Looks up "<ctx>|<English>" first, so one place
+ * can use shorter Spanish where the English-sized box has no room (e.g. footer
+ * links that are full page titles elsewhere), then falls back to t().
+ * English output is unchanged: with no dictionary it returns its argument.
+ */
+export function tc<T>(ctx: string, v: T): T {
+  if (typeof v !== "string") return v;
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const dict = (IS_RSC ? rscStore!().dict : R.use(DictContext)) as Dict | null;
+  const hit = dict?.[`${ctx}|${v.trim()}`];
+  return hit === undefined ? t(v) : (hit as T);
+}

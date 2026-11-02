@@ -1,0 +1,1199 @@
+[
+ {
+  "en": "Free domain for the first year",
+  "es": "Dominio gratis el primer año",
+  "maxChars": 26,
+  "where": [
+   "/ecommerce-hosting@1440",
+   "/ecommerce-hosting@390",
+   "/wordpress-hosting@390"
+  ]
+ },
+ {
+  "en": "Unlimited sites and 6 GB RAM. The tier most WordPress projects settle on.",
+  "es": "Sitios ilimitados y 6 GB de RAM. El nivel que elige la mayoría de los proyectos WordPress.",
+  "maxChars": 76,
+  "where": [
+   "/wordpress-hosting@390",
+   "/wordpress-hosting@768"
+  ]
+ },
+ {
+  "en": "8 GB RAM and ~100,000 monthly visits, for busy WooCommerce stores.",
+  "es": "8 GB de RAM y ~100,000 visitas mensuales, para tiendas WooCommerce con mucho movimiento.",
+  "maxChars": 67,
+  "where": [
+   "/wordpress-hosting@1440",
+   "/wordpress-hosting@390",
+   "/wordpress-hosting@768"
+  ]
+ },
+ {
+  "en": "This weekend",
+  "es": "Este fin de semana",
+  "maxChars": 13,
+  "where": [
+   "/wordpress-hosting@390"
+  ]
+ },
+ {
+  "en": "Country sourdough",
+  "es": "Pan de masa madre rústico",
+  "maxChars": 15,
+  "where": [
+   "/wordpress-hosting@390"
+  ]
+ },
+ {
+  "en": "Seeded rye",
+  "es": "Centeno con semillas",
+  "maxChars": 7,
+  "where": [
+   "/wordpress-hosting@390"
+  ]
+ },
+ {
+  "en": "Hours, prices and stock answered the moment someone asks, not the next morning.",
+  "es": "Horarios, precios y existencias respondidos en el momento en que alguien pregunta, no a la mañana siguiente.",
+  "maxChars": 98,
+  "where": [
+   "/wordpress-hosting@390"
+  ]
+ },
+ {
+  "en": "Included with every WordPress plan at no extra cost.",
+  "es": "Incluido en todos los planes de WordPress sin costo adicional.",
+  "maxChars": 52,
+  "where": [
+   "/wordpress-hosting@1440",
+   "/wordpress-hosting@390"
+  ]
+ },
+ {
+  "en": "Save hours managing WordPress",
+  "es": "Ahorra horas administrando WordPress",
+  "maxChars": 31,
+  "where": [
+   "/wordpress-hosting@390",
+   "/wordpress-hosting@768"
+  ]
+ },
+ {
+  "en": "Core and security updates applied automatically, with a backup taken before each one. You keep the switch.",
+  "es": "Actualizaciones del núcleo y de seguridad aplicadas automáticamente, con un respaldo antes de cada una. Tú decides si las activas.",
+  "maxChars": 104,
+  "where": [
+   "/wordpress-hosting@1440",
+   "/wordpress-hosting@390",
+   "/wordpress-hosting@768"
+  ]
+ },
+ {
+  "en": "Server-level LiteSpeed caching on every plan, so pages stay fast without a stack of cache plugins.",
+  "es": "Caché LiteSpeed a nivel de servidor en todos los planes, para que las páginas sigan rápidas sin un montón de plugins de caché.",
+  "maxChars": 103,
+  "where": [
+   "/wordpress-hosting@1440",
+   "/wordpress-hosting@390",
+   "/wordpress-hosting@768"
+  ]
+ },
+ {
+  "en": "Fast pages and uptime you can trust",
+  "es": "Páginas rápidas y disponibilidad en la que puedes confiar",
+  "maxChars": 34,
+  "where": [
+   "/wordpress-hosting@1440",
+   "/wordpress-hosting@390",
+   "/wordpress-hosting@768"
+  ]
+ },
+ {
+  "en": "The file system is scanned on a schedule, and anything harmful is flagged before it spreads.",
+  "es": "El sistema de archivos se escanea de forma programada, y cualquier cosa dañina se marca antes de que se propague.",
+  "maxChars": 87,
+  "where": [
+   "/wordpress-hosting@390"
+  ]
+ },
+ {
+  "en": "Certificates issued and renewed automatically, so the padlock never lapses.",
+  "es": "Certificados emitidos y renovados automáticamente, para que el candado nunca venza.",
+  "maxChars": 78,
+  "where": [
+   "/wordpress-hosting@390",
+   "/wordpress-hosting@768"
+  ]
+ },
+ {
+  "en": "Hands-off hosting for WordPress",
+  "es": "Hosting para WordPress sin complicaciones",
+  "maxChars": 32,
+  "where": [
+   "/wordpress-hosting@390",
+   "/wordpress-hosting@768"
+  ]
+ },
+ {
+  "en": "Safely test before you publish",
+  "es": "Prueba de forma segura antes de publicar",
+  "maxChars": 30,
+  "where": [
+   "/wordpress-hosting@390"
+  ]
+ },
+ {
+  "en": "cPanel, file access and one-click installs are all included, for when you want to do it yourself.",
+  "es": "cPanel, acceso a archivos e instalaciones en un clic están incluidos, para cuando quieras hacerlo tú mismo.",
+  "maxChars": 101,
+  "where": [
+   "/wordpress-hosting@390"
+  ]
+ },
+ {
+  "en": "No cap on how many sites",
+  "es": "Sin límite de sitios",
+  "maxChars": 19,
+  "where": [
+   "/wordpress-hosting@390",
+   "/wordpress-hosting@768"
+  ]
+ },
+ {
+  "en": "Tested on staging before DNS changes",
+  "es": "Probado en staging antes de cambiar el DNS",
+  "maxChars": 39,
+  "where": [
+   "/wordpress-hosting@390"
+  ]
+ },
+ {
+  "en": "Your old host keeps serving until the switch",
+  "es": "Tu hosting anterior sigue funcionando hasta el cambio",
+  "maxChars": 44,
+  "where": [
+   "/wordpress-hosting@390",
+   "/wordpress-hosting@768"
+  ]
+ },
+ {
+  "en": "Plugin updates stay under your control — we apply core updates, not plugin updates, because a plugin update is the most common way a working site breaks. If one does break something, the nightly backup restores it for free.",
+  "es": "Las actualizaciones de plugins quedan bajo tu control: aplicamos las actualizaciones del núcleo, no las de plugins, porque actualizar un plugin es la forma más común de que un sitio que funciona se rompa. Si alguna rompe algo, la copia de seguridad nocturna lo restaura gratis.",
+  "maxChars": 257,
+  "where": [
+   "/faq@390",
+   "/wordpress-hosting@1440",
+   "/wordpress-hosting@390"
+  ]
+ },
+ {
+  "en": "What are the CPU, RAM and storage limits on a WordPress plan?",
+  "es": "¿Cuáles son los límites de CPU, RAM y almacenamiento de un plan WordPress?",
+  "maxChars": 67,
+  "where": [
+   "/faq@390",
+   "/wordpress-hosting@390"
+  ]
+ },
+ {
+  "en": "RAM is the number printed on every plan card — 2 GB on Starter, 4 GB on Plus, 6 GB on Turbo and 8 GB on Business. Storage is unlimited NVMe and bandwidth is unmetered, both subject to normal fair use: they are sized for websites, not for file distribution or backup archives.",
+  "es": "La RAM es el número que aparece en cada tarjeta de plan: 2 GB en Starter, 4 GB en Plus, 6 GB en Turbo y 8 GB en Business. El almacenamiento es NVMe ilimitado y el ancho de banda sin medición, ambos sujetos a un uso razonable normal: están pensados para sitios web, no para distribuir archivos ni guardar respaldos.",
+  "maxChars": 285,
+  "where": [
+   "/faq@1440",
+   "/faq@390",
+   "/faq@768"
+  ]
+ },
+ {
+  "en": "From {0}/mo on the monthly term. During Black Friday (until {1}) Starter is {2} for the first month, with its one-off setup fee cut to {3}, then {4}/mo. The {5}% discount applies to the first payment on every hosting, email and ConvoAI Pro plan and is added automatically at checkout. Today's price and the renewal price are both on every plan card.",
+  "es": "Desde {0}/mes con el periodo mensual. Durante Black Friday (hasta el {1}), Starter cuesta {2} el primer mes, con su tarifa única de configuración rebajada a {3}, y luego {4}/mes. El {5}% de descuento se aplica al primer pago de cada plan de hosting, correo y ConvoAI Pro, y se agrega automáticamente al pagar. El precio de hoy y el de renovación aparecen en cada tarjeta de plan.",
+  "maxChars": 348,
+  "where": [
+   "/faq@1440",
+   "/faq@390",
+   "/faq@768"
+  ]
+ },
+ {
+  "en": "Same infrastructure, different defaults. WordPress plans ship with WordPress already installed, LiteSpeed caching tuned for it, core and security updates applied automatically with a backup taken first, and one-click staging. On a general plan you would configure all of that yourself.",
+  "es": "La misma infraestructura, con otra configuración de fábrica. Los planes WordPress vienen con WordPress ya instalado, caché LiteSpeed optimizada para él, actualizaciones del núcleo y de seguridad aplicadas automáticamente tras hacer una copia de seguridad, y staging en un clic. En un plan general tendrías que configurar todo eso tú.",
+  "maxChars": 286,
+  "where": [
+   "/faq@1440",
+   "/faq@390",
+   "/faq@768"
+  ]
+ },
+ {
+  "en": "One on Starter, seven on Plus, and unlimited on Turbo and Business. Each gets its own staging copy and its own backups, so an agency account does not have to share one restore point across every client.",
+  "es": "Uno en Starter, siete en Plus e ilimitados en Turbo y Business. Cada uno tiene su propia copia de staging y sus propias copias de seguridad, así que una cuenta de agencia no tiene que compartir un solo punto de restauración entre todos sus clientes.",
+  "maxChars": 219,
+  "where": [
+   "/faq@1440",
+   "/faq@390",
+   "/faq@768"
+  ]
+ },
+ {
+  "en": "Try Serverlys WordPress hosting risk-free. If it is not right, tell us within 30 days for a full refund.",
+  "es": "Prueba el hosting WordPress de Serverlys sin riesgo. Si no es para ti, avísanos dentro de 30 días y te devolvemos todo tu dinero.",
+  "maxChars": 92,
+  "where": [
+   "/wordpress-hosting@1440",
+   "/wordpress-hosting@390",
+   "/wordpress-hosting@768"
+  ]
+ },
+ {
+  "en": "Seven sites and ~25,000 monthly visits, room for a blog and a shop.",
+  "es": "Siete sitios y ~25,000 visitas mensuales, espacio para un blog y una tienda.",
+  "maxChars": 68,
+  "where": [
+   "/wordpress-hosting@1440",
+   "/wordpress-hosting@768"
+  ]
+ },
+ {
+  "en": "See how ConvoAI works",
+  "es": "Mira cómo funciona ConvoAI",
+  "maxChars": 22,
+  "where": [
+   "/wordpress-hosting@768"
+  ]
+ },
+ {
+  "en": "Admin email set",
+  "es": "Email de administrador configurado",
+  "maxChars": 15,
+  "where": [
+   "/wordpress-hosting@768"
+  ]
+ },
+ {
+  "en": "WordPress installed and pre-tuned for LiteSpeed in a click, ready for Elementor, the block editor or WooCommerce.",
+  "es": "WordPress instalado y optimizado para LiteSpeed en un clic, listo para Elementor, el editor de bloques o WooCommerce.",
+  "maxChars": 111,
+  "where": [
+   "/wordpress-hosting@768"
+  ]
+ },
+ {
+  "en": "WordPress Updates",
+  "es": "Actualizaciones de WordPress",
+  "maxChars": 19,
+  "where": [
+   "/wordpress-hosting@768"
+  ]
+ },
+ {
+  "en": "Today, 3:02 AM · restore anytime",
+  "es": "Hoy, 3:02 AM · restaura cuando quieras",
+  "maxChars": 29,
+  "where": [
+   "/wordpress-hosting@768"
+  ]
+ },
+ {
+  "en": "Updates without the risk",
+  "es": "Actualizaciones sin riesgo",
+  "maxChars": 24,
+  "where": [
+   "/wordpress-hosting@768"
+  ]
+ },
+ {
+  "en": "Unmetered bandwidth and room to move up a tier in a few clicks when traffic grows.",
+  "es": "Ancho de banda sin medición y espacio para subir de nivel en unos clics cuando crezca el tráfico.",
+  "maxChars": 82,
+  "where": [
+   "/wordpress-hosting@1440",
+   "/wordpress-hosting@768"
+  ]
+ },
+ {
+  "en": "Fast pages and free SSL are part of what search engines reward, from day one.",
+  "es": "Las páginas rápidas y el SSL gratis son parte de lo que premian los buscadores, desde el primer día.",
+  "maxChars": 82,
+  "where": [
+   "/wordpress-hosting@1440",
+   "/wordpress-hosting@768"
+  ]
+ },
+ {
+  "en": "Maximum website protection",
+  "es": "Máxima protección para tu sitio web",
+  "maxChars": 28,
+  "where": [
+   "/wordpress-hosting@1440",
+   "/wordpress-hosting@768"
+  ]
+ },
+ {
+  "en": "Traffic is filtered before it reaches WordPress, so attacks stop at the edge.",
+  "es": "El tráfico se filtra antes de llegar a WordPress, así que los ataques se detienen en el borde.",
+  "maxChars": 80,
+  "where": [
+   "/wordpress-hosting@1440",
+   "/wordpress-hosting@768"
+  ]
+ },
+ {
+  "en": "Daily backups you control",
+  "es": "Respaldos diarios que tú controlas",
+  "maxChars": 27,
+  "where": [
+   "/wordpress-hosting@768"
+  ]
+ },
+ {
+  "en": "Malware scanning, a firewall and free SSL run on every plan by default.",
+  "es": "El escaneo de malware, un firewall y SSL gratis funcionan en todos los planes por defecto.",
+  "maxChars": 75,
+  "where": [
+   "/wordpress-hosting@1440",
+   "/wordpress-hosting@768"
+  ]
+ },
+ {
+  "en": "Plugins and theme",
+  "es": "Plugins y tema",
+  "maxChars": 13,
+  "where": [
+   "/wordpress-hosting@1440",
+   "/wordpress-hosting@768"
+  ]
+ },
+ {
+  "en": "I want to create a website",
+  "es": "Quiero crear un sitio web",
+  "maxChars": 23,
+  "where": [
+   "/wordpress-hosting@768"
+  ]
+ },
+ {
+  "en": "Most of it is already on: a firewall in front of PHP, malware scanning on a schedule, free SSL issued and renewed, and automatic security patching. The part left to you is choosing plugins carefully and keeping the admin account on a password you do not reuse.",
+  "es": "La mayor parte ya está activada: un firewall delante de PHP, escaneos de malware programados, SSL gratis emitido y renovado, y parches de seguridad automáticos. Lo que te toca a ti es elegir plugins con cuidado y usar en la cuenta de administrador una contraseña que no repitas.",
+  "maxChars": 255,
+  "where": [
+   "/wordpress-hosting@1440",
+   "/wordpress-hosting@768"
+  ]
+ },
+ {
+  "en": "WordPress installed and LiteSpeed-tuned, zero setup",
+  "es": "WordPress instalado y optimizado para LiteSpeed, sin configuración",
+  "maxChars": 54,
+  "where": [
+   "/wordpress-hosting@1440"
+  ]
+ },
+ {
+  "en": "Free website migration",
+  "es": "Migración de sitio web gratis",
+  "maxChars": 24,
+  "where": [
+   "/wordpress-hosting@1440"
+  ]
+ },
+ {
+  "en": "One WordPress site on unlimited NVMe with free SSL, plus a free domain on 12 months or longer.",
+  "es": "Un sitio WordPress en NVMe ilimitado con SSL gratis, más un dominio gratis en plazos de 12 meses o más.",
+  "maxChars": 96,
+  "where": [
+   "/wordpress-hosting@1440"
+  ]
+ },
+ {
+  "en": "View all features",
+  "es": "Ver todas las funciones",
+  "maxChars": 17,
+  "where": [
+   "/wordpress-hosting@1440"
+  ]
+ },
+ {
+  "en": "A chat agent that knows your site",
+  "es": "Un agente de chat que conoce tu sitio",
+  "maxChars": 34,
+  "where": [
+   "/wordpress-hosting@1440"
+  ]
+ },
+ {
+  "en": "Site title: Hearth Bakery",
+  "es": "Título del sitio: Hearth Bakery",
+  "maxChars": 26,
+  "where": [
+   "/wordpress-hosting@1440"
+  ]
+ },
+ {
+  "en": "Hearth Bakery · Updates",
+  "es": "Hearth Bakery · Actualizaciones",
+  "maxChars": 27,
+  "where": [
+   "/wordpress-hosting@1440"
+  ]
+ },
+ {
+  "en": "Fast, free, unlimited migrations",
+  "es": "Migraciones rápidas, gratis e ilimitadas",
+  "maxChars": 37,
+  "where": [
+   "/wordpress-hosting@1440"
+  ]
+ },
+ {
+  "en": "Updates, backups and security handled",
+  "es": "Actualizaciones, backups y seguridad resueltos",
+  "maxChars": 43,
+  "where": [
+   "/ecommerce-hosting@390"
+  ]
+ },
+ {
+  "en": "Choose your managed WooCommerce plan",
+  "es": "Elige tu plan de WooCommerce administrado",
+  "maxChars": 38,
+  "where": [
+   "/ecommerce-hosting@390"
+  ]
+ },
+ {
+  "en": "Unlimited features are subject to our",
+  "es": "Las funciones ilimitadas están sujetas a nuestra",
+  "maxChars": 40,
+  "where": [
+   "/ecommerce-hosting@390"
+  ]
+ },
+ {
+  "en": "Fair Usage Policy",
+  "es": "Política de uso justo",
+  "maxChars": 18,
+  "where": [
+   "/ecommerce-hosting@390"
+  ]
+ },
+ {
+  "en": "Studio wireless headphones",
+  "es": "Audífonos inalámbricos de estudio",
+  "maxChars": 26,
+  "where": [
+   "/ecommerce-hosting@390"
+  ]
+ },
+ {
+  "en": "40-hour battery, soft memory-foam cushions and a fold-flat case.",
+  "es": "Batería de 40 horas, almohadillas suaves de espuma viscoelástica y estuche plegable.",
+  "maxChars": 57,
+  "where": [
+   "/ecommerce-hosting@390"
+  ]
+ },
+ {
+  "en": "Skip the setup and get straight to selling.",
+  "es": "Sáltate la configuración y empieza a vender de inmediato.",
+  "maxChars": 43,
+  "where": [
+   "/ecommerce-hosting@390"
+  ]
+ },
+ {
+  "en": "A free domain for your brand",
+  "es": "Un dominio gratis para tu marca",
+  "maxChars": 29,
+  "where": [
+   "/ecommerce-hosting@390"
+  ]
+ },
+ {
+  "en": "WooCommerce installed in one click, ready for your first product",
+  "es": "WooCommerce instalado en un clic, listo para tu primer producto",
+  "maxChars": 59,
+  "where": [
+   "/ecommerce-hosting@390"
+  ]
+ },
+ {
+  "en": "Unlimited NVMe storage for every product photo",
+  "es": "Almacenamiento NVMe ilimitado para cada foto de producto",
+  "maxChars": 53,
+  "where": [
+   "/ecommerce-hosting@390"
+  ]
+ },
+ {
+  "en": "Move up a tier in a few clicks when the store grows",
+  "es": "Sube de nivel en unos clics cuando la tienda crezca",
+  "maxChars": 48,
+  "where": [
+   "/ecommerce-hosting@390"
+  ]
+ },
+ {
+  "en": "Your current store moved for you, free",
+  "es": "Tu tienda actual migrada por nosotros, gratis",
+  "maxChars": 40,
+  "where": [
+   "/ecommerce-hosting@390"
+  ]
+ },
+ {
+  "en": "A chat agent trained on your own store",
+  "es": "Un agente de chat entrenado con tu propia tienda",
+  "maxChars": 39,
+  "where": [
+   "/ecommerce-hosting@390",
+   "/ecommerce-hosting@768"
+  ]
+ },
+ {
+  "en": "Answers before you wake up",
+  "es": "Respuestas antes de que despiertes",
+  "maxChars": 28,
+  "where": [
+   "/ecommerce-hosting@390"
+  ]
+ },
+ {
+  "en": "It reads the pages you publish, so answers match your store instead of guessing.",
+  "es": "Lee las páginas que publicas, así que sus respuestas coinciden con tu tienda en lugar de adivinar.",
+  "maxChars": 87,
+  "where": [
+   "/ecommerce-hosting@390",
+   "/ecommerce-hosting@768"
+  ]
+ },
+ {
+  "en": "Top-notch security for your online store",
+  "es": "Seguridad de primer nivel para tu tienda en línea",
+  "maxChars": 41,
+  "where": [
+   "/ecommerce-hosting@1440",
+   "/ecommerce-hosting@390"
+  ]
+ },
+ {
+  "en": "Managed WooCommerce hosting",
+  "es": "Hosting WooCommerce administrado",
+  "maxChars": 30,
+  "where": [
+   "/ecommerce-hosting@390"
+  ]
+ },
+ {
+  "en": "#{0} · Velvet sofa",
+  "es": "#{0} · Sofá de terciopelo",
+  "maxChars": 11,
+  "where": [
+   "/ecommerce-hosting@1440",
+   "/ecommerce-hosting@390",
+   "/ecommerce-hosting@768"
+  ]
+ },
+ {
+  "en": "#{0} · Botanical oil",
+  "es": "#{0} · Aceite botánico",
+  "maxChars": 11,
+  "where": [
+   "/ecommerce-hosting@1440",
+   "/ecommerce-hosting@390",
+   "/ecommerce-hosting@768"
+  ]
+ },
+ {
+  "en": "Flat · $8",
+  "es": "Tarifa fija · $8",
+  "maxChars": 7,
+  "where": [
+   "/ecommerce-hosting@1440",
+   "/ecommerce-hosting@390",
+   "/ecommerce-hosting@768"
+  ]
+ },
+ {
+  "en": "Pickup",
+  "es": "Recoger en tienda",
+  "maxChars": 5,
+  "where": [
+   "/ecommerce-hosting@1440",
+   "/ecommerce-hosting@390",
+   "/ecommerce-hosting@768"
+  ]
+ },
+ {
+  "en": "Free $75+",
+  "es": "Gratis desde $75",
+  "maxChars": 11,
+  "where": [
+   "/ecommerce-hosting@1440",
+   "/ecommerce-hosting@390",
+   "/ecommerce-hosting@768"
+  ]
+ },
+ {
+  "en": "Moving fernandfold.shop",
+  "es": "Migrando fernandfold.shop",
+  "maxChars": 23,
+  "where": [
+   "/ecommerce-hosting@1440",
+   "/ecommerce-hosting@390",
+   "/ecommerce-hosting@768"
+  ]
+ },
+ {
+  "en": "Old host → Serverlys staging",
+  "es": "Hosting anterior → staging de Serverlys",
+  "maxChars": 23,
+  "where": [
+   "/ecommerce-hosting@1440",
+   "/ecommerce-hosting@390",
+   "/ecommerce-hosting@768"
+  ]
+ },
+ {
+  "en": "Send the current host login, or just the domain",
+  "es": "Envía el acceso de tu hosting actual, o solo el dominio",
+  "maxChars": 50,
+  "where": [
+   "/ecommerce-hosting@1440",
+   "/ecommerce-hosting@390"
+  ]
+ },
+ {
+  "en": "Products, orders, customers and email copied to staging first",
+  "es": "Productos, pedidos, clientes y correo copiados primero a staging",
+  "maxChars": 60,
+  "where": [
+   "/ecommerce-hosting@1440",
+   "/ecommerce-hosting@390"
+  ]
+ },
+ {
+  "en": "Your store keeps selling until you approve the switch",
+  "es": "Tu tienda sigue vendiendo hasta que apruebes el cambio",
+  "maxChars": 51,
+  "where": [
+   "/ecommerce-hosting@1440",
+   "/ecommerce-hosting@390"
+  ]
+ },
+ {
+  "en": "WooCommerce hosting FAQs",
+  "es": "Preguntas frecuentes sobre hosting WooCommerce",
+  "maxChars": 26,
+  "where": [
+   "/ecommerce-hosting@1440",
+   "/ecommerce-hosting@390",
+   "/ecommerce-hosting@768"
+  ]
+ },
+ {
+  "en": "Get answers to frequently asked questions about managed WooCommerce hosting plans.",
+  "es": "Encuentra respuestas a las preguntas frecuentes sobre los planes de hosting WooCommerce administrado.",
+  "maxChars": 82,
+  "where": [
+   "/ecommerce-hosting@1440",
+   "/ecommerce-hosting@390",
+   "/ecommerce-hosting@768"
+  ]
+ },
+ {
+  "en": "What is managed WooCommerce hosting?",
+  "es": "¿Qué es el hosting WooCommerce administrado?",
+  "maxChars": 37,
+  "where": [
+   "/ecommerce-hosting@390"
+  ]
+ },
+ {
+  "en": "How does managed WooCommerce hosting improve website speed and performance?",
+  "es": "¿Cómo mejora el hosting WooCommerce administrado la velocidad y el rendimiento de tu sitio web?",
+  "maxChars": 78,
+  "where": [
+   "/ecommerce-hosting@390",
+   "/ecommerce-hosting@768"
+  ]
+ },
+ {
+  "en": "Will I get a business email account?",
+  "es": "¿Tendré una cuenta de correo electrónico profesional?",
+  "maxChars": 37,
+  "where": [
+   "/ecommerce-hosting@390"
+  ]
+ },
+ {
+  "en": "Try Serverlys ecommerce hosting risk-free. If it is not right, tell us within 30 days for a full refund.",
+  "es": "Prueba el hosting de ecommerce de Serverlys sin riesgo. Si no es lo que buscas, avísanos dentro de los 30 días y te hacemos un reembolso completo.",
+  "maxChars": 116,
+  "where": [
+   "/ecommerce-hosting@1440",
+   "/ecommerce-hosting@390",
+   "/ecommerce-hosting@768"
+  ]
+ },
+ {
+  "en": "One store on unlimited NVMe with free SSL, plus a free domain on 12 months or longer.",
+  "es": "Una tienda con almacenamiento NVMe ilimitado y SSL gratis, más un dominio gratis en planes de 12 meses o más.",
+  "maxChars": 94,
+  "where": [
+   "/ecommerce-hosting@1440",
+   "/ecommerce-hosting@768"
+  ]
+ },
+ {
+  "en": "Seven sites and ~25,000 monthly visits — room for the catalogue to grow.",
+  "es": "Siete sitios y ~25,000 visitas mensuales: espacio para que tu catálogo crezca.",
+  "maxChars": 74,
+  "where": [
+   "/ecommerce-hosting@768"
+  ]
+ },
+ {
+  "en": "Yes, 5 to 8 business days, $12 flat. Want me to add the mug to your cart?",
+  "es": "Sí, de 5 a 8 días hábiles, tarifa fija de $12. ¿Quieres que agregue la taza a tu carrito?",
+  "maxChars": 75,
+  "where": [
+   "/ecommerce-hosting@1440",
+   "/ecommerce-hosting@768"
+  ]
+ },
+ {
+  "en": "Most store questions arrive after hours. They get answered then, not the next morning.",
+  "es": "La mayoría de las preguntas a una tienda llegan fuera del horario. Se responden en ese momento, no a la mañana siguiente.",
+  "maxChars": 102,
+  "where": [
+   "/ecommerce-hosting@1440",
+   "/ecommerce-hosting@768"
+  ]
+ },
+ {
+  "en": "A fast store keeps buyers moving from product page to checkout.",
+  "es": "Una tienda rápida mantiene a los compradores avanzando de la página del producto al pago.",
+  "maxChars": 63,
+  "where": [
+   "/ecommerce-hosting@1440",
+   "/ecommerce-hosting@768"
+  ]
+ },
+ {
+  "en": "Minimal watch, white",
+  "es": "Reloj minimalista, blanco",
+  "maxChars": 15,
+  "where": [
+   "/ecommerce-hosting@1440",
+   "/ecommerce-hosting@768"
+  ]
+ },
+ {
+  "en": "Active",
+  "es": "Activo",
+  "maxChars": 5,
+  "where": [
+   "/ecommerce-hosting@768"
+  ]
+ },
+ {
+  "en": "A free SSL certificate, issued and renewed automatically",
+  "es": "Un certificado SSL gratis, emitido y renovado automáticamente",
+  "maxChars": 56,
+  "where": [
+   "/ecommerce-hosting@768"
+  ]
+ },
+ {
+  "en": "Daily backups you can restore yourself, whole store or one file",
+  "es": "Backups diarios que puedes restaurar tú mismo, toda la tienda o un solo archivo",
+  "maxChars": 64,
+  "where": [
+   "/ecommerce-hosting@1440",
+   "/ecommerce-hosting@768"
+  ]
+ },
+ {
+  "en": "Automatic WordPress updates, with a backup taken first",
+  "es": "Actualizaciones automáticas de WordPress, con un backup previo",
+  "maxChars": 56,
+  "where": [
+   "/ecommerce-hosting@768"
+  ]
+ },
+ {
+  "en": "A firewall and malware scanning in front of the store",
+  "es": "Un firewall y escaneo de malware frente a la tienda",
+  "maxChars": 48,
+  "where": [
+   "/ecommerce-hosting@768"
+  ]
+ },
+ {
+  "en": "Recent orders",
+  "es": "Pedidos recientes",
+  "maxChars": 16,
+  "where": [
+   "/ecommerce-hosting@768"
+  ]
+ },
+ {
+  "en": "Free online store migration",
+  "es": "Migración gratis de tu tienda en línea",
+  "maxChars": 27,
+  "where": [
+   "/ecommerce-hosting@768"
+  ]
+ },
+ {
+  "en": "Perfect for your first online store",
+  "es": "Perfecto para tu primera tienda en línea",
+  "maxChars": 34,
+  "where": [
+   "/ecommerce-hosting@1440"
+  ]
+ },
+ {
+  "en": "Best value for high-traffic stores",
+  "es": "Mejor valor para tiendas con mucho tráfico",
+  "maxChars": 33,
+  "where": [
+   "/ecommerce-hosting@1440"
+  ]
+ },
+ {
+  "en": "Unlimited sites and 6 GB RAM. The tier most stores settle on.",
+  "es": "Sitios ilimitados y 6 GB de RAM. El nivel que eligen la mayoría de las tiendas.",
+  "maxChars": 69,
+  "where": [
+   "/ecommerce-hosting@1440"
+  ]
+ },
+ {
+  "en": "Maximum power for demanding stores",
+  "es": "Máxima potencia para tiendas exigentes",
+  "maxChars": 35,
+  "where": [
+   "/ecommerce-hosting@1440"
+  ]
+ },
+ {
+  "en": "LiteSpeed web servers with a store-aware cache built in",
+  "es": "Servidores web LiteSpeed con caché integrada pensada para tiendas",
+  "maxChars": 61,
+  "where": [
+   "/ecommerce-hosting@1440"
+  ]
+ },
+ {
+  "en": "NVMe storage, so product pages and images load quickly",
+  "es": "Almacenamiento NVMe, para que las páginas de producto y las imágenes carguen rápido",
+  "maxChars": 65,
+  "where": [
+   "/ecommerce-hosting@1440"
+  ]
+ },
+ {
+  "en": "Unmetered bandwidth for the day a product takes off",
+  "es": "Ancho de banda sin medición para el día en que un producto despegue",
+  "maxChars": 60,
+  "where": [
+   "/ecommerce-hosting@1440"
+  ]
+ },
+ {
+  "en": "Business email that builds trust",
+  "es": "Correo empresarial que genera confianza",
+  "maxChars": 28,
+  "where": [
+   "/business-email@1440",
+   "/business-email@390",
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "Works in your browser, on your phone and in any email app",
+  "es": "Funciona en tu navegador, en tu celular y en cualquier app de correo",
+  "maxChars": 64,
+  "where": [
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "From",
+  "es": "Desde",
+  "maxChars": 3,
+  "where": [
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": ". One-time $",
+  "es": ". Pago único de $",
+  "maxChars": 13,
+  "where": [
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "setup.",
+  "es": "de instalación.",
+  "maxChars": 11,
+  "where": [
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Search",
+  "es": "Buscar",
+  "maxChars": 3,
+  "where": [
+   "/business-email@1440",
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Signing in…",
+  "es": "Iniciando sesión…",
+  "maxChars": 16,
+  "where": [
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Creating mailbox",
+  "es": "Creando buzón",
+  "maxChars": 3,
+  "where": [
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Email",
+  "es": "Correo",
+  "maxChars": 3,
+  "where": [
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Calendar",
+  "es": "Calendario",
+  "maxChars": 3,
+  "where": [
+   "/business-email@1440",
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Of email storage on Enterprise Pro",
+  "es": "De almacenamiento de correo en Enterprise Pro",
+  "maxChars": 3,
+  "where": [
+   "/business-email@1440",
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Email accounts on one plan, for the whole team",
+  "es": "Cuentas de correo en un solo plan, para todo el equipo",
+  "maxChars": 3,
+  "where": [
+   "/business-email@1440",
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Plans, so you only pay for the mailboxes you use",
+  "es": "Planes, para que solo pagues por los buzones que usas",
+  "maxChars": 3,
+  "where": [
+   "/business-email@1440",
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Add account",
+  "es": "Agregar cuenta",
+  "maxChars": 3,
+  "where": [
+   "/business-email@390",
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "Attached in every format you asked for…",
+  "es": "Adjunto en todos los formatos que pediste…",
+  "maxChars": 10,
+  "where": [
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Can you share a link to the moodboards…",
+  "es": "¿Puedes compartir un enlace a los moodboards…",
+  "maxChars": 4,
+  "where": [
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Great meeting yesterday",
+  "es": "Gran reunión ayer",
+  "maxChars": 16,
+  "where": [
+   "/business-email@1440",
+   "/business-email@390",
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "Hi Alex, lovely to meet you…",
+  "es": "Hola Alex, un gusto conocerte…",
+  "maxChars": 21,
+  "where": [
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Reply all",
+  "es": "Responder a todos",
+  "maxChars": 3,
+  "where": [
+   "/business-email@1440",
+   "/business-email@390",
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "Room 2",
+  "es": "Sala 2",
+  "maxChars": 3,
+  "where": [
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Tomorrow, 11 am",
+  "es": "Mañana, 11 am",
+  "maxChars": 11,
+  "where": [
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Minutes, not a project",
+  "es": "Minutos, no un proyecto",
+  "maxChars": 7,
+  "where": [
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "from old host",
+  "es": "desde el hosting anterior",
+  "maxChars": 11,
+  "where": [
+   "/business-email@390",
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "Pricing",
+  "es": "Precios",
+  "maxChars": 3,
+  "where": [
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Purchase your",
+  "es": "Compra tu plan de",
+  "maxChars": 3,
+  "where": [
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "business email",
+  "es": "correo empresarial",
+  "maxChars": 10,
+  "where": [
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Best for: small teams",
+  "es": "Ideal para: equipos pequeños",
+  "maxChars": 21,
+  "where": [
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Regular price",
+  "es": "Precio regular",
+  "maxChars": 8,
+  "where": [
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Works on iPhone and Android",
+  "es": "Funciona en iPhone y Android",
+  "maxChars": 14,
+  "where": [
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Incoming",
+  "es": "Entrante",
+  "maxChars": 3,
+  "where": [
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Add the domain and your email plan together.",
+  "es": "Agrega el dominio y tu plan de correo juntos.",
+  "maxChars": 37,
+  "where": [
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Need a",
+  "es": "¿Necesitas un",
+  "maxChars": 3,
+  "where": [
+   "/business-email@390",
+   "/business-email@768"
+  ]
+ },
+ {
+  "en": "Create your mailboxes on it",
+  "es": "Crea tus buzones en él",
+  "maxChars": 5,
+  "where": [
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Pick the right plan",
+  "es": "Elige el plan correcto",
+  "maxChars": 9,
+  "where": [
+   "/business-email@390"
+  ]
+ },
+ {
+  "en": "Outlook, Apple Mail, iPhone and Android.",
+  "es": "Outlook, Apple Mail, iPhone y Android.",
+  "maxChars": 21,
+  "where": [
+   "/business-email@390"
+  ]
+ }
+]
