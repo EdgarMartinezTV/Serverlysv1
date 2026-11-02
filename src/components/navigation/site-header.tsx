@@ -390,7 +390,7 @@ export function SiteHeader() {
               */}
               <AssistantOpenButton onDark={dark} />
             </span>
-            <span className="hidden md:block">
+            <span className="hidden lg:block">
               <LanguageSelector onDark={dark} />
             </span>
             <CartButton onDark={dark} />

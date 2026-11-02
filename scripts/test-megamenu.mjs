@@ -306,7 +306,7 @@ console.log("\n── Header controls ──");
 await load();
 check(
   "language selector opens and offers Spanish on the matching page",
-  await ev(`const b=[...document.querySelectorAll('button[aria-haspopup="true"]')][0];
+  await ev(`const b=[...document.querySelectorAll('header button[aria-haspopup="listbox"]')][0];
     b.click(); await new Promise(r=>setTimeout(r,220));
     const es=[...document.querySelectorAll('header a[hreflang="es"]')][0];
     return b.getAttribute('aria-expanded')==='true' && !!es && /Español/.test(es.textContent) && es.getAttribute('href').startsWith('/es')`),
@@ -381,7 +381,8 @@ check(
   // Sera became ConvoAI on 2026-11-01.
   "drawer shows CTA, login and language",
   await ev(`const t=document.querySelector('#mobile-nav-panel').textContent;
-    return /Ask ConvoAI/.test(t) && /Client login/.test(t) && /English/.test(t)`),
+    const lang=document.querySelector('#mobile-nav-panel button[aria-haspopup="listbox"]');
+    return /Ask ConvoAI/.test(t) && /Client login/.test(t) && !!lang && /EN/.test(lang.textContent)`),
 );
 check(
   "no horizontal overflow on mobile",

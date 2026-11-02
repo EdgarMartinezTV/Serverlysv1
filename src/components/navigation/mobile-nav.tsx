@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { AssistantOpenButton } from "@/components/assistant/assistant-open-button";
 import Link from "next/link";
@@ -19,9 +19,7 @@ import { NavIcon, Chevron, ArrowUpRight } from "./nav-icons";
 import { cn } from "@/lib/utils";
 import { t as tx } from "@/i18n/t";
 import { lh } from "@/i18n/href";
-import { isSpanish } from "@/i18n/t";
-import { twinOf } from "@/i18n/paths";
-import { syncWhmcsLanguage } from "./language-selector";
+import { LocalePanel, LocaleTrigger } from "./language-selector";
 
 /**
  * Mobile navigation.
@@ -53,8 +51,8 @@ export function MobileNav({
   const panelRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const pathname = useSitePathname();
-  const spanish = isSpanish();
-  const twin = twinOf(pathname || "/");
+  const [langOpen, setLangOpen] = useState(false);
+  const langListId = useId();
 
   // Collapse sections on navigation — adjusted during render, not in an
   // effect. Closing the drawer itself is SiteHeader's job: it owns `open`.
@@ -67,7 +65,10 @@ export function MobileNav({
   const [wasOpen, setWasOpen] = useState(open);
   if (wasOpen !== open) {
     setWasOpen(open);
-    if (!open) setExpanded(null);
+    if (!open) {
+      setExpanded(null);
+      setLangOpen(false);
+    }
   }
 
   /*
@@ -100,6 +101,10 @@ export function MobileNav({
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         e.preventDefault();
+        if (langOpen) {
+          setLangOpen(false);
+          return;
+        }
         onOpenChange(false);
         toggleRef.current?.focus();
         return;
@@ -123,7 +128,7 @@ export function MobileNav({
     };
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [open, onOpenChange]);
+  }, [open, onOpenChange, langOpen]);
 
   useEffect(() => {
     if (open) panelRef.current?.focus();
@@ -245,34 +250,13 @@ export function MobileNav({
               <Button href={lh(billing.login)} variant="secondary" size="lg" block>{tx("Client login")}</Button>
             </div>
 
-            <div className="mt-6 flex items-center justify-between border-t border-line pt-5">
-              <span className="flex items-center gap-1 text-small">
-                {(["en", "es"] as const).map((code) =>
-                  code === (spanish ? "es" : "en") ? (
-                    <span key={code} aria-current="true" className="rounded-md bg-canvas-secondary px-2.5 py-1.5 font-semibold text-fg">
-                      {code === "en" ? tx("English") : tx("Español")}
-                    </span>
-                  ) : (
-                    <a
-                      key={code}
-                      href={twin ? twin[code] : code === "es" ? "/es" : "/"}
-                      hrefLang={code}
-                      lang={code}
-                      onClick={() => syncWhmcsLanguage(code === "es" ? "spanish" : "english")}
-                      className="rounded-md px-2.5 py-1.5 text-fg-secondary underline underline-offset-4"
-                    >
-                      {code === "en" ? tx("English") : tx("Español")}
-                    </a>
-                  ),
-                )}
-              </span>
-              <a
-                href={lh(company.phoneHref)}
-                className="tabular text-small text-fg-secondary underline underline-offset-4"
-              >
-                {tx(company.phone)}
-              </a>
-            </div>
+            <a
+              href={lh(company.phoneHref)}
+              className="tabular mt-6 block text-center text-small text-fg-secondary underline underline-offset-4"
+            >
+              {tx(company.phone)}
+            </a>
+
           </nav>
 
           {/* CATEGORY SCREEN — slides in from the right. */}
@@ -311,6 +295,24 @@ export function MobileNav({
               </>
             )}
           </div>
+
+          {/* LANGUAGE SHEET — hostinger.com's mobile locale picker: the
+              desktop panel as a full-height sheet over the menu. */}
+          {langOpen && (
+            <div className="absolute inset-0 z-10 flex flex-col bg-white motion-safe:animate-[localeSheetIn_200ms_cubic-bezier(0.16,1,0.3,1)]">
+              <LocalePanel id={langListId} autoFocusSearch onPicked={() => setLangOpen(false)} className="flex-1 px-4 sm:px-8" />
+            </div>
+          )}
+        </div>
+
+        {/* Bottom bar, as on hostinger.com: locale trigger left (the right is
+            left clear for the chat launcher, which floats over this corner). */}
+        <div className="flex h-[72px] shrink-0 items-center border-t border-line px-4 sm:px-8">
+          <LocaleTrigger
+            open={langOpen}
+            controls={langListId}
+            onClick={() => setLangOpen((v) => !v)}
+          />
         </div>
       </div>
     </div>
