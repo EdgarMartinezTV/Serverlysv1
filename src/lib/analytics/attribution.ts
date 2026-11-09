@@ -89,7 +89,7 @@ export function persistAttribution(): void {
  * location in the billing-proxy config (DEPLOY.md).
  */
 export const WHMCS_PATH =
-  /^\/(?:[A-Za-z0-9_-]+\.php(?:\/|$)|(?:assets|templates|modules|includes|images|feeds|lang|admin|oauth|download|knowledgebase|announcements|password|account|user|store|cart|domain|invoice|subscription|payment|clientarea|login|logout|sso)(?:\/|$))/;
+  /^\/(?:[A-Za-z0-9_-]+\.php(?:\/|$)|(?:assets|templates|modules|includes|images|feeds|lang|admin|oauth|download|knowledgebase|announcements|password|account|user|store|cart|domain|invoice|subscription|payment|clientarea|login|logout|sso|paypal_[a-z]+)(?:\/|$))/;
 
 /** Whether a URL points into WHMCS (served at the root of billingOrigin). */
 export function isBillingUrl(url: URL): boolean {
