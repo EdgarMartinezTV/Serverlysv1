@@ -3,6 +3,7 @@ import { originalArticles } from "./original";
 import { legacyArticles } from "./legacy";
 import { batch20261025 } from "./batch-2026-10-25";
 import { batch20261029 } from "./batch-2026-10-29";
+import { batch20261109 } from "./batch-2026-11-09";
 
 export type { Article, ArticleCategory, Block };
 
@@ -27,7 +28,7 @@ export type { Article, ArticleCategory, Block };
  * head of this list as its lead article, and "whatever happened to be first in
  * the file" is not an editorial decision.
  */
-export const articles: readonly Article[] = [...originalArticles, ...batch20261025, ...batch20261029, ...legacyArticles].sort(
+export const articles: readonly Article[] = [...originalArticles, ...batch20261025, ...batch20261029, ...batch20261109, ...legacyArticles].sort(
   (a, b) => b.published.localeCompare(a.published),
 );
 
