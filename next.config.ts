@@ -59,6 +59,9 @@ const nextConfig: NextConfig = {
       // Search Console showed clicks on /mailer (not a page on this or the old
       // site, likely left by the 2026 compromise); nearest real intent is email.
       { source: "/mailer", destination: "/business-email", permanent: true },
+      // GSC 2026-11-09: /partners/ is a 404 from the previous site still being
+      // crawled. No partner programme exists, so it goes to the company page.
+      { source: "/partners", destination: "/about", permanent: true },
       // Search Console still reports /email as a 404 from the previous site.
       { source: "/email", destination: "/business-email", permanent: true },
       { source: "/web-design", destination: "/website-design", permanent: true },
@@ -179,6 +182,13 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      /*
+       * Open Graph cards (/og/<page>) are PNGs for link previews, but Google
+       * crawls them as URLs and lists them as "Crawled - currently not
+       * indexed" (GSC 2026-11-09). noindex keeps them out of the index report
+       * without blocking the social crawlers that render previews.
+       */
+      { source: "/og/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex" }] },
       { source: "/brand/:path*", headers: [publicAssetCache] },
       { source: "/mock/:path*", headers: [publicAssetCache] },
       { source: "/Hosting-images/:path*", headers: [publicAssetCache] },

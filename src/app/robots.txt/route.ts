@@ -41,6 +41,11 @@ const WHMCS_DISALLOW = [
      not indexed". The plain URLs stay crawlable; only the language copies stop. */
   "/*?language=",
   "/*&language=",
+  /* 2026-11-09: the cart template switch (?carttpl=Serverlys) is the same
+     store page again; GSC listed the copies as "Duplicate without
+     user-selected canonical". */
+  "/*?carttpl=",
+  "/*&carttpl=",
 ];
 
 export function GET() {
