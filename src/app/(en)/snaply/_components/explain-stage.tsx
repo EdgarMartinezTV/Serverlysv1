@@ -3,7 +3,7 @@
 import { motion } from "motion/react";
 import { useReducedAfterMount } from "../../business-email/_components/use-reduced";
 import { BrowserShot, Eyebrow, PanelShot } from "./kit";
-import { t as tx } from "@/i18n/t";
+import { t as tx, tc } from "@/i18n/t";
 
 /**
  * The launch-style statement band, built like business-email's "Make the right
@@ -46,7 +46,7 @@ export function ExplainStage() {
         <h2 id="explain" className="mt-6 text-center font-display text-[42px] font-normal leading-[1.02] tracking-[-0.035em] text-fg sm:text-[64px] lg:text-[80px]">
           {WORDS.map((w, i) => (
             <motion.span key={w} {...reveal(i + 1)} className="mr-[0.24em] inline-block">
-              {tx(w)}
+              {tc("snaply", w)}
             </motion.span>
           ))}
           <motion.span {...reveal(4)} className="inline-block">

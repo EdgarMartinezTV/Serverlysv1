@@ -147,7 +147,9 @@ export function LegalPage({
 }) {
   const doc = legalDoc(path);
   const related = relatedDocs(doc.related);
-  const effectiveLabel = new Date(`${doc.effective}T00:00:00Z`).toLocaleDateString("en-US", {
+  // Spanish pages format the date natively ("10 de noviembre de 2026"); the
+  // dictionary's shape lookup mangled "November 10, 2026" into "10, de noviembre".
+  const effectiveLabel = new Date(`${doc.effective}T00:00:00Z`).toLocaleDateString(isSpanish() ? "es-419" : "en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",

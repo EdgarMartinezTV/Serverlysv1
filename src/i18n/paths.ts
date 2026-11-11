@@ -39,6 +39,8 @@ export const ES_PATHS: ReadonlySet<string> = new Set([
   "/abuse-handling-policy",
   "/ai-services-terms",
   "/customer-service-policy",
+  "/snaply",
+  "/snaply/privacy",
   // Spanish twins that predate the site-wide translation (own copy files).
   "/restaurant-websites",
   "/cleaning-company-websites",
@@ -51,7 +53,7 @@ export const LEGAL_PATHS: ReadonlySet<string> = new Set([
   "/cookie-policy", "/dmca-policy", "/data-processing-agreement", "/domain-registration-agreement",
   "/legal-information", "/report-abuse", "/accessibility", "/law-enforcement-requests",
   "/information-security-policy", "/responsible-disclosure-policy", "/abuse-handling-policy",
-  "/ai-services-terms", "/customer-service-policy",
+  "/ai-services-terms", "/customer-service-policy", "/snaply/privacy",
 ]);
 
 export const esPath = (path: string) => (path === "/" ? "/es" : `/es${path}`);

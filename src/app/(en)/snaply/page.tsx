@@ -10,7 +10,7 @@ import { HeroStage } from "./_components/hero-stage";
 import { ExplainStage } from "./_components/explain-stage";
 import { FeatureTabs } from "./_components/feature-tabs";
 import { BrowserShot, Check, Eyebrow, G, Glyph, SnaplyMark } from "./_components/kit";
-import { t as tx } from "@/i18n/t";
+import { t as tx, tc } from "@/i18n/t";
 import { lh } from "@/i18n/href";
 
 /**
@@ -157,7 +157,7 @@ function InstallButton({ tone = "primary" }: { tone?: "primary" | "white" }) {
         <path d="M12 8.4h8.6M8.9 13.8 4.6 6.4M15.1 13.8l-4.3 7.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
       </svg>
       {tx("Add to Chrome")}
-      {!AVAILABLE && <span className={`rounded-full px-2.5 py-0.5 text-micro font-semibold ${chip}`}>{tx("Coming soon")}</span>}
+      {!AVAILABLE && <span className={`rounded-full px-2.5 py-0.5 text-micro font-semibold ${chip}`}>{tc("snaply", "Coming soon")}</span>}
     </>
   );
   const cls = `inline-flex h-12 items-center gap-2.5 rounded-md px-7 text-body font-semibold transition-colors ${look}`;
@@ -209,7 +209,7 @@ export default function SnaplyPage() {
                 href={lh("#features")}
                 className="inline-flex h-12 items-center rounded-md px-6 text-body font-semibold text-primary ring-1 ring-inset ring-brand-200 transition-colors hover:bg-brand-50"
               >
-                {tx("See what it does")}
+                {tc("snaply", "See what it does")}
               </a>
             </div>
             <p className="mt-4 text-small text-fg-secondary">
