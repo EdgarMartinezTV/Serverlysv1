@@ -124,6 +124,15 @@ export const legalDocuments: readonly LegalDocument[] = [
     related: ["/cookie-policy", "/data-processing-agreement", "/law-enforcement-requests"],
   },
   {
+    path: "/snaply/privacy",
+    title: "Snaply privacy policy",
+    category: "policy",
+    summary:
+      "What the Snaply Chrome extension stores on your device, and the fact that it sends none of it to us.",
+    effective: "2026-11-10",
+    related: ["/privacy-policy", "/cookie-policy"],
+  },
+  {
     path: "/cookie-policy",
     title: "Cookie policy",
     category: "policy",

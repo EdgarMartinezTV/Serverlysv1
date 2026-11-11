@@ -711,6 +711,16 @@ export const routes: readonly RouteMeta[] = [
     parents: ["/"],
   },
   {
+    path: "/snaply/privacy",
+    name: "Snaply privacy policy",
+    group: "legal",
+    built: true,
+    indexable: true,
+    priority: 0.2,
+    changeFrequency: "yearly",
+    parents: ["/"],
+  },
+  {
     path: "/privacy-policy",
     name: "Privacy policy",
     group: "legal",
