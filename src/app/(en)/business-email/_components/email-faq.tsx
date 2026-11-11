@@ -20,9 +20,14 @@ const EASE = [0.16, 1, 0.3, 1] as const;
 export function EmailFaq({
   items,
   supportEmail,
+  heading = ["Before you ", "buy"],
+  lede = "The things people actually ask us, answered plainly.",
 }: {
   items: readonly { question: string; answer: string }[];
   supportEmail: string;
+  /** [plain, accent] — the accent half renders in brand blue. */
+  heading?: readonly [string, string];
+  lede?: string;
 }) {
   const [open, setOpen] = useState(0);
   const reduced = useReducedAfterMount();
@@ -41,9 +46,9 @@ export function EmailFaq({
           <h2
             id="faq-heading"
             className="mt-5 font-display text-[36px] font-normal leading-[1.08] tracking-[-0.03em] text-fg sm:text-[52px]"
-          >{tx("Before you ")}<span className="text-primary">{tx("buy")}</span>
+          >{tx(heading[0])}<span className="text-primary">{tx(heading[1])}</span>
           </h2>
-          <p className="mt-4 max-w-[400px] text-body-lg text-fg-secondary">{tx("The things people actually ask us, answered plainly.")}</p>
+          <p className="mt-4 max-w-[400px] text-body-lg text-fg-secondary">{tx(lede)}</p>
 
           <div className="relative mt-10 overflow-hidden rounded-3xl bg-[linear-gradient(160deg,#0f1f4d,#071230_60%,#040b22)] p-7 text-white shadow-[0_30px_60px_-30px_rgb(4_11_34/0.7)]">
             <div
