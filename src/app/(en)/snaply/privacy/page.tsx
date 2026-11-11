@@ -121,11 +121,11 @@ export default function SnaplyPrivacyPage() {
         title={tx("Snaply privacy policy")}
         intro={tx("Snaply keeps your screenshots and recordings on your device. This page explains exactly what it stores, where, and what it never does.")}
         path={PATH}
-        trail={[{ name: "Home", href: "/" }, { name: "Snaply privacy policy" }]}
+        trail={[{ name: "Home", href: "/" }, { name: "Snaply", href: "/snaply" }, { name: "Privacy policy" }]}
         sections={tx(SECTIONS)}
         contact={tx("Questions about Snaply and your data? Write to us and we will answer directly.")}
       />
-      <PageBreadcrumbs trail={[{ name: "Home", path: "/" }, { name: "Snaply privacy policy", path: PATH }]} />
+      <PageBreadcrumbs trail={[{ name: "Home", path: "/" }, { name: "Snaply", path: "/snaply" }, { name: "Privacy policy", path: PATH }]} />
     </>
   );
 }

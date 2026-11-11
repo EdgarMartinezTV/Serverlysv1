@@ -15,8 +15,13 @@ import { t as tx } from "@/i18n/t";
 export function FaqSection({
   items,
   surface = "light",
+  title = "Before you buy",
+  lede = "The things people actually ask us, answered plainly.",
 }: {
   items: readonly Faq[];
+  /** Heading override — "Before you buy" is wrong for a free product. */
+  title?: string;
+  lede?: string;
   /**
    * The band this sits on. Exposed because the FAQ moves between pages and the
    * surface it needs depends on what precedes it — the homepage now runs a
@@ -34,8 +39,8 @@ export function FaqSection({
           section picks it up. */}
       <div className="mx-auto max-w-[760px]">
         <div className="text-center">
-          <h2 id="faq-heading" className="display-md text-fg">{tx("Before you buy")}</h2>
-          <p className="mt-4 text-body-lg text-fg-secondary">{tx("The things people actually ask us, answered plainly.")}</p>
+          <h2 id="faq-heading" className="display-md text-fg">{tx(title)}</h2>
+          <p className="mt-4 text-body-lg text-fg-secondary">{tx(lede)}</p>
         </div>
 
         <ul className="mt-12 divide-y divide-line border-y border-line">

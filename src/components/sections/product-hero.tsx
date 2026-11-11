@@ -41,7 +41,12 @@ export function ProductHero({
   lede: string;
   breadcrumb: ReadonlyArray<{ name: string; href?: string }>;
   specs?: ReadonlyArray<{ label: string; value: string }>;
-  primary: { label: string; href: string };
+  /**
+   * `soon` renders the primary action as a disabled button with a "Coming
+   * soon" chip — for a product that is announced but not yet available
+   * (Snaply before its Chrome Web Store approval). `href` is ignored then.
+   */
+  primary: { label: string; href: string; soon?: boolean };
   secondary: { label: string; href: string };
   /** Rendered to the right on desktop, below the copy on mobile. */
   visual?: React.ReactNode;
@@ -122,14 +127,29 @@ export function ProductHero({
             </p>
 
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <Button
-                href={lh(primary.href)}
-                variant={dark ? "inverse" : "primary"}
-                size="lg"
-                block
-              >
-                {tx(primary.label)}
-              </Button>
+              {primary.soon ? (
+                <Button
+                  type="button"
+                  disabled
+                  variant={dark ? "inverse" : "primary"}
+                  size="lg"
+                  block
+                >
+                  {tx(primary.label)}
+                  <span className="rounded-full bg-white/20 px-2 py-0.5 text-micro font-semibold">
+                    {tx("Coming soon")}
+                  </span>
+                </Button>
+              ) : (
+                <Button
+                  href={lh(primary.href)}
+                  variant={dark ? "inverse" : "primary"}
+                  size="lg"
+                  block
+                >
+                  {tx(primary.label)}
+                </Button>
+              )}
               <Button
                 href={lh(secondary.href)}
                 variant={dark ? "inverseOutline" : "outline"}

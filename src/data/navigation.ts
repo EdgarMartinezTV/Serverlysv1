@@ -651,6 +651,12 @@ export const footerNav: readonly NavColumn[] = [
     ],
   },
   {
+    heading: "Tools",
+    links: [
+      { label: "Snaply for Chrome", href: "/snaply" },
+    ],
+  },
+  {
     heading: "Services",
     links: [
       { label: "Web design", href: "/website-design" },
