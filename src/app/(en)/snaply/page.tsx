@@ -10,7 +10,7 @@ import { HeroStage } from "./_components/hero-stage";
 import { ExplainStage } from "./_components/explain-stage";
 import { FeatureTabs } from "./_components/feature-tabs";
 import { BrowserShot, Check, Eyebrow, G, Glyph, SnaplyMark } from "./_components/kit";
-import { t as tx, tc } from "@/i18n/t";
+import { t as tx, tc, isSpanish } from "@/i18n/t";
 import { lh } from "@/i18n/href";
 
 /**
@@ -345,11 +345,11 @@ export default function SnaplyPage() {
               <div aria-hidden="true" className="absolute -left-4 -top-4 h-[80%] w-[80%] rounded-[28px] bg-brand-100" />
               <BrowserShot
                 className="relative"
-                src="/snaply/library.jpg"
-                alt="Snaply Projects: captures saved on this device, with the storage they use"
+                src={isSpanish() ? "/snaply/welcome-es.jpg" : "/snaply/welcome.jpg"}
+                alt="The Snaply welcome page that opens after you install it, with a three-step guide to your first capture"
                 width={1600}
                 height={1000}
-                url="Snaply Projects"
+                url={tx("Welcome to Snaply")}
                 sizes="(min-width: 1024px) 600px, 100vw"
               />
             </div>
@@ -361,7 +361,7 @@ export default function SnaplyPage() {
               <span className="text-primary">{tx("under a minute")}</span>
             </h2>
             <p className="mx-auto mt-4 max-w-[480px] text-body-lg text-fg-secondary lg:mx-0">
-              {tx("Once Snaply is live on the Chrome Web Store, this is all it takes.")}
+              {tx("Snaply walks you through it on its welcome page. This is all it takes.")}
             </p>
             <ol className="mx-auto mt-8 flex max-w-[440px] flex-col gap-4 text-left lg:mx-0">
               {[
