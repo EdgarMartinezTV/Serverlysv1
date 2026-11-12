@@ -56,6 +56,11 @@ const FAQS = [
       "Click Add to Chrome on this page. It opens Snaply on the Chrome Web Store, where one more click adds it to Chrome. Pin it to your toolbar and press its icon or the keyboard shortcut to capture.",
   },
   {
+    question: "Chrome says “Proceed with caution”. Is Snaply safe?",
+    answer:
+      "Yes. Snaply passed Google's review before it was published on the Chrome Web Store. If you use Chrome's Enhanced Safe Browsing, Chrome shows this message for every new extension until its developer has a few months of history on the store, whatever the extension does. Click Continue to install. Snaply asks only for what it needs to capture and record, keeps everything on your computer, and never uploads your screenshots or recordings. The message stops appearing on its own as Snaply builds that history.",
+  },
+  {
     question: "Where do my screenshots and recordings go?",
     answer:
       "Nowhere but your own computer. They are kept in Chrome's storage for the extension until you download, copy or delete them. Snaply has no servers, no analytics and no upload feature, and its pages are technically blocked from contacting the internet.",
@@ -217,6 +222,14 @@ export default function SnaplyPage() {
               <span className="font-semibold text-fg">{tx("Free")}</span>
               {tx(" · No account · No watermark · Chrome on desktop")}
             </p>
+            {AVAILABLE && (
+              <p className="mt-2 max-w-[460px] text-small text-fg-secondary">
+                {tx("New on the Chrome Web Store. If Chrome shows “Proceed with caution”, that is its standard notice for new extensions. Snaply is reviewed by Google and safe to install.")}{" "}
+                <a href={lh("#faq")} className="font-semibold text-primary underline-offset-2 hover:underline">
+                  {tx("Why?")}
+                </a>
+              </p>
+            )}
           </div>
           <HeroStage />
         </div>
@@ -374,7 +387,9 @@ export default function SnaplyPage() {
         </div>
       </section>
 
+      <div id="faq" className="scroll-mt-20">
       <EmailFaq items={tx(FAQS)} supportEmail={tx(company.email)} heading={["Questions about ", "Snaply"]} lede="Free, private, and here is exactly how it works." />
+      </div>
 
       {/* ── Closing band ───────────────────────────────────────────────── */}
       <section aria-labelledby="cta-title" className="relative isolate overflow-hidden bg-primary">
