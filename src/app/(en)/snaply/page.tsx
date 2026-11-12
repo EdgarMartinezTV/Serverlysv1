@@ -21,9 +21,9 @@ import { lh } from "@/i18n/href";
  * product UI, dark rolling-stats band, word-reveal statement band, dark
  * chaptered feature panel, brand banners, two-column FAQ.
  *
- * The extension is in Chrome Web Store review (item nkelhlncjjnfndcoclbnmngbajpbokna).
- * Until it is public every install button is a disabled "Coming soon". When the
- * listing is live, set STORE_URL — every button becomes a real link.
+ * Live on the Chrome Web Store since 2026-11-12 (item nkelhlncjjnfndcoclbnmngbajpbokna).
+ * Every install button links to STORE_URL; emptying it brings back the disabled
+ * "Coming soon" state.
  *
  * Every image is a real capture of the extension (public/snaply, from the Snaply
  * repo's store assets). Feature claims mirror the store listing — do not add one
@@ -31,8 +31,8 @@ import { lh } from "@/i18n/href";
  */
 
 const PATH = "/snaply";
-/** Chrome Web Store URL — empty until the listing is approved. */
-const STORE_URL = "";
+/** Chrome Web Store listing. An empty string switches every button back to "Coming soon". */
+const STORE_URL: string = "https://chromewebstore.google.com/detail/nkelhlncjjnfndcoclbnmngbajpbokna";
 const AVAILABLE = STORE_URL !== "";
 
 const DESCRIPTION =
@@ -51,9 +51,9 @@ const FAQS = [
       "Yes. Every feature is free, with no account, no trial, no watermark and no limit on how many screenshots or recordings you make. Serverlys builds it as a tool for our customers and for anyone else who finds it useful.",
   },
   {
-    question: "When can I install it?",
+    question: "How do I install it?",
     answer:
-      "Snaply has been submitted to the Chrome Web Store and is waiting for Google's review. The Add to Chrome buttons on this page go live the day it is approved.",
+      "Click Add to Chrome on this page. It opens Snaply on the Chrome Web Store, where one more click adds it to Chrome. Pin it to your toolbar and press its icon or the keyboard shortcut to capture.",
   },
   {
     question: "Where do my screenshots and recordings go?",
@@ -137,6 +137,7 @@ function softwareGraph() {
     browserRequirements: "Requires Google Chrome (desktop)",
     description: DESCRIPTION,
     url: canonical(PATH),
+    ...(AVAILABLE ? { installUrl: STORE_URL, downloadUrl: STORE_URL, sameAs: [STORE_URL] } : {}),
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     publisher: { "@type": "Organization", name: "Serverlys", url: canonical("/") },
   };
