@@ -17,7 +17,7 @@ export function Hero() {
       <BlackFridayProductHero
         id="wp-bf-hero"
         groupId="wordpress"
-        headline={tx("Managed hosting for WordPress this Black Friday")}
+        headline={tx("WordPress hosting this Black Friday")}
         bullets={[
           "WordPress installed and LiteSpeed-tuned, zero setup",
           "Updates applied with a backup taken first",
@@ -36,7 +36,7 @@ function StandardHero() {
         <div className="grid items-center gap-14 lg:grid-cols-[1fr_1.1fr]">
           <div>
             <p className="text-body-lg font-medium text-fg">{tx("Up to ")}<span className="text-primary">37%</span>{tx(" off managed hosting for WordPress")}</p>
-            <h1 id="wp-hero-heading" className="display-lg mt-4 text-fg">{tx("Manage your WordPress website the easy way")}</h1>
+            <h1 id="wp-hero-heading" className="display-lg mt-4 text-fg">{tx("Managed WordPress hosting, the easy way")}</h1>
             <p className="mt-5 max-w-[520px] text-body text-fg-secondary">{tx("WordPress installed, LiteSpeed tuned for it, updates applied with a backup taken first, and free migration. No server work on your side.")}</p>
             <div className="mt-8">
               <CtaButton href={lh("#plans")} className="w-full sm:w-auto">{tx("Start now")}</CtaButton>

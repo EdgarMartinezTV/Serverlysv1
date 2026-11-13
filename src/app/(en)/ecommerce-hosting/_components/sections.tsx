@@ -64,7 +64,7 @@ export function Hero() {
       <BlackFridayProductHero
         id="ecom-bf-hero"
         groupId="ecommerce"
-        headline={tx("WooCommerce hosting this Black Friday")}
+        headline={tx("Ecommerce hosting for WooCommerce this Black Friday")}
         bullets={["Free domain and store migration", "WooCommerce installed in one click", "Updates, backups and security handled"]}
         ctaHref="#pricing"
       />

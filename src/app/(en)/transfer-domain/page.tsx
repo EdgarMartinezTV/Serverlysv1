@@ -27,7 +27,7 @@ import { t as tx } from "@/i18n/t";
 
 const PATH = "/transfer-domain";
 
-const TITLE = "Transfer a Domain — Keep the Time You Paid For | Serverlys";
+const TITLE = "Domain Transfer: Move Your Domain, Keep Paid Time | Serverlys";
 const DESCRIPTION =
   "Move a domain to Serverlys without downtime. Your remaining registration carries over, DNS keeps resolving, and the 60-day ICANN rule is explained up front.";
 

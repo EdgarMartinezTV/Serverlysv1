@@ -31,8 +31,8 @@ const PATH = "/pricing";
 
 /* Black Friday 2026: the "from" figure is the first-month sale price while it runs. */
 const TITLE = blackFridayActive()
-  ? `Serverlys pricing | Black Friday: hosting from $${lowestSaleRate.toFixed(2)}/mo`
-  : `Serverlys pricing | Hosting and domains from $${lowestRate.toFixed(2)}/mo`;
+  ? `Hosting Plans & Pricing | Black Friday from $${lowestSaleRate.toFixed(2)}/mo`
+  : `Hosting Plans & Pricing from $${lowestRate.toFixed(2)}/mo | Serverlys`;
 const DESCRIPTION = blackFridayActive()
   ? `Black Friday until ${BLACK_FRIDAY.endsLabel}: ${Math.round(BLACK_FRIDAY.pct * 100)}% off the first payment on cloud, WordPress and ecommerce hosting, email and ConvoAI Pro, with the renewal rate shown beside every price. 30-day money-back guarantee.`
   : "Cloud, WordPress and ecommerce hosting plus domains, with the renewal rate shown beside the monthly rate on every plan. 30-day money-back guarantee.";

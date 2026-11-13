@@ -34,7 +34,7 @@ export const HERO = {
   eyebrowPrefix: "Up to ",
   eyebrowAccent: "71%",
   eyebrowSuffix: " off managed cloud hosting",
-  title: "Power without the complexity",
+  title: "Cloud hosting: power without the complexity",
   bullets: [
     "Free domain and website migration",
     "Get more resources as you grow",

@@ -49,7 +49,7 @@ export default function HostingPage() {
 
       <ProductHero
         eyebrow={tx("Web hosting")}
-        title={tx("Web hosting on one stack, three ways to run on it.")}
+        title={tx("Web hosting for small business, on one fast stack.")}
         lede={tx("Cloud, WordPress and ecommerce hosting share the same infrastructure. What differs is how it is tuned and who maintains it — not whether you get the fast disks.")}
         breadcrumb={[{ name: "Home", href: "/" }, { name: "Hosting" }]}
         specs={[

@@ -233,7 +233,7 @@ export async function generateMetadata(props: PageProps<"/tld/[tld]">) {
   const t = tldBySlug(tld);
   if (!t) return {};
   return pageMetadata({
-    title: `.${t.slug} Domain: Register for ${formatPrice(t.register)}/yr | Serverlys`,
+    title: `.${t.slug} Domain: Buy & Register for ${formatPrice(t.register)}/yr | Serverlys`,
     description: `Register a .${t.slug} domain for ${formatPrice(t.register)} a year, renewing at ${formatPrice(t.renew)}. ${t.forWhom}`.slice(0, 158),
     path: pathFor(t),
   });

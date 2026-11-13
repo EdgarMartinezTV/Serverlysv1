@@ -23,7 +23,7 @@ import { BLACK_FRIDAY, blackFridayActive } from "@/data/pricing";
  */
 
 export const HERO = {
-  title: "Plans & pricing",
+  title: "Hosting plans & pricing",
   trust: [
     { icon: "shield" as const, label: "30-day money-back guarantee" },
     { icon: "support" as const, label: "24/7 support" },

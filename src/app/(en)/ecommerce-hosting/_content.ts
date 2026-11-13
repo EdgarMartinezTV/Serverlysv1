@@ -33,7 +33,7 @@ export const HERO = {
   eyebrowPrefix: "Up to ",
   eyebrowAccent: "79%",
   eyebrowSuffix: " off WooCommerce hosting",
-  title: "Start selling with confidence",
+  title: "Ecommerce hosting to start selling with confidence",
   bullets: [
     "Free domain and website migration",
     "Quick setup, easy to scale",
