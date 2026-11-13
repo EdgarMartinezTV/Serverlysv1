@@ -55,7 +55,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // than build time because that date is known and does not change on redeploy.
   const posts = articles.map((article) => ({
     url: canonical(`/blog/${article.slug}`),
-    lastModified: new Date(`${article.published}T00:00:00Z`),
+    lastModified: new Date(`${article.updated ?? article.published}T00:00:00Z`),
     changeFrequency: "yearly" as const,
     priority: 0.5,
   }));

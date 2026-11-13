@@ -209,6 +209,12 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
             icon: "cart",
             description: "WooCommerce-ready, fast at checkout.",
           },
+          {
+            label: "Managed hosting",
+            href: "/managed-hosting",
+            icon: "server",
+            description: "We patch, back up and watch it for you.",
+          },
         ],
       },
       {
@@ -687,6 +693,8 @@ export const footerNav: readonly NavColumn[] = [
     heading: "Resources",
     links: [
       { label: "Pricing", href: "/pricing" },
+      { label: "Web hosting prices 2026", href: "/blog/web-hosting-cost-2026" },
+      { label: "Renewal prices compared", href: "/web-hosting-renewal-prices" },
       { label: "All resources", href: "/resources" },
       { label: "Tutorials", href: "/tutorials" },
       { label: "Hosting comparison", href: "/hosting-alternatives" },

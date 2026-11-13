@@ -1,17 +1,77 @@
 import type { Article } from "../types";
+import {
+  BLUEHOST,
+  BLUEHOST_TERM,
+  COMPETITOR_SOURCE_LABEL,
+  GD_HOSTING,
+  GD_HOSTING_TERM,
+  HOSTINGER,
+  NC_HOSTING,
+  SG_HOSTING,
+  SG_TERM_MONTHS,
+} from "@/data/competitor-pricing";
+import { formatPrice, groupById, monthlyLine, quote } from "@/data/pricing";
+
+/*
+ * Revised 2026-11-13 for the queries Search Console shows this post ranking
+ * 15–30 for: "hosting price(s)", "hosting pricing", "web hosting cost",
+ * "web hosting cost per year", "web hosting renewal prices". The named-host
+ * table reads competitor-pricing.ts (dated, sourced, nothing estimated) and
+ * the Serverlys row reads pricing.ts, so neither can drift from the site.
+ */
+const STARTER = groupById("cloud")?.plans[0];
+const OURS_ANNUAL = STARTER ? quote(STARTER, "annually").total : 0;
+const perYear = (monthly: number) => formatPrice(Math.round(monthly * 12 * 100) / 100);
+const [hPremium] = HOSTINGER;
+const [bStarter] = BLUEHOST;
+const [sgStartUp] = SG_HOSTING;
+const [ncStellar] = NC_HOSTING;
+const [gdEconomy] = GD_HOSTING;
 
 export const article: Article = {
   slug: "web-hosting-cost-2026",
-  title: "How Much Does Web Hosting Cost in 2026? Prices & Renewals",
-  seoTitle: "How Much Does Web Hosting Cost in 2026? Prices and Renewals",
-  description: "Web hosting prices in 2026: shared, cloud, VPS, dedicated and managed hosting costs, with the renewal rates and fees to check before you buy.",
+  title: "How Much Does Web Hosting Cost? 2026 Prices and Renewal Rates",
+  seoTitle: "Web Hosting Cost & Prices 2026 (With Renewal Rates)",
+  description: "Most websites pay $5–$25/month ($60–$300/year) for hosting in 2026. Real intro vs renewal prices from Hostinger, Bluehost, SiteGround and GoDaddy, plus the hidden fees.",
   category: "Hosting",
   published: "2026-06-20",
+  updated: "2026-11-13",
   body: [
-    { type: "p", text: "Web hosting pricing is deliberately confusing. Providers advertise introductory rates that look affordable, then triple the price at renewal. They sell \"unlimited\" plans that have limits buried in their terms of service. They offer low base prices but charge extra for features that should be standard — like SSL certificates, backups, and email." },
-    { type: "p", text: "This guide cuts through the noise with actual pricing data from the hosting market in 2026. We surveyed 35 hosting providers to compile real introductory prices, renewal prices, and add-on costs so you can calculate your true annual hosting expense before signing up." },
+    { type: "p", text: "Web hosting pricing is deliberately confusing. Providers advertise introductory rates that look affordable, then raise the price at renewal. They sell \"unlimited\" plans that have limits buried in their terms of service. They offer low base prices but charge extra for features that should be standard — like SSL certificates, backups, and email." },
+    { type: "p", text: `This guide gives you the price ranges for every type of hosting, then the real advertised and renewal prices of five of the biggest hosts, read off their own pricing pages on ${COMPETITOR_SOURCE_LABEL}. Use it to work out what hosting will actually cost you per year — not just in the first month.` },
     { type: "h2", id: "the-quick-answer", text: "The Quick Answer" },
-    { type: "p", text: "If you want a number without reading the full breakdown: most websites should budget **$5–$25/month ($60–$300/year)** for quality hosting in 2026. That gets you cloud hosting with NVMe storage, free SSL, daily backups, and decent support. Anything below $3/month has trade-offs that will cost you more in the long run. Anything above $50/month is unnecessary unless you have high-traffic or enterprise requirements." },
+    { type: "p", text: "Most websites should budget **$5–$25/month ($60–$300/year)** for quality hosting in 2026. That gets you cloud hosting with NVMe storage, free SSL, daily backups, and decent support. Anything below $3/month is almost always an introductory price that renews much higher. Anything above $50/month is unnecessary unless you have high-traffic or enterprise requirements." },
+    {
+      type: "table",
+      head: ["Hosting type", "Typical price per month", "Typical cost per year", "Best for"],
+      rows: [
+        ["Shared hosting", "$2–$15", "$24–$180 (more after renewal)", "Brochure sites, blogs"],
+        ["Cloud hosting", "$3–$30", "$36–$360", "Most small businesses"],
+        ["Managed WordPress", "$5–$60", "$60–$720", "WordPress sites you don't want to maintain"],
+        ["VPS hosting", "$10–$100", "$120–$1,200", "Custom apps, developers"],
+        ["Dedicated server", "$80–$500+", "$960–$6,000+", "Very high traffic, compliance"],
+      ],
+    },
+    { type: "h2", id: "what-popular-hosts-actually-charge", text: "What Popular Hosts Actually Charge (Intro vs Renewal)" },
+    { type: "p", text: `Ranges are useful, but the number that matters is what a named host charges you after the first term. These are the entry plans of five well-known hosts, exactly as printed on their own pricing pages on ${COMPETITOR_SOURCE_LABEL}. Where a host did not print a renewal price, we say so instead of guessing.` },
+    {
+      type: "table",
+      head: ["Host and plan", "Advertised price", "What you must commit to", "Renews at", "Renewal cost per year"],
+      rows: [
+        [`Hostinger ${hPremium.name}`, `${formatPrice(hPremium.intro)}/mo`, `${hPremium.months} months paid upfront (${formatPrice(hPremium.upfront)})`, `${formatPrice(hPremium.renews)}/mo`, perYear(hPremium.renews)],
+        [`Bluehost ${bStarter.name}`, `${formatPrice(bStarter.intro)}/mo`, BLUEHOST_TERM, `${formatPrice(bStarter.renews)}/mo`, perYear(bStarter.renews)],
+        [`SiteGround ${sgStartUp.name}`, `${formatPrice(sgStartUp.intro)}/mo`, `${SG_TERM_MONTHS} months prepaid`, `${formatPrice(sgStartUp.renews)}/mo`, perYear(sgStartUp.renews)],
+        [`Namecheap ${ncStellar.name}`, `${formatPrice(ncStellar.yearly)}/mo`, `Annual plan (${formatPrice(ncStellar.monthly)}/mo if you pay monthly)`, "Not printed; the discount does not apply to renewals", "—"],
+        [`GoDaddy ${gdEconomy.name}`, `${formatPrice(gdEconomy.price)}/mo`, GD_HOSTING_TERM, "Not printed (the card shows a struck-through " + formatPrice(gdEconomy.struck) + ")", "—"],
+        ...(STARTER
+          ? [[`Serverlys ${STARTER.name}`, `${formatPrice(STARTER.monthly)}/mo`, "Nothing — that is the month-to-month price", `${formatPrice(STARTER.monthly)}/mo (same price)`, `${formatPrice(OURS_ANNUAL)} on a 12-month term`]]
+          : []),
+      ],
+    },
+    { type: "p", text: `The pattern is clear: an advertised price of $2–$4 a month usually means a long prepaid term and a renewal of $10–$18 a month. SiteGround's ${sgStartUp.name} plan, for example, goes from ${formatPrice(sgStartUp.intro)} to ${formatPrice(sgStartUp.renews)} a month — ${Math.round(sgStartUp.renews / sgStartUp.intro)} times the advertised price. For the sources, links and more plans, see [web hosting renewal prices compared](/web-hosting-renewal-prices).` },
+    ...(STARTER
+      ? [{ type: "callout" as const, title: "Serverlys pricing", text: `Our ${STARTER.name} plan is ${monthlyLine(STARTER)}. Backups, Cloudflare, SSL and free migration are included. Every plan and term is on the [hosting pricing page](/pricing).` }]
+      : []),
     { type: "h2", id: "pricing-by-hosting-type", text: "Pricing by Hosting Type" },
     { type: "h3", text: "Shared Hosting: $2–$15/month" },
     {
@@ -40,7 +100,7 @@ export const article: Article = {
     {
       type: "callout",
       title: "Serverlys Tip",
-      text: "Our [cloud hosting pricing](/pricing) is transparent — the renewal price is shown right on the pricing page, not hidden in terms of service. Plans start at $7.95/month (and it renews at that same price) with NVMe storage, daily backups, Cloudflare, free SSL and free migration included.",
+      text: "Our [cloud hosting pricing](/pricing) is transparent — the renewal price is shown right on the pricing page, not hidden in terms of service. Every plan includes NVMe storage, daily backups, Cloudflare, free SSL and free migration.",
     },
     { type: "h3", text: "VPS Hosting: $10–$100/month" },
     {
@@ -119,8 +179,21 @@ export const article: Article = {
     {
       type: "callout",
       title: "Serverlys Tip",
-      text: "We believe in transparent pricing. Our [pricing page](/pricing) shows both introductory and renewal rates upfront. Cloud hosting starts at $7.95/month (and it renews at that same price) with daily backups, Cloudflare, SSL and free migration included — no surprise add-ons.",
+      text: "We believe in transparent pricing. Our [pricing page](/pricing) shows what every plan renews at next to today's price, with daily backups, Cloudflare, SSL and free migration included — no surprise add-ons.",
     },
+    { type: "h2", id: "web-hosting-cost-per-year", text: "Web Hosting Cost per Year" },
+    { type: "p", text: "Monthly prices hide the real bill, so it helps to think in years. A realistic yearly hosting budget, including the renewal price and a domain:" },
+    {
+      type: "table",
+      head: ["Type of site", "Hosting per year", "Domain per year", "Realistic total per year"],
+      rows: [
+        ["Personal site or blog", "$36–$150", "$10–$20", "$46–$170"],
+        ["Small business website", "$90–$300", "$10–$20", "$100–$320"],
+        ["Online store (WooCommerce)", "$180–$600", "$10–$20", "$190–$620"],
+        ["High-traffic site or app", "$600–$2,400+", "$10–$20", "$610–$2,420+"],
+      ],
+    },
+    { type: "p", text: "Two things move the yearly number more than anything else: the **renewal price** (year two onwards is where cheap plans get expensive) and **add-ons** you have to buy separately, such as backups, a CDN or email. If you want someone else to handle updates, security and backups for you, see what [managed hosting pricing](/managed-hosting) looks like — it usually costs only a few dollars more per month than unmanaged cloud hosting." },
     { type: "h2", id: "how-to-save-money-on-hosting", text: "How to Save Money on Hosting" },
     { type: "h3", text: "1. Pay Annually Instead of Monthly" },
     { type: "p", text: "Most providers offer 20–40% discounts for annual billing compared to month-to-month. If you are committed to a host, annual billing saves $20–$100/year depending on the plan." },

@@ -1,4 +1,15 @@
 import type { Article } from "../types";
+import { groupById, monthlyLine } from "@/data/pricing";
+
+/*
+ * Revised 2026-11-13: Search Console shows this guide, not /managed-hosting,
+ * is what Google ranks for "managed hosting", "managed hosting services" and
+ * "managed hosting pricing" (positions 19–48). The guide keeps the
+ * explainer intent and hands the buying intent to /managed-hosting with
+ * matching anchor text. Serverlys prices come from pricing.ts.
+ */
+const STARTER = groupById("cloud")?.plans[0];
+const OUR_PRICE = STARTER ? monthlyLine(STARTER) : "";
 
 export const article: Article = {
   slug: "managed-hosting-guide",
@@ -6,9 +17,22 @@ export const article: Article = {
   description: "Managed hosting explained: what it includes, what managed hosting costs, how it differs from unmanaged, and whether your website actually needs it.",
   category: "Hosting",
   published: "2026-07-18",
+  updated: "2026-11-13",
   body: [
     { type: "p", text: "Managed hosting is one of those terms the hosting industry throws around without always explaining what it means. Some providers call a shared hosting plan \"managed\" because they handle server maintenance. Others use the term for a fully hands-off service that includes security, updates, performance tuning, and priority support. The range of what \"managed\" covers is enormous, and it directly affects whether the premium is worth paying." },
     { type: "p", text: "This guide breaks down exactly what managed hosting includes, what it costs across different hosting types, and provides a clear framework for deciding whether you need it — or whether you are paying extra for services you could handle yourself." },
+    { type: "h2", id: "managed-hosting-at-a-glance", text: "Managed Hosting at a Glance" },
+    {
+      type: "table",
+      head: ["Question", "Short answer"],
+      rows: [
+        ["What is it?", "Hosting where the provider runs the server for you: updates, security patches, backups, monitoring and fixes."],
+        ["What does it cost?", "$5–$30/month for managed cloud hosting; $30–$100/month for a managed VPS; $150+/month for a managed dedicated server."],
+        ["How is it different from unmanaged?", "With unmanaged hosting you get a server and do all the maintenance yourself. With managed hosting, the provider does it."],
+        ["Who needs it?", "Any business without its own technical staff, and any site where downtime or a hack costs money."],
+      ],
+    },
+    { type: "p", text: "Want to compare real plans rather than ranges? See our [managed hosting pricing and services](/managed-hosting) — every plan shows what it renews at next to today's price." },
     { type: "h2", id: "managed-hosting-defined", text: "Managed Hosting Defined" },
     { type: "p", text: "Managed hosting is a service model where the hosting provider takes responsibility for the technical operations of your server. Instead of just renting you space on a machine, they actively maintain, monitor, and optimize the environment your website runs on." },
     { type: "p", text: "At minimum, managed hosting includes:" },
@@ -52,7 +76,7 @@ export const article: Article = {
     {
       type: "callout",
       title: "Serverlys Tip",
-      text: "Our [managed cloud hosting](/managed-hosting) includes daily backups, security patching, monitoring, free restores and free migration — all starting at $7.95/month (and it renews at that same price). You get the benefits of cloud infrastructure with zero server management required.",
+      text: `Our [managed cloud hosting](/managed-hosting) includes daily backups, security patching, monitoring, free restores and free migration — from ${OUR_PRICE}. You get the benefits of cloud infrastructure with zero server management required.`,
     },
     { type: "h3", text: "Managed VPS Hosting" },
     { type: "p", text: "A Virtual Private Server with dedicated resources, managed by the hosting provider. You get root-level performance without needing root-level knowledge. The provider handles OS configuration, security, updates, and monitoring while you get dedicated CPU, RAM, and storage." },
@@ -116,6 +140,20 @@ export const article: Article = {
       ],
     },
     { type: "p", text: "The management premium for cloud hosting is the sweet spot for most businesses: $2–$15/month buys you significant time savings and peace of mind. The premium for VPS and dedicated hosting is higher because the management tasks are more complex and require more specialized expertise." },
+    { type: "p", text: "For a full breakdown of what hosting of every type costs per month and per year — including the renewal prices of Hostinger, Bluehost and SiteGround — see [how much web hosting costs in 2026](/blog/web-hosting-cost-2026)." },
+    { type: "h2", id: "managed-hosting-for-small-business", text: "Managed Hosting for Small Business" },
+    { type: "p", text: "Small businesses are the group managed hosting suits best. A business website has to stay up, stay secure and load quickly, but most small businesses have no one on staff whose job is to patch a server at 2 AM. Managed hosting turns that job into a fixed monthly fee." },
+    { type: "p", text: "When you compare managed hosting services for a small business, check that the plan includes, at no extra cost:" },
+    {
+      type: "ul",
+      items: [
+        "**Daily backups with free restores** — not a paid add-on, and not only weekly.",
+        "**Security patching and malware cleanup** done by the host, not left to you.",
+        "**Free migration** of your existing site, done by the host's team.",
+        "**Free SSL and a CDN** so the site is secure and fast everywhere.",
+        "**A renewal price you can see before you buy** — the cheapest-looking managed plans often renew at two to four times the advertised price.",
+      ],
+    },
     { type: "h2", id: "who-actually-needs-managed-hosting", text: "Who Actually Needs Managed Hosting?" },
     { type: "h3", text: "You Need Managed Hosting If:" },
     {
@@ -141,7 +179,7 @@ export const article: Article = {
     {
       type: "callout",
       title: "Serverlys Tip",
-      text: "Not sure if managed hosting is right for you? Start with our [managed hosting plans](/managed-hosting) from $7.95/month (and it renews at that same price). If you decide you want more control, you can adjust your management level anytime. There is no lock-in.",
+      text: `Not sure if managed hosting is right for you? Start with our [small business managed hosting](/managed-hosting) plans from ${OUR_PRICE}. If you decide you want more control, you can adjust your management level anytime. There is no lock-in.`,
     },
     { type: "h2", id: "what-to-look-for-in-a-managed-hosting-provider", text: "What to Look for in a Managed Hosting Provider" },
     { type: "p", text: "Not all managed hosting is created equal. When evaluating providers, check for these specific services:" },

@@ -52,6 +52,7 @@ export async function generateMetadata(props: PageProps<"/blog/[slug]">) {
       ...base.openGraph,
       type: "article",
       publishedTime: article.published,
+      ...(article.updated ? { modifiedTime: article.updated } : {}),
       section: article.category,
     },
   };
@@ -207,6 +208,7 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
           description: article.description,
           path,
           published: article.published,
+          modified: article.updated,
           image: [
             ogImageFor(path),
             ...(COVERS.has(article.slug) ? [canonical(`/blog/covers/${article.slug}.webp`)] : []),
@@ -232,6 +234,11 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
             {article.category}
           </Link>
           <time dateTime={article.published}>{formatDate(article.published)}</time>
+          {article.updated && article.updated !== article.published ? (
+            <span className="font-normal text-fg-muted">
+              Updated <time dateTime={article.updated}>{formatDate(article.updated)}</time>
+            </span>
+          ) : null}
           <span>{AUTHOR}</span>
           <span className="font-normal text-fg-muted">{readingMinutes(article)} min read</span>
         </p>

@@ -47,5 +47,11 @@ export type Article = {
   category: ArticleCategory;
   /** ISO date. The day it was published on serverlys.com. */
   published: string;
+  /**
+   * ISO date of the last real content revision, when there was one. Feeds
+   * dateModified, the sitemap lastmod and the visible "Updated" line. Never
+   * bump it for a typo or a redeploy — only when the substance changed.
+   */
+  updated?: string;
   body: readonly Block[];
 };
