@@ -23,6 +23,8 @@ export type Tutorial = {
   summary: string;
   category: "Domains & DNS" | "Email" | "WordPress" | "Security" | "Recovery";
   minutes: number;
+  /** First published on serverlys.com (ISO date), from the repo history. */
+  published: string;
   /** Stated before step one, so nobody gets halfway and stops. */
   before: readonly string[];
   steps: readonly Step[];
@@ -41,6 +43,7 @@ export type Tutorial = {
 export const tutorials: readonly Tutorial[] = [
   {
     slug: "point-your-domain",
+    published: "2026-09-09",
     title: "Point your domain at Serverlys",
     summary:
       "The two ways to connect a domain to your hosting, and how to choose between them.",
@@ -91,6 +94,7 @@ export const tutorials: readonly Tutorial[] = [
   },
   {
     slug: "email-deliverability",
+    published: "2026-09-09",
     title: "Set up email that actually gets delivered",
     summary:
       "SPF, DKIM and DMARC in plain terms, and the order to add them in.",
@@ -142,6 +146,7 @@ export const tutorials: readonly Tutorial[] = [
   },
   {
     slug: "wordpress-fast-on-day-one",
+    published: "2026-09-09",
     title: "Install WordPress and make it fast on day one",
     summary:
       "The setup decisions that are painful to change later, made correctly at the start.",
@@ -188,6 +193,7 @@ export const tutorials: readonly Tutorial[] = [
   },
   {
     slug: "force-https",
+    published: "2026-09-09",
     title: "Force HTTPS and clear mixed content",
     summary:
       "Get the padlock, keep it, and find what is still loading over http.",
@@ -229,6 +235,7 @@ export const tutorials: readonly Tutorial[] = [
   },
   {
     slug: "restore-a-backup",
+    published: "2026-09-09",
     title: "Restore a backup without making it worse",
     summary:
       "What to check before you roll back, and what a restore will overwrite.",
@@ -269,6 +276,7 @@ export const tutorials: readonly Tutorial[] = [
   },
   {
     slug: "lower-ttl-before-migration",
+    published: "2026-09-09",
     title: "Lower your TTL before a migration",
     summary:
       "The one preparation step that turns a day of split traffic into minutes.",
@@ -310,6 +318,7 @@ export const tutorials: readonly Tutorial[] = [
   },
   {
     slug: "change-nameservers",
+    published: "2026-10-26",
     title: "Change your domain's nameservers",
     summary:
       "Hand a domain's DNS to a new provider without losing email, and know when the switch has actually happened.",
@@ -361,6 +370,7 @@ export const tutorials: readonly Tutorial[] = [
   },
   {
     slug: "add-a-or-cname-record",
+    published: "2026-10-26",
     title: "Add an A record or a CNAME record",
     summary:
       "Which record a name needs, how to type the host field without doubling the domain, and how to check the result.",
@@ -411,6 +421,7 @@ export const tutorials: readonly Tutorial[] = [
   },
   {
     slug: "set-up-dmarc",
+    published: "2026-10-26",
     title: "Set up DMARC step by step",
     summary:
       "Publish a DMARC record, read what the reports tell you, and move to an enforcing policy without losing real mail.",
@@ -464,6 +475,7 @@ export const tutorials: readonly Tutorial[] = [
   },
   {
     slug: "set-up-dkim",
+    published: "2026-10-26",
     title: "Set up DKIM for your domain",
     summary:
       "Turn on DKIM signing for each service that sends as your domain, publish the keys, and confirm the signatures pass.",
@@ -519,6 +531,7 @@ export const tutorials: readonly Tutorial[] = [
   },
   {
     slug: "connect-google-workspace-or-microsoft-365",
+    published: "2026-10-26",
     title: "Connect your domain to Google Workspace or Microsoft 365",
     summary:
       "Verify the domain, replace the MX records, and stop your hosting server from keeping mail meant for the new provider.",
@@ -572,6 +585,7 @@ export const tutorials: readonly Tutorial[] = [
   },
   {
     slug: "install-ssl-certificate-wordpress",
+    published: "2026-10-26",
     title: "Install an SSL certificate and switch WordPress to HTTPS",
     summary:
       "Get a valid certificate on the domain first, then move WordPress over to https without locking yourself out.",
@@ -628,6 +642,7 @@ export const tutorials: readonly Tutorial[] = [
   },
   {
     slug: "move-wordpress-to-a-new-host",
+    published: "2026-10-26",
     title: "Move WordPress to a new host manually",
     summary:
       "Copy the files and database yourself, test on the new server before anyone else sees it, then switch DNS.",
@@ -686,6 +701,7 @@ export const tutorials: readonly Tutorial[] = [
   },
   {
     slug: "change-wordpress-site-url",
+    published: "2026-10-26",
     title: "Change your WordPress site URL safely",
     summary:
       "Move WordPress to a new domain or address without breaking links, serialised settings or your own login.",
@@ -738,6 +754,7 @@ export const tutorials: readonly Tutorial[] = [
   },
   {
     slug: "reset-wordpress-password-phpmyadmin",
+    published: "2026-10-26",
     title: "Reset a WordPress admin password in phpMyAdmin",
     summary:
       "Get back into a WordPress site when the lost-password email never arrives.",
@@ -789,6 +806,7 @@ export const tutorials: readonly Tutorial[] = [
   },
   {
     slug: "wordpress-automatic-backups",
+    published: "2026-10-26",
     title: "Set up automatic WordPress backups",
     summary:
       "Add a scheduled, off-server copy of your files and database, and prove you can restore it.",
@@ -838,6 +856,7 @@ export const tutorials: readonly Tutorial[] = [
   },
   {
     slug: "harden-wordpress-login",
+    published: "2026-10-26",
     title: "Harden your WordPress login",
     summary:
       "The changes that stop password-guessing and stolen-password attacks on wp-admin, in the order worth doing them.",
@@ -888,6 +907,7 @@ export const tutorials: readonly Tutorial[] = [
   },
   {
     slug: "fix-error-establishing-database-connection",
+    published: "2026-10-26",
     title: "Fix \u201cError establishing a database connection\u201d",
     summary:
       "Find out which of the four usual causes it is, in the order that is quickest to check.",
@@ -939,6 +959,7 @@ export const tutorials: readonly Tutorial[] = [
   },
   {
     slug: "set-up-subdomain",
+    published: "2026-10-26",
     title: "Set up a subdomain",
     summary:
       "Create blog., shop. or staging. as its own site, with DNS and a certificate, and keep a staging copy out of search results.",
@@ -988,6 +1009,7 @@ export const tutorials: readonly Tutorial[] = [
   },
   {
     slug: "set-up-email-forwarding",
+    published: "2026-10-26",
     title: "Set up email forwarding",
     summary:
       "Forward an address on your domain to another inbox, and avoid the delivery problems forwarding causes.",
@@ -1037,6 +1059,7 @@ export const tutorials: readonly Tutorial[] = [
   },
   {
     slug: "transfer-a-domain",
+    published: "2026-10-26",
     title: "Transfer a domain to another registrar",
     summary:
       "Unlock it, get the authorisation code, keep DNS running during the move, and know how long each stage takes.",

@@ -1,12 +1,11 @@
 import Link from "next/link";
-import { Section } from "@/components/ui/section";
-import { FinalCta } from "@/components/sections/final-cta";
 import { JsonLd } from "@/components/ui/json-ld";
-import { tutorials, tutorialCategories, tutorialPath } from "@/data/tutorials";
-import { collectionGraph, pageMetadata } from "@/lib/seo";
-import { PageHero } from "../resources/_components/page-hero";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
-import { categoryAnchor, TutorialsHelpCta } from "./_components/tutorial-ui";
+import { tutorialBySlug, tutorialCategories, tutorialPath, tutorials, type Tutorial } from "@/data/tutorials";
+import { collectionGraph, pageMetadata } from "@/lib/seo";
+import { AllTutorials, HeroSearch } from "./_components/index-client";
+import { CardGrid, COL, SectionHead } from "./_components/index-ui";
+import { categoryAnchor } from "./_components/tutorial-ui";
 
 const PATH = "/tutorials";
 
@@ -17,19 +16,32 @@ const DESCRIPTION =
 export const metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH });
 
 /**
- * Tutorials index.
+ * Tutorials index — LAYOUT rebuilt on hostinger.com/tutorials (measured at
+ * 1440 on 2026-11-16, at Edgar's request): topic bar → blue search hero →
+ * three curated bands of three cards → a topic band with "View all" under its
+ * subtitle → every tutorial, newest first, paginated.
  *
- * Until 2026-10-26 every guide was rendered in full on this one page, which
- * meant none of them had a URL of its own and none could rank for its own
- * query. Each now lives at /tutorials/[slug] with its own HowTo markup; this
- * page groups them by category and links to each.
+ * CONTENT is ours and honest: we have no view counts and no weekly editorial
+ * rota, so the reference's "Most popular" and "Weekly editor's pick" become
+ * "Start here" and "When something breaks" — chosen by subject, and labelled
+ * as such. Dates are real first-publication dates; the byline is the company.
  *
- * The HowTo JSON-LD moved with the content: emitting it here as well would
- * describe the same procedure under two URLs. This page is a collection.
+ * Each guide lives at /tutorials/[slug] with its own HowTo markup; this page
+ * is a collection and emits only CollectionPage JSON-LD.
  */
+const pick = (...slugs: string[]) =>
+  slugs.map((s) => tutorialBySlug(s)).filter((t): t is Tutorial => Boolean(t));
+
+const START_HERE = pick("point-your-domain", "force-https", "email-deliverability");
+const WORDPRESS = pick("wordpress-fast-on-day-one", "move-wordpress-to-a-new-host", "harden-wordpress-login");
+const BREAKS = pick("fix-error-establishing-database-connection", "restore-a-backup", "reset-wordpress-password-phpmyadmin");
+const EMAIL = pick("set-up-dkim", "set-up-dmarc", "connect-google-workspace-or-microsoft-365");
+
+const anchor = (c: Tutorial["category"]) => `#all/${categoryAnchor(c)}`;
+
 export default function TutorialsPage() {
   return (
-    <>
+    <div className="bg-white font-display text-[#18181a] [&_h1]:text-wrap [&_h2]:text-wrap [&_h3]:text-wrap [&_p]:text-wrap">
       <JsonLd
         data={collectionGraph({
           name: "Serverlys tutorials",
@@ -39,76 +51,66 @@ export default function TutorialsPage() {
         })}
       />
 
-      <PageHero
-        trail={[
-          { name: "Home", href: "/" },
-          { name: "Resources", href: "/resources" },
-          { name: "Tutorials" },
-        ]}
-        label="Tutorials"
-        title="Get the job done"
-        lede={
-          <p>
-            Complete procedures with the actual record values, settings and commands. Each
-            one names the mistake people make, because that is usually why you are here.
-          </p>
-        }
-        visual={<DnsMock />}
+      <TopicBar />
+
+      {/* Hero: 570px band, 46/51 light heading, a 620px pill input and a
+          189px navy button, over soft circles — in the logo blue. */}
+      <section
+        aria-labelledby="tutorials-heading"
+        className="relative isolate flex min-h-[440px] items-center overflow-hidden bg-[#1f3dff] py-20 md:min-h-[506px]"
       >
-        <ul className="mt-8 flex flex-wrap gap-2">
-          {tutorialCategories.map((c) => (
-            <li key={c}>
-              <a
-                href={`#${categoryAnchor(c)}`}
-                className="inline-flex min-h-9 items-center rounded-full bg-canvas-secondary px-3.5 text-small font-medium text-fg ring-1 ring-line transition-colors hover:text-primary"
-              >
-                {c}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </PageHero>
-
-      <Section>
-        <div className="flex flex-col gap-16">
-          {tutorialCategories.map((category) => (
-            <section
-              key={category}
-              id={categoryAnchor(category)}
-              aria-labelledby={`${categoryAnchor(category)}-title`}
-              className="scroll-mt-28"
-            >
-              <h2 id={`${categoryAnchor(category)}-title`} className="display-md text-fg">
-                {category}
-              </h2>
-              <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {tutorials
-                  .filter((t) => t.category === category)
-                  .map((t) => (
-                    <li key={t.slug}>
-                      <Link
-                        href={tutorialPath(t)}
-                        className="group flex h-full flex-col rounded-2xl bg-canvas p-6 ring-1 ring-line transition-colors hover:ring-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                      >
-                        <h3 className="text-body-lg font-semibold text-fg group-hover:text-primary">
-                          {t.title}
-                        </h3>
-                        <p className="mt-2 flex-1 text-small text-fg-secondary">{t.summary}</p>
-                        <p className="mt-4 text-caption text-fg-muted">
-                          {t.steps.length} steps · About {t.minutes} minutes
-                        </p>
-                      </Link>
-                    </li>
-                  ))}
-              </ul>
-            </section>
-          ))}
+        <div aria-hidden className="absolute inset-0 -z-10">
+          <span className="absolute -top-[260px] -left-[180px] size-[620px] rounded-full bg-white/[0.06]" />
+          <span className="absolute -top-[120px] -right-[260px] size-[700px] rounded-full bg-white/[0.07]" />
+          <span className="absolute -bottom-[420px] left-1/2 size-[640px] -translate-x-1/2 rounded-full bg-white/[0.06]" />
+          <span className="absolute inset-0 bg-[radial-gradient(70%_80%_at_50%_120%,#0000d4,transparent_70%)]" />
         </div>
-      </Section>
+        <div className={`${COL} text-center`}>
+          <h1 id="tutorials-heading" className="text-[34px] leading-[40px] font-light text-white md:text-[46px] md:leading-[51px]">
+            Follow a guide and get the job done
+          </h1>
+          <HeroSearch />
+        </div>
+      </section>
 
-      <TutorialsHelpCta />
+      <Band id="start-here" title="Start here" sub="New site or new to Serverlys? These are the first jobs almost every website needs done.">
+        <CardGrid items={START_HERE} />
+      </Band>
 
-      <FinalCta />
+      <Band
+        id="wordpress"
+        title="WordPress"
+        sub="Whether you are launching your first site or moving a busy one, these cover setup, speed, moving hosts and keeping the login safe."
+        viewAll={anchor("WordPress")}
+      >
+        <CardGrid items={WORDPRESS} />
+      </Band>
+
+      <Band id="when-it-breaks" title="When something breaks" sub="The guides to open first when a site is down, a password is lost or a change needs undoing.">
+        <CardGrid items={BREAKS} />
+      </Band>
+
+      <Band
+        id="email"
+        title="Email"
+        sub="Get your mail delivered instead of filtered: the records that prove it is really you, and how to connect the mailbox you already use."
+        viewAll={anchor("Email")}
+        viewAllBelow
+      >
+        <CardGrid items={EMAIL} />
+      </Band>
+
+      <section id="all" aria-labelledby="all-heading" className="scroll-mt-24 pt-[110px] pb-24">
+        <div className={COL}>
+          <SectionHead
+            id="all-heading"
+            title="All Serverlys tutorials"
+            sub="Domains, DNS, email, WordPress, security and recovery, newest first. Every guide gives the exact records, settings and commands."
+          />
+          <AllTutorials />
+        </div>
+      </section>
+
       <PageBreadcrumbs
         trail={[
           { name: "Home", path: "/" },
@@ -116,50 +118,67 @@ export default function TutorialsPage() {
           { name: "Tutorials", path: PATH },
         ]}
       />
-    </>
+    </div>
+  );
+}
+
+function Band({
+  id,
+  title,
+  sub,
+  viewAll,
+  viewAllBelow,
+  children,
+}: {
+  id: string;
+  title: string;
+  sub: string;
+  viewAll?: string;
+  viewAllBelow?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <section aria-labelledby={`${id}-heading`} className="pt-[110px]">
+      <div className={COL}>
+        <SectionHead id={`${id}-heading`} title={title} sub={sub} viewAll={viewAll} viewAllBelow={viewAllBelow} />
+        <div className={viewAllBelow ? "mt-[30px]" : "mt-[52px]"}>{children}</div>
+      </div>
+    </section>
   );
 }
 
 /**
- * The first tutorial's subject, drawn: a DNS zone with the records a site
- * and its mail need. Values are documentation addresses (RFC 5737) and
- * placeholders, so nothing here points anywhere real.
+ * The reference's second bar: a segmented "Tutorials | Learning lab" switch,
+ * then the topics. Ours pairs Tutorials with the blog and lists our five
+ * topics, each filtering the "All" band.
  */
-function DnsMock() {
-  const rows = [
-    ["A", "@", "192.0.2.10"],
-    ["CNAME", "www", "yourbrand.com"],
-    ["MX", "@", "mail.yourbrand.com"],
-    ["TXT", "@", "v=spf1 include:_spf… ~all"],
-  ];
+function TopicBar() {
   return (
-    <div aria-hidden="true" className="mx-auto max-w-[480px] overflow-hidden rounded-2xl bg-white ring-1 ring-black/5">
-      <div className="flex items-center justify-between border-b border-line-subtle px-4 py-3">
-        <span className="text-small font-semibold text-fg">DNS zone · yourbrand.com</span>
-        <span className="rounded-md bg-primary px-2.5 py-1 text-micro font-semibold text-white">Add record</span>
-      </div>
-      <table className="w-full text-left text-micro">
-        <thead className="bg-canvas-secondary text-fg-muted">
-          <tr>
-            <th className="px-4 py-2 font-medium">Type</th>
-            <th className="px-4 py-2 font-medium">Name</th>
-            <th className="px-4 py-2 font-medium">Value</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-line-subtle">
-          {rows.map(([t, n, v]) => (
-            <tr key={t + n}>
-              <td className="px-4 py-2.5"><span className="rounded bg-brand-50 px-1.5 py-0.5 font-semibold text-primary">{t}</span></td>
-              <td className="px-4 py-2.5 text-fg">{n}</td>
-              <td className="max-w-0 truncate px-4 py-2.5 text-fg-secondary">{v}</td>
-            </tr>
+    <nav aria-label="Tutorial topics" className="border-b border-[#e3e4e8] bg-white">
+      <div className="mx-auto flex h-16 max-w-[1440px] items-center gap-4 overflow-x-auto px-4 md:px-5 [scrollbar-width:none]">
+        <div className="flex shrink-0 rounded-[10px] bg-[#f2f3f6] p-1 text-[14px] font-semibold">
+          <span aria-current="page" className="rounded-lg bg-white px-4 py-2 shadow-sm">
+            Tutorials
+          </span>
+          <Link href="/blog" className="rounded-lg px-4 py-2 hover:text-primary">
+            Blog
+          </Link>
+        </div>
+        <ul className="flex h-full shrink-0 items-stretch text-[14px]">
+          <li className="flex">
+            <a href="#all" className="flex items-center border-b-2 border-primary px-4 text-primary">
+              All Tutorials
+            </a>
+          </li>
+          {tutorialCategories.map((c) => (
+            <li key={c} className="flex">
+              <a href={anchor(c)} className="flex items-center border-b-2 border-transparent px-4 text-[#58585e] hover:text-primary">
+                {c}
+              </a>
+            </li>
           ))}
-        </tbody>
-      </table>
-      <p className="flex items-center gap-2 border-t border-line-subtle px-4 py-3 text-micro text-success">
-        <span className="size-1.5 rounded-full bg-success-fill" />
-        Propagated · HTTPS certificate issued
-      </p>
-    </div>
+        </ul>
+      </div>
+    </nav>
   );
 }
