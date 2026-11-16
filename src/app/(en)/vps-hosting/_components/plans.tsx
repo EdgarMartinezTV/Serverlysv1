@@ -31,7 +31,7 @@ export function Plans() {
           {PLANS.map((p) => (
             <li
               key={p.name}
-              className={cn("flex flex-col rounded-2xl p-6", p.featured ? "bg-[#26262b] ring-1 ring-primary/60" : "bg-[#18181b]")}
+              className={cn("flex flex-col rounded-2xl p-6", p.featured ? "bg-[linear-gradient(180deg,#2c2c31_0%,#1c1c20_100%)]" : "bg-[#18181b]")}
             >
               <div className="flex justify-end">
                 <span className="rounded-lg bg-primary px-2 py-0.5 text-[12px] leading-4 font-semibold text-white">
@@ -43,7 +43,7 @@ export function Plans() {
 
               <div className="mt-4 h-[72px]">
                 <p className="pt-2 text-[14px] leading-6 text-[#9d9ea4]">{PLANS_HEAD.priceNote}</p>
-                <p className="text-[32px] leading-10 font-semibold text-white">{PLANS_HEAD.price}</p>
+                <p className="text-[32px] leading-10 font-bold tracking-[-0.5px] text-white">{PLANS_HEAD.price}</p>
               </div>
 
               <Btn href={billing.sales} tone={p.featured ? "primary" : "outline"} className="mt-6 w-full">

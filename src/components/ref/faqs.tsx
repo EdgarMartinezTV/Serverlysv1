@@ -38,6 +38,7 @@ export function Faqs({
   id,
   tone = "light",
   size = "md",
+  defaultOpen,
 }: {
   /** Namespaces the button/panel ids so two FAQ bands can coexist. */
   idPrefix: string;
@@ -56,10 +57,12 @@ export function Faqs({
    * the older shape so those two pages are untouched.
    */
   size?: "md" | "lg";
+  /** Index of a panel open on first render (/vps-hosting opens the first, as its reference does). */
+  defaultOpen?: number;
 }) {
   const dark = tone === "dark";
   const lg = size === "lg";
-  const [open, setOpen] = useState<Set<number>>(new Set());
+  const [open, setOpen] = useState<Set<number>>(() => new Set(defaultOpen === undefined ? [] : [defaultOpen]));
 
   const toggle = (i: number) =>
     setOpen((prev) => {

@@ -50,7 +50,7 @@ export function Manage() {
             </div>
           </div>
 
-          <div aria-hidden className="relative h-[360px] overflow-hidden rounded-2xl bg-[radial-gradient(80%_80%_at_70%_60%,#0000ff_0%,#0b1a5c_55%,#121213_100%)] md:h-[432px]">
+          <div aria-hidden className="relative h-[360px] overflow-hidden rounded-2xl bg-[#0d1140] bg-[radial-gradient(55%_70%_at_0%_55%,rgb(31_85_255/0.75),transparent_70%),radial-gradient(55%_60%_at_100%_0%,rgb(31_85_255/0.7),transparent_70%),radial-gradient(60%_60%_at_100%_100%,rgb(0_0_255/0.55),transparent_70%)] md:h-[432px]">
             <div className="absolute top-6 left-6 h-[300px] w-[78%] rounded-lg bg-[#121214] p-3 font-mono text-[10px] leading-[15px] text-white/80 shadow-2xl ring-1 ring-white/10 md:left-8">
               <div className="mb-3 flex gap-1.5">
                 <span className="size-2 rounded-full bg-white/25" />

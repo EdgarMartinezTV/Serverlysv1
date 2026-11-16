@@ -81,7 +81,7 @@ export default function VpsHostingPage() {
       <Promises />
       <Banner />
       <div className="[&>section]:bg-black">
-        <Faqs idPrefix="vps" title={FAQ_HEAD.title} description="" items={FAQS} tone="dark" />
+        <Faqs idPrefix="vps" title={FAQ_HEAD.title} description="" items={FAQS} tone="dark" size="lg" defaultOpen={0} />
       </div>
       <div className="bg-black text-white [&_a]:text-white/80">
         <PageBreadcrumbs trail={breadcrumbTrail(PATH)} />
