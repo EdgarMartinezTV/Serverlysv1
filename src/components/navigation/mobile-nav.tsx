@@ -165,7 +165,11 @@ export function MobileNav({
         {/* hostinger.com: logo left, close right, on every screen; "back"
             lives in the screen itself, as its small uppercase title. */}
         <div className="flex h-[58px] shrink-0 items-center justify-between px-6">
-          <Wordmark tone="dark" className="h-8" />
+          {/* Wordmark pins itself to the top of a flex row (self-start); the
+              wrapper is what the row centres, level with the close button. */}
+          <div className="flex">
+            <Wordmark tone="dark" className="h-8" />
+          </div>
           <button
             type="button"
             onClick={() => {

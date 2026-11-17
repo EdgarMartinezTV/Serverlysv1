@@ -834,8 +834,10 @@ export const announcement = {
 /* ── Path helpers ───────────────────────────────────────────────────────── */
 
 export function isActivePath(href: string, pathname: string): boolean {
-  if (href.startsWith("http") || href.startsWith("#")) return false;
-  const path = href.split("#")[0] || "/";
+  // A link to a section ("/#migration") is not the page itself, so it never
+  // shows as current, matching how the header decides ownership below.
+  if (href.startsWith("http") || href.includes("#")) return false;
+  const path = href;
   if (path === "/") return pathname === "/";
   return pathname === path || pathname.startsWith(path + "/");
 }
