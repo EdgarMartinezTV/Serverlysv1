@@ -1,9 +1,9 @@
-import Link from "next/link";
+import { ContentSwitch } from "@/components/ui/content-switch";
 import { JsonLd } from "@/components/ui/json-ld";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import { tutorialBySlug, tutorialCategories, tutorialPath, tutorials, type Tutorial } from "@/data/tutorials";
 import { collectionGraph, pageMetadata } from "@/lib/seo";
-import { AllTutorials, HeroSearch } from "./_components/index-client";
+import { AllTutorials, HeroSearch, TopicMenu } from "./_components/index-client";
 import { CardGrid, COL, SectionHead } from "./_components/index-ui";
 import { categoryAnchor } from "./_components/tutorial-ui";
 
@@ -155,29 +155,15 @@ function Band({
 function TopicBar() {
   return (
     <nav aria-label="Tutorial topics" className="border-b border-[#e3e4e8] bg-white">
-      <div className="mx-auto flex h-16 max-w-[1440px] items-center gap-4 overflow-x-auto px-[10px] md:px-5 [scrollbar-width:none]">
-        <div className="flex w-full shrink-0 rounded-[10px] bg-[#f2f3f6] p-1 text-[14px] font-semibold md:w-auto">
-          <span aria-current="page" className="flex-1 rounded-lg bg-white px-4 py-2 text-center shadow-sm md:flex-none">
-            Tutorials
-          </span>
-          <Link href="/blog" className="flex-1 rounded-lg px-4 py-2 text-center hover:text-primary md:flex-none">
-            Blog
-          </Link>
-        </div>
-        <ul className="hidden h-full shrink-0 items-stretch text-[14px] md:flex">
-          <li className="flex">
-            <a href="#all" className="flex items-center border-b-2 border-primary px-4 text-primary">
-              All Tutorials
-            </a>
-          </li>
-          {tutorialCategories.map((c) => (
-            <li key={c} className="flex">
-              <a href={anchor(c)} className="flex items-center border-b-2 border-transparent px-4 text-[#58585e] hover:text-primary">
-                {c}
-              </a>
-            </li>
-          ))}
-        </ul>
+      <div className="mx-auto flex h-16 max-w-[1440px] items-center gap-4 overflow-x-auto px-[10px] md:overflow-visible md:px-5 [scrollbar-width:none]">
+        <ContentSwitch active="tutorials" />
+        <TopicMenu
+          topics={tutorialCategories.map((c) => ({
+            label: c,
+            anchor: categoryAnchor(c),
+            items: tutorials.filter((t) => t.category === c).map((t) => ({ title: t.title, href: tutorialPath(t) })),
+          }))}
+        />
       </div>
     </nav>
   );

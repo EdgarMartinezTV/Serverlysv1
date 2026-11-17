@@ -162,3 +162,103 @@ export function AllTutorials() {
     </div>
   );
 }
+
+/**
+ * Topic links with the reference's dropdowns: hovering a topic (or pressing
+ * its chevron) opens "View all" plus that topic's tutorials. One open at a
+ * time; Escape, a click outside or leaving the item closes it.
+ */
+export function TopicMenu({
+  topics,
+}: {
+  topics: ReadonlyArray<{ label: string; anchor: string; items: ReadonlyArray<{ title: string; href: string }> }>;
+}) {
+  const [open, setOpen] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(null);
+    const onDown = (e: MouseEvent) => {
+      if (!(e.target as Element).closest?.("[data-topic-menu]")) setOpen(null);
+    };
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("mousedown", onDown);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("mousedown", onDown);
+    };
+  }, [open]);
+
+  return (
+    <ul data-topic-menu className="hidden h-full shrink-0 items-stretch text-[14px] md:flex">
+      <li className="flex">
+        <a href="#all" className="flex items-center border-b-2 border-primary px-4 text-primary">
+          All Tutorials
+        </a>
+      </li>
+      {topics.map((t) => {
+        const isOpen = open === t.anchor;
+        const panel = `topic-menu-${t.anchor}`;
+        return (
+          <li
+            key={t.anchor}
+            className="relative flex"
+            onMouseEnter={() => setOpen(t.anchor)}
+            onMouseLeave={() => setOpen((o) => (o === t.anchor ? null : o))}
+          >
+            <a
+              href={`#all/${t.anchor}`}
+              onClick={() => setOpen(null)}
+              className={cn(
+                "flex items-center border-b-2 border-transparent pl-4 hover:text-primary",
+                isOpen ? "text-primary" : "text-[#58585e]",
+              )}
+            >
+              {t.label}
+            </a>
+            <button
+              type="button"
+              aria-expanded={isOpen}
+              aria-controls={panel}
+              aria-label={`${t.label} tutorials`}
+              // A mouse click lands after hover already opened it, so it keeps
+              // the menu open; Enter/Space (detail 0) toggles it.
+              onClick={(e) => setOpen(isOpen && e.detail === 0 ? null : t.anchor)}
+              className="flex items-center pr-3 pl-1.5 text-[#58585e] hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary"
+            >
+              <svg aria-hidden viewBox="0 0 16 16" className={cn("size-4 transition-transform", isOpen && "rotate-180")}>
+                <path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+            <div
+              id={panel}
+              hidden={!isOpen}
+              className="absolute top-full left-0 z-30 w-[260px] rounded-lg border border-[#e3e4e8] bg-white py-2 shadow-[0_8px_24px_rgb(29_30_32/0.12)]"
+            >
+              <a
+                href={`#all/${t.anchor}`}
+                onClick={() => setOpen(null)}
+                className="flex items-center justify-between px-4 py-2.5 font-semibold text-primary hover:bg-[#f4f5ff]"
+              >
+                View all
+                <svg aria-hidden viewBox="0 0 16 16" className="size-4">
+                  <path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </a>
+              <div className="my-1 border-t border-[#e3e4e8]" />
+              <ul>
+                {t.items.map((it) => (
+                  <li key={it.href}>
+                    <a href={it.href} className="block px-4 py-2 leading-5 text-[#18181a] hover:bg-[#f4f5ff] hover:text-primary">
+                      {it.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}

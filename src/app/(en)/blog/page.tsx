@@ -1,3 +1,4 @@
+import { ContentSwitchBar } from "@/components/ui/content-switch";
 import Link from "next/link";
 import { FinalCta } from "@/components/sections/final-cta";
 import { JsonLd } from "@/components/ui/json-ld";
@@ -48,6 +49,8 @@ export default function BlogIndexPage() {
           items: articles.slice(0, 13).map((a) => ({ name: a.title, path: `/blog/${a.slug}` })),
         })}
       />
+
+      <ContentSwitchBar active="blog" />
 
       <BlogNav categories={articleCategories} active="all" searchIndex={searchIndex} />
       <h1 className="sr-only">Serverlys blog</h1>

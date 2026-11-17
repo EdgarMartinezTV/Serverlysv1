@@ -1,3 +1,4 @@
+import { ContentSwitchBar } from "@/components/ui/content-switch";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { FinalCta } from "@/components/sections/final-cta";
@@ -56,6 +57,8 @@ export default async function BlogCategoryPage({ params }: Props) {
           items: posts.map((a) => ({ name: a.title, path: `/blog/${a.slug}` })),
         })}
       />
+
+      <ContentSwitchBar active="blog" />
 
       <BlogNav categories={articleCategories} active={category} searchIndex={searchIndex} />
 
