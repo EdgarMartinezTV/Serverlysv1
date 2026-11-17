@@ -16,7 +16,7 @@ import { categoryAnchor } from "./tutorial-ui";
  * stock or generated pictures.
  */
 
-export const COL = "mx-auto w-full max-w-[1152px] px-4 md:px-6 xl:px-4";
+export const COL = "mx-auto w-full max-w-[1152px] px-[10px] sm:px-4 md:px-6 xl:px-4";
 
 const DOT: Record<Tutorial["category"], string> = {
   "Domains & DNS": "bg-[#f26b1d]",
@@ -65,15 +65,15 @@ export function SectionHead({
     </Link>
   ) : null;
   return (
-    <div>
-      <div className="flex items-end justify-between gap-6">
-        <h2 id={id} className="text-[40px] leading-[48px] font-light text-[#18181a] md:text-[56px] md:leading-[67px]">
+    <div className="text-center md:text-left">
+      <div className="md:flex md:items-end md:justify-between md:gap-6">
+        <h2 id={id} className="text-[56px] leading-[67px] font-light text-[#18181a]">
           {title}
         </h2>
         {!viewAllBelow && btn && <div className="hidden pb-2 md:block">{btn}</div>}
       </div>
-      <p className="mt-7 max-w-[1060px] text-[18px] leading-[27px] text-[#797980]">{sub}</p>
-      {viewAllBelow && btn && <div className="mt-[72px]">{btn}</div>}
+      <p className="mx-auto mt-7 max-w-[1060px] text-[18px] md:mx-0 leading-[27px] text-[#797980]">{sub}</p>
+      {viewAllBelow && btn && <div className="mt-8 md:mt-[72px]">{btn}</div>}
       {!viewAllBelow && btn && <div className="mt-6 md:hidden">{btn}</div>}
     </div>
   );
@@ -94,7 +94,7 @@ export function CardGrid({ items, byline = false }: { items: readonly Tutorial[]
 export function TutorialCard({ t, byline = false }: { t: Tutorial; byline?: boolean }) {
   const href = tutorialPath(t);
   return (
-    <article className="flex flex-col">
+    <article className="flex flex-col text-center md:text-left">
       <div className="relative">
         <Link href={href} aria-label={t.title} tabIndex={-1} className="block">
           <Thumb t={t} />
@@ -107,12 +107,12 @@ export function TutorialCard({ t, byline = false }: { t: Tutorial; byline?: bool
           {t.category}
         </a>
       </div>
-      <div className="flex flex-col pt-4 pb-6">
-        <div className="mb-2 flex justify-between gap-4 text-[16px] leading-[33.6px] font-light text-brand-950">
+      <div className="flex flex-col pt-7 pb-6 md:pt-4">
+        <div className="mb-2 flex flex-wrap justify-center gap-x-2 text-[14px] leading-[21px] font-light text-brand-950 md:flex-nowrap md:justify-between md:gap-4 md:text-[16px] md:leading-[33.6px]">
           <a href={`#all/${categoryAnchor(t.category)}`} className="uppercase hover:text-primary">
             {t.category}
           </a>
-          <p className="text-right">
+          <p className="md:text-right">
             <span className="uppercase">Published</span> <time dateTime={t.published}>{formatDate(t.published)}</time>
           </p>
         </div>

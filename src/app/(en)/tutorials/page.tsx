@@ -57,7 +57,7 @@ export default function TutorialsPage() {
           189px navy button, over soft circles — in the logo blue. */}
       <section
         aria-labelledby="tutorials-heading"
-        className="relative isolate flex min-h-[440px] items-center overflow-hidden bg-[#1f3dff] py-20 md:min-h-[506px]"
+        className="relative isolate flex items-center overflow-hidden bg-[#1f3dff] py-12 md:min-h-[506px] md:py-20"
       >
         <div aria-hidden className="absolute inset-0 -z-10">
           <span className="absolute -top-[260px] -left-[180px] size-[620px] rounded-full bg-white/[0.06]" />
@@ -66,7 +66,7 @@ export default function TutorialsPage() {
           <span className="absolute inset-0 bg-[radial-gradient(70%_80%_at_50%_120%,#0000d4,transparent_70%)]" />
         </div>
         <div className={`${COL} text-center`}>
-          <h1 id="tutorials-heading" className="text-[34px] leading-[40px] font-light text-white md:text-[46px] md:leading-[51px]">
+          <h1 id="tutorials-heading" className="text-[30px] leading-[36px] font-light text-white md:text-[46px] md:leading-[51px]">
             Follow a guide and get the job done
           </h1>
           <HeroSearch />
@@ -100,7 +100,7 @@ export default function TutorialsPage() {
         <CardGrid items={EMAIL} />
       </Band>
 
-      <section id="all" aria-labelledby="all-heading" className="scroll-mt-24 pt-[110px] pb-24">
+      <section id="all" aria-labelledby="all-heading" className="scroll-mt-24 pt-14 pb-24 md:pt-[110px]">
         <div className={COL}>
           <SectionHead
             id="all-heading"
@@ -138,7 +138,7 @@ function Band({
   children: React.ReactNode;
 }) {
   return (
-    <section aria-labelledby={`${id}-heading`} className="pt-[110px]">
+    <section aria-labelledby={`${id}-heading`} className="pt-14 md:pt-[110px]">
       <div className={COL}>
         <SectionHead id={`${id}-heading`} title={title} sub={sub} viewAll={viewAll} viewAllBelow={viewAllBelow} />
         <div className={viewAllBelow ? "mt-[30px]" : "mt-[52px]"}>{children}</div>
@@ -155,16 +155,16 @@ function Band({
 function TopicBar() {
   return (
     <nav aria-label="Tutorial topics" className="border-b border-[#e3e4e8] bg-white">
-      <div className="mx-auto flex h-16 max-w-[1440px] items-center gap-4 overflow-x-auto px-4 md:px-5 [scrollbar-width:none]">
-        <div className="flex shrink-0 rounded-[10px] bg-[#f2f3f6] p-1 text-[14px] font-semibold">
-          <span aria-current="page" className="rounded-lg bg-white px-4 py-2 shadow-sm">
+      <div className="mx-auto flex h-16 max-w-[1440px] items-center gap-4 overflow-x-auto px-[10px] md:px-5 [scrollbar-width:none]">
+        <div className="flex w-full shrink-0 rounded-[10px] bg-[#f2f3f6] p-1 text-[14px] font-semibold md:w-auto">
+          <span aria-current="page" className="flex-1 rounded-lg bg-white px-4 py-2 text-center shadow-sm md:flex-none">
             Tutorials
           </span>
-          <Link href="/blog" className="rounded-lg px-4 py-2 hover:text-primary">
+          <Link href="/blog" className="flex-1 rounded-lg px-4 py-2 text-center hover:text-primary md:flex-none">
             Blog
           </Link>
         </div>
-        <ul className="flex h-full shrink-0 items-stretch text-[14px]">
+        <ul className="hidden h-full shrink-0 items-stretch text-[14px] md:flex">
           <li className="flex">
             <a href="#all" className="flex items-center border-b-2 border-primary px-4 text-primary">
               All Tutorials

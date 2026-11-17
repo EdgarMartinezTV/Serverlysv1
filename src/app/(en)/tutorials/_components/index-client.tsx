@@ -25,7 +25,7 @@ export function HeroSearch() {
         window.dispatchEvent(new CustomEvent(EVENT, { detail: q }));
         document.getElementById("all")?.scrollIntoView({ behavior: "smooth", block: "start" });
       }}
-      className="mx-auto mt-14 flex w-full max-w-[840px] flex-col gap-4 sm:flex-row sm:gap-[30px]"
+      className="mx-auto mt-14 flex w-full max-w-[840px] flex-col gap-5 sm:flex-row sm:gap-[30px]"
     >
       <label htmlFor="tutorial-search" className="sr-only">
         Search tutorials
@@ -36,11 +36,11 @@ export function HeroSearch() {
         value={q}
         onChange={(e) => setQ(e.target.value)}
         placeholder="Search tutorials"
-        className="h-[60px] min-w-0 flex-1 rounded-full bg-white px-[30px] text-[18px] text-[#18181a] placeholder:text-[#6d6d73] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        className="h-[50px] w-full min-w-0 shrink-0 rounded-full sm:h-[60px] sm:flex-1 bg-white px-[30px] text-[18px] text-[#18181a] placeholder:text-[#6d6d73] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
       />
       <button
         type="submit"
-        className="h-[60px] shrink-0 rounded-full bg-brand-950 px-10 text-[18px] font-light text-white transition-colors hover:bg-black focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:w-[189px]"
+        className="h-[50px] w-full shrink-0 rounded-full bg-brand-950 px-10 text-[18px] sm:h-[60px] font-light text-white transition-colors hover:bg-black focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:w-[189px]"
       >
         Search
       </button>
@@ -105,7 +105,7 @@ export function AllTutorials() {
   return (
     <div className="mt-[52px]">
       {(category || query) && (
-        <div className="-mt-4 mb-10 flex flex-wrap items-center gap-3 text-[16px] text-[#18181a]">
+        <div className="-mt-4 mb-10 flex flex-wrap items-center justify-center gap-3 md:justify-start text-[16px] text-[#18181a]">
           <span>
             Showing {list.length} {list.length === 1 ? "tutorial" : "tutorials"}
             {category && <> in <b className="font-semibold">{category}</b></>}
