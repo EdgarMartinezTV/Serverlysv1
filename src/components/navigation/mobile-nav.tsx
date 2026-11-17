@@ -2,7 +2,6 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { AssistantOpenButton } from "@/components/assistant/assistant-open-button";
 import Link from "next/link";
 import { useSitePathname } from "@/i18n/use-site-pathname";
 import {
@@ -12,8 +11,7 @@ import {
   type MegaItem,
 } from "@/data/navigation";
 import { resolveNavTarget } from "@/data/routes";
-import { billing, company } from "@/data/company";
-import { Button } from "@/components/ui/button";
+import { billing } from "@/data/company";
 import { Wordmark } from "@/components/layout/wordmark";
 import { NavIcon, Chevron, ArrowUpRight } from "./nav-icons";
 import { cn } from "@/lib/utils";
@@ -22,11 +20,12 @@ import { lh } from "@/i18n/href";
 import { LocalePanel, LocaleTrigger } from "./language-selector";
 
 /**
- * Mobile navigation.
- *
- * A dedicated experience, not the mega menu scaled down: top-level sections
- * expand into their categories, and each category lists its items with the same
- * icon, title and description the desktop panel shows.
+ * Mobile navigation, laid out on hostinger.com's mobile menu (measured at
+ * 390px on 2026-11-17): a white sheet under the announcement bar with the
+ * logo and a close button; Pricing; the PRODUCTS group (icon, label, small
+ * chevron); then Solutions and Resources as single rows. Each opens a screen
+ * titled "‹ NAME" listing items as title + one line, groups split by a rule.
+ * Locale and "My account" sit in a bar at the bottom.
  *
  * FULL-VIEWPORT and PORTALLED to <body>, for two reasons that are not
  * cosmetic: the header uses backdrop-filter, which makes it a containing block
@@ -52,6 +51,9 @@ export function MobileNav({
   const toggleRef = useRef<HTMLButtonElement>(null);
   const pathname = useSitePathname();
   const [langOpen, setLangOpen] = useState(false);
+  // Where the sheet starts: under the announcement bar while it is on screen,
+  // as on hostinger.com. Measured when the menu opens.
+  const [top, setTop] = useState(0);
   const langListId = useId();
 
   // Collapse sections on navigation — adjusted during render, not in an
@@ -91,8 +93,13 @@ export function MobileNav({
     if (!open) return;
     const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    // The chat launcher floats over the bottom-right corner, where the
+    // sheet's "My account" sits; hide it while the menu is open.
+    const chat = document.getElementById("convoai-widget-host");
+    chat?.style.setProperty("visibility", "hidden");
     return () => {
       document.body.style.overflow = previous;
+      chat?.style.removeProperty("visibility");
     };
   }, [open]);
 
@@ -134,11 +141,12 @@ export function MobileNav({
     if (open) panelRef.current?.focus();
   }, [open]);
 
-  const drill = expanded ? findCategory(expanded) : null;
+  const screen = expanded ? findScreen(expanded) : null;
 
   const drawer = (
     <div
-      className="fixed inset-0 z-50 lg:hidden"
+      className="fixed inset-x-0 bottom-0 z-50 lg:hidden"
+      style={{ top }}
       role="dialog"
       aria-modal="true"
       aria-label={tx("Site menu")}
@@ -152,19 +160,12 @@ export function MobileNav({
         onClick={(e) => {
           if ((e.target as HTMLElement).closest("a[href]")) onOpenChange(false);
         }}
-        className="absolute inset-0 flex flex-col overflow-hidden bg-canvas font-display outline-none motion-safe:animate-[sheetIn_220ms_cubic-bezier(0.16,1,0.3,1)]"
+        className="absolute inset-0 flex flex-col overflow-hidden bg-white font-display text-[#1d1e20] outline-none motion-safe:animate-[sheetIn_220ms_cubic-bezier(0.16,1,0.3,1)]"
       >
-        <div className="flex h-16 shrink-0 items-center justify-between px-5 sm:px-8">
-          {drill ? (
-            <button
-              type="button"
-              onClick={() => setExpanded(null)}
-              className="-ml-2 inline-flex h-11 items-center gap-1.5 rounded-lg px-2 text-body font-medium text-fg focus-visible:outline-2 focus-visible:outline-primary"
-            >
-              <Chevron className="h-5 w-5 rotate-90" />{tx("Back")}</button>
-          ) : (
-            <Wordmark tone="dark" className="h-10" />
-          )}
+        {/* hostinger.com: logo left, close right, on every screen; "back"
+            lives in the screen itself, as its small uppercase title. */}
+        <div className="flex h-[58px] shrink-0 items-center justify-between px-6">
+          <Wordmark tone="dark" className="h-8" />
           <button
             type="button"
             onClick={() => {
@@ -172,117 +173,104 @@ export function MobileNav({
               toggleRef.current?.focus();
             }}
             aria-label={tx("Close menu")}
-            className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-fg transition-colors duration-fast hover:bg-ink-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            className="-mr-2.5 inline-flex h-11 w-11 items-center justify-center rounded-lg transition-colors duration-fast hover:bg-[#f2f3f6] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             <svg viewBox="0 0 20 20" aria-hidden="true" className="h-6 w-6">
-              <path
-                d="m5 5 10 10M15 5 5 15"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.75"
-                strokeLinecap="round"
-              />
+              <path d="m4.5 4.5 11 11M15.5 4.5l-11 11" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
             </svg>
           </button>
         </div>
 
         <div className="relative flex-1">
-          {/* ROOT — the reference's drill-down: top-level links, then each
-              menu's categories as large rows that open their own screen. */}
+          {/* ROOT: Pricing; the PRODUCTS group with icons; then each other
+              menu as one row that opens its own screen. */}
           <nav
             aria-label={tx("Mobile")}
-            inert={!!drill}
+            inert={!!screen}
             className={cn(
-              "absolute inset-0 overflow-y-auto overscroll-contain px-5 pb-8 sm:px-8 transition-transform duration-slow ease-hover",
-              drill && "-translate-x-full",
+              "absolute inset-0 overflow-y-auto overscroll-contain px-6 pb-8 transition-transform duration-slow ease-hover",
+              screen && "-translate-x-full",
             )}
           >
-            {primaryNav.map((item, i) => {
-              if (!item.categories) {
-                const target = resolveNavTarget(item.href);
-                const active = isActivePath(item.href, pathname);
-                return (
-                  <div key={item.label} className={cn("border-b border-line", i > 0 && "pt-2")}>
-                    <Link
-                      href={lh(target.href)}
-                      aria-current={active ? "page" : undefined}
-                      className={cn(
-                        "flex min-h-16 items-center text-[18px] leading-6",
-                        active ? "text-primary" : "text-fg",
-                      )}
-                    >
-                      {tx(item.label)}
-                    </Link>
-                  </div>
-                );
-              }
-              return (
-                <section key={item.label} className="border-b border-line py-5">
-                  <h2 className="pb-2 text-small font-semibold uppercase tracking-[0.02em] text-fg-secondary">
+            <ul className="border-b border-[#dadce0] py-3">
+              {primaryNav
+                .filter((item) => !item.categories)
+                .map((item) => {
+                  const target = resolveNavTarget(item.href);
+                  const active = isActivePath(item.href, pathname);
+                  return (
+                    <li key={item.label}>
+                      <Link
+                        href={lh(target.href)}
+                        aria-current={active ? "page" : undefined}
+                        className={cn("flex h-12 items-center text-[17px] leading-6", active && "text-primary")}
+                      >
+                        {tx(item.label)}
+                      </Link>
+                    </li>
+                  );
+                })}
+            </ul>
+
+            {primaryNav
+              .filter((item) => item.categories && item.label === "Products")
+              .map((item) => (
+                <section key={item.label} className="border-b border-[#dadce0] py-4">
+                  <h2 className="pb-2 text-[12px] leading-5 font-semibold tracking-[0.04em] text-[#36344d] uppercase">
                     {tx(item.railLabel)}
                   </h2>
                   <ul>
-                    {item.categories.map((c) => (
+                    {item.categories!.map((c) => (
                       <li key={c.id}>
-                        <button
-                          type="button"
-                          onClick={() => setExpanded(`${item.label}::${c.id}`)}
-                          className="flex min-h-14 w-full items-center gap-4 text-left text-[18px] leading-6 text-fg focus-visible:outline-2 focus-visible:outline-primary"
-                        >
-                          <NavIcon name={c.icon} className="h-6 w-6 shrink-0" />
-                          <span className="flex-1">{tx(c.label)}</span>
-                          <Chevron className="h-5 w-5 shrink-0 -rotate-90" />
-                        </button>
+                        <Row onClick={() => setExpanded(`cat::${c.id}`)} icon={c.icon}>
+                          {tx(c.label)}
+                        </Row>
                       </li>
                     ))}
                   </ul>
                 </section>
-              );
-            })}
+              ))}
 
-            <div className="mt-7 flex flex-col gap-3">
-              {/*
-                Matches the desktop header. `onOpen` closes the drawer first —
-                opening the chat panel behind an open full-screen drawer would
-                put it somewhere the visitor cannot see it.
-              */}
-              <AssistantOpenButton block onOpen={() => onOpenChange(false)} />
-              <Button href={lh(billing.login)} variant="secondary" size="lg" block>{tx("Client login")}</Button>
-            </div>
-
-            <a
-              href={lh(company.phoneHref)}
-              className="tabular mt-6 block text-center text-small text-fg-secondary underline underline-offset-4"
-            >
-              {tx(company.phone)}
-            </a>
-
+            <ul className="py-3">
+              {primaryNav
+                .filter((item) => item.categories && item.label !== "Products")
+                .map((item) => (
+                  <li key={item.label}>
+                    <Row onClick={() => setExpanded(`sec::${item.label}`)}>{tx(item.label)}</Row>
+                  </li>
+                ))}
+            </ul>
           </nav>
 
-          {/* CATEGORY SCREEN — slides in from the right. */}
+          {/* SUB SCREEN — slides in from the right: "‹ TITLE", then the items
+              (title + one line), groups split by a rule and a small heading. */}
           <div
-            inert={!drill}
-            aria-hidden={!drill}
+            inert={!screen}
+            aria-hidden={!screen}
             className={cn(
-              "absolute inset-0 overflow-y-auto overscroll-contain px-5 pb-10 sm:px-8 transition-transform duration-slow ease-hover",
-              drill ? "translate-x-0" : "translate-x-full",
+              "absolute inset-0 overflow-y-auto overscroll-contain px-6 pb-10 transition-transform duration-slow ease-hover",
+              screen ? "translate-x-0" : "translate-x-full",
             )}
           >
-            {drill && (
+            {screen && (
               <>
-                <p className="pt-2 text-small font-semibold uppercase tracking-[0.02em] text-fg-secondary">
-                  {tx(drill.railLabel)}
-                </p>
-                <h2 className="mt-1 flex items-center gap-3 text-[24px] font-medium leading-8 tracking-[-0.01em] text-fg">
-                  <NavIcon name={drill.category.icon} className="h-6 w-6 text-primary" />
-                  {tx(drill.category.label)}
-                </h2>
-                {drill.category.groups.map((g) => (
-                  <section key={g.heading} className="mt-7">
-                    <h3 className="text-caption font-semibold uppercase tracking-[0.04em] text-fg-secondary">
-                      {tx(g.heading)}
-                    </h3>
-                    <ul className="mt-3 flex flex-col gap-1">
+                <button
+                  type="button"
+                  onClick={() => setExpanded(null)}
+                  className="-ml-1 flex h-11 items-center gap-2 pr-2 text-[12px] leading-5 font-semibold tracking-[0.04em] text-[#36344d] uppercase focus-visible:outline-2 focus-visible:outline-primary"
+                >
+                  <Chevron className="h-4 w-4 rotate-90" />
+                  <span className="sr-only">{tx("Back")}: </span>
+                  {tx(screen.title)}
+                </button>
+                {screen.groups.map((g, i) => (
+                  <section key={`${g.heading}-${i}`} className={cn(i > 0 && "mt-3 border-t border-[#dadce0] pt-5")}>
+                    {i > 0 && (
+                      <h3 className="mb-1 text-[12px] leading-5 font-semibold tracking-[0.04em] text-[#36344d] uppercase">
+                        {tx(g.heading)}
+                      </h3>
+                    )}
+                    <ul>
                       {g.items.map((entry) => (
                         <li key={entry.label}>
                           <MobileItem item={tx(entry)} pathname={tx(pathname)} />
@@ -291,7 +279,6 @@ export function MobileNav({
                     </ul>
                   </section>
                 ))}
-                <MobilePromo promo={tx(drill.category.promo)} />
               </>
             )}
           </div>
@@ -305,14 +292,19 @@ export function MobileNav({
           )}
         </div>
 
-        {/* Bottom bar, as on hostinger.com: locale trigger left (the right is
-            left clear for the chat launcher, which floats over this corner). */}
-        <div className="flex h-[72px] shrink-0 items-center border-t border-line px-4 sm:px-8">
-          <LocaleTrigger
-            open={langOpen}
-            controls={langListId}
-            onClick={() => setLangOpen((v) => !v)}
-          />
+        {/* Bottom bar, as on hostinger.com: locale left, account right. */}
+        <div className="flex h-[64px] shrink-0 items-center justify-between border-t border-[#dadce0] px-4">
+          <LocaleTrigger open={langOpen} controls={langListId} onClick={() => setLangOpen((v) => !v)} />
+          <a
+            href={lh(billing.login)}
+            className="flex h-10 items-center gap-2 rounded-full px-3 text-[14px] leading-6 font-semibold hover:bg-[#f2f3f6] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+              <circle cx="12" cy="8.5" r="3.5" />
+              <path d="M5 19.5a7 7 0 0 1 14 0" />
+            </svg>
+            {tx("My account")}
+          </a>
         </div>
       </div>
     </div>
@@ -323,7 +315,13 @@ export function MobileNav({
       <button
         ref={toggleRef}
         type="button"
-        onClick={() => onOpenChange(!open)}
+        onClick={() => {
+          if (!open) {
+            const header = toggleRef.current?.closest("header");
+            setTop(Math.max(0, Math.round(header?.getBoundingClientRect().top ?? 0)));
+          }
+          onOpenChange(!open);
+        }}
         aria-expanded={open}
         aria-controls="mobile-nav-panel"
         aria-label={open ? tx("Close menu") : tx("Open menu")}
@@ -351,34 +349,40 @@ export function MobileNav({
   );
 }
 
-/** `expanded` holds "<menu label>::<category id>" while a category is open. */
-function findCategory(key: string) {
-  const [label, id] = key.split("::");
-  const item = primaryNav.find((i) => i.label === label);
-  const category = item?.categories?.find((c) => c.id === id);
-  return item?.categories && category ? { railLabel: item.railLabel, category } : null;
+/**
+ * `expanded` is "cat::<product category id>" for a product screen, or
+ * "sec::<menu label>" for a whole menu (Solutions, Resources) on one screen,
+ * each of its categories becoming a group as on hostinger.com.
+ */
+function findScreen(key: string): { title: string; groups: ReadonlyArray<{ heading: string; items: readonly MegaItem[] }> } | null {
+  const [kind, id] = key.split("::");
+  if (kind === "cat") {
+    const products = primaryNav.find((i) => i.label === "Products");
+    const c = products?.categories?.find((x) => x.id === id);
+    return c ? { title: c.label, groups: c.groups } : null;
+  }
+  const item = primaryNav.find((i) => i.label === id);
+  if (!item?.categories) return null;
+  return {
+    title: item.label,
+    groups: item.categories.flatMap((c: MegaCategory) =>
+      c.groups.map((g, j) => ({ heading: j === 0 ? c.label : g.heading, items: g.items })),
+    ),
+  };
 }
 
-/** The category's promo, as the reference's card at the foot of the screen. */
-function MobilePromo({ promo }: { promo: MegaCategory["promo"] }) {
-  const target = resolveNavTarget(promo.cta.href);
-  const cls =
-    "mt-4 flex h-11 w-full items-center justify-center rounded-lg bg-white text-body font-semibold text-fg";
+/** A root row: optional icon, label, small grey chevron. */
+function Row({ onClick, icon, children }: { onClick: () => void; icon?: MegaCategory["icon"]; children: React.ReactNode }) {
   return (
-    <div className="mt-8 rounded-2xl bg-[linear-gradient(165deg,#2a5bff,var(--color-primary)_55%,#0000d6)] p-5 text-white">
-      <p className="text-caption font-semibold uppercase tracking-[0.04em] text-white/85">{tx(promo.eyebrow)}</p>
-      <p className="mt-3 text-[20px] font-medium leading-[26px]">{tx(promo.title)}</p>
-      <p className="mt-2 text-small text-white/85">{tx(promo.body)}</p>
-      {promo.cta.external ? (
-        <a href={lh(promo.cta.href)} target="_blank" rel="noopener noreferrer" className={cls}>
-          {tx(promo.cta.label)}
-        </a>
-      ) : (
-        <Link href={lh(target.href)} className={cls}>
-          {tx(promo.cta.label)}
-        </Link>
-      )}
-    </div>
+    <button
+      type="button"
+      onClick={onClick}
+      className="flex h-12 w-full items-center gap-3 text-left text-[17px] leading-6 focus-visible:outline-2 focus-visible:outline-primary"
+    >
+      {icon && <NavIcon name={icon} className="h-5 w-5 shrink-0" />}
+      <span className="flex-1">{children}</span>
+      <Chevron className="h-4 w-4 shrink-0 -rotate-90 text-[#6d7081]" />
+    </button>
   );
 }
 
@@ -388,35 +392,28 @@ function MobileItem({ item, pathname }: { item: MegaItem; pathname: string }) {
   const active = !item.external && isActivePath(item.href, pathname);
 
   const inner = (
-    <span className="-mx-2 flex min-h-12 items-start gap-3.5 rounded-xl px-2 py-3 active:bg-ink-50">
-      <span aria-hidden="true" className="mt-0.5 shrink-0 text-fg">
-        <NavIcon name={item.icon} className="h-5 w-5" />
-      </span>
-      <span className="min-w-0">
-        <span className="flex items-center gap-2">
-          <span
-            className={cn(
-              "text-body font-semibold",
-              active ? "text-primary" : interactive ? "text-fg" : "text-fg-muted",
-            )}
-          >
-            {tx(item.label)}
+    <span className="-mx-2 block rounded-lg px-2 py-2.5 active:bg-[#f2f3f6]">
+      <span className="flex items-center gap-2">
+        <span
+          className={cn(
+            "text-[16px] leading-6 font-medium",
+            active ? "text-primary" : interactive ? "text-[#1d1e20]" : "text-fg-muted",
+          )}
+        >
+          {tx(item.label)}
+        </span>
+        {item.badge && (
+          <span className="rounded-md bg-brand-50 px-1.5 py-0.5 text-micro leading-4 font-semibold text-primary ring-1 ring-inset ring-brand-100">
+            {tx(item.badge.text)}
           </span>
-          {item.badge && (
-            <span className="rounded-md bg-brand-50 px-1.5 py-0.5 text-micro leading-4 font-semibold text-primary ring-1 ring-inset ring-brand-100">
-              {tx(item.badge.text)}
-            </span>
-          )}
-          {item.external && (
-            <span aria-hidden="true" className="text-fg-muted">
-              <ArrowUpRight className="h-3 w-3" />
-            </span>
-          )}
-        </span>
-        <span className="mt-1 block text-small leading-snug text-fg-secondary">
-          {tx(item.description)}
-        </span>
+        )}
+        {item.external && (
+          <span aria-hidden="true" className="text-fg-muted">
+            <ArrowUpRight className="h-3 w-3" />
+          </span>
+        )}
       </span>
+      <span className="mt-0.5 block text-[14px] leading-5 text-[#6d7081]">{tx(item.description)}</span>
     </span>
   );
 
