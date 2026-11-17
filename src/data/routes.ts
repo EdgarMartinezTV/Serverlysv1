@@ -1,5 +1,6 @@
 import { tldCatalog } from "./tld-catalog";
 import { industries, industryPath } from "./industries";
+import { NAV_OVERRIDES, resolveNavTarget } from "./nav-target";
 /**
  * Route registry — the single source of truth for what exists on this site.
  *
@@ -944,28 +945,23 @@ export function unbuiltRoutes(): readonly RouteMeta[] {
  * Breadcrumb trail for a path, derived from `parents`. Returns entries in
  * order, current page last.
  */
-/**
- * How a navigation entry should render.
- *
- * `link`   → a real <a>/<Link> to `href`
- * `text`   → not a link: the page does not exist and has no honest interim
- *            destination, and linking to a 404 wastes crawl budget on every
- *            page of the site while sending visitors nowhere.
- */
-export function resolveNavTarget(path: string): {
-  mode: "link" | "text";
-  href: string;
-} {
-  // External URLs and in-page anchors are never registry-managed.
-  if (/^https?:\/\//.test(path) || path.startsWith("#")) {
-    return { mode: "link", href: path };
+// Client-safe; see the file for why it is separate. Re-exported so server
+// code can keep importing it from here.
+export { resolveNavTarget };
+
+// Keep nav-target.ts in sync with this registry. It runs wherever routes.ts is
+// loaded (build, sitemap, every server render), so drift fails the build.
+{
+  const expected = Object.fromEntries(
+    routes.filter((r) => !r.built).map((r) => [r.path, r.interim ?? null]),
+  );
+  const a = JSON.stringify(Object.entries(expected).sort());
+  const b = JSON.stringify(Object.entries(NAV_OVERRIDES).sort());
+  if (a !== b) {
+    throw new Error(
+      `data/nav-target.ts NAV_OVERRIDES is out of sync with data/routes.ts. Expected ${a}, got ${b}.`,
+    );
   }
-  const route = byPath.get(path);
-  // Unknown paths are assumed real — the registry describes the site, it does
-  // not gate it, and a missing entry should not silently break a link.
-  if (!route || route.built) return { mode: "link", href: path };
-  if (route.interim) return { mode: "link", href: route.interim };
-  return { mode: "text", href: path };
 }
 
 export function breadcrumbTrail(path: string): Array<{ name: string; path: string }> {

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { MegaItem } from "@/data/navigation";
-import { resolveNavTarget } from "@/data/routes";
+import { resolveNavTarget } from "@/data/nav-target";
 import { NavIcon, ArrowUpRight } from "./nav-icons";
 import { cn } from "@/lib/utils";
 import { t as tx } from "@/i18n/t";

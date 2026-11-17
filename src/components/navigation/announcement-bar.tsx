@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { announcement } from "@/data/navigation";
-import { resolveNavTarget } from "@/data/routes";
+import { resolveNavTarget } from "@/data/nav-target";
 import { DismissAnnouncement } from "./dismiss-announcement";
 import { t as tx } from "@/i18n/t";
 import { lh } from "@/i18n/href";

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/animations/reveal";
-import { resolveNavTarget } from "@/data/routes";
+import { resolveNavTarget } from "@/data/nav-target";
 import { NavIcon } from "@/components/navigation/nav-icons";
 import type { NavIconName } from "@/data/navigation";
 import { cn } from "@/lib/utils";

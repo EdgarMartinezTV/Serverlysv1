@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { footerNav, legalNav, socialLinks } from "@/data/navigation";
 import { company, emailDisplay } from "@/data/company";
-import { resolveNavTarget } from "@/data/routes";
+import { resolveNavTarget } from "@/data/nav-target";
 import { Wordmark } from "./wordmark";
 import { CurrentYear } from "./current-year";
 import { SocialIcon } from "./social-icon";

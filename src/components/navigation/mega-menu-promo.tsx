@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { MegaPromo } from "@/data/navigation";
-import { resolveNavTarget } from "@/data/routes";
+import { resolveNavTarget } from "@/data/nav-target";
 import { ArrowUpRight } from "./nav-icons";
 import { ConvoAiLogo } from "@/components/layout/convoai-logo";
 import Image from "next/image";

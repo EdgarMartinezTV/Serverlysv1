@@ -5,7 +5,7 @@ import { useCallback, useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
 import { useSitePathname } from "@/i18n/use-site-pathname";
 import { primaryNav, isActiveItem, isActivePath } from "@/data/navigation";
-import { resolveNavTarget } from "@/data/routes";
+import { resolveNavTarget } from "@/data/nav-target";
 import { Wordmark } from "@/components/layout/wordmark";
 import { MegaMenu, panelLinks } from "./mega-menu";
 import { MobileNav } from "./mobile-nav";

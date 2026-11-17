@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { Badge } from "@/components/ui/badge";
 import { products, upcomingProducts, startingPrice, saleStartingPrice } from "@/data/products";
-import { resolveNavTarget } from "@/data/routes";
+import { resolveNavTarget } from "@/data/nav-target";
 import { BLACK_FRIDAY, blackFridayActive, formatPrice } from "@/data/pricing";
 
 /**

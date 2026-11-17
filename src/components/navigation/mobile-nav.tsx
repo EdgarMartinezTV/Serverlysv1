@@ -10,7 +10,7 @@ import {
   type MegaCategory,
   type MegaItem,
 } from "@/data/navigation";
-import { resolveNavTarget } from "@/data/routes";
+import { resolveNavTarget } from "@/data/nav-target";
 import { billing } from "@/data/company";
 import { Wordmark } from "@/components/layout/wordmark";
 import { NavIcon, Chevron, ArrowUpRight } from "./nav-icons";
