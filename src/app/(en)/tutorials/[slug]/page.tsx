@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Section } from "@/components/ui/section";
@@ -7,6 +8,8 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import {
   relatedTutorials,
+  SCREENS,
+  screenSrc,
   tutorialBySlug,
   tutorialPath,
   tutorials,
@@ -77,7 +80,7 @@ export default async function TutorialPage(props: PageProps<"/tutorials/[slug]">
           description: tutorial.summary,
           path,
           minutes: tutorial.minutes,
-          steps: tutorial.steps.map((s, i) => ({ name: s.title, text: s.detail, anchor: stepAnchor(i) })),
+          steps: tutorial.steps.map((s, i) => ({ name: s.title, text: s.detail, anchor: stepAnchor(i), image: s.shot && screenSrc(s.shot.id) })),
         })}
       />
 
@@ -158,6 +161,26 @@ export default async function TutorialPage(props: PageProps<"/tutorials/[slug]">
                       <pre className="mt-3 overflow-x-auto rounded-lg bg-canvas-abyss p-4">
                         <code className="font-mono text-small text-fg-on-dark-secondary">{s.code}</code>
                       </pre>
+                    )}
+                    {s.shot && (
+                      <figure className="mt-4 max-w-[640px]">
+                        <a
+                          href={screenSrc(s.shot.id)}
+                          target="_blank"
+                          rel="noopener"
+                          className="block overflow-hidden rounded-xl border border-line bg-white shadow-sm transition-shadow hover:shadow-md"
+                        >
+                          <Image
+                            src={screenSrc(s.shot.id)}
+                            alt={SCREENS[s.shot.id].alt}
+                            width={SCREENS[s.shot.id].w}
+                            height={SCREENS[s.shot.id].h}
+                            sizes="(min-width: 768px) 640px, 100vw"
+                            className="h-auto w-full"
+                          />
+                        </a>
+                        <figcaption className="mt-2 text-small text-fg-secondary">{s.shot.caption}</figcaption>
+                      </figure>
                     )}
                   </div>
                 </li>

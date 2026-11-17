@@ -15,7 +15,34 @@ export type Step = {
   detail: string;
   /** Optional literal to copy — a record value, a config line, a command. */
   code?: string;
+  /** Optional screenshot of the Serverlys cPanel screen this step happens in. */
+  shot?: { id: ScreenId; caption: string };
 };
+
+/**
+ * Real screenshots of Serverlys cPanel, taken 2026-11-17 from one of our own
+ * accounts. Identifying and security details are replaced before capture:
+ * the domain reads yourdomain.com, the account username, the server
+ * hostname server.serverlys.com, IPs use the documentation ranges
+ * (192.0.2.x, 198.51.100.x), and no server name, software version,
+ * private key or customer data is in frame. Files: public/tutorials/cpanel/.
+ */
+export const SCREENS = {
+  "zone-records": { w: 1024, h: 620, alt: "cPanel Zone Editor listing the DNS records of yourdomain.com with their TTL, type and value, and the nameservers ns1.serverlys.com and ns2.serverlys.com" },
+  "zone-add-record": { w: 1024, h: 560, alt: "cPanel Zone Editor with a new record row open: name, TTL, type and value fields and a Save Record button" },
+  "email-deliverability-dkim": { w: 1024, h: 836, alt: "cPanel Email Deliverability, Manage the Domain: DKIM status and the suggested default._domainkey TXT record with its value" },
+  "email-routing": { w: 1024, h: 520, alt: "cPanel Email Routing with the options Automatically Detect, Local, Backup and Remote Mail Exchanger" },
+  forwarders: { w: 1024, h: 760, alt: "cPanel Forwarders page with the Add Forwarder and Add Domain Forwarder buttons" },
+  "default-address": { w: 1024, h: 520, alt: "cPanel Default Address page set to discard unrouted mail with an error message" },
+  "mysql-databases": { w: 1024, h: 720, alt: "cPanel Manage My Databases: Create New Database with the account prefix, Check and Repair Database, and the list of current databases" },
+  "cron-jobs": { w: 1024, h: 900, alt: "cPanel Cron Jobs page with the cron email setting and the Add New Cron Job form" },
+  domains: { w: 1024, h: 440, alt: "cPanel Domains list with the Create A New Domain button and the Force HTTPS Redirect switch" },
+  "ssl-tls-status": { w: 1024, h: 640, alt: "cPanel SSL/TLS Certificates, Status tab, showing a self-signed certificate and the AutoSSL error for a domain that does not point at this server yet" },
+  jetbackup: { w: 1024, h: 900, alt: "JetBackup 5 in cPanel with Restore and Download options for full backups, home directory, cron jobs, databases, domains, certificates and email accounts" },
+} as const;
+
+export type ScreenId = keyof typeof SCREENS;
+export const screenSrc = (id: ScreenId) => `/tutorials/cpanel/${id}.webp`;
 
 export type Tutorial = {
   slug: string;
@@ -75,6 +102,7 @@ export const tutorials: readonly Tutorial[] = [
         detail:
           "For nameservers, replace the existing entries with the Serverlys pair. For an A record, set the host to @ and the value to your server IP, then add a CNAME for www pointing at your domain.",
         code: "A     @     your.server.ip.address\nCNAME www   yourdomain.com.",
+        shot: { id: "zone-records", caption: "Serverlys cPanel → Domains → Zone Editor → Manage. The nameservers to use are listed at the top (ns1.serverlys.com and ns2.serverlys.com); the A record for the bare domain holds your server IP." },
       },
       {
         title: "Confirm it resolves here",
@@ -85,6 +113,7 @@ export const tutorials: readonly Tutorial[] = [
         title: "Issue the SSL certificate",
         detail:
           "Only after the domain resolves to us. Certificate issuance validates by looking up the domain, so it cannot succeed before DNS points here. Then raise the TTL back to something sensible, like 3600.",
+        shot: { id: "ssl-tls-status", caption: "Security → SSL/TLS Certificates → Status while the domain still points elsewhere: AutoSSL reports that the domain resolved to an IP that is not on this server. Once DNS points here, the next run replaces the self-signed certificate." },
       },
     ],
     gotcha:
@@ -120,6 +149,7 @@ export const tutorials: readonly Tutorial[] = [
         title: "Turn on DKIM at each sender",
         detail:
           "DKIM signs outgoing mail cryptographically so a receiver can tell it was not altered. Each platform gives you a public key to publish as a TXT record at its own selector. Do this for every sender on your list, not just the main mailbox.",
+        shot: { id: "email-deliverability-dkim", caption: "For mail sent from your Serverlys hosting, Email → Email Deliverability → Manage shows the exact DKIM record to publish, with a Copy button for the name and the value." },
       },
       {
         title: "Start DMARC in monitor mode",
@@ -211,6 +241,7 @@ export const tutorials: readonly Tutorial[] = [
         detail:
           "Do it once, at the server or in .htaccess, rather than in a plugin. A plugin redirect runs after PHP has started, which is slower and stops working the moment the plugin is disabled.",
         code: "RewriteEngine On\nRewriteCond %{HTTPS} off\nRewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]",
+        shot: { id: "domains", caption: "On Serverlys cPanel, Domains → Domains has a Force HTTPS Redirect switch for each domain. It does this server-level redirect for you once a valid certificate is in place." },
       },
       {
         title: "Find the mixed content",
@@ -252,6 +283,7 @@ export const tutorials: readonly Tutorial[] = [
         title: "Decide what you are restoring",
         detail:
           "Files and database are separate decisions. A broken plugin usually needs files only; a corrupted post or a bad import needs the database. Restoring both when you needed one loses everything written in between.",
+        shot: { id: "jetbackup", caption: "On Serverlys cPanel, Files → JetBackup 5 → Restore & Download keeps files (Home Directory), Databases, Email Accounts and more as separate choices, so you can restore only what broke." },
       },
       {
         title: "Save anything written since",
@@ -288,6 +320,7 @@ export const tutorials: readonly Tutorial[] = [
         title: "Find out what your TTL is now",
         detail:
           "TTL is how long resolvers are allowed to cache a DNS answer, in seconds. 3600 is an hour; 86400 is a day. Whatever it says, that is how long some visitors will keep reaching your old server after you change anything.",
+        shot: { id: "zone-records", caption: "The TTL column in cPanel → Zone Editor → Manage, in seconds. 14400 is four hours. Use Edit on the record to change it." },
       },
       {
         title: "Lower it to 300",
@@ -334,6 +367,7 @@ export const tutorials: readonly Tutorial[] = [
         title: "Copy the current DNS zone",
         detail:
           "Nameservers decide who answers for ALL of the domain's records, not just the website. List every record at the current DNS provider — A, AAAA, CNAME, MX, every TXT (SPF, DKIM, DMARC, site verification) and any SRV. Many providers can export the zone as a text file; if yours cannot, take screenshots.",
+        shot: { id: "zone-records", caption: "On Serverlys cPanel, Zone Editor → Manage lists every record in the zone. Use the A, CNAME, MX and TXT filters to check nothing is missing before you switch." },
       },
       {
         title: "Recreate those records at the new provider first",
@@ -396,6 +430,7 @@ export const tutorials: readonly Tutorial[] = [
         detail:
           "In cPanel it is Domains → Zone Editor → Manage next to the domain → Add Record. At a registrar it is usually under DNS settings. Every editor asks for the same four things: name (host), type, TTL and value.",
         code: "blog.yourdomain.com.   3600  IN  A      192.0.2.10\nshop.yourdomain.com.   3600  IN  CNAME  shops.example-platform.com.",
+        shot: { id: "zone-add-record", caption: "Add Record opens a row at the top of the list: name, TTL, type, then the value. Pick the type first; the value field changes with it (IPv4 address for A, a hostname for CNAME)." },
       },
       {
         title: "Type the name the way the editor expects",
@@ -449,6 +484,7 @@ export const tutorials: readonly Tutorial[] = [
         detail:
           "Add a TXT record at the host _dmarc. v=DMARC1 must come first, with the policy straight after it. p=none changes nothing about delivery; it only asks for reports. Publish exactly one DMARC record — if receivers find two, they apply neither.",
         code: "Host:  _dmarc\nType:  TXT\nValue: v=DMARC1; p=none; rua=mailto:dmarc@yourdomain.com",
+        shot: { id: "zone-add-record", caption: "On Serverlys cPanel: Zone Editor → Manage → Add Record, type TXT, name _dmarc, and paste the record as the value." },
       },
       {
         title: "Check that it is live",
@@ -496,6 +532,7 @@ export const tutorials: readonly Tutorial[] = [
         detail:
           "Open Email → Email Deliverability and choose Manage for the domain. cPanel shows whether DKIM is valid and the record it expects, normally at the selector default. If the domain's DNS is on the same server, it can install the record for you; if DNS is elsewhere, copy the name and value it shows into that DNS host.",
         code: "default._domainkey  TXT  \"v=DKIM1; k=rsa; p=<public key from the panel>\"",
+        shot: { id: "email-deliverability-dkim", caption: "Email → Email Deliverability → Manage. cPanel shows the DKIM record it signs with, named default._domainkey. The yellow note appears when the domain's DNS is hosted somewhere else: copy the Name and Value into that provider's DNS." },
       },
       {
         title: "Google Workspace",
@@ -559,11 +596,13 @@ export const tutorials: readonly Tutorial[] = [
         detail:
           "Google Workspace uses a single MX record for new setups. Microsoft 365 gives each domain its own MX target in the admin center under Settings → Domains; copy it exactly, as the format varies between tenants. Microsoft also asks for an autodiscover CNAME so Outlook can configure itself.",
         code: "Google:     @  MX  1  smtp.google.com.\nMicrosoft:  @  MX  0  yourdomain-com.mail.protection.outlook.com.\n            autodiscover  CNAME  autodiscover.outlook.com.",
+        shot: { id: "zone-add-record", caption: "If the domain uses Serverlys nameservers: Zone Editor → Manage → delete the old MX records, then Add Record with type MX for each record your provider gives you." },
       },
       {
         title: "On cPanel hosting, set email routing to remote",
         detail:
           "Email → Email Routing → select the domain → Remote Mail Exchanger. If it stays on Local, the hosting server still believes it handles your mail, so messages your own website sends to your addresses — contact forms, order notifications — are delivered into a cPanel mailbox nobody reads.",
+        shot: { id: "email-routing", caption: "Email → Email Routing. Select Remote Mail Exchanger and press Change. The current setting is shown in bold; Local Mail Exchanger means the server still delivers your mail to itself." },
       },
       {
         title: "Update SPF in the same record",
@@ -600,7 +639,8 @@ export const tutorials: readonly Tutorial[] = [
       {
         title: "Issue a free certificate",
         detail:
-          "On cPanel, open Security → SSL/TLS Status, select the domain and its www name, and run AutoSSL. Validation works by reaching the domain, so it only succeeds once DNS points at this server. A name that does not resolve here, such as www without a DNS record, is left off the certificate.",
+          "On Serverlys cPanel this is automatic: AutoSSL issues and renews a free certificate for the domain and its www name on its own schedule. Open Security → SSL/TLS Certificates → Status to see where it stands. Validation works by reaching the domain, so it only succeeds once DNS points at this server; until then the Status tab shows the error instead. A name that does not resolve here, such as www without a DNS record, is left off the certificate.",
+        shot: { id: "ssl-tls-status", caption: "Security → SSL/TLS Certificates → Status. This example is a domain that does not point at the server yet, so AutoSSL could not validate it. When DNS points here, the next run issues the certificate and the padlock turns green." },
       },
       {
         title: "Or install a certificate you bought",
@@ -668,7 +708,8 @@ export const tutorials: readonly Tutorial[] = [
       {
         title: "Create the database on the new host",
         detail:
-          "On cPanel, open MySQL Databases: create a database, create a user with a strong password, then add the user to the database with ALL PRIVILEGES. cPanel prefixes both names with the account username, so note the full names it shows.",
+          "On cPanel, open Databases → Manage My Databases: create a database, create a user with a strong password, then add the user to the database with ALL PRIVILEGES. cPanel prefixes both names with the account username, so note the full names it shows.",
+        shot: { id: "mysql-databases", caption: "Databases → Manage My Databases. Every name starts with your account prefix (shown here as username_). Further down the same page, Database Users creates the user and Add User To Database grants it ALL PRIVILEGES." },
       },
       {
         title: "Import the database",
@@ -821,6 +862,7 @@ export const tutorials: readonly Tutorial[] = [
         title: "Know what your host already keeps",
         detail:
           "Every Serverlys plan includes daily server-level backups. Before relying on any host's backups, find out how many days they go back, because a problem noticed after that window cannot be rolled back.",
+        shot: { id: "jetbackup", caption: "Files → JetBackup 5 in Serverlys cPanel shows the backups the server keeps for your account, and lets you restore or download each part on its own." },
       },
       {
         title: "Keep a second copy somewhere else",
@@ -837,6 +879,7 @@ export const tutorials: readonly Tutorial[] = [
         detail:
           "On cPanel, Advanced → Cron Jobs runs a command on a schedule. This exports the database nightly at 03:00 and deletes copies older than 14 days. In crontab every % must be escaped as \\%. The path to wp can differ from server to server — run `which wp` over SSH to find yours. Keep the folder outside public_html so it cannot be downloaded.",
         code: "0 3 * * * cd ~/public_html && wp db export ~/backups/db-$(date +\\%F).sql\n30 3 * * * find ~/backups -name 'db-*.sql' -mtime +14 -delete",
+        shot: { id: "cron-jobs", caption: "Advanced → Cron Jobs. Set Cron Email to an address you read, then use Add New Cron Job with the schedule and the command." },
       },
       {
         title: "Back up more often if the database is busy",
@@ -926,13 +969,13 @@ export const tutorials: readonly Tutorial[] = [
       {
         title: "Compare wp-config.php with the panel",
         detail:
-          "DB_NAME, DB_USER, DB_PASSWORD and DB_HOST must match a real database and user. On cPanel, MySQL Databases lists both and shows whether the user is added to that database. After a migration, a wrong name prefix or a user never added to the database is the usual cause.",
+          "DB_NAME, DB_USER, DB_PASSWORD and DB_HOST must match a real database and user. On cPanel, Databases → Manage My Databases lists both and shows whether the user is added to that database. After a migration, a wrong name prefix or a user never added to the database is the usual cause.",
         code: "define( 'DB_NAME', 'cpuser_wp' );\ndefine( 'DB_USER', 'cpuser_wpuser' );\ndefine( 'DB_PASSWORD', '…' );\ndefine( 'DB_HOST', 'localhost' );",
       },
       {
         title: "Reset the password if unsure",
         detail:
-          "cPanel cannot show you a database user's password, only change it. Set a new one in MySQL Databases, then paste the same value into DB_PASSWORD. DB_HOST is localhost on most cPanel servers; a site moved from another host may still carry that host's value.",
+          "cPanel cannot show you a database user's password, only change it. Set a new one in Databases → Manage My Databases (Current Users → Change Password), then paste the same value into DB_PASSWORD. DB_HOST is localhost on most cPanel servers; a site moved from another host may still carry that host's value.",
       },
       {
         title: "Test the credentials directly",
@@ -945,6 +988,7 @@ export const tutorials: readonly Tutorial[] = [
         detail:
           "Add the line below to wp-config.php, open /wp-admin/maint/repair.php and run Repair Database. Remove the line as soon as it finishes.",
         code: "define( 'WP_ALLOW_REPAIR', true );",
+        shot: { id: "mysql-databases", caption: "The same repair from cPanel: Databases → Manage My Databases → Modify Databases → choose the database under Repair Database." },
       },
       {
         title: "Look for a resource limit",
@@ -979,6 +1023,7 @@ export const tutorials: readonly Tutorial[] = [
         title: "Create it in the control panel",
         detail:
           "In current cPanel versions, Domains → Domains → Create A New Domain, and type the full name, such as staging.yourdomain.com. Older versions have a separate Subdomains page. Untick the option to share the main domain's document root, so the subdomain gets its own folder.",
+        shot: { id: "domains", caption: "Domains → Domains. Create A New Domain is at the top right; each domain's document root and Force HTTPS Redirect switch are in the list." },
       },
       {
         title: "Make sure the name resolves",
@@ -989,7 +1034,7 @@ export const tutorials: readonly Tutorial[] = [
       {
         title: "Get it a certificate",
         detail:
-          "Once the name resolves, open SSL/TLS Status and run AutoSSL for the new name rather than waiting for the next scheduled run.",
+          "Once the name resolves here, AutoSSL picks it up on its next scheduled run. Check Security → SSL/TLS Certificates → Status: the new name should move from an error to a valid certificate. If it still shows an error a few hours after the name resolves here, open a ticket and we will check it.",
       },
       {
         title: "Put the site in place",
@@ -1030,6 +1075,7 @@ export const tutorials: readonly Tutorial[] = [
         title: "Create the forwarder",
         detail:
           "On cPanel, Email → Forwarders → Add Forwarder. Enter the address to forward and the destination. A forwarder with no mailbox behind it keeps no copy; if you also want a copy on the server, create a mailbox with the same address.",
+        shot: { id: "forwarders", caption: "Email → Forwarders. Add Forwarder sends one address on; Add Domain Forwarder sends every address at a domain to another domain." },
       },
       {
         title: "Forward a whole domain if that is what you need",
@@ -1040,6 +1086,7 @@ export const tutorials: readonly Tutorial[] = [
         title: "Set the default address to reject",
         detail:
           "Mail to addresses that do not exist goes to the domain's default address. Set it to discard with an error to the sender, so misspelt and invented addresses are refused at the door rather than forwarded. A catch-all that forwards everything mostly forwards spam.",
+        shot: { id: "default-address", caption: "Email → Default Address. Discard the email while your server processes it by SMTP time with an error message is the setting to keep: the sender gets a bounce and you collect no spam." },
       },
       {
         title: "Understand why some forwarded mail fails",

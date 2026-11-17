@@ -438,7 +438,7 @@ export function howToGraph({
   description: string;
   path: string;
   minutes: number;
-  steps: ReadonlyArray<{ name: string; text: string; anchor: string }>;
+  steps: ReadonlyArray<{ name: string; text: string; anchor: string; image?: string }>;
 }) {
   const url = canonical(path);
   return {
@@ -459,6 +459,7 @@ export function howToGraph({
       name: s.name,
       text: s.text,
       url: `${url}#${s.anchor}`,
+      ...(s.image ? { image: canonical(s.image) } : {}),
     })),
   };
 }
