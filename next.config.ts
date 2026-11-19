@@ -126,6 +126,14 @@ const nextConfig: NextConfig = {
       { source: "/callflow-ai", destination: "https://callflow.serverlys.com/", permanent: true },
       { source: "/case-studies", destination: "/our-process", permanent: true },
       { source: "/success-stories", destination: "/our-process", permanent: true },
+      /*
+       * Old static-site URLs still requested in the proxy logs (2026-11-18).
+       * /Copy/* and /Backup/* were asset folders of that site — no successor.
+       */
+      { source: "/terms-conditions", destination: "/terms-of-service", permanent: true },
+      { source: "/terms", destination: "/terms-of-service", permanent: true },
+      { source: "/cloudhosting.html", destination: "/cloud-hosting", permanent: true },
+      { source: "/Copy/pro-services.html", destination: "/website-design", permanent: true },
     ];
   },
 
