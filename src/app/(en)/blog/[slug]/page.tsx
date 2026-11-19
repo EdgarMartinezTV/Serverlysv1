@@ -17,7 +17,30 @@ import {
   relatedArticles,
   type Block,
 } from "@/data/articles";
-import { pageMetadata, articleGraph, ogImageFor, canonical } from "@/lib/seo";
+import { pageMetadata, articleGraph, faqGraph, ogImageFor, canonical } from "@/lib/seo";
+import type { Faq } from "@/data/faqs";
+
+/**
+ * The article's visible FAQ section as Q&A pairs: every h3 + following
+ * paragraph under the h2 whose id is "faq" / "frequently-asked-questions",
+ * up to the next h2. Built from the rendered body so the FAQPage markup can
+ * never say anything the page does not show. Markdown links and bold markers
+ * are reduced to plain text.
+ */
+function articleFaqs(body: readonly Block[]) {
+  const start = body.findIndex(
+    (b) => b.type === "h2" && (b.id === "faq" || b.id === "frequently-asked-questions"),
+  );
+  if (start < 0) return [];
+  const plain = (s: string) => s.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1").replace(/\*\*/g, "");
+  const out: Faq[] = [];
+  for (let i = start + 1; i < body.length && body[i].type !== "h2"; i++) {
+    const q = body[i];
+    const a = body[i + 1];
+    if (q.type === "h3" && a?.type === "p") out.push({ question: plain(q.text), answer: plain(a.text), scopes: [] });
+  }
+  return out;
+}
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 
 /**
@@ -199,6 +222,7 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
 
   const path = `/blog/${article.slug}`;
   const related = relatedArticles(article);
+  const faqs = articleFaqs(article.body);
 
   return (
     <>
@@ -216,6 +240,7 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
           section: article.category,
         })}
       />
+      {faqs.length >= 2 ? <JsonLd data={faqGraph(faqs, path)} /> : null}
 
       <BlogNav
         categories={articleCategories}
