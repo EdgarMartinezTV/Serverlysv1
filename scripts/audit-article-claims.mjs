@@ -118,8 +118,11 @@ function collect(dir) {
   return out;
 }
 
-// Tutorials follow the same editorial rules (see the header of tutorials.ts).
-const EXTRA_FILES = ["src/data/tutorials.ts"];
+// Tutorials follow the same editorial rules (see the header of tutorials/types.ts).
+// One file per category since 2026-11-20; types/index/glossary hold no claims.
+const EXTRA_FILES = readdirSync(resolve("src/data/tutorials"))
+  .filter((f) => f.endsWith(".ts") && !["index.ts", "types.ts"].includes(f))
+  .map((f) => join("src/data/tutorials", f));
 
 const files = [...DIRS.flatMap(collect), ...EXTRA_FILES];
 const showAll = process.argv.includes("--all");

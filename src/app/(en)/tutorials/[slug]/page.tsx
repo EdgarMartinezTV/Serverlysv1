@@ -7,6 +7,7 @@ import { FinalCta } from "@/components/sections/final-cta";
 import { JsonLd } from "@/components/ui/json-ld";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
 import {
+  GLOSSARY,
   relatedTutorials,
   SCREENS,
   screenSrc,
@@ -128,8 +129,35 @@ export default async function TutorialPage(props: PageProps<"/tutorials/[slug]">
           </nav>
 
           <article className="min-w-0">
-            <div className="rounded-2xl bg-brand-50 p-5">
-              <h2 className="text-small font-semibold text-fg">Before you start</h2>
+            <div className="rounded-2xl p-5 ring-1 ring-line">
+              <h2 className="text-body font-semibold text-fg">What this does, in plain words</h2>
+              <p className="mt-2 max-w-[62ch] text-body text-fg-secondary">{tutorial.intro}</p>
+            </div>
+
+            {tutorial.terms.length > 0 && (
+              <details className="group mt-4 rounded-2xl bg-canvas-secondary p-5 ring-1 ring-line" open={tutorial.terms.length <= 4}>
+                <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 text-body font-semibold text-fg [&::-webkit-details-marker]:hidden">
+                  <span>
+                    Words you will see{" "}
+                    <span className="font-normal text-fg-muted">({tutorial.terms.length})</span>
+                  </span>
+                  <span aria-hidden="true" className="text-fg-muted transition-transform group-open:rotate-180">
+                    ▾
+                  </span>
+                </summary>
+                <dl className="mt-3 grid gap-4 sm:grid-cols-2">
+                  {tutorial.terms.map((k) => (
+                    <div key={k}>
+                      <dt className="text-small font-semibold text-fg">{GLOSSARY[k].term}</dt>
+                      <dd className="mt-1 text-small text-fg-secondary">{GLOSSARY[k].def}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </details>
+            )}
+
+            <div className="mt-4 rounded-2xl bg-brand-50 p-5">
+              <h2 className="text-small font-semibold text-fg">What you need before you start</h2>
               <ul className="mt-3 flex flex-col gap-2">
                 {tutorial.before.map((b) => (
                   <li key={b} className="flex gap-2.5 text-small text-fg-secondary">
@@ -156,6 +184,17 @@ export default async function TutorialPage(props: PageProps<"/tutorials/[slug]">
                       <span className="sr-only">Step {i + 1}: </span>
                       {s.title}
                     </h2>
+                    {s.where && s.where.length > 0 && (
+                      <p className="mt-2 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-small">
+                        <span className="font-medium text-fg-muted">Where:</span>
+                        {s.where.map((w, j) => (
+                          <span key={w + j} className="inline-flex items-center gap-1.5">
+                            {j > 0 && <span aria-hidden="true" className="text-fg-muted">›</span>}
+                            <span className="rounded-md bg-canvas-secondary px-2 py-0.5 font-medium text-fg ring-1 ring-line">{w}</span>
+                          </span>
+                        ))}
+                      </p>
+                    )}
                     <p className="mt-2 max-w-[62ch] text-body text-fg-secondary">{s.detail}</p>
                     {s.code && (
                       <pre className="mt-3 overflow-x-auto rounded-lg bg-canvas-abyss p-4">
@@ -182,12 +221,29 @@ export default async function TutorialPage(props: PageProps<"/tutorials/[slug]">
                         <figcaption className="mt-2 text-small text-fg-secondary">{s.shot.caption}</figcaption>
                       </figure>
                     )}
+                    {s.check && (
+                      <p className="mt-3 flex max-w-[62ch] gap-2.5 rounded-lg bg-success-soft px-3.5 py-2.5 text-small text-fg">
+                        <span aria-hidden="true" className="font-bold text-success">✓</span>
+                        <span>
+                          <span className="font-semibold">You should now see: </span>
+                          {s.check}
+                        </span>
+                      </p>
+                    )}
                   </div>
                 </li>
               ))}
             </ol>
 
-            <div className="mt-8 flex gap-4 rounded-2xl bg-warning-soft p-5">
+            <div className="mt-8 flex gap-4 rounded-2xl bg-success-soft p-5">
+              <span aria-hidden="true" className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-success text-small font-bold text-white">✓</span>
+              <div>
+                <h2 className="text-body font-semibold text-fg">How you know you are done</h2>
+                <p className="mt-2 max-w-[62ch] text-small text-fg-secondary">{tutorial.done}</p>
+              </div>
+            </div>
+
+            <div className="mt-4 flex gap-4 rounded-2xl bg-warning-soft p-5">
               <span aria-hidden="true" className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-warning-fill text-small font-bold text-white">!</span>
               <div>
                 <h2 className="text-body font-semibold text-fg">The mistake people make</h2>

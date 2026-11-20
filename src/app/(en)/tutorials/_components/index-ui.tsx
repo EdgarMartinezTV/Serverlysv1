@@ -19,6 +19,7 @@ import { categoryAnchor } from "./tutorial-ui";
 export const COL = "mx-auto w-full max-w-[1152px] px-[10px] sm:px-4 md:px-6 xl:px-4";
 
 const DOT: Record<Tutorial["category"], string> = {
+  "Getting started": "bg-[#f5b400]",
   "Domains & DNS": "bg-[#f26b1d]",
   Email: "bg-[#1f55ff]",
   WordPress: "bg-[#00b090]",
@@ -137,6 +138,7 @@ export function TutorialCard({ t, byline = false }: { t: Tutorial; byline?: bool
 /* ------------------------------------------------------------------ */
 
 const LABEL: Record<string, string> = {
+  "log-in-to-cpanel": "Open cPanel →",
   "point-your-domain": "A  @  192.0.2.10",
   "email-deliverability": "SPF · DKIM · DMARC",
   "wordpress-fast-on-day-one": "Cache: on",
@@ -161,6 +163,7 @@ const LABEL: Record<string, string> = {
 };
 
 const BG: Record<Tutorial["category"], string> = {
+  "Getting started": "bg-brand-950",
   "Domains & DNS": "bg-[#1f3dff]",
   Email: "bg-brand-900",
   WordPress: "bg-brand-950",
@@ -192,6 +195,19 @@ function Thumb({ t }: { t: Tutorial }) {
 function Motif({ category }: { category: Tutorial["category"] }) {
   const s = { fill: "none", stroke: "white", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round" } as const;
   switch (category) {
+    case "Getting started":
+      return (
+        <g {...s}>
+          <rect x="128" y="44" width="104" height="84" rx="8" />
+          <path d="M128 62h104" />
+          <rect x="142" y="74" width="20" height="16" rx="3" />
+          <rect x="170" y="74" width="20" height="16" rx="3" />
+          <rect x="198" y="74" width="20" height="16" rx="3" />
+          <rect x="142" y="98" width="20" height="16" rx="3" />
+          <rect x="170" y="98" width="20" height="16" rx="3" />
+          <path d="M206 118l6 14 3-6 6-3z" />
+        </g>
+      );
     case "Domains & DNS":
       return (
         <g {...s}>

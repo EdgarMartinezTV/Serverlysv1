@@ -32,7 +32,7 @@ export const metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, p
 const pick = (...slugs: string[]) =>
   slugs.map((s) => tutorialBySlug(s)).filter((t): t is Tutorial => Boolean(t));
 
-const START_HERE = pick("point-your-domain", "force-https", "email-deliverability");
+const START_HERE = pick("log-in-to-cpanel", "point-your-domain", "force-https");
 const WORDPRESS = pick("wordpress-fast-on-day-one", "move-wordpress-to-a-new-host", "harden-wordpress-login");
 const BREAKS = pick("fix-error-establishing-database-connection", "restore-a-backup", "reset-wordpress-password-phpmyadmin");
 const EMAIL = pick("set-up-dkim", "set-up-dmarc", "connect-google-workspace-or-microsoft-365");
