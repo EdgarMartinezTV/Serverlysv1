@@ -29,7 +29,7 @@ export const GLOSSARY = {
   },
   "client-area": {
     term: "Client area",
-    def: "Your Serverlys account at serverlys.com/billing. It is where you see your plans, domains and invoices, and where the button to open cPanel lives.",
+    def: "Your Serverlys account, where you sign in at serverlys.com/login. It is where you see your plans, domains and invoices, and where the button to open cPanel lives.",
   },
   cpanel: {
     term: "cPanel",

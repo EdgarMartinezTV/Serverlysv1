@@ -19,7 +19,7 @@ export const gettingStartedTutorials: readonly Tutorial[] = [
       "Almost every tutorial here starts in cPanel, the control panel for your hosting. Think of your hosting plan as a rented shop and cPanel as the back office: it is where you create email addresses, look at your website's files, change your domain's settings and restore backups. You never need a separate password for it, because you open it from your Serverlys account with one click.",
     terms: ["client-area", "cpanel", "hosting", "domain"],
     done:
-      "You are looking at a page full of icons with headings such as Email, Files, Databases and Domains, and your domain name is shown on the right. That is cPanel. Bookmark serverlys.com/billing/login so you can get back to it.",
+      "You are looking at a page full of icons with headings such as Email, Files, Databases and Domains, and your domain name is shown on the right. That is cPanel. Bookmark serverlys.com/login so you can get back to it.",
     before: [
       "The email address and password you used when you bought your Serverlys plan. Forgotten the password? The sign-in page has a link to reset it.",
       "An active hosting plan. If you only bought a domain, there is no cPanel yet: the domain is managed under Domains in your account instead.",
@@ -29,9 +29,9 @@ export const gettingStartedTutorials: readonly Tutorial[] = [
       {
         title: "Open the Serverlys sign-in page",
         detail:
-          "In your web browser, go to serverlys.com/billing/login. This is your Serverlys account, also called the client area. It is where your plans, domains and invoices are, and it is the front door to cPanel.",
-        where: ["serverlys.com/billing/login"],
-        code: "https://serverlys.com/billing/login",
+          "In your web browser, go to serverlys.com/login. This is your Serverlys account, also called the client area. It is where your plans, domains and invoices are, and it is the front door to cPanel.",
+        where: ["serverlys.com/login"],
+        code: "https://serverlys.com/login",
         check: "You see a sign-in form asking for your email address and password.",
       },
       {
@@ -70,7 +70,7 @@ export const gettingStartedTutorials: readonly Tutorial[] = [
       {
         title: "Close it when you are done",
         detail:
-          "When you finish, close the cPanel tab or use the account menu at the top right to log out. On a shared or public computer, also sign out of the client area. Next time, start again at serverlys.com/billing/login.",
+          "When you finish, close the cPanel tab or use the account menu at the top right to log out. On a shared or public computer, also sign out of the client area. Next time, start again at serverlys.com/login.",
       },
     ],
     gotcha:

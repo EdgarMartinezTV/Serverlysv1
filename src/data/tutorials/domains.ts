@@ -71,7 +71,7 @@ export const domainsTutorials: readonly Tutorial[] = [
         title: "Option one: change the nameservers",
         detail:
           "Log in at your registrar and open your domain's settings. Look for a section called Nameservers, DNS or DNS management. Remove the existing entries and type the two Serverlys nameservers, one per box. If your domain is registered with Serverlys, sign in to your account and find the domain under Domains, then Domain portfolio. Skip the next two steps if you use this option.",
-        where: ["serverlys.com/billing/login", "Domains", "Domain portfolio"],
+        where: ["serverlys.com/login", "Domains", "Domain portfolio"],
         code: "ns1.serverlys.com\nns2.serverlys.com",
         check: "Your registrar's page lists only ns1.serverlys.com and ns2.serverlys.com as nameservers.",
       },
@@ -503,7 +503,7 @@ export const domainsTutorials: readonly Tutorial[] = [
         title: "Start the transfer at the new registrar",
         detail:
           "At the new registrar, choose to transfer a domain. Enter the domain and the code, then pay. For most common endings the transfer adds a year to the registration, and the time you have already paid for is kept. At Serverlys, you can follow a transfer under Domains, then Transfers, in your account.",
-        where: ["serverlys.com/billing/login", "Domains", "Transfers"],
+        where: ["serverlys.com/login", "Domains", "Transfers"],
         check: "The new registrar shows the transfer as pending or in progress.",
       },
       {
