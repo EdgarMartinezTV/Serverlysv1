@@ -91,7 +91,7 @@ function Scene({ category, big }: { category: string; big: boolean }) {
         <div className={cn("flex items-center gap-2.5", t)}>
           <span className={cn("inline-flex shrink-0 items-center justify-center rounded-full border-2 border-fg font-bold text-fg", big ? "size-10 text-body-lg" : "size-7 text-[12px]")}>W</span>
           <div>
-            <p className="font-semibold text-fg">Updated to 6.8</p>
+            <p className="font-semibold text-fg">WordPress up to date</p>
             <p className="text-fg-muted">Backup taken first</p>
           </div>
         </div>
