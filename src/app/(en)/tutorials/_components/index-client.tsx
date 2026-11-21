@@ -190,7 +190,7 @@ export function TopicMenu({
   }, [open]);
 
   return (
-    <ul data-topic-menu className="hidden h-full shrink-0 items-stretch text-[14px] md:flex">
+    <ul data-topic-menu className="hidden h-full shrink-0 items-stretch text-[14px] lg:flex">
       <li className="flex">
         <a href="#all" className="flex items-center border-b-2 border-primary px-4 text-primary">
           All Tutorials

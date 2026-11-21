@@ -155,7 +155,7 @@ function Band({
 function TopicBar() {
   return (
     <nav aria-label="Tutorial topics" className="border-b border-[#e3e4e8] bg-white">
-      <div className="mx-auto flex h-16 max-w-[1440px] items-center gap-4 overflow-x-auto px-[10px] md:overflow-visible md:px-5 [scrollbar-width:none]">
+      <div className="mx-auto flex h-16 max-w-[1440px] items-center gap-4 overflow-x-auto px-[10px] md:px-5 lg:overflow-visible [scrollbar-width:none]">
         <ContentSwitch active="tutorials" />
         <TopicMenu
           topics={tutorialCategories.map((c) => ({

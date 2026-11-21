@@ -102,7 +102,7 @@ export function TutorialCard({ t, byline = false }: { t: Tutorial; byline?: bool
         </Link>
         <a
           href={`#all/${categoryAnchor(t.category)}`}
-          className="absolute top-2 left-2 inline-flex items-center gap-1.5 rounded-lg bg-white px-2 py-0.5 text-[12px] leading-[18px] font-semibold text-[#222225]"
+          className="absolute top-2 left-2 inline-flex items-center gap-1.5 rounded-lg bg-white px-2 py-[3px] text-[12px] leading-[18px] font-semibold text-[#222225]"
         >
           <span aria-hidden className={`size-2 rounded-full ${DOT[t.category]}`} />
           {t.category}
@@ -110,7 +110,7 @@ export function TutorialCard({ t, byline = false }: { t: Tutorial; byline?: bool
       </div>
       <div className="flex flex-col pt-7 pb-6 md:pt-4">
         <div className="mb-2 flex flex-wrap justify-center gap-x-2 text-[14px] leading-[21px] font-light text-brand-950 md:flex-nowrap md:justify-between md:gap-4 md:text-[16px] md:leading-[33.6px]">
-          <a href={`#all/${categoryAnchor(t.category)}`} className="uppercase hover:text-primary">
+          <a href={`#all/${categoryAnchor(t.category)}`} className="-my-0.5 py-0.5 uppercase hover:text-primary md:my-0 md:py-0">
             {t.category}
           </a>
           <p className="md:text-right">
