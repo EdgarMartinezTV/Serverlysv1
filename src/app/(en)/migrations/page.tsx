@@ -111,7 +111,7 @@ export default function MigrationsPage() {
           ...(from ? [`Plans from ${from}/mo${bfNote}`] : []),
         ]}
         lede={tx("Our team copies your website to Serverlys, tests it in private, syncs the last changes and switches your domain at a quiet time you pick. Your old host keeps serving customers until the new site is proven, so it never goes offline.")}
-        cta={{ label: "See how it works", href: "#how-it-works" }}
+        cta={{ label: "Start your free migration", href: "#plans" }}
         badgeCaption={tx("Every move")}
         badges={[
           { label: "Done for you", icon: "team" },
@@ -158,6 +158,12 @@ export default function MigrationsPage() {
           columns={4}
           footnote={
             <>{tx("Every plan includes free website migration and a 30-day money-back guarantee.")}{" "}
+              {tx("Already a customer?")}{" "}
+              <a
+                href={lh(billing.migrationRequest)}
+                className="font-semibold text-primary hover:text-primary-hover"
+              >{tx("Request your migration")}</a>
+              {". "}
               <a
                 href={lh("/cloud-hosting#pricing")}
                 className="font-semibold text-primary hover:text-primary-hover"

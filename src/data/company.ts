@@ -56,6 +56,13 @@ export const billing = {
   login: `${BILLING}/login`,
   /** Sales department ticket — used by every "talk to an expert" CTA. */
   sales: `${BILLING}/submitticket.php?step=2&deptid=1`,
+  /**
+   * Free-migration request: a Technical Support ticket (dept 2; WHMCS has no
+   * migration department or product, checked 2026-11-23). Tickets are
+   * clients-only, so this is the after-checkout step; logged-out visitors are
+   * sent to the WHMCS login first and land back on the ticket form.
+   */
+  migrationRequest: `${BILLING}/submitticket.php?step=2&deptid=2&subject=${encodeURIComponent("Website migration request")}`,
   registerDomain: `${BILLING}/cart.php?a=add&domain=register`,
   /**
    * The domain cart with the search prefilled — the handoff for every result

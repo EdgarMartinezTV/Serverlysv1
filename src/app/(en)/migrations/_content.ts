@@ -1,5 +1,6 @@
 import type { FaqItem } from "@/components/ref/faqs";
 import type { SwitchCopy } from "@/components/ref/content-switch";
+import { billing } from "@/data/company";
 
 /**
  * Website migration page content.
@@ -165,6 +166,38 @@ export const FAQ_HEAD = {
 };
 
 export const FAQS: FaqItem[] = [
+  {
+    q: "How do I request my free website migration?",
+    a: [
+      {
+        type: "p",
+        runs: [
+          { text: "Choose a cloud hosting plan and complete checkout. Then " },
+          { text: "open a migration request", href: billing.migrationRequest },
+          {
+            text: " from your client area with your website's address and a login for your current host or WordPress admin. Our team replies to confirm, copies the site, and agrees the switch time with you. Questions before you buy? ",
+          },
+          { text: "Ask the team", href: billing.sales },
+          { text: "." },
+        ],
+      },
+    ],
+  },
+  {
+    q: "How much does a website migration service cost?",
+    a: [
+      {
+        type: "p",
+        runs: [
+          {
+            text: "At Serverlys it is free with every cloud hosting plan, for as many websites as your plan allows. Elsewhere, prices range from free with a new hosting plan to a paid project for a complex site. For what drives the price and what to check before accepting a free migration, read ",
+          },
+          { text: "how much a website migration service costs", href: "/blog/website-migration-cost" },
+          { text: "." },
+        ],
+      },
+    ],
+  },
   {
     q: "What do I need for a successful website migration?",
     a: [

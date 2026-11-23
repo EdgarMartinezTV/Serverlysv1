@@ -32,7 +32,7 @@ const PHASES: Phase[] = [
   {
     n: "01",
     title: "You send us the details",
-    body: "Your site’s address and a login for your current host or WordPress. This is the only part you do. Don’t cancel your old hosting yet.",
+    body: "After checkout, open a migration request in your client area with your site’s address and a login for your current host or WordPress. This is the only part you do. Don’t cancel your old hosting yet.",
     serving: "old",
     you: true,
   },
