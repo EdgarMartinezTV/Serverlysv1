@@ -97,6 +97,7 @@ export const article: Article = {
         "**Priority support:** If \"priority support\" is a paid tier, their regular support is likely slow by design.",
       ],
     },
+    { type: "p", text: "The biggest hidden cost is usually the renewal. Our guide to [how much web hosting costs in 2026](/blog/web-hosting-cost-2026) lists the advertised and renewal prices of five major hosts side by side, and our [web hosting renewal prices](/web-hosting-renewal-prices) page shows how much each one goes up after the first term." },
     { type: "h2", id: "our-recommendation-for-small-businesses-in-2026", text: "Our Recommendation for Small Businesses in 2026" },
     { type: "p", text: "After three months of testing, the pattern is clear: **cloud hosting is the best value for most small businesses**. The performance gap between shared and cloud hosting has widened, while the price gap has narrowed. For $5–$15/month, you get auto-scaling, NVMe storage, and uptimes that used to require a $50+ VPS plan." },
     { type: "quote", text: "The businesses that struggle with hosting are almost always on plans they chose based on the lowest price, not the best fit. Spending an extra $3–$5/month on proper hosting pays for itself in faster load times, fewer support calls, and higher conversion rates." },

@@ -15,18 +15,24 @@
  * data/pricing.ts (BLACK_FRIDAY, TERM_PRICES; Starter 36 mo $178.20 → $112.27
  * was verified on the live cart) and the refund / migration facts from
  * data/faqs.ts and data/company.ts.
+ *
+ * 2026-11-23 refresh (GSC: "black friday hosting deals" pos ~24-28): dates table,
+ * quick-answer callout, all-plan BF table (bfPrice() on TERM_PRICES annually /
+ * triennially, identical across cloud/wordpress/ecommerce groups), Cyber Monday +
+ * end-date FAQs. ⚠ After 2026-12-07 the Serverlys section is stale: rewrite it.
  */
 import type { Article } from "./types";
 
 export const batch20261114: readonly Article[] = [
   {
     slug: "black-friday-web-hosting-deals-checklist",
-    title: "Black Friday web hosting deals: 9 things to check before you buy",
-    seoTitle: "Black Friday web hosting deals: what to check (2026)",
+    title: "Black Friday web hosting deals 2026: 9 things to check before you buy",
+    seoTitle: "Black Friday Hosting Deals 2026: 9 Checks Before You Buy",
     description:
-      "Black Friday is the cheapest time of year to buy hosting, if you read past the headline price. Here are nine checks that separate a real deal from a renewal trap.",
+      "Black Friday 2026 is November 27 and Cyber Monday is November 30. Nine checks that separate a real web hosting deal from a renewal trap, plus every Serverlys Black Friday price.",
     category: "Hosting",
     published: "2026-11-14",
+    updated: "2026-11-23",
     body: [
       {
         type: "p",
@@ -35,6 +41,25 @@ export const batch20261114: readonly Article[] = [
       {
         type: "p",
         text: "A hosting deal is only a deal if it still makes sense on the second invoice. This checklist covers the nine things worth checking before you pay, a worked example of how to compare two offers, and when it is smarter to wait.",
+      },
+      {
+        type: "callout",
+        title: "The quick answer",
+        text: "**Black Friday 2026 is Friday, November 27, and Cyber Monday is November 30.** Before you buy any hosting deal, find three numbers: the price you pay at checkout, the renewal price, and the length of the refund window. A deal with a low renewal price and a 30-day money-back guarantee is low risk. A deal that hides its renewal price is not a deal. [Serverlys hosting is 37% off the first payment until December 7](#serverlys-black-friday).",
+      },
+      { type: "h2", id: "dates", text: "Black Friday and Cyber Monday 2026: the dates" },
+      {
+        type: "table",
+        head: ["", "Date"],
+        rows: [
+          ["Black Friday", "Friday, November 27, 2026"],
+          ["Cyber Monday", "Monday, November 30, 2026"],
+          ["Serverlys Black Friday ends", "Monday, December 7, 2026"],
+        ],
+      },
+      {
+        type: "p",
+        text: "Many hosts start their sale before Black Friday and keep it running through Cyber Monday or later, so the deal you see on a Tuesday in mid-November is often the same one you will see on the day. There is rarely a reason to wait for Cyber Monday if the offer already passes the checklist below. Check each host's own end date rather than assuming the sale stops on Monday night.",
       },
       { type: "h2", id: "checklist", text: "The 9-point Black Friday hosting checklist" },
       { type: "h3", text: "1. Find the renewal price before anything else" },
@@ -123,6 +148,20 @@ export const batch20261114: readonly Article[] = [
       },
       {
         type: "p",
+        text: "And every plan, on the two most popular terms. The prices are the same for cloud, WordPress and ecommerce hosting:",
+      },
+      {
+        type: "table",
+        head: ["Plan", "12 months: Black Friday price (renews at)", "36 months: Black Friday price (renews at)"],
+        rows: [
+          ["Starter", "$52.54 ($83.40 a year)", "$112.27 ($178.20 every 3 years)"],
+          ["Plus", "$82.78 ($131.40 a year)", "$202.99 ($322.20 every 3 years)"],
+          ["Turbo", "$128.14 ($203.40 a year)", "$339.07 ($538.20 every 3 years)"],
+          ["Business", "$173.50 ($275.40 a year)", "$475.15 ($754.20 every 3 years)"],
+        ],
+      },
+      {
+        type: "p",
         text: "Going through the checklist: the renewal price is shown on the [pricing page](/pricing) beside the plan price; you can choose a 1, 12, 24 or 36-month term; free SSL, daily backups and free migration are part of the plan, not a first-year extra; and every hosting plan has a 30-day money-back guarantee, set out in the [refund policy](/refund-policy). Compare plans for [cloud hosting](/cloud-hosting), [WordPress hosting](/wordpress-hosting) or [ecommerce hosting](/ecommerce-hosting), or ask us to [move your existing site](/migrations).",
       },
       { type: "h2", id: "when-to-wait", text: "When it is better not to buy on Black Friday" },
@@ -154,7 +193,17 @@ export const batch20261114: readonly Article[] = [
       { type: "h3", text: "What happens when the Black Friday price ends?" },
       {
         type: "p",
-        text: "Your plan renews at the host's renewal price for your billing term. That is why the renewal price, not the sale price, is the most important number to check before you buy. For a broader view of what hosting should cost, see [web hosting cost in 2026](/blog/web-hosting-cost-2026).",
+        text: "Your plan renews at the host's renewal price for your billing term. That is why the renewal price, not the sale price, is the most important number to check before you buy. For a broader view of what hosting should cost, see [web hosting cost in 2026](/blog/web-hosting-cost-2026), and compare real renewal rates on our [web hosting renewal prices](/web-hosting-renewal-prices) page.",
+      },
+      { type: "h3", text: "Are Cyber Monday hosting deals better than Black Friday?" },
+      {
+        type: "p",
+        text: "Usually they are the same deal. Most hosts run one sale across the whole weekend rather than a second, deeper discount on Monday. A few add a short extra offer, but waiting risks missing a sale that ends early. If an offer passes the nine checks above, there is little to gain by holding out.",
+      },
+      { type: "h3", text: "When does the Serverlys Black Friday sale end?" },
+      {
+        type: "p",
+        text: "On December 7, 2026. Until then the 37% discount applies automatically at checkout on the first payment of every hosting plan, business email plan and ConvoAI Pro, on every billing term. See the current prices on the [pricing page](/pricing).",
       },
     ],
   },

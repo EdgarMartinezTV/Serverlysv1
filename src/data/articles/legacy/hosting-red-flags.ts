@@ -42,6 +42,7 @@ export const article: Article = {
       ],
     },
     { type: "quote", text: "If your hosting provider charges $3/month to get you in and $13/month to keep you, their business model is based on trapping customers, not serving them. That mentality shows up in every part of their service." },
+    { type: "p", text: "You can check this before you buy: our [web hosting renewal prices](/web-hosting-renewal-prices) page compares what the biggest hosts charge after the first term, and our guide to [how much web hosting costs in 2026](/blog/web-hosting-cost-2026) explains how to work out the real yearly cost." },
     { type: "h2", id: "red-flag-5-they-charge-extra-for-ssl-certificates", text: "Red Flag #5: They Charge Extra for SSL Certificates" },
     { type: "p", text: "In 2026, SSL certificates should be free, automatic, and included with every hosting plan. Let's Encrypt has made SSL free for everyone. If your host charges $50-$100/year for basic SSL, they're monetizing something that costs them nothing — and that tells you how they approach every other aspect of their business." },
     { type: "p", text: "**Beyond SSL, watch for charges for:**" },

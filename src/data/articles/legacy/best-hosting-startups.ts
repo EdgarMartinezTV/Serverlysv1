@@ -94,6 +94,7 @@ export const article: Article = {
       ],
     },
     { type: "quote", text: "The best hosting decision a startup can make is choosing infrastructure they will never have to migrate away from. Cloud hosting lets you start at $3/month and scale to $200/month on the same platform. Every migration carries risk, cost, and downtime that no startup can afford." },
+    { type: "p", text: "Before you commit a budget, check what each plan costs after the first term, not just at signup. Our guide to [how much web hosting costs in 2026](/blog/web-hosting-cost-2026) compares the real intro and renewal prices of the biggest hosts, and the Serverlys [startup hosting](/startup-hosting) plans show the renewal price next to the plan price." },
     { type: "h2", id: "mistakes-startups-make-with-hosting", text: "Mistakes Startups Make with Hosting" },
     { type: "h3", text: "1. Choosing the Cheapest Option Every Time" },
     { type: "p", text: "The $1.99/month hosting plan looks attractive when you are bootstrapping. But it renews at $9.99/month, has no auto-scaling, uses outdated hardware, and will force you to migrate within 6–12 months when you outgrow it. The \"savings\" end up costing more in time, migration fees, and lost customers during the transition." },

@@ -119,6 +119,7 @@ export const article: Article = {
       ],
     },
     { type: "p", text: "Budget shared hosts had the highest markup, with some providers nearly quadrupling the price at renewal. Cloud hosting providers generally had the most transparent pricing, with smaller increases or flat rates." },
+    { type: "p", text: "To compare named hosts, our guide to [how much web hosting costs in 2026](/blog/web-hosting-cost-2026) lists real intro and renewal prices, and the [web hosting renewal prices](/web-hosting-renewal-prices) page shows the jump at renewal for each." },
     { type: "h2", id: "features-that-actually-matter-for-wordpress", text: "Features That Actually Matter for WordPress" },
     { type: "p", text: "Not all hosting features are created equal. Here are the ones that make a real difference for WordPress sites:" },
     { type: "h3", text: "Must-Have Features" },

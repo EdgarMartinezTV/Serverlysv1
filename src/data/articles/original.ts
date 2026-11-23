@@ -1513,6 +1513,10 @@ export const originalArticles: readonly Article[] = [
         type: "p",
         text: "Any provider worth buying from can answer all three in one reply. We publish the renewal rate next to the introductory rate on [every plan](/pricing) for exactly this reason: it costs us some sign-ups, and it saves the conversation that would otherwise happen twelve months later.",
       },
+      {
+        type: "p",
+        text: "To see these numbers for real plans, our [web hosting renewal prices](/web-hosting-renewal-prices) page compares what the biggest hosts charge after the first term, and our guide to [how much web hosting costs in 2026](/blog/web-hosting-cost-2026) turns them into a yearly budget.",
+      },
     ],
   },
   {

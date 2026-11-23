@@ -1,5 +1,5 @@
 import type { FaqItem } from "@/components/ref/faqs";
-import { BLACK_FRIDAY, blackFridayActive } from "@/data/pricing";
+import { BLACK_FRIDAY, blackFridayActive, formatPrice, lowestRate } from "@/data/pricing";
 
 /**
  * Pricing page content.
@@ -23,7 +23,7 @@ import { BLACK_FRIDAY, blackFridayActive } from "@/data/pricing";
  */
 
 export const HERO = {
-  title: "Hosting plans & pricing",
+  title: "Web hosting plans & pricing",
   trust: [
     { icon: "shield" as const, label: "30-day money-back guarantee" },
     { icon: "support" as const, label: "24/7 support" },
@@ -159,6 +159,21 @@ export const FAQS: FaqItem[] = [
           },
           { text: " How other hosts compare: " },
           { text: "web hosting renewal prices, side by side", href: "/web-hosting-renewal-prices" },
+          { text: "." },
+        ],
+      },
+    ],
+  },
+  {
+    q: "How much does web hosting cost per month and per year?",
+    a: [
+      {
+        type: "p",
+        runs: [
+          {
+            text: `Serverlys hosting starts at ${formatPrice(lowestRate)}/mo on the monthly term, and every plan card shows the 12, 24 and 36-month price too. Most small business websites should budget $5–$25 a month ($60–$300 a year) for good hosting. For named hosts and what they renew at, read `,
+          },
+          { text: "how much web hosting costs in 2026", href: "/blog/web-hosting-cost-2026" },
           { text: "." },
         ],
       },

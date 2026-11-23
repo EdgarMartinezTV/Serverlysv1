@@ -141,6 +141,7 @@ export const article: Article = {
     },
     { type: "p", text: "The management premium for cloud hosting is the sweet spot for most businesses: $2–$15/month buys you significant time savings and peace of mind. The premium for VPS and dedicated hosting is higher because the management tasks are more complex and require more specialized expertise." },
     { type: "p", text: "For a full breakdown of what hosting of every type costs per month and per year — including the renewal prices of Hostinger, Bluehost and SiteGround — see [how much web hosting costs in 2026](/blog/web-hosting-cost-2026)." },
+    { type: "p", text: "For what managed plans renew at, compare real numbers on our [web hosting renewal prices](/web-hosting-renewal-prices) page, or see Serverlys [managed hosting pricing](/managed-hosting), where every plan shows its renewal price." },
     { type: "h2", id: "managed-hosting-for-small-business", text: "Managed Hosting for Small Business" },
     { type: "p", text: "Small businesses are the group managed hosting suits best. A business website has to stay up, stay secure and load quickly, but most small businesses have no one on staff whose job is to patch a server at 2 AM. Managed hosting turns that job into a fixed monthly fee." },
     { type: "p", text: "When you compare managed hosting services for a small business, check that the plan includes, at no extra cost:" },
