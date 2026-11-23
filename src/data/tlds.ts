@@ -15,6 +15,12 @@ export type Tld = {
   price: number;
   /** Yearly renewal price, USD. */
   renew: number;
+  /**
+   * One-year transfer-in price, USD (includes the year a transfer adds). Live
+   * WHMCS value only: the static snapshot has none, so callers must handle
+   * it being absent.
+   */
+  transfer?: number;
   /** Shown as a hint under the TLD chip. */
   note?: string;
   /** Included in the default alternate-suggestion set. */

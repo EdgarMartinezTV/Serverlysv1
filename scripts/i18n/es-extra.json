@@ -159,5 +159,12 @@
 "Start your free migration": "Empieza tu migración gratis",
 "After checkout, open a migration request in your client area with your site’s address and a login for your current host or WordPress. This is the only part you do. Don’t cancel your old hosting yet.": "Después del pago, abre una solicitud de migración en tu área de cliente con la dirección de tu sitio y un acceso a tu hosting actual o a WordPress. Es lo único que haces tú. No canceles todavía tu hosting anterior.",
 "Already a customer?": "¿Ya eres cliente?",
-"Request your migration": "Solicita tu migración"
+"Request your migration": "Solicita tu migración",
+"How much does it cost to transfer a domain to Serverlys?": "¿Cuánto cuesta transferir un dominio a Serverlys?",
+"A .com transfer is {0}, and that payment adds a year to the registration, so you are not paying for nothing. Other extensions are priced the same way: one year at that extension's normal rate.": "Transferir un .com cuesta {0}, y ese pago añade un año al registro, así que no pagas por nada. Las demás extensiones funcionan igual: un año a la tarifa normal de esa extensión.",
+"One year at the extension's normal rate, and that payment adds a year to the registration, so you are not paying for nothing.": "Un año a la tarifa normal de la extensión, y ese pago añade un año al registro, así que no pagas por nada.",
+"Do I need Serverlys hosting to transfer my domain here?": "¿Necesito hosting de Serverlys para transferir mi dominio aquí?",
+"No. You can transfer just the domain and keep your website and email where they are: the DNS records decide where they live, not the registrar. If you want to move the website too, our free migration with every cloud plan handles that separately.": "No. Puedes transferir solo el dominio y dejar tu sitio web y tu correo donde están: los registros DNS deciden dónde viven, no el registrador. Si también quieres mover el sitio web, nuestra migración gratis con cada plan cloud se encarga de eso por separado.",
+"Can I transfer a domain that is about to expire?": "¿Puedo transferir un dominio que está a punto de vencer?",
+"Yes, as long as it is not inside the 60-day lock. Start at least a week before the expiry date so there is time to approve it, and remember the transfer adds a year. A domain that has already expired depends on your current registrar's grace-period rules, so renew it there first if you can.": "Sí, siempre que no esté dentro del bloqueo de 60 días. Empieza al menos una semana antes de la fecha de vencimiento para que haya tiempo de aprobarla, y recuerda que la transferencia añade un año. Un dominio que ya venció depende de las reglas del período de gracia de tu registrador actual, así que, si puedes, renuévalo primero allí."
 }

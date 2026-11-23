@@ -3,6 +3,8 @@ import { DomainHero, Explainers, Manage, Popular, Reasons, Steps, TldTable } fro
 import { Faqs } from "@/components/ref/faqs";
 import { DomainSearchApp } from "@/components/domain/domain-search-app";
 import { getTldPricing } from "@/lib/domains/pricing";
+import { formatPrice } from "@/data/pricing";
+import type { Tld } from "@/data/tlds";
 import { faqGraph, pageMetadata } from "@/lib/seo";
 import { FAQ_HEAD, HERO, REASONS, STEPS } from "./_content";
 import { PageBreadcrumbs } from "@/components/ui/page-breadcrumbs";
@@ -36,6 +38,19 @@ export const metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, p
 /** Prices come from WHMCS (lib/domains/pricing); re-render at the same cadence. */
 export const revalidate = 3600;
 
+/** The cost answer reads the live WHMCS transfer price for .com when it has one. */
+function costFaq(tlds: readonly Tld[]) {
+  const com = tlds.find((t) => t.tld === ".com");
+  const price = com?.transfer;
+  return {
+    question: "How much does it cost to transfer a domain to Serverlys?",
+    answer: price
+      ? `A .com transfer is ${formatPrice(price)}, and that payment adds a year to the registration, so you are not paying for nothing. Other extensions are priced the same way: one year at that extension's normal rate.`
+      : "One year at the extension's normal rate, and that payment adds a year to the registration, so you are not paying for nothing.",
+    scopes: [PATH],
+  };
+}
+
 const FAQ_TEXT = [
   {
     question: "Will I lose the time left on my registration?",
@@ -67,15 +82,28 @@ const FAQ_TEXT = [
       "Usually a few hours once you approve it, and up to five days if the approval email is not actioned. An unapproved transfer times out and has to be started again.",
     scopes: [PATH],
   },
+  {
+    question: "Do I need Serverlys hosting to transfer my domain here?",
+    answer:
+      "No. You can transfer just the domain and keep your website and email where they are: the DNS records decide where they live, not the registrar. If you want to move the website too, our free migration with every cloud plan handles that separately.",
+    scopes: [PATH],
+  },
+  {
+    question: "Can I transfer a domain that is about to expire?",
+    answer:
+      "Yes, as long as it is not inside the 60-day lock. Start at least a week before the expiry date so there is time to approve it, and remember the transfer adds a year. A domain that has already expired depends on your current registrar's grace-period rules, so renew it there first if you can.",
+    scopes: [PATH],
+  },
 ];
 
 export default async function TransferDomainPage() {
   const { all, featured } = await getTldPricing();
+  const faqs = [costFaq(all), ...FAQ_TEXT];
 
   return (
     /** globals.css balances headings; the reference wraps normally. */
     <div className="[&_h1]:text-wrap [&_h2]:text-wrap [&_h3]:text-wrap [&_p]:text-wrap">
-      <JsonLd data={faqGraph(FAQ_TEXT, "/transfer-domain")} />
+      <JsonLd data={faqGraph(faqs, "/transfer-domain")} />
 
       <DomainHero copy={tx(HERO)} tlds={tx(featured)} tool={<DomainSearchApp tlds={tx(featured)} catalog={tx(all)} />} />
       <Reasons copy={tx(REASONS)} />
@@ -89,7 +117,7 @@ export default async function TransferDomainPage() {
         idPrefix="td"
         title={tx(FAQ_HEAD.title)}
         description={tx(FAQ_HEAD.description)}
-        items={FAQ_TEXT.map((f) => ({
+        items={faqs.map((f) => ({
           q: f.question,
           a: [{ type: "p" as const, runs: [{ text: f.answer }] }],
         }))}
