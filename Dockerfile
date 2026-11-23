@@ -26,7 +26,10 @@ ARG NEXT_PUBLIC_ALLOW_INDEXING
 # rebuild — an unchanged commit skips the build). Unset = that piece is off.
 ARG NEXT_PUBLIC_GTM_ID
 ARG NEXT_PUBLIC_GA_MEASUREMENT_ID
-ARG NEXT_PUBLIC_CLARITY_PROJECT_ID
+# Microsoft Clarity project "Serverlys" (public, in every page's source):
+# production's ID as the default, like the pixel below. Loads only where
+# analytics resolves on and only after an analytics Accept.
+ARG NEXT_PUBLIC_CLARITY_PROJECT_ID=zi8uzcq2ym
 # The pixel ID is public (it is in every page's source), so production's is
 # the default here; an Easypanel env value still overrides it. It loads only
 # where analytics resolves on (the production origin) and only after a
