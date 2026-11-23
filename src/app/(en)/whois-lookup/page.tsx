@@ -36,6 +36,12 @@ export const metadata = pageMetadata({
 
 const FAQS: readonly Faq[] = [
   {
+    question: "How do I find out where my domain is registered?",
+    answer:
+      "Type the domain into the lookup above and read the Registrar line: that is the company the domain is registered with. The name servers show who runs its DNS, which is often, but not always, the website host. The expiry date shows when it must be renewed.",
+    scopes: [PATH],
+  },
+  {
     question: "Why can I not see the owner's name and address?",
     answer:
       "Because the registries no longer publish them. Since GDPR, registrant contact details are redacted in public records for most domains, and ICANN policy formalised it. Anyone showing you a full contact record for a modern domain is showing you a cached copy from before the change, or making it up.",

@@ -101,6 +101,23 @@ export const FAQ_HEAD = {
 
 export const FAQS: FaqItem[] = [
   {
+    q: "How do I find out where my domain is registered?",
+    a: [
+      {
+        type: "p",
+        runs: [
+          { text: "Run it through our free " },
+          { text: "WHOIS lookup", href: "/whois-lookup" },
+          {
+            text: " and read the Registrar line: that is the company your domain is registered with. The name servers show who runs its DNS. For finding your web and email host too, see ",
+          },
+          { text: "where is my domain registered?", href: "/blog/where-is-my-domain-registered" },
+          { text: "." },
+        ],
+      },
+    ],
+  },
+  {
     q: "What is a domain name?",
     a: [
       {
