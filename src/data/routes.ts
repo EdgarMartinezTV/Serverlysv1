@@ -92,6 +92,16 @@ export const routes: readonly RouteMeta[] = [
     parents: ["/", "/hosting"],
   },
   {
+    path: "/daily-backups",
+    name: "Daily backups",
+    group: "commercial",
+    built: true,
+    indexable: true,
+    priority: 0.7,
+    changeFrequency: "monthly",
+    parents: ["/", "/hosting"],
+  },
+  {
     path: "/free-ssl",
     name: "Free SSL certificate",
     group: "commercial",

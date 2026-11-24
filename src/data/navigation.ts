@@ -148,7 +148,7 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
         items: [
           {
             label: "Daily backups",
-            href: "/cloud-hosting",
+            href: "/daily-backups",
             icon: "shield",
             description: "Taken nightly. Restores are free.",
           },
