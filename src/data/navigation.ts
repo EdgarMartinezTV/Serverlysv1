@@ -160,7 +160,7 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
           },
           {
             label: "Free SSL",
-            href: "/cloud-hosting",
+            href: "/free-ssl",
             icon: "shield",
             description: "Issued and renewed automatically.",
           },
