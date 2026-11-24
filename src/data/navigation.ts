@@ -202,12 +202,6 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
             icon: "cart",
             description: "WooCommerce-ready, fast at checkout.",
           },
-          {
-            label: "Managed hosting",
-            href: "/managed-hosting",
-            icon: "server",
-            description: "We patch, back up and watch it for you.",
-          },
         ],
       },
       {
