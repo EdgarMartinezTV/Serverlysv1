@@ -136,13 +136,6 @@ const PRODUCT_CATEGORIES: readonly MegaCategory[] = [
             description: "Answers your customers around the clock.",
           },
           {
-            label: "CallFlow",
-            href: "https://callflow.serverlys.com/",
-            external: true,
-            icon: "phone",
-            description: "Picks up the phone when nobody can.",
-          },
-          {
             label: "Automations",
             href: "/automations",
             icon: "bolt",
