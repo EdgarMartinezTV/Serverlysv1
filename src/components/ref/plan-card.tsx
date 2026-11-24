@@ -90,14 +90,16 @@ export function PlanCard({
       data-convoai-target={`${group.id}-${plan.tier}`}
       className={cn(
         "relative row-span-13 grid grid-rows-subgrid gap-y-0 overflow-hidden rounded-2xl p-6",
-        featured
-          ? "bg-[linear-gradient(180deg,var(--color-brand-950)_0%,#040a1c_100%)] shadow-e5"
-          : dark
-            ? "bg-[#141416] ring-1 ring-white/10"
+        surface === "dark"
+          ? featured
+            ? "bg-[#2a2a2e] ring-1 ring-white/20"
+            : "bg-[#18181a] ring-1 ring-white/10"
+          : featured
+            ? "bg-[linear-gradient(180deg,var(--color-brand-950)_0%,#040a1c_100%)] shadow-e5"
             : "bg-canvas ring-1 ring-line",
       )}
     >
-      {featured && (
+      {featured && surface !== "dark" && (
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(80%_100%_at_50%_0%,rgb(0_0_255/0.5)_0%,transparent_70%)]"

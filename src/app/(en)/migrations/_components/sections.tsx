@@ -9,7 +9,7 @@ import { t as tx } from "@/i18n/t";
 import { lh } from "@/i18n/href";
 import { AI_TOOLS, BANNER, HERO, HOW, PRICING_HEAD, SAVINGS, STEPS, WHY } from "../_content";
 import { SavingsTable, WhyAccordion } from "./interactive";
-import { WhyPanel } from "./why-panel";
+import { MockPhoto } from "@/components/ui/mock-photo";
 
 /**
  * /migrations bands, measured off hostinger.com/website-migration at 1440:
@@ -36,8 +36,8 @@ export function Hero() {
   const price = q ? (q.bf ? q.bf.perMonth : q.perMonth) : 0;
 
   return (
-    <section aria-labelledby="wm-hero-heading" className="overflow-hidden bg-black">
-      <Grid className="grid items-center gap-10 pt-10 pb-14 md:pt-14 xl:grid-cols-[1fr_minmax(0,600px)] xl:gap-16 xl:pt-[72px] xl:pb-20">
+    <section aria-labelledby="wm-hero-heading" className="relative isolate -mt-18 overflow-hidden bg-black">
+      <Grid className="grid items-center gap-10 pt-28 pb-14 md:pt-32 xl:min-h-[730px] xl:grid-cols-[1fr_minmax(0,600px)] xl:gap-16 xl:pt-32 xl:pb-16">
         <div className="flex flex-col items-start">
           <h1 id="wm-hero-heading" className="max-w-[600px] text-[36px] leading-[44px] font-normal tracking-[-0.03em] text-white md:text-[48px] md:leading-[56px]">
             {BF ? (
@@ -155,7 +155,7 @@ function HeroArt({ className }: { className?: string }) {
 export function Pricing() {
   if (!CLOUD) return null;
   return (
-    <section id="pricing" aria-labelledby="wm-pricing-heading" className="scroll-mt-20 bg-black pb-14 md:pb-16 xl:pb-20">
+    <section id="pricing" aria-labelledby="wm-pricing-heading" className="scroll-mt-20 bg-black pt-12 pb-14 md:pt-16 md:pb-16 xl:pt-24 xl:pb-20">
       <Grid>
         <div className="flex flex-col items-center text-center">
           <h2 id="wm-pricing-heading" className={cn(H2, "text-white")}>
@@ -246,77 +246,79 @@ export function Steps() {
   );
 }
 
-/* ── "See how site migration works" (navy, one big screen) ──────────────── */
+/* ── "See how site migration works" (navy, one big screen) ──────────────
+ * The reference plays a recording of its migration wizard: a wide white
+ * screen, the product bar on top, ONE small summary card in the middle, the
+ * step progress bar and Back / Submit at the foot. Same composition here, with
+ * the fields our request actually asks for. */
 export function How() {
-  const rows: [string, string, boolean][] = [
-    ["Website files", "3.0 GB", true],
-    ["Database", "harbor_wp · 412 MB", true],
-    ["SSL certificate", "Issued", true],
-    ["Email accounts", "12 mailboxes", false],
-  ];
   return (
     <section aria-labelledby="wm-how-heading" className="bg-canvas-abyss py-14 md:py-16 xl:py-20">
       <Grid>
         <h2 id="wm-how-heading" className={cn(H2, "text-center text-white")}>
           {tx(HOW.title)}
         </h2>
-        <div aria-hidden className="mt-10 overflow-hidden rounded-2xl bg-white xl:mt-12">
+        <div aria-hidden className="mt-10 flex flex-col overflow-hidden rounded-2xl bg-white xl:mt-12 xl:aspect-[1440/700]">
           <div className="flex items-center justify-between border-b border-line-subtle px-5 py-3">
-            <span className="flex gap-1.5">
-              <span className="size-2.5 rounded-full bg-ink-200" />
-              <span className="size-2.5 rounded-full bg-ink-200" />
-              <span className="size-2.5 rounded-full bg-ink-200" />
-            </span>
+            <span className="w-[60px]" />
             <Image src="/brand/logo.webp" alt="" width={1653} height={409} sizes="110px" className="h-6 w-auto" />
-            <span className="w-[42px]" />
+            <span className="flex w-[60px] justify-end gap-3 text-fg-secondary">
+              <svg viewBox="0 0 20 20" className="size-4" fill="none"><rect x="3" y="4" width="14" height="12" rx="2" stroke="currentColor" strokeWidth="1.5" /><path d="M7 8h6M7 11h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
+              <svg viewBox="0 0 20 20" className="size-4" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" strokeWidth="1.5" /><path d="M8.2 8a1.9 1.9 0 1 1 2.6 1.8c-.5.2-.8.6-.8 1.1v.6M10 14h.01" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
+            </span>
           </div>
-          <div className="grid gap-8 px-6 py-10 md:px-12 md:py-14 lg:grid-cols-2 lg:items-center lg:gap-16">
-            <div className="rounded-2xl p-6 ring-1 ring-line">
-              <p className="text-[18px] leading-7 font-semibold text-fg">{tx("Request a migration")}</p>
-              <p className="text-[13px] text-fg-muted">{tx("Takes about two minutes")}</p>
-              <div className="mt-5 space-y-3 text-[13px]">
-                {[
-                  ["Website address", "harborgoods.com"],
-                  ["Current host", "Another provider"],
-                  ["Platform", "WordPress + WooCommerce"],
-                  ["Access", "cPanel login, shared securely"],
-                ].map(([k, v]) => (
-                  <span key={k} className="block">
-                    <span className="text-[12px] font-semibold text-fg-secondary">{tx(k)}</span>
-                    <span className="mt-1 block rounded-lg bg-canvas-secondary px-3 py-2.5 text-fg ring-1 ring-line">{tx(v)}</span>
-                  </span>
-                ))}
-              </div>
-              <span className="mt-5 flex h-11 items-center justify-center rounded-lg bg-primary text-[14px] font-semibold text-white">{tx("Submit request")}</span>
-            </div>
-            <div className="flex flex-col items-center text-center">
-              <svg viewBox="0 0 200 120" className="w-[200px]">
-                <path d="M30 110h140M50 110V40h60v70M120 30h60M150 30v80M120 30l30-20 30 20" stroke="#c7d2fe" strokeWidth="2" fill="none" />
-                <rect x="62" y="56" width="36" height="28" rx="4" fill="#eef3ff" stroke="#0000ff" strokeWidth="1.5" />
-                <path d="M74 70h12m-4-4l4 4-4 4" stroke="#0000ff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-              </svg>
-              <p className="mt-4 text-[18px] leading-7 font-semibold text-fg">{tx("Moving your site to Serverlys")}</p>
-              <p className="text-[13px] text-fg-muted">{tx("Your site stays live on the old host until you approve the switch.")}</p>
-              <div className="mt-5 h-2 w-full max-w-[360px] overflow-hidden rounded-full bg-brand-50">
-                <span className="block h-full w-[76%] rounded-full bg-primary" />
-              </div>
-              <ul className="mt-6 w-full max-w-[360px] space-y-2 text-left text-[13px]">
-                {rows.map(([k, v, done]) => (
-                  <li key={k} className="flex items-center justify-between rounded-lg bg-canvas-secondary px-3 py-2">
-                    <span>
-                      <span className="block text-fg">{tx(k)}</span>
-                      <span className="text-[12px] text-fg-muted">{tx(v)}</span>
+
+          <div className="flex flex-1 items-center justify-center px-4 py-12">
+            <div className="w-full max-w-[380px]">
+              <p className="text-[16px] leading-6 font-semibold text-fg">{tx("Migration summary")}</p>
+              <div className="mt-3 rounded-xl p-4 ring-1 ring-line">
+                <p className="text-[11px] text-fg-muted">{tx("You are migrating the content of")}</p>
+                <div className="mt-1 flex items-center justify-between">
+                  <span className="text-[14px] font-semibold text-fg">https://harborgoods.com</span>
+                  <span className="flex items-center gap-1.5 text-fg-muted">
+                    <svg viewBox="0 0 20 20" className="size-4" fill="none"><path d="M4 10h11m-4-4l4 4-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                    <span className="grid size-7 place-items-center rounded-md bg-brand-50">
+                      <Image src="/brand/logo.webp" alt="" width={1653} height={409} sizes="20px" className="h-2 w-auto object-cover object-left" />
                     </span>
-                    {done ? (
-                      <span className="grid size-5 place-items-center rounded-full bg-success-fill text-white">
-                        <Check className="size-3" />
+                  </span>
+                </div>
+                <div className="mt-4 space-y-3 border-t border-line-subtle pt-3 text-[12px]">
+                  {[
+                    ["Website on Serverlys", "harborgoods.com"],
+                    ["Plan", "Turbo Cloud"],
+                    ["Platform", "WordPress"],
+                  ].map(([k, v]) => (
+                    <div key={k} className="flex items-center justify-between">
+                      <span>
+                        <span className="block text-fg-muted">{tx(k)}</span>
+                        <span className="font-semibold text-fg">{tx(v)}</span>
                       </span>
-                    ) : (
-                      <span className="size-5 rounded-full border-2 border-brand-100 [border-top-color:var(--color-primary)]" />
-                    )}
-                  </li>
-                ))}
-              </ul>
+                      {k !== "Platform" && <span className="rounded-md px-2 py-1 text-[11px] font-semibold text-primary ring-1 ring-brand-100">{tx("Change")}</span>}
+                    </div>
+                  ))}
+                </div>
+                <p className="mt-4 flex gap-2 rounded-lg bg-canvas-secondary p-3 text-[11px] leading-4 text-fg-secondary">
+                  <svg viewBox="0 0 20 20" className="size-4 shrink-0" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" strokeWidth="1.4" /><path d="M10 9v4M10 6.5v.01" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>
+                  {tx("Only change your DNS once we tell you the migration is complete.")}
+                </p>
+              </div>
+              <p className="mt-3 flex gap-2 text-[11px] leading-4 text-fg-secondary">
+                <svg viewBox="0 0 20 20" className="size-4 shrink-0" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" strokeWidth="1.4" /><path d="M10 6v4l2.5 1.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /></svg>
+                <span>
+                  {tx("A WordPress migration ")}<b className="text-fg">{tx("usually takes under two hours")}</b>
+                  {tx(". Your website keeps working as usual on your old host while we work.")}
+                </span>
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <div className="h-1.5 bg-brand-50">
+              <span className="block h-full w-[86%] bg-primary" />
+            </div>
+            <div className="flex items-center justify-center gap-[clamp(2rem,20vw,22rem)] py-3">
+              <span className="rounded-md px-3 py-1.5 text-[12px] font-semibold text-fg-secondary ring-1 ring-line">← {tx("Back")}</span>
+              <span className="rounded-md bg-primary px-3 py-1.5 text-[12px] font-semibold text-white">{tx("Submit request")} →</span>
             </div>
           </div>
         </div>
@@ -334,7 +336,7 @@ export function Why() {
           {tx(WHY.title)}
         </h2>
         <div className="mt-10 grid gap-10 xl:mt-12 xl:grid-cols-2 xl:items-center xl:gap-20">
-          <WhyPanel className="aspect-[600/440] w-full" />
+          <StoreMedia />
           <WhyAccordion />
         </div>
       </Grid>
@@ -361,41 +363,58 @@ export function Savings() {
   );
 }
 
-/* ── AI tools (navy) ────────────────────────────────────────────────────── */
+/* ── AI tools (navy) ────────────────────────────────────────────────────
+ * The reference's cards are tall photo compositions with one piece of
+ * product UI floating on the photo. Same here: licensed product photos
+ * (public/mock, Unsplash) under UI we draw. */
 function ToolArt({ id }: { id: string }) {
   if (id === "chat")
     return (
-      <div className="flex h-full flex-col justify-end gap-2 bg-[linear-gradient(160deg,#1f55ff,#061a4d)] p-5">
-        <span className="max-w-[80%] self-end rounded-2xl rounded-br-sm bg-white px-3 py-2 text-[12px] text-fg">{tx("Do you ship to Canada?")}</span>
-        <span className="max-w-[85%] rounded-2xl rounded-bl-sm bg-white/15 px-3 py-2 text-[12px] text-white">{tx("Yes! Orders to Canada arrive in 3–5 days, and shipping is free over $75.")}</span>
+      <div className="relative h-full">
+        <MockPhoto src="coffee" sizes="(min-width:1280px) 460px, 90vw" className="absolute inset-0 size-full" />
+        <div className="absolute inset-x-5 top-5 flex flex-col gap-2">
+          <span className="self-end rounded-2xl rounded-br-sm bg-white px-3.5 py-2.5 text-[13px] text-fg shadow-e4">{tx("Are you open on Sunday?")}</span>
+          <span className="max-w-[88%] rounded-2xl rounded-bl-sm bg-primary px-3.5 py-2.5 text-[13px] text-white shadow-e4">
+            {tx("Yes! Sundays 8am to 2pm. Want me to book a table for brunch?")}
+          </span>
+        </div>
+        <span className="absolute bottom-5 left-5 flex items-center gap-2 rounded-xl bg-white/95 px-3 py-2 text-[12px] font-semibold text-fg shadow-e4">
+          <span className="size-2 rounded-full bg-success-fill" />{tx("ConvoAI · answering")}
+        </span>
       </div>
     );
   if (id === "channels")
     return (
-      <div className="grid h-full place-items-center bg-[linear-gradient(160deg,#dbe6ff,#9db6ff)] p-5">
-        <div className="flex w-full max-w-[240px] flex-col gap-2">
+      <div className="relative h-full">
+        <MockPhoto src="bread-sliced" sizes="(min-width:1280px) 460px, 90vw" className="absolute inset-0 size-full" />
+        <div className="absolute inset-x-5 top-5 rounded-xl bg-white/95 p-2 shadow-e4">
           {[
-            ["WhatsApp", "New order question"],
-            ["Email", "Return request #2041"],
-            ["Website", "Opening hours?"],
+            ["WhatsApp", "Can I order a cake for Friday?"],
+            ["Email", "Wholesale price list, please"],
+            ["Website", "Do you have gluten-free bread?"],
           ].map(([c, m]) => (
-            <span key={c} className="flex items-center justify-between rounded-xl bg-white px-3 py-2 text-[12px] shadow-e3">
+            <span key={c} className="flex items-center justify-between gap-3 rounded-lg px-2.5 py-2 text-[12px]">
               <span className="font-semibold text-fg">{tx(c)}</span>
-              <span className="text-fg-muted">{tx(m)}</span>
+              <span className="truncate text-fg-muted">{tx(m)}</span>
             </span>
           ))}
         </div>
       </div>
     );
   return (
-    <div className="grid h-full place-items-center bg-[linear-gradient(160deg,#5f8bff,#0000ff)] p-5">
-      <div className="flex items-center gap-2 text-[12px]">
-        {["Form sent", "Saved to CRM", "Team notified"].map((s, i) => (
-          <span key={s} className="flex items-center gap-2">
-            <span className="rounded-lg bg-white px-2.5 py-2 font-semibold text-fg shadow-e3">{tx(s)}</span>
-            {i < 2 && <span className="text-white">→</span>}
-          </span>
-        ))}
+    <div className="relative h-full bg-[linear-gradient(150deg,#5f8bff,#0000ff)]">
+      <div className="absolute inset-y-0 right-0 w-[45%] bg-white/10 [clip-path:polygon(40%_0,100%_0,100%_100%,0_100%)]" />
+      <div className="absolute inset-x-5 top-5 rounded-xl bg-white px-3 py-2.5 text-[12px] text-fg-secondary shadow-e4">{tx("When a booking form arrives…")}</div>
+      <div className="absolute inset-x-8 top-[72px] bottom-5 overflow-hidden rounded-xl bg-white shadow-e5">
+        <MockPhoto src="checkout" sizes="380px" className="h-[45%] w-full" />
+        <div className="space-y-2 p-3 text-[12px]">
+          {["Saved to your customer list", "Added to the calendar", "Team notified on email"].map((t) => (
+            <span key={t} className="flex items-center gap-2 text-fg">
+              <span className="grid size-4 place-items-center rounded-full bg-success-fill text-white"><Check className="size-2.5" /></span>
+              {tx(t)}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -405,14 +424,14 @@ export function AiTools() {
   return (
     <section aria-labelledby="wm-ai-heading" className="bg-canvas-abyss py-14 md:py-16 xl:py-20">
       <Grid>
-        <h2 id="wm-ai-heading" className={cn(H2, "mx-auto max-w-[640px] text-center text-white")}>
+        <h2 id="wm-ai-heading" className={cn(H2, "mx-auto max-w-[646px] text-center text-white")}>
           {tx(AI_TOOLS.title)}
         </h2>
         <ul className="mt-10 grid gap-6 md:grid-cols-3 xl:mt-12">
           {AI_TOOLS.items.map((t) => (
             <li key={t.id}>
               <a href={/^https?:/.test(t.href) ? t.href : lh(t.href)} className="group block">
-                <div aria-hidden className="aspect-[410/260] overflow-hidden rounded-2xl">
+                <div aria-hidden className="aspect-square overflow-hidden rounded-2xl">
                   <ToolArt id={t.id} />
                 </div>
                 <h3 className="mt-5 text-[18px] leading-7 text-white group-hover:underline">{tx(t.title)}</h3>
@@ -423,6 +442,41 @@ export function AiTools() {
         </ul>
       </Grid>
     </section>
+  );
+}
+
+/* ── "Why migrate" media: a store built on Serverlys, as the reference
+ * composes its builder shot — tinted panel with a diagonal, a dark tool rail,
+ * the store's hero photo, a floating status card and a product card. */
+function StoreMedia() {
+  return (
+    <div aria-hidden className="relative aspect-[600/600] w-full overflow-hidden rounded-2xl bg-brand-100">
+      <div className="absolute inset-0 bg-brand-400 [clip-path:polygon(100%_0,100%_100%,0_100%,0_78%,62%_0)]" />
+      <div className="absolute top-[17%] right-0 bottom-[9%] left-[11%] overflow-hidden rounded-l-xl shadow-e5">
+        <div className="absolute inset-y-0 left-0 z-10 flex w-[12%] flex-col items-center gap-3 bg-[#16161a] pt-4">
+          <span className="grid size-8 place-items-center rounded-md bg-white/10 text-[11px] font-bold text-white">W</span>
+          <span className="grid size-8 place-items-center rounded-md bg-primary">
+            <svg viewBox="0 0 20 20" className="size-4" fill="none"><path d="M4 10h12M10 4v12" stroke="#fff" strokeWidth="2" strokeLinecap="round" /></svg>
+          </span>
+        </div>
+        <MockPhoto src="serum" sizes="(min-width:1280px) 560px, 90vw" className="absolute inset-0 size-full" position="center 40%" />
+        <div className="absolute inset-y-0 right-[6%] z-10 flex flex-col items-end justify-center text-right">
+          <p className="font-serif text-[clamp(28px,4.2vw,64px)] leading-[0.95] font-bold text-white drop-shadow">{tx("Glow")}<br />{tx("Daily")}</p>
+          <span className="mt-4 border border-white/80 px-4 py-1.5 text-[11px] font-semibold tracking-[0.15em] text-white">{tx("SHOP NOW")}</span>
+        </div>
+      </div>
+      <div className="absolute top-[5%] left-[37%] z-20 w-[46%] rounded-xl bg-white/90 p-4 text-center shadow-e5 backdrop-blur">
+        <p className="text-[14px] font-semibold text-fg">{tx("Site migrated")}</p>
+        <span className="mt-2 block h-1.5 rounded-full bg-primary" />
+        <p className="mt-2 text-[11px] text-fg-muted">{tx("Files, database and email · 100%")}</p>
+      </div>
+      <div className="absolute bottom-[4%] left-[4%] z-20 w-[32%] rounded-xl bg-white p-2.5 text-center shadow-e5">
+        <MockPhoto src="bottle" sizes="200px" className="aspect-[4/3] w-full rounded-lg" />
+        <p className="mt-2 font-serif text-[14px] font-bold text-fg">{tx("Face serum")}</p>
+        <p className="text-[12px] text-fg-secondary">$42.00</p>
+        <span className="mt-2 block rounded-md bg-[#8a9a5b] py-1 text-[10px] font-semibold tracking-[0.1em] text-white">{tx("ADD TO CART")}</span>
+      </div>
+    </div>
   );
 }
 
