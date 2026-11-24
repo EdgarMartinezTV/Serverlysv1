@@ -45,15 +45,29 @@ export const PLAN_CARD_ITEM = "row-span-13 grid grid-rows-subgrid gap-y-0";
  * figure is the monthly price, and the line under the button says what is charged
  * today and that the term renews at the same price — which is what WHMCS does.
  */
-export function PlanCard({ plan, group, why, cta }: { plan: Plan; group: PlanGroup; why?: string; cta: string }) {
-  const dark = Boolean(plan.popular);
+export function PlanCard({
+  plan,
+  group,
+  why,
+  cta,
+  surface = "light",
+}: {
+  plan: Plan;
+  group: PlanGroup;
+  why?: string;
+  cta: string;
+  /** "dark" = the card sits on a black page (/migrations): every card is dark, the featured one stays the brand gradient. */
+  surface?: "light" | "dark";
+}) {
+  const featured = Boolean(plan.popular);
+  const dark = featured || surface === "dark";
   const { term } = useTerm();
   const q = quote(plan, term);
   const bf = q.bf;
   const bfPct = `${Math.round(BLACK_FRIDAY.pct * 100)}% off`;
   const pill = bf
-    ? dark ? `Most popular · Black Friday ${bfPct}` : `Black Friday · ${bfPct}`
-    : dark
+    ? featured ? `Most popular · Black Friday ${bfPct}` : `Black Friday · ${bfPct}`
+    : featured
       ? q.savePct ? `Most popular · ${q.savePct}% off` : "Most popular"
       : q.savePct ? `${q.savePct}% off` : "No commitment";
   /* During Black Friday the struck figure is this term's regular per-month
@@ -76,12 +90,14 @@ export function PlanCard({ plan, group, why, cta }: { plan: Plan; group: PlanGro
       data-convoai-target={`${group.id}-${plan.tier}`}
       className={cn(
         "relative row-span-13 grid grid-rows-subgrid gap-y-0 overflow-hidden rounded-2xl p-6",
-        dark
+        featured
           ? "bg-[linear-gradient(180deg,var(--color-brand-950)_0%,#040a1c_100%)] shadow-e5"
-          : "bg-canvas ring-1 ring-line",
+          : dark
+            ? "bg-[#141416] ring-1 ring-white/10"
+            : "bg-canvas ring-1 ring-line",
       )}
     >
-      {dark && (
+      {featured && (
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(80%_100%_at_50%_0%,rgb(0_0_255/0.5)_0%,transparent_70%)]"
@@ -132,9 +148,11 @@ export function PlanCard({ plan, group, why, cta }: { plan: Plan; group: PlanGro
         href={lh(orderUrl(group, plan, q.key))}
         className={cn(
           "relative mt-6 flex h-12 w-full items-center justify-center rounded-md text-body font-semibold transition-colors duration-fast focus-visible:outline-2 focus-visible:outline-offset-2",
-          dark
+          featured
             ? "bg-primary text-white hover:bg-primary-hover focus-visible:outline-white"
-            : "text-primary ring-1 ring-inset ring-primary hover:bg-primary-soft focus-visible:outline-primary",
+            : dark
+              ? "text-white ring-1 ring-inset ring-white/70 hover:bg-white/10 focus-visible:outline-white"
+              : "text-primary ring-1 ring-inset ring-primary hover:bg-primary-soft focus-visible:outline-primary",
         )}
       >
         {tx(cta)}
