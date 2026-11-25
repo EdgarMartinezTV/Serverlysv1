@@ -87,7 +87,7 @@ export const FAQS: readonly FaqItem[] = [
         type: "p",
         runs: [
           {
-            text: "First we ask your domain's own nameservers directly, skipping every cache, to get your current records. Then we ask DNS servers in more than 30 countries, run by internet providers and public DNS services, what they return for the same name, and compare. A server is live when its answer matches your current records. Nothing is stored, and you can share a check by copying the page address. Need your DNS hosted somewhere reliable? ",
+            text: "First we ask your domain's own nameservers directly, skipping every cache, to get your current records. Then we ask 28 DNS servers in 24 countries, run by internet providers and public DNS services, what they return for the same name, and compare. A server is live when its answer matches your current records. Nothing is stored, and you can share a check by copying the page address. Need your DNS hosted somewhere reliable? ",
           },
           { text: "See our hosting plans", href: "/hosting" },
           { text: "." },

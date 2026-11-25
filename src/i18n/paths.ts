@@ -15,6 +15,7 @@ export const ES_PATHS: ReadonlySet<string> = new Set([
   "/register-domain",
   "/transfer-domain",
   "/whois-lookup",
+  "/dns-propagation-checker",
   "/pricing",
   "/ai-agents",
   "/automations",

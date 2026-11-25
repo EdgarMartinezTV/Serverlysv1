@@ -7,6 +7,8 @@ import { World, type Marker, type MarkerTone, type View } from "./world";
 import type { CheckResult, Row, RowStatus } from "@/lib/dns/propagation";
 import { DNS_SERVERS } from "@/lib/dns/servers";
 import { RECORD_TYPES } from "@/lib/dns/types";
+import { tc } from "@/i18n/t";
+import { lh } from "@/i18n/href";
 
 /**
  * The DNS propagation checker — form, pinned summary bar, map, the table of
@@ -48,6 +50,20 @@ export const DOT = {
 } as const;
 const dotFor = (s: RowStatus) =>
   s === "live" ? DOT.live : s === "notLive" ? DOT.notLive : DOT.noAnswer;
+
+/**
+ * Translate a template with {named} slots, then fill the slots. Domains,
+ * record types and counts go in AFTER the lookup, so one dictionary entry
+ * ("{domain} isn't registered") covers every domain. English: identity.
+ * Call only while rendering (t() reads the dictionary from React context).
+ */
+function T(s: string, vars: Record<string, string | number> = {}) {
+  // Keys are namespaced ("dns|Live") so words like "Live" and "Answer" get the
+  // checker's meaning without changing how other pages translate them.
+  return tc("dns", s).replace(/\{(\w+)\}/g, (m, k: string) =>
+    k in vars ? String(vars[k]) : m,
+  );
+}
 
 export function formatTtl(s: number | null) {
   if (s === null) return "–";
@@ -234,7 +250,24 @@ export function Checker() {
       ? Math.max(0, Math.ceil((notice.retryAt - now) / 1000))
       : 0;
 
+  // Translated once per render, outside the memo: t() reads React context,
+  // which may not be called from inside useMemo.
+  const L = {
+    live: T("Live"),
+    notLive: T("Not live yet"),
+    noAnswer: T("No answer"),
+    checking: T("Checking…"),
+    waiting: T("Waiting for a check"),
+  };
+  const countryName: Record<string, string> = {};
+  for (const s of DNS_SERVERS) {
+    countryName[s.country] = T(s.country);
+    countryName[s.city] = T(s.city);
+  }
+  const labels = JSON.stringify([L, countryName]);
+
   const markers: Marker[] = useMemo(() => {
+    const [l, names] = JSON.parse(labels) as [typeof L, Record<string, string>];
     const byId = new Map(rows.map((r) => [r.id, r]));
     return DNS_SERVERS.map((s) => {
       const r = byId.get(s.id);
@@ -248,22 +281,22 @@ export function Checker() {
               : "noAnswer";
       const status = r
         ? r.status === "live"
-          ? "Live"
+          ? l.live
           : r.status === "notLive"
-            ? "Not live yet"
-            : "No answer"
+            ? l.notLive
+            : l.noAnswer
         : checking
-          ? "Checking…"
-          : "Waiting for a check";
+          ? l.checking
+          : l.waiting;
       return {
         id: s.id,
         lat: s.lat,
         lon: s.lon,
         tone,
-        label: `${s.city}, ${s.country}: ${status}`,
+        label: `${names[s.city]}, ${names[s.country]}: ${status}`,
       };
     });
-  }, [rows, checking]);
+  }, [rows, checking, labels]);
 
   const showSummary = Boolean(query) && (checking || result?.state === "completed");
 
@@ -279,11 +312,12 @@ export function Checker() {
             id="dns-hero-heading"
             className="text-[36px] leading-[44px] font-normal tracking-[-0.18px] text-[#18181a] md:text-[48px] md:leading-[56px] md:tracking-[-0.24px]"
           >
-            DNS checker
+            {T("DNS checker")}
           </h1>
           <p className="mt-4 max-w-[736px] text-[16px] leading-6 text-black/75">
-            See which DNS servers around the world already return your new records, and
-            which still have the old ones.
+            {T(
+              "See which DNS servers around the world already return your new records, and which still have the old ones.",
+            )}
           </p>
         </div>
 
@@ -294,14 +328,16 @@ export function Checker() {
           >
             <div>
               <p className="text-[16px] leading-6 font-semibold text-[#18181a]">
-                {notice.kind === "rateLimited"
-                  ? "You've run a lot of checks in a short time"
-                  : "We couldn't run the check"}
+                {T(
+                  notice.kind === "rateLimited"
+                    ? "You've run a lot of checks in a short time"
+                    : "We couldn't run the check",
+                )}
               </p>
               <p className="text-[14px] leading-5 text-black/75">
                 {notice.kind === "rateLimited"
-                  ? `Wait a minute and check again.${result ? " The results below are from your last check." : ""}`
-                  : "Something went wrong on our side. Try again in a minute."}
+                  ? `${T("Wait a minute and check again.")}${result ? ` ${T("The results below are from your last check.")}` : ""}`
+                  : T("Something went wrong on our side. Try again in a minute.")}
               </p>
             </div>
             {notice.kind === "failed" && query && (
@@ -310,7 +346,7 @@ export function Checker() {
                 onClick={() => void run(query.domain, query.type, !result)}
                 className="h-10 shrink-0 rounded-xl border border-black/15 bg-white px-4 text-[14px] font-semibold text-[#18181a] hover:bg-ink-50"
               >
-                Try again
+                {T("Try again")}
               </button>
             )}
           </div>
@@ -330,7 +366,7 @@ export function Checker() {
                 htmlFor="dns-domain"
                 className="block pl-0.5 text-[14px] leading-5 font-semibold text-[#18181a]"
               >
-                Domain or hostname
+                {T("Domain or hostname")}
               </label>
               <div
                 className={cn(
@@ -364,7 +400,7 @@ export function Checker() {
                   id="dns-domain-error"
                   className="mt-1.5 pl-0.5 text-[13px] leading-5 text-error"
                 >
-                  {fieldError}
+                  {T(fieldError)}
                 </p>
               )}
             </div>
@@ -374,7 +410,7 @@ export function Checker() {
                 htmlFor="dns-type"
                 className="block pl-0.5 text-[14px] leading-5 font-semibold text-[#18181a]"
               >
-                Record type
+                {T("Record type")}
               </label>
               <TypeSelect
                 id="dns-type"
@@ -388,14 +424,14 @@ export function Checker() {
               type="submit"
               disabled={checking || cooldown > 0}
               aria-busy={checking || undefined}
-              className="flex h-12 items-center justify-center rounded-xl bg-primary px-4 text-[16px] font-semibold text-white transition-colors hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-80 md:mt-7 md:w-[196px]"
+              className="flex h-12 items-center justify-center rounded-xl bg-primary px-4 text-[16px] font-semibold text-white transition-colors hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-80 md:mt-7 md:min-w-[196px] md:px-6 md:whitespace-nowrap"
             >
               {checking ? (
-                <Spinner className="size-5" label="Checking" />
+                <Spinner className="size-5" label={T("Checking")} />
               ) : cooldown > 0 ? (
-                `Check again in ${cooldown}s`
+                T("Check again in {s}s", { s: cooldown })
               ) : (
-                "Check propagation"
+                T("Check propagation")
               )}
             </button>
           </div>
@@ -404,7 +440,7 @@ export function Checker() {
 
       {/* ── Summary bar, map, results, records ────────────────────────── */}
       <section
-        aria-label="Results"
+        aria-label={T("Results")}
         className="bg-[#f5f5f6] px-4 pt-12 pb-12 md:px-10 md:pt-[136px] xl:px-20"
       >
         <div className="mx-auto max-w-[1440px]">
@@ -435,17 +471,17 @@ export function Checker() {
               <>
                 <ul
                   className="absolute top-0 left-0 z-10 flex flex-col gap-1 text-[14px] leading-5 text-[#18181a] md:text-[16px]"
-                  aria-label="Map legend"
+                  aria-label={T("Map legend")}
                 >
-                  <Legend color={DOT.live} label="Live" />
-                  <Legend color={DOT.notLive} label="Not live yet" />
-                  <Legend color={DOT.noAnswer} label="No answer" />
+                  <Legend color={DOT.live} label={T("Live")} />
+                  <Legend color={DOT.notLive} label={T("Not live yet")} />
+                  <Legend color={DOT.noAnswer} label={T("No answer")} />
                 </ul>
 
                 <div
                   className="absolute top-0 right-0 z-10 flex rounded-full bg-[#ebebef] p-1 text-[13px] font-semibold md:text-[14px]"
                   role="group"
-                  aria-label="Map view"
+                  aria-label={T("Map view")}
                 >
                   {(["globe", "map"] as const).map((v) => (
                     <button
@@ -465,7 +501,7 @@ export function Checker() {
                       ) : (
                         <PinIcon className="size-4" />
                       )}
-                      {v === "globe" ? "Globe" : "Flat map"}
+                      {T(v === "globe" ? "Globe" : "Flat map")}
                     </button>
                   ))}
                 </div>
@@ -591,42 +627,50 @@ function SummaryBar({
   const fresh = checking && !result;
 
   let headline: React.ReactNode;
-  if (fresh) headline = `Asking ${total} DNS servers…`;
-  else if (outcome === "noAnswers") headline = `None of the ${total} servers answered`;
+  if (fresh) headline = T("Asking {total} DNS servers…", { total });
+  else if (outcome === "noAnswers")
+    headline = T("None of the {total} servers answered", { total });
   else if (outcome === "allFailed")
-    headline = `All ${total} servers failed to look up this domain`;
+    headline = T("All {total} servers failed to look up this domain", { total });
   else if (outcome === "noRecords")
-    headline = `All ${total} servers agree there's no ${result?.type} record`;
+    headline = T("All {total} servers agree there's no {type} record", {
+      total,
+      type: result?.type ?? "",
+    });
   else if (outcome === "notPublished")
-    headline = `None of the ${total} servers can find this domain yet`;
-  else
+    headline = T("None of the {total} servers can find this domain yet", { total });
+  else {
+    // "{live} of {total} servers are live." with the first number in bold.
+    const [before, after] = T("{live} of {total} servers are live.", { total }).split(
+      "{live}",
+    );
     headline = (
       <>
-        <strong className="font-semibold">{counts.live}</strong> of {total} servers are
-        live.
+        {before}
+        <strong className="font-semibold">{counts.live}</strong>
+        {after}
       </>
     );
+  }
 
   const badge =
     fresh || !result ? null : everywhere ? (
       <span className="rounded-md bg-success-soft px-1.5 py-0.5 text-[13px] leading-4 font-semibold text-success">
-        Live everywhere
+        {T("Live everywhere")}
       </span>
     ) : outcome === "propagating" ? (
       <span className="rounded-md bg-ink-100 px-1.5 py-0.5 text-[13px] leading-4 font-semibold text-[#36344d]">
-        {percent}% propagated
+        {T("{percent}% propagated", { percent })}
       </span>
     ) : null;
 
   const status = checking
-    ? result
-      ? "Checking again…"
-      : "Checking now"
+    ? T(result ? "Checking again…" : "Checking now")
     : checkedAgo < 5
-      ? "Checked just now"
+      ? T("Checked just now")
       : checkedAgo < 60
-        ? `Checked ${checkedAgo}s ago`
-        : `Checked ${Math.floor(checkedAgo / 60)} min ago`;
+        ? T("Checked {s}s ago", { s: checkedAgo })
+        : T("Checked {m} min ago", { m: Math.floor(checkedAgo / 60) });
 
   const ordered = useMemo(
     () => [...rows].sort((a, b) => ORDER.indexOf(b.status) - ORDER.indexOf(a.status)),
@@ -656,7 +700,7 @@ function SummaryBar({
               <TypeSelect
                 value={type}
                 onChange={changeType}
-                label="Record type"
+                label={T("Record type")}
                 className="h-9 w-[110px] shrink-0 text-[14px] md:w-[150px]"
               />
             </div>
@@ -673,11 +717,14 @@ function SummaryBar({
             </div>
             <div
               role="meter"
-              aria-label="Servers returning the current records"
+              aria-label={T("Servers returning the current records")}
               aria-valuemin={0}
               aria-valuemax={total}
               aria-valuenow={counts.live}
-              aria-valuetext={`${counts.live} of ${total} servers are live`}
+              aria-valuetext={T("{live} of {total} servers are live", {
+                live: counts.live,
+                total,
+              })}
               className={cn(
                 "mt-2 flex flex-wrap",
                 stuck ? "gap-1.5" : "gap-1.5 md:gap-2",
@@ -695,7 +742,7 @@ function SummaryBar({
                     style={{ backgroundColor: r ? dotFor(r.status) : DOT.pending }}
                     title={
                       r
-                        ? `${r.city}, ${r.country}: ${STATUS_LABEL[r.status]}`
+                        ? `${T(r.city)}, ${T(r.country)}: ${T(STATUS_LABEL[r.status])}`
                         : undefined
                     }
                   />
@@ -709,7 +756,7 @@ function SummaryBar({
               type="button"
               role="switch"
               aria-checked={auto}
-              aria-label="Auto-refresh"
+              aria-label={T("Auto-refresh")}
               onClick={() => setAuto(!auto)}
               className={cn(
                 "relative h-6 w-10 shrink-0 rounded-full transition-colors",
@@ -727,14 +774,14 @@ function SummaryBar({
               aria-hidden
               className={cn("text-[16px]", auto ? "text-[#18181a]" : "text-black/50")}
             >
-              Auto-refresh
+              {T("Auto-refresh")}
               {auto && nextIn !== null && !checking && (
                 <span className="text-[13px] text-black/50"> · {nextIn}s</span>
               )}
             </span>
             <button
               type="button"
-              aria-label="How auto-refresh works"
+              aria-label={T("How auto-refresh works")}
               aria-expanded={info}
               onClick={() => setInfo(!info)}
               onBlur={() => setInfo(false)}
@@ -747,9 +794,9 @@ function SummaryBar({
                 role="tooltip"
                 className="absolute top-9 right-0 z-40 w-[300px] rounded-xl bg-ink-950 p-3 text-[13px] leading-5 text-white shadow-lg"
               >
-                While this page is open, every server is asked again 15 seconds after
-                each check, for up to 10 minutes. It stops once all servers return the
-                current record, and waits while this tab is in the background.
+                {T(
+                  "While this page is open, every server is asked again 15 seconds after each check, for up to 10 minutes. It stops once all servers return the current record, and waits while this tab is in the background.",
+                )}
               </p>
             )}
             <button
@@ -759,7 +806,7 @@ function SummaryBar({
               className="flex h-10 items-center gap-1.5 rounded-xl border border-black/15 bg-white px-4 text-[14px] font-semibold text-[#18181a] hover:bg-ink-50 disabled:opacity-50 md:ml-2"
             >
               <RefreshIcon className={cn("size-4", checking && "animate-spin")} />
-              Check again
+              {T("Check again")}
             </button>
           </div>
         </div>
@@ -813,14 +860,25 @@ function Results({
   }, [rows, sort]);
   const shown = filter === "all" ? sorted : sorted.filter((r) => r.status === filter);
 
-  let description =
-    "Enter a domain above to see what DNS servers around the world return.";
+  let description = T(
+    "Enter a domain above to see what DNS servers around the world return.",
+  );
   if (checking && !result && query)
-    description = `Asking DNS servers around the world for ${query.domain}'s ${query.type} records…`;
+    description = T(
+      "Asking DNS servers around the world for {domain}'s {type} records…",
+      {
+        domain: query.domain,
+        type: query.type,
+      },
+    );
   else if (result?.state === "completed")
-    description =
-      "Every server we asked, with its answer, how long it may keep it cached (TTL), and whether it's live.";
-  else if (result) description = `What we found when we looked up ${result.domain}.`;
+    description = T(
+      "Every server we asked, with its answer, how long it may keep it cached (TTL), and whether it's live.",
+    );
+  else if (result)
+    description = T("What we found when we looked up {domain}.", {
+      domain: result.domain,
+    });
 
   const toggleSort = (key: SortKey) =>
     setSort((s) =>
@@ -840,7 +898,7 @@ function Results({
       data-qa="dns-results"
     >
       <h2 className="text-[20px] leading-7 font-semibold tracking-[-0.1px] text-[#18181a] md:text-[24px] md:leading-8 md:tracking-[-0.12px]">
-        All DNS server responses
+        {T("All DNS server responses")}
       </h2>
       <p className="mt-1 flex items-center gap-2 text-[16px] leading-6 text-black/75">
         {checking && !result && <Spinner className="size-4 shrink-0" label="" />}
@@ -856,7 +914,7 @@ function Results({
           <div
             className="mt-6 flex flex-wrap items-center gap-2"
             role="group"
-            aria-label="Show servers"
+            aria-label={T("Show servers")}
           >
             {chips.map((f) => {
               const n = f === "all" ? total : counts[f];
@@ -877,7 +935,7 @@ function Results({
                   )}
                 >
                   {selected && <CheckIcon className="size-4" />}
-                  {f === "all" ? "All" : STATUS_LABEL[f]} {n}
+                  {T(f === "all" ? "All" : STATUS_LABEL[f])} {n}
                 </button>
               );
             })}
@@ -888,17 +946,17 @@ function Results({
               <thead className="max-md:sr-only">
                 <tr className="border-b border-black/10">
                   <SortHeader
-                    label="Location"
+                    label={T("Location")}
                     k="location"
                     sort={sort}
                     onSort={toggleSort}
                     className="w-[22%]"
                   />
                   <th scope="col" className="px-4 py-3 font-normal md:w-[33%]">
-                    Provider
+                    {T("Provider")}
                   </th>
                   <th scope="col" className="px-4 py-3 font-normal">
-                    Answer
+                    {T("Answer")}
                   </th>
                   <SortHeader
                     label="TTL"
@@ -909,7 +967,7 @@ function Results({
                     align="right"
                   />
                   <SortHeader
-                    label="Status"
+                    label={T("Status")}
                     k="status"
                     sort={sort}
                     onSort={toggleSort}
@@ -980,8 +1038,8 @@ function ResultRow({ row }: { row: Row }) {
         <span className="flex items-center gap-3">
           <Flag cc={row.cc} />
           <span className="leading-5">
-            <span className="block text-[16px]">{row.city}</span>
-            <span className="block text-[14px] text-black/60">{row.country}</span>
+            <span className="block text-[16px]">{T(row.city)}</span>
+            <span className="block text-[14px] text-black/60">{T(row.country)}</span>
           </span>
         </span>
       </td>
@@ -993,7 +1051,9 @@ function ResultRow({ row }: { row: Row }) {
           {row.provider}
           <button
             type="button"
-            aria-label={`Show the resolver IP for ${row.provider}`}
+            aria-label={T("Show the resolver IP for {provider}", {
+              provider: row.provider,
+            })}
             aria-expanded={tip}
             onClick={() => setTip(!tip)}
             onMouseEnter={() => setTip(true)}
@@ -1008,7 +1068,7 @@ function ResultRow({ row }: { row: Row }) {
               role="tooltip"
               className="absolute bottom-full left-0 z-20 mb-2 rounded-lg bg-ink-950 px-3 py-1.5 text-[13px] leading-5 whitespace-nowrap text-white shadow-lg"
             >
-              Resolver IP: {row.ip}
+              {T("Resolver IP: {ip}", { ip: row.ip })}
             </span>
           )}
         </span>
@@ -1027,19 +1087,21 @@ function ResultRow({ row }: { row: Row }) {
             ))}
             {row.status === "notLive" && (
               <span className="text-[13px] font-semibold text-black/60">
-                Records differ
+                {T("Records differ")}
               </span>
             )}
           </span>
         ) : (
           <span className="text-black/60">
-            {row.answer.kind === "noRecords"
-              ? "No records"
-              : row.answer.kind === "notFoundYet"
-                ? "Not found yet"
-                : row.answer.kind === "noResponse"
-                  ? "No response"
-                  : "Server error"}
+            {T(
+              row.answer.kind === "noRecords"
+                ? "No records"
+                : row.answer.kind === "notFoundYet"
+                  ? "Not found yet"
+                  : row.answer.kind === "noResponse"
+                    ? "No response"
+                    : "Server error",
+            )}
           </span>
         )}
       </td>
@@ -1074,7 +1136,7 @@ function StatusBadge({ status }: { status: RowStatus }) {
       ) : (
         <AlertIcon className="size-4" />
       )}
-      {STATUS_LABEL[status]}
+      {T(STATUS_LABEL[status])}
     </span>
   );
 }
@@ -1101,36 +1163,60 @@ function Strip({
 
   if (outcome === "noAnswers") {
     tone = "danger";
-    title = `We couldn't check ${domain} right now`;
-    body =
-      "None of the servers answered in time. This is usually a short-lived problem on our side or with the network, not with your domain. Try again in a minute.";
-    action = <StripButton onClick={() => recheck(domain, type)}>Try again</StripButton>;
+    title = T("We couldn't check {domain} right now", { domain });
+    body = T(
+      "None of the servers answered in time. This is usually a short-lived problem on our side or with the network, not with your domain. Try again in a minute.",
+    );
+    action = (
+      <StripButton onClick={() => recheck(domain, type)}>{T("Try again")}</StripButton>
+    );
   } else if (outcome === "allFailed") {
     tone = "danger";
-    title = `No server could look up ${domain}`;
-    body =
-      "Every server replied with an error. This usually means the domain's nameservers aren't working or its DNSSEC settings are wrong. Check them, then try again.";
-    action = <StripButton onClick={() => recheck(domain, type)}>Try again</StripButton>;
+    title = T("No server could look up {domain}", { domain });
+    body = T(
+      "Every server replied with an error. This usually means the domain's nameservers aren't working or its DNSSEC settings are wrong. Check them, then try again.",
+    );
+    action = (
+      <StripButton onClick={() => recheck(domain, type)}>{T("Try again")}</StripButton>
+    );
   } else if (outcome === "noRecords") {
     tone = "warning";
-    title = `None of the servers return ${type} records for ${domain}`;
+    title = T("None of the servers return {type} records for {domain}", {
+      type,
+      domain,
+    });
     if (type === "CNAME" && isRoot) {
-      body = `A root domain like ${domain} can't have a CNAME record. To see where it points, check its A records instead.`;
+      body = T(
+        "A root domain like {domain} can't have a CNAME record. To see where it points, check its A records instead.",
+        { domain },
+      );
       action = (
-        <StripButton onClick={() => recheck(domain, "A")}>Check A records</StripButton>
+        <StripButton onClick={() => recheck(domain, "A")}>
+          {T("Check A records")}
+        </StripButton>
       );
     } else if (type === "SRV" && !domain.startsWith("_")) {
-      body = `SRV records sit on a service name, like _sip._tcp.${domain}, not on the domain itself. Check that name instead.`;
+      body = T(
+        "SRV records sit on a service name, like _sip._tcp.{domain}, not on the domain itself. Check that name instead.",
+        { domain },
+      );
     } else if (type === "NS" && !isRoot) {
-      body = `NS records list a domain's nameservers and sit on the domain itself, not on a name inside it like ${domain}. Check the domain instead.`;
+      body = T(
+        "NS records list a domain's nameservers and sit on the domain itself, not on a name inside it like {domain}. Check the domain instead.",
+        { domain },
+      );
     } else {
-      body = `If you expected ${type} records, check that they're added in ${domain}'s DNS settings and that the domain uses the nameservers where you added them.`;
+      body = T(
+        "If you expected {type} records, check that they're added in {domain}'s DNS settings and that the domain uses the nameservers where you added them.",
+        { type, domain },
+      );
     }
   } else if (outcome === "notPublished") {
     tone = "warning";
-    title = `${domain} is registered, but isn't live yet`;
-    body =
-      "No server can find it yet. A newly registered domain usually shows up within a few minutes, sometimes a few hours. If it's older, it may be suspended or have no nameservers set, so check with the company you registered it with.";
+    title = T("{domain} is registered, but isn't live yet", { domain });
+    body = T(
+      "No server can find it yet. A newly registered domain usually shows up within a few minutes, sometimes a few hours. If it's older, it may be suspended or have no nameservers set, so check with the company you registered it with.",
+    );
   } else if (summary.counts.notLive > 0) {
     const longest = Math.max(
       0,
@@ -1139,24 +1225,37 @@ function Strip({
     const left = longest - checkedAgo;
     if (left <= -60) {
       tone = "warning";
-      title = "Some servers are taking longer than expected";
-      body =
-        "This is normal, and can happen if your nameservers changed recently or when a server keeps its copy for longer than its TTL. Most catch up within a few hours, and nameserver changes can take up to 48 hours.";
+      title = T("Some servers are taking longer than expected");
+      body = T(
+        "This is normal, and can happen if your nameservers changed recently or when a server keeps its copy for longer than its TTL. Most catch up within a few hours, and nameserver changes can take up to 48 hours.",
+      );
     } else if (left > 0) {
+      const [before, after] = T(
+        "Servers that aren't live yet should all catch up when their cached copy expires, within {about}.",
+      ).split("{about}");
       title = (
         <>
-          Servers that aren&apos;t live yet should all catch up when their cached copy
-          expires, within{" "}
-          <strong className="font-semibold">about {formatDuration(left)}</strong>.
+          {before}
+          <strong className="font-semibold">
+            {T("about {duration}", { duration: formatDuration(left) })}
+          </strong>
+          {after}
         </>
       );
     } else {
-      title =
-        "Servers that aren't live yet should catch up any moment now, as their cached copy has expired.";
+      title = T(
+        "Servers that aren't live yet should catch up any moment now, as their cached copy has expired.",
+      );
     }
   } else if (current?.dynamic) {
-    title = `${domain} gives different answers depending on where and when it's asked`;
-    body = `Large sites and CDNs send each visitor to a nearby server, so their ${type} records vary by location. Any server that returns ${type} records for ${domain} is counted as live.`;
+    title = T(
+      "{domain} gives different answers depending on where and when it's asked",
+      { domain },
+    );
+    body = T(
+      "Large sites and CDNs send each visitor to a nearby server, so their {type} records vary by location. Any server that returns {type} records for {domain} is counted as live.",
+      { type, domain },
+    );
   }
 
   if (!title) return null;
@@ -1207,18 +1306,24 @@ function StateCard({ result }: { result: CheckResult }) {
   const registrable = domain.split(".").slice(-2).join(".");
   const copy = {
     notFound: {
-      title: `We couldn't find ${domain}`,
-      body: "Check the spelling. If it's right, the domain may not be registered yet, so it could be available. Just registered it? Give it a few minutes to show up.",
+      title: T("We couldn't find {domain}", { domain }),
+      body: T(
+        "Check the spelling. If it's right, the domain may not be registered yet, so it could be available. Just registered it? Give it a few minutes to show up.",
+      ),
       cta: true,
     },
     notRegistered: {
-      title: `${domain} isn't registered`,
-      body: "No owner, no records, just potential. Check its availability and make it yours.",
+      title: T("{domain} isn't registered", { domain }),
+      body: T(
+        "No owner, no records, just potential. Check its availability and make it yours.",
+      ),
       cta: true,
     },
     noNameservers: {
-      title: `${domain}'s nameservers aren't answering`,
-      body: "Its nameservers are missing or not responding, so we can't tell what its current records are, and visitors can't reach it. Check the nameservers where you registered the domain. If you just changed them, it can take up to 24 hours.",
+      title: T("{domain}'s nameservers aren't answering", { domain }),
+      body: T(
+        "Its nameservers are missing or not responding, so we can't tell what its current records are, and visitors can't reach it. Check the nameservers where you registered the domain. If you just changed them, it can take up to 24 hours.",
+      ),
       cta: false,
     },
     completed: { title: "", body: "", cta: false },
@@ -1235,10 +1340,10 @@ function StateCard({ result }: { result: CheckResult }) {
       </div>
       {copy.cta && (
         <Link
-          href={`/domain-name-results?domain=${encodeURIComponent(state === "notRegistered" ? registrable : domain)}`}
+          href={`${lh("/domain-name-results")}?domain=${encodeURIComponent(state === "notRegistered" ? registrable : domain)}`}
           className="inline-flex h-12 shrink-0 items-center rounded-xl bg-primary px-6 text-[16px] font-semibold text-white hover:bg-primary-hover"
         >
-          Check availability
+          {T("Check availability")}
         </Link>
       )}
     </div>
@@ -1276,24 +1381,40 @@ function CurrentRecords({ result }: { result: CheckResult }) {
   return (
     <div className="mt-6 rounded-3xl border border-black/10 bg-white p-6 md:p-8">
       <h2 className="text-[20px] leading-7 font-semibold tracking-[-0.1px] text-[#18181a] md:text-[24px] md:leading-8 md:tracking-[-0.12px]">
-        Your current records
+        {T("Your current records")}
       </h2>
       <p className="mt-1 text-[16px] leading-6 text-black/75">
         {current.cname
-          ? `${result.domain} is a CNAME to ${current.cname}, so a server is live when it follows it there.`
-          : `What ${result.domain}'s nameservers return right now. A server is live when it returns exactly these.`}
+          ? T(
+              "{domain} is a CNAME to {target}, so a server is live when it follows it there.",
+              {
+                domain: result.domain,
+                target: current.cname,
+              },
+            )
+          : T(
+              "What {domain}'s nameservers return right now. A server is live when it returns exactly these.",
+              { domain: result.domain },
+            )}
       </p>
 
       {n === 0 ? (
-        <p className="mt-4 text-[16px] text-black/60">{`${result.domain}'s nameservers return no ${result.type} records.`}</p>
+        <p className="mt-4 text-[16px] text-black/60">
+          {T("{domain}'s nameservers return no {type} records.", {
+            domain: result.domain,
+            type: result.type,
+          })}
+        </p>
       ) : (
         <>
           <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
             <p className="text-[14px] leading-5 text-black/75">
               <strong className="font-semibold text-[#18181a]">
-                {n === 1 ? `1 ${label} record` : `${n} ${label} records`}
+                {n === 1
+                  ? T("1 {type} record", { type: label })
+                  : T("{n} {type} records", { n, type: label })}
               </strong>
-              {from && <> · from {from}</>}
+              {from && <> · {T("from {servers}", { servers: from })}</>}
               {ttl !== null && <> · TTL {formatTtl(ttl)}</>}
             </p>
             <button
@@ -1304,14 +1425,14 @@ function CurrentRecords({ result }: { result: CheckResult }) {
               className="flex h-9 items-center gap-1.5 rounded-xl border border-black/15 px-3 text-[14px] font-semibold text-[#18181a] hover:bg-ink-50"
             >
               <CopyIcon className="size-4" />
-              {copied === "all" ? "Copied" : "Copy all"}
+              {T(copied === "all" ? "Copied" : "Copy all")}
             </button>
           </div>
           {n > 5 && (
             <input
               type="search"
-              aria-label="Filter records"
-              placeholder="Filter records, e.g. google"
+              aria-label={T("Filter records")}
+              placeholder={T("Filter records, e.g. google")}
               value={q}
               onChange={(e) => setQ(e.target.value)}
               className="mt-4 h-10 w-full rounded-xl border border-black/15 px-3 text-[14px] outline-none focus:border-primary focus:ring-1 focus:ring-primary md:max-w-[320px]"
@@ -1328,7 +1449,7 @@ function CurrentRecords({ result }: { result: CheckResult }) {
                 </span>
                 <button
                   type="button"
-                  aria-label={`Copy ${label} record`}
+                  aria-label={T("Copy {type} record", { type: label })}
                   onClick={() => copy(r.value, r.value)}
                   className="shrink-0 text-[#36344d] hover:text-[#18181a]"
                 >
@@ -1342,7 +1463,7 @@ function CurrentRecords({ result }: { result: CheckResult }) {
             ))}
             {list.length === 0 && (
               <li className="px-4 py-3 text-[14px] text-black/60">
-                No records match “{q}”.
+                {T("No records match “{q}”.", { q })}
               </li>
             )}
           </ul>
@@ -1352,7 +1473,7 @@ function CurrentRecords({ result }: { result: CheckResult }) {
               onClick={() => setAll(!all)}
               className="mt-3 text-[14px] font-semibold text-primary hover:underline"
             >
-              {all ? "Show fewer" : `Show all ${list.length} records`}
+              {all ? T("Show fewer") : T("Show all {n} records", { n: list.length })}
             </button>
           )}
         </>
