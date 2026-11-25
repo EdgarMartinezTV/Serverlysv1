@@ -9,14 +9,18 @@ import { DNS_SERVERS } from "@/lib/dns/servers";
 import { RECORD_TYPES } from "@/lib/dns/types";
 
 /**
- * The DNS propagation checker — form, map, summary, current records and the
- * table of every server's answer. Layout and behaviour follow
- * hostinger.com/dns-propagation-checker; the checking itself is ours, in
- * /api/dns/propagation (lib/dns/propagation.ts).
+ * The DNS propagation checker — form, pinned summary bar, map, the table of
+ * every server's answer, and the current records. Layout and behaviour were
+ * taken from hostinger.com/dns-propagation-checker as it renders a real check
+ * in a real browser (2026-11-24): summary bar pinned under the header with
+ * one dot per server, legend + Globe/Flat map over the globe, filter chips,
+ * a sortable bordered table showing every server, and "Your current records"
+ * as its own card below. The checking itself is ours, in /api/dns/propagation.
  *
- * Auto-refresh: while the page is open, a check that still has servers "not
- * live yet" is repeated 15 seconds after it finishes, for up to 10 minutes. It
- * stops when every server is live and pauses while the tab is hidden.
+ * Auto-refresh (off by default, as on the reference): while the page is open,
+ * a check that still has servers "not live yet" is repeated 15 seconds after
+ * it finishes, for up to 10 minutes. It stops when every server is live and
+ * pauses while the tab is hidden.
  */
 
 const REFRESH_EVERY = 15;
@@ -25,6 +29,7 @@ const CLIENT_HOST = /^([a-z0-9_-]{1,63}\.)+[a-z][a-z0-9-]{1,62}$/;
 
 type Notice = { kind: "rateLimited" | "failed"; retryAt?: number } | null;
 type Filter = "all" | RowStatus;
+type SortKey = "location" | "ttl" | "status";
 
 const STATUS_LABEL: Record<RowStatus, string> = {
   live: "Live",
@@ -33,12 +38,16 @@ const STATUS_LABEL: Record<RowStatus, string> = {
   failed: "Failed",
 };
 const ORDER: RowStatus[] = ["notLive", "failed", "timedOut", "live"];
-/** Rows shown before "Show all": the ones that need attention sort first. */
-const PAGE = 12;
 
-function flag(cc: string) {
-  return cc.toUpperCase().replace(/./g, (c) => String.fromCodePoint(127397 + c.charCodeAt(0)));
-}
+/** Colours shared by the summary dots, the map markers and the legend. */
+export const DOT = {
+  live: "#009e5b",
+  notLive: "#a1a1aa",
+  noAnswer: "#d12c35",
+  pending: "#dedee2",
+} as const;
+const dotFor = (s: RowStatus) =>
+  s === "live" ? DOT.live : s === "notLive" ? DOT.notLive : DOT.noAnswer;
 
 export function formatTtl(s: number | null) {
   if (s === null) return "–";
@@ -65,6 +74,23 @@ function cleanInput(raw: string) {
     .replace(/\.+$/, "");
 }
 
+function Flag({ cc, className }: { cc: string; className?: string }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element -- 20px static icons; next/image adds nothing here
+    <img
+      src={`/flags/${cc.toLowerCase()}.png`}
+      alt=""
+      width={20}
+      height={20}
+      loading="lazy"
+      className={cn(
+        "size-5 shrink-0 rounded-full object-cover ring-1 ring-black/5",
+        className,
+      )}
+    />
+  );
+}
+
 export function Checker() {
   const [input, setInput] = useState("");
   const [type, setType] = useState<string>("A");
@@ -75,7 +101,7 @@ export function Checker() {
   const [notice, setNotice] = useState<Notice>(null);
   const [filter, setFilter] = useState<Filter>("all");
   const [view, setView] = useState<View>("globe");
-  const [auto, setAuto] = useState(true);
+  const [auto, setAuto] = useState(false);
   const [now, setNow] = useState(() => Date.now());
   const [nextAt, setNextAt] = useState<number | null>(null);
   const started = useRef<number>(0);
@@ -88,39 +114,48 @@ export function Checker() {
     return () => window.clearInterval(id);
   }, []);
 
-  const run = useCallback(async (domain: string, recordType: string, fresh: boolean) => {
-    const my = ++seq.current;
-    setChecking(true);
-    setNotice(null);
-    setNextAt(null);
-    setQuery({ domain, type: recordType });
-    if (fresh) {
-      setResult(null);
-      setFilter("all");
-      started.current = Date.now();
-    }
-    try {
-      const res = await fetch(`/api/dns/propagation?domain=${encodeURIComponent(domain)}&type=${recordType}`, {
-        cache: "no-store",
-      });
-      const body = await res.json().catch(() => null);
-      if (my !== seq.current) return;
-      if (res.status === 429) {
-        setNotice({ kind: "rateLimited", retryAt: Date.now() + (Number(body?.retryAfter) || 60) * 1000 });
-      } else if (res.status === 400) {
-        setFieldError(body?.reason ?? "Enter a valid domain, like example.com");
-        setQuery(null);
-      } else if (!res.ok || !body?.ok) {
-        setNotice({ kind: "failed" });
-      } else {
-        setResult(body.result as CheckResult);
+  const run = useCallback(
+    async (domain: string, recordType: string, fresh: boolean) => {
+      const my = ++seq.current;
+      setChecking(true);
+      setNotice(null);
+      setNextAt(null);
+      setQuery({ domain, type: recordType });
+      if (fresh) {
+        setResult(null);
+        setFilter("all");
+        started.current = Date.now();
       }
-    } catch {
-      if (my === seq.current) setNotice({ kind: "failed" });
-    } finally {
-      if (my === seq.current) setChecking(false);
-    }
-  }, []);
+      try {
+        const res = await fetch(
+          `/api/dns/propagation?domain=${encodeURIComponent(domain)}&type=${recordType}`,
+          {
+            cache: "no-store",
+          },
+        );
+        const body = await res.json().catch(() => null);
+        if (my !== seq.current) return;
+        if (res.status === 429) {
+          setNotice({
+            kind: "rateLimited",
+            retryAt: Date.now() + (Number(body?.retryAfter) || 60) * 1000,
+          });
+        } else if (res.status === 400) {
+          setFieldError(body?.reason ?? "Enter a valid domain, like example.com");
+          setQuery(null);
+        } else if (!res.ok || !body?.ok) {
+          setNotice({ kind: "failed" });
+        } else {
+          setResult(body.result as CheckResult);
+        }
+      } catch {
+        if (my === seq.current) setNotice({ kind: "failed" });
+      } finally {
+        if (my === seq.current) setChecking(false);
+      }
+    },
+    [],
+  );
 
   const submit = useCallback(
     (raw: string, recordType: string) => {
@@ -160,7 +195,10 @@ export function Checker() {
   }, [submit]);
 
   /* ── Auto-refresh ─────────────────────────────────────────────────────── */
-  const pending = result?.state === "completed" && result.summary.outcome === "propagating" && result.summary.counts.notLive > 0;
+  const pending =
+    result?.state === "completed" &&
+    result.summary.outcome === "propagating" &&
+    result.summary.counts.notLive > 0;
   useEffect(() => {
     if (!auto || checking || !pending || !query) return;
     if (Date.now() - started.current > REFRESH_FOR * 1000) return;
@@ -177,29 +215,65 @@ export function Checker() {
   }, [auto, checking, pending, query, run, result]);
 
   /* ── Derived ──────────────────────────────────────────────────────────── */
-  const rows = useMemo(() => (result?.state === "completed" ? result.rows : []), [result]);
-  const counts = result?.summary.counts ?? { live: 0, notLive: 0, timedOut: 0, failed: 0 };
+  const rows = useMemo(
+    () => (result?.state === "completed" ? result.rows : []),
+    [result],
+  );
+  const counts = result?.summary.counts ?? {
+    live: 0,
+    notLive: 0,
+    timedOut: 0,
+    failed: 0,
+  };
   const total = result?.summary.total ?? DNS_SERVERS.length;
-  const checkedAgo = result ? Math.max(0, Math.floor((now - Date.parse(result.checkedAt)) / 1000)) : 0;
-  const cooldown = notice?.kind === "rateLimited" && notice.retryAt ? Math.max(0, Math.ceil((notice.retryAt - now) / 1000)) : 0;
+  const checkedAgo = result
+    ? Math.max(0, Math.floor((now - Date.parse(result.checkedAt)) / 1000))
+    : 0;
+  const cooldown =
+    notice?.kind === "rateLimited" && notice.retryAt
+      ? Math.max(0, Math.ceil((notice.retryAt - now) / 1000))
+      : 0;
 
   const markers: Marker[] = useMemo(() => {
     const byId = new Map(rows.map((r) => [r.id, r]));
     return DNS_SERVERS.map((s) => {
       const r = byId.get(s.id);
       let tone: MarkerTone = checking && !r ? "checking" : "idle";
-      if (r) tone = r.status === "live" ? "live" : r.status === "notLive" ? "notLive" : "noAnswer";
-      const status = r ? (r.status === "live" ? "Live" : r.status === "notLive" ? "Not live yet" : "No answer") : checking ? "Checking…" : "Waiting for a check";
-      return { id: s.id, lat: s.lat, lon: s.lon, tone, label: `${s.city}, ${s.country}: ${status}` };
+      if (r)
+        tone =
+          r.status === "live"
+            ? "live"
+            : r.status === "notLive"
+              ? "notLive"
+              : "noAnswer";
+      const status = r
+        ? r.status === "live"
+          ? "Live"
+          : r.status === "notLive"
+            ? "Not live yet"
+            : "No answer"
+        : checking
+          ? "Checking…"
+          : "Waiting for a check";
+      return {
+        id: s.id,
+        lat: s.lat,
+        lon: s.lon,
+        tone,
+        label: `${s.city}, ${s.country}: ${status}`,
+      };
     });
   }, [rows, checking]);
 
-  const showSummary = Boolean(result?.state === "completed") || (checking && !!query);
+  const showSummary = Boolean(query) && (checking || result?.state === "completed");
 
   return (
     <>
       {/* ── Hero + form ───────────────────────────────────────────────── */}
-      <section aria-labelledby="dns-hero-heading" className="bg-[#f5f5f6] px-4 pt-[72px] md:px-10 md:pt-[96px]">
+      <section
+        aria-labelledby="dns-hero-heading"
+        className="bg-[#f5f5f6] px-4 pt-[72px] md:px-10 md:pt-[96px]"
+      >
         <div className="mx-auto flex max-w-[880px] flex-col items-center text-center">
           <h1
             id="dns-hero-heading"
@@ -208,7 +282,8 @@ export function Checker() {
             DNS checker
           </h1>
           <p className="mt-4 max-w-[736px] text-[16px] leading-6 text-black/75">
-            See which DNS servers around the world already return your new records, and which still have the old ones.
+            See which DNS servers around the world already return your new records, and
+            which still have the old ones.
           </p>
         </div>
 
@@ -219,7 +294,9 @@ export function Checker() {
           >
             <div>
               <p className="text-[16px] leading-6 font-semibold text-[#18181a]">
-                {notice.kind === "rateLimited" ? "You've run a lot of checks in a short time" : "We couldn't run the check"}
+                {notice.kind === "rateLimited"
+                  ? "You've run a lot of checks in a short time"
+                  : "We couldn't run the check"}
               </p>
               <p className="text-[14px] leading-5 text-black/75">
                 {notice.kind === "rateLimited"
@@ -245,11 +322,14 @@ export function Checker() {
             e.preventDefault();
             if (!cooldown) submit(input, type);
           }}
-          className="mx-auto mt-12 max-w-[880px] rounded-3xl border border-black/10 bg-white p-6 text-left shadow-[0_2px_6px_rgba(0,0,0,0.1)] md:mt-[48px]"
+          className="mx-auto mt-12 max-w-[880px] rounded-3xl border border-black/10 bg-white p-6 text-left shadow-[0_2px_6px_rgba(0,0,0,0.1)]"
         >
           <div className="flex flex-col gap-4 md:flex-row md:items-start md:gap-3">
             <div className="min-w-0 flex-1">
-              <label htmlFor="dns-domain" className="block pl-0.5 text-[14px] leading-5 font-semibold text-[#18181a]">
+              <label
+                htmlFor="dns-domain"
+                className="block pl-0.5 text-[14px] leading-5 font-semibold text-[#18181a]"
+              >
                 Domain or hostname
               </label>
               <div
@@ -280,31 +360,28 @@ export function Checker() {
                 />
               </div>
               {fieldError && (
-                <p id="dns-domain-error" className="mt-1.5 pl-0.5 text-[13px] leading-5 text-error">
+                <p
+                  id="dns-domain-error"
+                  className="mt-1.5 pl-0.5 text-[13px] leading-5 text-error"
+                >
                   {fieldError}
                 </p>
               )}
             </div>
 
             <div className="md:w-[160px]">
-              <label htmlFor="dns-type" className="block pl-0.5 text-[14px] leading-5 font-semibold text-[#18181a]">
+              <label
+                htmlFor="dns-type"
+                className="block pl-0.5 text-[14px] leading-5 font-semibold text-[#18181a]"
+              >
                 Record type
               </label>
-              <div className="relative mt-2">
-                <select
-                  id="dns-type"
-                  value={type}
-                  onChange={(e) => setType(e.target.value)}
-                  className="h-12 w-full appearance-none rounded-xl border border-black/15 bg-white pr-10 pl-4 text-[14px] text-[#18181a] outline-none focus:border-primary focus:ring-1 focus:ring-primary"
-                >
-                  {RECORD_TYPES.map((t) => (
-                    <option key={t} value={t}>
-                      {t}
-                    </option>
-                  ))}
-                </select>
-                <Chevron className="pointer-events-none absolute top-1/2 right-4 size-4 -translate-y-1/2 text-[#18181a]" />
-              </div>
+              <TypeSelect
+                id="dns-type"
+                value={type}
+                onChange={setType}
+                className="mt-2 h-12 text-[14px]"
+              />
             </div>
 
             <button
@@ -313,57 +390,89 @@ export function Checker() {
               aria-busy={checking || undefined}
               className="flex h-12 items-center justify-center rounded-xl bg-primary px-4 text-[16px] font-semibold text-white transition-colors hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-80 md:mt-7 md:w-[196px]"
             >
-              {checking ? <Spinner className="size-5" label="Checking" /> : cooldown > 0 ? `Check again in ${cooldown}s` : "Check propagation"}
+              {checking ? (
+                <Spinner className="size-5" label="Checking" />
+              ) : cooldown > 0 ? (
+                `Check again in ${cooldown}s`
+              ) : (
+                "Check propagation"
+              )}
             </button>
           </div>
         </form>
       </section>
 
-      {/* ── Map stage + results ───────────────────────────────────────── */}
-      <section aria-label="Results" className="bg-[#f5f5f6] px-4 pt-8 pb-12 md:px-10 md:pt-12 xl:px-20">
-        <div className="mx-auto max-w-[1280px]">
-          <div className="relative">
-            <World markers={markers} view={view} />
+      {/* ── Summary bar, map, results, records ────────────────────────── */}
+      <section
+        aria-label="Results"
+        className="bg-[#f5f5f6] px-4 pt-12 pb-12 md:px-10 md:pt-[136px] xl:px-20"
+      >
+        <div className="mx-auto max-w-[1440px]">
+          {showSummary && query && (
+            <SummaryBar
+              domain={result?.domain ?? query.domain}
+              type={query.type}
+              result={result}
+              checking={checking}
+              total={total}
+              counts={counts}
+              rows={rows}
+              checkedAgo={checkedAgo}
+              auto={auto}
+              setAuto={setAuto}
+              nextIn={nextAt ? Math.max(0, Math.ceil((nextAt - now) / 1000)) : null}
+              disabled={checking || cooldown > 0}
+              recheck={() => void run(query.domain, query.type, false)}
+              changeType={(t) => {
+                setType(t);
+                submit(query.domain, t);
+              }}
+            />
+          )}
 
-            <div className="absolute top-0 right-0 flex rounded-full border border-black/10 bg-white p-1 text-[13px] font-semibold shadow-sm" role="group" aria-label="Map view">
-              {(["globe", "map"] as const).map((v) => (
-                <button
-                  key={v}
-                  type="button"
-                  aria-pressed={view === v}
-                  onClick={() => setView(v)}
-                  className={cn(
-                    "rounded-full px-3 py-1 transition-colors",
-                    view === v ? "bg-[#18181a] text-white" : "text-[#36344d] hover:bg-ink-100",
-                  )}
-                >
-                  {v === "globe" ? "Globe" : "Flat map"}
-                </button>
-              ))}
-            </div>
-
-            {result?.state === "completed" && (
-              <ul className="absolute bottom-3 left-0 hidden gap-4 text-[13px] text-[#36344d] sm:flex" aria-label="Map legend">
-                <Legend color="bg-[#009e5b]" label="Live" />
-                <Legend color="bg-[#e69800]" label="Not live yet" />
-                <Legend color="bg-[#9d9ea4]" label="No answer" />
-              </ul>
-            )}
-
+          <div className={cn("relative", showSummary && "mt-8 md:mt-12")}>
             {showSummary && (
-              <Summary
-                result={result}
-                checking={checking}
-                total={total}
-                counts={counts}
-                checkedAgo={checkedAgo}
-                auto={auto}
-                setAuto={setAuto}
-                nextIn={nextAt ? Math.max(0, Math.ceil((nextAt - now) / 1000)) : null}
-                recheck={() => query && void run(query.domain, query.type, false)}
-                disabled={checking || cooldown > 0}
-              />
+              <>
+                <ul
+                  className="absolute top-0 left-0 z-10 flex flex-col gap-1 text-[14px] leading-5 text-[#18181a] md:text-[16px]"
+                  aria-label="Map legend"
+                >
+                  <Legend color={DOT.live} label="Live" />
+                  <Legend color={DOT.notLive} label="Not live yet" />
+                  <Legend color={DOT.noAnswer} label="No answer" />
+                </ul>
+
+                <div
+                  className="absolute top-0 right-0 z-10 flex rounded-full bg-[#ebebef] p-1 text-[13px] font-semibold md:text-[14px]"
+                  role="group"
+                  aria-label="Map view"
+                >
+                  {(["globe", "map"] as const).map((v) => (
+                    <button
+                      key={v}
+                      type="button"
+                      aria-pressed={view === v}
+                      onClick={() => setView(v)}
+                      className={cn(
+                        "flex items-center gap-1.5 rounded-full px-3 py-1 transition-colors",
+                        view === v
+                          ? "bg-white text-[#18181a] shadow-sm"
+                          : "text-[#36344d] hover:text-[#18181a]",
+                      )}
+                    >
+                      {v === "globe" ? (
+                        <GlobeIcon className="size-4" />
+                      ) : (
+                        <PinIcon className="size-4" />
+                      )}
+                      {v === "globe" ? "Globe" : "Flat map"}
+                    </button>
+                  ))}
+                </div>
+              </>
             )}
+
+            <World markers={markers} view={view} />
           </div>
 
           <Results
@@ -382,55 +491,132 @@ export function Checker() {
               submit(d, t);
             }}
           />
+
+          {result?.state === "completed" && result.current && (
+            <CurrentRecords result={result} />
+          )}
         </div>
       </section>
     </>
   );
 }
 
-/* ── Summary (pinned over the map) ───────────────────────────────────────── */
+/* ── Record type select (form + summary bar) ─────────────────────────────── */
 
-function Summary({
+function TypeSelect({
+  id,
+  value,
+  onChange,
+  className,
+  label,
+}: {
+  id?: string;
+  value: string;
+  onChange: (v: string) => void;
+  className?: string;
+  label?: string;
+}) {
+  return (
+    <div className={cn("relative", className)}>
+      <select
+        id={id}
+        aria-label={label}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="h-full w-full appearance-none rounded-xl border border-black/15 bg-white pr-10 pl-4 text-[#18181a] outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+      >
+        {RECORD_TYPES.map((t) => (
+          <option key={t} value={t}>
+            {t}
+          </option>
+        ))}
+      </select>
+      <Chevron className="pointer-events-none absolute top-1/2 right-4 size-4 -translate-y-1/2 text-[#18181a]" />
+    </div>
+  );
+}
+
+/* ── Summary bar (pinned under the header) ───────────────────────────────── */
+
+function SummaryBar({
+  domain,
+  type,
   result,
   checking,
   total,
   counts,
+  rows,
   checkedAgo,
   auto,
   setAuto,
   nextIn,
-  recheck,
   disabled,
+  recheck,
+  changeType,
 }: {
+  domain: string;
+  type: string;
   result: CheckResult | null;
   checking: boolean;
   total: number;
   counts: Record<RowStatus, number>;
+  rows: Row[];
   checkedAgo: number;
   auto: boolean;
   setAuto: (v: boolean) => void;
   nextIn: number | null;
-  recheck: () => void;
   disabled: boolean;
+  recheck: () => void;
+  changeType: (t: string) => void;
 }) {
   const [info, setInfo] = useState(false);
+  const [stuck, setStuck] = useState(false);
+  const sentinel = useRef<HTMLDivElement>(null);
+
+  // Compact the dots once the bar is pinned, as the reference does.
+  useEffect(() => {
+    const el = sentinel.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => setStuck(!e.isIntersecting), {
+      rootMargin: "-85px 0px 0px 0px",
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   const outcome = result?.summary.outcome ?? null;
   const percent = total ? Math.round((counts.live / total) * 100) : 0;
-  const everywhere = counts.notLive === 0 && counts.live > 0 && outcome === "propagating";
+  const everywhere =
+    counts.notLive === 0 && counts.live > 0 && outcome === "propagating";
+  const fresh = checking && !result;
 
   let headline: React.ReactNode;
-  if (!result) headline = `Asking ${total} DNS servers…`;
+  if (fresh) headline = `Asking ${total} DNS servers…`;
   else if (outcome === "noAnswers") headline = `None of the ${total} servers answered`;
-  else if (outcome === "allFailed") headline = `All ${total} servers failed to look up this domain`;
-  else if (outcome === "noRecords") headline = `All ${total} servers agree there's no ${result.type} record`;
-  else if (outcome === "notPublished") headline = `None of the ${total} servers can find this domain yet`;
-  else if (everywhere) headline = "Live everywhere";
+  else if (outcome === "allFailed")
+    headline = `All ${total} servers failed to look up this domain`;
+  else if (outcome === "noRecords")
+    headline = `All ${total} servers agree there's no ${result?.type} record`;
+  else if (outcome === "notPublished")
+    headline = `None of the ${total} servers can find this domain yet`;
   else
     headline = (
       <>
-        <strong className="font-semibold">{counts.live}</strong> of {total} servers are live.
+        <strong className="font-semibold">{counts.live}</strong> of {total} servers are
+        live.
       </>
     );
+
+  const badge =
+    fresh || !result ? null : everywhere ? (
+      <span className="rounded-md bg-success-soft px-1.5 py-0.5 text-[13px] leading-4 font-semibold text-success">
+        Live everywhere
+      </span>
+    ) : outcome === "propagating" ? (
+      <span className="rounded-md bg-ink-100 px-1.5 py-0.5 text-[13px] leading-4 font-semibold text-[#36344d]">
+        {percent}% propagated
+      </span>
+    ) : null;
 
   const status = checking
     ? result
@@ -442,81 +628,143 @@ function Summary({
         ? `Checked ${checkedAgo}s ago`
         : `Checked ${Math.floor(checkedAgo / 60)} min ago`;
 
+  const ordered = useMemo(
+    () => [...rows].sort((a, b) => ORDER.indexOf(b.status) - ORDER.indexOf(a.status)),
+    [rows],
+  );
+
   return (
-    <div
-      aria-live="polite"
-      className="relative z-10 mx-auto -mt-6 w-full max-w-[560px] rounded-2xl border border-black/10 bg-white p-4 shadow-[0_8px_24px_rgba(0,0,0,0.08)] md:absolute md:top-6 md:left-1/2 md:mt-0 md:-translate-x-1/2 md:p-5"
-    >
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <p className="text-[18px] leading-[26px] text-[#18181a]">{headline}</p>
-          <p className="mt-0.5 flex items-center gap-1.5 text-[13px] leading-5 text-black/60">
-            {checking && <Spinner className="size-3.5" label="" />}
-            {status}
-          </p>
-        </div>
-        {result && outcome === "propagating" && !everywhere && (
-          <span className="shrink-0 rounded-full bg-ink-100 px-2.5 py-1 text-[13px] font-semibold text-[#18181a]">{percent}% propagated</span>
+    <>
+      <div ref={sentinel} aria-hidden className="h-px" />
+      <div
+        data-stage-rail=""
+        aria-live="polite"
+        className={cn(
+          "z-30 rounded-3xl md:sticky md:top-[84px] border border-black/10 bg-white px-5 py-4 transition-shadow md:px-8",
+          stuck && "shadow-[0_8px_24px_rgba(0,0,0,0.08)]",
         )}
-      </div>
+      >
+        <div className="grid items-center gap-4 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:gap-8">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2">
+              <span
+                className="truncate text-[16px] leading-6 font-semibold text-[#18181a]"
+                title={domain}
+              >
+                {domain}
+              </span>
+              <TypeSelect
+                value={type}
+                onChange={changeType}
+                label="Record type"
+                className="h-9 w-[110px] shrink-0 text-[14px] md:w-[150px]"
+              />
+            </div>
+            <p className="mt-1 flex items-center gap-1.5 text-[14px] leading-5 text-black/75 md:text-[16px] md:leading-6">
+              {checking && <Spinner className="size-3.5" label="" />}
+              {status}
+            </p>
+          </div>
 
-      {result && (
-        <div
-          role="meter"
-          aria-label="Servers returning the current records"
-          aria-valuemin={0}
-          aria-valuemax={total}
-          aria-valuenow={counts.live}
-          aria-valuetext={`${counts.live} of ${total} servers are live`}
-          className="mt-3 flex h-2 overflow-hidden rounded-full bg-ink-100"
-        >
-          <span className="bg-[#009e5b] transition-[width] duration-500" style={{ width: `${(counts.live / total) * 100}%` }} />
-          <span className="bg-[#e69800] transition-[width] duration-500" style={{ width: `${(counts.notLive / total) * 100}%` }} />
-        </div>
-      )}
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-1">
+              <p className="text-[16px] leading-6 text-[#18181a]">{headline}</p>
+              {badge}
+            </div>
+            <div
+              role="meter"
+              aria-label="Servers returning the current records"
+              aria-valuemin={0}
+              aria-valuemax={total}
+              aria-valuenow={counts.live}
+              aria-valuetext={`${counts.live} of ${total} servers are live`}
+              className={cn(
+                "mt-2 flex flex-wrap",
+                stuck ? "gap-1.5" : "gap-1.5 md:gap-2",
+              )}
+            >
+              {(fresh ? Array.from({ length: total }, () => null) : ordered).map(
+                (r, i) => (
+                  <span
+                    key={r?.id ?? i}
+                    className={cn(
+                      "rounded-full transition-[height,background-color] duration-300",
+                      stuck ? "size-2" : "h-6 w-2",
+                      !r && "animate-pulse",
+                    )}
+                    style={{ backgroundColor: r ? dotFor(r.status) : DOT.pending }}
+                    title={
+                      r
+                        ? `${r.city}, ${r.country}: ${STATUS_LABEL[r.status]}`
+                        : undefined
+                    }
+                  />
+                ),
+              )}
+            </div>
+          </div>
 
-      {result && (
-        <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
-          <div className="relative flex items-center gap-2 text-[14px] text-[#18181a]">
+          <div className="relative flex flex-wrap items-center gap-3 lg:justify-end">
             <button
               type="button"
               role="switch"
               aria-checked={auto}
+              aria-label="Auto-refresh"
               onClick={() => setAuto(!auto)}
-              className={cn("relative h-5 w-9 rounded-full transition-colors", auto ? "bg-primary" : "bg-ink-300")}
+              className={cn(
+                "relative h-6 w-10 shrink-0 rounded-full transition-colors",
+                auto ? "bg-primary" : "bg-ink-300",
+              )}
             >
-              <span className={cn("absolute top-0.5 size-4 rounded-full bg-white shadow transition-[left]", auto ? "left-[18px]" : "left-0.5")} />
-              <span className="sr-only">Auto-refresh</span>
+              <span
+                className={cn(
+                  "absolute top-1 size-4 rounded-full bg-white shadow transition-[left]",
+                  auto ? "left-5" : "left-1",
+                )}
+              />
             </button>
-            <span aria-hidden>Auto-refresh</span>
+            <span
+              aria-hidden
+              className={cn("text-[16px]", auto ? "text-[#18181a]" : "text-black/50")}
+            >
+              Auto-refresh
+              {auto && nextIn !== null && !checking && (
+                <span className="text-[13px] text-black/50"> · {nextIn}s</span>
+              )}
+            </span>
             <button
               type="button"
               aria-label="How auto-refresh works"
               aria-expanded={info}
               onClick={() => setInfo(!info)}
-              className="grid size-5 place-items-center rounded-full border border-black/20 text-[11px] font-semibold text-black/60 hover:text-[#18181a]"
+              onBlur={() => setInfo(false)}
+              className="text-[#36344d] hover:text-[#18181a]"
             >
-              i
+              <InfoIcon className="size-[18px]" />
             </button>
-            {auto && nextIn !== null && !checking && <span className="text-[13px] text-black/60">· next in {nextIn}s</span>}
             {info && (
-              <p className="absolute top-7 left-0 z-20 w-[280px] rounded-xl bg-ink-950 p-3 text-[13px] leading-5 text-white shadow-lg">
-                While this page is open, every server is asked again 15 seconds after each check, for up to 10 minutes. It stops once all servers return
-                the current record, and waits while this tab is in the background.
+              <p
+                role="tooltip"
+                className="absolute top-9 right-0 z-40 w-[300px] rounded-xl bg-ink-950 p-3 text-[13px] leading-5 text-white shadow-lg"
+              >
+                While this page is open, every server is asked again 15 seconds after
+                each check, for up to 10 minutes. It stops once all servers return the
+                current record, and waits while this tab is in the background.
               </p>
             )}
+            <button
+              type="button"
+              onClick={recheck}
+              disabled={disabled}
+              className="flex h-10 items-center gap-1.5 rounded-xl border border-black/15 bg-white px-4 text-[14px] font-semibold text-[#18181a] hover:bg-ink-50 disabled:opacity-50 md:ml-2"
+            >
+              <RefreshIcon className={cn("size-4", checking && "animate-spin")} />
+              Check again
+            </button>
           </div>
-          <button
-            type="button"
-            onClick={recheck}
-            disabled={disabled}
-            className="h-9 rounded-xl border border-black/15 px-4 text-[14px] font-semibold text-[#18181a] hover:bg-ink-50 disabled:opacity-50"
-          >
-            Check again
-          </button>
         </div>
-      )}
-    </div>
+      </div>
+    </>
   );
 }
 
@@ -545,21 +793,52 @@ function Results({
   checkedAgo: number;
   recheck: (domain: string, type: string) => void;
 }) {
-  const sorted = useMemo(
-    () => [...rows].sort((a, b) => ORDER.indexOf(a.status) - ORDER.indexOf(b.status) || a.country.localeCompare(b.country) || a.city.localeCompare(b.city)),
-    [rows],
-  );
-  const [expanded, setExpanded] = useState(false);
-  const filtered = filter === "all" ? sorted : sorted.filter((r) => r.status === filter);
-  const shown = expanded ? filtered : filtered.slice(0, PAGE);
+  const [sort, setSort] = useState<{ key: SortKey; dir: 1 | -1 }>({
+    key: "status",
+    dir: 1,
+  });
+  const sorted = useMemo(() => {
+    const by = (a: Row, b: Row) => {
+      if (sort.key === "location")
+        return a.country.localeCompare(b.country) || a.city.localeCompare(b.city);
+      if (sort.key === "ttl") return (a.ttl ?? -1) - (b.ttl ?? -1);
+      return ORDER.indexOf(a.status) - ORDER.indexOf(b.status);
+    };
+    return [...rows].sort(
+      (a, b) =>
+        by(a, b) * sort.dir ||
+        a.country.localeCompare(b.country) ||
+        a.city.localeCompare(b.city),
+    );
+  }, [rows, sort]);
+  const shown = filter === "all" ? sorted : sorted.filter((r) => r.status === filter);
 
-  let description = "Enter a domain above to see what DNS servers around the world return.";
-  if (checking && !result && query) description = `Asking DNS servers around the world for ${query.domain}'s ${query.type} records…`;
-  else if (result?.state === "completed") description = "Every server we asked, with its answer, how long it may keep it cached (TTL), and whether it's live.";
+  let description =
+    "Enter a domain above to see what DNS servers around the world return.";
+  if (checking && !result && query)
+    description = `Asking DNS servers around the world for ${query.domain}'s ${query.type} records…`;
+  else if (result?.state === "completed")
+    description =
+      "Every server we asked, with its answer, how long it may keep it cached (TTL), and whether it's live.";
   else if (result) description = `What we found when we looked up ${result.domain}.`;
 
+  const toggleSort = (key: SortKey) =>
+    setSort((s) =>
+      s.key === key ? { key, dir: s.dir === 1 ? -1 : 1 } : { key, dir: 1 },
+    );
+  const chips: Filter[] = [
+    "all",
+    "live",
+    "notLive",
+    ...(counts.timedOut ? (["timedOut"] as const) : []),
+    ...(counts.failed ? (["failed"] as const) : []),
+  ];
+
   return (
-    <div className="relative z-[1] mt-6 rounded-3xl border border-black/10 bg-white p-6 md:mt-0 md:p-8" data-qa="dns-results">
+    <div
+      className="relative z-[1] rounded-3xl border border-black/10 bg-white p-6 md:p-8"
+      data-qa="dns-results"
+    >
       <h2 className="text-[20px] leading-7 font-semibold tracking-[-0.1px] text-[#18181a] md:text-[24px] md:leading-8 md:tracking-[-0.12px]">
         All DNS server responses
       </h2>
@@ -573,110 +852,185 @@ function Results({
       {result?.state === "completed" && (
         <>
           <Strip result={result} checkedAgo={checkedAgo} recheck={recheck} />
-          {result.current && <CurrentRecords result={result} />}
 
-          <div className="mt-8 flex flex-wrap items-center gap-2" role="group" aria-label="Show servers">
-            {(["all", "live", "notLive", "timedOut", "failed"] as const).map((f) => {
+          <div
+            className="mt-6 flex flex-wrap items-center gap-2"
+            role="group"
+            aria-label="Show servers"
+          >
+            {chips.map((f) => {
               const n = f === "all" ? total : counts[f];
-              if (f !== "all" && n === 0 && filter !== f) return null;
+              const selected = filter === f;
               return (
                 <button
                   key={f}
                   type="button"
-                  aria-pressed={filter === f}
+                  aria-pressed={selected}
+                  disabled={n === 0 && !selected}
                   onClick={() => setFilter(f)}
                   className={cn(
-                    "h-9 rounded-full border px-4 text-[14px] font-semibold transition-colors",
-                    filter === f ? "border-[#18181a] bg-[#18181a] text-white" : "border-black/15 text-[#18181a] hover:bg-ink-50",
+                    "flex h-8 items-center gap-1 rounded-3xl px-3 text-[16px] font-normal transition-colors",
+                    selected
+                      ? "bg-[#18181a] text-[#f8f9fa]"
+                      : "text-[#18181a] shadow-[inset_0_0_0_1px_rgba(0,0,0,0.15)] hover:bg-ink-50",
+                    "disabled:cursor-default disabled:text-black/30 disabled:shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)] disabled:hover:bg-transparent",
                   )}
                 >
-                  {f === "all" ? "All" : STATUS_LABEL[f]} <span className={filter === f ? "text-white/70" : "text-black/50"}>{n}</span>
+                  {selected && <CheckIcon className="size-4" />}
+                  {f === "all" ? "All" : STATUS_LABEL[f]} {n}
                 </button>
               );
             })}
           </div>
 
-          <table className="mt-4 w-full border-collapse text-left text-[14px] leading-5 text-[#18181a]">
-            <thead className="max-md:sr-only">
-              <tr className="border-b border-black/10 text-[13px] text-black/60">
-                <th scope="col" className="py-3 pr-4 font-semibold md:w-[24%]">Location</th>
-                <th scope="col" className="py-3 pr-4 font-semibold md:w-[20%]">Provider</th>
-                <th scope="col" className="py-3 pr-4 font-semibold">Answer</th>
-                <th scope="col" className="py-3 pr-4 font-semibold md:w-[8%]">TTL</th>
-                <th scope="col" className="py-3 font-semibold md:w-[14%]">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {shown.map((r) => (
-                <ResultRow key={r.id} row={r} />
-              ))}
-            </tbody>
-          </table>
-          {filtered.length > PAGE && (
-            <button
-              type="button"
-              onClick={() => setExpanded(!expanded)}
-              className="mt-4 h-10 w-full rounded-xl border border-black/15 text-[14px] font-semibold text-[#18181a] hover:bg-ink-50 md:w-auto md:px-5"
-            >
-              {expanded ? "Show fewer" : `Show all ${filtered.length} servers`}
-            </button>
-          )}
+          <div className="mt-6 overflow-hidden rounded-2xl border border-black/10">
+            <table className="w-full border-collapse text-left text-[16px] leading-6 text-[#18181a]">
+              <thead className="max-md:sr-only">
+                <tr className="border-b border-black/10">
+                  <SortHeader
+                    label="Location"
+                    k="location"
+                    sort={sort}
+                    onSort={toggleSort}
+                    className="w-[22%]"
+                  />
+                  <th scope="col" className="px-4 py-3 font-normal md:w-[33%]">
+                    Provider
+                  </th>
+                  <th scope="col" className="px-4 py-3 font-normal">
+                    Answer
+                  </th>
+                  <SortHeader
+                    label="TTL"
+                    k="ttl"
+                    sort={sort}
+                    onSort={toggleSort}
+                    className="w-[8%]"
+                    align="right"
+                  />
+                  <SortHeader
+                    label="Status"
+                    k="status"
+                    sort={sort}
+                    onSort={toggleSort}
+                    className="w-[14%]"
+                  />
+                </tr>
+              </thead>
+              <tbody>
+                {shown.map((r) => (
+                  <ResultRow key={r.id} row={r} />
+                ))}
+              </tbody>
+            </table>
+          </div>
         </>
       )}
     </div>
   );
 }
 
-function ResultRow({ row }: { row: Row }) {
-  const [ipOpen, setIpOpen] = useState(false);
-  const [more, setMore] = useState(false);
-  const values = row.answer.values;
-  const visible = more ? values : values.slice(0, 3);
+function SortHeader({
+  label,
+  k,
+  sort,
+  onSort,
+  className,
+  align = "left",
+}: {
+  label: string;
+  k: SortKey;
+  sort: { key: SortKey; dir: 1 | -1 };
+  onSort: (k: SortKey) => void;
+  className?: string;
+  align?: "left" | "right";
+}) {
+  const active = sort.key === k;
   return (
-    <tr className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-1 border-b border-black/10 py-4 last:border-b-0 md:table-row md:py-0">
-      <td className="md:py-4 md:pr-4 md:align-top">
-        <span className="flex items-center gap-2">
-          <span aria-hidden className="text-[18px] leading-5">{flag(row.cc)}</span>
-          <span>
-            <span className="font-semibold">{row.city}</span>
-            <span className="text-black/60">, {row.country}</span>
+    <th
+      scope="col"
+      aria-sort={active ? (sort.dir === 1 ? "ascending" : "descending") : "none"}
+      className={cn("px-4 py-3 font-normal", className)}
+    >
+      <button
+        type="button"
+        onClick={() => onSort(k)}
+        className={cn(
+          "flex w-full items-center gap-2",
+          align === "right" && "flex-row-reverse",
+        )}
+      >
+        {label}
+        {active ? (
+          <ArrowIcon className={cn("size-4", sort.dir === -1 && "rotate-180")} />
+        ) : (
+          <SortIcon className="size-4 text-black/70" />
+        )}
+      </button>
+    </th>
+  );
+}
+
+function ResultRow({ row }: { row: Row }) {
+  const [tip, setTip] = useState(false);
+  const values = row.answer.values;
+  return (
+    <tr className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-1 border-b border-black/10 px-4 py-4 last:border-b-0 hover:bg-[#f4f4f6] md:table-row md:p-0">
+      <td className="md:px-4 md:py-3 md:align-middle">
+        <span className="flex items-center gap-3">
+          <Flag cc={row.cc} />
+          <span className="leading-5">
+            <span className="block text-[16px]">{row.city}</span>
+            <span className="block text-[14px] text-black/60">{row.country}</span>
           </span>
         </span>
       </td>
       <td className="col-start-2 row-start-1 md:hidden">
-        <StatusPill status={row.status} />
+        <StatusBadge status={row.status} />
       </td>
-      <td className="col-span-2 text-black/75 md:py-4 md:pr-4 md:align-top md:text-[#18181a]">
-        <span className="inline-flex items-center gap-1.5">
+      <td className="col-span-2 md:px-4 md:py-3 md:align-middle">
+        <span className="relative inline-flex items-center gap-2">
           {row.provider}
           <button
             type="button"
             aria-label={`Show the resolver IP for ${row.provider}`}
-            aria-expanded={ipOpen}
-            onClick={() => setIpOpen(!ipOpen)}
-            className="grid size-4 place-items-center rounded-full border border-black/25 text-[10px] font-semibold text-black/60 hover:text-[#18181a]"
+            aria-expanded={tip}
+            onClick={() => setTip(!tip)}
+            onMouseEnter={() => setTip(true)}
+            onMouseLeave={() => setTip(false)}
+            onBlur={() => setTip(false)}
+            className="text-[#36344d] hover:text-[#18181a]"
           >
-            i
+            <InfoIcon className="size-[18px]" />
           </button>
+          {tip && (
+            <span
+              role="tooltip"
+              className="absolute bottom-full left-0 z-20 mb-2 rounded-lg bg-ink-950 px-3 py-1.5 text-[13px] leading-5 whitespace-nowrap text-white shadow-lg"
+            >
+              Resolver IP: {row.ip}
+            </span>
+          )}
         </span>
-        <span className="text-black/50 md:hidden"> · TTL {formatTtl(row.ttl)}</span>
-        {ipOpen && <span className="block font-mono text-[12px] text-black/60">Resolver IP: {row.ip}</span>}
+        <span className="text-[14px] text-black/50 md:hidden">
+          {" "}
+          · TTL {formatTtl(row.ttl)}
+        </span>
       </td>
-      <td className="col-span-2 min-w-0 md:py-4 md:pr-4 md:align-top">
+      <td className="col-span-2 min-w-0 md:px-4 md:py-3 md:align-middle">
         {row.answer.kind === "records" ? (
-          <ul className="flex flex-col gap-0.5">
-            {visible.map((v) => (
-              <li key={v} className="font-mono text-[12px] [overflow-wrap:anywhere] md:text-[13px]">{v}</li>
+          <span className="flex flex-col">
+            {values.map((v) => (
+              <span key={v} className="[overflow-wrap:anywhere]">
+                {v}
+              </span>
             ))}
-            {values.length > 3 && (
-              <li>
-                <button type="button" onClick={() => setMore(!more)} className="text-[13px] font-semibold text-primary hover:underline">
-                  {more ? "Show fewer" : `+${values.length - 3} more`}
-                </button>
-              </li>
+            {row.status === "notLive" && (
+              <span className="text-[13px] font-semibold text-black/60">
+                Records differ
+              </span>
             )}
-            {row.status === "notLive" && <li className="text-[12px] font-semibold text-warning">Records differ</li>}
-          </ul>
+          </span>
         ) : (
           <span className="text-black/60">
             {row.answer.kind === "noRecords"
@@ -689,25 +1043,37 @@ function ResultRow({ row }: { row: Row }) {
           </span>
         )}
       </td>
-      <td className="hidden md:table-cell md:py-4 md:pr-4 md:align-top">{formatTtl(row.ttl)}</td>
-      <td className="hidden md:table-cell md:py-4 md:align-top">
-        <StatusPill status={row.status} />
+      <td className="hidden text-right md:table-cell md:px-4 md:py-3 md:align-middle">
+        {formatTtl(row.ttl)}
+      </td>
+      <td className="hidden md:table-cell md:px-4 md:py-3 md:align-middle">
+        <StatusBadge status={row.status} />
       </td>
     </tr>
   );
 }
 
-function StatusPill({ status }: { status: RowStatus }) {
+function StatusBadge({ status }: { status: RowStatus }) {
   const tone = {
     live: "bg-success-soft text-success",
-    notLive: "bg-warning-soft text-warning",
-    timedOut: "bg-ink-100 text-black/70",
+    notLive: "bg-ink-100 text-[#36344d]",
+    timedOut: "bg-error-soft text-error",
     failed: "bg-error-soft text-error",
   }[status];
-  const dot = { live: "bg-[#009e5b]", notLive: "bg-[#e69800]", timedOut: "bg-[#9d9ea4]", failed: "bg-[#e73a47]" }[status];
   return (
-    <span className={cn("inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[13px] leading-4 font-semibold whitespace-nowrap", tone)}>
-      <span aria-hidden className={cn("size-1.5 rounded-full", dot)} />
+    <span
+      className={cn(
+        "inline-flex items-center gap-1 rounded-xl py-0.5 pr-1.5 pl-0.5 text-[14px] leading-5 font-semibold whitespace-nowrap",
+        tone,
+      )}
+    >
+      {status === "live" ? (
+        <CheckCircleIcon className="size-4" />
+      ) : status === "notLive" ? (
+        <ClockIcon className="size-4" />
+      ) : (
+        <AlertIcon className="size-4" />
+      )}
       {STATUS_LABEL[status]}
     </span>
   );
@@ -715,7 +1081,15 @@ function StatusPill({ status }: { status: RowStatus }) {
 
 /* ── Strips: what the result means ──────────────────────────────────────── */
 
-function Strip({ result, checkedAgo, recheck }: { result: CheckResult; checkedAgo: number; recheck: (d: string, t: string) => void }) {
+function Strip({
+  result,
+  checkedAgo,
+  recheck,
+}: {
+  result: CheckResult;
+  checkedAgo: number;
+  recheck: (d: string, t: string) => void;
+}) {
   const { domain, type, summary, rows, current } = result;
   const outcome = summary.outcome;
   const isRoot = domain.split(".").length === 2;
@@ -728,19 +1102,23 @@ function Strip({ result, checkedAgo, recheck }: { result: CheckResult; checkedAg
   if (outcome === "noAnswers") {
     tone = "danger";
     title = `We couldn't check ${domain} right now`;
-    body = "None of the servers answered in time. This is usually a short-lived problem on our side or with the network, not with your domain. Try again in a minute.";
+    body =
+      "None of the servers answered in time. This is usually a short-lived problem on our side or with the network, not with your domain. Try again in a minute.";
     action = <StripButton onClick={() => recheck(domain, type)}>Try again</StripButton>;
   } else if (outcome === "allFailed") {
     tone = "danger";
     title = `No server could look up ${domain}`;
-    body = "Every server replied with an error. This usually means the domain's nameservers aren't working or its DNSSEC settings are wrong. Check them, then try again.";
+    body =
+      "Every server replied with an error. This usually means the domain's nameservers aren't working or its DNSSEC settings are wrong. Check them, then try again.";
     action = <StripButton onClick={() => recheck(domain, type)}>Try again</StripButton>;
   } else if (outcome === "noRecords") {
     tone = "warning";
     title = `None of the servers return ${type} records for ${domain}`;
     if (type === "CNAME" && isRoot) {
       body = `A root domain like ${domain} can't have a CNAME record. To see where it points, check its A records instead.`;
-      action = <StripButton onClick={() => recheck(domain, "A")}>Check A records</StripButton>;
+      action = (
+        <StripButton onClick={() => recheck(domain, "A")}>Check A records</StripButton>
+      );
     } else if (type === "SRV" && !domain.startsWith("_")) {
       body = `SRV records sit on a service name, like _sip._tcp.${domain}, not on the domain itself. Check that name instead.`;
     } else if (type === "NS" && !isRoot) {
@@ -754,7 +1132,10 @@ function Strip({ result, checkedAgo, recheck }: { result: CheckResult; checkedAg
     body =
       "No server can find it yet. A newly registered domain usually shows up within a few minutes, sometimes a few hours. If it's older, it may be suspended or have no nameservers set, so check with the company you registered it with.";
   } else if (summary.counts.notLive > 0) {
-    const longest = Math.max(0, ...rows.filter((r) => r.status === "notLive").map((r) => r.ttl ?? 0));
+    const longest = Math.max(
+      0,
+      ...rows.filter((r) => r.status === "notLive").map((r) => r.ttl ?? 0),
+    );
     const left = longest - checkedAgo;
     if (left <= -60) {
       tone = "warning";
@@ -764,12 +1145,14 @@ function Strip({ result, checkedAgo, recheck }: { result: CheckResult; checkedAg
     } else if (left > 0) {
       title = (
         <>
-          Servers that aren&apos;t live yet should all catch up when their cached copy expires, within{" "}
+          Servers that aren&apos;t live yet should all catch up when their cached copy
+          expires, within{" "}
           <strong className="font-semibold">about {formatDuration(left)}</strong>.
         </>
       );
     } else {
-      title = "Servers that aren't live yet should catch up any moment now, as their cached copy has expired.";
+      title =
+        "Servers that aren't live yet should catch up any moment now, as their cached copy has expired.";
     }
   } else if (current?.dynamic) {
     title = `${domain} gives different answers depending on where and when it's asked`;
@@ -784,7 +1167,12 @@ function Strip({ result, checkedAgo, recheck }: { result: CheckResult; checkedAg
     success: "border-[#009e5b]/30 bg-success-soft",
   };
   return (
-    <div className={cn("mt-6 flex flex-col gap-3 rounded-2xl border p-4 sm:flex-row sm:items-center sm:justify-between", tones[tone])}>
+    <div
+      className={cn(
+        "mt-6 flex flex-col gap-3 rounded-2xl border p-4 sm:flex-row sm:items-center sm:justify-between",
+        tones[tone],
+      )}
+    >
       <div className="text-[14px] leading-5">
         <p className="text-[15px] leading-[22px] text-[#18181a]">{title}</p>
         {body && <p className="mt-1 text-black/75">{body}</p>}
@@ -794,9 +1182,19 @@ function Strip({ result, checkedAgo, recheck }: { result: CheckResult; checkedAg
   );
 }
 
-function StripButton({ onClick, children }: { onClick: () => void; children: React.ReactNode }) {
+function StripButton({
+  onClick,
+  children,
+}: {
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
   return (
-    <button type="button" onClick={onClick} className="h-10 shrink-0 rounded-xl border border-black/15 bg-white px-4 text-[14px] font-semibold text-[#18181a] hover:bg-ink-50">
+    <button
+      type="button"
+      onClick={onClick}
+      className="h-10 shrink-0 rounded-xl border border-black/15 bg-white px-4 text-[14px] font-semibold text-[#18181a] hover:bg-ink-50"
+    >
       {children}
     </button>
   );
@@ -828,8 +1226,12 @@ function StateCard({ result }: { result: CheckResult }) {
   return (
     <div className="mt-6 flex flex-col items-start gap-4 rounded-2xl border border-black/10 bg-ink-50 p-6 md:flex-row md:items-center md:justify-between">
       <div>
-        <p className="text-[18px] leading-[26px] font-semibold text-[#18181a]">{copy.title}</p>
-        <p className="mt-1 max-w-[720px] text-[14px] leading-5 text-black/75">{copy.body}</p>
+        <p className="text-[18px] leading-[26px] font-semibold text-[#18181a]">
+          {copy.title}
+        </p>
+        <p className="mt-1 max-w-[720px] text-[14px] leading-5 text-black/75">
+          {copy.body}
+        </p>
       </div>
       {copy.cta && (
         <Link
@@ -843,17 +1245,23 @@ function StateCard({ result }: { result: CheckResult }) {
   );
 }
 
-/* ── Your current records ────────────────────────────────────────────────── */
+/* ── Your current records (its own card, below the results) ─────────────── */
 
 function CurrentRecords({ result }: { result: CheckResult }) {
   const current = result.current!;
   const [q, setQ] = useState("");
   const [all, setAll] = useState(false);
   const [copied, setCopied] = useState<string | null>(null);
-  const list = current.records.filter((r) => r.value.toLowerCase().includes(q.trim().toLowerCase()));
+  const list = current.records.filter((r) =>
+    r.value.toLowerCase().includes(q.trim().toLowerCase()),
+  );
   const visible = all ? list : list.slice(0, 5);
   const label = current.cname ? "CNAME" : result.type;
   const n = current.records.length;
+  const ttl = n ? Math.min(...current.records.map((r) => r.ttl)) : null;
+  const from = current.nameservers.length
+    ? current.nameservers.join(", ")
+    : current.source;
 
   const copy = async (text: string, key: string) => {
     try {
@@ -866,39 +1274,39 @@ function CurrentRecords({ result }: { result: CheckResult }) {
   };
 
   return (
-    <div className="mt-6 rounded-2xl border border-black/10 p-5">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h3 className="text-[18px] leading-[26px] font-semibold text-[#18181a]">Your current records</h3>
-          <p className="mt-0.5 text-[14px] leading-5 text-black/75">
-            {current.cname
-              ? `${result.domain} is a CNAME to ${current.cname}, so a server is live when it follows it there.`
-              : `What ${result.domain}'s nameservers return right now. A server is live when it returns exactly these.`}
-          </p>
-        </div>
-        {n > 0 && (
-          <button
-            type="button"
-            onClick={() => copy(current.records.map((r) => r.value).join("\n"), "all")}
-            className="h-9 rounded-xl border border-black/15 px-3 text-[14px] font-semibold text-[#18181a] hover:bg-ink-50"
-          >
-            {copied === "all" ? "Copied" : "Copy all"}
-          </button>
-        )}
-      </div>
+    <div className="mt-6 rounded-3xl border border-black/10 bg-white p-6 md:p-8">
+      <h2 className="text-[20px] leading-7 font-semibold tracking-[-0.1px] text-[#18181a] md:text-[24px] md:leading-8 md:tracking-[-0.12px]">
+        Your current records
+      </h2>
+      <p className="mt-1 text-[16px] leading-6 text-black/75">
+        {current.cname
+          ? `${result.domain} is a CNAME to ${current.cname}, so a server is live when it follows it there.`
+          : `What ${result.domain}'s nameservers return right now. A server is live when it returns exactly these.`}
+      </p>
 
       {n === 0 ? (
-        <p className="mt-4 text-[14px] text-black/60">{`${result.domain}'s nameservers return no ${result.type} records.`}</p>
+        <p className="mt-4 text-[16px] text-black/60">{`${result.domain}'s nameservers return no ${result.type} records.`}</p>
       ) : (
         <>
-          <p className="mt-4 text-[13px] text-black/60">
-            {n === 1 ? `1 ${label} record` : `${n} ${label} records`}
-            {current.source && (
-              <>
-                {" "}from <span className="font-mono">{current.source}</span>
-              </>
-            )}
-          </p>
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+            <p className="text-[14px] leading-5 text-black/75">
+              <strong className="font-semibold text-[#18181a]">
+                {n === 1 ? `1 ${label} record` : `${n} ${label} records`}
+              </strong>
+              {from && <> · from {from}</>}
+              {ttl !== null && <> · TTL {formatTtl(ttl)}</>}
+            </p>
+            <button
+              type="button"
+              onClick={() =>
+                copy(current.records.map((r) => r.value).join("\n"), "all")
+              }
+              className="flex h-9 items-center gap-1.5 rounded-xl border border-black/15 px-3 text-[14px] font-semibold text-[#18181a] hover:bg-ink-50"
+            >
+              <CopyIcon className="size-4" />
+              {copied === "all" ? "Copied" : "Copy all"}
+            </button>
+          </div>
           {n > 5 && (
             <input
               type="search"
@@ -906,30 +1314,44 @@ function CurrentRecords({ result }: { result: CheckResult }) {
               placeholder="Filter records, e.g. google"
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              className="mt-3 h-10 w-full rounded-xl border border-black/15 px-3 text-[14px] outline-none focus:border-primary focus:ring-1 focus:ring-primary md:max-w-[320px]"
+              className="mt-4 h-10 w-full rounded-xl border border-black/15 px-3 text-[14px] outline-none focus:border-primary focus:ring-1 focus:ring-primary md:max-w-[320px]"
             />
           )}
-          <ul className="mt-3 flex flex-col divide-y divide-black/5 rounded-xl bg-ink-50">
+          <ul className="mt-4 flex flex-col gap-2">
             {visible.map((r) => (
-              <li key={r.value} className="flex flex-col gap-1 px-3 py-2.5 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
-                <span className="min-w-0 font-mono text-[13px] leading-5 [overflow-wrap:anywhere] text-[#18181a]">{r.value}</span>
-                <span className="flex shrink-0 items-center gap-3">
-                  <span className="text-[12px] text-black/60">TTL {formatTtl(r.ttl)}</span>
-                  <button
-                    type="button"
-                    aria-label={`Copy ${label} record`}
-                    onClick={() => copy(r.value, r.value)}
-                    className="text-[12px] font-semibold text-primary hover:underline"
-                  >
-                    {copied === r.value ? "Copied" : "Copy"}
-                  </button>
+              <li
+                key={r.value}
+                className="flex items-center justify-between gap-3 rounded-xl bg-[#f4f4f6] px-4 py-3"
+              >
+                <span className="min-w-0 text-[14px] leading-5 [overflow-wrap:anywhere] text-[#18181a]">
+                  {r.value}
                 </span>
+                <button
+                  type="button"
+                  aria-label={`Copy ${label} record`}
+                  onClick={() => copy(r.value, r.value)}
+                  className="shrink-0 text-[#36344d] hover:text-[#18181a]"
+                >
+                  {copied === r.value ? (
+                    <CheckIcon className="size-4 text-success" />
+                  ) : (
+                    <CopyIcon className="size-4" />
+                  )}
+                </button>
               </li>
             ))}
-            {list.length === 0 && <li className="px-3 py-2.5 text-[13px] text-black/60">No records match “{q}”.</li>}
+            {list.length === 0 && (
+              <li className="px-4 py-3 text-[14px] text-black/60">
+                No records match “{q}”.
+              </li>
+            )}
           </ul>
           {list.length > 5 && (
-            <button type="button" onClick={() => setAll(!all)} className="mt-2 text-[14px] font-semibold text-primary hover:underline">
+            <button
+              type="button"
+              onClick={() => setAll(!all)}
+              className="mt-3 text-[14px] font-semibold text-primary hover:underline"
+            >
               {all ? "Show fewer" : `Show all ${list.length} records`}
             </button>
           )}
@@ -943,25 +1365,155 @@ function CurrentRecords({ result }: { result: CheckResult }) {
 
 function Legend({ color, label }: { color: string; label: string }) {
   return (
-    <li className="flex items-center gap-1.5">
-      <span aria-hidden className={cn("size-2.5 rounded-full", color)} />
+    <li className="flex items-center gap-2">
+      <span
+        aria-hidden
+        className="size-2.5 rounded-full"
+        style={{ backgroundColor: color }}
+      />
       {label}
     </li>
   );
 }
 
+const icon = {
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 1.8,
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
+  "aria-hidden": true,
+};
+
+function InfoIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 20 20" className={className} {...icon}>
+      <circle cx="10" cy="10" r="8" />
+      <path d="M10 9v5M10 6.2v.1" />
+    </svg>
+  );
+}
+function RefreshIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 20 20" className={className} {...icon}>
+      <path d="M16.5 10a6.5 6.5 0 1 1-1.9-4.6M16.5 3.5v3.5H13" />
+    </svg>
+  );
+}
+function CheckIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 20 20" className={className} {...icon}>
+      <path d="m4 10.5 4 4 8-9" />
+    </svg>
+  );
+}
+function CheckCircleIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 20 20" className={className} aria-hidden>
+      <circle cx="10" cy="10" r="8" fill="currentColor" />
+      <path
+        d="m6.5 10.2 2.3 2.3 4.7-5"
+        fill="none"
+        stroke="#fff"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+function ClockIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 20 20" className={className} {...icon}>
+      <circle cx="10" cy="10" r="7.5" />
+      <path d="M10 6v4.2l2.6 1.6" />
+    </svg>
+  );
+}
+function AlertIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 20 20" className={className} aria-hidden>
+      <circle cx="10" cy="10" r="8" fill="currentColor" />
+      <path
+        d="M10 6v4.5M10 13.5v.1"
+        fill="none"
+        stroke="#fff"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+function CopyIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 20 20" className={className} {...icon}>
+      <rect x="7" y="7" width="9" height="10" rx="1.5" />
+      <path d="M4 13V4.5A1.5 1.5 0 0 1 5.5 3H12" />
+    </svg>
+  );
+}
+function SortIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 20 20" className={className} {...icon}>
+      <path d="M7 4v12M4 13l3 3 3-3M13 16V4M10 7l3-3 3 3" />
+    </svg>
+  );
+}
+function ArrowIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 20 20" className={className} {...icon}>
+      <path d="M10 16V4M6 8l4-4 4 4" />
+    </svg>
+  );
+}
+function PinIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 20 20" className={className} {...icon}>
+      <path d="M10 18s-5.5-5.2-5.5-9.5a5.5 5.5 0 0 1 11 0C15.5 12.8 10 18 10 18Z" />
+      <circle cx="10" cy="8.5" r="2" />
+    </svg>
+  );
+}
+
 function Spinner({ className, label }: { className?: string; label: string }) {
   return (
-    <svg viewBox="0 0 24 24" className={cn("animate-spin", className)} role={label ? "img" : undefined} aria-label={label || undefined} aria-hidden={label ? undefined : true}>
-      <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeOpacity="0.25" strokeWidth="3" />
-      <path d="M21 12a9 9 0 0 0-9-9" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+    <svg
+      viewBox="0 0 24 24"
+      className={cn("animate-spin", className)}
+      role={label ? "img" : undefined}
+      aria-label={label || undefined}
+      aria-hidden={label ? undefined : true}
+    >
+      <circle
+        cx="12"
+        cy="12"
+        r="9"
+        fill="none"
+        stroke="currentColor"
+        strokeOpacity="0.25"
+        strokeWidth="3"
+      />
+      <path
+        d="M21 12a9 9 0 0 0-9-9"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
 
 function GlobeIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={className} aria-hidden>
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      className={className}
+      aria-hidden
+    >
       <circle cx="12" cy="12" r="9" />
       <path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3Z" />
     </svg>
@@ -970,7 +1522,14 @@ function GlobeIcon({ className }: { className?: string }) {
 
 function Chevron({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" className={className} aria-hidden>
+    <svg
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      className={className}
+      aria-hidden
+    >
       <path d="m4 6 4 4 4-4" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );

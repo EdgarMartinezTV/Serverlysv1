@@ -17,12 +17,13 @@ export type MarkerTone = "idle" | "checking" | "live" | "notLive" | "noAnswer";
 export type Marker = { id: string; lat: number; lon: number; tone: MarkerTone; label: string };
 export type View = "globe" | "map";
 
+/** Same colours as the legend and the summary dots (checker.tsx DOT). */
 const TONE: Record<MarkerTone, string> = {
   idle: "#0000ff",
   checking: "#0000ff",
   live: "#009e5b",
-  notLive: "#e69800",
-  noAnswer: "#9d9ea4",
+  notLive: "#a1a1aa",
+  noAnswer: "#d12c35",
 };
 
 const RAD = Math.PI / 180;
@@ -61,8 +62,11 @@ export function World({ markers, view }: { markers: Marker[]; view: View }) {
   }, []);
 
   const desktop = width >= 768;
-  const diameter = desktop ? Math.min(790, width * 0.62) : width;
-  const height = view === "map" ? Math.round(width / MAP_RATIO) : Math.round(diameter * (desktop ? 0.54 : 0.45));
+  // The reference: an ~820px globe, its top ~90px below the legend row, cut
+  // off at its equator by the results card. Phones get a full-width globe.
+  const diameter = desktop ? Math.min(820, width * 0.62) : width * 0.92;
+  const top = desktop ? Math.round(88 * (diameter / 820)) : 84;
+  const height = view === "map" ? Math.round(width / MAP_RATIO) + top : Math.round(diameter * 0.5) + top;
 
   useEffect(() => {
     const c = canvas.current;
@@ -78,7 +82,7 @@ export function World({ markers, view }: { markers: Marker[]; view: View }) {
 
     const R = diameter / 2;
     const cx = width / 2;
-    const cy = R + (desktop ? 30 * (diameter / 790) : 12);
+    const cy = R + top;
 
     const drawGlobe = (t: number) => {
       const s = state.current;
@@ -126,8 +130,9 @@ export function World({ markers, view }: { markers: Marker[]; view: View }) {
 
     const drawMap = (t: number) => {
       const s = state.current;
+      const mapH = height - top;
       const px = (lon: number) => ((lon + 180) / 360) * width;
-      const py = (lat: number) => ((MAP_TOP - lat) / (MAP_TOP - MAP_BOTTOM)) * height;
+      const py = (lat: number) => top + ((MAP_TOP - lat) / (MAP_TOP - MAP_BOTTOM)) * mapH;
       const size = Math.max(1.6, width / 520);
       ctx.fillStyle = "rgba(96, 98, 112, 0.55)";
       for (const [lat, lon] of dots) {
@@ -153,6 +158,11 @@ export function World({ markers, view }: { markers: Marker[]; view: View }) {
         ctx.fillStyle = hexA(color, 0.28 * (1 - phase));
         ctx.fill();
       }
+      // Soft halo, as the reference draws around every marker.
+      ctx.beginPath();
+      ctx.arc(x, y, r * 2.3, 0, Math.PI * 2);
+      ctx.fillStyle = hexA(color, 0.14);
+      ctx.fill();
       ctx.beginPath();
       ctx.arc(x, y, r + 1.5, 0, Math.PI * 2);
       ctx.fillStyle = "#ffffff";
@@ -188,7 +198,7 @@ export function World({ markers, view }: { markers: Marker[]; view: View }) {
       cancelAnimationFrame(raf);
       window.clearInterval(redraw);
     };
-  }, [width, height, diameter, desktop, view, dots]);
+  }, [width, height, diameter, desktop, view, dots, top]);
 
   const onMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
     const s = state.current;
