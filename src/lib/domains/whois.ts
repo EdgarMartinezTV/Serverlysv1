@@ -1,4 +1,13 @@
+import { domainToUnicode } from "node:url";
 import { parseDomainInput } from "./normalize";
+import {
+  eppStatus,
+  isoDate,
+  parseWhois,
+  pick,
+  whoisQuery,
+  whoisServerFor,
+} from "./whois43";
 
 /**
  * Registration lookup, over RDAP.
@@ -41,6 +50,10 @@ export type WhoisRecord = {
   handle?: string;
   /** Registrar website and abuse contact, from the registrar entity. */
   registrarUrl?: string;
+  /** Registrar's WHOIS/RDAP server, as published. */
+  whoisServer?: string;
+  /** Unicode form of an internationalised name (münchen.de), for display. */
+  unicode?: string;
   abuseEmail?: string;
   abusePhone?: string;
   /**
@@ -50,7 +63,7 @@ export type WhoisRecord = {
    */
   contacts?: WhoisContact[];
   /** The RDAP documents as received, for the "Raw RDAP registry data" panel. */
-  raw?: { registry: unknown; registrar?: unknown };
+  raw?: { registry?: unknown; registrar?: unknown; whois?: string };
   /** Why the lookup could not answer. Only set for unsupported/error. */
   reason?: string;
 };
@@ -224,6 +237,10 @@ async function parseRecord(
     registrarUrl: registrar?.links?.find(
       (l) => l.rel === "about" && l.href?.startsWith("http"),
     )?.href,
+    // The registrar's own lookup server, as the reference's "WHOIS server" row.
+    whoisServer:
+      registrar?.links?.find((l) => l.rel === "about" && l.value?.startsWith("http"))
+        ?.value ?? (related ? new URL(related).origin + "/" : undefined),
     abuseEmail: abuseFields.find((f) => f.label === "Email")?.value,
     abusePhone: abuseFields.find((f) => f.label === "Phone")?.value,
     contacts,
@@ -238,20 +255,26 @@ async function parseRecord(
     updated: eventDate(body, "last changed"),
     expires: eventDate(body, "expiration"),
     nameservers: body.nameservers
-      ?.map((n) => n.ldhName?.toLowerCase())
+      ?.map((n) => n.ldhName?.toLowerCase().replace(/\.$/, ""))
       .filter((n): n is string => Boolean(n)),
     epp: body.status,
     dnssec: body.secureDNS?.delegationSigned,
   };
 }
 
+/**
+ * Two-label public suffixes a subdomain must never be reduced to: asking the
+ * registry about "co.uk" itself would answer for the suffix, not a domain.
+ */
+const SUFFIXES = new Set(
+  "co.uk org.uk me.uk ltd.uk plc.uk net.uk sch.uk ac.uk gov.uk com.au net.au org.au edu.au co.nz org.nz net.nz com.br net.br org.br com.mx org.mx com.ar com.co com.pe com.ec com.uy com.ve com.tr com.sg com.hk com.cn com.tw co.jp ne.jp or.jp co.kr co.in net.in org.in co.za com.es com.pl co.il com.my com.ph com.vn com.pk com.ng com.eg com.sa co.id".split(
+    " ",
+  ),
+);
+
 export async function lookupWhois(input: string): Promise<WhoisRecord> {
   const parsed = parseDomainInput(input);
-  if (!parsed.ok) {
-    return { domain: input, status: "error", reason: parsed.message };
-  }
-  // A bare name with no extension cannot be looked up — there is no registry
-  // to ask. The UI validates for this too; this is the server-side backstop.
+  if (!parsed.ok) return { domain: input, status: "error", reason: parsed.message };
   if (!parsed.tld) {
     return {
       domain: parsed.sld,
@@ -259,8 +282,35 @@ export async function lookupWhois(input: string): Promise<WhoisRecord> {
       reason: "Include the extension — for example serverlys.com, not serverlys.",
     };
   }
-  const domain = `${parsed.sld}${parsed.tld}`;
+  /*
+   * A hostname like mail.google.com is not a registration: try the full
+   * name, then its parents, stopping above a public suffix. The first one
+   * the registry knows is the answer (as the reference does for subdomains).
+   */
+  const labels = `${parsed.sld}${parsed.tld}`.split(".");
+  const candidates: string[] = [];
+  for (let i = 0; i <= labels.length - 2; i++) {
+    const name = labels.slice(i).join(".");
+    if (i > 0 && SUFFIXES.has(name)) break;
+    candidates.push(name);
+  }
+  let result: WhoisRecord = {
+    domain: candidates[0],
+    status: "error",
+    reason: "Could not reach the registry.",
+  };
+  for (const name of candidates) {
+    result = await lookupOne(name);
+    if (result.status !== "available") break;
+  }
+  // An unregistered hostname reports its full name, not its last parent.
+  if (result.status === "available") result = { ...result, domain: candidates[0] };
+  if (result.domain.includes("xn--"))
+    result.unicode = domainToUnicode(result.domain) || undefined;
+  return result;
+}
 
+async function lookupOne(domain: string): Promise<WhoisRecord> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
@@ -287,13 +337,7 @@ export async function lookupWhois(input: string): Promise<WhoisRecord> {
       if (!/no rdap service/i.test(notFound?.title ?? ""))
         return { domain, status: "available" };
       const direct = RDAP_DIRECT[domain.split(".").pop()!];
-      if (!direct) {
-        return {
-          domain,
-          status: "unsupported",
-          reason: "This registry does not publish RDAP data.",
-        };
-      }
+      if (!direct) return viaWhois(domain);
       const retry = await fetch(direct + encodeURIComponent(domain), {
         headers: { Accept: "application/rdap+json", "User-Agent": USER_AGENT },
         signal: controller.signal,
@@ -308,13 +352,7 @@ export async function lookupWhois(input: string): Promise<WhoisRecord> {
         };
       return parseRecord(domain, (await retry.json()) as RdapResponse, retry.url);
     }
-    if (res.status === 501 || res.status === 400) {
-      return {
-        domain,
-        status: "unsupported",
-        reason: "This registry does not publish RDAP data.",
-      };
-    }
+    if (res.status === 501 || res.status === 400) return viaWhois(domain);
     if (res.status === 429) {
       return {
         domain,
@@ -343,4 +381,102 @@ export async function lookupWhois(input: string): Promise<WhoisRecord> {
   } finally {
     clearTimeout(timer);
   }
+}
+
+/** Classic WHOIS for registries without RDAP (see whois43.ts). */
+async function viaWhois(domain: string): Promise<WhoisRecord> {
+  const unsupported: WhoisRecord = {
+    domain,
+    status: "unsupported",
+    reason: "This registry does not publish RDAP data.",
+  };
+  const server = await whoisServerFor(domain.split(".").pop()!);
+  if (!server) return unsupported;
+  let text: string;
+  try {
+    text = await whoisQuery(server, domain);
+  } catch {
+    return { domain, status: "error", reason: "The registry did not respond in time." };
+  }
+  const p = parseWhois(text);
+  if (p.available) return { domain, status: "available" };
+  if (!p.fields.size) return { ...unsupported, raw: { whois: text } };
+
+  const one = (...k: string[]) => pick(p, ...k)?.[0];
+  const contacts: WhoisContact[] = [];
+  for (const [role, prefix] of [
+    ["registrant", "registrant"],
+    ["administrative", "admin"],
+    ["technical", "tech"],
+    ["billing", "billing"],
+  ] as const) {
+    const fields = (
+      [
+        ["Name", "name"],
+        ["Organization", "organization"],
+        ["Street", "street"],
+        ["City", "city"],
+        ["State/Province", "state/province"],
+        ["Postal code", "postal code"],
+        ["Country", "country"],
+        ["Phone", "phone"],
+        ["Email", "email"],
+      ] as const
+    )
+      .map(([label, key]) => ({ label, value: one(`${prefix} ${key}`) ?? "" }))
+      .filter((f) => f.value);
+    if (fields.length) contacts.push({ role, fields });
+  }
+  const dnssec = one("dnssec", "signed", "registrar dnssec");
+  return {
+    domain,
+    status: "registered",
+    handle: one("registry domain id", "domain id"),
+    registrar: one(
+      "registrar",
+      "sponsoring registrar",
+      "registrar organization",
+      "registrar name",
+    ),
+    registrarIanaId: one("registrar iana id"),
+    registrarUrl: one("registrar url", "registrar website", "registrar web"),
+    whoisServer: one("registrar whois server"),
+    abuseEmail: one("registrar abuse contact email"),
+    abusePhone: one("registrar abuse contact phone"),
+    registered: isoDate(
+      one("creation date", "created on", "created", "registered", "registration date"),
+    ),
+    updated: isoDate(
+      one("updated date", "last updated", "last update", "changed", "last modified"),
+    ),
+    expires: isoDate(
+      one(
+        "registry expiry date",
+        "registrar registration expiration date",
+        "expiration date",
+        "expiry date",
+        "expire date",
+        "expires",
+      ),
+    ),
+    nameservers: [
+      ...new Set(
+        (
+          pick(
+            p,
+            "name server",
+            "nserver",
+            "name servers",
+            "nameservers",
+            "name servers values",
+            "nameservers values",
+          ) ?? []
+        ).map((n) => n.split(/\s+/)[0].toLowerCase().replace(/\.$/, "")),
+      ),
+    ],
+    epp: (pick(p, "domain status", "status") ?? []).map(eppStatus),
+    dnssec: dnssec ? !/unsigned|no|inactive/i.test(dnssec) : undefined,
+    contacts,
+    raw: { whois: text },
+  };
 }

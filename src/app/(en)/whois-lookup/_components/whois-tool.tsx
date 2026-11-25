@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils";
 import { tc } from "@/i18n/t";
 import { lh } from "@/i18n/href";
 import { billing } from "@/data/company";
-import { addToCart } from "@/lib/domains/cart";
 import { checkDomains } from "@/lib/domains/client";
 import type { Tld } from "@/data/tlds";
 import type { WhoisRecord } from "@/lib/domains/whois";
@@ -45,7 +44,8 @@ function clean(raw: string) {
     .replace(/^[a-z][a-z0-9+.-]*:\/\//, "")
     .split(/[/?#]/)[0]
     .replace(/^www\./, "")
-    .replace(/\.+$/, "");
+    .replace(/\.{2,}/g, ".")
+    .replace(/^\.+|\.+$/g, "");
 }
 
 /** "2027-07-17T20:51:26Z" → "2027-07-17 20:51" (UTC). */
@@ -95,9 +95,18 @@ export function WhoisTool({
       );
       const body = await res.json().catch(() => null);
       if (my !== seq.current) return;
-      if (res.ok && body?.ok)
-        setState({ kind: "done", record: body.record as WhoisRecord });
-      else if (res.status === 429)
+      if (res.ok && body?.ok) {
+        const record = body.record as WhoisRecord;
+        setState({ kind: "done", record });
+        // Show what was actually looked up (google.com for mail.google.com).
+        setInput(record.unicode ?? record.domain);
+        const shown = record.unicode ?? record.domain;
+        if (shown !== domain) {
+          const url = new URL(window.location.href);
+          url.searchParams.set("domain", shown);
+          window.history.replaceState(null, "", url);
+        }
+      } else if (res.status === 429)
         setState({
           kind: "error",
           domain,
@@ -122,10 +131,11 @@ export function WhoisTool({
 
   const submit = useCallback(
     (raw: string, scroll = true) => {
-      const domain = clean(raw);
-      if (!domain) return setFieldError("Enter a domain name, like example.com");
-      if (!domain.includes("."))
-        return setFieldError("Include the extension, for example serverlys.com");
+      let domain = clean(raw);
+      // As the reference: an empty search does nothing, and a bare name is
+      // looked up as .com.
+      if (!domain) return;
+      if (!domain.includes(".")) domain = `${domain}.com`;
       if (!/[^\x00-\x7f]/.test(domain) && !HOST.test(domain))
         return setFieldError("Enter a valid domain name, like example.com");
       setFieldError(null);
@@ -228,6 +238,8 @@ export function WhoisTool({
               <Link
                 key={l.href}
                 href={lh(l.href)}
+                target="_blank"
+                rel="noopener"
                 className="inline-flex items-center gap-2 text-[16px] font-semibold text-primary hover:text-primary-hover"
               >
                 {T(l.label)}
@@ -299,7 +311,9 @@ function Record({ state }: { state: Exclude<LookupState, { kind: "idle" }> }) {
 
       {record?.status === "available" && (
         <Card
-          title={T("{domain} is available", { domain: record.domain })}
+          title={T("{domain} is available", {
+            domain: record.unicode ?? record.domain,
+          })}
           body={T(
             "Good news – no one's claimed this domain yet. Buy it now and start building your online presence.",
           )}
@@ -362,7 +376,7 @@ const ROLE_TITLE: Record<string, string> = {
 
 function RegisteredRecord({ record }: { record: WhoisRecord }) {
   const rows: [string, React.ReactNode][] = [
-    [T("Domain name"), record.domain],
+    [T("Domain name"), record.unicode ?? record.domain],
     ...(record.handle
       ? ([[T("Registry domain ID"), record.handle]] as [string, React.ReactNode][])
       : []),
@@ -376,24 +390,14 @@ function RegisteredRecord({ record }: { record: WhoisRecord }) {
       record.nameservers?.length ? <Lines items={record.nameservers} /> : "–",
     ],
   ];
+  // The reference's six rows, in its order.
   const registrarCandidates: [string, React.ReactNode][] = [
-    [T("Registrar"), record.registrar],
+    [T("Name"), record.registrar],
     [T("IANA ID"), record.registrarIanaId],
-    [
-      T("Website"),
-      record.registrarUrl ? (
-        <a
-          href={record.registrarUrl}
-          target="_blank"
-          rel="noopener noreferrer nofollow"
-          className="text-primary hover:underline"
-        >
-          {record.registrarUrl.replace(/^https?:\/\//, "").replace(/\/$/, "")}
-        </a>
-      ) : undefined,
-    ],
-    [T("Abuse email"), record.abuseEmail],
-    [T("Abuse phone"), record.abusePhone],
+    [T("WHOIS server"), record.whoisServer],
+    [T("Abuse contact email"), record.abuseEmail],
+    [T("Abuse contact phone"), record.abusePhone],
+    [T("Registration expiration date"), when(record.expires)],
   ];
   const registrarRows = registrarCandidates.filter((r) => Boolean(r[1]));
 
@@ -416,15 +420,25 @@ function RegisteredRecord({ record }: { record: WhoisRecord }) {
         <Section title={T("Notice")}>
           <p className="text-[16px] leading-6 text-[#18181a]">
             {T("This domain is registered with {registrar}.", {
-              registrar: record.registrar,
+              registrar: record.registrar.replace(/\.$/, ""),
             })}
           </p>
         </Section>
       )}
       {record.raw && (
-        <Section title={T("Raw RDAP registry data")} last>
-          <pre className="max-h-[560px] overflow-auto rounded-xl bg-[#f6f7fb] p-4 font-mono text-[13px] leading-5 text-[#18181a]">
-            {JSON.stringify(record.raw, null, 2)}
+        <Section
+          title={T(
+            record.raw.whois ? "Raw WHOIS registry data" : "Raw RDAP registry data",
+          )}
+          last
+        >
+          <pre className="max-h-[560px] overflow-auto rounded-xl bg-[#f6f7fb] p-4 font-mono text-[13px] leading-5 whitespace-pre-wrap text-[#18181a]">
+            {record.raw.whois ??
+              JSON.stringify(
+                { registry: record.raw.registry, registrar: record.raw.registrar },
+                null,
+                2,
+              )}
           </pre>
         </Section>
       )}
@@ -477,8 +491,17 @@ function Rows({ rows }: { rows: [string, React.ReactNode][] }) {
     <dl className="grid grid-cols-1 gap-y-1 sm:grid-cols-[minmax(140px,40%)_1fr] sm:gap-x-4 sm:gap-y-3 md:grid-cols-[245px_1fr]">
       {rows.map(([k, v], i) => (
         <div key={k} className="contents">
-          <dt className={cn("text-[14px] leading-5 font-semibold text-[#18181a] sm:mt-0 sm:pt-0.5", i > 0 && "mt-3")}>{k}</dt>
-          <dd className="min-w-0 text-[16px] leading-6 break-words text-[#18181a]">{v}</dd>
+          <dt
+            className={cn(
+              "text-[14px] leading-5 font-semibold text-[#18181a] sm:mt-0 sm:pt-0.5",
+              i > 0 && "mt-3",
+            )}
+          >
+            {k}
+          </dt>
+          <dd className="min-w-0 text-[16px] leading-6 break-words text-[#18181a]">
+            {v}
+          </dd>
         </div>
       ))}
     </dl>
@@ -550,8 +573,8 @@ function Similar({
   useEffect(() => {
     if (!sld || sld.includes(".")) return;
     const ac = new AbortController();
-    // Featured extensions first, then the rest of what we sell; check up to 10.
-    const candidates = pricing.filter((t) => t.tld !== tld).slice(0, 10);
+    // Featured extensions first, then the rest of what we sell; check up to 16 (the API maximum).
+    const candidates = pricing.filter((t) => t.tld !== tld).slice(0, 16);
     const byTld = new Map(pricing.map((t) => [t.tld, t]));
     void checkDomains(
       `${sld}${candidates[0]?.tld ?? ".com"}`,
@@ -603,7 +626,6 @@ function Similar({
 }
 
 function SuggestionRow({ s }: { s: Suggestion | null }) {
-  const [added, setAdded] = useState(false);
   const [busy, setBusy] = useState(false);
   const [tip, setTip] = useState(false);
   if (!s) {
@@ -617,10 +639,8 @@ function SuggestionRow({ s }: { s: Suggestion | null }) {
   const save = s.renew > s.price ? Math.round((1 - s.price / s.renew) * 100) : 0;
   const add = async () => {
     setBusy(true);
-    const ok = await addToCart([s.domain]);
-    setBusy(false);
-    if (ok) setAdded(true);
-    else window.location.href = billing.addDomain(s.domain);
+    // As the reference: straight to checkout with the name in the cart.
+    window.location.href = billing.addDomain(s.domain);
   };
   return (
     <div className="flex items-start justify-between gap-4 border-b border-black/10 p-6">
@@ -660,7 +680,11 @@ function SuggestionRow({ s }: { s: Suggestion | null }) {
               role="tooltip"
               className="absolute top-full left-0 z-10 mt-1 rounded-lg bg-ink-950 px-3 py-1.5 text-[13px] whitespace-nowrap text-white shadow-lg"
             >
-              {T("Renews at ${price}/yr", { price: s.renew.toFixed(2) })}
+              {save > 0
+                ? T(
+                    "Discounted price applies for the first year, then renews at the regular price",
+                  )
+                : T("Renews at ${price}/yr", { price: s.renew.toFixed(2) })}
             </span>
           )}
         </p>
@@ -674,26 +698,12 @@ function SuggestionRow({ s }: { s: Suggestion | null }) {
         <button
           type="button"
           onClick={add}
-          disabled={busy || added}
-          aria-label={
-            added
-              ? T("{domain} is in your cart", { domain: s.domain })
-              : T("Add {domain} to cart", { domain: s.domain })
-          }
-          className={cn(
-            "grid size-12 place-items-center rounded-xl border transition-colors",
-            added
-              ? "border-success bg-success-soft text-success"
-              : "border-primary text-primary hover:bg-brand-50",
-          )}
+          disabled={busy}
+          aria-label={T("Buy now")}
+          title={T("Buy now")}
+          className="grid size-12 place-items-center rounded-xl border border-primary text-primary transition-colors hover:bg-brand-50"
         >
-          {busy ? (
-            <Spinner className="size-5" />
-          ) : added ? (
-            <CheckIcon className="size-5" />
-          ) : (
-            <CartIcon className="size-5" />
-          )}
+          {busy ? <Spinner className="size-5" /> : <CartIcon className="size-5" />}
         </button>
       </div>
     </div>
@@ -739,13 +749,6 @@ function CartIcon({ className }: { className?: string }) {
       <path d="M3 4h2l2.4 11h10.2L20 8H6.2" />
       <circle cx="9" cy="19" r="1.4" />
       <circle cx="17" cy="19" r="1.4" />
-    </svg>
-  );
-}
-function CheckIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} {...st} strokeWidth={2.2}>
-      <path d="m5 12.5 4.5 4.5L19 7" />
     </svg>
   );
 }

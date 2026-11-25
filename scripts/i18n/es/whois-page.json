@@ -105,5 +105,12 @@
 "What is the process for hiding whois information?": "¿Cómo se ocultan los datos WHOIS?",
 "Turn on whois privacy (also called domain privacy or ID protection) at your registrar. With Serverlys it's included free: open the domain in the client area and check that privacy protection is switched on. Personal details for most domains are also redacted by the registry automatically.": "Activa la privacidad WHOIS (también llamada privacidad de dominio o protección de identidad) en tu registrador. Con Serverlys está incluida gratis: abre el dominio en el área de cliente y revisa que la protección de privacidad esté activada. Además, el registro oculta automáticamente los datos personales de la mayoría de los dominios.",
 "Can the whois search tool be used to register domains?": "¿Puedo registrar dominios con la herramienta de búsqueda WHOIS?",
-"Not by itself, as it only reads public records. When a lookup shows a domain is available, use the Buy domain link in the result, or the suggestions next to it, to add it to your cart and register it.": "No directamente, porque solo lee registros públicos. Cuando una consulta muestre que un dominio está disponible, usa el enlace Comprar dominio del resultado o las sugerencias de al lado para agregarlo a tu carrito y registrarlo."
+"Not by itself, as it only reads public records. When a lookup shows a domain is available, use the Buy domain link in the result, or the suggestions next to it, to add it to your cart and register it.": "No directamente, porque solo lee registros públicos. Cuando una consulta muestre que un dominio está disponible, usa el enlace Comprar dominio del resultado o las sugerencias de al lado para agregarlo a tu carrito y registrarlo.",
+"whois|Discounted price applies for the first year, then renews at the regular price": "El precio con descuento aplica el primer año; después se renueva al precio regular",
+"whois|Raw WHOIS registry data": "Datos WHOIS sin procesar del registro",
+"whois|WHOIS server": "Servidor WHOIS",
+"whois|Abuse contact email": "Email de contacto para abusos",
+"whois|Abuse contact phone": "Teléfono de contacto para abusos",
+"whois|Registration expiration date": "Fecha de vencimiento del registro",
+"whois|Buy now": "Comprar ahora"
 }
