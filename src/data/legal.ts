@@ -128,8 +128,15 @@ export const legalDocuments: readonly LegalDocument[] = [
     category: "policy",
     summary:
       "What personal data we hold, why we hold it, and what you can ask us to do about it.",
-    effective: "2026-09-09",
-    related: ["/cookie-policy", "/data-processing-agreement", "/law-enforcement-requests"],
+    effective: "2026-11-25",
+    related: [
+      "/cookie-policy",
+      "/data-processing-agreement",
+      "/law-enforcement-requests",
+      "/ai-services-terms",
+      "/information-security-policy",
+      "/snaply/privacy",
+    ],
   },
   {
     path: "/snaply/privacy",
