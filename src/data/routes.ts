@@ -520,6 +520,16 @@ export const routes: readonly RouteMeta[] = [
     parents: ["/", "/domain-name"],
   },
   {
+    path: "/dns-propagation-checker",
+    name: "DNS propagation checker",
+    group: "tool",
+    built: true,
+    indexable: true,
+    priority: 0.4,
+    changeFrequency: "monthly",
+    parents: ["/", "/domain-name"],
+  },
+  {
     path: "/migrations",
     name: "Migrations",
     group: "commercial",

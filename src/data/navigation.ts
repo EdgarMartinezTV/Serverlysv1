@@ -632,6 +632,7 @@ export const footerNav: readonly NavColumn[] = [
       { label: "Register a domain", href: "/register-domain" },
       { label: "Transfer a domain", href: "/transfer-domain" },
       { label: "WHOIS lookup", href: "/whois-lookup" },
+      { label: "DNS propagation checker", href: "/dns-propagation-checker" },
     ],
   },
   {
