@@ -156,7 +156,7 @@ export default function WebsiteDevelopmentPage() {
           name={HOURS.name}
           summary={HOURS.body}
           price={<Rate blue={false} price={hourly.price} unit={hourly.unit} />}
-          cta={{ label: "Book hours", href: billing.sales }}
+          cta={{ label: "Book hours", href: billing.webDevHourly }}
           listTitle="Good for"
           list={[
             "A fix or a single feature",
@@ -196,7 +196,7 @@ export default function WebsiteDevelopmentPage() {
               ))}
             </ul>
           }
-          cta={{ label: "Set up a retainer", href: billing.sales }}
+          cta={{ label: "Set up a retainer", href: billing.webDevRetainers }}
         />
       </PricingPanel>
       <Faqs id="webdev-faq-heading" items={faqs} />

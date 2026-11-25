@@ -97,6 +97,14 @@ export const billing = {
   /** The cart itself. Carries `#cartItemCount`, which lib/domains/cart reads. */
   viewCart: `${BILLING}/cart.php?a=view`,
   /**
+   * Web development (WHMCS group 13, created 2026-11-25). Hourly = product 47:
+   * one-time, the customer picks the hours ($129 each) on the configure step.
+   * Retainers = products 48/49/50, monthly. Extra hours on an existing service
+   * are the "Extra development hours" add-on (id 2), bought from the client area.
+   */
+  webDevHourly: `${BILLING}/cart.php?a=add&pid=47`,
+  webDevRetainers: `${BILLING}/store/web-development`,
+  /**
    * The transfer cart, prefilled. Same `query` contract as `searchDomain`, and
    * verified the same way: the transfer page fills `#inputTransferDomain` from
    * it. A name that came back registered is not a dead end — it is a transfer
