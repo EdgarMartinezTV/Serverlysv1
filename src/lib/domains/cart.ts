@@ -102,6 +102,7 @@ export async function addToCart(domains: readonly string[]): Promise<boolean> {
     if (!res.ok) return false;
     const count = countFrom(await res.text());
     if (count === null) return false;
+    lastRefresh = Date.now();
     write({ count, added: [...new Set([...state.added, ...domains])] });
     return true;
   } catch {
@@ -109,9 +110,28 @@ export async function addToCart(domains: readonly string[]): Promise<boolean> {
   }
 }
 
+let lastRefresh = 0;
+let inFlight: Promise<void> | null = null;
+
+/**
+ * Re-read the count unless it was read in the last `maxAgeMs`. The header
+ * calls this whenever it is about to show a badge, so a count left in
+ * localStorage after the WHMCS cart was emptied (checkout, an item removed in
+ * the cart, an expired WHMCS session) is corrected instead of showing forever.
+ */
+export function refreshCartCountIfStale(maxAgeMs = 30_000): Promise<void> {
+  if (inFlight) return inFlight;
+  if (Date.now() - lastRefresh < maxAgeMs) return Promise.resolve();
+  inFlight = refreshCartCount().finally(() => {
+    inFlight = null;
+  });
+  return inFlight;
+}
+
 /** Re-read the real count from WHMCS (e.g. after the visitor edited the cart). */
 export async function refreshCartCount(): Promise<void> {
   if (!canAddInPlace()) return;
+  lastRefresh = Date.now();
   try {
     const res = await fetch(billing.viewCart, { credentials: "include", cache: "no-store" });
     const count = res.ok ? countFrom(await res.text()) : null;

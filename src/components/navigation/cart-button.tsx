@@ -1,8 +1,8 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { billing } from "@/data/company";
-import { cartStore } from "@/lib/domains/cart";
+import { cartStore, refreshCartCountIfStale } from "@/lib/domains/cart";
 import { cn } from "@/lib/utils";
 import { t as tx } from "@/i18n/t";
 import { lh } from "@/i18n/href";
@@ -10,7 +10,10 @@ import { lh } from "@/i18n/href";
 /**
  * Header cart, Hostinger-style: an icon with the WHMCS cart count, linking to
  * the cart. The count is what lib/domains/cart last read from WHMCS (set when a
- * name is added from the domain results, re-read on that page's arrival).
+ * name is added from the domain results). Because that number is cached in
+ * localStorage, it is re-checked against the real WHMCS cart whenever a badge
+ * is about to show and when the tab regains focus — otherwise a cart emptied
+ * in WHMCS (checkout, item removed, session expired) left a stale "1" here.
  *
  * Renders nothing until the visitor has something in the cart — the header
  * stays exactly as it was for everyone else, and the server render (count
@@ -18,7 +21,17 @@ import { lh } from "@/i18n/href";
  */
 export function CartButton({ onDark = false }: { onDark?: boolean }) {
   const { count } = useSyncExternalStore(cartStore.subscribe, cartStore.getSnapshot, cartStore.getServerSnapshot);
-  if (count <= 0) return null;
+  const hasItems = count > 0;
+  useEffect(() => {
+    if (!hasItems) return;
+    void refreshCartCountIfStale();
+    const onVisible = () => {
+      if (document.visibilityState === "visible") void refreshCartCountIfStale();
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => document.removeEventListener("visibilitychange", onVisible);
+  }, [hasItems]);
+  if (!hasItems) return null;
   return (
     <a
       href={lh(billing.viewCart)}
