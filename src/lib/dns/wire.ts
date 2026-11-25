@@ -93,9 +93,12 @@ function buildQuery(id: number, name: string, type: string, recursive: boolean, 
   const q = Buffer.alloc(4);
   q.writeUInt16BE(TYPE_CODE[type], 0);
   q.writeUInt16BE(1, 2); // IN
-  // EDNS0 OPT: root name, type 41, UDP size 1232 (the DNS-flag-day value).
+  // EDNS0 OPT: root name, type 41, UDP size 4096. The DNS-flag-day value
+  // (1232) makes resolvers cut big answers (a domain with 20 TXT records is
+  // ~1.7 KB) and send us to TCP, which many ISP resolvers refuse from outside
+  // their network. Asking for 4096 gets the whole answer over UDP from most.
   const options = ecs && /^\d+\.\d+\.\d+\.\d+$/.test(ecs) ? ecsOption(ecs) : Buffer.alloc(0);
-  const opt = Buffer.from([0, 0, 41, 0x04, 0xd0, 0, 0, 0, 0, options.length >> 8, options.length & 0xff]);
+  const opt = Buffer.from([0, 0, 41, 0x10, 0x00, 0, 0, 0, 0, options.length >> 8, options.length & 0xff]);
   return Buffer.concat([header, encodeName(name), q, opt, options]);
 }
 
@@ -281,5 +284,11 @@ export async function query(
   const msg = parse(await overUdp(server, packet, id, timeoutMs));
   if (!msg.tc) return msg;
   const left = Math.max(800, timeoutMs - (Date.now() - started));
-  return parse(await overTcp(server, packet, left));
+  try {
+    return parse(await overTcp(server, packet, left));
+  } catch {
+    // TCP refused or too slow: the cut-short UDP answer (tc still set) is
+    // better than nothing — the caller decides what a partial answer proves.
+    return msg;
+  }
 }

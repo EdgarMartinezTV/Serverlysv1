@@ -220,6 +220,10 @@ async function ask(server: DnsServer, name: string, type: RecordType, expected: 
   // When the name is not a CNAME but the resolver followed one anyway (or the
   // answer is a chain), what matters is the final set of the asked type.
   const values = norm(relevant.map((r) => r.value));
+  if (!values.length && m.tc) {
+    // Truncated with nothing usable in it: we cannot tell what it holds.
+    return { ...base, status: "failed", answer: { kind: "serverError", values: [] }, ttl: null, ms };
+  }
   if (!values.length) {
     return {
       ...base,
@@ -230,9 +234,13 @@ async function ask(server: DnsServer, name: string, type: RecordType, expected: 
     };
   }
   const ttl = Math.min(...relevant.map((r) => r.ttl));
+  // A truncated answer (too big for one packet, TCP refused) holds only part
+  // of the set. If every record in that part is current, the server has the
+  // current records; it just could not send them all.
+  const partialButCurrent = m.tc && values.every((v) => expected.includes(v));
   return {
     ...base,
-    status: same(values, expected) ? "live" : "notLive",
+    status: same(values, expected) || partialButCurrent ? "live" : "notLive",
     answer: { kind: "records", values },
     ttl,
     ms,
