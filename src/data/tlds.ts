@@ -106,6 +106,8 @@ export function tldsInCategory(list: readonly Tld[], category: string): Tld[] {
  * Extensions where a hosting plan bought on annual (or longer) billing makes
  * the domain free for the first year — WHMCS tblproducts.freedomaintlds on
  * every cloud, WordPress and WooCommerce plan, verified with a real cart on
- * 2026-11-01 (Turbo Cloud annual + .com: domain line $0.00).
+ * 2026-11-01 (Turbo Cloud annual + .com: domain line $0.00). Narrowed to
+ * .com/.net/.org/.info on all 14 plans on 2026-11-25 (Edgar) — keep in step
+ * with WHMCS.
  */
-export const FREE_WITH_HOSTING: readonly string[] = [".com", ".net", ".org", ".biz", ".info"];
+export const FREE_WITH_HOSTING: readonly string[] = [".com", ".net", ".org", ".info"];
