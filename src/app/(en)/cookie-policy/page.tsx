@@ -64,6 +64,7 @@ const SECTIONS: readonly LegalSection[] = [
           "Notice and banner state — so a notice you dismissed stays dismissed.",
           "Your domain shortlist, which is held in your own browser so that names you saved survive a page reload. It is not sent to us as a profile.",
           "Chat: the ConvoAI messenger (convoai.cloud, a Serverlys product) keeps a visitor id and your conversation id in your browser's local storage so the conversation is still there when you come back. Your messages are stored by ConvoAI, not in your browser.",
+          "Cart count: when something is in your cart, the billing area sets a cookie (sv_cart) holding only the number of items, so the header can show the cart icon. It is deleted when the cart is empty and expires when you close your browser.",
           "Billing and account session cookies, set when you sign in to the billing area. These identify your session so that you stay signed in, and are required for checkout to function.",
           "Security and abuse-prevention cookies used to protect forms and logins from automated attack.",
         ],

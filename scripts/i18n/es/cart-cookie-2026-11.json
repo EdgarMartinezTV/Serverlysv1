@@ -1,0 +1,3 @@
+{
+ "Cart count: when something is in your cart, the billing area sets a cookie (sv_cart) holding only the number of items, so the header can show the cart icon. It is deleted when the cart is empty and expires when you close your browser.": "Cantidad del carrito: cuando tienes algo en tu carrito, el área de facturación guarda una cookie (sv_cart) que contiene solo la cantidad de artículos, para que el encabezado pueda mostrar el ícono del carrito. Se elimina cuando el carrito queda vacío y caduca al cerrar el navegador."
+}

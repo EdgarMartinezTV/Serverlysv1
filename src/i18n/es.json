@@ -553,6 +553,7 @@
 "Card payments are processed by a PCI-compliant payment provider and card numbers are never stored on our systems or transmitted through them. That is a statement about the payment path, not a claim of certification for Serverlys.":"Los pagos con tarjeta los procesa un proveedor de pagos que cumple con PCI, y los números de tarjeta nunca se guardan en nuestros sistemas ni pasan por ellos. Eso describe el flujo del pago; no es una afirmación de certificación de Serverlys.",
 "Cart (1)":"Carrito (1)",
 "Cart (2)":"Carrito (2)",
+"Cart count: when something is in your cart, the billing area sets a cookie (sv_cart) holding only the number of items, so the header can show the cart icon. It is deleted when the cart is empty and expires when you close your browser.":"Cantidad del carrito: cuando tienes algo en tu carrito, el área de facturación guarda una cookie (sv_cart) que contiene solo la cantidad de artículos, para que el encabezado pueda mostrar el ícono del carrito. Se elimina cuando el carrito queda vacío y caduca al cerrar el navegador.",
 "Cart · 2":"Carrito · 2",
 "Cart,":"Carrito,",
 "Categories of people: your users, customers, employees and contacts — again, determined by you.":"Categorías de personas: tus usuarios, clientes, empleados y contactos; de nuevo, definidas por ti.",

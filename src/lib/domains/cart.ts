@@ -17,15 +17,20 @@ import { billing } from "@/data/company";
  * same cart link — the pre-2026-11-01 behaviour, still correct, just not
  * in place.
  *
- * STATE. `added` (names put in the cart this browser session) is sessionStorage;
- * `count` is localStorage so the header badge survives navigation. Both are
- * hints for the UI only — WHMCS is the cart, and `refreshCartCount()` re-reads
- * it. Everything is wrapped: storage can be unavailable (private mode).
+ * STATE. `count` comes from the `sv_cart` cookie, which a WHMCS hook
+ * (includes/hooks/serverlys_cart_cookie.php) sets on every client-area page —
+ * so a hosting plan added inside WHMCS shows here too, not only domains added
+ * from this site, and an emptied cart deletes it. `added` (names put in the
+ * cart this browser session) is sessionStorage. Both are UI hints only — WHMCS
+ * is the cart, and `refreshCartCount()` re-reads it. Everything is wrapped:
+ * storage can be unavailable (private mode).
  */
 
 type CartState = { count: number; added: readonly string[] };
 
-const COUNT_KEY = "sv-cart-count";
+const COOKIE = "sv_cart";
+/** The old localStorage count (before 2026-11-25). Removed on first read: it went stale. */
+const LEGACY_COUNT_KEY = "sv-cart-count";
 const ADDED_KEY = "sv-cart-added";
 const EMPTY: CartState = { count: 0, added: [] };
 
@@ -35,7 +40,11 @@ const listeners = new Set<() => void>();
 
 function read(): CartState {
   try {
-    const count = Number(localStorage.getItem(COUNT_KEY) ?? 0);
+    const m = /(?:^|;\s*)sv_cart=(\d+)/.exec(document.cookie);
+    const count = m ? Number(m[1]) : 0;
+    try {
+      localStorage.removeItem(LEGACY_COUNT_KEY);
+    } catch {}
     const added = JSON.parse(sessionStorage.getItem(ADDED_KEY) ?? "[]") as unknown;
     return {
       count: Number.isFinite(count) && count > 0 ? Math.floor(count) : 0,
@@ -49,7 +58,12 @@ function read(): CartState {
 function write(next: CartState) {
   state = next;
   try {
-    localStorage.setItem(COUNT_KEY, String(next.count));
+    // WHMCS sets the cookie on the same response that changed the cart; this
+    // keeps it in step when the count came from a re-read.
+    document.cookie =
+      next.count > 0
+        ? `${COOKIE}=${next.count}; path=/; secure; samesite=lax`
+        : `${COOKIE}=; path=/; max-age=0; secure; samesite=lax`;
     sessionStorage.setItem(ADDED_KEY, JSON.stringify(next.added));
   } catch {}
   for (const l of listeners) l();
@@ -62,16 +76,19 @@ export const cartStore = {
       state = read();
     }
     listeners.add(listener);
-    const onStorage = (e: StorageEvent) => {
-      if (e.key === COUNT_KEY) {
-        state = read();
+    // Another tab (e.g. the WHMCS cart) may have changed the cookie.
+    const onVisible = () => {
+      if (document.visibilityState !== "visible") return;
+      const next = read();
+      if (next.count !== state.count) {
+        state = next;
         listener();
       }
     };
-    window.addEventListener("storage", onStorage);
+    document.addEventListener("visibilitychange", onVisible);
     return () => {
       listeners.delete(listener);
-      window.removeEventListener("storage", onStorage);
+      document.removeEventListener("visibilitychange", onVisible);
     };
   },
   getSnapshot: () => state,
