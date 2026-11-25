@@ -438,7 +438,7 @@ export default function SiteGroundAlternativePage() {
             <p className="mt-4 max-w-[60ch] text-body text-fg-secondary">
               Domains follow the same pattern. SiteGround&rsquo;s .com is free or {formatPrice(SG_COM.firstYear)} in
               year one and {formatPrice(SG_COM.regular)} after. A Serverlys .com costs {comRegister} in year one
-              and {comRenew} in every year after, so there is no jump to plan for.
+              and {comRenew} in every year after, and both prices are shown before you buy.
             </p>
           </div>
           <ul className="grid content-start gap-4 sm:grid-cols-2">

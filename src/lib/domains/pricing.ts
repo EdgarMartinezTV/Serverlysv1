@@ -12,9 +12,12 @@ import { whmcsConfig } from "@/lib/env";
  * with the same server-only credentials as the rest of lib/domains. Verified
  * from the production container 2026-11-01: 26 TLDs, register/renew/transfer.
  *
- * FRESHNESS. Cached for PRICING_REVALIDATE seconds, and every page that shows
- * a price sets the same `revalidate`, so the worst case after a WHMCS change
- * is about an hour. Checkout is never affected either way: the cart always
+ * FRESHNESS. Cached for PRICING_REVALIDATE seconds (60). Every page that shows
+ * a price is rendered per request (`dynamic = "force-dynamic"`), never at
+ * build time — the Docker build has no WHMCS credentials, so a build-time
+ * page baked in the static fallback list and served it until the next
+ * revalidation (seen live 2026-11-25: old $14.95 .com after a redeploy). So a
+ * price changed in WHMCS reaches the site within a minute. Checkout is never affected either way: the cart always
  * charges the WHMCS price, and availability results carry the price WHMCS
  * returned for that exact lookup.
  *
@@ -24,16 +27,20 @@ import { whmcsConfig } from "@/lib/env";
  * failure is never cached for an hour.
  *
  * MERGE RULES.
- *   - A TLD in both: WHMCS prices win; the note, `suggest` flag and order come
- *     from data/tlds.ts.
- *   - In WHMCS only (newly added for sale): appended, sorted by price, with no
- *     note and suggest=false — it appears in the full price table.
+ *   - ORDER is WHMCS's: GetTLDPricing returns TLDs in the Domain Pricing list
+ *     order (the up/down arrows in the admin). The first eight are the
+ *     featured set (hero chips, search dropdown, popular rail), and the first
+ *     five are the default-extension chips — so whatever sits at the top of
+ *     that list in WHMCS (kept in step with Spotlight TLDs) is what the site
+ *     features. No code change to re-feature a TLD.
+ *   - Prices always come from WHMCS. data/tlds.ts only adds its `note` (and
+ *     categories when WHMCS sends none).
  *   - In data/tlds.ts only (removed from sale in WHMCS): dropped. A price for
  *     something the cart will not sell is worse than no price.
  */
 
 /** Seconds. Pages that render prices export this same number as `revalidate`. */
-export const PRICING_REVALIDATE = 3600;
+export const PRICING_REVALIDATE = 60;
 
 export type TldPricing = {
   /** Every TLD on sale, featured first. */
@@ -45,6 +52,7 @@ export type TldPricing = {
 };
 
 const FEATURED_COUNT = 8;
+const SUGGEST_COUNT = 5;
 const FETCH_TIMEOUT_MS = 5_000;
 
 type WhmcsTld = {
@@ -60,31 +68,30 @@ function money(value: string | undefined): number | null {
   return Number.isFinite(n) && n > 0 ? n : null;
 }
 
-/** Exported for tests: pure merge of a GetTLDPricing payload onto the static list. */
+/** Exported for tests: pure merge of a GetTLDPricing payload onto the static metadata. */
 export function mergePricing(pricing: Record<string, WhmcsTld>): Tld[] {
-  const live = new Map<string, { price: number; renew: number; transfer?: number; categories?: readonly string[] }>();
+  const meta = new Map(STATIC_TLDS.map((t) => [t.tld, t]));
+  const out: Tld[] = [];
   for (const [key, entry] of Object.entries(pricing)) {
     const price = money(entry.register?.["1"]);
-    if (price === null) continue; // not sold for a 1-year term
+    if (price === null) continue; // not sold for a 1-year term (e.g. .ai, 2-year minimum)
+    const tld = `.${key.replace(/^\./, "").toLowerCase()}`;
     const renew = money(entry.renew?.["1"]) ?? price;
     const transfer = money(entry.transfer?.["1"]);
-    const categories = Array.isArray(entry.categories) && entry.categories.length ? entry.categories : undefined;
-    live.set(`.${key.replace(/^\./, "").toLowerCase()}`, {
+    const categories = Array.isArray(entry.categories) && entry.categories.length ? entry.categories : meta.get(tld)?.categories;
+    const note = meta.get(tld)?.note;
+    out.push({
+      tld,
       price,
       renew,
       ...(transfer !== null && { transfer }),
       ...(categories && { categories }),
+      ...(note && { note }),
+      // WHMCS list order decides: the top five are the default-extension chips.
+      suggest: out.length < SUGGEST_COUNT,
     });
   }
-
-  const known = STATIC_TLDS.filter((t) => live.has(t.tld)).map((t) => ({ ...t, ...live.get(t.tld)! }));
-  const knownSet = new Set(known.map((t) => t.tld));
-  const added = [...live.entries()]
-    .filter(([tld]) => !knownSet.has(tld))
-    .map(([tld, p]) => ({ tld, ...p, suggest: false }))
-    .sort((a, b) => a.price - b.price);
-
-  return [...known, ...added];
+  return out;
 }
 
 /** `apiUrl` is an argument so it is part of the cache key: pointing the site at a
@@ -114,7 +121,7 @@ async function fetchWhmcsPricing(apiUrl: string): Promise<Tld[]> {
   return merged;
 }
 
-const cachedWhmcsPricing = unstable_cache(fetchWhmcsPricing, ["tld-pricing-v2"], {
+const cachedWhmcsPricing = unstable_cache(fetchWhmcsPricing, ["tld-pricing-v3"], {
   revalidate: PRICING_REVALIDATE,
   tags: ["tld-pricing"],
 });

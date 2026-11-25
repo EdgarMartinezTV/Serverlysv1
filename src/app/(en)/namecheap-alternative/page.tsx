@@ -207,7 +207,7 @@ const NAMECHEAP_STRENGTHS = [
   },
   {
     title: "You are registering or transferring a .com",
-    body: `Namecheap's first-year .com is ${formatPrice(NC_COM_PRICE.firstYear)}, or ${formatPrice(NC_COM_PRICE.newCustomer)} for a new customer with a promo code, and a transfer in is ${formatPrice(NC_COM_PRICE.transfer)}. Ours is ${comRegister} for either. Check the renewal before you decide: theirs is ${formatPrice(NC_COM_PRICE.renew)}, ours ${comRenew}.`,
+    body: `Namecheap's first-year .com is ${formatPrice(NC_COM_PRICE.firstYear)}, or ${formatPrice(NC_COM_PRICE.newCustomer)} for a new customer with a promo code, and a transfer in is ${formatPrice(NC_COM_PRICE.transfer)}. Ours is ${comRegister} to register and ${comTransfer} to transfer. Check the renewal before you decide: theirs is ${formatPrice(NC_COM_PRICE.renew)}, ours ${comRenew}.`,
   },
   {
     title: "You want privacy guaranteed for life",

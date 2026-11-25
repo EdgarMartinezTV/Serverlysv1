@@ -440,7 +440,7 @@ export default function GoDaddyAlternativePage() {
               Domains follow the same pattern. A one-cent first year is a real saving, but it comes with a{" "}
               {GD_COM_PRICE.minYears}-year purchase and {formatPrice(GD_COM_PRICE.additionalYear)} for each
               further year. A Serverlys .com costs {comRegister} in year one and {comRenew} in every year
-              after, so there is no jump to plan for.
+              after, with no multi-year purchase required, and both prices are shown before you buy.
             </p>
           </div>
           <ul className="grid content-start gap-4 sm:grid-cols-2">

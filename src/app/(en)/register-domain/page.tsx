@@ -40,7 +40,9 @@ export async function generateMetadata() {
 }
 
 /** Prices come from WHMCS (lib/domains/pricing); re-render at the same cadence. */
-export const revalidate = 3600;
+// Rendered per request so domain prices are always the live WHMCS ones
+// (lib/domains/pricing caches the WHMCS call for 60s).
+export const dynamic = "force-dynamic";
 
 export default async function RegisterDomainPage() {
   const faqs = faqsFor(PATH);

@@ -88,7 +88,9 @@ function Cancel({ className }: { className?: string }) {
 const TRUST_ICONS = { shield: ShieldCheck, support: Support, cancel: Cancel } as const;
 
 /** The Domains tab shows WHMCS prices (lib/domains/pricing); re-render hourly. */
-export const revalidate = 3600;
+// Rendered per request so domain prices are always the live WHMCS ones
+// (lib/domains/pricing caches the WHMCS call for 60s).
+export const dynamic = "force-dynamic";
 
 export default async function PricingPage() {
   const { featured } = await getTldPricing();

@@ -30,7 +30,9 @@ export const metadata = pageMetadata({
 });
 
 /** Prices for the "Want similar domain name?" card come from WHMCS; hourly. */
-export const revalidate = 3600;
+// Rendered per request so domain prices are always the live WHMCS ones
+// (lib/domains/pricing caches the WHMCS call for 60s).
+export const dynamic = "force-dynamic";
 
 const FAQ_TEXT = FAQS.map((f) => ({
   question: f.q,

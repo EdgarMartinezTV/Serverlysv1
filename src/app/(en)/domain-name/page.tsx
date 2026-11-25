@@ -43,7 +43,9 @@ const DESCRIPTION =
 export const metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH });
 
 /** Prices come from WHMCS (lib/domains/pricing); re-render at the same cadence. */
-export const revalidate = 3600;
+// Rendered per request so domain prices are always the live WHMCS ones
+// (lib/domains/pricing caches the WHMCS call for 60s).
+export const dynamic = "force-dynamic";
 
 const BREADCRUMB = [
   { name: "Home", path: "/" },

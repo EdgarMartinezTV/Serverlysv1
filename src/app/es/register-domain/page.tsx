@@ -7,7 +7,9 @@ export async function generateMetadata() {
   setLocale("es");
   return esMetadata(await enMetadata(), "/register-domain");
 }
-export const revalidate = 3600;
+// Rendered per request so domain prices are always the live WHMCS ones
+// (lib/domains/pricing caches the WHMCS call for 60s).
+export const dynamic = "force-dynamic";
 
 export default function SpanishPage() {
   setLocale("es");

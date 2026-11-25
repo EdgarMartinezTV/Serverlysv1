@@ -12,7 +12,8 @@ import { breadcrumbTrail } from "@/data/routes";
 import { billing } from "@/data/company";
 import { formatPrice } from "@/data/pricing";
 import type { Faq } from "@/data/faqs";
-import { PRICES_AS_OF, relatedTlds, tldBySlug, tldCatalog, type TldEntry } from "@/data/tld-catalog";
+import { PRICES_AS_OF, type TldEntry } from "@/data/tld-catalog";
+import { liveCatalog, liveTldBySlug } from "@/lib/domains/catalog-live";
 
 /**
  * One page per domain extension, as hostinger.com does with /tld/<ext>.
@@ -35,9 +36,8 @@ import { PRICES_AS_OF, relatedTlds, tldBySlug, tldCatalog, type TldEntry } from 
  * typographic (’): the SEO audit matches questions against raw HTML, where a
  * straight quote is escaped.
  */
-export function generateStaticParams() {
-  return tldCatalog.map((t) => ({ tld: t.slug }));
-}
+// Rendered per request so prices are the live WHMCS ones (see lib/domains/catalog-live).
+export const dynamic = "force-dynamic";
 
 const pathFor = (t: TldEntry) => `/tld/${t.slug}`;
 
@@ -230,7 +230,7 @@ const PAIRINGS = [
 
 export async function generateMetadata(props: PageProps<"/tld/[tld]">) {
   const { tld } = await props.params;
-  const t = tldBySlug(tld);
+  const t = await liveTldBySlug(tld);
   if (!t) return {};
   return pageMetadata({
     title: `.${t.slug} Domain: Buy & Register for ${formatPrice(t.register)}/yr | Serverlys`,
@@ -243,13 +243,14 @@ const linkClass = "text-primary underline underline-offset-4";
 
 export default async function TldPage(props: PageProps<"/tld/[tld]">) {
   const { tld } = await props.params;
-  const t = tldBySlug(tld);
+  const t = await liveTldBySlug(tld);
   if (!t) notFound();
 
   const dot = `.${t.slug}`;
   const path = pathFor(t);
   const faqs = faqsFor(t);
-  const related = relatedTlds(t);
+  const catalog = await liveCatalog();
+  const related = t.related.map((s) => catalog.find((e) => e.slug === s)).filter((e): e is TldEntry => Boolean(e));
 
   return (
     <>

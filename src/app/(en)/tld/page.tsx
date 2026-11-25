@@ -8,6 +8,7 @@ import { breadcrumbTrail } from "@/data/routes";
 import { billing } from "@/data/company";
 import { formatPrice } from "@/data/pricing";
 import { PRICES_AS_OF, tldCatalog } from "@/data/tld-catalog";
+import { liveCatalog } from "@/lib/domains/catalog-live";
 
 const PATH = "/tld";
 
@@ -22,9 +23,11 @@ export const metadata = pageMetadata({
  * extensions list). Links every /tld/<ext> page and shows register and renewal
  * prices together, which is the comparison people come here to make.
  */
-const SORTED = [...tldCatalog].sort((a, b) => a.slug.localeCompare(b.slug));
+// Rendered per request so prices are the live WHMCS ones (see lib/domains/catalog-live).
+export const dynamic = "force-dynamic";
 
-export default function TldIndexPage() {
+export default async function TldIndexPage() {
+  const SORTED = (await liveCatalog()).sort((a, b) => a.slug.localeCompare(b.slug));
   return (
     <>
       <JsonLd data={breadcrumbGraph(breadcrumbTrail(PATH))} />

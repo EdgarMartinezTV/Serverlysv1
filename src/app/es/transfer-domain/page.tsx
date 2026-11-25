@@ -4,7 +4,9 @@ import { setLocale } from "@/i18n/rsc";
 
 /** /es/transfer-domain — Spanish twin of /transfer-domain: same page, rendered with the Spanish dictionary. */
 export const metadata = esMetadata(enMetadata, "/transfer-domain");
-export const revalidate = 3600;
+// Rendered per request so domain prices are always the live WHMCS ones
+// (lib/domains/pricing caches the WHMCS call for 60s).
+export const dynamic = "force-dynamic";
 
 export default function SpanishPage() {
   setLocale("es");

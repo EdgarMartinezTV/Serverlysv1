@@ -36,7 +36,7 @@
  *   renewed ICANN registry agreement (registrar notices: Name.com, INWX).
  * - .me: second-level names open worldwide, no nexus (registrar policy pages).
  */
-export const PRICES_AS_OF = "2026-10-26";
+export const PRICES_AS_OF = "2026-11-25";
 
 export type TldEntry = {
   /** Without the leading dot; also the URL slug. */
@@ -66,7 +66,7 @@ export type TldEntry = {
 export const tldCatalog: readonly TldEntry[] = [
   {
     slug: "com",
-    register: 14.95, transfer: 14.95, renew: 14.95,
+    register: 17.95, transfer: 20.95, renew: 20.95,
     forWhom: "Any business that wants the address customers type by default.",
     about: "The original commercial extension, one of the first generic top-level domains created in 1985, and still the one people assume when they hear a business name. It is open to anyone, anywhere, for any purpose: you do not need to be a company. Because it is the default, short dictionary .com names are rarely unregistered, so most new .com names combine two words or add a qualifier.",
     uses: [
@@ -84,7 +84,7 @@ export const tldCatalog: readonly TldEntry[] = [
   },
   {
     slug: "net",
-    register: 16.95, transfer: 16.95, renew: 16.95,
+    register: 18.95, transfer: 23.95, renew: 23.95,
     forWhom: "Tech, network and internet businesses, or a fallback when the .com is taken.",
     about: "One of the original 1985 generic extensions, created for network infrastructure providers and now used by every kind of business. It is open to anyone with no residency or purpose requirement. Like .com it is run by Verisign, and it is a familiar second choice when the .com of a name belongs to someone else.",
     uses: [
@@ -102,7 +102,7 @@ export const tldCatalog: readonly TldEntry[] = [
   },
   {
     slug: "org",
-    register: 16.95, transfer: 16.95, renew: 16.95,
+    register: 19.95, transfer: 24.95, renew: 24.95,
     forWhom: "Non-profits, communities, open-source projects and causes.",
     about: "One of the original 1985 generic extensions, long associated with non-profit organisations, though registration is open to anyone and no proof of status is asked for. Readers tend to read a .org as a mission rather than a shop. The registry is operated by Public Interest Registry.",
     uses: [
@@ -120,7 +120,7 @@ export const tldCatalog: readonly TldEntry[] = [
   },
   {
     slug: "biz",
-    register: 21.95, transfer: 21.95, renew: 21.95,
+    register: 30.95, transfer: 37.95, renew: 37.95,
     forWhom: "Businesses that want a clearly commercial address when the .com is gone.",
     about: "Introduced in 2001 as a generic extension specifically for business. Its registry agreement with ICANN restricts it to names used, or intended to be used, primarily for bona fide business or commercial purposes, which makes it one of the few generic extensions with a stated purpose.",
     rules: "Names must be used, or intended to be used, primarily for bona fide business or commercial purposes. Registering a name only to sell, trade or lease it does not count as business use under the registry’s rules.",
@@ -139,7 +139,7 @@ export const tldCatalog: readonly TldEntry[] = [
   },
   {
     slug: "info",
-    register: 27.95, transfer: 27.95, renew: 27.95,
+    register: 37.95, transfer: 46.95, renew: 46.95,
     forWhom: "Guides, resource sites and informational projects.",
     about: "A generic extension launched in 2001 for informational sites, among the first open extensions added after the originals. It is open to anyone with no purpose requirement, and it suits sites whose job is to explain rather than sell.",
     uses: [
@@ -157,7 +157,7 @@ export const tldCatalog: readonly TldEntry[] = [
   },
   {
     slug: "cloud",
-    register: 26.95, transfer: 26.95, renew: 26.95,
+    register: 36.95, transfer: 54.95, renew: 54.95,
     forWhom: "SaaS products, cloud services and software companies.",
     about: "A generic extension aimed at cloud and software businesses, open to anyone. It is short and descriptive for anything delivered over the internet, from a SaaS product to a self-hosted personal server.",
     uses: [
@@ -175,7 +175,7 @@ export const tldCatalog: readonly TldEntry[] = [
   },
   {
     slug: "eu",
-    register: 9.95, transfer: 9.95, renew: 9.95,
+    register: 11.95, transfer: 15.95, renew: 15.95,
     country: "the European Union",
     forWhom: "Businesses and people based in the EU who want a European identity.",
     about: "The top-level domain of the European Union, run by the non-profit registry EURid under EU regulation. It signals a European presence to customers across the member states rather than in one country. EURid also runs versions of the extension in Greek and Cyrillic script for names written in those alphabets.",
@@ -201,7 +201,7 @@ export const tldCatalog: readonly TldEntry[] = [
   },
   {
     slug: "io",
-    register: 69.95, transfer: 69.95, renew: 69.95,
+    register: 80.95, transfer: 95.95, renew: 95.95,
     country: "the British Indian Ocean Territory",
     forWhom: "Tech start-ups, developer tools and software products.",
     about: "Technically the country code of the British Indian Ocean Territory, adopted by the tech industry because I/O reads as input/output. It is open to registrants anywhere, with no residency requirement. It costs several times what a .com does every year, which is worth weighing before you commit a brand to it.",
@@ -220,7 +220,7 @@ export const tldCatalog: readonly TldEntry[] = [
   },
   {
     slug: "store",
-    register: 69.95, transfer: 69.95, renew: 69.95,
+    register: 75.95, transfer: 75.95, renew: 75.95,
     forWhom: "Online shops that want the address to say what they do.",
     about: "A generic extension for retail and ecommerce, open to anyone. It tells a visitor they can buy something before the page loads, and it works for shops with a physical counter as well as online-only brands.",
     uses: [
@@ -238,7 +238,7 @@ export const tldCatalog: readonly TldEntry[] = [
   },
   {
     slug: "online",
-    register: 44.95, transfer: 44.95, renew: 44.95,
+    register: 50.95, transfer: 50.95, renew: 50.95,
     forWhom: "Any business whose main presence is on the web.",
     about: "A generic extension open to anyone, often chosen when the .com of a short brand name is taken. It reads as a plain statement that the business is on the web, which suits service firms and creators alike.",
     uses: [
@@ -256,7 +256,7 @@ export const tldCatalog: readonly TldEntry[] = [
   },
   {
     slug: "pro",
-    register: 31.95, transfer: 31.95, renew: 31.95,
+    register: 44.95, transfer: 54.95, renew: 54.95,
     forWhom: "Consultants, freelancers and professional practices.",
     about: "A generic extension positioned for professionals. Until November 2015 it was restricted to licensed professionals; since the registry agreement was renewed that year, anyone can register one. It reads as credentials-first, which suits service businesses built on expertise.",
     uses: [
@@ -274,7 +274,7 @@ export const tldCatalog: readonly TldEntry[] = [
   },
   {
     slug: "shop",
-    register: 41.95, transfer: 41.95, renew: 41.95,
+    register: 49.95, transfer: 59.95, renew: 59.95,
     forWhom: "Stores of any size, from a single product to a full catalogue.",
     about: "A generic extension for retail, open to anyone. The English word is understood far beyond English-speaking countries, which makes it a clear signal for a store selling internationally.",
     uses: [
@@ -292,7 +292,7 @@ export const tldCatalog: readonly TldEntry[] = [
   },
   {
     slug: "xyz",
-    register: 16.95, transfer: 16.95, renew: 16.95,
+    register: 23.95, transfer: 28.95, renew: 28.95,
     forWhom: "Side projects, new brands and anyone who wants a short, available name.",
     about: "A generic extension with no implied industry, which makes short names far easier to find than on .com. It is open to anyone, at the same yearly price as .net.",
     uses: [
@@ -310,7 +310,7 @@ export const tldCatalog: readonly TldEntry[] = [
   },
   {
     slug: "live",
-    register: 35.95, transfer: 35.95, renew: 35.95,
+    register: 44.95, transfer: 52.95, renew: 52.95,
     forWhom: "Streamers, events, venues and live entertainment.",
     about: "A generic extension for anything that happens in real time: streams, shows, events and broadcasts. It is open to anyone, and it suits names that should read as happening now.",
     uses: [
@@ -328,7 +328,7 @@ export const tldCatalog: readonly TldEntry[] = [
   },
   {
     slug: "club",
-    register: 22.95, transfer: 22.95, renew: 22.95,
+    register: 28.95, transfer: 34.95, renew: 34.95,
     forWhom: "Clubs, memberships, fan groups and communities.",
     about: "A generic extension for member-based groups, from sports clubs to subscription communities. It is open to anyone.",
     uses: [
@@ -346,7 +346,7 @@ export const tldCatalog: readonly TldEntry[] = [
   },
   {
     slug: "site",
-    register: 46.95, transfer: 46.95, renew: 46.95,
+    register: 53.95, transfer: 53.95, renew: 53.95,
     forWhom: "Portfolios, small business sites and personal projects.",
     about: "A plain, generic extension that says exactly what it is. It is open to anyone, and because it implies no industry it fits any kind of website.",
     uses: [
@@ -364,7 +364,7 @@ export const tldCatalog: readonly TldEntry[] = [
   },
   {
     slug: "me",
-    register: 38.95, transfer: 38.95, renew: 38.95,
+    register: 26.95, transfer: 28.95, renew: 28.95,
     country: "Montenegro",
     forWhom: "Personal brands, CVs, portfolios and about-me pages.",
     about: "The country code of Montenegro. Second-level names such as yourname.me are open to registrants worldwide with no residency requirement, and the extension is widely used for personal sites because it reads as a word.",
@@ -383,7 +383,7 @@ export const tldCatalog: readonly TldEntry[] = [
   },
   {
     slug: "tv",
-    register: 44.95, transfer: 44.95, renew: 44.95,
+    register: 42.95, transfer: 50.95, renew: 50.95,
     country: "Tuvalu",
     forWhom: "Video creators, channels, studios and media brands.",
     about: "The country code of Tuvalu, open to registrants worldwide and adopted by video and broadcast brands because it reads as television. Some short and dictionary .tv names are classed as premium by the registry and cost more than the standard price.",
@@ -402,7 +402,7 @@ export const tldCatalog: readonly TldEntry[] = [
   },
   {
     slug: "rocks",
-    register: 21.95, transfer: 21.95, renew: 21.95,
+    register: 28.95, transfer: 30.95, renew: 30.95,
     forWhom: "Bands, creative projects and brands with a sense of humour.",
     about: "A generic extension that turns a name into a phrase. It is open to anyone, and it suits projects that want to sound informal rather than corporate.",
     uses: [
@@ -420,7 +420,7 @@ export const tldCatalog: readonly TldEntry[] = [
   },
   {
     slug: "name",
-    register: 11.95, transfer: 11.95, renew: 11.95,
+    register: 12.95, transfer: 15.95, renew: 15.95,
     forWhom: "Individuals who want a site or email address at their own name.",
     about: "A generic extension created for personal names, such as firstnamelastname.name. It is open to anyone, and it is one of the least expensive extensions the store sells.",
     uses: [
@@ -438,7 +438,7 @@ export const tldCatalog: readonly TldEntry[] = [
   },
   {
     slug: "blog",
-    register: 34.95, transfer: 34.95, renew: 34.95,
+    register: 32.95, transfer: 39.95, renew: 39.95,
     forWhom: "Writers, publications and company blogs.",
     about: "A generic extension for blogs and publishing, open to anyone. It works as a standalone blog address or alongside a main business domain.",
     uses: [
@@ -456,7 +456,7 @@ export const tldCatalog: readonly TldEntry[] = [
   },
   {
     slug: "us",
-    register: 11.95, transfer: 11.95, renew: 11.95,
+    register: 11.95, transfer: 14.95, renew: 14.95,
     country: "the United States",
     forWhom: "Businesses and people based in the United States.",
     about: "The country-code extension for the United States, run under a contract with the US Department of Commerce. It is short, inexpensive, and a clear signal of a US presence.",
@@ -482,7 +482,7 @@ export const tldCatalog: readonly TldEntry[] = [
   },
   {
     slug: "design",
-    register: 61.95, transfer: 61.95, renew: 61.95,
+    register: 82.95, transfer: 98.95, renew: 98.95,
     forWhom: "Designers, studios, agencies and creative portfolios.",
     about: "A generic extension for design work of any kind, from graphic and product design to interiors and fashion. It is open to anyone.",
     uses: [
@@ -500,7 +500,7 @@ export const tldCatalog: readonly TldEntry[] = [
   },
   {
     slug: "host",
-    register: 116.95, transfer: 116.95, renew: 116.95,
+    register: 170.95, transfer: 202.95, renew: 202.95,
     forWhom: "Hosting companies, servers and infrastructure projects.",
     about: "A generic extension for hosting and infrastructure, open to anyone. It is the most expensive extension the store sells, which keeps short names more available than on cheaper extensions.",
     uses: [
@@ -518,7 +518,7 @@ export const tldCatalog: readonly TldEntry[] = [
   },
   {
     slug: "social",
-    register: 41.95, transfer: 41.95, renew: 41.95,
+    register: 48.95, transfer: 53.95, renew: 53.95,
     forWhom: "Communities, social projects and agencies that run social media.",
     about: "A generic extension for anything built around people talking to each other. It is open to anyone.",
     uses: [
@@ -536,7 +536,7 @@ export const tldCatalog: readonly TldEntry[] = [
   },
   {
     slug: "website",
-    register: 39.95, transfer: 39.95, renew: 39.95,
+    register: 37.95, transfer: 37.95, renew: 37.95,
     forWhom: "Businesses that want an unmistakable web address.",
     about: "A generic extension that names itself. It is open to anyone, and short names are often still unregistered.",
     uses: [
