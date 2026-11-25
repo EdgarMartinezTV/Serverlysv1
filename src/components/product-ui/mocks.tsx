@@ -1,6 +1,7 @@
 import { AppFrame, BrowserFrame, PhoneFrame } from "./frame";
 import { NavIcon } from "@/components/navigation/nav-icons";
 import { cn } from "@/lib/utils";
+import { priceFor } from "@/data/tlds";
 import { MockPhoto } from "@/components/ui/mock-photo";
 import { t as tx } from "@/i18n/t";
 
@@ -101,13 +102,16 @@ export function HostingMock({ className }: { className?: string }) {
 
 /** Domain search results, mirroring the real tool on /register-domain. */
 export function DomainMock({ className }: { className?: string }) {
-  const rows = [
-    [".com", "$14.95", "available"],
-    [".eu", "$9.95", "available"],
-    [".io", "$69.95", "available"],
-    [".net", "$16.95", "available"],
-    [".org", "$16.95", "taken"],
-  ] as const;
+  // Prices come from the site's TLD list (kept in step with WHMCS), never typed here.
+  const rows = (
+    [
+      [".com", "available"],
+      [".io", "available"],
+      [".net", "available"],
+      [".org", "available"],
+      [".info", "taken"],
+    ] as const
+  ).map(([tld, state]) => [tld, `$${(priceFor(tld) ?? 0).toFixed(2)}`, state] as const);
   return (
     <BrowserFrame url="serverlys.com/register-domain" className={className}>
       <div className="p-4 sm:p-5">
