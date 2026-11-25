@@ -131,6 +131,7 @@ export async function POST(request: Request) {
   const pricing = await getTldPricing();
   const tldSet = new Set(pricing.all.map((t) => t.tld));
   const livePrice = new Map(pricing.all.map((t) => [t.tld, t.price]));
+  const liveRenew = new Map(pricing.all.map((t) => [t.tld, t.renew]));
   const popular = pricing.all.filter((t) => t.categories?.includes("Popular"));
   const suggestionTlds = (exclude: string) =>
     (popular.length ? popular : pricing.all.filter((t) => t.suggest)).filter((t) => t.tld !== exclude);
@@ -172,9 +173,11 @@ export async function POST(request: Request) {
     // "unsupported", whatever the registry says.
     const results = checked.map((r): DomainResult => {
       if (!r.tld || r.status === "unsupported") return r;
+      // Real time: the price WHMCS returned for this exact lookup wins.
+      if (r.livePrice && r.price !== null) return { ...r, renew: r.renew ?? liveRenew.get(r.tld) ?? null };
       const price = livePrice.get(r.tld);
       if (price === undefined) return r.source === "rdap" ? { ...r, status: "unsupported", price: null } : r;
-      return { ...r, price };
+      return { ...r, price, renew: liveRenew.get(r.tld) ?? null };
     });
     const outcome: CheckOutcome = { ok: true, results, source: provider.name };
     return NextResponse.json(outcome, {

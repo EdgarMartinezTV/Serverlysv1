@@ -217,7 +217,7 @@ function OfferCard({
         </div>
         {price !== null && (
           <div className="flex w-full shrink-0 flex-wrap items-center justify-end gap-3 sm:w-auto sm:flex-nowrap">
-            <PriceBlock price={tx(price)} renew={tx(tld?.renew) ?? null} large />
+            <PriceBlock price={tx(price)} renew={tx(result.renew ?? tld?.renew) ?? null} large />
             <SaveButton domain={result.domain} saved={tx(saved)} onToggle={onToggleSave} />
             {result.source === "whmcs" ? (
               <AddButton domains={[result.domain]} label={tx("Make it yours")} primary onAdded={onAdded} srName={tx(result.domain)} />
@@ -383,7 +383,7 @@ function OptionRow({
       </div>
       {sellable && (
         <div className="flex w-full shrink-0 flex-wrap items-center justify-end gap-3 sm:w-auto sm:flex-nowrap">
-          <PriceBlock price={tx(result.price!)} renew={tx(tld?.renew) ?? null} />
+          <PriceBlock price={tx(result.price!)} renew={tx(result.renew ?? tld?.renew) ?? null} />
           <SaveButton domain={result.domain} saved={tx(saved)} onToggle={onToggleSave} />
           {result.source === "whmcs" ? (
             <AddButton domains={[result.domain]} label={tx("Get it")} onAdded={onAdded} srName={tx(result.domain)} />

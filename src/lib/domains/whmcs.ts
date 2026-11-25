@@ -136,7 +136,7 @@ type CartResult = {
   isRegistered?: boolean;
   isValidDomain?: boolean;
   isPremium?: boolean;
-  pricing?: Record<string, { register?: string }>;
+  pricing?: Record<string, { register?: string; renew?: string }>;
 };
 
 async function lookup(
@@ -195,7 +195,12 @@ function toRow(domain: string, results: CartResult[] | null): DomainResult | nul
   if (!hit || hit.isValidDomain === false) {
     return { ...row, price: null, status: "unsupported" };
   }
-  const price = parsePrice(hit.pricing?.["1"]?.register) ?? row.price;
+  const livePrice = parsePrice(hit.pricing?.["1"]?.register);
+  const price = livePrice ?? row.price;
+  if (livePrice !== null) {
+    row.renew = parsePrice(hit.pricing?.["1"]?.renew);
+    row.livePrice = true;
+  }
   if (hit.isPremium) {
     return {
       ...row,
@@ -244,7 +249,7 @@ async function safeLookup(base: string, domain: string, type: "domain" | "spotli
 const BATCH_PARK_MS = 10 * 60_000;
 let batchParkedUntil = 0;
 
-type BatchRow = { domain?: string; status?: string; premium?: boolean };
+type BatchRow = { domain?: string; status?: string; premium?: boolean; price?: number | null; renew?: number | null };
 
 async function batchLookup(
   base: string,
@@ -277,7 +282,12 @@ async function batchLookup(
     for (const r of data.results) {
       const domain = (r.domain ?? "").toLowerCase();
       if (!domains.includes(domain)) continue;
-      const row = baseRow(domain);
+      const base = baseRow(domain);
+      // Real-time WHMCS prices from this same request (see serverlys_domaincheck.php).
+      const live = typeof r.price === "number" && r.price > 0;
+      const row = live
+        ? { ...base, price: r.price as number, renew: typeof r.renew === "number" && r.renew > 0 ? r.renew : null, livePrice: true }
+        : base;
       if (r.premium) {
         out.set(domain, {
           ...row,

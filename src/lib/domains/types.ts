@@ -23,6 +23,14 @@ export type DomainResult = {
   source: "whmcs" | "rdap";
   /** Present when status is "unknown", to explain why. */
   reason?: string;
+  /** Yearly renewal, USD, when WHMCS returned it with this lookup. */
+  renew?: number | null;
+  /**
+   * True when `price`/`renew` were read from WHMCS Domain Pricing during this
+   * very lookup (serverlys_domaincheck.php or the cart answer) — the real-time
+   * price. The check route only falls back to its 60s price list when false.
+   */
+  livePrice?: boolean;
 };
 
 export type CheckOutcome =
