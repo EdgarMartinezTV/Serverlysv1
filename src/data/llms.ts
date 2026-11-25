@@ -282,7 +282,7 @@ export const LLMS_SUMMARIES: Record<string, string> = {
   "/restaurant-websites/cost":
     "Guide: what a restaurant website costs in 2026, with sourced price ranges for DIY builders, freelancers, agencies and restaurant platforms, the third-party fees that come on top, and Serverlys' restaurant plan prices.",
   "/website-development":
-    "Custom web development for features, integrations, bookings, payments and fixes an off-the-shelf plugin cannot do: $129/hr, or a monthly retainer at $119/hr (1 hour), $109/hr (3 hours) or $99/hr (5 hours). Not website design — new websites are on /website-design.",
+    "Custom web development for features, integrations, bookings, payments and fixes an off-the-shelf plugin cannot do: $129/hr (paid at checkout), or a monthly retainer at $119/hr (1 hour), $109/hr (3 hours) or $99/hr (5 hours). Extra hours can be added at $129/hr from the client area on an existing web development service. Not website design — new websites are on /website-design.",
   "/site-management": `Website maintenance (ServerCare), billed monthly: ${carePlans
     .map(
       (p) =>

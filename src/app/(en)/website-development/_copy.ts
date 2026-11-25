@@ -99,7 +99,7 @@ export const PLANS = {
   title: "Two ways to work with us",
   lede: "Buy the hours you need for one piece of work, or keep a block of time on standby each month. The more you commit, the lower the rate.",
   footnote:
-    "Charged in full at checkout, plus tax. Every project is scoped in writing before any of it starts.",
+    "Hours are paid at checkout; retainers are billed monthly. Every project is scoped in writing before any of it starts.",
   cards: [
     {
       name: "Serverlys Hours",
@@ -201,7 +201,11 @@ export const FAQS = {
     },
     {
       q: "What does it cost?",
-      a: "A defined project gets a fixed price, or a range with the specific things that would move it. Ongoing capacity is a monthly arrangement. Either way the number arrives with a scope you have read, so you can see exactly what it buys. Nothing starts before you have agreed both.",
+      a: "Work is billed by the hour at $129, paid when you book the hours. Ongoing work can be a monthly retainer instead: 1, 3 or 5 hours a month at $119, $109 or $99 an hour. A larger defined project gets a fixed price, or a range with the specific things that would move it. Either way the number arrives with a scope you have read, so you can see exactly what it buys. Nothing starts before you have agreed both.",
+    },
+    {
+      q: "What if the work needs more hours than I booked?",
+      a: "You add them yourself from your client area: open the web development service, go to Add-ons and choose Extra development hours, at $129 an hour, as many as you need. Nothing extra is charged unless you add it.",
     },
     {
       q: "Do I have to host with Serverlys?",
