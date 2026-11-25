@@ -85,7 +85,7 @@ export const carePlans: readonly CarePlan[] = [
       "Advanced monitoring plus malware removal",
       "Weekly updates",
       "Advanced speed optimization with CDN setup",
-      "24/7 monitoring with alerts and an uptime SLA",
+      "24/7 monitoring with alerts",
       "Priority support by email, chat & phone",
       "Monthly SEO audits with recommendations",
       "4 hours of content updates per month",

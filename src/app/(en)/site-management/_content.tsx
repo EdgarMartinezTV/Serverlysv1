@@ -45,7 +45,7 @@ export const USES = [
   },
   {
     title: "Watched around the clock",
-    body: "24/7 uptime monitoring on every plan, with email alerts on Essential and instant alerts on Plus. Premium adds an uptime SLA, malware removal and automatic removal from weekly scans.",
+    body: "24/7 uptime monitoring on every plan, with email alerts on Essential and instant alerts on Plus. Premium adds malware removal and automatic removal from weekly scans.",
     src: "/mock/care-vet.jpg",
     alt: "A veterinarian sitting with a dog in his clinic",
     position: "center 40%",
@@ -115,7 +115,7 @@ export const GROUPS: FeatureGroup[] = [
     features: [
       [
         "24/7 uptime monitoring",
-        "Email alerts on Essential, instant alerts on Plus, alerts and an uptime SLA on Premium.",
+        "Email alerts on Essential, instant alerts on Plus, advanced monitoring with alerts on Premium.",
       ],
       [
         "Malware scans",
@@ -212,7 +212,7 @@ export const FAQS = [
   {
     question: "Which ServerCare plan do I need?",
     answer:
-      "Essential suits a small site that changes now and then. Plus suits a site that does real business, with bi-weekly updates and chat support. Premium suits sites that cannot go down, with weekly care, malware removal, CDN setup, an uptime SLA and phone support.",
+      "Essential suits a small site that changes now and then. Plus suits a site that does real business, with bi-weekly updates and chat support. Premium suits sites that cannot go down, with weekly care, malware removal, CDN setup and phone support.",
   },
 ].map((f) => ({ ...f, scopes: [PATH] }));
 
