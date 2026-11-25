@@ -81,8 +81,16 @@ export const legalDocuments: readonly LegalDocument[] = [
     category: "agreement",
     summary:
       "The agreement covering every service you buy from us, and the one the others sit under.",
-    effective: "2026-09-09",
-    related: ["/acceptable-use-policy", "/refund-policy", "/privacy-policy"],
+    effective: "2026-11-25",
+    related: [
+      "/acceptable-use-policy",
+      "/refund-policy",
+      "/privacy-policy",
+      "/domain-registration-agreement",
+      "/ai-services-terms",
+      "/data-processing-agreement",
+      "/customer-service-policy",
+    ],
   },
   {
     path: "/domain-registration-agreement",
