@@ -233,7 +233,7 @@ export const legalDocuments: readonly LegalDocument[] = [
     category: "policy",
     summary:
       "The conformance target for this website, what we know is not yet meeting it, and how to report a barrier.",
-    effective: "2026-09-09",
+    effective: "2026-11-25",
     related: ["/customer-service-policy"],
   },
 

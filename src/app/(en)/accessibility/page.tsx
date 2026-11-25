@@ -45,7 +45,7 @@ const SECTIONS: readonly LegalSection[] = [
       {
         type: "ul",
         items: [
-          "Colour contrast is computed rather than estimated. Every foreground and background pairing in the design system has a calculated ratio, and the floors are checked automatically on every build — a token pairing that would fail cannot ship.",
+          "Colour contrast is computed rather than estimated. Every foreground and background pairing in the design system has a calculated ratio that meets the WCAG AA minimum, and a validation script checks those pairings during development.",
           "Interactive targets meet the WCAG 2.2 minimum of 24 by 24 CSS pixels, and controls on touch surfaces are sized to 44 pixels.",
           "Every page is operable by keyboard alone, including the mega menu and the mobile drawer. Focus is visible everywhere and is never removed without a replacement.",
           "The navigation uses real ARIA patterns — a tablist for the mega menu rail, a modal dialog for the mobile drawer — with focus returned to the trigger on close.",
@@ -64,11 +64,11 @@ const SECTIONS: readonly LegalSection[] = [
     blocks: [
       {
         type: "p",
-        text: "Automated checks run against every page as part of our build and review process: heading order, images without alternative text, controls with no accessible name, unlabelled landmarks, and target sizes below the minimum. Contrast is validated separately against the design tokens.",
+        text: "We run automated checks during development and review: heading order, images without alternative text, controls with no accessible name, unlabelled landmarks, and target sizes below the minimum. Contrast is validated separately against the design tokens. These checks are run by hand before changes go out; they are not yet an automatic gate on every deployment.",
       },
       {
         type: "p",
-        text: "Automation catches perhaps a third of real accessibility problems, so pages are also operated by keyboard and reviewed at eleven screen widths from 375 to 2560 pixels.",
+        text: "Automation catches perhaps a third of real accessibility problems, so pages are also operated by keyboard and checked at nine screen widths from 320 to 1440 pixels.",
       },
     ],
   },
@@ -85,7 +85,10 @@ const SECTIONS: readonly LegalSection[] = [
         items: [
           "No independent audit has been carried out. Our testing is our own, and self-assessment has blind spots by definition.",
           "We have not completed testing with the full range of screen readers and browser combinations. Automated checks and keyboard testing are not a substitute for that.",
-          "The billing and client area runs on separate third-party software. We do not control its markup, and it has not been assessed to the same standard as this site.",
+          "The billing and client area runs on WHMCS, third-party billing software. We have built our own theme on it, but much of the underlying markup comes from WHMCS, and the client area has not been assessed to the same standard as this site.",
+          "The ConvoAI chat assistant on this site and in the client area is our own product, but it has not yet been tested with screen readers to the same standard as the pages around it.",
+          "Some illustrative mock-ups on product pages use colours outside the design system, so the contrast check described above does not cover them. They are decorative pictures of a product, not controls you need to use.",
+          "Our accessibility checks run by hand rather than automatically on every deployment, so a regression can reach the live site before we catch it.",
           "Where a domain registry or payment provider renders part of a flow, its accessibility is outside our control.",
         ],
       },
@@ -101,7 +104,7 @@ const SECTIONS: readonly LegalSection[] = [
       },
       {
         type: "p",
-        text: "We treat accessibility reports as defects rather than feature requests. If something on this site prevents you doing business with us, we will also do that business with you by phone or email in the meantime, at no disadvantage to you.",
+        text: "We treat accessibility reports as defects rather than feature requests. We aim to reply to an accessibility report within one business day. If something on this site prevents you doing business with us, we will also do that business with you by phone on (305) 671-1272 or by email in the meantime, at no disadvantage to you.",
       },
     ],
   },
