@@ -84,7 +84,7 @@ export default function WordPressHostingPage() {
       </div>
       <Banner
         title={tx("Launch WordPress today")}
-        body={tx("Try Serverlys WordPress hosting risk-free. If it is not right, tell us within 30 days for a full refund.")}
+        body={tx("Try Serverlys WordPress hosting risk-free. If it is not right, tell us within 30 days for a refund.")}
         href={lh("#plans")}
       />
       <PageBreadcrumbs trail={tx(breadcrumbTrail(PATH))} />

@@ -170,7 +170,7 @@ export const COMMITMENTS = {
     },
     {
       title: "Thirty days to change your mind",
-      body: "Hosting plans carry a 30-day money-back guarantee. Domain registrations do not, because the registry fee is paid the moment you register and is not recoverable.",
+      body: "Hosting plans carry a 30-day money-back guarantee. Domain registrations do not, because the registration fee goes to the registry the moment you register.",
     },
   ],
 } as const;

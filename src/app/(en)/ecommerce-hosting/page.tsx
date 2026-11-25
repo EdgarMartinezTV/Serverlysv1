@@ -110,7 +110,7 @@ export default function EcommerceHostingPage() {
       </div>
       <Banner
         title={tx("Your store is one step away")}
-        body={tx("Try Serverlys ecommerce hosting risk-free. If it is not right, tell us within 30 days for a full refund.")}
+        body={tx("Try Serverlys ecommerce hosting risk-free. If it is not right, tell us within 30 days for a refund.")}
         href={lh("#pricing")}
       />
       <PageBreadcrumbs trail={tx(breadcrumbTrail(PATH))} />

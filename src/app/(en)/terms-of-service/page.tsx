@@ -157,7 +157,7 @@ const SECTIONS: readonly LegalSection[] = [
     blocks: [
       {
         type: "p",
-        text: "Hosting plans carry a 30-day money-back guarantee. Domain registrations, renewals and transfers are not refundable once made, except where a registration fails at the registry and you were charged for it. The full detail, including what is and is not covered, is on the refund policy page.",
+        text: "Hosting, email and ConvoAI Pro plans carry a 30-day money-back guarantee on the first payment. Domain registrations, renewals and transfers are not refundable once made, except where a registration fails at the registry and you were charged for it. The full detail, including what is and is not covered, is on the refund policy page.",
       },
     ],
   },

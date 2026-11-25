@@ -20,7 +20,7 @@ const PROMISES = [
   },
   {
     title: "Thirty days to change your mind",
-    body: "If it is not right, ask within 30 days for a full refund. No forms, no retention call.",
+    body: "If it is not right, ask within 30 days for a refund. No forms, no retention call.",
   },
   {
     title: "We move your site for you",

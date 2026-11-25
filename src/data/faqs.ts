@@ -55,7 +55,7 @@ export const faqs: readonly Faq[] = [
   {
     question: "Can I get a refund if it does not work out?",
     answer:
-      "Yes, 30 days on all hosting plans, no questions asked. Domain registrations are generally not refundable once registered because the registry fee is paid immediately, which is standard across registrars and set out in the refund policy.",
+      "Yes, 30 days on all hosting and email plans and ConvoAI Pro, no questions asked. If your plan came with a free domain, its regular price is deducted and the domain stays yours. Domain registrations are generally not refundable once registered because the registry fee is paid immediately, which is standard across registrars and set out in the refund policy.",
     scopes: ["/", "/pricing"],
   },
   {

@@ -14,7 +14,7 @@ import { lh } from "@/i18n/href";
  */
 export function Banner({
   title = "Your website is one step away",
-  body = "Try Serverlys cloud hosting risk-free. If it is not right, tell us within 30 days for a full refund.",
+  body = "Try Serverlys cloud hosting risk-free. If it is not right, tell us within 30 days for a refund.",
   href = "#pricing",
 }: { title?: string; body?: string; href?: string } = {}) {
   return (

@@ -167,7 +167,7 @@ function info(): ToolResult {
       support: { email: company.email, phone: company.phone, ticket: billing.sales },
       clientArea: billing.clientArea,
       refunds:
-        "Hosting plans have a 30-day money-back guarantee from the first payment. Domain registrations, renewals and transfers are not refundable.",
+        "Hosting, email and ConvoAI Pro plans have a 30-day money-back guarantee from the first payment; a free domain included with the plan has its regular price deducted and stays with the customer. Domain registrations, renewals and transfers are not refundable.",
       refundPolicy: canonical("/refund-policy"),
       helpCenter: `${billing.root}/knowledgebase`,
     },

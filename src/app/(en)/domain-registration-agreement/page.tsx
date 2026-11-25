@@ -175,7 +175,7 @@ const SECTIONS: readonly LegalSection[] = [
     blocks: [
       {
         type: "p",
-        text: "Domain registrations, renewals and transfers are not refundable once processed. The registry fee is paid the moment a name is registered and is not returned to us, so refunding it would mean paying for a name you now own.",
+        text: "Domain registrations, renewals and transfers are not refundable once processed. The registration fee goes to the registry the moment a name is registered, so refunding it would mean paying for a name you now own.",
       },
       {
         type: "p",

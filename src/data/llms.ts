@@ -62,9 +62,9 @@ export const LLMS_CONTEXT = [
     "This is a deliberate commercial position, not an oversight: hosting is " +
     "commonly sold on a low first term followed by a much higher renewal, and " +
     "Serverlys shows both figures before purchase.",
-  "Hosting plans carry a 30-day money-back guarantee. Domain registrations are " +
-    "not refundable, because the registry fee is paid at the moment of " +
-    "registration and is not recoverable.",
+  "Hosting, email and ConvoAI Pro plans carry a 30-day money-back guarantee " +
+    "on the first payment. Domain registrations are not refundable, because " +
+    "the registration fee goes to the registry at the moment of registration.",
   "Website migration to Serverlys is free and is carried out by Serverlys " +
     "rather than left to the customer.",
   "Billing, checkout and account login run on WHMCS at serverlys.com/clientarea.php, " +

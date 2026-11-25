@@ -161,7 +161,7 @@ export const legalDocuments: readonly LegalDocument[] = [
     category: "policy",
     summary:
       "The 30-day hosting guarantee, why domain registrations sit outside it, and the three exceptions.",
-    effective: "2026-09-09",
+    effective: "2026-11-25",
     related: ["/terms-of-service", "/customer-service-policy"],
   },
   {
