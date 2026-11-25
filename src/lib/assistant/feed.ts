@@ -6,6 +6,7 @@ import { upcomingProducts } from "@/data/products";
 import { hostingPlans, hostingProducts } from "./knowledge/hosting";
 import { companyFacts, contactChannels, serviceCatalogue } from "./knowledge/services";
 import { NAVIGABLE } from "./navigation-map";
+import { FREE_WITH_HOSTING } from "@/data/tlds";
 
 /**
  * The knowledge feed ConvoAI reads (GET /api/convoai/knowledge).
@@ -33,7 +34,8 @@ const lines = (xs: (string | undefined | false | null)[]) => xs.filter(Boolean).
 
 function plansDoc(): FeedDocument {
   const out: string[] = [
-    "Serverlys hosting plans. Every price below is monthly; NO plan has a term or commitment.",
+    "Serverlys hosting plans. Every plan can be paid monthly with no commitment, or 12, 24 or 36 months up front; longer terms cost less per month and each term renews at its own same price. Never say a plan REQUIRES a long term — but do explain the up-front options, because the site's \"from $X/mo\" headlines are the per-month equivalent of paying 36 months up front.",
+    `FREE DOMAIN: every Cloud, WordPress and WooCommerce plan paid 12 months or longer up front includes ${FREE_WITH_HOSTING.join(", ")} free for the first year (it then renews at the normal domain price). The monthly term does NOT include a free domain. Never say hosting plans have no free domain.`,
     "When quoting a price ALWAYS give two numbers: what they pay today (first payment, incl. any setup fee) and the regular price it renews at. Serverlys renews every plan at its own regular price.",
     "\"From $X/mo\" figures in the FAQ and page summaries are the plan price WITHOUT its setup fee. When you tell someone what they pay today, use the \"first payment ... in total\" figure below for the term they are asking about (monthly unless they say otherwise).",
     "",
@@ -50,6 +52,7 @@ function plansDoc(): FeedDocument {
           p.summary,
           `Price: ${p.monthlyPrice}. Renews at: ${p.renewsAt}. ${p.savings}.`,
           p.blackFriday,
+          p.terms,
           p.setupFee,
           `Sites: ${p.sites}. Visits: ${p.visits}. Memory: ${p.memory}. Storage: ${p.storage}. Transfer: ${p.transfer}.`,
           p.includes.length ? `Includes: ${p.includes.join("; ")}.` : "",
@@ -138,6 +141,38 @@ function faqDoc(): FeedDocument {
   };
 }
 
+function selfServiceDoc(): FeedDocument {
+  const u = company.url;
+  return {
+    key: "self-service",
+    title: "How customers do things themselves (exact steps — give these instead of handing over)",
+    url: `${u}/clientarea`,
+    content: lines([
+      "Give the customer the exact steps and the direct link. Most account tasks are self-service in the Serverlys client area; a person is only needed when the steps below say so.",
+      "Every client-area link asks them to log in first if they are not signed in. Forgotten password: " + `${u}/password/reset` + ".",
+      "",
+      `- See or manage a hosting plan: ${u}/clientarea?action=services → open the service. From there they can log in to cPanel with one click, see usage, and upgrade.`,
+      `- Upgrade or downgrade a plan: open the service in ${u}/clientarea?action=services and choose Upgrade/Downgrade; the price difference is prorated. Their site does not move.`,
+      `- Cancel a service: open the service in ${u}/clientarea?action=services and choose Request Cancellation; they pick immediate or end of billing period. Within 30 days of the first payment the money-back guarantee applies (see the FAQ for what is deducted).`,
+      `- Pay an invoice or see billing history: ${u}/clientarea?action=invoices. Signed-in customers can also pay from the chat with the Pay invoice button.`,
+      `- Change the saved card or payment method: ${u}/account/paymentmethods.`,
+      `- Update name, address, email or company on the account: ${u}/clientarea?action=details.`,
+      `- Domains (renew, auto-renew, nameservers, WHOIS contacts, lock): ${u}/clientarea?action=domains → Manage on the domain. Signed-in customers can renew from the chat with the Renew domain button.`,
+      `- Transfer a domain IN: ${u}/transfer-domain (they need the auth/EPP code from the current registrar and the domain unlocked).`,
+      "- Transfer a domain OUT (get the EPP code / unlock): from the domain's Manage page. Domains registered or transferred in the last 30 days cannot be unlocked or get an EPP code yet (registry rule) — say so plainly.",
+      "- Email accounts, DNS records, files, databases, WordPress: inside cPanel (log in from the service page): Email Accounts, Zone Editor, File Manager, MySQL Databases. SSL certificates are issued and renewed automatically (AutoSSL); nothing to buy or install.",
+      "- Restore a backup: cPanel → JetBackup (daily backups, restores are free and self-service: pick the date, then files, databases or email).",
+      `- Move a site to Serverlys: migration is free. Order hosting, then open a request from ${u}/clientarea and the team moves it; you can open it for them in this chat (ticket) once they give the domain, current host and an email. Never ask for passwords in chat.`,
+      "",
+      "Needs a person (open the ticket yourself in this chat with every detail they gave, give them the reference, and tell them the team replies by email):",
+      "- a refund, a double charge or any billing dispute (state the 30-day guarantee and what happens next first);",
+      "- a service that is down or broken after they have tried the steps above, or anything only server access can fix;",
+      "- account ownership or access problems the password reset cannot fix;",
+      "- legal, abuse and law-enforcement requests.",
+    ]),
+  };
+}
+
 function saleDoc(active: boolean): FeedDocument {
   const pct = `${Math.round(BLACK_FRIDAY.pct * 100)}%`;
   return {
@@ -157,7 +192,7 @@ export function buildFeed(now = new Date()): AssistantFeed {
     generatedAt: now.toISOString(),
     site: company.url,
     sale: active ? { active, name: "Black Friday", endsLabel: BLACK_FRIDAY.endsLabel, code: BLACK_FRIDAY.code, pct: BLACK_FRIDAY.pct } : null,
-    documents: [saleDoc(active), plansDoc(), productsDoc(), servicesDoc(), companyDoc(), faqDoc()],
+    documents: [saleDoc(active), plansDoc(), productsDoc(), servicesDoc(), companyDoc(), selfServiceDoc(), faqDoc()],
     pages: NAVIGABLE.map((p) => ({ path: p.path, label: p.label, sections: p.sections.map((s) => ({ id: s.id, label: s.label })) })),
   };
 }

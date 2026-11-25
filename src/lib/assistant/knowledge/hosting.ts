@@ -1,4 +1,5 @@
-import { BLACK_FRIDAY, formatPrice, groupById, planGroups, quote } from "@/data/pricing";
+import { BLACK_FRIDAY, TERMS, formatPrice, groupById, planGroups, quote } from "@/data/pricing";
+import { FREE_WITH_HOSTING } from "@/data/tlds";
 import { products, startingPrice, upcomingProducts } from "@/data/products";
 import { billing } from "@/data/company";
 
@@ -30,6 +31,8 @@ export type PlanFact = {
   savings: string;
   /** Black Friday first-payment prices while the sale runs (WHMCS code BLACKFRIDAY, auto-applied in the cart). */
   blackFriday?: string;
+  /** Every billing term: total, per-month equivalent, setup, free domain — so "from $X/mo" headlines can be explained. */
+  terms: string;
   setupFee?: string;
   sites: string;
   visits: string;
@@ -62,8 +65,13 @@ function toPlanFact(groupSlug: string, plan: (typeof planGroups)[number]["plans"
       const y = quote(plan, "annually");
       const t = quote(plan, "triennially");
       if (!m.bf || !y.bf || !t.bf) return undefined;
-      return `Black Friday until ${BLACK_FRIDAY.endsLabel}: ${Math.round(BLACK_FRIDAY.pct * 100)}% off the first payment, applied automatically at checkout. Monthly term: first payment ${formatPrice(m.bf.today)} in total${m.bf.setup ? ` (this ALREADY INCLUDES the ${formatPrice(plan.setupFee ?? 0)} setup fee — nothing else is added)` : ""}, then ${formatPrice(plan.monthly)}/mo. Paying 12 months up front: ${formatPrice(y.bf.today)} (regular ${formatPrice(y.total)}). Paying 36 months up front: ${formatPrice(t.bf.today)} (regular ${formatPrice(t.total)}). Renews at the regular price.`;
+      const pm = (total: number, months: number) => formatPrice(Math.round((total / months) * 100) / 100);
+      return `Black Friday until ${BLACK_FRIDAY.endsLabel}: ${Math.round(BLACK_FRIDAY.pct * 100)}% off the first payment, applied automatically at checkout. Monthly term: first payment ${formatPrice(m.bf.today)} in total${m.bf.setup ? ` (this ALREADY INCLUDES the ${formatPrice(plan.setupFee ?? 0)} setup fee — nothing else is added)` : ""}, then ${formatPrice(plan.monthly)}/mo. Paying 12 months up front: ${formatPrice(y.bf.today)} today (works out to ${pm(y.bf.today, 12)}/mo; regular ${formatPrice(y.total)}), free domain included. Paying 36 months up front: ${formatPrice(t.bf.today)} today (works out to ${pm(t.bf.today, 36)}/mo — this is the "from ${pm(t.bf.today, 36)}/mo" headline on the site; regular ${formatPrice(t.total)}), free domain included. Each term renews at its regular price.`;
     })(),
+    terms: `Billing terms (regular prices): ${TERMS.map((t) => {
+      const q = quote(plan, t.key);
+      return `${q.label}: ${formatPrice(q.total)}${t.months > 1 ? ` for ${t.months} months (${formatPrice(q.perMonth)}/mo)` : "/mo"}${q.setup ? ` + ${formatPrice(q.setup)} one-off setup` : ""}${q.freeDomain ? ", free domain for the first year" : ", no free domain"}`;
+    }).join("; ")}. Every term renews at that same term price. Free domain = ${FREE_WITH_HOSTING.join(", ")} for the first year on 12-month or longer billing; the monthly term does not include one.`,
     setupFee: plan.setupFee ? `${formatPrice(plan.setupFee)} one-off setup fee` : undefined,
     sites: plan.specs.sites,
     visits: plan.specs.visits,

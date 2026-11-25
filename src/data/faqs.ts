@@ -61,7 +61,7 @@ export const faqs: readonly Faq[] = [
   {
     question: "Which hosting plan should I choose?",
     answer:
-      "Match it to the workload. Brochure sites and blogs fit shared hosting; variable or growing traffic suits cloud; applications needing root access want a VPS; sustained heavy load justifies a dedicated server. If nobody in-house wants to maintain a server, choose managed hosting at whichever tier.",
+      "Pick by how many sites you run and how busy they are. One site with up to about 10,000 visits a month, like most local businesses, fits Starter. Up to 7 sites or about 25,000 visits fits Plus. Unlimited sites start at Turbo (about 50,000 visits), and Business covers about 100,000. WordPress sites go on WordPress hosting and WooCommerce stores on Ecommerce hosting; every tier includes free migration, SSL and daily backups, and you can move up a tier later without moving your site. VPS and dedicated servers are not available yet.",
     scopes: ["/", "/pricing"],
   },
   {
@@ -157,7 +157,7 @@ export const faqs: readonly Faq[] = [
   {
     question: "Which hosting should I choose?",
     answer:
-      "Match it to the workload rather than the price. Brochure sites and blogs fit the entry tier; variable or growing traffic suits cloud; a store needs checkout headroom. If nobody in-house wants to maintain a server, choose managed at whichever tier.",
+      "Pick by how many sites you run and how busy they are. One site with up to about 10,000 visits a month, like most local businesses, fits Starter. Up to 7 sites or about 25,000 visits fits Plus. Unlimited sites start at Turbo (about 50,000 visits), and Business covers about 100,000. WordPress sites go on WordPress hosting and WooCommerce stores on Ecommerce hosting; every tier includes free migration, SSL and daily backups, and you can move up a tier later without moving your site. VPS and dedicated servers are not available yet.",
     scopes: ["/hosting"],
   },
   {
