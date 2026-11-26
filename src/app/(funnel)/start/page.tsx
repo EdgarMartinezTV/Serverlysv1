@@ -405,7 +405,7 @@ export default function StartPage() {
           </div>
           <div className="mt-2 rounded-[32px] bg-black px-3 pb-3 pt-5 text-white shadow-[0_20px_60px_rgba(0,0,0,0.3)]">
             <p className="px-4 font-display text-[20px] font-medium">Start your website</p>
-            <p className="px-4 pb-3 text-[11px] text-white/60">30-day money-back guarantee on hosting.</p>
+            <p className="px-4 pb-3 text-[11px] text-white/60">We check your domain instantly. 30-day money-back guarantee on hosting.</p>
             <NameField id="start-hero" variant="dark" />
           </div>
         </div>
