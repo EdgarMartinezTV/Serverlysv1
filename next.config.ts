@@ -294,7 +294,13 @@ const nextConfig: NextConfig = {
               `connect-src 'self' ${convoai}${more(ext.connect)}`,
               "object-src 'none'",
               "base-uri 'self'",
-              "form-action 'self'",
+              /*
+               * In production WHMCS is served on this same origin, so 'self'
+               * covers the plain GET forms that hand off to the cart (/start).
+               * In development the page is on localhost and WHMCS is not, so
+               * the billing origin is allowed there only.
+               */
+              `form-action 'self'${isDev ? ` ${new URL(process.env.NEXT_PUBLIC_BILLING_ORIGIN ?? "https://serverlys.com").origin}` : ""}`,
               "frame-ancestors 'self'",
               "frame-src 'none'",
               /*
