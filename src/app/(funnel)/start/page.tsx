@@ -28,14 +28,13 @@ import { NameField } from "./name-field";
  *    the real 30-day money-back guarantee (/refund-policy).
  *  · Photos are real Unsplash stock (public/mock/CREDITS.md) — no AI images.
  *
- * noindex: duplicates the hosting pages; only exists to receive ad traffic.
- * Not in data/routes.ts, so not in the sitemap.
+ * Indexable since 2026-11-26 (Edgar asked for it to be submitted to Search
+ * Console); listed in data/routes.ts, so it is in the sitemap.
  */
 export const metadata: Metadata = {
   title: "Start your website today",
   description:
     "Hosting, a domain and a secure website — online in minutes, with a 30-day money-back guarantee.",
-  robots: { index: false, follow: false },
   alternates: { canonical: "/start" },
 };
 

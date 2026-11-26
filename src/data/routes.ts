@@ -510,6 +510,16 @@ export const routes: readonly RouteMeta[] = [
     parents: ["/", "/domain-name"],
   },
   {
+    path: "/start",
+    name: "Start your website",
+    group: "commercial",
+    built: true,
+    indexable: true,
+    priority: 0.7,
+    changeFrequency: "monthly",
+    parents: ["/"],
+  },
+  {
     path: "/whois-lookup",
     name: "WHOIS lookup",
     group: "tool",
