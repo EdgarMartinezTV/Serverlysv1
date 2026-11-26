@@ -16,6 +16,7 @@ import { batch20261123b } from "./batch-2026-11-23b";
 import { batch20261124 } from "./batch-2026-11-24";
 import { batch20261124b } from "./batch-2026-11-24b";
 import { batch20261125 } from "./batch-2026-11-25";
+import { batch20261125b } from "./batch-2026-11-25b";
 
 export type { Article, ArticleCategory, Block };
 
@@ -40,7 +41,7 @@ export type { Article, ArticleCategory, Block };
  * head of this list as its lead article, and "whatever happened to be first in
  * the file" is not an editorial decision.
  */
-export const articles: readonly Article[] = [...originalArticles, ...batch20261025, ...batch20261029, ...batch20261109, ...batch20261112, ...batch20261114, ...batch20261115, ...batch20261116, ...batch20261120, ...batch20261121, ...batch20261122, ...batch20261123, ...batch20261123b, ...batch20261124, ...batch20261124b, ...batch20261125, ...legacyArticles].sort(
+export const articles: readonly Article[] = [...originalArticles, ...batch20261025, ...batch20261029, ...batch20261109, ...batch20261112, ...batch20261114, ...batch20261115, ...batch20261116, ...batch20261120, ...batch20261121, ...batch20261122, ...batch20261123, ...batch20261123b, ...batch20261124, ...batch20261124b, ...batch20261125, ...batch20261125b, ...legacyArticles].sort(
   (a, b) => b.published.localeCompare(a.published),
 );
 
