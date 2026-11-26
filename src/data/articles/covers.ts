@@ -1,6 +1,6 @@
 /**
  * Articles that have a cover photo at /blog/covers/<slug>.webp.
- * CC0 / public-domain photos — sources in public/blog/covers/CREDITS.txt.
+ * Photos and coded product mockups — sources in public/blog/covers/CREDITS.txt.
  * A new article without one falls back to the coded category thumbnail.
  */
 export const COVERS: ReadonlySet<string> = new Set([
@@ -85,4 +85,39 @@ export const COVERS: ReadonlySet<string> = new Set([
   "wordpress-staging-site",
   "wordpress-vs-webflow-squarespace",
   "wordpress-white-screen-death",
+  "ai-receptionist-for-small-business",
+  "bilingual-website-english-spanish",
+  "black-friday-web-hosting-deals-checklist",
+  "dns-propagation-explained",
+  "domain-renewal-scams",
+  "domain-vs-hosting",
+  "first-week-after-launching-a-website",
+  "fonts-scripts-and-embeds-slowing-your-site",
+  "google-november-2026-core-update",
+  "hipaa-website-hosting",
+  "hosting-for-bootstrapped-startups",
+  "how-ai-is-helping-small-businesses",
+  "how-long-does-a-domain-transfer-take",
+  "how-much-hosting-do-you-need",
+  "how-to-build-a-strong-online-presence",
+  "is-my-website-down",
+  "keep-control-of-your-domain",
+  "online-store-pre-launch-checklist",
+  "php-8-2-end-of-life-update-php-version",
+  "prepare-online-store-for-holiday-traffic",
+  "website-accessibility-checklist",
+  "website-migration-cost",
+  "website-not-secure-warning",
+  "website-not-showing-on-google",
+  "what-fully-managed-hosting-includes",
+  "what-happens-if-you-stop-paying-for-web-hosting",
+  "what-is-web-hosting",
+  "where-is-my-domain-registered",
+  "who-has-access-to-your-website",
+  "why-are-my-emails-going-to-spam",
+  "why-your-business-needs-a-website",
+  "wordpress-7-1-5-security-update",
+  "wordpress-hosting-vs-web-hosting",
+  "wordpress-maintenance-routine",
+  "write-the-answers-your-ai-assistant-gives",
 ]);

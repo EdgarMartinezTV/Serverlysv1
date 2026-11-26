@@ -28,3 +28,28 @@ wordpress-7-1-3-update-and-wordpress-7-2.webp: Christopher Gower,
 get-your-products-into-chatgpt-shopping.webp: Vitaly Gariev,
   https://unsplash.com/photos/KfJQ2mU_hYQ
 Resized/cropped to 3:2, 1200x800, WebP q78.
+
+Coded product mockups, NOT AI-generated (2026-11-25), 35 covers:
+ai-receptionist-for-small-business bilingual-website-english-spanish 
+black-friday-web-hosting-deals-checklist dns-propagation-explained 
+domain-renewal-scams domain-vs-hosting first-week-after-launching-a-website 
+fonts-scripts-and-embeds-slowing-your-site google-november-2026-core-update 
+hipaa-website-hosting hosting-for-bootstrapped-startups 
+how-ai-is-helping-small-businesses how-long-does-a-domain-transfer-take 
+how-much-hosting-do-you-need how-to-build-a-strong-online-presence 
+is-my-website-down keep-control-of-your-domain 
+online-store-pre-launch-checklist php-8-2-end-of-life-update-php-version 
+prepare-online-store-for-holiday-traffic website-accessibility-checklist 
+website-migration-cost website-not-secure-warning 
+website-not-showing-on-google what-fully-managed-hosting-includes 
+what-happens-if-you-stop-paying-for-web-hosting what-is-web-hosting 
+where-is-my-domain-registered who-has-access-to-your-website 
+why-are-my-emails-going-to-spam why-your-business-needs-a-website 
+wordpress-7-1-5-security-update wordpress-hosting-vs-web-hosting 
+wordpress-maintenance-routine write-the-answers-your-ai-assistant-gives
+Each is an HTML/CSS mockup of a generic product screen (browser, control
+panel, WordPress admin, mail client, analytics, store admin...) built for
+Serverlys and rendered to 1200x800 WebP q80 with headless Chromium. All
+business names, domains, numbers and people in them are fictional. Photos
+inside some mockups are the Unsplash-licensed images already in
+public/industries (credited in public/industries/CREDITS.md).
