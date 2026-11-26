@@ -2,7 +2,7 @@
 
 import { useId, useRef, useState } from "react";
 import { billing } from "@/data/company";
-import { addToCart, canAddInPlace } from "@/lib/domains/cart";
+import { canAddInPlace } from "@/lib/domains/cart";
 import type { CheckOutcome, DomainResult } from "@/lib/domains/types";
 
 /**
@@ -11,22 +11,50 @@ import type { CheckOutcome, DomainResult } from "@/lib/domains/types";
  *
  *   1. The visitor types a business name ("Fresh Bakery") or a domain.
  *   2. We check it with /api/domains/check (WHMCS lookup, ResellerClub).
- *   3. AVAILABLE → the name goes into the WHMCS cart in place (same-origin
- *      credentialed GET, lib/domains/cart.ts) and the visitor lands on the
- *      Starter Cloud order page with `incartdomain=<name>`, which sx-cart.js
- *      opens on "From my cart" with that name linked to the plan — WHMCS then
- *      applies the plan's free first year where the TLD qualifies.
- *      TAKEN → available alternatives, plus "It's mine": use it where it is
- *      (domainoption=owndomain — goes STRAIGHT into the cart, verified live
- *      2026-11-25) or transfer it (domainoption=transfer — order page opens
- *      on the Transfer tab with the name filled in, verified live).
+ *   3. AVAILABLE → "Continue": Starter Cloud + the domain go into the cart
+ *      in one step and the visitor lands on checkout (see addPlanWithDomain).
+ *      TAKEN → available alternatives (same as above), plus "It's mine":
+ *      use it where it is (owndomain) or transfer it (transfer) — both also
+ *      go straight into the cart with the plan, then checkout.
  *
- * Off the billing origin (localhost) an in-place add is impossible, so an
- * available name falls back to the order page with the name prefilled in
- * "Register a new domain".
+ * Off the billing origin (localhost) an in-place add is impossible, so every
+ * choice falls back to the order page with the name filled in on the right tab.
  */
 const PID = 1;
-const PLAN_URL = billing.order("cloud-hosting", "starter-cloud");
+const CHECKOUT_URL = `${billing.root}/cart.php?a=checkout`;
+
+type Option = "register" | "transfer" | "owndomain";
+
+/**
+ * Verified live 2026-11-25 (and the carts emptied again):
+ *   register .com → Starter Cloud $83.40 + domain $0.00 → $52.54 due today
+ *   register .io  → Starter Cloud $83.40 + domain $80.95 (charged)
+ *   transfer      → Starter Cloud + "Domain Transfer" line
+ *   owndomain     → Starter Cloud with the domain on the hosting line
+ * The CSRF token is the visitor's own WHMCS session token, read from their
+ * cart page — this only works same-origin, which is why canAddInPlace() gates it.
+ */
+async function addPlanWithDomain(option: Option, r: DomainResult): Promise<boolean> {
+  try {
+    if (option === "owndomain") {
+      const res = await fetch(cartUrl("owndomain", r), { credentials: "include", cache: "no-store" });
+      return res.ok && (await res.text()).includes(r.domain);
+    }
+    const view = await fetch(`${billing.root}/cart.php?a=view`, { credentials: "include", cache: "no-store" });
+    const token = /name="token" value="([^"]+)"/.exec(await view.text())?.[1];
+    if (!token) return false;
+    const body = new URLSearchParams({ token, domainoption: option });
+    body.append("domains[]", r.domain);
+    body.append(`domainsregperiod[${r.domain}]`, "1");
+    const res = await fetch(
+      `${billing.root}/cart.php?a=add&pid=${PID}&domainselect=1&billingcycle=annually&skipconfig=1`,
+      { method: "POST", credentials: "include", body },
+    );
+    return res.ok && (await res.text()).includes(r.domain);
+  } catch {
+    return false;
+  }
+}
 /** WHMCS freedomaintlds on annual+ plans (verified with a cart: domain $0). */
 const FREE_TLDS = new Set([".com", ".net", ".org", ".biz", ".info"]);
 
@@ -42,7 +70,7 @@ function toQuery(raw: string): string {
   return v.replace(/[^a-z0-9-]+/g, "").replace(/^-+|-+$/g, "").slice(0, 63);
 }
 
-function cartUrl(option: "owndomain" | "transfer" | "register", r: { sld: string; tld: string }) {
+function cartUrl(option: Option, r: { sld: string; tld: string }) {
   const p = new URLSearchParams({
     a: "add",
     pid: String(PID),
@@ -123,19 +151,22 @@ export function NameField({ id, variant }: { id: string; variant: "dark" | "ligh
   }
 
   /** Available name → into the cart, then the plan page with it linked. */
-  async function register(r: DomainResult) {
-    setGoing(r.domain);
-    if (canAddInPlace() && (await addToCart([r.domain]))) {
-      // WHMCS order page, served by the front-door proxy — not a Next.js route.
+  /**
+   * Plan + domain into the cart, then checkout. On serverlys.com this is the
+   * same POST the WHMCS order page sends (frmProductDomainSelections), so the
+   * domain is attached to the plan and priced by WHMCS: free first year on
+   * the free-domain TLDs, the TLD's price otherwise. If anything about it
+   * fails — or we are off the billing origin — the visitor lands on the
+   * order page with the name filled in instead, which still completes.
+   */
+  async function addAndCheckout(option: Option, r: DomainResult) {
+    setGoing(`${option}:${r.domain}`);
+    if (canAddInPlace() && (await addPlanWithDomain(option, r))) {
+      // WHMCS checkout, served by the front-door proxy — not a Next.js route.
       // eslint-disable-next-line @next/next/no-location-assign-relative-destination
-      window.location.assign(`${PLAN_URL}?billingcycle=annually&incartdomain=${encodeURIComponent(r.domain)}`);
+      window.location.assign(CHECKOUT_URL);
       return;
     }
-    window.location.assign(cartUrl("register", r));
-  }
-
-  function go(option: "owndomain" | "transfer", r: DomainResult) {
-    setGoing(`${option}:${r.domain}`);
     window.location.assign(cartUrl(option, r));
   }
 
@@ -212,11 +243,11 @@ export function NameField({ id, variant }: { id: string; variant: "dark" | "ligh
                 </p>
                 <button
                   type="button"
-                  onClick={() => register(state.primary)}
+                  onClick={() => addAndCheckout("register", state.primary)}
                   disabled={going !== null}
                   className={`mt-3 flex w-full items-center justify-center gap-2 rounded-full px-5 py-3 text-[15px] font-semibold transition-colors ${primaryBtn}`}
                 >
-                  {going === state.primary.domain ? <Spinner /> : null}
+                  {going === `register:${state.primary.domain}` ? <Spinner /> : null}
                   Continue with {state.primary.domain} <Arrow className="size-4" />
                 </button>
               </>
@@ -234,14 +265,14 @@ export function NameField({ id, variant }: { id: string; variant: "dark" | "ligh
                         <li key={r.domain}>
                           <button
                             type="button"
-                            onClick={() => register(r)}
+                            onClick={() => addAndCheckout("register", r)}
                             disabled={going !== null}
                             className={`flex w-full items-center justify-between gap-3 rounded-full px-4 py-2.5 text-left text-[14px] transition-colors ${ghostBtn}`}
                           >
                             <span className="font-semibold">{r.domain}</span>
                             <span className={`flex items-center gap-2 text-[12px] ${muted}`}>
                               {FREE_TLDS.has(r.tld) ? "Free 1st year" : `${fmt(r.price)}/yr`}
-                              {going === r.domain ? <Spinner /> : <Arrow className="size-4" />}
+                              {going === `register:${r.domain}` ? <Spinner /> : <Arrow className="size-4" />}
                             </span>
                           </button>
                         </li>
@@ -249,7 +280,7 @@ export function NameField({ id, variant }: { id: string; variant: "dark" | "ligh
                     </ul>
                   </>
                 )}
-                <OwnedChoice result={state.primary} going={going} onGo={go} muted={muted} primaryBtn={primaryBtn} ghostBtn={ghostBtn} lead={`Is ${state.primary.domain} yours?`} />
+                <OwnedChoice result={state.primary} going={going} onGo={addAndCheckout} muted={muted} primaryBtn={primaryBtn} ghostBtn={ghostBtn} lead={`Is ${state.primary.domain} yours?`} />
               </>
             ) : (
               <>
@@ -291,7 +322,7 @@ function OwnedChoice({
 }: {
   result: DomainResult;
   going: string | null;
-  onGo: (option: "owndomain" | "transfer", r: DomainResult) => void;
+  onGo: (option: Option, r: DomainResult) => void;
   muted: string;
   primaryBtn: string;
   ghostBtn: string;
