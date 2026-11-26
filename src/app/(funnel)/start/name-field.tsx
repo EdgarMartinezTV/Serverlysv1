@@ -22,6 +22,12 @@ import type { CheckOutcome, DomainResult } from "@/lib/domains/types";
  */
 const PID = 1;
 const CHECKOUT_URL = `${billing.root}/cart.php?a=checkout`;
+/**
+ * A transfer needs the EPP/auth code from the current registrar. Sending it to
+ * checkout made WHMCS bounce back here with a red "You must enter the EPP
+ * code" error (verified live 2026-11-26); landing here first asks for it plainly.
+ */
+const TRANSFER_URL = `${billing.root}/cart.php?a=confdomains`;
 
 type Option = "register" | "transfer" | "owndomain";
 
@@ -164,7 +170,7 @@ export function NameField({ id, variant }: { id: string; variant: "dark" | "ligh
     if (canAddInPlace() && (await addPlanWithDomain(option, r))) {
       // WHMCS checkout, served by the front-door proxy — not a Next.js route.
       // eslint-disable-next-line @next/next/no-location-assign-relative-destination
-      window.location.assign(CHECKOUT_URL);
+      window.location.assign(option === "transfer" ? TRANSFER_URL : CHECKOUT_URL);
       return;
     }
     window.location.assign(cartUrl(option, r));
