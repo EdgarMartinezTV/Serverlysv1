@@ -8,7 +8,7 @@ import {
   groupById,
   quote,
 } from "@/data/pricing";
-import { NameField, type PlanOption } from "./name-field";
+import { NameField } from "./name-field";
 
 /**
  * /start — the paid-search / ads landing page. LAYOUT follows
@@ -45,23 +45,6 @@ const starter = groupById("cloud")!.plans[0];
 const q = quote(starter, "annually");
 const perMonth = q.bf ? q.bf.perMonth : q.perMonth;
 const today = q.bf ? q.bf.today : q.today;
-
-/** WHMCS product ids of the Cloud plans (verified live 2026-11-26 by following cart.php?a=add&pid=N). */
-const CLOUD_PID = { starter: 1, plus: 4, turbo: 2, business: 5 } as const;
-
-/** The plans offered after the domain check — 12 months, priced from data/pricing.ts. */
-const PLANS: PlanOption[] = groupById("cloud")!.plans.map((plan) => {
-  const t = quote(plan, "annually");
-  return {
-    pid: CLOUD_PID[plan.tier],
-    name: plan.name,
-    sites: plan.specs.sites,
-    perMonth: t.bf ? t.bf.perMonth : t.perMonth,
-    today: t.bf ? t.bf.today : t.today,
-    renew: t.total,
-    popular: plan.popular,
-  };
-});
 
 /* ── Icons ───────────────────────────────────────────────────────────────── */
 
@@ -423,7 +406,7 @@ export default function StartPage() {
           <div className="mt-2 rounded-[32px] bg-black px-3 pb-3 pt-5 text-white shadow-[0_20px_60px_rgba(0,0,0,0.3)]">
             <p className="px-4 font-display text-[20px] font-medium">Start your website</p>
             <p className="px-4 pb-3 text-[11px] text-white/60">We check your domain instantly. 30-day money-back guarantee on hosting.</p>
-            <NameField id="start-hero" variant="dark" plans={PLANS} />
+            <NameField id="start-hero" variant="dark" />
           </div>
         </div>
       </section>
@@ -476,7 +459,7 @@ export default function StartPage() {
             {sale ? `${pct}% off your first payment until ${BLACK_FRIDAY.endsLabel}. ` : ""}Renews at {formatPrice(q.total)}/yr.
           </p>
           <div className="mt-7 w-full max-w-[400px]">
-            <NameField id="start-footer" variant="light" plans={PLANS} />
+            <NameField id="start-footer" variant="light" />
           </div>
           <p className="mt-5 text-[11px] text-white/65">Domains are not refundable once registered.</p>
         </div>
